@@ -35,6 +35,7 @@ public class Variables {
 	public static boolean database_none_leaderleft;
 	public static int database_none_delay;
 	public static String database_file_name;
+	public static boolean database_sql_enable;
 	public static String database_sql_url;
 	public static String database_sql_username;
 	public static String database_sql_password;
@@ -228,6 +229,7 @@ public class Variables {
 		database_none_leaderleft = true;
 		database_none_delay = 600;
 		database_file_name = "data";
+		database_sql_enable = false;
 		database_sql_url = "jdbc:mysql://localhost:3306/database";
 		database_sql_username = "username";
 		database_sql_password = "password";
