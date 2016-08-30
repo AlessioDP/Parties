@@ -46,11 +46,7 @@ public class CommandMigrate implements CommandInterface{
 				return true;
 			}
 		}
-		if(Variables.database_file_name.equalsIgnoreCase("none")){
-			plugin.log(ConsoleColors.CYAN.getCode() + Messages.database_none);
-			return true;
-		}
-		if(plugin.getSQL() == null || plugin.getSQL().isFailed()){
+		if(!Variables.database_sql_enable || plugin.getSQLDatabase() == null){
 			if(sender instanceof Player)
 				plugin.getPlayerHandler().getThePlayer((Player)sender).sendMessage(Messages.database_offlinesql);
 			plugin.log(ConsoleColors.CYAN.getCode() + Messages.database_offlinesql);
@@ -119,26 +115,26 @@ public class CommandMigrate implements CommandInterface{
 	    			tp.setRank(sec.getInt(uuid.toString()+".rank"));
 	    		else
 	    			tp.setRank(Variables.rank_default);
-	    		plugin.getSQL().updatePlayer(tp);
+	    		plugin.getSQLDatabase().updatePlayer(tp);
 	    	}
 	    }
 	    for(String key : spies){
-	    	plugin.getSQL().setSpy(UUID.fromString(key), true);
+	    	plugin.getSQLDatabase().setSpy(UUID.fromString(key), true);
 	    }
 	}
 	private void sql2yaml(){
-		for(String name : plugin.getSQL().getAllParties()){
-			Party party = plugin.getSQL().getParty(name);
+		for(String name : plugin.getSQLDatabase().getAllParties()){
+			Party party = plugin.getSQLDatabase().getParty(name);
 			plugin.getConfigHandler().getData().bp_updateParty(party);
 		}
-		for(String name : plugin.getSQL().getAllPlayers()){
+		for(String name : plugin.getSQLDatabase().getAllPlayers()){
 			ThePlayer tp = new ThePlayer(UUID.fromString(name), plugin);
 			tp.setHaveParty(true);
-			tp.setPartyName(plugin.getSQL().getPlayerPartyName(UUID.fromString(name)));
-			tp.setRank(plugin.getSQL().getRank(UUID.fromString(name)));
+			tp.setPartyName(plugin.getSQLDatabase().getPlayerPartyName(UUID.fromString(name)));
+			tp.setRank(plugin.getSQLDatabase().getRank(UUID.fromString(name)));
 			plugin.getConfigHandler().getData().bp_updatePlayer(tp);
 		}
-		for(UUID spy : plugin.getSQL().getAllSpies()){
+		for(UUID spy : plugin.getSQLDatabase().getAllSpies()){
 			plugin.getConfigHandler().getData().bp_setSpy(spy);
 		}
 	}

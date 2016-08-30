@@ -1,6 +1,6 @@
 name: Parties
 main: com.alessiodp.parties.Parties
-version: 1.6.0
+version: 1.6.1
 description: Party manager for minecraft servers
 softdepend: [Vault, DeluxeChat, PlaceholderAPI, Dynmap]
 permissions:

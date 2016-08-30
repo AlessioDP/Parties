@@ -236,7 +236,6 @@ database:
     to-file: "&aCopied data from SQL to FILE"
     to-sql: "&aCopied data from FILE to SQL"
     sql-offline: "&cThe database SQL must be online!"
-    none: "&cCannot migrate from none database!"
 vault:
     create-nomoney: "&cYou don't have enough money to create a party [%price%$]"
     home-nomoney: "&cYou don't have enough money to use the home command [%price%$]"
