@@ -68,7 +68,6 @@ database:
         # Default is data (data.yml)
         name: data
     sql:
-        enable: false
         url: "jdbc:mysql://localhost:3306/database"
         username: "username"
         password: "password"
@@ -349,4 +348,4 @@ commands:
     command-claim: "claim"
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 10
+    config-version: 9
