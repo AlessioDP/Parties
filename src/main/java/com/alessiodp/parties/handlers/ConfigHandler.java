@@ -31,12 +31,13 @@ public class ConfigHandler {
 		reloadConfig();
 		reloadMessages();
 		if(Variables.database_type.equalsIgnoreCase("sql")){
-			plugin.setSQL(new SQLDatabase(plugin, Variables.database_sql_username, Variables.database_sql_password, Variables.database_sql_url));
-			if(plugin.getSQL().isFailed()){
+			SQLDatabase database = new SQLDatabase(plugin, Variables.database_sql_username, Variables.database_sql_password, Variables.database_sql_url);
+			if(database.isFailed()){
 				Variables.database_type = "file";
 				plugin.log(ConsoleColors.CYAN.getCode() + "Failed open connection with Server SQL. Database changed to File");
 				LogHandler.log(1, "Failed open connection with Server SQL. Database changed to File");
 			} else {
+				plugin.setSQL(database);
 				flag=true;
 			}
 		}
