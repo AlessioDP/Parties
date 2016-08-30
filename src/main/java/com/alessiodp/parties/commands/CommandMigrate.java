@@ -50,7 +50,7 @@ public class CommandMigrate implements CommandInterface{
 			plugin.log(ConsoleColors.CYAN.getCode() + Messages.database_none);
 			return true;
 		}
-		if(plugin.getSQL() == null || plugin.getSQL().isFailed()){
+		if(plugin.getSQL() == null){
 			if(sender instanceof Player)
 				plugin.getPlayerHandler().getThePlayer((Player)sender).sendMessage(Messages.database_offlinesql);
 			plugin.log(ConsoleColors.CYAN.getCode() + Messages.database_offlinesql);
