@@ -73,7 +73,7 @@ public class Parties extends JavaPlugin {
 	private PartyHandler party;
 	private SQLDatabase sqldatabase;
 
-	private static final int ver_config = 9;
+	private static final int ver_config = 10;
 	private static final int ver_mess = 8;
 	private static final String scoreboardprefix = "PARTY";
 	
@@ -321,8 +321,8 @@ public class Parties extends JavaPlugin {
 	public ConfigHandler getConfigHandler(){return config;}
 	public PlayerHandler getPlayerHandler(){return player;}
 	public PartyHandler getPartyHandler(){return party;}
-	public SQLDatabase getSQL(){return sqldatabase;}
-	public void setSQL(SQLDatabase s){sqldatabase = s;}
+	public SQLDatabase getSQLDatabase(){return sqldatabase;}
+	public void setSQLDatabase(SQLDatabase s){sqldatabase = s;}
 	
 	public boolean getPex(){return addon_PEX;}
 	public boolean getGM(){return addon_GM;}
