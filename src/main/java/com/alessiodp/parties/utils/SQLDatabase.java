@@ -553,7 +553,7 @@ public class SQLDatabase {
 				return false;
 			}
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery("SELECT * FROM " + name);
+			ResultSet result = statement.executeQuery("SELECT * FROM " + name + ";");
 			
 			if (result != null)
 				return true;
@@ -581,9 +581,9 @@ public class SQLDatabase {
 				return;
 			}
 			Statement statement = connection.createStatement();
-			statement.executeUpdate("RENAME TABLE "+name+" TO "+name+"_temp");
+			statement.executeUpdate("RENAME TABLE "+name+" TO "+name+"_temp;");
 			createTable(Variables.database_sql_tables_parties, 1);
-			ResultSet rs = statement.executeQuery("SELECT * FROM "+name+"_temp");
+			ResultSet rs = statement.executeQuery("SELECT * FROM "+name+"_temp;");
 			while(rs.next()){
 				/*
 				 * Search first old leader
@@ -624,14 +624,14 @@ public class SQLDatabase {
 			plugin.log(ConsoleColors.CYAN + "Converting old players table (MySQL)");
 			LogHandler.log(1, "Converting old players table (MySQL)");
 			Statement substatement = connection.createStatement();
-			substatement.executeUpdate("RENAME TABLE "+name+" TO "+name+"_temp");
+			substatement.executeUpdate("RENAME TABLE "+name+" TO "+name+"_temp;");
 			createTable(name, 2);
-			ResultSet rs = substatement.executeQuery("SELECT * FROM "+name+"_temp");
+			ResultSet rs = substatement.executeQuery("SELECT * FROM "+name+"_temp;");
 			while(rs.next()){
 				Statement statement3 = connection.createStatement();
 				statement3.executeUpdate("INSERT INTO "+name+" (nickname, party, rank) VALUES ('"+rs.getString("nickname")+"', '"+rs.getString("party")+ "', '"+Variables.rank_default+"') ON DUPLICATE KEY UPDATE party=VALUES(party), rank=VALUES(rank);");
 			}
-			statement.executeUpdate("DROP TABLE "+Variables.database_sql_tables_players+"_temp");
+			statement.executeUpdate("DROP TABLE "+Variables.database_sql_tables_players+"_temp" + ";");
 		} catch (SQLException ex) {}
 	}
 	public void checkConvertedLeaders(){
@@ -641,9 +641,13 @@ public class SQLDatabase {
 				return;
 			}
 			Statement statement = connection.createStatement();
-			ResultSet res = statement.executeQuery("SELECT leader FROM " + Variables.database_sql_tables_parties);
+			ResultSet res = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_parties + ";");
 			while (res.next()) {
-				setRank(UUID.fromString(res.getString("leader")), Variables.rank_last);
+				String leader = res.getString("leader");
+				if(leader == null || leader.isEmpty())
+					this.removeParty(res.getString("name"));
+				else
+					setRank(UUID.fromString(leader), Variables.rank_last);
 			}
 			return;
 		} catch (SQLException ex) {}
