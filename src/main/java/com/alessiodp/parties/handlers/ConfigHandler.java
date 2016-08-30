@@ -30,14 +30,14 @@ public class ConfigHandler {
 		messages = new Messages();
 		reloadConfig();
 		reloadMessages();
-		if(Variables.database_type.equalsIgnoreCase("sql")){
+		if(Variables.database_sql_enable){
 			SQLDatabase database = new SQLDatabase(plugin, Variables.database_sql_username, Variables.database_sql_password, Variables.database_sql_url);
 			if(database.isFailed()){
-				Variables.database_type = "file";
+				Variables.database_sql_enable = false;
 				plugin.log(ConsoleColors.CYAN.getCode() + "Failed open connection with Server SQL. Database changed to File");
 				LogHandler.log(1, "Failed open connection with Server SQL. Database changed to File");
 			} else {
-				plugin.setSQL(database);
+				plugin.setSQLDatabase(database);
 				flag=true;
 			}
 		}
@@ -111,6 +111,8 @@ public class ConfigHandler {
 		    variables.database_none_delay = cfg.getInt("database.none.delay-delete-party");
 		if(cfg.get("database.file.name") != null)
 		    variables.database_file_name = cfg.getString("database.file.name");
+		if(cfg.get("database.sql.enable") != null)
+		    variables.database_sql_enable = cfg.getBoolean("database.sql.enable");
 		if(cfg.get("database.sql.url") != null)
 		    variables.database_sql_url = cfg.getString("database.sql.url");
 		if(cfg.get("database.sql.username") != null)

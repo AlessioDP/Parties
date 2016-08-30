@@ -42,7 +42,7 @@ public class Data {
 	 */
 	public boolean isSpy(UUID uuid) {
 		if (mysql)
-			return ch.getMain().getSQL().isSpy(uuid);
+			return ch.getMain().getSQLDatabase().isSpy(uuid);
 		if (data.getStringList("spies").contains(uuid.toString()))
 			return true;
 		return false;
@@ -50,7 +50,7 @@ public class Data {
 
 	public void setSpy(UUID uuid, boolean value) {
 		if (mysql) {
-			ch.getMain().getSQL().setSpy(uuid, value);
+			ch.getMain().getSQLDatabase().setSpy(uuid, value);
 			return;
 		}
 		List<String> lt = data.getStringList("spies");
@@ -83,7 +83,7 @@ public class Data {
 	public void updatePlayer(ThePlayer tp) {
 		if (mysql) {
 			ch.getMain()
-					.getSQL()
+					.getSQLDatabase()
 					.updatePlayer(tp);
 			return;
 		}
@@ -103,7 +103,7 @@ public class Data {
 
 	public void removePlayer(UUID uuid) {
 		if (mysql) {
-			ch.getMain().getSQL().removePlayer(uuid);
+			ch.getMain().getSQLDatabase().removePlayer(uuid);
 			return;
 		}
 		data.set("players." + uuid.toString(), null);
@@ -117,7 +117,7 @@ public class Data {
 	
 	public String getPlayerPartyName(UUID uuid) {
 		if (mysql)
-			return ch.getMain().getSQL().getPlayerPartyName(uuid);
+			return ch.getMain().getSQLDatabase().getPlayerPartyName(uuid);
 		String partyname = data.getString("players." + uuid.toString() + ".party");
 		if (partyname != null)
 			return partyname;
@@ -125,12 +125,12 @@ public class Data {
 	}
 	public int getRank(UUID uuid) {
 		if (mysql)
-			return ch.getMain().getSQL().getRank(uuid);
+			return ch.getMain().getSQLDatabase().getRank(uuid);
 		return data.getInt("players." + uuid.toString() + ".rank");
 	}
 	public void setRank(UUID uuid, int rank){
 		if (mysql) {
-			ch.getMain().getSQL().setRank(uuid, rank);
+			ch.getMain().getSQLDatabase().setRank(uuid, rank);
 			return;
 		}
 		data.set("players." + uuid.toString() + ".rank", rank);
@@ -143,7 +143,7 @@ public class Data {
 	}
 	public void setPartyName(UUID uuid, String party){
 		if (mysql) {
-			ch.getMain().getSQL().setPartyName(uuid, party);
+			ch.getMain().getSQLDatabase().setPartyName(uuid, party);
 			return;
 		}
 		data.set("players."+uuid.toString(), party);
@@ -160,7 +160,7 @@ public class Data {
 	 */
 	public Party getParty(String name){
 		if(mysql)
-			return ch.getMain().getSQL().getParty(name);
+			return ch.getMain().getSQLDatabase().getParty(name);
 		Party party = new Party(name, ch.getMain());
 		party.setDescription(getPartyDesc(name));
 		party.setMOTD(getPartyMotd(name));
@@ -176,7 +176,7 @@ public class Data {
 	public void renameParty(String prev, String next){
 		if(mysql){
 			ch.getMain()
-			.getSQL()
+			.getSQLDatabase()
 				.renameParty(prev, next);
 			return;
 		}
@@ -193,7 +193,7 @@ public class Data {
 	public void updateParty(Party party) {
 		if (mysql) {
 			ch.getMain()
-				.getSQL()
+				.getSQLDatabase()
 					.updateParty(party);
 			return;
 		}
@@ -246,10 +246,10 @@ public class Data {
 
 	public void removeParty(Party party) {
 		if (mysql) {
-			for (UUID uuid : ch.getMain().getSQL().getMembersParty(party.getName())) {
-				ch.getMain().getSQL().removePlayer(uuid);
+			for (UUID uuid : ch.getMain().getSQLDatabase().getMembersParty(party.getName())) {
+				ch.getMain().getSQLDatabase().removePlayer(uuid);
 			}
-			ch.getMain().getSQL().removeParty(party.getName());
+			ch.getMain().getSQLDatabase().removeParty(party.getName());
 		} else {
 			for (UUID uuid : party.getMembers()) {
 				removePlayer(uuid);
@@ -269,7 +269,7 @@ public class Data {
 
 	public boolean existParty(String name) {
 		if (mysql)
-			return ch.getMain().getSQL().existParty(name);
+			return ch.getMain().getSQLDatabase().existParty(name);
 		String leader = data.getString("parties." + name + ".leader");
 		String partyname;
 		if(leader != null && !leader.isEmpty()){
@@ -283,7 +283,7 @@ public class Data {
 	
 	public ArrayList<String> getAllParties() {
 		if(mysql)
-			return ch.getMain().getSQL().getAllParties();
+			return ch.getMain().getSQLDatabase().getAllParties();
 		ConfigurationSection cs = data.getConfigurationSection("parties");
 		if(cs != null)
 			return new ArrayList<String>(data.getConfigurationSection("parties").getKeys(false));
@@ -293,7 +293,7 @@ public class Data {
 	public UUID getPartyLeader(String name) {
 		String lead;
 		if (mysql)
-			lead = ch.getMain().getSQL().getPartyLeader(name);
+			lead = ch.getMain().getSQLDatabase().getPartyLeader(name);
 		else
 			lead = data.getString("parties." + name + ".leader");
 		if (lead != null)
@@ -303,7 +303,7 @@ public class Data {
 	
 	public ArrayList<UUID> getMembersParty(String name) {
 		if (mysql)
-			return ch.getMain().getSQL().getMembersParty(name);
+			return ch.getMain().getSQLDatabase().getMembersParty(name);
 		ArrayList<UUID> list = new ArrayList<UUID>();
 		for(String id : data.getStringList("parties." + name + ".members")){
 			list.add(UUID.fromString(id));
@@ -314,7 +314,7 @@ public class Data {
 	public String getPartyDesc(String name) {
 		String desc;
 		if (mysql)
-			desc = ch.getMain().getSQL().getPartyDesc(name);
+			desc = ch.getMain().getSQLDatabase().getPartyDesc(name);
 		else
 			desc = data.getString("parties." + name + ".desc");
 		if (desc != null)
@@ -325,7 +325,7 @@ public class Data {
 	public String getPartyMotd(String name) {
 		String motd;
 		if (mysql)
-			motd = ch.getMain().getSQL().getPartyMotd(name);
+			motd = ch.getMain().getSQLDatabase().getPartyMotd(name);
 		else
 			motd = data.getString("parties." + name + ".motd");
 		if (motd != null)
@@ -336,7 +336,7 @@ public class Data {
 	public String getPartyPrefix(String name) {
 		String prefix;
 		if (mysql)
-			prefix = ch.getMain().getSQL().getPartyPrefix(name);
+			prefix = ch.getMain().getSQLDatabase().getPartyPrefix(name);
 		else
 			prefix = data.getString("parties." + name + ".prefix");
 		if (prefix != null)
@@ -347,7 +347,7 @@ public class Data {
 	public String getPartySuffix(String name) {
 		String suffix;
 		if (mysql)
-			suffix = ch.getMain().getSQL().getPartySuffix(name);
+			suffix = ch.getMain().getSQLDatabase().getPartySuffix(name);
 		else
 			suffix = data.getString("parties." + name + ".suffix");
 		if (suffix != null)
@@ -357,7 +357,7 @@ public class Data {
 
 	public int getPartyKills(String name) {
 		if (mysql)
-			return ch.getMain().getSQL().getPartyKills(name);
+			return ch.getMain().getSQLDatabase().getPartyKills(name);
 		int kills = 0;
 		if (data.get("parties." + name + ".kills") != null) {
 			try {
@@ -369,7 +369,7 @@ public class Data {
 	}
 	public String getPartyPassword(String name) {
 		if (mysql)
-			return ch.getMain().getSQL().getPartyPassword(name);
+			return ch.getMain().getSQLDatabase().getPartyPassword(name);
 		String password = "";
 		if (data.get("parties." + name + ".password") != null) {
 			try {
