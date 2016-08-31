@@ -128,14 +128,14 @@ public class Parties extends JavaPlugin {
 		}
 	}
 	private void handle() {
-		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-		
 		new PartiesAPI();
 		config = new ConfigHandler(this);
 		new LogHandler(this);
 		party = new PartyHandler(this);
 		checkUpdates();
 		player = new PlayerHandler(this);
+		
+		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		
 		registerCommands();
 		
