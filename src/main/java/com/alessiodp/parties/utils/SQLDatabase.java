@@ -572,7 +572,7 @@ public class SQLDatabase {
 			statement.executeQuery("SELECT leader FROM " + name);
 			return;
 		} catch (SQLException ex) {}
-		plugin.log(ConsoleColors.CYAN + "Converting old parties table (MySQL)");
+		plugin.log(ConsoleColors.CYAN.getCode() + "Converting old parties table (MySQL)");
 		LogHandler.log(1, "Converting old parties table (MySQL)");
 		try {
 			connection = getConnection();
@@ -621,7 +621,7 @@ public class SQLDatabase {
 			Statement statement = connection.createStatement();
 			statement.executeQuery("SELECT isLeader FROM " + name);
 			/* Here give error if isLeader doesn't exist (so it doesnt is old) */
-			plugin.log(ConsoleColors.CYAN + "Converting old players table (MySQL)");
+			plugin.log(ConsoleColors.CYAN.getCode() + "Converting old players table (MySQL)");
 			LogHandler.log(1, "Converting old players table (MySQL)");
 			Statement substatement = connection.createStatement();
 			substatement.executeUpdate("RENAME TABLE "+name+" TO "+name+"_temp;");
