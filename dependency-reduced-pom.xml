@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.alessiodp.parties</groupId>
   <artifactId>Parties</artifactId>
-  <version>1.6.2</version>
+  <version>1.6.3</version>
   <build>
     <plugins>
       <plugin>
