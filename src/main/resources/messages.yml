@@ -144,7 +144,6 @@ motd:
     footer: ""
     invalid-chars: "&cInvalid characters. You can also use ''. , /''. Min 3 and max 100 chars."
     censored-name: "&cThe description contains censored words!"
-    only-leader: "&cOnly leaders can set the motd"
     wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
 chat:
     enabled: "&aChat setted to party"
@@ -236,6 +235,8 @@ database:
     to-file: "&aCopied data from SQL to FILE"
     to-sql: "&aCopied data from FILE to SQL"
     sql-offline: "&cThe database SQL must be online!"
+    none: "&cCannot migrate from none database!"
+    wrong-command: "&cWrong variables: Type &7/party migrate <sql/file>"
 vault:
     create-nomoney: "&cYou don't have enough money to create a party [%price%$]"
     home-nomoney: "&cYou don't have enough money to use the home command [%price%$]"
@@ -284,4 +285,4 @@ help:
     migrate: "&b/party migrate <sql/file> &7- Copy database to SQL/File"
     claim: "&b/party claim <permission> &7- Grant permissions into the claim"
 dont-edit-this:
-    messages-version: 8
+    messages-version: 9
