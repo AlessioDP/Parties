@@ -39,21 +39,23 @@ public class CommandChat implements CommandInterface{
 		 */
 		
 		if(args.length > 1){
-			if(args[1].equalsIgnoreCase(Variables.command_sub_on)){
+			if(args[1].equalsIgnoreCase(Variables.command_sub_on))
 				tp.setChatParty(true);
-				tp.sendMessage(Messages.chat_enabled);
-				LogHandler.log(2, p.getName() + "[" + p.getUniqueId() + "] toggled party chat in true");
-			} else if(args[1].equalsIgnoreCase(Variables.command_sub_off)){
+			else if(args[1].equalsIgnoreCase(Variables.command_sub_off))
 				tp.setChatParty(false);
-				tp.sendMessage(Messages.chat_disabled);
-				LogHandler.log(2, p.getName() + "[" + p.getUniqueId() + "] toggled party chat in false");
-			} else {
+			else {
 				tp.sendMessage(Messages.chat_wrongcmd);
+				return true;
 			}
 		} else {
 			tp.setChatParty(!tp.chatParty());
-			tp.sendMessage(tp.chatParty() ? Messages.chat_disabled : Messages.chat_enabled);
-			LogHandler.log(2, p.getName() + "[" + p.getUniqueId() + "] toggled party chat in " + !tp.chatParty());
+		}
+		if(tp.chatParty()){
+			tp.sendMessage(Messages.chat_enabled);
+			LogHandler.log(2, p.getName() + "[" + p.getUniqueId() + "] toggled party chat in true");
+		} else {
+			tp.sendMessage(Messages.chat_disabled);
+			LogHandler.log(2, p.getName() + "[" + p.getUniqueId() + "] toggled party chat in false");
 		}
 		return true;
 	}
