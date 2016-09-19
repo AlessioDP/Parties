@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -156,6 +158,66 @@ public class PlayerListener implements Listener{
 					return;
 				Player p = (Player) event.getEntity();
 				Player attacker = (Player) ((Arrow)event.getDamager()).getShooter();
+				if(!Variables.friendlyfire_listworlds.contains("*") && !Variables.friendlyfire_listworlds.contains(attacker.getWorld().getName()))
+					return;
+				
+				ThePlayer tp = plugin.getPlayerHandler().getThePlayer(p);
+				
+				if(tp.haveParty()){
+					Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
+					if(party.getOnlinePlayers().contains(attacker)){
+						plugin.getPlayerHandler().getThePlayer(attacker).sendMessage(Messages.canthitmates);
+						if(Variables.friendlyfire_warn){
+							for(Player onlineP : party.getOnlinePlayers()){
+								if(onlineP.equals(attacker))
+									continue;
+								Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
+								if(r != null)
+									if(r.havePermission(PartiesPermissions.PRIVATE_WARNONDAMAGE.toString()))
+										plugin.getPlayerHandler().getThePlayer(onlineP).sendMessage(Messages.warnondamage.replace("%player%", attacker.getName()).replace("%victim%", p.getName()));
+							}
+						}
+						event.setCancelled(true);
+					}
+				}
+			}
+		}
+		if(event.getEntity() instanceof Player && event.getDamager() instanceof EnderPearl){
+			if(((EnderPearl)event.getDamager()).getShooter() instanceof Player){
+				if(!Variables.friendlyfire_enable)
+					return;
+				Player p = (Player) event.getEntity();
+				Player attacker = (Player) ((EnderPearl)event.getDamager()).getShooter();
+				if(!Variables.friendlyfire_listworlds.contains("*") && !Variables.friendlyfire_listworlds.contains(attacker.getWorld().getName()))
+					return;
+				
+				ThePlayer tp = plugin.getPlayerHandler().getThePlayer(p);
+				
+				if(tp.haveParty()){
+					Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
+					if(party.getOnlinePlayers().contains(attacker)){
+						plugin.getPlayerHandler().getThePlayer(attacker).sendMessage(Messages.canthitmates);
+						if(Variables.friendlyfire_warn){
+							for(Player onlineP : party.getOnlinePlayers()){
+								if(onlineP.equals(attacker))
+									continue;
+								Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
+								if(r != null)
+									if(r.havePermission(PartiesPermissions.PRIVATE_WARNONDAMAGE.toString()))
+										plugin.getPlayerHandler().getThePlayer(onlineP).sendMessage(Messages.warnondamage.replace("%player%", attacker.getName()).replace("%victim%", p.getName()));
+							}
+						}
+						event.setCancelled(true);
+					}
+				}
+			}
+		}
+		if(event.getEntity() instanceof Player && event.getDamager() instanceof Snowball){
+			if(((Snowball)event.getDamager()).getShooter() instanceof Player){
+				if(!Variables.friendlyfire_enable)
+					return;
+				Player p = (Player) event.getEntity();
+				Player attacker = (Player) ((Snowball)event.getDamager()).getShooter();
 				if(!Variables.friendlyfire_listworlds.contains("*") && !Variables.friendlyfire_listworlds.contains(attacker.getWorld().getName()))
 					return;
 				

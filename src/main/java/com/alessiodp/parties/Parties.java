@@ -93,7 +93,8 @@ public class Parties extends JavaPlugin {
 	
 	
 	public static Parties getInstance() {return instance;}
-
+        
+        @Override
 	public void onEnable() {
 		/* init */
 		instance = this;
@@ -104,7 +105,8 @@ public class Parties extends JavaPlugin {
 		log(ConsoleColors.CYAN.getCode() + "Parties enabled");
 		LogHandler.log(1, "Parties v"+getDescription().getVersion()+" enabled");
 	}
-
+	
+	@Override
 	public void onDisable() {
 		if(addon_DC != null)
 			addon_DC.disable();
