@@ -56,7 +56,7 @@ public class PartiesAPI implements Api{
 	
 	public Status addPlayerInParty(Player paramPlayer, String paramParty){
 		String partyName = plugin.getPlayerHandler().getThePlayer(paramPlayer).getPartyName();
-		if(partyName.isEmpty() || partyName == null)
+		if(!partyName.isEmpty() && partyName != null)
 			return Status.ALREADYINPARTY;
 		if(!plugin.getPartyHandler().existParty(paramParty))
 			return Status.NOEXIST;
@@ -69,7 +69,7 @@ public class PartiesAPI implements Api{
 		
 		ThePlayer tp = plugin.getPlayerHandler().getThePlayer(paramPlayer);
 		tp.setHaveParty(true);
-		tp.setPartyName(partyName);
+		tp.setPartyName(party.getName());
 		
 		party.updateParty();
 		tp.updatePlayer();
