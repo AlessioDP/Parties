@@ -89,9 +89,17 @@ public class Party {
 							.replace("%suffix%", suffix)
 							.replace("%kills%", kills+""), home);
 				else
-					plugin.getDynmap().removeMarker(name);
+					plugin
+					.getDynmap()
+					.removeMarker(
+							name
+							);
 			else
-				plugin.getDynmap().removeMarker(name);
+				plugin
+				.getDynmap()
+				.removeMarker(
+						name
+						);
 		}
 		
 		if(Variables.database_type.equalsIgnoreCase("none"))
