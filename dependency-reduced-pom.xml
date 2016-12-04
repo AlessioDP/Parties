@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.alessiodp.parties</groupId>
   <artifactId>Parties</artifactId>
-  <version>1.6.5</version>
+  <version>1.6.6</version>
   <build>
     <plugins>
       <plugin>
@@ -60,19 +60,19 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.10-R0.1-SNAPSHOT</version>
+      <version>1.11-R0.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.10-R0.1-SNAPSHOT</version>
+      <version>1.11-R0.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>net.md-5</groupId>
       <artifactId>bungeecord-api</artifactId>
-      <version>1.10-SNAPSHOT</version>
+      <version>1.11-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
