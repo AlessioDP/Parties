@@ -80,7 +80,7 @@ public class PartiesAPI implements Api{
 	
 	public Status removePlayerFromParty(UUID uuid){
 		String partyName = plugin.getPlayerHandler().getThePlayer(uuid).getPartyName();
-		if(partyName.isEmpty() || partyName == null)
+		if(!partyName.isEmpty() && partyName != null)
 			return Status.NOPARTY;
 		ThePlayer tp = plugin.getPlayerHandler().getThePlayer(uuid);
 		if(!plugin.getPartyHandler().existParty(tp.getPartyName()))
