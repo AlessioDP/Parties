@@ -92,19 +92,29 @@ public class CommandMigrate implements CommandInterface{
 	    List<String> spies = data.getStringList("spies");
 	    ConfigurationSection secParties = data.getConfigurationSection("parties");
 	    for(String key : secParties.getKeys(false)){
+	    	System.out.println(">>" + key);
 	    	Party par = new Party(key, plugin);
-	    	par.setDescription(secParties.getString((key+".desc") != null ? secParties.getString(key+".desc") : ""));
-	    	par.setMOTD(secParties.getString((key+".motd") != null ? secParties.getString(key+".motd") : ""));
-	    	par.setPrefix(secParties.getString((key+".prefix") != null ? secParties.getString(key+".prefix") : ""));
-	    	par.setSuffix(secParties.getString((key+".suffix") != null ? secParties.getString(key+".suffix") : ""));
+	    	par.setDescription(secParties.getString(key+".desc") != null ? secParties.getString(key+".desc") : "");
+	    	par.setMOTD(secParties.getString(key+".motd") != null ? secParties.getString(key+".motd") : "");
+	    	par.setPrefix(secParties.getString(key+".prefix") != null ? secParties.getString(key+".prefix") : "");
+	    	par.setSuffix(secParties.getString(key+".suffix") != null ? secParties.getString(key+".suffix") : "");
+	    	par.setPassword(secParties.getString(key+".password") != null ? secParties.getString(key+".password") : "");
 	    	par.setKills(secParties.getInt(key+".kills"));
-	    	par.setHome(calcolateHome(secParties.getString((key+".home") != null ? secParties.getString(key+".home") : "")));
-	    	par.setLeader(UUID.fromString(secParties.getString(key+".leader")));
+	    	par.setHome(calcolateHome(secParties.getString(key+".home") != null ? secParties.getString(key+".home") : ""));
+	    	String ldr = secParties.getString(key+".leader");
+	    	if(ldr != null){
+	    		if(ldr.equalsIgnoreCase("fixed")){
+	    			par.setLeader(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+		    		par.setFixed(true);
+		    	} else
+		    		par.setLeader(UUID.fromString(ldr));
+	    	}
 	    	
 	    	ArrayList<UUID> ar = new ArrayList<UUID>();
 	    	for(String uuid : secParties.getStringList(key+".members"))
 	    		ar.add(UUID.fromString(uuid));
 	    	par.setMembers(ar);
+	    	plugin.getSQLDatabase().updateParty(par);
 	    	
 	    	for(UUID uuid : ar){
 	    		ThePlayer tp = new ThePlayer(uuid, plugin);

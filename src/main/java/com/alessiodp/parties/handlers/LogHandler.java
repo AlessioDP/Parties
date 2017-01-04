@@ -53,15 +53,22 @@ public class LogHandler {
 			return;
 		}
 		try {
-			File file = new File(plugin.getDataFolder(), Variables.log_file_name);
+			File file = new File(Parties.datafolder, Variables.log_file_name);
 			if(!file.exists())
 				file.createNewFile();
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(plugin.getDataFolder()+"/" + Variables.log_file_name, true)));
-	        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-	        txt = Variables.log_prefix + txt;
-	        txt = txt.replace("%time%", sdf.format(Calendar.getInstance().getTime()));
-	        sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        txt = txt.replace("%date%", sdf.format(Calendar.getInstance().getTime()));
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(Parties.datafolder+"/" + Variables.log_file_name, true)));
+		    SimpleDateFormat sdf;
+		    txt = Variables.log_prefix + txt;
+		    if(txt.contains("%time%")){
+		    	sdf = new SimpleDateFormat("HH:mm:ss");
+		        txt = txt.replace("%time%", sdf.format(Calendar.getInstance().getTime()));
+		    }
+	        if(txt.contains("%date%")){
+	        	sdf = new SimpleDateFormat("yyyy-MM-dd");
+		        txt = txt.replace("%date%", sdf.format(Calendar.getInstance().getTime()));
+	        }
+	        if(txt.contains("%position%"))
+	        	txt = txt.replace("%position%", Thread.currentThread().getStackTrace()[1].getClassName());
 		    out.println(txt);
 		    out.close();
 		} catch (IOException e) {
@@ -108,7 +115,6 @@ public class LogHandler {
 				return;
 			}
 			Statement statement = connection.createStatement();
-			System.out.println(log_table);
 			statement.executeUpdate("CREATE TABLE " + log_table + " (line INT NOT NULL AUTO_INCREMENT, date VARCHAR(10), time VARCHAR(10), level TINYINT, message VARCHAR(255), PRIMARY KEY (line));");
 		} catch (SQLException ex) {
 			plugin.log(Level.WARNING, ConsoleColors.RED.getCode()

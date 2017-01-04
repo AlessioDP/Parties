@@ -1,8 +1,8 @@
 name: Parties
 main: com.alessiodp.parties.Parties
-version: 1.6.6
+version: 1.7.0
 description: Party manager for minecraft servers
-softdepend: [Vault, DeluxeChat, PlaceholderAPI, Dynmap]
+softdepend: [Vault, DeluxeChat, PlaceholderAPI, Dynmap, ProtocolLib]
 permissions:
     parties.sendmessage:
         description: Command /p
@@ -62,14 +62,20 @@ permissions:
         description: Command /party rank on other players
     parties.claim:
         description: Command /party claim with GriefPrevention
+    parties.joindefault:
+        description: Join into default party
     parties.admin.vaultbypass:
         description: Bypass vault party commands
+    parties.admin.fixed:
+        description: Command /party create party fixed
     parties.admin.delete:
         description: Command /party delete
     parties.admin.delete.silent:
         description: Command /party delete with silent
     parties.admin.rename:
         description: Command /party rename
+    parties.admin.joindefault.bypass:
+        description: Bypass default join
     parties.admin.spy:
         description: Command /party spy
     parties.admin.reload:
@@ -107,6 +113,7 @@ permissions:
           parties.kick: true
           parties.rank: true
           parties.claim: true
+          parties.joindefault: true
     parties.admin.*:
         default: op
         description: Can use all party commands
@@ -117,9 +124,11 @@ permissions:
           parties.join.others: true
           parties.kick.others: true
           parties.admin.vaultbypass: true
+          parties.admin.fixed: true
           parties.admin.delete: true
           parties.admin.delete.silent: true
           parties.admin.rename: true
+          parties.admin.joindefault.bypass: true
           parties.admin.spy: true
           parties.admin.reload: true
           parties.admin.updates: true

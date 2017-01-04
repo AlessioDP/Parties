@@ -15,6 +15,7 @@
 # %rank% = Show a customizable string (format-rank-leader and format-rank-member)
 # %message% = Show the message of player
 # %desc% = Show the party description
+# %prefix% & %suffix% = Prefix and Suffix placeholders
 # %world% = Show the name of world of sender/player (ex: world_nether)
 # %group% = If PEX/GM is active will display the name of group customizable (format-group)
 #
@@ -27,6 +28,12 @@ functions:
     per-permission-help: true
     # Permissions for help page
     permission-page-help: 9
+    # Allow creation of parties without a leader (fixed)
+    enable-fixed-party: false
+    # When a player join put him into a party (if he doesn't have one)
+    default-party:
+        enable: false
+        party: default
     # Divide-exp system
     divide-exp-between-players: false
     # Range in blocks between player in a party divide experience, -1 is unlimited (Everyone player in the party online)
@@ -39,6 +46,7 @@ log:
     # Enable log system (Into file log.txt)
     enable: false
     # Prefix for logs (Ex: 15-1-15 [10:00] )
+    # Tags: %date%, %time% and %position% (To report a bug use %position% tag inside log)
     prefix: "%date% [%time%] "
     # Log chat of the parties
     chat: true
@@ -62,7 +70,7 @@ database:
     # file = Save all data in a configuration file
     # sql = Save all data in a SQL Database
     type: file
-    # Command migrate can be used only from the console
+    # Command migrate can be used only via console
     migrate-only-console: true
     file:
         # Default is data (data.yml)
@@ -88,6 +96,7 @@ party:
     # If you use tag-name system, for avoid bugs set max to 10
     min-length-name: 3
     max-length-name: 10
+    # Allow colorized name (Example: /party create &cPar&bty
     prevent-friendly-fire:
         # Prevent fighting between players in a party
         enable: true
@@ -112,10 +121,12 @@ party:
         cancel-if-move: true
         # Distance for deny teleport
         distance-cancel: 3
-    # Password system
-    password:
+    # Password system (Allows to use /party join <party>, you can still disable via permissions passwords)
+    join-password:
         # Allow create parties with password (/party create <party> <password>)
         enable: false
+        # When use /party join, auto leave from current party
+        bypass-leave: false
         # Regex of the chars (Use "\\" instead "\") (For ALL utf characters use "[\p{L}\s]+")
         allowed-chars: "[a-zA-Z0-9]+"
         # Hashes: MD5, SHA-1, SHA-256
@@ -187,6 +198,20 @@ kills:
         neutral-mobs: false
         hostile-mobs: false
         players: true
+tablist:
+    # Use ProtocolLib (4+)
+    enable: true
+    # Leaves blank to unchange
+    # Using json text
+    in-party: "{\"text\":\"%player%\",\"color\":\"aqua\"}"
+    out-party: ""
+    # Header & Footer, leave blank to disable
+    header:
+        in-party: "&b> %party% <"
+        out-party: "&cOut of party"
+    footer:
+        in-party: "&b&lParties"
+        out-party: "&b&lParties"
 tag:
     # Set a tag name ahead players head (Use ScoreboardTeams system)
     tag-system: false
@@ -345,8 +370,13 @@ commands:
     command-reload: "reload"
     sub-command-on: "on"
     sub-command-off: "off"
+    # Sub-command of /party create <partyname> fixed (if enabled)
+    sub-command-fixed: "fixed"
+    # Command to migrate SQL/YAML database
     command-migrate: "migrate"
+    # Command for GriefPrevention support
     command-claim: "claim"
+    # Command to buy commands (Vault support)
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 10
+    config-version: 11

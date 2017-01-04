@@ -36,7 +36,7 @@ public class BanManagerHandler extends Listeners<BanManager>{
 				if(party.getLeader().equals(pl.getUUID())){
 					party.sendBroadcastParty((OfflinePlayer)pl.getPlayer(), Messages.leave_disbanded);
 					party.sendSpyMessage((OfflinePlayer)pl.getPlayer(), Messages.leave_disbanded);
-					plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted by leader ban, from: " + pl.getName());
+					plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted via leader ban, by: " + pl.getName());
 					party.removeParty();
 				} else {
 					party.getMembers().remove(pl.getUUID());

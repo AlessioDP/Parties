@@ -161,16 +161,54 @@ public class Data {
 	public Party getParty(String name){
 		if(mysql)
 			return ch.getMain().getSQLDatabase().getParty(name);
+		String str;
 		Party party = new Party(name, ch.getMain());
-		party.setDescription(getPartyDesc(name));
-		party.setMOTD(getPartyMotd(name));
-		party.setPrefix(getPartyPrefix(name));
-		party.setSuffix(getPartySuffix(name));
-		party.setKills(getPartyKills(name));
-		party.setHome(getPartyHome(name));
-		party.setPassword(getPartyPassword(name));
-		party.setLeader(getPartyLeader(name));
+		
+		str = data.getString("parties." + name + ".desc");
+		party.setDescription(str != null ? str : "");
+		
+		str = data.getString("parties." + name + ".motd");
+		party.setMOTD(str != null ? str : "");
+		
+		str = data.getString("parties." + name + ".prefix");
+		party.setPrefix(str != null ? str : "");
+		
+		str = data.getString("parties." + name + ".suffix");
+		party.setSuffix(str != null ? str : "");
+		
+		str = data.getString("parties." + name + ".password");
+		party.setPassword(str != null ? str : "");
+		
+		str = data.getString("parties." + name + ".leader");
+		if(str != null){
+			if(str.equalsIgnoreCase("fixed")){
+				party.setLeader(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+				party.setFixed(true);
+			} else
+				party.setLeader(UUID.fromString(str));
+		}
+		
+		if(data.get("parties." + name + ".kills")!=null)
+			try{party.setKills(data.getInt("parties." + name + ".kills"));}catch(NumberFormatException ex){};
+		
+		if(data.get("parties."+name+".home") != null){
+			String[] split = data.getString("parties."+name+".home").split(",");
+			World world;
+			int x,y,z;
+			float yaw,pitch;
+			try{
+				world = Bukkit.getWorld(split[0]);
+				x = Integer.parseInt(split[1]);
+				y = Integer.parseInt(split[2]);
+				z = Integer.parseInt(split[3]);
+				yaw = Float.parseFloat(split[4]);
+				pitch = Float.parseFloat(split[5]);
+				party.setHome(new Location(world,x,y,z,yaw,pitch));
+			} catch(Exception ex){}
+		}
+		
 		party.setMembers(getMembersParty(name));
+		
 		return party;
 	}
 	public void renameParty(String prev, String next){
@@ -234,7 +272,10 @@ public class Data {
 		for(UUID uuid : party.getMembers()){
 			lt.add(uuid.toString());
 		}
-		data.set("parties." + party.getName() + ".leader", party.getLeader().toString());
+		if(party.isFixed())
+			data.set("parties." + party.getName() + ".leader", "fixed");
+		else
+			data.set("parties." + party.getName() + ".leader", party.getLeader().toString());
 		data.set("parties." + party.getName() + ".members", lt);
 		try {
 			data.save(dataFile);
@@ -242,6 +283,8 @@ public class Data {
 			ch.reloadData();
 			e.printStackTrace();
 		}
+		if(party.isFixed())
+			addFixed(party.getName());
 	}
 
 	public void removeParty(Party party) {
@@ -262,6 +305,8 @@ public class Data {
 				ch.reloadData();
 				e.printStackTrace();
 			}
+			if(party.isFixed())
+				removeFixed(party.getName());
 		}
 		party.removeAllPlayers();
 		ch.getMain().getPartyHandler().listParty.remove(party.getName());
@@ -273,6 +318,8 @@ public class Data {
 		String leader = data.getString("parties." + name + ".leader");
 		String partyname;
 		if(leader != null && !leader.isEmpty()){
+			if(leader.equals("fixed"))
+				return true;
 			partyname = getPlayerPartyName(UUID.fromString(leader));
 			if(partyname != null && !partyname.isEmpty())
 				if(partyname.equalsIgnoreCase(name))
@@ -290,6 +337,17 @@ public class Data {
 		return new ArrayList<String>();
 	}
 	
+	public ArrayList<UUID> getMembersParty(String name) {
+		ArrayList<UUID> list = new ArrayList<UUID>();
+		for(String id : data.getStringList("parties." + name + ".members")){
+			list.add(UUID.fromString(id));
+		}
+		return list;
+	}
+	
+	/*
+	 * Deprecated
+	 * 
 	public UUID getPartyLeader(String name) {
 		String lead;
 		if (mysql)
@@ -297,20 +355,9 @@ public class Data {
 		else
 			lead = data.getString("parties." + name + ".leader");
 		if (lead != null)
-			return UUID.fromString(lead);
+			return lead.equals("fixed") ? UUID.fromString("00000000-0000-0000-0000-000000000000") : UUID.fromString(lead);
 		return null;
 	}
-	
-	public ArrayList<UUID> getMembersParty(String name) {
-		if (mysql)
-			return ch.getMain().getSQLDatabase().getMembersParty(name);
-		ArrayList<UUID> list = new ArrayList<UUID>();
-		for(String id : data.getStringList("parties." + name + ".members")){
-			list.add(UUID.fromString(id));
-		}
-		return list;
-	}
-
 	public String getPartyDesc(String name) {
 		String desc;
 		if (mysql)
@@ -380,9 +427,8 @@ public class Data {
 		return password;
 	}
 	public Location getPartyHome(String name) {
-		if(mysql){
-			return null;
-		}
+		if(mysql)
+			return ch.getMain().getSQLDatabase().getPartyHome(name);
 		if(data.get("parties."+name+".home") == null)
 			return null;
 		String[] split = data.getString("parties."+name+".home").split(",");
@@ -401,7 +447,49 @@ public class Data {
 		}
 		return new Location(world, x, y, z, yaw, pitch);
 	}
-
+	*/
+	/*
+	 * Fixed
+	 */
+	public void addFixed(String name){
+		if(mysql)
+			return;
+		List<String> lst = getAllFixed();
+		if(!lst.contains(name))
+			lst.add(name);
+		data.set("players.fixed", lst);
+		try {
+			data.save(dataFile);
+		} catch (IOException e) {
+			ch.reloadData();
+			e.printStackTrace();
+		}
+	}
+	public void removeFixed(String name){
+		if(mysql)
+			return;
+		List<String> lst = getAllFixed();
+		if(lst.contains(name))
+			lst.remove(name);
+		if(lst.isEmpty())
+			data.set("players.fixed", null);
+		else
+			data.set("players.fixed", lst);
+		try {
+			data.save(dataFile);
+		} catch (IOException e) {
+			ch.reloadData();
+			e.printStackTrace();
+		}
+	}
+	public List<String> getAllFixed(){
+		if(mysql)
+			return ch.getMain().getSQLDatabase().getAllFixed();
+		List<String> lst = new ArrayList<String>();
+		if(data.get("players.fixed")!=null)
+			lst = data.getStringList("players.fixed");
+		return lst;
+	}
 	/*
 	 * Bypass
 	 */
@@ -458,7 +546,10 @@ public class Data {
 		for(UUID uuid : party.getMembers()){
 			lt.add(uuid.toString());
 		}
-		data.set("parties." + party.getName() + ".leader", party.getLeader().toString());
+		if(party.isFixed())
+			data.set("parties." + party.getName() + ".leader", "fixed");
+		else
+			data.set("parties." + party.getName() + ".leader", party.getLeader().toString());
 		data.set("parties." + party.getName() + ".members", lt);
 		try {
 			data.save(dataFile);

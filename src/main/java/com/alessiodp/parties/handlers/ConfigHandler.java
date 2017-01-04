@@ -70,6 +70,13 @@ public class ConfigHandler {
 			variables.perpermissionhelp = cfg.getBoolean("functions.per-permission-help");
 		if(cfg.get("functions.permission-page-help") != null)
 			variables.permissionspagehelp = cfg.getInt("functions.permission-page-help");
+		
+		if(cfg.get("functions.enable-fixed-party") != null)
+			variables.fixedparty = cfg.getBoolean("functions.enable-fixed-party");
+		if(cfg.get("functions.default-party.enable") != null)
+			variables.default_enable = cfg.getBoolean("functions.default-party.enable");
+		if(cfg.get("functions.default-party.party") != null)
+			variables.default_party = cfg.getString("functions.default-party.party");
 		if(cfg.get("functions.divide-exp-between-players") != null)
 			variables.divideexp = cfg.getBoolean("functions.divide-exp-between-players");
 		if(cfg.get("functions.divide-exp-range") != null)
@@ -156,18 +163,20 @@ public class ConfigHandler {
 		if(cfg.get("party.home.distance-cancel") != null)
 			variables.home_distance = cfg.getInt("party.home.distance-cancel");
 		
-		if(cfg.get("party.password.enable") != null)
-			variables.password_enable = cfg.getBoolean("party.password.enable");
-		if(cfg.get("party.password.allowed-chars") != null)
-			variables.password_allowedchars = cfg.getString("party.password.allowed-chars");
-		if(cfg.get("party.password.hash") != null)
-			variables.password_hash = cfg.getString("party.password.hash");
-		if(cfg.get("party.password.encode") != null)
-			variables.password_encode = cfg.getString("party.password.encode");
-		if(cfg.get("party.password.length-min") != null)
-			variables.password_lengthmin = cfg.getInt("party.password.length-min");
-		if(cfg.get("party.password.length-max") != null)
-			variables.password_lengthmax = cfg.getInt("party.password.length-max");;
+		if(cfg.get("party.join-password.enable") != null)
+			variables.password_enable = cfg.getBoolean("party.join-password.enable");
+		if(cfg.get("party.join-password.bypass-leave") != null)
+			variables.password_bypassleave = cfg.getBoolean("party.join-password.bypass-leave");
+		if(cfg.get("party.join-password.allowed-chars") != null)
+			variables.password_allowedchars = cfg.getString("party.join-password.allowed-chars");
+		if(cfg.get("party.join-password.hash") != null)
+			variables.password_hash = cfg.getString("party.join-password.hash");
+		if(cfg.get("party.join-password.encode") != null)
+			variables.password_encode = cfg.getString("party.join-password.encode");
+		if(cfg.get("party.join-password.length-min") != null)
+			variables.password_lengthmin = cfg.getInt("party.join-password.length-min");
+		if(cfg.get("party.join-password.length-max") != null)
+			variables.password_lengthmax = cfg.getInt("party.join-password.length-max");;
 		
 		if(cfg.get("description.length-min") != null)
 			variables.desc_min = cfg.getInt("description.length-min");
@@ -202,6 +211,21 @@ public class ConfigHandler {
 			variables.kill_save_mobshostile = cfg.getBoolean("kills.which-save.hostile-mobs");
 		if(cfg.get("kills.which-save.players") != null)
 			variables.kill_save_players = cfg.getBoolean("kills.which-save.players");
+		
+		if(cfg.get("tablist.enable") != null)
+			variables.tablist_enable = cfg.getBoolean("tablist.enable");
+		if(cfg.get("tablist.in-party") != null)
+			variables.tablist_inparty = cfg.getString("tablist.in-party");
+		if(cfg.get("tablist.out-party") != null)
+			variables.tablist_outparty = cfg.getString("tablist.out-party");
+		if(cfg.get("tablist.header.in-party") != null)
+			variables.tablist_header_inparty = cfg.getString("tablist.header.in-party");
+		if(cfg.get("tablist.header.out-party") != null)
+			variables.tablist_header_outparty = cfg.getString("tablist.header.out-party");
+		if(cfg.get("tablist.footer.in-party") != null)
+			variables.tablist_footer_inparty = cfg.getString("tablist.footer.in-party");
+		if(cfg.get("tablist.footer.out-party") != null)
+			variables.tablist_footer_outparty = cfg.getString("tablist.footer.out-party");
 		
 		if(cfg.get("tag.tag-system") != null)
 			variables.tag_enable = cfg.getBoolean("tag.tag-system");
@@ -398,6 +422,8 @@ public class ConfigHandler {
 			variables.command_sub_on = cfg.getString("commands.sub-command-on");
 		if(cfg.get("commands.sub-command-off") != null)
 			variables.command_sub_off = cfg.getString("commands.sub-command-off");
+		if(cfg.get("commands.sub-command-fixed") != null)
+			variables.command_sub_fixed = cfg.getString("commands.sub-command-fixed");
 		if(cfg.get("commands.command-migrate") != null)
 			variables.command_migrate = cfg.getString("commands.command-migrate");
 		if(cfg.get("commands.command-claim") != null)
@@ -500,12 +526,16 @@ public class ConfigHandler {
 			messages.expgain = msg.getString("exp-gained");
 		if(msg.get("exp-gained-from-other") != null)
 			messages.expgainother = msg.getString("exp-gained-from-other");
+		if(msg.get("default-joined") != null)
+			messages.defaultjoined = msg.getString("default-joined");
 
 		if(msg.get("p.wrong-command") != null)
 			messages.p_wrongcmd = msg.getString("p.wrong-command");
 		
 		if(msg.get("create.party-created") != null)
 			messages.create_partycreated = msg.getString("create.party-created");
+		if(msg.get("create.party-fixed-created") != null)
+			messages.create_partycreated_fixed = msg.getString("create.party-fixed-created");
 		if(msg.get("create.name-already-exist") != null)
 			messages.create_alreadyexist = msg.getString("create.name-already-exist");
 		if(msg.get("create.already-in-party") != null)
@@ -708,6 +738,10 @@ public class ConfigHandler {
 			messages.kick_kickedfrom = msg.getString("kick.kicked-from-party");
 		if(msg.get("kick.kicked-player-party") != null)
 			messages.kick_kickedplayer = msg.getString("kick.kicked-player-party");
+		if(msg.get("kick.kick-send-other") != null)
+			messages.kick_kicksendother = msg.getString("kick.kick-send-other");
+		if(msg.get("kick.other-no-member") != null)
+			messages.kick_nomemberother = msg.getString("kick.other-no-member");
 		if(msg.get("kick.no-member") != null)
 			messages.kick_nomember = msg.getString("kick.no-member");
 		if(msg.get("kick.wrong-command") != null)

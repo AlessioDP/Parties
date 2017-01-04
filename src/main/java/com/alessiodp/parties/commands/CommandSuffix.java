@@ -68,7 +68,7 @@ public class CommandSuffix implements CommandInterface {
 		if (args[1].equalsIgnoreCase(Variables.tag_custom_removeword)) {
 			party.setSuffix("");
 			party.updateParty();
-			plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+			plugin.getPartyHandler().tag_refresh(party);
 
 			party.sendBroadcastParty(p, Messages.suffix_removed);
 			party.sendSpyMessage(p, Messages.suffix_removed);
@@ -128,7 +128,7 @@ public class CommandSuffix implements CommandInterface {
 		party.setSuffix(sb.toString());
 		party.updateParty();
 
-		plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+		plugin.getPartyHandler().tag_refresh(party);
 		party.sendBroadcastParty(p, Messages.suffix_changed.replace("%suffix%", sb.toString()).replace("%price%", Double.toString(Variables.vault_suffix_price)));
 		party.sendSpyMessage(p, Messages.suffix_changed.replace("%suffix%", sb.toString()).replace("%price%", Double.toString(Variables.vault_suffix_price)));
 		

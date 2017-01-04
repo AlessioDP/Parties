@@ -71,7 +71,7 @@ public class CommandPrefix implements CommandInterface {
 
 			party.sendBroadcastParty(p, Messages.prefix_removed);
 			party.sendSpyMessage(p, Messages.prefix_removed);
-			plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+			plugin.getPartyHandler().tag_refresh(party);
 			
 			LogHandler.log(2, p.getName() + "[" + p.getUniqueId() + "] removed prefix of the party " + party.getName());
 			return true;
@@ -127,7 +127,7 @@ public class CommandPrefix implements CommandInterface {
 		
 		party.setPrefix(sb.toString());
 		party.updateParty();
-		plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+		plugin.getPartyHandler().tag_refresh(party);
 		
 		party.sendBroadcastParty(p, Messages.prefix_changed.replace("%prefix%", sb.toString()).replace("%price%", Double.toString(Variables.vault_prefix_price)));
 		party.sendSpyMessage(p, Messages.prefix_changed.replace("%prefix%", sb.toString()).replace("%price%", Double.toString(Variables.vault_prefix_price)));

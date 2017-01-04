@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>me.alessiodp.parties</groupId>
+	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>Parties</artifactId>
-	<version>1.6.6</version>
+	<version>1.7.0</version>
 	<repositories>
 		<repository>
 			<id>spigot-repo</id>
@@ -25,6 +25,10 @@
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
 		</repository>
+		<repository>
+    		<id>dmulloy2-repo</id>
+    		<url>http://repo.dmulloy2.net/content/groups/public/</url>
+  		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -62,6 +66,11 @@
 			<version>1.6</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+    		<groupId>com.comphenix.protocol</groupId>
+    		<artifactId>ProtocolLib-API</artifactId>
+    		<version>4.1.0</version>
+  		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -70,16 +79,16 @@
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
+					<source>1.7</source>
 					<artifactSet>
 						<includes>
 							<include>org.mcstats.*:*</include>
-							<include>net.gravitydevelopment.updater:updater</include>
 						</includes>
 					</artifactSet>
 					<relocations>
 						<relocation>
 							<pattern>org.mcstats</pattern>
-							<shadedPattern>me.alessiodp.parties.utils.metrics</shadedPattern>
+							<shadedPattern>com.alessiodp.parties.utils.metrics</shadedPattern>
 						</relocation>
 					</relocations>
 				</configuration>
@@ -94,8 +103,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
-		<powermock.version>1.5</powermock.version>
-	</properties>
 </project>

@@ -1,5 +1,6 @@
 package com.alessiodp.parties.commands;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -100,6 +101,12 @@ public class CommandCreate implements CommandInterface {
 			tp.sendMessage(Messages.create_alreadyexist.replace("%party%", partyName));
 			return true;
 		}
+		boolean fixed = false;
+		if(Variables.fixedparty && args.length > 2 && args[2].equalsIgnoreCase(Variables.command_sub_fixed)){
+			if(p.hasPermission(PartiesPermissions.ADMIN_CREATE_FIXED.toString())){
+				fixed = true;
+			}
+		}
 		if(Variables.vault_enable && Variables.vault_create_price > 0 && !p.hasPermission(PartiesPermissions.ADMIN_VAULTBYPASS.toString())){
 			if(Variables.vault_confirm_enable){
 				if(tp.getLastCommand() != null && ((boolean)tp.getLastCommand()[2]) == true){
@@ -133,6 +140,19 @@ public class CommandCreate implements CommandInterface {
 		 * 
 		 * 
 		 */
+		if(fixed && Variables.fixedparty){
+			// Fixed creation
+			Party party = new Party(partyName, plugin);
+			party.setLeader(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+			party.setFixed(true);
+			plugin.getPartyHandler().listParty.put(party.getName(), party);
+			party.updateParty();
+			
+			tp.sendMessage(Messages.create_partycreated_fixed.replace("%price%", Double.toString(Variables.vault_create_price)), party);
+			party.sendSpyMessage(p, Messages.create_partycreated_fixed.replace("%price%", Double.toString(Variables.vault_create_price)));
+			LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] created fixed party " + party.getName());
+			return true;
+		}
 		Party party = new Party(partyName, plugin);
 		party.getMembers().add(p.getUniqueId());
 		party.getOnlinePlayers().add(p);
@@ -147,9 +167,9 @@ public class CommandCreate implements CommandInterface {
 		party.updateParty();
 		tp.updatePlayer();
 
-		plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+		plugin.getPartyHandler().tag_refresh(party);
 
-		tp.sendMessage(Messages.create_partycreated.replace("%price%", Double.toString(Variables.vault_create_price)));
+		tp.sendMessage(Messages.create_partycreated.replace("%price%", Double.toString(Variables.vault_create_price)), party);
 		party.sendSpyMessage(p, Messages.create_partycreated.replace("%price%", Double.toString(Variables.vault_create_price)));
 		LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] created party " + party.getName());
 		return true;

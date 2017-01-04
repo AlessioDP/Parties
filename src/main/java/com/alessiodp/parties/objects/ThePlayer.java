@@ -60,10 +60,12 @@ public class ThePlayer {
 			}
 		} else {
 			partyName = plugin.getConfigHandler().getData().getPlayerPartyName(uuid);
-			Party party = plugin.getPartyHandler().loadParty(partyName);
-			if(party != null){
-				haveParty = true;
-				rank = plugin.getConfigHandler().getData().getRank(uuid);
+			if(!partyName.isEmpty()){
+				Party party = plugin.getPartyHandler().loadParty(partyName);
+				if(party != null){
+					haveParty = true;
+					rank = plugin.getConfigHandler().getData().getRank(uuid);
+				}
 			}
 		}
 		createID = UUID.randomUUID();
