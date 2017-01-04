@@ -57,11 +57,10 @@ public class CommandDelete implements CommandInterface{
 				}
 				
 				tp.sendMessage(Messages.delete_deleted_silent, party);
-				plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted by command, from: " + p.getName());
-				LogHandler.log(1, "Party " + party.getName() + " deleted by command, from: " + p.getName());
+				plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted (silently) by: " + p.getName());
+				LogHandler.log(1, "Party " + party.getName() + " deleted (silently) by: " + p.getName());
 				
 				party.removeParty();
-				plugin.getPartyHandler().scoreboard_removePlayer(p);
 			} else {
 				tp.sendMessage(Messages.delete_wrongcmd);
 			}

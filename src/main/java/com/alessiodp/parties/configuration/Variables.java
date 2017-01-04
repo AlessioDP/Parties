@@ -13,6 +13,9 @@ public class Variables {
 	public static boolean bungeecord;
 	
 	public static boolean perpermissionhelp;
+	public static boolean fixedparty;
+	public static boolean default_enable;
+	public static String default_party;
 	public static boolean divideexp;
 	public static int exprange;
 	public static boolean invisibleallies;
@@ -65,6 +68,7 @@ public class Variables {
 	public static int home_distance;
 	
 	public static boolean password_enable;
+	public static boolean password_bypassleave;
 	public static String password_allowedchars;
 	public static String password_hash;
 	public static String password_encode;
@@ -89,6 +93,14 @@ public class Variables {
 	public static boolean kill_save_mobsneutral;
 	public static boolean kill_save_mobshostile;
 	public static boolean kill_save_players;
+	
+	public static boolean tablist_enable;
+	public static String tablist_inparty;
+	public static String tablist_outparty;
+	public static String tablist_header_inparty;
+	public static String tablist_header_outparty;
+	public static String tablist_footer_inparty;
+	public static String tablist_footer_outparty;
 	
 	public static boolean tag_enable;
 	public static boolean tag_system;
@@ -194,6 +206,7 @@ public class Variables {
 	public static String command_reload;
 	public static String command_sub_on;
 	public static String command_sub_off;
+	public static String command_sub_fixed;
 	public static String command_migrate;
 	public static String command_claim;
 	public static String command_confirm;
@@ -209,6 +222,9 @@ public class Variables {
 		
 		perpermissionhelp = true;
 		permissionspagehelp = 9;
+		fixedparty = false;
+		default_enable = false;
+		default_party = "default";
 		divideexp = false;
 		exprange = 15;
 		invisibleallies = false;
@@ -268,6 +284,7 @@ public class Variables {
 		home_distance = 3;
 		
 		password_enable = false;
+		password_bypassleave = false;
 		password_allowedchars = "[a-zA-Z0-9]+";
 		password_hash = "MD5";
 		password_encode = "UTF-8";
@@ -292,6 +309,14 @@ public class Variables {
 		kill_save_mobsneutral = false;
 		kill_save_mobshostile = false;
 		kill_save_players = true;
+		
+		tablist_enable = true;
+		tablist_inparty = "{\"text\":\"%player%\",\"color\":\"aqua\"}";
+		tablist_outparty = "";
+		tablist_header_inparty = "&b> %party% <";
+		tablist_header_outparty = "&cOut of party";
+		tablist_footer_inparty = "&b&lParties";
+		tablist_footer_outparty = "&b&lParties";
 		
 		tag_enable = false;
 		tag_system = true;
@@ -402,6 +427,7 @@ public class Variables {
 		command_reload = "reload";
 		command_sub_on = "on";
 		command_sub_off = "off";
+		command_sub_fixed = "fixed";
 		command_migrate = "migrate";
 		command_claim = "claim";
 		command_confirm = "confirm";

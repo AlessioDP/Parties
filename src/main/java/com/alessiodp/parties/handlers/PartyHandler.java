@@ -2,9 +2,11 @@ package com.alessiodp.parties.handlers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -14,6 +16,7 @@ import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.Rank;
+import com.alessiodp.parties.utils.addon.ProtocolHandler;
 
 
 public class PartyHandler {
@@ -26,6 +29,7 @@ public class PartyHandler {
 	public HashMap<String, Integer> listPartyToDelete;
 	
 	public PartyHandler(Parties instance){
+		LogHandler.log(3, "Initializing PartyHandler");
 		plugin = instance;
 		ranks = Variables.rank_list;
 		
@@ -33,9 +37,18 @@ public class PartyHandler {
 		listPartyToDelete = new HashMap<String, Integer>();
 		
 		scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-		resetScoreboard();
+		tag_reset();
+		checkParties();
 	}
-	
+	private void checkParties(){
+		if(Variables.fixedparty){
+			List<String> lst = plugin.getConfigHandler().getData().getAllFixed();
+			for(String party : lst){
+				LogHandler.log(3, "Loading fixed party " + party);
+				loadParty(party);
+			}
+		}
+	}
 	/*
 	 * Party Management
 	 */
@@ -153,62 +166,128 @@ public class PartyHandler {
 	/*
 	 *  Scoreboard system
 	 */
-	public void scoreboard_refreshParty(String partyname){
-		Party party = loadParty(partyname);
-		if(party!=null){
-			Team team = scoreboard.getTeam(plugin.getScoreboardPrefix()+partyname.toLowerCase());
-			if(team != null)
-				team.unregister();
-			for(Player player : party.getOnlinePlayers()){
-				scoreboard_addPlayer(player, partyname);
+	public void tag_refresh(Party party){
+		if(party==null)
+			return;
+		if(Variables.tablist_enable){
+			ProtocolHandler.handleHF();
+			for(Player pl : party.getOnlinePlayers())
+				ProtocolHandler.send(pl.getUniqueId());
+		}
+		Team t = scoreboard.getTeam(plugin.getScoreboardPrefix()+party.getName().toLowerCase());
+		if(t != null)
+			t.unregister();
+		if(Variables.tag_enable || Variables.invisibleallies){
+			if(party.getOnlinePlayers().size()>0){
+				String str = plugin.getScoreboardPrefix()+party.getName().toLowerCase();
+				if(str.length() > 10)
+					str = str.substring(0, 10);
+			    Team team = scoreboard.getTeam(str);
+			    if (team == null) {
+			      team = scoreboard.registerNewTeam(str);
+			      if(Variables.tag_enable && Variables.tag_system){
+			    	  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName()));
+			    	  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName()));
+			      } else if(Variables.tag_enable && !Variables.tag_system){
+			    	  if(Variables.tag_custom_prefix)
+			    		  if(!party.getPrefix().isEmpty())
+			    			  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix()));
+			    	  else
+			    		  team.setPrefix("");
+			          if(Variables.tag_custom_suffix)
+			        	  if(!party.getSuffix().isEmpty())
+			        		  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix()));
+			          else
+			        	  team.setSuffix("");
+			      } else {
+			    	  team.setPrefix("");
+			    	  team.setSuffix("");
+			      }
+			      if(Variables.invisibleallies)
+			    	  team.setCanSeeFriendlyInvisibles(true);
+			      else
+			    	  team.setCanSeeFriendlyInvisibles(false);
+			    }
+				for(Player player : party.getOnlinePlayers()){
+					team.addPlayer(player);
+				}
 			}
 		}
 	}
-	
-	public void scoreboard_addPlayer(Player player, String partyName){
-		if(!Variables.tag_system && !Variables.invisibleallies)
-			return;
-		Party party = loadParty(partyName);
+	public void tag_addPlayer(Player player, Party party){
+		if(Variables.tablist_enable){
+			ProtocolHandler.handleHF();
+			if(party != null)
+				for(Player pl : party.getOnlinePlayers())
+					ProtocolHandler.send(pl.getUniqueId());
+		}
+		if(Variables.tag_system || Variables.invisibleallies){
+			if(party != null){
+				String str = plugin.getScoreboardPrefix()+party.getName().toLowerCase();
+				if(str.length() > 10)
+					str = str.substring(0, 10);
+			    Team team = scoreboard.getTeam(str);
+			    if (team == null) {
+			      team = scoreboard.registerNewTeam(str);
+			      if(Variables.tag_enable && Variables.tag_system){
+			    	  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName()));
+			    	  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName()));
+			      } else if(Variables.tag_enable && !Variables.tag_system){
+			    	  if(Variables.tag_custom_prefix)
+			    		  if(!party.getPrefix().isEmpty())
+			    			  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix()));
+			    	  else
+			    		  team.setPrefix("");
+			          if(Variables.tag_custom_suffix)
+			        	  if(!party.getSuffix().isEmpty())
+			        		  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix()));
+			          else
+			        	  team.setSuffix("");
+			      } else {
+			    	  team.setPrefix("");
+			    	  team.setSuffix("");
+			      }
+			      if(Variables.invisibleallies)
+			    	  team.setCanSeeFriendlyInvisibles(true);
+			      else
+			    	  team.setCanSeeFriendlyInvisibles(false);
+			    }
+			    team.addPlayer(player);
+			}
+		}
+	}
+	public void tag_removePlayer(Player player, Party party){
+		if(Variables.tablist_enable){
+			ProtocolHandler.handleHF();
+			ProtocolHandler.send(player.getUniqueId());
+			if(party != null)
+				for(Player pl : party.getOnlinePlayers())
+					ProtocolHandler.send(pl.getUniqueId());
+		}
+		if(Variables.tag_system || Variables.invisibleallies){
+			Team team = scoreboard.getPlayerTeam(player);
+		    if ((team != null) && (team.getName().startsWith(plugin.getScoreboardPrefix())))
+		    	team.removePlayer(player);
+		}
+	}
+	public void tag_delete(Party party){
 		if(party==null)
 			return;
-		String str = plugin.getScoreboardPrefix()+party.getName().toLowerCase();
-		if(str.length() > 10)
-			str = str.substring(0, 10);
-	    Team team = scoreboard.getTeam(str);
-	    if (team == null) {
-	      team = scoreboard.registerNewTeam(str);
-	      if(Variables.tag_enable && Variables.tag_system){
-	    	  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName()));
-	    	  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName()));
-	      } else if(Variables.tag_enable && !Variables.tag_system){
-	    	  if(Variables.tag_custom_prefix)
-	    		  if(!party.getPrefix().isEmpty())
-	    			  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix()));
-	    	  else
-	    		  team.setPrefix("");
-	          if(Variables.tag_custom_suffix)
-	        	  if(!party.getSuffix().isEmpty())
-	        		  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix()));
-	          else
-	        	  team.setSuffix("");
-	      } else {
-	    	  team.setPrefix("");
-	    	  team.setSuffix("");
-	      }
-	      if(Variables.invisibleallies)
-	    	  team.setCanSeeFriendlyInvisibles(true);
-	      else
-	    	  team.setCanSeeFriendlyInvisibles(false);
-	    }
-	    team.addPlayer(player);
+		if(Variables.tablist_enable){
+			ProtocolHandler.handleHF();
+			for(Player pl : party.getOnlinePlayers())
+				ProtocolHandler.send(pl.getUniqueId());
+		}
+		if(Variables.tag_system || Variables.invisibleallies){
+			Team t = scoreboard.getTeam(plugin.getScoreboardPrefix()+party.getName().toLowerCase());
+			if(t != null){
+				for(OfflinePlayer p : t.getPlayers())
+					t.removePlayer(p);
+				t.unregister();
+			}
+		}
 	}
-	public void scoreboard_removePlayer(Player player){
-		Team team = scoreboard.getPlayerTeam(player);
-	    if ((team != null) && (team.getName().startsWith(plugin.getScoreboardPrefix())))
-	    	team.removePlayer(player);
-	}
-	
-	public void resetScoreboard(){
+	public void tag_reset(){
 		if(scoreboard == null)
 			return;
 		for(Team team : scoreboard.getTeams()){

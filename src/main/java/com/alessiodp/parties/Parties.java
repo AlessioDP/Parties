@@ -1,5 +1,6 @@
 package com.alessiodp.parties;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map.Entry;
@@ -62,6 +63,7 @@ import com.alessiodp.parties.utils.addon.EssentialsChatHandler;
 import com.alessiodp.parties.utils.addon.GravityUpdater;
 import com.alessiodp.parties.utils.addon.GriefPreventionHandler;
 import com.alessiodp.parties.utils.addon.PlaceholderHandler;
+import com.alessiodp.parties.utils.addon.ProtocolHandler;
 import com.alessiodp.parties.utils.api.PartiesAPI;
 import com.alessiodp.parties.utils.bungeecord.BukkitHandler;
 
@@ -73,9 +75,10 @@ public class Parties extends JavaPlugin {
 	private PartyHandler party;
 	private SQLDatabase sqldatabase;
 
-	private static final int ver_config = 10;
-	private static final int ver_mess = 9;
+	private static final int ver_config = 11;
+	private static final int ver_mess = 10;
 	private static final String scoreboardprefix = "PARTY";
+	public static File datafolder;
 	
 	/* Updates variables */
 	private boolean update_avail = false;
@@ -94,14 +97,14 @@ public class Parties extends JavaPlugin {
 	
 	public static Parties getInstance() {return instance;}
         
-        @Override
+    @Override
 	public void onEnable() {
 		/* init */
 		instance = this;
+		datafolder = getDataFolder();
 		log(ConsoleColors.CYAN.getCode() + "Initializing Parties " + this.getDescription().getVersion());
 		
 		handle();
-		
 		log(ConsoleColors.CYAN.getCode() + "Parties enabled");
 		LogHandler.log(1, "Parties v"+getDescription().getVersion()+" enabled");
 	}
@@ -112,7 +115,7 @@ public class Parties extends JavaPlugin {
 			addon_DC.disable();
 		resetPendingPartyTask();
 		log(ConsoleColors.CYAN.getCode() + "Parties disabled");
-		LogHandler.log(1, "Parties disabled");
+		LogHandler.log(1, "Parties disabled\n========== End of Log ==========");
 	}
 	
 	public void checkUpdates() {
@@ -136,6 +139,7 @@ public class Parties extends JavaPlugin {
 		party = new PartyHandler(this);
 		checkUpdates();
 		player = new PlayerHandler(this);
+		player.init();
 		
 		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		
@@ -150,6 +154,14 @@ public class Parties extends JavaPlugin {
 			new BukkitHandler(this);
 			log(ConsoleColors.CYAN.getCode() + "Ready for Bungeecord!");
 			LogHandler.log(1, "Ready for Bungeecord");
+		}
+		/* ProtocolLib */
+		if(Variables.tablist_enable){
+			if(new ProtocolHandler(this).start()){
+				log(ConsoleColors.CYAN.getCode() + "ProtocolLib Hooked!");
+				LogHandler.log(1, "ProtocolLib Hooked");
+			} else
+				Variables.tablist_enable=false;
 		}
 		/* PEX */
 		if (Bukkit.getPluginManager().isPluginEnabled("PermissionsEx")

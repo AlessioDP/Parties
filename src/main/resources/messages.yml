@@ -39,10 +39,13 @@ update-available: "&9Parties %thisversion% found an update: %version%"
 # Special tags: %exp% = Experience gained | %exptotal% = Total experience | %mob% = Mob type name (Ex. Skeleton, Zombie)
 exp-gained: "&bYou killed a %mob%, you gained %exp% experience"
 exp-gained-from-other: "&b%player% has killed a %mob%, you gained %exp% experience"
+# Joined into a default party
+default-joined: "&bYou entered into %party%"
 p:
     wrong-command: "&cWrong variables: Type &7/p <message>"
 create:
     party-created: "&l&bYou have created the party %party%\n&r&bType &7/party invite &bfor invite your mates"
+    party-fixed-created: "&l&bYou have created the fixed party %party%"
     name-already-exist: "&cThe party name %party% already exists, choose a different name"
     already-in-party: "&cYou are already in a party!"
     too-long-name: "&cThe party name is too long!"
@@ -187,6 +190,8 @@ kick:
     kick-up-rank: "&cYou cannot kick your superior!"
     kicked-from-party: "&bYou have been kicked from party %party%"
     kicked-player-party: "&b&l%player% has been kicked from party"
+    kick-send-other: "&bYou kicked %player% from the party"
+    other-no-member: "&c%player% is not in a party"
     no-member: "&c%player% is not in your party"
     wrong-command: "&cWrong variables: Type &7/party kick <name>"
 delete:
@@ -285,4 +290,4 @@ help:
     migrate: "&b/party migrate <sql/file> &7- Copy database to SQL/File"
     claim: "&b/party claim <permission> &7- Grant permissions into the claim"
 dont-edit-this:
-    messages-version: 9
+    messages-version: 10

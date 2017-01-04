@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,6 +25,7 @@ public class Party {
 	private String name;
 	private ArrayList<UUID> members;
 	private UUID leader;
+	private boolean fixed;
 	
 	private ArrayList<Player> onlinePlayers;
 	private String description = "";
@@ -45,6 +44,7 @@ public class Party {
 		this.name = name;
 		members = new ArrayList<UUID>();
 		leader = null;
+		fixed = false;
 		onlinePlayers = new ArrayList<Player>();
 		whoInvite = new HashMap<UUID, UUID>();
 		invited = new HashMap<UUID, Integer>();
@@ -55,6 +55,7 @@ public class Party {
 		name = copy.name;
 		members = copy.members;
 		leader = copy.leader;
+		fixed = copy.fixed;
 		onlinePlayers = copy.onlinePlayers;
 		description = copy.description;
 		motd = copy.motd;
@@ -75,7 +76,6 @@ public class Party {
 			tp.setChatParty(false);
 			tp.setPartyName("");
 			tp.setRank(Variables.rank_default);
-			plugin.getPartyHandler().scoreboard_removePlayer(player);
 		}
 		LogHandler.log(3, "Removed all players of party " + name);
 	}
@@ -89,17 +89,9 @@ public class Party {
 							.replace("%suffix%", suffix)
 							.replace("%kills%", kills+""), home);
 				else
-					plugin
-					.getDynmap()
-					.removeMarker(
-							name
-							);
+					plugin.getDynmap().removeMarker(name);
 			else
-				plugin
-				.getDynmap()
-				.removeMarker(
-						name
-						);
+				plugin.getDynmap().removeMarker(name);
 		}
 		
 		if(Variables.database_type.equalsIgnoreCase("none"))
@@ -116,6 +108,7 @@ public class Party {
 		if(Variables.database_type.equalsIgnoreCase("none"))
 			return;
 		plugin.getConfigHandler().getData().removeParty(this);
+		plugin.getPartyHandler().tag_delete(this);
 		LogHandler.log(3, "Removed party " + name);
 	}
 	
@@ -169,7 +162,7 @@ public class Party {
 		updateParty();
 		tp.updatePlayer();
 		
-		plugin.getPartyHandler().scoreboard_refreshParty(name);
+		plugin.getPartyHandler().tag_addPlayer(tp.getPlayer(), this);
 	}
 	public void denyInvite(UUID to){
 		plugin.getServer().getScheduler().cancelTask(invited.get(to));
@@ -194,15 +187,7 @@ public class Party {
 			if(BanManagerHandler.isMuted(sender)){
 				return;
 			}
-		String formattedMessage = Variables.chatformat
-				.replace("%player%", sender.getDisplayName())
-				.replace("%desc%", description)
-				.replace("%party%", name)
-				.replace("%world%", sender.getWorld().getName())
-				.replace("%group%", plugin.getPlayerHandler().getGroup(sender))
-				.replace("%rank%", plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(sender).getRank()).getChat());
-		formattedMessage = setVault(formattedMessage, sender);
-		formattedMessage = setPlaceholder(formattedMessage, sender);
+		String formattedMessage = convertText(Variables.chatformat, sender);
 		
 		if(JSONHandler.isJSON(formattedMessage)){
 			String msg = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message));
@@ -220,15 +205,8 @@ public class Party {
 		if(message.isEmpty() || message==null)
 			return;
 		String formattedMessage = Variables.partybroadcastformat
-				.replace("%message%", message)
-				.replace("%desc%", description)
-				.replace("%player%", sender.getName())
-				.replace("%group%", plugin.getPlayerHandler().getGroup(sender))
-				.replace("%world%", sender.getWorld().getName())
-				.replace("%party%", name)
-				.replace("%rank%", plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(sender).getRank()).getChat());
-		formattedMessage = setVault(formattedMessage, sender);
-		formattedMessage = setPlaceholder(formattedMessage, sender);
+				.replace("%message%", message);
+		formattedMessage = convertText(formattedMessage, sender);
 		
 		if(JSONHandler.isJSON(formattedMessage)){
 			for (Player player : onlinePlayers) {
@@ -249,10 +227,12 @@ public class Party {
 				.replace("%player%", sender.getName())
 				.replace("%group%", plugin.getPlayerHandler().getGroup(sender))
 				.replace("%party%", name)
+				.replace("%prefix%", prefix)
+				.replace("%suffix%", suffix)
 				.replace("%sender%", sender.getName())
 				.replace("%rank%", plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(sender).getRank()).getChat());
-		formattedMessage = setVault(formattedMessage, null);
-		formattedMessage = setPlaceholder(formattedMessage, null);
+		formattedMessage = plugin.getPlayerHandler().setVault(formattedMessage, null);
+		formattedMessage = plugin.getPlayerHandler().setPlaceholder(formattedMessage, null);
 		
 		if(JSONHandler.isJSON(formattedMessage)){
 			for (Player player : onlinePlayers) {
@@ -270,15 +250,8 @@ public class Party {
 			return;
 
 		String formattedMessage = Variables.spychatformat
-				.replace("%message%", ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message)))
-				.replace("%player%", sender.getDisplayName())
-				.replace("%party%", name)
-				.replace("%desc%", description)
-				.replace("%group%", plugin.getPlayerHandler().getGroup(sender))
-				.replace("%world%", sender.getWorld().getName())
-				.replace("%rank%", plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(sender).getRank()).getChat());
-		formattedMessage = setVault(formattedMessage, sender);
-		formattedMessage = setPlaceholder(formattedMessage, sender);
+				.replace("%message%", ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message)));
+		formattedMessage = convertText(formattedMessage, sender);
 		
 		plugin.getPlayerHandler().sendMessageToSpy(ChatColor.translateAlternateColorCodes('&', formattedMessage), name);
 	}
@@ -290,35 +263,24 @@ public class Party {
 				.replace("%group%", plugin.getPlayerHandler().getGroup(sender))
 				.replace("%desc%", description)
 				.replace("%party%", name)
+				.replace("%prefix%", prefix)
+				.replace("%suffix%", suffix)
 				.replace("%message", message)
 				.replace("%rank%", plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(sender).getRank()).getChat());
-		formattedMessage = setVault(formattedMessage, null);
-		formattedMessage = setPlaceholder(formattedMessage, null);
+		formattedMessage = plugin.getPlayerHandler().setVault(formattedMessage, null);
+		formattedMessage = plugin.getPlayerHandler().setPlaceholder(formattedMessage, null);
 		
 		plugin.getPlayerHandler().sendMessageToSpy(ChatColor.translateAlternateColorCodes('&', formattedMessage), name);
 	}
-	/*
-	 *  Private methods
-	 */
-	private String setVault(String message, Player sender){
-		if(Variables.vault_enable)
-			if(plugin.getVaultChat() != null){
-				if(sender == null){
-					message = message
-							.replace("%vault_prefix%", "")
-							.replace("%vault_suffix%", "");
-				} else {
-					message = message
-							.replace("%vault_prefix%", plugin.getVaultChat().getPlayerPrefix(sender))
-							.replace("%vault_suffix%", plugin.getVaultChat().getPlayerPrefix(sender));
-				}
-			}
-		return message;
-	}
-	private String setPlaceholder(String message, Player sender){
-		if(plugin.isPlaceholderAPIHooked())
-			message = PlaceholderAPI.setPlaceholders(sender, message);
-		return message;
+	public String convertText(String text, Player player){
+		text = text
+				.replace("%desc%", description)
+				.replace("%party%", name)
+				.replace("%prefix%", prefix)
+				.replace("%suffix%", suffix)
+				.replace("%rank%", plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(player).getRank()).getChat());
+		text = plugin.getPlayerHandler().convertText(text, player);
+		return text;
 	}
 	/*
 	 * Gets
@@ -347,6 +309,8 @@ public class Party {
 	public void setSuffix(String v){suffix = v;}
 	public int getKills(){return kills;}
 	public void setKills(int v){kills = v;}
+	public boolean isFixed(){return fixed;}
+	public void setFixed(boolean v){fixed=v;}
 	public String getPassword(){return password;}
 	public void setPassword(String v){password = v;}
 	public HashMap<UUID, UUID> getWhoInviteMap(){return whoInvite;}

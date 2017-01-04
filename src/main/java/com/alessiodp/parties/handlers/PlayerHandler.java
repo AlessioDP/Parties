@@ -18,6 +18,7 @@ import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.PartiesPermissions;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PlayerHandler {
@@ -31,6 +32,9 @@ public class PlayerHandler {
 		listThePlayer = new HashMap<UUID, ThePlayer>();
 		listSpyPlayers = new ArrayList<UUID>();
 		homeCounts = 0;
+	}
+	public void init(){
+		LogHandler.log(3, "Initializing PlayerHandler");
 		reloadPlayers();
 	}
 	public void reloadPlayers(){
@@ -49,7 +53,7 @@ public class PlayerHandler {
 			} else {
 				if(!party.getOnlinePlayers().contains(p))
 					party.getOnlinePlayers().add(p);
-				plugin.getPartyHandler().scoreboard_addPlayer(p, tp.getPartyName());
+				plugin.getPartyHandler().tag_addPlayer(p, party);
 			}
 			if(p.hasPermission(PartiesPermissions.ADMIN_UPDATES.toString()) && Variables.warnupdates)
 				if(plugin.isUpdateAvailable())
@@ -57,6 +61,38 @@ public class PlayerHandler {
 		}
 		LogHandler.log(3, "Reloaded list players");
 		LogHandler.log(2, "Loaded " + plugin.getPartyHandler().listParty.size() + " parties");
+	}
+	/*
+	 * Player text converter
+	 */
+	public String convertText(String text, Player player){
+		text = text
+				.replace("%player%", player.getDisplayName())
+				.replace("%world%", player.getWorld().getName())
+				.replace("%group%", plugin.getPlayerHandler().getGroup(player));
+		text = setVault(text, player);
+		text = setPlaceholder(text, player);
+		return text;
+	}
+	public String setVault(String message, Player sender){
+		if(Variables.vault_enable)
+			if(plugin.getVaultChat() != null){
+				if(sender == null){
+					message = message
+							.replace("%vault_prefix%", "")
+							.replace("%vault_suffix%", "");
+				} else {
+					message = message
+							.replace("%vault_prefix%", plugin.getVaultChat().getPlayerPrefix(sender))
+							.replace("%vault_suffix%", plugin.getVaultChat().getPlayerPrefix(sender));
+				}
+			}
+		return message;
+	}
+	public String setPlaceholder(String message, Player sender){
+		if(plugin.isPlaceholderAPIHooked())
+			message = PlaceholderAPI.setPlaceholders(sender, message);
+		return message;
 	}
 	/*
 	 * Gets

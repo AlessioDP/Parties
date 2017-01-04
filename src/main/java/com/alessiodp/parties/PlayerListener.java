@@ -1,6 +1,7 @@
 package com.alessiodp.parties;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Animals;
@@ -34,6 +35,7 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.Rank;
 import com.alessiodp.parties.objects.ThePlayer;
+import com.alessiodp.parties.utils.ConsoleColors;
 import com.alessiodp.parties.utils.PartiesPermissions;
 import com.alessiodp.parties.utils.tasks.MotdTask;
 import com.alessiodp.parties.utils.tasks.PartyDeleteTask;
@@ -53,20 +55,47 @@ public class PlayerListener implements Listener{
 		
 		plugin.getPlayerHandler().initSpy(player.getUniqueId());
 		
-		if(!tp.haveParty())
+		if(!tp.haveParty() && !Variables.default_enable)
 			return;
 		
 		Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
 		if(party != null){
 			if(!party.getOnlinePlayers().contains(player))
 				party.getOnlinePlayers().add(player);
-			plugin.getPartyHandler().scoreboard_addPlayer(player, tp.getPartyName());
+			plugin.getPartyHandler().tag_addPlayer(player, party);
 			if(!party.getMOTD().isEmpty()){
 				new MotdTask(plugin, player).runTaskLater(plugin, Variables.motd_delay);
 			}
 			if(plugin.getPartyHandler().listPartyToDelete.containsKey(party.getName()))
 				Bukkit.getScheduler().cancelTask(plugin.getPartyHandler().listPartyToDelete.get(party.getName()));
 			LogHandler.log(3, player.getName() + "[" + player.getUniqueId() + "] entered in the game, party " + party.getName());
+		} else {
+			if(Variables.default_enable){
+				party = plugin.getPartyHandler().loadParty(Variables.default_party);
+				if(party != null){
+					party.getMembers().add(tp.getUUID());
+					party.getOnlinePlayers().add(tp.getPlayer());
+					tp.setHaveParty(true);
+					tp.setPartyName(party.getName());
+					tp.setRank(Variables.rank_default);
+					party.updateParty();
+					tp.updatePlayer();
+					
+					plugin.getPartyHandler().tag_addPlayer(player, party);
+					
+					if(!party.getMOTD().isEmpty()){
+						new MotdTask(plugin, player).runTaskLater(plugin, Variables.motd_delay);
+					}
+					if(plugin.getPartyHandler().listPartyToDelete.containsKey(party.getName()))
+						Bukkit.getScheduler().cancelTask(plugin.getPartyHandler().listPartyToDelete.get(party.getName()));
+					
+					tp.sendMessage(Messages.defaultjoined, party);
+					LogHandler.log(2, player.getName() + "[" + player.getUniqueId() + "] entered in the game, setted default party " + party.getName());
+				} else {
+					plugin.log(Level.WARNING, ConsoleColors.RED.getCode() + "Cannot load default party");
+					LogHandler.log(1, "Cannot load default party");
+				}
+			}
 		}
 		if(player.hasPermission(PartiesPermissions.ADMIN_UPDATES.toString()) && Variables.warnupdates){
 			if(plugin.isUpdateAvailable()){
@@ -90,12 +119,11 @@ public class PlayerListener implements Listener{
 				if(Variables.database_type.equalsIgnoreCase("none")){
 					PartyDeleteTask task = (PartyDeleteTask) new PartyDeleteTask(party.getName());
 					task.runTaskLaterAsynchronously(plugin, Variables.database_none_delay * 20);
-					System.out.println(Variables.database_none_delay);
 					if(Variables.database_none_delay > 0)
 						plugin.getPartyHandler().listPartyToDelete.put(party.getName(), task.getTaskId());
 				}
 			}
-			plugin.getPartyHandler().scoreboard_removePlayer(p);
+			plugin.getPartyHandler().tag_removePlayer(p, party);
 		}
 		plugin.getPlayerHandler().removePlayer(p.getUniqueId());
 	}
@@ -118,7 +146,7 @@ public class PlayerListener implements Listener{
 						plugin.getPartyHandler().listPartyToDelete.put(party.getName(), task.getTaskId());
 				}
 			}
-			plugin.getPartyHandler().scoreboard_removePlayer(p);
+			plugin.getPartyHandler().tag_removePlayer(p, party);
 		}
 		plugin.getPlayerHandler().removePlayer(p.getUniqueId());
 	}

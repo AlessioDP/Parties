@@ -299,7 +299,15 @@ public class SQLDatabase {
 						pt.setHome(null);
 					}
 				}
-				pt.setLeader(UUID.fromString(res.getString("leader")));
+				
+				String str = res.getString("leader");
+				if(str != null){
+					if(str.equalsIgnoreCase("fixed")){
+						pt.setLeader(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+						pt.setFixed(true);
+					} else
+						pt.setLeader(UUID.fromString(str));
+				}
 				pt.setMembers(getMembersParty(party));
 				return pt;
 			}
@@ -320,7 +328,7 @@ public class SQLDatabase {
 				home = party.getHome().getWorld().getName() + "," + party.getHome().getBlockX() + "," + party.getHome().getBlockY() + "," + party.getHome().getBlockZ() + "," + party.getHome().getYaw() + "," + party.getHome().getPitch();
 			
 			Statement statement = connection.createStatement();
-			statement.executeUpdate("INSERT INTO "+Variables.database_sql_tables_parties+" (name, leader, descr, motd, prefix, suffix, kills, password, home) VALUES ('"+party.getName()+"', '"+party.getLeader().toString()+"', '"+party.getDescription()+"', '"+party.getMOTD()+"', '"+party.getPrefix()+"', '"+party.getSuffix()+"', "+party.getKills()+", '"+party.getPassword()+"', '"+home+"') ON DUPLICATE KEY UPDATE leader=VALUES(leader), descr=VALUES(descr), motd=VALUES(motd), prefix=VALUES(prefix), suffix=VALUES(suffix), kills=VALUES(kills), password=VALUES(password), home=VALUES(home);");
+			statement.executeUpdate("INSERT INTO "+Variables.database_sql_tables_parties+" (name, leader, descr, motd, prefix, suffix, kills, password, home) VALUES ('"+party.getName()+"', '"+(party.isFixed() ? "fixed" : party.getLeader().toString())+"', '"+party.getDescription()+"', '"+party.getMOTD()+"', '"+party.getPrefix()+"', '"+party.getSuffix()+"', "+party.getKills()+", '"+party.getPassword()+"', '"+home+"') ON DUPLICATE KEY UPDATE leader=VALUES(leader), descr=VALUES(descr), motd=VALUES(motd), prefix=VALUES(prefix), suffix=VALUES(suffix), kills=VALUES(kills), password=VALUES(password), home=VALUES(home);");
 		} catch (SQLException ex) {
 			plugin.log(Level.WARNING, ConsoleColors.RED.getCode()
 					+ "Error in SQL Query: Can't update party: " + ex.getMessage());
@@ -382,6 +390,9 @@ public class SQLDatabase {
 		}
 		return list;
 	}
+	/* 
+	 * Deprecated
+	 * 
 	public String getPartyLeader(String party){
 		try{
 			connection = getConnection();
@@ -525,6 +536,26 @@ public class SQLDatabase {
 		}
 		return null;
 	}
+	*/
+	public ArrayList<String> getAllFixed(){
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			connection = getConnection();
+			if (connection == null)
+				return list;
+			Statement statement = connection.createStatement();
+			ResultSet res = statement.executeQuery("SELECT name FROM "+Variables.database_sql_tables_parties+" WHERE leader='fixed';");
+			while (res.next()) {
+				list.add(res.getString("name"));
+			}
+			return list;
+		} catch (SQLException ex) {
+			plugin.log(Level.WARNING, ConsoleColors.RED.getCode()
+					+ "Error in SQL Query get all fixed parties: " + ex.getMessage());
+			LogHandler.log(1, "Error in SQL Query get all fixed parties: " + ex.getMessage());
+		}
+		return list;
+	}
 	/*
 	 * TABLES
 	 */
@@ -645,11 +676,10 @@ public class SQLDatabase {
 			while (res.next()) {
 				String leader = res.getString("leader");
 				if(leader == null || leader.isEmpty())
-					this.removeParty(res.getString("name"));
-				else
+					removeParty(res.getString("name"));
+				else if(!leader.equalsIgnoreCase("fixed"))
 					setRank(UUID.fromString(leader), Variables.rank_last);
 			}
-			return;
 		} catch (SQLException ex) {}
 	}
 	public void createTable(String name, int type) {

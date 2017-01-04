@@ -42,7 +42,7 @@ public class PartiesAPI implements Api{
 		party.updateParty();
 		tp.updatePlayer();
 
-		plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+		plugin.getPartyHandler().tag_refresh(party);
 		return Status.SUCCESS;
 	}
 	
@@ -74,7 +74,7 @@ public class PartiesAPI implements Api{
 		party.updateParty();
 		tp.updatePlayer();
 		
-		plugin.getPartyHandler().scoreboard_refreshParty(partyName);
+		plugin.getPartyHandler().tag_addPlayer(paramPlayer, party);
 		return Status.SUCCESS;
 	}
 	
@@ -97,8 +97,7 @@ public class PartiesAPI implements Api{
 		party.updateParty();
 		tp.updatePlayer();
 		if(tp.getPlayer().isOnline()){
-			plugin.getPartyHandler().scoreboard_removePlayer(Bukkit.getPlayer(uuid));
-			plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+			plugin.getPartyHandler().tag_removePlayer(Bukkit.getPlayer(uuid), party);
 		}
 		return Status.SUCCESS;
 	}

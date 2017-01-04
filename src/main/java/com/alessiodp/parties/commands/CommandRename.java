@@ -124,11 +124,12 @@ public class CommandRename implements CommandInterface{
 		for(Player player : party.getOnlinePlayers()){
 			plugin.getPlayerHandler().getThePlayer(player).setPartyName(partyName);
 		}
+		plugin.getPartyHandler().tag_delete(party);
 		party.setName(partyName);
 		plugin.getPartyHandler().listParty.remove(args[1]);
 		plugin.getPartyHandler().listParty.remove(party.getName());
 		plugin.getPartyHandler().listParty.put(partyName, party);
-		plugin.getPartyHandler().scoreboard_refreshParty(partyName);
+		plugin.getPartyHandler().tag_refresh(party);
 		
 		party.sendBroadcastParty(p, Messages.rename_broadcast);
 		tp.sendMessage(Messages.rename_renamed.replace("%old%", args[1]).replace("%party%", party.getName()));

@@ -9,13 +9,11 @@ public class PartyDeleteTask extends BukkitRunnable {
 	private String name;
 
 	public PartyDeleteTask(String name) {
-		System.out.println("create");
 		plugin = Parties.getInstance();
 		this.name = name;
 	}
 
 	public void run() {
-		System.out.println("run");
 		plugin.getPartyHandler().deleteTimedParty(name, false);
 	}
 	public String getName(){return name;}

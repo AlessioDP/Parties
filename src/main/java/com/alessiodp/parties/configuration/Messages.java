@@ -14,10 +14,12 @@ public class Messages {
 	public static String availableupdate;
 	public static String expgainother;
 	public static String expgain;
+	public static String defaultjoined;
 
 	public static String p_wrongcmd;
 	
 	public static String create_partycreated;
+	public static String create_partycreated_fixed;
 	public static String create_alreadyexist;
 	public static String create_alreadyinparty;
 	public static String create_toolongname;
@@ -141,6 +143,8 @@ public class Messages {
 	public static String kick_uprank;
 	public static String kick_kickedfrom;
 	public static String kick_kickedplayer;
+	public static String kick_kicksendother;
+	public static String kick_nomemberother;
 	public static String kick_nomember;
 	public static String kick_wrongcmd;
 	
@@ -252,10 +256,12 @@ public class Messages {
 		availableupdate = "&bParties update available: %version%";
 		expgain = "&bYou killed a %mob%, you gained %exp% experience";
 		expgainother = "&b%player% has killed a %mob%, you gained %exp% experience";
+		defaultjoined = "&bYou entered into %party%";
 		
 		p_wrongcmd = "&cWrong variables: Type &7/p <message>";
 
 		create_partycreated = "&l&bYou have created the party %party%\n&r&bType &7/party invite &bfor invite your mates";
+		create_partycreated_fixed = "&l&bYou have created the fixed party %party%";
 		create_alreadyexist = "&cThe party name %party% already exists, choose a different name";
 		create_alreadyinparty = "&cYou are already in a party!";
 		create_toolongname = "&cThe party name is too long!";
@@ -390,6 +396,8 @@ public class Messages {
 		kick_uprank = "&cYou cannot kick your superior!";
 		kick_kickedfrom = "&bYou have been kicked from party %party%";
 		kick_kickedplayer = "&b&l%player% has been kicked from party";
+		kick_kicksendother = "&cYou kicked %player% from the party";
+		kick_nomemberother = "&c%player% is not in a party";
 		kick_nomember = "&c%player% is not in your party";
 		kick_wrongcmd = "&cWrong variables: Type &7/party kick <name>";
 

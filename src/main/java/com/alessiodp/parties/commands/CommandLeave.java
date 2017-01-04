@@ -47,19 +47,18 @@ public class CommandLeave implements CommandInterface{
 		if (party.getLeader().equals(p.getUniqueId())) {
 			party.sendBroadcastParty(p, Messages.leave_disbanded);
 			party.sendSpyMessage(p, Messages.leave_disbanded);
-			plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted by leaving, from: " + p.getName());
+			plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted via leave, by: " + p.getName());
 			party.removeParty();
 			
-			plugin.getPartyHandler().scoreboard_removePlayer(p);
-			LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] deleted " + party.getName() + " by leaving");
+			plugin.getPartyHandler().tag_removePlayer(p, null);
+			LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] deleted " + party.getName() + " via leave");
 			return true;
 		}
 		
 		party.updateParty();
-		plugin.getPartyHandler().scoreboard_removePlayer(p);
-		plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+		plugin.getPartyHandler().tag_removePlayer(p, party);
 		
-		LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] leaved from the party " + party.getName());
+		LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] leaved the party " + party.getName());
 		return true;
 	}
 }

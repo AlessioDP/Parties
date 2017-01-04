@@ -32,12 +32,12 @@ public class CommandKick implements CommandInterface{
 			tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.KICK.toString()));
 			return true;
 		}
-		if (!tp.haveParty()) {
+		if (!tp.haveParty() && !p.hasPermission(PartiesPermissions.KICK_OTHERS.toString())) {
 			tp.sendMessage(Messages.noparty);
 			return true;
 		}
 		Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-		if(r != null){
+		if(r != null && !p.hasPermission(PartiesPermissions.KICK_OTHERS.toString())){
 			if(!r.havePermission(PartiesPermissions.PRIVATE_KICK.toString())){
 				Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_KICK.toString());
 				if(rr!=null)
@@ -57,30 +57,25 @@ public class CommandKick implements CommandInterface{
 
 		Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
 
-		if (tp.getRank() < plugin.getConfigHandler().getData().getRank(kickedPlayer.getUniqueId())) {
-			tp.sendMessage(Messages.kick_uprank, kickedPlayer);
-			return true;
-		}
-
-		if (!party.getMembers().contains(kickedPlayer.getUniqueId())) {
+		if (party == null || !party.getMembers().contains(kickedPlayer.getUniqueId())) {
 			if(p.hasPermission(PartiesPermissions.KICK_OTHERS.toString())){
 				String partyName = plugin.getPlayerHandler().getThePlayer(kickedPlayer).getPartyName();
 				if(partyName.isEmpty()){
-					tp.sendMessage(Messages.kick_nomember, kickedPlayer);
+					tp.sendMessage(Messages.kick_nomemberother, kickedPlayer);
 					return true;
 				}
 				Party party_2 = plugin.getPartyHandler().loadParty(partyName);
 				if(party_2 == null){
-					tp.sendMessage(Messages.kick_nomember, kickedPlayer);
+					tp.sendMessage(Messages.kick_nomemberother, kickedPlayer);
 					return true;
 				}
 				if(party_2.getLeader().equals(kickedPlayer.getUniqueId())){
-					party.sendBroadcastParty(kickedPlayer, Messages.leave_disbanded);
-					party.sendSpyMessage(kickedPlayer, Messages.leave_disbanded);
-					plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party.getName() + " deleted by kick, from: " + p.getName());
+					party_2.sendBroadcastParty(kickedPlayer, Messages.leave_disbanded);
+					party_2.sendSpyMessage(kickedPlayer, Messages.leave_disbanded);
+					plugin.log(ConsoleColors.CYAN.getCode() + "Party " + party_2.getName() + " deleted via kick, by: " + p.getName());
 					party_2.removeParty();
 					if(kickedPlayer.isOnline())
-						plugin.getPartyHandler().scoreboard_removePlayer(Bukkit.getPlayer(kickedPlayer.getName()));
+						plugin.getPartyHandler().tag_removePlayer(Bukkit.getPlayer(kickedPlayer.getName()), null);
 					return true;
 				}
 				if(party_2.getMembers().contains(kickedPlayer.getUniqueId())){
@@ -88,16 +83,24 @@ public class CommandKick implements CommandInterface{
 				}
 				party_2.updateParty();
 				if(kickedPlayer.isOnline()){
-					plugin.getPartyHandler().scoreboard_removePlayer(Bukkit.getPlayer(kickedPlayer.getName()));
-					plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+					ThePlayer tp2 = plugin.getPlayerHandler().getThePlayer(kickedPlayer);
+					tp2.sendMessage(Messages.kick_kickedfrom, p);
+					tp2.removePlayer();
+					plugin.getPartyHandler().tag_removePlayer(Bukkit.getPlayer(kickedPlayer.getName()), party_2);
 				}
-				LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] kicked "+ kickedPlayer.getName() +"["+kickedPlayer.getUniqueId()+" from " + party.getName());
+				tp.sendMessage(Messages.kick_kicksendother, kickedPlayer);
+				LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] kicked "+ kickedPlayer.getName() +"["+kickedPlayer.getUniqueId()+" by " + party_2.getName());
 			} else {
 				tp.sendMessage(Messages.kick_nomember, kickedPlayer);
 			}
 			return true;
 		}
-
+		
+		if ((tp.getRank() < plugin.getConfigHandler().getData().getRank(kickedPlayer.getUniqueId())) && !p.hasPermission(PartiesPermissions.KICK_OTHERS.toString())) {
+			tp.sendMessage(Messages.kick_uprank, kickedPlayer);
+			return true;
+		}
+		
 		party.getMembers().remove(kickedPlayer.getUniqueId());
 
 		Player onlinePlayer = plugin.getServer().getPlayer(playerName);
@@ -107,8 +110,7 @@ public class CommandKick implements CommandInterface{
 			tp2.removePlayer();
 			
 			party.getOnlinePlayers().remove(onlinePlayer);
-			plugin.getPartyHandler().scoreboard_removePlayer(onlinePlayer);
-			plugin.getPartyHandler().scoreboard_refreshParty(party.getName());
+			plugin.getPartyHandler().tag_removePlayer(onlinePlayer, party);
 		} else {
 			
 			plugin.getPlayerHandler().getThePlayer(kickedPlayer).removePlayer();
@@ -117,7 +119,7 @@ public class CommandKick implements CommandInterface{
 		party.sendBroadcastParty(kickedPlayer, Messages.kick_kickedplayer);
 		
 		party.updateParty();
-		LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] kicked "+ kickedPlayer.getName() +"["+kickedPlayer.getUniqueId()+" from " + party.getName());
+		LogHandler.log(1, p.getName() + "[" + p.getUniqueId() + "] kicked "+ kickedPlayer.getName() +"["+kickedPlayer.getUniqueId()+" by " + party.getName());
 		return true;
 	}
 }
