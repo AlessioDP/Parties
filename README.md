@@ -15,8 +15,10 @@ Everything is configurable!<br>
 ## Plugins Supported
 <b>PEX & GroupManager</b> - For group name placeholders<br>
 <b>DeluxeChat, EssentialsChat & PlaceholderAPI</b> - Chat placeholders<br>
+<b>ProtocolLib</b> - Tablist support<br>
 <b>GriefPrevention</b> - Adds claim command<br>
 <b>Vault</b> - Command price, prefix and suffix<br>
+<b>BanManager</b> - Ban handler<br>
 <b>Dynmap</b> - Party home markers<br>
 <b>Bungeecord</b> - Auto-join into servers<br>
 <b>[More info here.](https://github.com/AlessioDP/Parties/wiki/Plugins-Supported)</b><br>
@@ -26,6 +28,7 @@ If you need additional help, read [my wiki](https://github.com/AlessioDP/Parties
 <br>
 <br>
 ## Help pages example
-![Help 1](http://puu.sh/qSxGI/38bbc988f4.png)
-![Help 2](http://puu.sh/qSxHQ/dfc6466a19.png)
-![Help 3](http://puu.sh/qSxJ8/e9d65c95be.png)
+![Help 1](http://puu.sh/tbujE/6fa32efba8.jpg)
+![Help 2](http://puu.sh/tbusF/bc800c0325.jpg)
+![Help 3](http://puu.sh/tbuub/7651a7cc1f.jpg)
+![Tablist](http://puu.sh/tbuvy/0428a926d2.jpg)
