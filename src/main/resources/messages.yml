@@ -44,7 +44,7 @@ default-joined: "&bYou entered into %party%"
 p:
     wrong-command: "&cWrong variables: Type &7/p <message>"
 create:
-    party-created: "&l&bYou have created the party %party%\n&r&bType &7/party invite &bfor invite your mates"
+    party-created: "&l&bYou have created the party %party%\n&r&bType &7/party invite &bto invite your mates"
     party-fixed-created: "&l&bYou have created the fixed party %party%"
     name-already-exist: "&cThe party name %party% already exists, choose a different name"
     already-in-party: "&cYou are already in a party!"
@@ -149,8 +149,8 @@ motd:
     censored-name: "&cThe description contains censored words!"
     wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
 chat:
-    enabled: "&aChat setted to party"
-    disabled: "&aChat setted to public"
+    enabled: "&aChat set to party"
+    disabled: "&aChat set to public"
     wrong-command: "&cWrong variables: Type &7/party chat [on/off]"
 list:
     # Special tags: %number% = Number parties online | %page% = Current list page | %maxpages% = How many pages exist
@@ -165,12 +165,12 @@ invite:
     max-player-reached: "&cThe party is full!"
     already-party: "&c%player% is already in a party"
     already-invite: "&c%player% was already invited"
-    no-permission-player: "&c%player% doesn't have permissions for join"
+    no-permission-player: "&c%player% doesn't have permissions to join"
     invite-send: "&bYou invited %player% in your party"
     invite-rec: "&b%player% has invited you in his party\n&bTo accept/deny invitation type &7/party <accept/deny>"
     invite-timeout: "&7You didnt accept the party invite"
     invite-noresponse: "&7%player% didnt accept the party invite"
-    invite-revoked-send: "&7Revoked invite sended to %player%"
+    invite-revoked-send: "&7Revoked invite sent to %player%"
     invite-revoked-rec: "&7Invited received from %party% has been revoked"
     wrong-command: "&cWrong variables: Type &7/party invite <name>"
 prefix:
@@ -202,11 +202,11 @@ delete:
     wrong-command: "&cWrong variables: Type &7/party delete <party> [silent]"
 rename:
     renamed: "&aRenamed the party %old% in %party%"
-    broadcast-party: "&aYour party has been renamed in %party%!"
+    broadcast-party: "&aYour party has been renamed to %party%!"
     no-exist: "&cThe party %party% doesn't exist"
     wrong-command: "&cWrong variables: Type &7/party rename <party> <newname>"
 rank:
-    promoted: "&b&l%player% now is %rank%"
+    promoted: "&b&l%player% rank changed to %rank%"
     no-member: "&c%player% is not in your party"
     no-party: "&c%player% don't have a party"
     wrong-rank: "&cRank '%rank%' doesn't exist!"
@@ -230,7 +230,7 @@ home:
 claim:
     done: "&aGranted permission to the party"
     removed: "&aRemoved permission to the party"
-    no-manager: "&cYou need to be manager of the claim"
+    no-manager: "&cYou need to be the manager of the claim"
     no-exist-claim: "&cAny claim found"
     wrong-command: "&cWrong variables: Type &7/party claim <permission>\n&cPermissions: trust, container & access"
 spy:
@@ -263,6 +263,7 @@ help:
     help: "&b/party help [page] &7- Show help pages"
     p: "&b/p <message> &7- Send a message to the party"
     create: "&b/party create <name> &7- Create a new party"
+    create-fixed: "&b/party create <name> [fixed] &7- Create a new party"
     join: "&b/party join <party> [password] &7- Join in a party"
     accept: "&b/party accept &7- Accept a party invitation"
     deny: "&b/party deny &7- Deny a party invitation"
@@ -283,11 +284,11 @@ help:
     prefix: "&b/party prefix <prefix/remove> &7- Add/remove prefix tag"
     suffix: "&b/party suffix <suffix/remove> &7- Add/remove suffix tag"
     kick: "&b/party kick <player> &7- Kick a player from your party"
-    spy: "&b/party spy &7- Spy messages other parties"
-    delete: "&b/party delete <party> &7- Delete the party"
-    rename: "&b/party rename <party> <newname> &7- Rename the party"
+    spy: "&b/party spy &7- See messages from other parties"
+    delete: "&b/party delete <party> &7- Deletes the party"
+    rename: "&b/party rename <party> <newname> &7- Renames a party"
     reload: "&b/party reload &7- Reload the configuration"
     migrate: "&b/party migrate <sql/file> &7- Copy database to SQL/File"
     claim: "&b/party claim <permission> &7- Grant permissions into the claim"
 dont-edit-this:
-    messages-version: 10
+    messages-version: 11

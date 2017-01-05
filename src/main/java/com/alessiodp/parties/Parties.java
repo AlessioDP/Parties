@@ -76,7 +76,7 @@ public class Parties extends JavaPlugin {
 	private SQLDatabase sqldatabase;
 
 	private static final int ver_config = 11;
-	private static final int ver_mess = 10;
+	private static final int ver_mess = 11;
 	private static final String scoreboardprefix = "PARTY";
 	public static File datafolder;
 	
