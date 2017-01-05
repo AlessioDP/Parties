@@ -871,6 +871,8 @@ public class ConfigHandler {
 			messages.help_p = msg.getString("help.p");
 		if(msg.get("help.create") != null)
 			messages.help_create = msg.getString("help.create");
+		if(msg.get("help.create-fixed") != null)
+			messages.help_createfixed = msg.getString("help.create-fixed");
 		if(msg.get("help.join") != null)
 			messages.help_join = msg.getString("help.join");
 		if(msg.get("help.accept") != null)

@@ -214,6 +214,7 @@ public class Messages {
 	public static String help_help;
 	public static String help_p;
 	public static String help_create;
+	public static String help_createfixed;
 	public static String help_join;
 	public static String help_accept;
 	public static String help_deny;
@@ -467,6 +468,7 @@ public class Messages {
 		help_help = "&b/party help [page] &7- Show help pages";
 		help_p = "&b/p <message> &7- Send a message to the party";
 		help_create = "&b/party create <name> &7- Create a new party";
+		help_createfixed = "&b/party create <name> [fixed] &7- Create a new party";
 		help_join = "&b/party join <party> [password] &7- Join in a party";
 		help_accept = "&b/party accept &7- Accept a party invitation";
 		help_deny = "&b/party deny &7- Deny a party invitation";

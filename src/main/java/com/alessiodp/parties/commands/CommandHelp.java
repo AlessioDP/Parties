@@ -72,8 +72,12 @@ public class CommandHelp implements CommandInterface{
 			if(p.hasPermission(PartiesPermissions.CLAIM.toString()) && Variables.griefprevention_enable  && r.havePermission(PartiesPermissions.PRIVATE_CLAIM.toString()))
 				str.add(Messages.help_claim);
 		} else {
-			if (p.hasPermission(PartiesPermissions.CREATE.toString()))
-				str.add(Messages.help_create);
+			if (p.hasPermission(PartiesPermissions.CREATE.toString())){
+				if(p.hasPermission(PartiesPermissions.ADMIN_CREATE_FIXED.toString()))
+					str.add(Messages.help_createfixed);
+				else
+					str.add(Messages.help_create);
+			}
 			if (Variables.password_enable && p.hasPermission(PartiesPermissions.JOIN.toString()))
 				str.add(Messages.help_join);
 			if (p.hasPermission(PartiesPermissions.ACCEPT.toString()))
