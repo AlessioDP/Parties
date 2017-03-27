@@ -3,19 +3,30 @@ package com.alessiodp.parties.objects;
 import java.util.List;
 
 public class Rank {
+	private String hardname;
 	private String name;
 	private String chat;
 	private int level;
 	private boolean dft;
 	private List<String> permissions;
 	
-	public Rank(int lvl, String nm, String ch, boolean dft, List<String> perm){
+	public Rank(int lvl, String hm, String nm, String ch, boolean dft, List<String> perm){
 		level = lvl;
+		hardname = hm;
 		name = nm;
 		chat = ch;
 		this.dft = dft;
 		permissions = perm;
 	}
+	
+	/**
+	    *  	Set configuration name of the rank
+	    */
+	public void setHardName(String hardname){this.hardname = hardname;}
+	/**
+	    *  	Get configuration name of the rank
+	    */
+	public String getHardName(){return hardname;}
 	
 	/**
 	    *  	Set name of the rank
