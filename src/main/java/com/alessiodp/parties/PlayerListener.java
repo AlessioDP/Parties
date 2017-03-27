@@ -37,6 +37,7 @@ import com.alessiodp.parties.objects.Rank;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.ConsoleColors;
 import com.alessiodp.parties.utils.PartiesPermissions;
+import com.alessiodp.parties.utils.addon.SkillAPIHandler;
 import com.alessiodp.parties.utils.tasks.MotdTask;
 import com.alessiodp.parties.utils.tasks.PartyDeleteTask;
 import com.alessiodp.parties.utils.tasks.PortalTask;
@@ -432,10 +433,10 @@ public class PlayerListener implements Listener{
 	public void onEntityDie(EntityDeathEvent event){
 		if(!(event.getEntity().getKiller() instanceof Player))
 			return;
-		if(!Variables.divideexp)
+		if(!Variables.exp_enable)
 			return;
-		int exp = event.getDroppedExp();
-		int exptotal = exp;
+		double exp = event.getDroppedExp();
+		double exptotal = exp;
 		event.setDroppedExp(0);
 		ArrayList<Player> list = new ArrayList<Player>();
 		
@@ -446,29 +447,42 @@ public class PlayerListener implements Listener{
 		if(tp.haveParty()){
 			Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
 				for(Player p : party.getOnlinePlayers()){
-					if(killer.getLocation().distance(p.getLocation()) < Variables.exprange && (p != killer)){
+					if(killer.getLocation().distance(p.getLocation()) < Variables.exp_range && (p != killer)){
 						list.add(p);
 					}
 			}
 		}
 		if(list.size() < 2){
-			event.setDroppedExp(exp);
+			event.setDroppedExp((int) exp);
 			return;
 		}
+		// SkillAPI watcher
+		if(SkillAPIHandler.active)
+			exp = SkillAPIHandler.getExp(exp, event.getEntity());
+		
 		if(exp<1)
 			return;
 		if(exp==1){
-			killer.giveExp(exp);
+			// Giving exp
+			if(SkillAPIHandler.active)
+				SkillAPIHandler.giveExp(killer, exp);
+			else
+				killer.giveExp((int) exp);
 			tp.sendMessage(Messages.expgain.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()));
 			return;
 		}
 		exp /= list.size();
 		for(int c=0;c<list.size();c++){
-			list.get(c).giveExp(exp);
+			// Giving exp to party
+			if(SkillAPIHandler.active)
+				SkillAPIHandler.giveExp(list.get(c), exp);
+			else
+				list.get(c).giveExp((int) exp);
+			
 			if(list.get(c) == killer)
 				tp.sendMessage(Messages.expgain.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()));
 			else
-			plugin.getPlayerHandler().getThePlayer(list.get(c)).sendMessage(Messages.expgainother.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()), killer);
+				plugin.getPlayerHandler().getThePlayer(list.get(c)).sendMessage(Messages.expgainother.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()), killer);
 		}
 	}
 	@EventHandler

@@ -120,10 +120,10 @@ public class PartyHandler {
 			r = plugin.getPartyHandler().defaultRank();
 		return r;
 	}
-	public Rank searchRank(String name){
+	public Rank searchRank(String hardname){
 		Rank r = null;
 		for(int c=0;c<ranks.size();c++){
-			if(ranks.get(c).getName().equalsIgnoreCase(name)){
+			if(ranks.get(c).getHardName().equalsIgnoreCase(hardname)){
 				r = ranks.get(c);
 				break;
 			}
@@ -170,7 +170,8 @@ public class PartyHandler {
 		if(party==null)
 			return;
 		if(Variables.tablist_enable){
-			ProtocolHandler.handleHF();
+			if(Variables.tablist_enable)
+				ProtocolHandler.handleHF();
 			for(Player pl : party.getOnlinePlayers())
 				ProtocolHandler.send(pl.getUniqueId());
 		}
@@ -228,21 +229,37 @@ public class PartyHandler {
 					str = str.substring(0, 10);
 			    Team team = scoreboard.getTeam(str);
 			    if (team == null) {
+			      String fix;
 			      team = scoreboard.registerNewTeam(str);
 			      if(Variables.tag_enable && Variables.tag_system){
-			    	  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName()));
-			    	  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName()));
+			    	  fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName());
+			    	  if(fix.length()>16)
+			    		  fix = fix.substring(0,16);
+			    	  team.setPrefix(fix);
+			    	  
+			    	  fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName());
+			    	  if(fix.length()>16)
+			    		  fix = fix.substring(0,16);
+			    	  team.setSuffix(fix);
 			      } else if(Variables.tag_enable && !Variables.tag_system){
-			    	  if(Variables.tag_custom_prefix)
-			    		  if(!party.getPrefix().isEmpty())
-			    			  team.setPrefix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix()));
-			    	  else
-			    		  team.setPrefix("");
-			          if(Variables.tag_custom_suffix)
-			        	  if(!party.getSuffix().isEmpty())
-			        		  team.setSuffix(ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix()));
-			          else
-			        	  team.setSuffix("");
+			    	  if(Variables.tag_custom_prefix){
+			    		  if(!party.getPrefix().isEmpty()){
+			    			  fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix());
+			    			  if(fix.length() > 16)
+			    				  fix = fix.substring(0,16);
+			    			  team.setPrefix(fix);
+			    		  } else
+			    			  team.setPrefix("");
+			    	  }
+			          if(Variables.tag_custom_suffix){
+			        	  if(!party.getSuffix().isEmpty()){
+			        		  fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix());
+			        		  if(fix.length() > 16)
+			        			  fix = fix.substring(0,16);
+			        		  team.setSuffix(fix);
+			        	  }else
+			        		  team.setSuffix("");
+			          }
 			      } else {
 			    	  team.setPrefix("");
 			    	  team.setSuffix("");
