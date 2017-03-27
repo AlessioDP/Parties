@@ -31,6 +31,7 @@ Everything is configurable!
 <b>BanManager</b> - Ban handler<br>
 <b>Dynmap</b> - Party home markers<br>
 <b>Bungeecord</b> - Auto-join into servers<br>
+<b>SkillAPI</b> - Share party exp<br>
 <b>[More info here.](https://github.com/AlessioDP/Parties/wiki/Plugins-Supported)</b><br>
 <br>
 
@@ -43,4 +44,8 @@ If you need additional help, read [my wiki](https://github.com/AlessioDP/Parties
 ![Help 1](http://puu.sh/tbujE/6fa32efba8.jpg)
 ![Help 2](http://puu.sh/tbusF/bc800c0325.jpg)
 ![Help 3](http://puu.sh/tbuub/7651a7cc1f.jpg)
+<<<<<<< HEAD
 ![Tablist](http://puu.sh/tbuvy/0428a926d2.jpg)
+=======
+![Tablist](http://puu.sh/tbuvy/0428a926d2.jpg)
+>>>>>>> refs/remotes/origin/dev
