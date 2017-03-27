@@ -62,9 +62,8 @@ import com.alessiodp.parties.utils.addon.DynmapHandler;
 import com.alessiodp.parties.utils.addon.EssentialsChatHandler;
 import com.alessiodp.parties.utils.addon.GravityUpdater;
 import com.alessiodp.parties.utils.addon.GriefPreventionHandler;
-import com.alessiodp.parties.utils.addon.PlaceholderAPIHandler;
+import com.alessiodp.parties.utils.addon.PlaceholderHandler;
 import com.alessiodp.parties.utils.addon.ProtocolHandler;
-import com.alessiodp.parties.utils.addon.SkillAPIHandler;
 import com.alessiodp.parties.utils.api.PartiesAPI;
 import com.alessiodp.parties.utils.bungeecord.BukkitHandler;
 
@@ -76,7 +75,7 @@ public class Parties extends JavaPlugin {
 	private PartyHandler party;
 	private SQLDatabase sqldatabase;
 
-	private static final int ver_config = 12;
+	private static final int ver_config = 11;
 	private static final int ver_mess = 11;
 	private static final String scoreboardprefix = "PARTY";
 	public static File datafolder;
@@ -92,7 +91,6 @@ public class Parties extends JavaPlugin {
 	private DeluxeChatHandler addon_DC;
 	private boolean addon_PlhAPI = false;
 	private DynmapHandler addon_Dynmap;
-	private ProtocolHandler addon_protocolhandler = null;
 	private static Economy addon_VEcon = null;
 	private static Chat addon_VChat = null;
 	
@@ -137,12 +135,6 @@ public class Parties extends JavaPlugin {
 	private void handle() {
 		new PartiesAPI();
 		config = new ConfigHandler(this);
-		// Needed to handle PartyHandler
-		try{
-			addon_protocolhandler = new ProtocolHandler(this);
-		} catch(NoClassDefFoundError ex) {
-			Variables.tablist_enable = false;
-		}
 		new LogHandler(this);
 		party = new PartyHandler(this);
 		checkUpdates();
@@ -164,16 +156,16 @@ public class Parties extends JavaPlugin {
 			LogHandler.log(1, "Ready for Bungeecord");
 		}
 		/* ProtocolLib */
-		if(Variables.tablist_enable && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")){
-			if(addon_protocolhandler.start()){
+		if(Variables.tablist_enable){
+			if(new ProtocolHandler(this).start()){
 				log(ConsoleColors.CYAN.getCode() + "ProtocolLib Hooked!");
 				LogHandler.log(1, "ProtocolLib Hooked");
 			} else
 				Variables.tablist_enable=false;
-		} else
-			Variables.tablist_enable=false;
+		}
 		/* PEX */
-		if (Bukkit.getPluginManager().isPluginEnabled("PermissionsEX")) {
+		if (Bukkit.getPluginManager().isPluginEnabled("PermissionsEx")
+				|| Bukkit.getPluginManager().isPluginEnabled("PermissionsEX")) {
 			addon_PEX = true;
 			log(ConsoleColors.CYAN.getCode() + "PEX Hooked!");
 			LogHandler.log(1, "PEX Hooked");
@@ -219,7 +211,7 @@ public class Parties extends JavaPlugin {
 		}
 		/* PlaceholderAPI */
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
-			if(new PlaceholderAPIHandler(this).hook()){
+			if(new PlaceholderHandler(this).hook()){
 				log(ConsoleColors.CYAN.getCode() + "PlaceholderAPI Hooked!");
 				LogHandler.log(1, "PlaceholderAPI Hooked");
 				addon_PlhAPI = true;
@@ -230,11 +222,6 @@ public class Parties extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new EssentialsChatHandler(this), this);
 			log(ConsoleColors.CYAN.getCode() + "EssentialsChat Hooked!");
 			LogHandler.log(1, "EssentialsChat Hooked");
-		}
-		/* SkillAPI */
-		if(new SkillAPIHandler(this).init()){
-			log(ConsoleColors.CYAN.getCode() + "SkillAPI Hooked!");
-			LogHandler.log(1, "SkillAPI Hooked");
 		}
 		/* Vault */
 		if(Variables.vault_enable){

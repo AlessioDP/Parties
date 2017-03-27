@@ -1,8 +1,8 @@
 name: Parties
 main: com.alessiodp.parties.Parties
-version: 1.7.3
+version: 1.7.1
 description: Party manager for minecraft servers
-softdepend: [Vault, DeluxeChat, PlaceholderAPI, Dynmap, ProtocolLib, SkillAPI]
+softdepend: [Vault, DeluxeChat, PlaceholderAPI, Dynmap, ProtocolLib]
 permissions:
     parties.sendmessage:
         description: Command /p

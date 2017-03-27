@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
-import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
@@ -43,7 +42,7 @@ public class DeluxeChatHandler {
 								tp = plugin.getPlayerHandler().getThePlayer(p);
 								if(!tp.haveParty())
 									return "";
-								return Variables.party_placeholder.replace("%party%", tp.getPartyName());
+								return tp.getPartyName();
 								
 							case "desc":
 								tp = plugin.getPlayerHandler().getThePlayer(p);

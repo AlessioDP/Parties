@@ -16,6 +16,8 @@ public class Variables {
 	public static boolean fixedparty;
 	public static boolean default_enable;
 	public static String default_party;
+	public static boolean divideexp;
+	public static int exprange;
 	public static boolean invisibleallies;
 	public static int permissionspagehelp;
 	
@@ -52,7 +54,6 @@ public class Variables {
 	public static String party_allowedchars;
 	public static int party_maxlengthname;
 	public static int party_minlengthname;
-	public static String party_placeholder;
 	
 	public static boolean friendlyfire_enable;
 	public static boolean friendlyfire_warn;
@@ -142,11 +143,6 @@ public class Variables {
 	public static List<String> censor_startwith;
 	public static List<String> censor_endwith;
 	
-	public static boolean exp_enable;
-	public static int exp_range;
-	public static boolean exp_skillapi_enable;
-	public static String exp_skillapi_source;
-	
 	public static boolean banmanager_enable;
 	public static boolean banmanager_muted;
 	public static boolean banmanager_kickban;
@@ -229,6 +225,8 @@ public class Variables {
 		fixedparty = false;
 		default_enable = false;
 		default_party = "default";
+		divideexp = false;
+		exprange = 15;
 		invisibleallies = false;
 		
 		log_enable = false;
@@ -258,11 +256,11 @@ public class Variables {
 		List<String> perms = new ArrayList<String>();
 		rank_list = new ArrayList<Rank>();
 		perms.add("party.sendmessage");perms.add("party.leave");perms.add("party.home");perms.add("party.desc");perms.add("party.motd");perms.add("party.claim");
-		rank_list.add(new Rank(5, "member", "Member", "&bMember", true, perms));
+		rank_list.add(new Rank(5, "Member", "&bMember", true, perms));
 		perms = new ArrayList<String>();perms.add("-party.edit.home");perms.add("-party.edit.desc");perms.add("-party.edit.motd");perms.add("-party.edit.prefix");perms.add("-party.edit.suffix");perms.add("-party.edit.password");perms.add("-party.edit.rank");perms.add("-party.autocommand");perms.add("*");
-		rank_list.add(new Rank(10, "moderator", "Moderator", "&cModerator", false, perms));
+		rank_list.add(new Rank(10, "Moderator", "&cModerator", false, perms));
 		perms = new ArrayList<String>();perms.add("*");
-		rank_list.add(new Rank(20, "leader", "Leader", "&4&lLeader", false, perms));
+		rank_list.add(new Rank(20, "Leader", "&4&lLeader", false, perms));
 		rank_default = 5;
 		rank_last = 20;
 		
@@ -270,7 +268,6 @@ public class Variables {
 		party_allowedchars = "[a-zA-Z0-9]+";
 		party_maxlengthname = 15;
 		party_minlengthname = 3;
-		party_placeholder = "%partyname%";
 		
 		friendlyfire_enable = true;
 		friendlyfire_warn = true;
@@ -313,7 +310,7 @@ public class Variables {
 		kill_save_mobshostile = false;
 		kill_save_players = true;
 		
-		tablist_enable = false;
+		tablist_enable = true;
 		tablist_inparty = "{\"text\":\"%player%\",\"color\":\"aqua\"}";
 		tablist_outparty = "";
 		tablist_header_inparty = "&b> %party% <";
@@ -367,11 +364,6 @@ public class Variables {
 		censor_contains = new ArrayList<String>();
 		censor_startwith = new ArrayList<String>();
 		censor_endwith = new ArrayList<String>();
-		
-		exp_enable = false;
-		exp_range = 15;
-		exp_skillapi_enable = false;
-		exp_skillapi_source = "MOB";
 		
 		banmanager_enable = false;
 		banmanager_muted = true;

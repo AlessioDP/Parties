@@ -34,6 +34,10 @@ functions:
     default-party:
         enable: false
         party: default
+    # Divide-exp system
+    divide-exp-between-players: false
+    # Range in blocks between player in a party divide experience, -1 is unlimited (Everyone player in the party online)
+    divide-exp-range: 15
     # See invisible allies (Use ScoreboardTeams system)
     see-allies-invisible: false
     # Active for bungeecord support (Insert parties in bungeecord plugin folder too)
@@ -92,9 +96,6 @@ party:
     # If you use tag-name system, for avoid bugs set max to 10
     min-length-name: 3
     max-length-name: 10
-    # Placeholder for chat handlers
-    # One tag: %party% (Example: "[%party%] ")
-    party-placeholder: "%party%"
     # Allow colorized name (Example: /party create &cPar&bty
     prevent-friendly-fire:
         # Prevent fighting between players in a party
@@ -198,8 +199,8 @@ kills:
         hostile-mobs: false
         players: true
 tablist:
-    # Use ProtocolLib (4+) [IT BROKES SKINS]
-    enable: false
+    # Use ProtocolLib (4+)
+    enable: true
     # Leaves blank to unchange
     # Using json text
     in-party: "{\"text\":\"%player%\",\"color\":\"aqua\"}"
@@ -213,7 +214,6 @@ tablist:
         out-party: "&b&lParties"
 tag:
     # Set a tag name ahead players head (Use ScoreboardTeams system)
-    # To avoid Minecraft bugs characters limit is 16 (party name included)
     tag-system: false
     # Base-tag is TRUE  | Custom-tag is FALSE
     which-tag-system: true
@@ -290,16 +290,6 @@ censor:
     contains: []
     start-with: []
     end-with: []
-exp:
-    # Divide-exp system
-    divide-exp-between-players: false
-    # Range in blocks between player in a party divide experience, -1 is unlimited (Everyone player in the party online)
-    divide-exp-range: 15
-    # Give exp via SkillAPI (ExpSource MOB)
-    skillapi:
-        enable: false
-        # SkillAPI sources
-        exp-source: "MOB"
 banmanager:
     # Enable BanManager support
     enable: false
@@ -389,4 +379,4 @@ commands:
     # Command to buy commands (Vault support)
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 12
+    config-version: 11

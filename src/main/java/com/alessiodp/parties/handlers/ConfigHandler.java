@@ -77,6 +77,10 @@ public class ConfigHandler {
 			variables.default_enable = cfg.getBoolean("functions.default-party.enable");
 		if(cfg.get("functions.default-party.party") != null)
 			variables.default_party = cfg.getString("functions.default-party.party");
+		if(cfg.get("functions.divide-exp-between-players") != null)
+			variables.divideexp = cfg.getBoolean("functions.divide-exp-between-players");
+		if(cfg.get("functions.divide-exp-range") != null)
+			variables.exprange = cfg.getInt("functions.divide-exp-range");
 		if(cfg.get("functions.see-allies-invisible") != null)
 			variables.invisibleallies = cfg.getBoolean("functions.see-allies-invisible");
 		if(cfg.get("functions.bungeecord") != null)
@@ -137,8 +141,6 @@ public class ConfigHandler {
 			variables.party_minlengthname = cfg.getInt("party.min-length-name");
 		if(cfg.get("party.max-length-name") != null)
 			variables.party_maxlengthname = cfg.getInt("party.max-length-name");
-		if(cfg.get("party.party-placeholder") != null)
-			variables.party_placeholder = cfg.getString("party.party-placeholder");
 		
 		if(cfg.get("party.prevent-friendly-fire.enable") != null)
 			variables.friendlyfire_enable = cfg.getBoolean("party.prevent-friendly-fire.enable");
@@ -296,15 +298,6 @@ public class ConfigHandler {
 		variables.censor_startwith = cfg.getStringList("censor.start-with");
 		variables.censor_endwith = cfg.getStringList("censor.end-with");
 		
-		if(cfg.get("exp.divide-exp-between-players") != null)
-			variables.exp_enable = cfg.getBoolean("exp.divide-exp-between-players");
-		if(cfg.get("exp.divide-exp-range") != null)
-			variables.exp_range = cfg.getInt("exp.divide-exp-range");
-		if(cfg.get("exp.skillapi.enable") != null)
-			variables.exp_skillapi_enable = cfg.getBoolean("exp.skillapi.enable");
-		if(cfg.get("exp.skillapi.exp-source") != null)
-			variables.exp_skillapi_source = cfg.getString("exp.skillapi.exp-source");
-		
 		if(cfg.get("banmanager.enable") != null)
 			variables.banmanager_enable = cfg.getBoolean("banmanager.enable");
 		if(cfg.get("banmanager.prevent-chat-muted") != null)
@@ -454,7 +447,7 @@ public class ConfigHandler {
 			    	String chat = cs.get(key+".chat") != null ? cs.getString(key+".chat") : name;
 			    	boolean dft = cs.get(key+".default") != null ? cs.getBoolean(key+".default") : false;
 			    	List<String> perm = cs.get(key+".permissions") != null ? cs.getStringList(key+".permissions") : new ArrayList<String>();
-			    	Rank newRank = new Rank(rank, key, name, chat, dft, perm);
+			    	Rank newRank = new Rank(rank, name, chat, dft, perm);
 			    	ranks.add(newRank);
 			    	if(dft)
 			    		def = newRank.getLevel();
