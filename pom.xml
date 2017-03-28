@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>Parties</artifactId>
-	<version>1.7.3</version>
+	<version>1.7.4</version>
 	<repositories>
 		<repository>
 			<id>spigot-repo</id>
@@ -16,10 +16,6 @@
 		<repository>
 			<id>placeholderapi</id>
 			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-		</repository>
-		<repository>
-			<id>Plugin Metrics</id>
-			<url>http://repo.mcstats.org/content/repositories/public</url>
 		</repository>
 		<repository>
 			<id>vault-repo</id>
@@ -55,12 +51,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mcstats.bukkit</groupId>
-			<artifactId>metrics</artifactId>
-			<version>R8-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.6</version>
@@ -77,19 +67,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
+				<version>3.0.0</version>
 				<configuration>
 					<source>1.7</source>
 					<artifactSet>
 						<includes>
-							<include>org.mcstats.*:*</include>
+							<include>com.alessiodp*:*</include>
 						</includes>
 					</artifactSet>
 					<relocations>
-						<relocation>
-							<pattern>org.mcstats</pattern>
-							<shadedPattern>com.alessiodp.parties.utils.metrics</shadedPattern>
-						</relocation>
 					</relocations>
 				</configuration>
 				<executions>

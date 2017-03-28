@@ -291,10 +291,12 @@ censor:
     start-with: []
     end-with: []
 exp:
-    # Divide-exp system
-    divide-exp-between-players: false
-    # Range in blocks between player in a party divide experience, -1 is unlimited (Everyone player in the party online)
-    divide-exp-range: 15
+    # Exp system
+    enable: false
+    # Divide exp
+    divide-between-players: true
+    # Range in blocks between player in a party share experience, -1 is unlimited (Everyone player in the party online)
+    range: 15
     # Give exp via SkillAPI (ExpSource MOB)
     skillapi:
         enable: false
@@ -389,4 +391,4 @@ commands:
     # Command to buy commands (Vault support)
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 12
+    config-version: 13

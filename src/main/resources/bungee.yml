@@ -1,4 +1,5 @@
 name: Parties
+author: AlessioDP
 main: com.alessiodp.parties.PartiesBungee
-version: 1.7.3
+version: 1.7.4
 description: Party manager for minecraft servers

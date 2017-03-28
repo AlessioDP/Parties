@@ -5,8 +5,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class EssentialsChatHandler implements Listener{
 	Parties plugin;
@@ -22,9 +25,9 @@ public class EssentialsChatHandler implements Listener{
 			ThePlayer tp = plugin.getPlayerHandler().getThePlayer(event.getPlayer());
 			if(tp.haveParty()){
 				Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
-				old = old.replaceAll("\\{PARTIES_PARTY\\}", tp.getPartyName())
+				old = old.replaceAll("\\{PARTIES_PARTY\\}", ChatColor.translateAlternateColorCodes('&', Variables.party_placeholder).replace("%party%", tp.getPartyName()))
 						.replaceAll("\\{PARTIES_RANK\\}", plugin.getPartyHandler().searchRank(tp.getRank()).getName())
-						.replaceAll("\\{PARTIES_RANK_FORMATTED\\}", plugin.getPartyHandler().searchRank(tp.getRank()).getChat())
+						.replaceAll("\\{PARTIES_RANK_FORMATTED\\}", ChatColor.translateAlternateColorCodes('&', plugin.getPartyHandler().searchRank(tp.getRank()).getChat()))
 						.replaceAll("\\{PARTIES_DESC\\}", party.getDescription())
 						.replaceAll("\\{PARTIES_MOTD\\}", party.getMOTD())
 						.replaceAll("\\{PARTIES_PREFIX\\}", party.getPrefix())

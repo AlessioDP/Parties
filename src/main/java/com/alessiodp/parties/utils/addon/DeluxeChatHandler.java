@@ -1,6 +1,7 @@
 package com.alessiodp.parties.utils.addon;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
@@ -37,13 +38,13 @@ public class DeluxeChatHandler {
 								return plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(p).getRank()).getName();
 								
 							case "rank_formatted":
-								return plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(p).getRank()).getChat();
+								return ChatColor.translateAlternateColorCodes('&', plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getThePlayer(p).getRank()).getChat());
 								
 							case "party":
 								tp = plugin.getPlayerHandler().getThePlayer(p);
 								if(!tp.haveParty())
 									return "";
-								return Variables.party_placeholder.replace("%party%", tp.getPartyName());
+								return ChatColor.translateAlternateColorCodes('&', Variables.party_placeholder.replace("%party%", tp.getPartyName()));
 								
 							case "desc":
 								tp = plugin.getPlayerHandler().getThePlayer(p);

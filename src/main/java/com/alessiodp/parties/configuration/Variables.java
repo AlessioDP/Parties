@@ -143,6 +143,7 @@ public class Variables {
 	public static List<String> censor_endwith;
 	
 	public static boolean exp_enable;
+	public static boolean exp_divide;
 	public static int exp_range;
 	public static boolean exp_skillapi_enable;
 	public static String exp_skillapi_source;
@@ -369,6 +370,7 @@ public class Variables {
 		censor_endwith = new ArrayList<String>();
 		
 		exp_enable = false;
+		exp_divide = true;
 		exp_range = 15;
 		exp_skillapi_enable = false;
 		exp_skillapi_source = "MOB";

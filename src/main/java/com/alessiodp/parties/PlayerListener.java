@@ -462,16 +462,17 @@ public class PlayerListener implements Listener{
 		
 		if(exp<1)
 			return;
-		if(exp==1){
+		if(exp==1 && Variables.exp_divide){
 			// Giving exp
 			if(SkillAPIHandler.active)
 				SkillAPIHandler.giveExp(killer, exp);
 			else
 				killer.giveExp((int) exp);
-			tp.sendMessage(Messages.expgain.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()));
+			tp.sendMessage(Messages.expgain.replace("%exp%", (Math.floor(exp*100)/100)+"").replace("%exptotal%", (Math.floor(exptotal*10)/10)+"").replace("%mob%", event.getEntity().getType().getName()));
 			return;
 		}
-		exp /= list.size();
+		if(Variables.exp_divide)
+			exp /= list.size();
 		for(int c=0;c<list.size();c++){
 			// Giving exp to party
 			if(SkillAPIHandler.active)
@@ -480,9 +481,9 @@ public class PlayerListener implements Listener{
 				list.get(c).giveExp((int) exp);
 			
 			if(list.get(c) == killer)
-				tp.sendMessage(Messages.expgain.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()));
+				tp.sendMessage(Messages.expgain.replace("%exp%", (Math.floor(exp*100)/100)+"").replace("%exptotal%", (Math.floor(exptotal*100)/100)+"").replace("%mob%", event.getEntity().getType().getName()));
 			else
-				plugin.getPlayerHandler().getThePlayer(list.get(c)).sendMessage(Messages.expgainother.replace("%exp%", exp+"").replace("%exptotal%", exptotal+"").replace("%mob%", event.getEntity().getType().getName()), killer);
+				plugin.getPlayerHandler().getThePlayer(list.get(c)).sendMessage(Messages.expgainother.replace("%exp%", (Math.floor(exp*100)/100)+"").replace("%exptotal%", (Math.floor(exptotal*100)/100)+"").replace("%mob%", event.getEntity().getType().getName()), killer);
 		}
 	}
 	@EventHandler
