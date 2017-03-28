@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.alessiodp.parties</groupId>
   <artifactId>Parties</artifactId>
-  <version>1.7.3</version>
+  <version>1.7.4</version>
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -19,17 +19,8 @@
         </executions>
         <configuration>
           <source>1.7</source>
-          <artifactSet>
-            <includes>
-              <include>org.mcstats.*:*</include>
-            </includes>
-          </artifactSet>
-          <relocations>
-            <relocation>
-              <pattern>org.mcstats</pattern>
-              <shadedPattern>com.alessiodp.parties.utils.metrics</shadedPattern>
-            </relocation>
-          </relocations>
+          <artifactSet />
+          <relocations />
         </configuration>
       </plugin>
     </plugins>
@@ -48,10 +39,6 @@
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
     <repository>
-      <id>Plugin Metrics</id>
-      <url>http://repo.mcstats.org/content/repositories/public</url>
-    </repository>
-    <repository>
       <id>vault-repo</id>
       <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
     </repository>
@@ -61,18 +48,6 @@
     </repository>
   </repositories>
   <dependencies>
-    <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.11-R0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.11-R0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
     <dependency>
       <groupId>net.md-5</groupId>
       <artifactId>bungeecord-api</artifactId>
@@ -104,12 +79,6 @@
       <artifactId>VaultAPI</artifactId>
       <version>1.6</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.comphenix.protocol</groupId>
-      <artifactId>ProtocolLib-API</artifactId>
-      <version>4.1.0</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>

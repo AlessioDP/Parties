@@ -1,7 +1,6 @@
 package com.alessiodp.parties;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -15,7 +14,6 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.mcstats.Metrics;
 
 import com.alessiodp.parties.commands.CommandAccept;
 import com.alessiodp.parties.commands.CommandChat;
@@ -55,6 +53,7 @@ import com.alessiodp.parties.handlers.PartyHandler;
 import com.alessiodp.parties.handlers.PlayerHandler;
 import com.alessiodp.parties.utils.BaseCommand;
 import com.alessiodp.parties.utils.ConsoleColors;
+import com.alessiodp.parties.utils.Metrics;
 import com.alessiodp.parties.utils.SQLDatabase;
 import com.alessiodp.parties.utils.addon.BanManagerHandler;
 import com.alessiodp.parties.utils.addon.DeluxeChatHandler;
@@ -76,7 +75,7 @@ public class Parties extends JavaPlugin {
 	private PartyHandler party;
 	private SQLDatabase sqldatabase;
 
-	private static final int ver_config = 12;
+	private static final int ver_config = 13;
 	private static final int ver_mess = 11;
 	private static final String scoreboardprefix = "PARTY";
 	public static File datafolder;
@@ -197,8 +196,8 @@ public class Parties extends JavaPlugin {
 			try{
 				addon_DC = new DeluxeChatHandler(this);
 			}catch(NoClassDefFoundError ex){
-				log(ConsoleColors.RED.getCode() + "Impossible hook into DeluxeChat (Maybe too old version)!");
-				LogHandler.log(1, "Impossible hook into DeluxeChat (Maybe too old version)!");
+				log(ConsoleColors.RED.getCode() + "Impossible hook into DeluxeChat (Maybe too much old version)!");
+				LogHandler.log(1, "Impossible hook into DeluxeChat (Maybe too much old version)!");
 			}
 		}
 		/* BanManager */
@@ -252,12 +251,25 @@ public class Parties extends JavaPlugin {
 	        }
 		}
 		/* Metrics */
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-			if(Variables.log_mode > 2)
-				LogHandler.log(1, "Metrics Hooked");
-		} catch (IOException e) {}
+		Metrics metrics = new Metrics(this);
+		metrics.addCustomChart(new Metrics.SimplePie("type_of_party_used") {
+			@Override
+			public String getValue(){
+				if(Variables.fixedparty)
+					return "Fixed";
+				return "Normal";
+			}
+		});
+		metrics.addCustomChart(new Metrics.SimplePie("type_of_database_used") {
+			@Override
+			public String getValue(){
+				if(Variables.database_type.equalsIgnoreCase("none"))
+					return "None";
+				else if(Variables.database_type.equalsIgnoreCase("sql") && Variables.database_sql_enable)
+					return "SQL";
+				return "File";
+			}
+		});
 	}
 	
 	public void reloadConfiguration() {

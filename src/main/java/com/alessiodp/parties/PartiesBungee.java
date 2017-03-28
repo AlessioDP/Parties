@@ -5,6 +5,8 @@ import java.util.logging.Level;
 import com.alessiodp.parties.utils.ConsoleColors;
 import com.alessiodp.parties.utils.bungeecord.BungeeHandler;
 import com.alessiodp.parties.utils.bungeecord.ConfigHandlerBungee;
+import com.alessiodp.parties.utils.bungeecord.Metrics;
+import com.alessiodp.parties.utils.bungeecord.VariablesBungee;
 
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -37,6 +39,16 @@ public class PartiesBungee extends Plugin{
 		config = new ConfigHandlerBungee(this);
 		this.getProxy().registerChannel(channel);
 		this.getProxy().getPluginManager().registerListener(this, new BungeeHandler(this));
+		
+		Metrics metrics = new Metrics(this);
+		metrics.addCustomChart(new Metrics.SimplePie("how_many_follow_party_enabled") {
+			@Override
+			public String getValue(){
+				if(VariablesBungee.follow_enable)
+					return "Enabled";
+				return "Disabled";
+			}
+		});
 	}
 
 

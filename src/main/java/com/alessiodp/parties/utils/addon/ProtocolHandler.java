@@ -28,6 +28,7 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 
 public class ProtocolHandler {
+	private static boolean active = false;
 	Parties plugin;
 	static PacketContainer latest;
 	
@@ -41,12 +42,16 @@ public class ProtocolHandler {
 		try{
 			handleClean();
 		}catch(ClassNotFoundException ex){
+			active = false;
 			return false;
 		}
+		active = true;
 		return true;
 	}
 
 	public static void send(UUID u) {
+		if(!active)
+			return;
 		if(listPlayers == null)
 			return;
 		try {
@@ -123,6 +128,8 @@ public class ProtocolHandler {
 				});
 	}
 	public static void handleHF(){
+		if(!active)
+			return;
 		if(Variables.tablist_header_inparty.isEmpty() && Variables.tablist_header_outparty.isEmpty()&& 
 				Variables.tablist_footer_inparty.isEmpty() && Variables.tablist_footer_outparty.isEmpty())
 			return;

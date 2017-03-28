@@ -296,10 +296,12 @@ public class ConfigHandler {
 		variables.censor_startwith = cfg.getStringList("censor.start-with");
 		variables.censor_endwith = cfg.getStringList("censor.end-with");
 		
-		if(cfg.get("exp.divide-exp-between-players") != null)
-			variables.exp_enable = cfg.getBoolean("exp.divide-exp-between-players");
-		if(cfg.get("exp.divide-exp-range") != null)
-			variables.exp_range = cfg.getInt("exp.divide-exp-range");
+		if(cfg.get("exp.enable") != null)
+			variables.exp_enable = cfg.getBoolean("exp.enable");
+		if(cfg.get("exp.divide-between-players") != null)
+			variables.exp_divide = cfg.getBoolean("exp.divide-between-players");
+		if(cfg.get("exp.range") != null)
+			variables.exp_range = cfg.getInt("exp.range");
 		if(cfg.get("exp.skillapi.enable") != null)
 			variables.exp_skillapi_enable = cfg.getBoolean("exp.skillapi.enable");
 		if(cfg.get("exp.skillapi.exp-source") != null)
