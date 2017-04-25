@@ -44,8 +44,4 @@ If you need additional help, read [my wiki](https://github.com/AlessioDP/Parties
 ![Help 1](http://puu.sh/tbujE/6fa32efba8.jpg)
 ![Help 2](http://puu.sh/tbusF/bc800c0325.jpg)
 ![Help 3](http://puu.sh/tbuub/7651a7cc1f.jpg)
-<<<<<<< HEAD
 ![Tablist](http://puu.sh/tbuvy/0428a926d2.jpg)
-=======
-![Tablist](http://puu.sh/tbuvy/0428a926d2.jpg)
->>>>>>> refs/remotes/origin/dev
