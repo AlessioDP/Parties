@@ -146,7 +146,7 @@ public class Data {
 			ch.getMain().getSQLDatabase().setPartyName(uuid, party);
 			return;
 		}
-		data.set("players."+uuid.toString(), party);
+		data.set("players."+uuid.toString()+".party", party);
 		try {
 			data.save(dataFile);
 		} catch (IOException e) {

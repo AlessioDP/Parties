@@ -456,9 +456,13 @@ public class PlayerListener implements Listener{
 			event.setDroppedExp((int) exp);
 			return;
 		}
-		// SkillAPI watcher
+		// SkillAPI watcher & MythicMob
 		if(SkillAPIHandler.active)
 			exp = SkillAPIHandler.getExp(exp, event.getEntity());
+		if(SkillAPIHandler.mythicmobs_support){
+			exp = SkillAPIHandler.MythicMobs_changeEXP(exp, event.getEntity());
+		}
+		// END
 		
 		if(exp<1)
 			return;
@@ -469,21 +473,28 @@ public class PlayerListener implements Listener{
 			else
 				killer.giveExp((int) exp);
 			tp.sendMessage(Messages.expgain.replace("%exp%", (Math.floor(exp*100)/100)+"").replace("%exptotal%", (Math.floor(exptotal*10)/10)+"").replace("%mob%", event.getEntity().getType().getName()));
+			LogHandler.log(3, killer.getName() + " got (" + (Math.floor(exp*100)/100) + ") exp by killing (" + event.getEntity().getName() + ")");
 			return;
 		}
 		if(Variables.exp_divide)
 			exp /= list.size();
 		for(int c=0;c<list.size();c++){
-			// Giving exp to party
-			if(SkillAPIHandler.active)
-				SkillAPIHandler.giveExp(list.get(c), exp);
-			else
-				list.get(c).giveExp((int) exp);
-			
-			if(list.get(c) == killer)
+			if(list.get(c).equals(killer)){
+				// Killer auto-obtain
 				tp.sendMessage(Messages.expgain.replace("%exp%", (Math.floor(exp*100)/100)+"").replace("%exptotal%", (Math.floor(exptotal*100)/100)+"").replace("%mob%", event.getEntity().getType().getName()));
-			else
+				LogHandler.log(3, list.get(c).getName() + " got (" + (Math.floor(exp*100)/100) + ") exp by killing (" + event.getEntity().getName() + ")");
+				if(!SkillAPIHandler.active)
+					killer.giveExp((int) exp);
+			} else {
+				if(SkillAPIHandler.active){
+					SkillAPIHandler.giveExp(list.get(c), exp);
+					LogHandler.log(3, "Giving SkillAPI exp (" + (Math.floor(exp*100)/100) + ") to " + list.get(c).getName());
+				}else{
+					list.get(c).giveExp((int) exp);
+					LogHandler.log(3, "Giving exp (" + (Math.floor(exp*100)/100) + ") to " + list.get(c).getName());
+				}
 				plugin.getPlayerHandler().getThePlayer(list.get(c)).sendMessage(Messages.expgainother.replace("%exp%", (Math.floor(exp*100)/100)+"").replace("%exptotal%", (Math.floor(exptotal*100)/100)+"").replace("%mob%", event.getEntity().getType().getName()), killer);
+			}
 		}
 	}
 	@EventHandler
