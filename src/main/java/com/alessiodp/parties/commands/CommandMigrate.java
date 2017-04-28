@@ -92,7 +92,6 @@ public class CommandMigrate implements CommandInterface{
 	    List<String> spies = data.getStringList("spies");
 	    ConfigurationSection secParties = data.getConfigurationSection("parties");
 	    for(String key : secParties.getKeys(false)){
-	    	System.out.println(">>" + key);
 	    	Party par = new Party(key, plugin);
 	    	par.setDescription(secParties.getString(key+".desc") != null ? secParties.getString(key+".desc") : "");
 	    	par.setMOTD(secParties.getString(key+".motd") != null ? secParties.getString(key+".motd") : "");
