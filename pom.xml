@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>Parties</artifactId>
-	<version>1.7.5</version>
+	<version>1.7.6</version>
 	<repositories>
 		<repository>
 			<id>spigot-repo</id>
