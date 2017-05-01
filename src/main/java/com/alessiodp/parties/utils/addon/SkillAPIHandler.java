@@ -43,17 +43,21 @@ public class SkillAPIHandler {
 	}
 	
 	public static double MythicMobs_changeEXP(double old, Entity entity) {
-		MythicMob mob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(entity).getType();
-		double newexp = -1;
-		for(String s : mob.getDrops()){
-			if(s.contains("skillapi-exp")){
-				newexp = DropManager.parseAmount(s.split(" ")[1]);
-				break;
+		try {
+			MythicMob mob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(entity).getType();
+			double newexp = -1;
+			for(String s : mob.getDrops()){
+				if(s.contains("skillapi-exp")){
+					newexp = DropManager.parseAmount(s.split(" ")[1]);
+					break;
+				}
 			}
-		}
-		if(newexp != -1){
-			LogHandler.log(3, "Changing exp dropped from " + old + " to " + newexp);
-			old = newexp;
+			if(newexp != -1){
+				LogHandler.log(3, "Changing exp dropped from " + old + " to " + newexp);
+				old = newexp;
+			}
+		} catch(NullPointerException ex) {
+			LogHandler.log(3, "Cannot get exp from MythicMob: NullPointerException");
 		}
 		return old;
 	}
