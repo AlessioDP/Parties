@@ -447,8 +447,10 @@ public class PlayerListener implements Listener{
 		if(tp.haveParty()){
 			Party party = plugin.getPartyHandler().loadParty(tp.getPartyName());
 				for(Player p : party.getOnlinePlayers()){
-					if(killer.getLocation().distance(p.getLocation()) < Variables.exp_range && (p != killer)){
-						list.add(p);
+					if(p.getLocation().getWorld() == killer.getWorld()){
+						if(killer.getLocation().distance(p.getLocation()) < Variables.exp_range && (p != killer)){
+							list.add(p);
+						}
 					}
 			}
 		}
