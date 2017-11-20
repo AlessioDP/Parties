@@ -1,0 +1,434 @@
+# 
+# Parties Config file
+#
+# For a better configuration:
+# - Use Notepad++
+#   - View -> Symbols -> Show White Space and TAB (Active)
+#   - Don't use arrows, but spaces
+# - Set format (syntax) editor to YAML
+#
+#
+# Available tags:
+# ColorCodes (ex: &1, &2, &3, &a, &b, &c, &r, &l)
+# %party% = Name of the party
+# %desc% = Description of the party
+# %motd% = MOTD of the party
+# %kills% = Kills of the party
+# %prefix% = Prefix of the party
+# %suffix% = Suffix of the party
+# %players% = Number of players online in the party
+# %sender% or %player% = Name of the sender/player
+# %rank% = Customizable rank string (Config.yml: format-rank-leader and format-rank-member)
+# %message% = Message of the player
+# %world% = Name of the world where the player is (ex: world_nether)
+# %price% = Price of the command (Only some commands, see vault section)
+#
+functions:
+    # Check and download updates
+    download-updates: false
+    # Send a message to admins if is available an update
+    warn-updates-in-game: true
+    # Show in help page only commands that you have the permission to perform
+    per-permission-help: true
+    # Commands per help page
+    commands-per-page: 9
+    # Enable tab support (/party <tab> to see every allowed command)
+    command-tab: true
+    # Allow the creation of parties without a leader (fixed parties)
+    # Admins with 'parties.admin.fixed.edit' permission can join parties and edit their info (ex: description, prefix, etc..)
+    enable-fixed-party: false
+    # When a player join into the server, put him into a party (if he doesn't have one)
+    default-party:
+        enable: false
+        party: default
+    # See invisible allies (Use ScoreboardTeams system)
+    see-allies-invisible: false
+    # Message upon login and logout of partymates
+    join-leave-messages: false
+    # Enable bungeecord listener (Insert parties in bungeecord plugin folder too)
+    bungeecord: false
+log:
+    # Enable log system
+    enable: false
+    # Log format
+    # %date% = Date as yyyy-MM-dd
+    # %time% = Time as HH:mm:ss
+    # %position% = Debug purpose, show caller class (USE IT TO REPORT BUGS)
+    # %level% = Mode of the message
+    # %message% = Message
+    format: "%date% [%time%] (%level%) {%position%} %message%"
+    # Log chat of parties
+    chat: true
+    # Print messages on the console
+    print-console: true
+    # Levels:
+    # 1: Basic log level
+    # 2: Log all events that interacts with the database
+    # 3: Debug level (Log a lot of events)
+    mode: 1
+    # file = Save all logs into log.txt
+    # sql = Save all logs into a SQL Database
+    type: file
+    file:
+        name: "log.txt"
+    sql:
+        url: "jdbc:mysql://localhost:3306/database"
+        username: "username"
+        password: "password"
+        log-table: "log"
+database:
+    # none = Don't save parties (A reload reset everything)
+    # file = Save all data into a configuration file
+    # sql = Save all data into a SQL Database
+    type: file
+    # Command migrate can be used only via console
+    migrate-only-console: true
+    # Rename old data.yml (Empty to overwrite)
+    migration-suffix: "_backup"
+    file:
+        # Name of data-file (default: data.yml)
+        name: "data.yml"
+    sql:
+        # You can enable it to use migrate command
+        enable: false
+        url: "jdbc:mysql://localhost:3306/database"
+        username: "username"
+        password: "password"
+        tables:
+            spies: "spies"
+            players: "players"
+            parties: "parties"
+    none:
+        disband-on-leader-left: true
+        # Delete empty parties after tot seconds
+        delay-delete-party: 600
+party:
+    # Max members of a party (-1 is unlimited)
+    max-members: -1
+    # Regex of the chars (Use "\\" instead of "\") (For ALL utf characters use "[\p{L}\s]+")
+    allowed-chars: '[a-zA-Z0-9]+'
+    # If you use tag-name system, set max to 10 to avoid bugs
+    min-length-name: 3
+    max-length-name: 10
+    # Cooldown for rename command (in seconds)
+    rename-cooldown: 300
+    # Placeholder for chat handlers (like PlaceholderAPI)
+    # For example: "[%party%] "
+    # If there is no party, you should see "" else "[%party%] "
+    party-placeholder: "[%party%] "
+    prevent-friendly-fire:
+        # Prevent fighting between players in a party
+        enable: true
+        # When partymates hit together, leaders will be warned
+        # Give permission "party.warnondamage" to the party leaders
+        warn-players-on-fight: true
+        # Worlds protected from friendly fire ('*' = all worlds)
+        list-worlds:
+        - '*'
+    invite:
+        # Invite timeout in seconds
+        timeout: 20
+        # Enable revoke command  (Do again /party invite <player>)
+        revoke: true
+        # Don't invite players that doesn't have the permission to join in parties
+        prevent-invite-player-no-permission-join: true
+    home:
+        # Party home cooldown before teleport, in seconds
+        # Bypass cooldown with the permission parties.home.%time%
+        cooldown: 0
+        # Cancel the teleport if player is moving or he got hitted
+        cancel-if-move: true
+        # Walk distance to deny the teleport
+        distance-cancel: 3
+    teleport:
+        # Enable teleport command, teleport every partymate to the command sender
+        enable: false
+        # Delay between every teleport command
+        delay: 60
+    # Password system (Allows to use /party join <party>, you can still disable via permissions passwords)
+    join-password:
+        # Allow create parties with password (/party create <party> <password>)
+        enable: false
+        # When use /party join, auto leave from current party
+        bypass-leave: false
+        # Regex of the chars (Use "\\" instead "\") (For ALL utf characters use "[\p{L}\s]+")
+        allowed-chars: "[a-zA-Z0-9]+"
+        # Hashes: MD5, SHA-1, SHA-256
+        hash: "MD5"
+        encode: "UTF-8"
+        length-min: 1
+        length-max: 16
+    # Permissions List:
+    #   party.(sendmessage/home/desc/motd/invite/kick/claim)
+    #   party.edit.(home/desc/motd/prefix/suffix/password)
+    #   party.admin.(rename/rank/teleport)
+    #   '*'
+    #
+    # Not commands: party.(warnondamage/autocommand/bypasscooldown)
+    # You can negate a permission with -
+    ranks:
+        member:
+            rank: 5
+            name: "Member"
+            chat: "&bMember"
+            default: true
+            permissions:
+            - party.sendmessage
+            - party.home
+            - party.desc
+            - party.motd
+            - party.claim
+        moderator:
+            rank: 10
+            name: "Moderator"
+            chat: "&cModerator"
+            permissions:
+            - -party.edit.home
+            - -party.edit.desc
+            - -party.edit.motd
+            - -party.edit.prefix
+            - -party.edit.suffix
+            - -party.admin.password
+            - -party.admin.rename
+            - -party.admin.rank
+            - -party.admin.teleport
+            - -party.autocommand
+            - '*'
+        leader:
+            rank: 20
+            name: "Leader"
+            chat: "&4&lLeader"
+            permissions:
+            - '*'
+description:
+    length-min: 3
+    length-max: 16
+    # Regex of the chars (Use "\\" instead "\") (For ALL utf characters use "[\p{L}\s]+")
+    allowed-chars: '[a-zA-Z0-9 .,]+'
+    remove-word: "remove"
+    censored-words: []
+motd:
+    length-min: 3
+    # SQL limit: 255 chars
+    length-max: 100
+    # Delay before motd printing in ticks (20 ticks = 1 second)
+    delay: 20
+    # Regex of the chars (Use "\\" instead "\") (For ALL utf characters use "[\p{L}\s]+")
+    allowed-chars: '[a-zA-Z0-9\\ .,]+'
+    new-line-code: '\\n'
+    remove-word: "remove"
+    censored-words: []
+kills:
+    # Save in data.yml each kill of parties
+    save-kills: false
+    which-save:
+        neutral-mobs: false
+        hostile-mobs: false
+        players: true
+tablist:
+    # Use ProtocolLib (4+) [IT BROKES SKINS]
+    enable: false
+    # Leave empty to disable
+    # You need to use JSON text
+    in-party: "{\"text\":\"%player%\",\"color\":\"aqua\"}"
+    out-party: ""
+    # Header & Footer, leave empty to disable
+    header:
+        in-party: "&b> %party% <"
+        out-party: "&cOut of party"
+    footer:
+        in-party: "&b&lParties"
+        out-party: "&b&lParties"
+tag:
+    # Set a tag name on players head (Use Minecraft ScoreboardTeams system)
+    # To avoid Minecraft bugs characters limit is 16 (party name included)
+    tag-system: false
+    # Base-tag is TRUE  | Custom-tag is FALSE
+    which-tag-system: true
+    # Show name of the party
+    base-tag:
+        # Warning: If you select this the max length for the party name is 10 chars. Overflow this will be bug plugin.
+        #
+        # Formats for the tag [ PREFIX | PLAYER NAME | SUFFIX]
+        format-prefix: "[%party%] "
+        format-suffix: ""
+    # Show a customizable name
+    custom-tag:
+        # Prefix are the /party prefix command
+        prefix: true
+        format-prefix: "[%prefix%] "
+        # Suffix are the /party suffix command
+        suffix: false
+        format-suffix: " [%suffix%]"
+        remove-word: "remove"
+        allowed-chars: '[a-zA-Z0-9 .,]+'
+        max-length: 6
+        min-lenght: 3
+        censored-words: []
+chat:
+    chat-format: "&b[Party] %rank% %player%&r&7: &b%message%"
+    # Allow sending messages with color codes (&1, &2, etc..)
+    allow-colors: false
+    # Chat cooldown in seconds
+    chat-cooldown: 0
+    spy-chat-format: "&7[SPY] [Party:%party%] %player%: %message%"
+    party-broadcast-format: "&b[Party] %message%"
+    format-group: "[%name%] "
+list:
+    # Sort system:
+    # kills = Total kills.
+    # players = Total players online.
+    # allplayers = Total players.
+    # name = Alphabetical order
+    ordered-by: players
+    # Filter parties if number of online players is less than X.
+    filter-min: 1
+    parties-per-page: 8
+    # Hide some parties from the list (Type the name of party)
+    hidden-parties: []
+follow-party:
+    # When player join in a world, whole the party will follow him
+    # If you wanna use a server follow alternative, install Parties into your bungeecord plugins folder
+    enable: false
+    # Type of teleport:
+    # 1 = Teleport into world spawn
+    # 2 = Same point of followed player
+    type-of-teleport: 1
+    # Minimum rank to let partymates follow you (0 = all ranks)
+    needed-rank: 0
+    # Minimum rank to follow the party (0 = all ranks)
+    minimum-rank-to-follow: 0
+    # Timeout before player can re-use portal in seconds, important to fix join portals spam (20 ticks = 1 second)
+    timeout-portal: 100
+    # List of worlds that would use follow-party feature ('*' = all worlds)
+    list-worlds:
+    - '*'
+auto-command:
+    # All partymates use the same command that use the leader (Rank permission: party.autocommand)
+    enable: false
+    # Important: Blacklist/whitelist your commands to prevent exploits (Pay for example)
+    # Blacklist/whitelist your commands with a "start-with" check (Block /pay to prevent commands like "/pay bla bla", "/paymember bla", "/payment")
+    # If you whitelist a command, you will bypass it (if it is blacklisted)
+    # You can insert '*' for all commands
+    blacklist:
+    - "/pay"
+    - "/money"
+    whitelist: []
+censor:
+    # Party names to censure
+    enable: false
+    case-sensitive: false
+    contains: []
+    starts-with: []
+    ends-with: []
+exp:
+    # Exp system
+    enable: false
+    # Divide exp
+    divide-between-players: true
+    share-if-more-than: 1
+    # Tags:
+    # %number% = Number of players
+    # %exp% = Exp value
+    formula: "%exp% / %number%"
+    # Range in blocks between players in a party to share experience, -1 is unlimited (Every online player of the party)
+    range: 15
+    # Give exp via SkillAPI (ExpSource MOB)
+    skillapi:
+        enable: false
+        # SkillAPI sources
+        exp-source: "MOB"
+banmanager:
+    # Enable BanManager support
+    enable: false
+    prevent-chat-muted: true
+    # Warning: BanManager doesn't works good with offline-mode uuid
+    auto-kick-banned: true
+dynmap:
+    # Enable Dynmap support
+    enable: false
+    show-party-homes: true
+    hide-by-default: false
+    settings:
+        # Minimum party players to show up the marker on Dynmap
+        minimum-players: 3
+    markers:
+        layer: "Party homes"
+        # HTML Allowed. Tags: %party%, %prefix%, %suffix%, %kills%
+        label: "<b>%party%</b>'s home"
+        # Dynmap icons
+        icon: "house"
+griefprevention:
+    enable: false
+    # To perform the command you need to be the Owner of the claim, or Manager
+    need-to-be-owner-claim: false
+    sub-commands:
+        trust: "trust"
+        container: "container"
+        access: "access"
+        remove: "remove"
+vault:
+    # Enable Vault support (Use permission 'parties.admin.vaultbypass' to bypass commands)
+    enable: false
+    confirm-command:
+        # True: use confirm command, False: buy when the command is used
+        enable: true
+        # Timeout in ms
+        timeout: 10000
+    # Set a price for these commands (in Double, 1.1, 1.5, etc..)
+    price-commands:
+        create: 0
+        join: 0
+        home: 0
+        set-home: 0
+        desc: 0
+        motd: 0
+        prefix: 0
+        suffix: 0
+        teleport: 0
+        claim: 0
+commands:
+    # Change commands (For the help page see messages configuration file)
+    command-party: "party"
+    command-party-desc: "Parties help page"
+    command-help: "help"
+    command-p: "p"
+    command-p-desc: "Send a party message"
+    command-create: "create"
+    command-password: "password"
+    command-join: "join"
+    command-accept: "accept"
+    command-deny: "deny"
+    command-ignore: "ignore"
+    command-leave: "leave"
+    command-list: "list"
+    command-info: "info"
+    command-members: "members"
+    command-home: "home"
+    command-sethome: "sethome"
+    command-teleport: "teleport"
+    command-desc: "desc"
+    command-motd: "motd"
+    command-chat: "chat"
+    command-invite: "invite"
+    command-prefix: "prefix"
+    command-suffix: "suffix"
+    command-rank: "rank"
+    command-kick: "kick"
+    command-delete: "delete"
+    command-rename: "rename"
+    command-silent: "silent"
+    command-spy: "spy"
+    command-reload: "reload"
+    sub-command-on: "on"
+    sub-command-off: "off"
+    # Sub-command of /party create <partyname> fixed (if enabled)
+    sub-command-fixed: "fixed"
+    # Command to migrate SQL/YAML database
+    command-migrate: "migrate"
+    # Command for GriefPrevention support
+    command-claim: "claim"
+    # Command to buy commands (Vault support)
+    command-confirm: "confirm"
+dont-edit-this:
+    config-version: 14

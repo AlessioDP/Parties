@@ -1,0 +1,5 @@
+name: Parties
+author: AlessioDP
+main: com.alessiodp.parties.PartiesBungee
+version: ${project.version}
+description: Party manager for minecraft servers

@@ -1,0 +1,145 @@
+name: Parties
+author: AlessioDP
+main: com.alessiodp.parties.Parties
+version: ${project.version}
+description: Party manager for minecraft servers
+softdepend: [Vault, PlaceholderAPI, Dynmap, ProtocolLib, SkillAPI]
+permissions:
+    parties.sendmessage:
+        description: Use the command /p
+    parties.help:
+        description: Use the command /party
+    parties.create:
+        description: Use the command /party create
+    parties.leave:
+        description: Use the command /party leave
+    parties.ignore:
+        description: Use the command /party ignore
+    parties.accept:
+        description: Use the command /party accept
+    parties.deny:
+        description: Use the command /party deny
+    parties.join:
+        description: Use the command /party join
+    parties.join.others:
+        description: Use the command /party join in other parties
+    parties.joindefault:
+        description: Join into the default party
+    parties.password:
+        description: Use the command /party password
+    parties.info:
+        description: Use the command /party info
+    parties.info.others:
+        description: Use the command /party info on other parties
+    parties.members:
+        description: Use the command /party members
+    parties.members.others:
+        description: Use the command /party members on other parties
+    parties.invite:
+        description: Use the command /party invite
+    parties.chat:
+        description: Use the command /party chat
+    parties.list:
+        description: Use the command /party list
+    parties.home:
+        description: Use the command /party home
+    parties.home.others:
+        description: Use the command /party home on other homes
+    parties.sethome:
+        description: Use the command /party sethome
+    parties.teleport:
+        description: Use the command /party teleport
+    parties.desc:
+        description: Use the command /party desc
+    parties.motd:
+        description: Use the command /party motd
+    parties.prefix:
+        description: Use the command /party prefix
+    parties.suffix:
+        description: Use the command /party suffix
+    parties.rename:
+        description: Use the command /party rename
+    parties.rename.others:
+        description: Use the command /party rename on other parties
+    parties.kick:
+        description: Use the command /party kick
+    parties.kick.others:
+        description: Use the command /party kick on other players
+    parties.rank:
+        description: Use the command /party rank
+    parties.rank.others:
+        description: Use the command /party rank on other players
+    parties.claim:
+        description: Use the command /party claim with GriefPrevention
+    parties.admin.vaultbypass:
+        description: Bypass vault party commands
+    parties.admin.rankbypass:
+        description: Bypass rank restrictions
+    parties.admin.fixed:
+        description: Use the command /party create party fixed
+    parties.admin.delete:
+        description: Use the command /party delete
+    parties.admin.delete.silent:
+        description: Use the command /party delete with silent
+    parties.admin.joindefault.bypass:
+        description: Bypass the default join
+    parties.admin.spy:
+        description: Use the command /party spy
+    parties.admin.reload:
+        description: Use the command /party reload
+    parties.admin.updates:
+        description: Send message if a new version is available
+    parties.admin.migrate:
+        description: Use the command /party migrate
+    parties.user.*:
+        default: op
+        description: Can use party commands
+        children:
+          parties.sendmessage: true
+          parties.help: true
+          parties.create: true
+          parties.accept: true
+          parties.deny: true
+          parties.ignore: true
+          parties.leave: true
+          parties.join: true
+          parties.joindefault: true
+          parties.password: true
+          parties.info: true
+          parties.info.others: true
+          parties.members: true
+          parties.members.others: true
+          parties.invite: true
+          parties.chat: true
+          parties.list: true
+          parties.home: true
+          parties.sethome: true
+          parties.teleport: true
+          parties.desc: true
+          parties.motd: true
+          parties.prefix: true
+          parties.suffix: true
+          parties.rename: true
+          parties.kick: true
+          parties.rank: true
+          parties.claim: true
+    parties.admin.*:
+        default: op
+        description: Can use all party commands
+        children:
+          parties.user.*: true
+          parties.rename.others: true
+          parties.rank.others: true
+          parties.home.others: true
+          parties.join.others: true
+          parties.kick.others: true
+          parties.admin.vaultbypass: true
+          parties.admin.rankbypass: true
+          parties.admin.fixed: true
+          parties.admin.delete: true
+          parties.admin.delete.silent: true
+          parties.admin.joindefault.bypass: true
+          parties.admin.spy: true
+          parties.admin.reload: true
+          parties.admin.updates: true
+          parties.admin.migrate: true
