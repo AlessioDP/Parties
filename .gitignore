@@ -1,0 +1,16 @@
+/*
+!.gitignore
+!pom.xml
+!*.md
+
+!/api/
+/api/*
+!/api/src
+!/api/pom.xml
+
+!/bukkit/
+/bukkit/*
+!/bukkit/src
+!/bukkit/pom.xml
+
+!/images/
