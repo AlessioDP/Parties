@@ -28,12 +28,15 @@ public class SQLData {
 	private int tablePartiesVersion = 1;
 	private int tablePlayersVersion = 1;
 	private int tableSpiesVersion = 1;
+	
+	private String varcharSize;
 
-	public SQLData(Parties instance, String un, String pw, String u) {
+	public SQLData(Parties instance, String un, String pw, String u, int varchar) {
 		plugin = instance;
 		username = un;
 		password = pw;
 		url = u;
+		varcharSize = Integer.toString(varchar);
 		Connection connection = getConnection();
 		if (connection != null) {
 			initTables(connection);
@@ -130,7 +133,8 @@ public class SQLData {
 			if (connection != null) {
 				try (
 						Statement statement = connection.createStatement();
-						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players + ";");
+						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players
+								+ " WHERE uuid='" + uuid.toString() + "';");
 					) {
 					if (rs.next())
 						ret = this.getPlayerFromResultSet(connection, rs);
@@ -159,7 +163,8 @@ public class SQLData {
 			if (connection != null) {
 				try (
 						Statement statement = connection.createStatement();
-						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players + " WHERE uuid='" + uuid.toString() + "';")
+						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players
+								+ " WHERE uuid='" + uuid.toString() + "';")
 					) {
 					if (rs.next())
 						ret = rs.getString("party");
@@ -176,7 +181,8 @@ public class SQLData {
 			if (connection != null) {
 				try (
 						Statement statement = connection.createStatement();
-						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players + " WHERE uuid='" + uuid.toString() + "';")
+						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players
+								+ " WHERE uuid='" + uuid.toString() + "';")
 					) {
 					if (rs.next())
 						ret = rs.getInt("rank");
@@ -191,17 +197,20 @@ public class SQLData {
 		// Object: [String, Integer] -> [name, rank]
 		HashMap<UUID, Object[]> ret = new HashMap<UUID, Object[]>();
 		try (Connection connection = getConnection()) {
-			try (
-					Statement statement = connection.createStatement();
-					ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players + " WHERE party='" + party + "';")
-				) {
-				while (rs.next()) {
-					try {
-						Object[] ob = new Object[] {
-								rs.getString("name"),
-								rs.getInt("rank")};
-						ret.put(UUID.fromString(rs.getString("uuid")), ob);
-					} catch (IllegalArgumentException ex) {}
+			if (connection != null) {
+				try (PreparedStatement preStatement = connection.prepareStatement("SELECT * FROM " + Variables.database_sql_tables_players
+						+ " WHERE party=?;")) {
+					preStatement.setString(1, party);
+					try (ResultSet rs = preStatement.executeQuery()) {
+						while (rs.next()) {
+							try {
+								Object[] ob = new Object[] {
+										rs.getString("name"),
+										rs.getInt("rank")};
+								ret.put(UUID.fromString(rs.getString("uuid")), ob);
+							} catch (IllegalArgumentException ex) {}
+						}
+					}
 				}
 			}
 		} catch (SQLException ex) {
@@ -214,7 +223,8 @@ public class SQLData {
 		HashMap<UUID, Long> hash = new HashMap<UUID, Long>();
 		try (Connection connection = getConnection()) {
 			if (connection != null) {
-				try (PreparedStatement preStatement = connection.prepareStatement("SELECT * FROM " + Variables.database_sql_tables_players + " WHERE name=?;")) {
+				try (PreparedStatement preStatement = connection.prepareStatement("SELECT * FROM " + Variables.database_sql_tables_players
+						+ " WHERE name=?;")) {
 					preStatement.setString(1, name);
 					try (ResultSet rs = preStatement.executeQuery()) {
 						while (rs.next()) {
@@ -236,7 +246,8 @@ public class SQLData {
 			if (connection != null) {
 				try (
 						Statement statement = connection.createStatement();
-						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players + " WHERE uuid='" + uuid.toString() + "';")
+						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_players
+								+ " WHERE uuid='" + uuid.toString() + "';")
 					) {
 					if (rs.next())
 						ret = rs.getString("name");
@@ -289,7 +300,8 @@ public class SQLData {
 			if (connection != null) {
 				try (
 						Statement statement = connection.createStatement();
-						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_parties + " WHERE name='" + party + "';")
+						ResultSet rs = statement.executeQuery("SELECT * FROM " + Variables.database_sql_tables_parties
+								+ " WHERE name='" + party + "';")
 					) {
 						if (rs.next())
 							ret = getPartyFromResultSet(connection, rs);
@@ -573,25 +585,25 @@ public class SQLData {
 			case 1:
 				// Parties
 				statement.execute("CREATE TABLE " + Variables.database_sql_tables_parties
-						+ " (name VARCHAR(255) NOT NULL,"
-							+ "leader VARCHAR(255) NOT NULL,"
-							+ "descr VARCHAR(255) DEFAULT '',"
-							+ "motd VARCHAR(255) DEFAULT '',"
-							+ "prefix VARCHAR(255) DEFAULT '',"
-							+ "suffix VARCHAR(255) DEFAULT '',"
+						+ " (name VARCHAR(" + varcharSize + ") NOT NULL,"
+							+ "leader VARCHAR(" + varcharSize + ") NOT NULL,"
+							+ "descr VARCHAR(" + varcharSize + ") DEFAULT '',"
+							+ "motd VARCHAR(" + varcharSize + ") DEFAULT '',"
+							+ "prefix VARCHAR(" + varcharSize + ") DEFAULT '',"
+							+ "suffix VARCHAR(" + varcharSize + ") DEFAULT '',"
 							+ "kills INT DEFAULT 0,"
-							+ "password VARCHAR(255) DEFAULT '',"
-							+ "home VARCHAR(255) DEFAULT '',"
+							+ "password VARCHAR(" + varcharSize + ") DEFAULT '',"
+							+ "home VARCHAR(" + varcharSize + ") DEFAULT '',"
 							+ "PRIMARY KEY (name))"
 						+ "COMMENT='Database version (do not edit):"+tablePartiesVersion+"';");
 				break;
 			case 2:
 				// Players
 				statement.execute("CREATE TABLE " + Variables.database_sql_tables_players
-						+ " (uuid VARCHAR(255) NOT NULL,"
-							+ "party VARCHAR(255) NOT NULL,"
+						+ " (uuid VARCHAR(" + varcharSize + ") NOT NULL,"
+							+ "party VARCHAR(" + varcharSize + ") NOT NULL,"
 							+ "rank INT DEFAULT 0,"
-							+ "name VARCHAR(255),"
+							+ "name VARCHAR(" + varcharSize + "),"
 							+ "timestamp INT,"
 							+ "PRIMARY KEY (uuid))"
 						+ "COMMENT='Database version (do not edit):"+tablePlayersVersion+"';");
@@ -599,7 +611,7 @@ public class SQLData {
 			case 3:
 				// Spies
 				statement.execute("CREATE TABLE " + Variables.database_sql_tables_spies
-						+ " (uuid VARCHAR(255) NOT NULL,"
+						+ " (uuid VARCHAR(" + varcharSize + ") NOT NULL,"
 							+ "PRIMARY KEY (uuid))"
 						+ "COMMENT='Database version (do not edit):"+tableSpiesVersion+"';");
 			}

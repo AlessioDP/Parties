@@ -31,6 +31,7 @@ public class Variables {
 	public static String log_sql_url;
 	public static String log_sql_username;
 	public static String log_sql_password;
+	public static int log_sql_varcharsize;
 	public static String log_sql_logtable;
 	
 	public static String database_type;
@@ -43,6 +44,7 @@ public class Variables {
 	public static String database_sql_url;
 	public static String database_sql_username;
 	public static String database_sql_password;
+	public static int database_sql_varcharsize;
 	public static String database_sql_tables_spies;
 	public static String database_sql_tables_players;
 	public static String database_sql_tables_parties;
@@ -261,6 +263,7 @@ public class Variables {
 		log_sql_url = "jdbc:mysql://localhost:3306/database";
 		log_sql_username = "username";
 		log_sql_password = "password";
+		log_sql_varcharsize = 255;
 		log_sql_logtable = "log";
 		
 		database_type = "file";
@@ -273,6 +276,7 @@ public class Variables {
 		database_sql_url = "jdbc:mysql://localhost:3306/database";
 		database_sql_username = "username";
 		database_sql_password = "password";
+		database_sql_varcharsize = 255;
 		database_sql_tables_spies = "spies";
 		database_sql_tables_players = "players";
 		database_sql_tables_parties = "parties";

@@ -28,6 +28,7 @@ public class LogHandler {
 	private static String username;
 	private static String password;
 	private static String url;
+	private static String varcharSize;
 	private static String logTable;
 	
 	private static LogLevel logLevel;
@@ -42,6 +43,7 @@ public class LogHandler {
 			username = Variables.log_sql_username;
 			password = Variables.log_sql_password;
 			url = Variables.log_sql_url;
+			varcharSize = Integer.toString(Variables.log_sql_varcharsize);
 			logTable = Variables.log_sql_logtable;
 			if (!startLogSQL()) {
 				Variables.log_type = "file";
@@ -57,12 +59,12 @@ public class LogHandler {
 		log(level, txt, printConsole, null);
 	}
 	public static void log(LogLevel level, String txt, boolean printConsole, ConsoleColors color) {
-		if (level.equals(LogLevel.BASE)
-				|| (printConsole
-				&& (level.equals(LogLevel.BASIC)
-						|| (Variables.log_enable
-								&& Variables.log_printconsole
-								&& level.getLevel() <= logLevel.getLevel())))) {
+		if (printConsole
+				&& (level.equals(LogLevel.BASE)
+						|| (level.equals(LogLevel.BASIC)
+								|| (Variables.log_enable
+										&& Variables.log_printconsole
+										&& level.getLevel() <= logLevel.getLevel())))) {
 			String print = txt;
 			if (color != null)
 				print = color.getCode() + print;
@@ -214,8 +216,8 @@ public class LogHandler {
 					+ " (id INT NOT NULL AUTO_INCREMENT,"
 						+ "date DATETIME,"
 						+ "level TINYINT,"
-						+ "position VARCHAR(50),"
-						+ "message VARCHAR(255),"
+						+ "position VARCHAR(" + varcharSize + "),"
+						+ "message VARCHAR(" + varcharSize + "),"
 						+ "PRIMARY KEY (id))"
 					+ "COMMENT='Database version (do not edit):"+tableLogVersion+"';");
 			ret = true;

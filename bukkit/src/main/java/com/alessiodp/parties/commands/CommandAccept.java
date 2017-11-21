@@ -30,7 +30,7 @@ public class CommandAccept implements CommandInterface {
 			tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.ACCEPT.toString()));
 			return true;
 		}
-		if (tp.getPartyName().isEmpty()) {
+		if (!tp.getPartyName().isEmpty()) {
 			tp.sendMessage(Messages.accept_alreadyinparty);
 			return true;
 		}

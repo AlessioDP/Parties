@@ -75,6 +75,7 @@ log:
         url: "jdbc:mysql://localhost:3306/database"
         username: "username"
         password: "password"
+        varchar-size: 255
         log-table: "log"
 database:
     # none = Don't save parties (A reload reset everything)
@@ -95,6 +96,7 @@ database:
         username: "username"
         password: "password"
         tables:
+            varchar-size: 255
             spies: "spies"
             players: "players"
             parties: "parties"
@@ -431,4 +433,4 @@ commands:
     # Command to buy commands (Vault support)
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 14
+    config-version: 15

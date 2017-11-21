@@ -37,7 +37,7 @@ public class ConfigHandler {
 		new LogHandler(plugin);
 		
 		if (Variables.database_sql_enable) {
-			SQLData database = new SQLData(plugin, Variables.database_sql_username, Variables.database_sql_password, Variables.database_sql_url);
+			SQLData database = new SQLData(plugin, Variables.database_sql_username, Variables.database_sql_password, Variables.database_sql_url, Variables.database_sql_varcharsize);
 			if (database.isFailed()) {
 				Variables.database_sql_enable = false;
 				LogHandler.printError("Failed to open the connection with Server SQL. Database changed to File");
@@ -108,6 +108,8 @@ public class ConfigHandler {
 			variables.log_file_name = cfg.getString("log.file.name");
 		if (cfg.get("log.sql.url") != null)
 			variables.log_sql_url = cfg.getString("log.sql.url");
+		if (cfg.get("log.sql.varchar-size") != null)
+			variables.log_sql_varcharsize = cfg.getInt("log.sql.varchar-size");
 		if (cfg.get("log.sql.username") != null)
 			variables.log_sql_username = cfg.getString("log.sql.username");
 		if (cfg.get("log.sql.password") != null)
@@ -135,6 +137,8 @@ public class ConfigHandler {
 			variables.database_sql_username = cfg.getString("database.sql.username");
 		if (cfg.get("database.sql.password") != null)
 			variables.database_sql_password = cfg.getString("database.sql.password");
+		if (cfg.get("database.sql.tables.varchar-size") != null)
+			variables.database_sql_varcharsize = cfg.getInt("database.sql.tables.varchar-size");
 		if (cfg.get("database.sql.tables.spies") != null)
 			variables.database_sql_tables_spies = cfg.getString("database.sql.tables.spies");
 		if (cfg.get("database.sql.tables.players") != null)

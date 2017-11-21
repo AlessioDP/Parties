@@ -42,7 +42,7 @@ public class Parties extends JavaPlugin {
 	private DatabaseType			databaseType;
 
 	private final int				curseProject = 90889;
-	private final int				configVersion = 14;
+	private final int				configVersion = 15;
 	private final int				messageVersion = 12;
 	private final int				databaseVersion = 1;
 	private final String			scoreboardprefix = "PARTY";
@@ -136,11 +136,11 @@ public class Parties extends JavaPlugin {
 		registerMetrics();
 		
 		// Updater task
-		getServer().getScheduler().runTaskLater(this, new Runnable() {
+		getServer().getScheduler().runTaskTimer(this, new Runnable() {
 			public void run() {
 				checkUpdates();
 			}
-		}, 20);
+		}, 20, 28800); // Timer of 24 hours (28800)
 		
 		if (isDebug) {
 			// Debug task
