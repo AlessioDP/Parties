@@ -239,79 +239,83 @@ public class PartyHandler {
 		}
 	}
 	public void tag_addPlayer(Player player, Party party) {
-		// ProtocolLib
-		if (Variables.tablist_enable && ProtocolHandler.isActive()) {
-			ProtocolHandler.handleHF();
-			if (party != null)
-				for (Player pl : party.getOnlinePlayers())
-					ProtocolHandler.send(pl.getUniqueId());
-		}
-		// Scoreboard
-		if (Variables.tag_system || Variables.invisibleallies) {
-			if (party != null) {
-				String str = plugin.getScoreboardPrefix()+party.getName().toLowerCase();
-				if (str.length() > 10)
-					str = str.substring(0, 10);
-				Team team = scoreboard.getTeam(str);
-				if (team == null) {
-					String fix;
-					team = scoreboard.registerNewTeam(str);
-					if (Variables.tag_enable && Variables.tag_system) {
-						fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName());
-						if (fix.length() > 16)
-							fix = fix.substring(0,16);
-						team.setPrefix(fix);
-						
-						fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName());
-						if (fix.length() > 16)
-							fix = fix.substring(0,16);
-						team.setSuffix(fix);
-					} else if (Variables.tag_enable && !Variables.tag_system) {
-						if (Variables.tag_custom_prefix) {
-							if (!party.getPrefix().isEmpty()) {
-								fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix());
-								if (fix.length() > 16)
-									fix = fix.substring(0,16);
-								team.setPrefix(fix);
-							} else
-								team.setPrefix("");
+		if (player != null) {
+			// ProtocolLib
+			if (Variables.tablist_enable && ProtocolHandler.isActive()) {
+				ProtocolHandler.handleHF();
+				if (party != null)
+					for (Player pl : party.getOnlinePlayers())
+						ProtocolHandler.send(pl.getUniqueId());
+			}
+			// Scoreboard
+			if (Variables.tag_system || Variables.invisibleallies) {
+				if (party != null) {
+					String str = plugin.getScoreboardPrefix()+party.getName().toLowerCase();
+					if (str.length() > 10)
+						str = str.substring(0, 10);
+					Team team = scoreboard.getTeam(str);
+					if (team == null) {
+						String fix;
+						team = scoreboard.registerNewTeam(str);
+						if (Variables.tag_enable && Variables.tag_system) {
+							fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatprefix).replace("%party%", party.getName());
+							if (fix.length() > 16)
+								fix = fix.substring(0,16);
+							team.setPrefix(fix);
+							
+							fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_base_formatsuffix).replace("%party%", party.getName());
+							if (fix.length() > 16)
+								fix = fix.substring(0,16);
+							team.setSuffix(fix);
+						} else if (Variables.tag_enable && !Variables.tag_system) {
+							if (Variables.tag_custom_prefix) {
+								if (!party.getPrefix().isEmpty()) {
+									fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatprefix).replace("%prefix%", party.getPrefix());
+									if (fix.length() > 16)
+										fix = fix.substring(0,16);
+									team.setPrefix(fix);
+								} else
+									team.setPrefix("");
+							}
+							if (Variables.tag_custom_suffix) {
+								if (!party.getSuffix().isEmpty()) {
+									fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix());
+									if (fix.length() > 16)
+										fix = fix.substring(0,16);
+									team.setSuffix(fix);
+								} else
+									team.setSuffix("");
+							}
+						} else {
+							team.setPrefix("");
+							team.setSuffix("");
 						}
-						if (Variables.tag_custom_suffix) {
-							if (!party.getSuffix().isEmpty()) {
-								fix = ChatColor.translateAlternateColorCodes('&', Variables.tag_custom_formatsuffix).replace("%suffix%", party.getSuffix());
-								if (fix.length() > 16)
-									fix = fix.substring(0,16);
-								team.setSuffix(fix);
-							} else
-								team.setSuffix("");
-						}
-					} else {
-						team.setPrefix("");
-						team.setSuffix("");
+						if (Variables.invisibleallies)
+							team.setCanSeeFriendlyInvisibles(true);
+						else
+							team.setCanSeeFriendlyInvisibles(false);
 					}
-					if (Variables.invisibleallies)
-						team.setCanSeeFriendlyInvisibles(true);
-					else
-						team.setCanSeeFriendlyInvisibles(false);
+					team.addEntry(player.getName());
 				}
-				team.addEntry(player.getName());
 			}
 		}
 	}
 	public void tag_removePlayer(Player player, Party party) {
-		// ProtocolLib
-		if (Variables.tablist_enable && ProtocolHandler.isActive()) {
-			ProtocolHandler.handleHF();
-			ProtocolHandler.send(player.getUniqueId()); // Player is not present into the party anymore
-			if (party != null)
-				for (Player pl : party.getOnlinePlayers())
-					ProtocolHandler.send(pl.getUniqueId());
-		}
-		// Scoreboard
-		if (Variables.tag_system || Variables.invisibleallies) {
-			Team team = scoreboard.getEntryTeam(player.getName());
-			if (team != null && team.getName().startsWith(plugin.getScoreboardPrefix()))
-				team.removeEntry(player.getName());
+		if (player != null) {
+			// ProtocolLib
+			if (Variables.tablist_enable && ProtocolHandler.isActive()) {
+				ProtocolHandler.handleHF();
+				ProtocolHandler.send(player.getUniqueId()); // Player is not present into the party anymore
+				if (party != null)
+					for (Player pl : party.getOnlinePlayers())
+						ProtocolHandler.send(pl.getUniqueId());
+			}
+			// Scoreboard
+			if (Variables.tag_system || Variables.invisibleallies) {
+				Team team = scoreboard.getEntryTeam(player.getName());
+				if (team != null && team.getName().startsWith(plugin.getScoreboardPrefix()))
+					team.removeEntry(player.getName());
+			}
 		}
 	}
 	public void tag_delete(Party party) {

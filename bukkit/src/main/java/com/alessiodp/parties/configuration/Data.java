@@ -68,7 +68,11 @@ public class Data {
 		if (mysqlUse && !bypassSql)
 			plugin.getSQLDatabase().updateSpies(list);
 		else {
-			data.set("spies", list);
+			List<String> spies = new ArrayList<String>();
+			for (UUID u : list) {
+				spies.add(u.toString());
+			}
+			data.set("spies", spies);
 			
 			try {
 				data.save(dataFile);

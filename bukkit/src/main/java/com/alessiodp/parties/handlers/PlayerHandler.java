@@ -144,7 +144,7 @@ public class PlayerHandler {
 			Player pl = Bukkit.getPlayer(uuid);
 			if (pl != null) {
 				if (pl.hasPermission(PartiesPermissions.ADMIN_SPY.toString())) {
-					if (getPlayer(uuid).getPartyName().equalsIgnoreCase(partyName)) {
+					if (!getPlayer(uuid).getPartyName().equalsIgnoreCase(partyName)) {
 						if (JSONHandler.isJSON(message))
 							JSONHandler.sendJSON(message, pl);
 						else

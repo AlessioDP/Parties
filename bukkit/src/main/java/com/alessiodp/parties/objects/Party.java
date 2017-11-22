@@ -228,7 +228,9 @@ public class Party {
 				player.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessage).replace("%message%", msg));
 			}
 		}
-		plugin.getPlayerHandler().sendMessageToSpy(convertText(Variables.chat_spychatformat, sender).replace("%message%", playerMessage), name);
+		plugin.getPlayerHandler().sendMessageToSpy(
+				ChatColor.translateAlternateColorCodes('&', convertText(Variables.chat_spychatformat, sender))
+				.replace("%message%", playerMessage), name);
 	}
 	
 	public void sendBroadcastParty(Player sender, String message) {
