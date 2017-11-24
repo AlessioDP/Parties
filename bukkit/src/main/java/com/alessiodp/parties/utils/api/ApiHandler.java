@@ -134,7 +134,7 @@ public class ApiHandler implements PartiesAPI {
 		Status ret = Status.ALREADYINPARTY;
 		ThePlayer tp = plugin.getPlayerHandler().getPlayer(paramLeader);
 		if (tp.getPartyName().isEmpty()) {
-			if (plugin.getPartyHandler().existParty(paramParty)) {
+			if (!plugin.getPartyHandler().existParty(paramParty)) {
 				Party party = new Party(paramParty, plugin);
 				party.getMembers().add(paramLeader);
 				Player p = tp.getPlayer();
