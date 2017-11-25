@@ -46,7 +46,7 @@ public class Parties extends JavaPlugin {
 	private final int				messageVersion = 12;
 	private final int				databaseVersion = 1;
 	private final String			scoreboardprefix = "PARTY";
-	private final static boolean	isDebug = false;
+	private final static boolean	isDebug = true;
 	
 	private String					updaterNewVersion = "";
 
@@ -425,7 +425,7 @@ public class Parties extends JavaPlugin {
 	}
 	public static void debugLog(String message) {
 		if (isDebug)
-			System.out.println("[Parties Debug] " + message);
+			System.out.println(ConsoleColors.PURPLE.getCode() + "[Parties Debug] " + message + ConsoleColors.RESET.getCode());
 	}
 	
 	/* Gets & Sets */

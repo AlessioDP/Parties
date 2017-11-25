@@ -37,6 +37,7 @@ public class SQLData {
 		password = pw;
 		url = u;
 		varcharSize = Integer.toString(varchar);
+		
 		Connection connection = getConnection();
 		if (connection != null) {
 			initTables(connection);
@@ -718,6 +719,21 @@ public class SQLData {
 	/*
 	 * Connection
 	 */
+	
+	/* Upcoming db
+	public void initDatabase() {
+		HikariConfig config = new HikariConfig();
+		config.setJdbcUrl(url);
+		config.setUsername(username);
+		config.setPassword(password);
+		
+		testDS = new HikariDataSource(config);
+	}
+	HikariDataSource testDS;
+	public Connection getConnection2() throws SQLException {
+		return testDS.getConnection();
+	}
+	*/
 	public boolean isFailed() {
 		return failed;
 	}

@@ -3,14 +3,14 @@
 !pom.xml
 !*.md
 
-!/api/
-/api/*
-!/api/src
-!/api/pom.xml
+!/parties-api/
+/parties-api/*
+!/parties-api/src
+!/parties-api/pom.xml
 
-!/bukkit/
-/bukkit/*
-!/bukkit/src
-!/bukkit/pom.xml
+!/parties-bukkit/
+/parties-bukkit/*
+!/parties-bukkit/src
+!/parties-bukkit/pom.xml
 
 !/images/

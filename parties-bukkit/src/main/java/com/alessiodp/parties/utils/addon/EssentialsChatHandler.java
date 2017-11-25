@@ -32,6 +32,7 @@ public class EssentialsChatHandler implements Listener {
 						.replaceAll("\\{PARTIES_PREFIX\\}", party.getPrefix())
 						.replaceAll("\\{PARTIES_SUFFIX\\}", party.getSuffix())
 						.replaceAll("\\{PARTIES_KILLS\\}", Integer.toString(party.getKills()));
+				old = ChatColor.translateAlternateColorCodes('&', old);
 			} else {
 				old = old.replaceAll("\\{PARTIES_PARTY\\}", "")
 						.replaceAll("\\{PARTIES_RANK\\}", "")

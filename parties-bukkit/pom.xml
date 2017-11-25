@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>com.alessiodp.parties</groupId>
 		<artifactId>Parties</artifactId>
-		<version>2.0.3</version>
+		<version>2.0.4</version>
 	</parent>
 	
 	<name>Parties</name>
-	<artifactId>bukkit</artifactId>
+	<artifactId>parties-bukkit</artifactId>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -95,11 +95,6 @@
 			<url>http://repo.mikeprimm.com/</url>
 		</repository>
 		<repository>
-			<!-- PermissionsEx -->
-			<id>pex-repo</id>
-			<url>http://pex-repo.aoeu.xyz</url>
-		</repository>
-		<repository>
 			<!-- GriefPrevention -->
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
@@ -109,7 +104,7 @@
 		<dependency>
 			<groupId>com.alessiodp.partiesapi</groupId>
 			<artifactId>parties-api</artifactId>
-			<version>2.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.md-5</groupId>
@@ -146,14 +141,15 @@
 			<version>2.5</version>
 		</dependency>
 		<dependency>
-			<groupId>ru.tehkode</groupId>
-			<artifactId>PermissionsEx</artifactId>
-			<version>1.23</version>
-		</dependency>
-		<dependency>
 			<groupId>com.github.TechFortress</groupId>
 			<artifactId>GriefPrevention</artifactId>
 			<version>16.7.1</version>
 		</dependency>
+		<!--
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>2.7.3</version>
+		</dependency> -->
 	</dependencies>
 </project>

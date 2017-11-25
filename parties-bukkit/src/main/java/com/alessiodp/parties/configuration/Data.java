@@ -65,6 +65,7 @@ public class Data {
 	 */
 	public void updateSpies(List<UUID> list, boolean bypassSql) {
 		Parties.debugLog("Data call: updateSpies()");
+		long msTime = System.currentTimeMillis();
 		if (mysqlUse && !bypassSql)
 			plugin.getSQLDatabase().updateSpies(list);
 		else {
@@ -81,9 +82,11 @@ public class Data {
 				LogHandler.printError("Error in Data updateSpies(): " + ex.getMessage());
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 	}
 	public List<UUID> getSpies(boolean bypassSql) {
 		Parties.debugLog("Data call: getSpies()");
+		long msTime = System.currentTimeMillis();
 		List<UUID> ret;
 		if (mysqlUse && !bypassSql)
 			ret = plugin.getSQLDatabase().getSpies();
@@ -98,6 +101,7 @@ public class Data {
 				}
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 
@@ -106,6 +110,7 @@ public class Data {
 	 */
 	public ThePlayer getPlayer(UUID uuid, boolean bypassSql) {
 		Parties.debugLog("Data call: getPlayer()");
+		long msTime = System.currentTimeMillis();
 		ThePlayer ret = null;
 		if (mysqlUse && !bypassSql)
 			ret = plugin.getSQLDatabase().getPlayer(uuid);
@@ -119,10 +124,12 @@ public class Data {
 				ret.compareName(data.getString("players." + uuid.toString() + ".name.name", ""));
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	public void updatePlayer(ThePlayer tp, boolean bypassSql) {
 		Parties.debugLog("Data call: updatePlayer()");
+		long msTime = System.currentTimeMillis();
 		if (mysqlUse && !bypassSql)
 			plugin.getSQLDatabase().updatePlayer(tp);
 		else {
@@ -141,10 +148,12 @@ public class Data {
 				LogHandler.printError("Error in Data updatePlayer(): " + ex.getMessage());
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 	}
 
 	public void removePlayer(UUID uuid) {
 		Parties.debugLog("Data call: removePlayer()");
+		long msTime = System.currentTimeMillis();
 		if (mysqlUse)
 			plugin.getSQLDatabase().removePlayer(uuid);
 		else {
@@ -157,28 +166,34 @@ public class Data {
 				LogHandler.printError("Error in Data removePlayer(): " + ex.getMessage());
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 	}
 	
 	public String getPlayerPartyName(UUID uuid) {
 		Parties.debugLog("Data call: getPlayerPartyName()");
+		long msTime = System.currentTimeMillis();
 		String ret;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().getPlayerPartyName(uuid);
 		else
 			ret = data.getString("players." + uuid.toString() + ".party", "");
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	public int getRank(UUID uuid) {
 		Parties.debugLog("Data call: getRank()");
+		long msTime = System.currentTimeMillis();
 		int ret;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().getRank(uuid);
 		else
 			ret = data.getInt("players." + uuid.toString() + ".rank");
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	public HashMap<UUID, Object[]> getPlayersRank(String party) {
 		Parties.debugLog("Data call: getPlayersRank()");
+		long msTime = System.currentTimeMillis();
 		HashMap<UUID, Object[]> ret;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().getPlayersRank(party);
@@ -199,10 +214,12 @@ public class Data {
 				}
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	public HashMap<UUID, Long> getPlayersFromName(String name) {
 		Parties.debugLog("Data call: getPlayersFromName()");
+		long msTime = System.currentTimeMillis();
 		HashMap<UUID, Long> ret;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().getPlayersFromName(name);
@@ -221,15 +238,18 @@ public class Data {
 				}
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	public String getOldPlayerName(UUID uuid) {
 		Parties.debugLog("Data call: getOldPlayerName()");
+		long msTime = System.currentTimeMillis();
 		String ret;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().getOldPlayerName(uuid);
 		else
 			ret = data.getString("players." + uuid.toString() + ".name.name", "");
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 
@@ -238,6 +258,7 @@ public class Data {
 	 */
 	public Party getParty(String name, boolean bypassSql) {
 		Parties.debugLog("Data call: getParty()");
+		long msTime = System.currentTimeMillis();
 		Party ret;
 		if (mysqlUse && !bypassSql)
 			ret = plugin.getSQLDatabase().getParty(name);
@@ -274,10 +295,12 @@ public class Data {
 			}
 			ret.setMembers(list);
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	public void renameParty(String before, String now) {
 		Parties.debugLog("Data call: renameParty()");
+		long msTime = System.currentTimeMillis();
 		if (mysqlUse)
 			plugin.getSQLDatabase().renameParty(before, now);
 		else {
@@ -295,9 +318,11 @@ public class Data {
 				LogHandler.printError("Error in Data renameParty(): " + ex.getMessage());
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 	}
 	public void updateParty(Party party, boolean bypassSql) {
 		Parties.debugLog("Data call: updateParty()");
+		long msTime = System.currentTimeMillis();
 		if (mysqlUse && !bypassSql)
 			plugin.getSQLDatabase().updateParty(party);
 		else {
@@ -341,10 +366,12 @@ public class Data {
 				LogHandler.printError("Error in Data updateParty(): " + ex.getMessage());
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 	}
 
 	public void removeParty(Party party) {
 		Parties.debugLog("Data call: removeParty()");
+		long msTime = System.currentTimeMillis();
 		if (mysqlUse)
 			plugin.getSQLDatabase().removeParty(party.getName());
 		else {
@@ -362,10 +389,12 @@ public class Data {
 				LogHandler.printError("Error in Data removeParty(): " + ex.getMessage());
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 	}
 
 	public boolean existParty(String name) {
 		Parties.debugLog("Data call: existParty()");
+		long msTime = System.currentTimeMillis();
 		boolean ret = false;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().existParty(name);
@@ -386,11 +415,13 @@ public class Data {
 				}
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	
 	public List<Party> getAllParties() {
 		Parties.debugLog("Data call: getAllParties()");
+		long msTime = System.currentTimeMillis();
 		List<Party> ret;
 		if (mysqlUse)
 			ret = plugin.getSQLDatabase().getAllParties();
@@ -403,11 +434,13 @@ public class Data {
 				ret.add(getParty(name, true));
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	
 	public List<String> getAllFixed() {
 		Parties.debugLog("Data call: getAllFixed()");
+		long msTime = System.currentTimeMillis();
 		List<String> ret;
 		if (mysqlUse)
 			ret =  plugin.getSQLDatabase().getAllFixed();
@@ -422,6 +455,7 @@ public class Data {
 				} catch (Exception ex) {}
 			}
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return ret;
 	}
 	
@@ -430,6 +464,7 @@ public class Data {
 	 */
 	public boolean migrateSQLtoYAML() {
 		Parties.debugLog("Data call: migrateSQLtoYAML()");
+		long msTime = System.currentTimeMillis();
 		boolean completed = false;
 		if (mysqlEnabled) {
 			String fileName = Variables.database_file_name + Variables.database_migrate_suffix;
@@ -451,10 +486,12 @@ public class Data {
 			// Start migration
 			completed = plugin.getSQLDatabase().migrateSQLtoYAML();
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return completed;
 	}
 	public boolean migrateYAMLtoSQL() {
 		Parties.debugLog("Data call: migrateYAMLtoSQL()");
+		long msTime = System.currentTimeMillis();
 		boolean completed = false;
 		if (mysqlEnabled) {
 			// Spies
@@ -482,6 +519,7 @@ public class Data {
 			
 			completed = plugin.getSQLDatabase().migrateYAMLtoSQL(spies, players, parties);
 		}
+		Parties.debugLog("End data call in " + (System.currentTimeMillis() - msTime) + "ms");
 		return completed;
 	}
 	
