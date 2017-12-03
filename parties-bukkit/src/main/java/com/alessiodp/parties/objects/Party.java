@@ -19,6 +19,7 @@ import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.handlers.JSONHandler;
 import com.alessiodp.parties.handlers.LogHandler;
+import com.alessiodp.parties.utils.PartyColor;
 import com.alessiodp.parties.utils.addon.BanManagerHandler;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
@@ -40,6 +41,7 @@ public class Party {
 	private Location home;
 	private String prefix;
 	private String suffix;
+	private PartyColor color;
 	private int kills;
 	private String password;
 	private HashMap<UUID, UUID> whoInvite;
@@ -58,6 +60,7 @@ public class Party {
 		home = null;
 		prefix = "";
 		suffix = "";
+		color = null;
 		kills = 0;
 		password = "";
 		whoInvite = new HashMap<UUID, UUID>();
@@ -76,6 +79,7 @@ public class Party {
 		home = copy.home;
 		prefix = copy.prefix;
 		suffix = copy.suffix;
+		color = copy.color;
 		kills = copy.kills;
 		password = copy.password;
 		whoInvite = copy.whoInvite;
@@ -97,21 +101,17 @@ public class Party {
 				plugin.getDynmap().removeMarker(name);
 		}
 		
-		if (!plugin.getDatabaseType().isNone()) {
-			plugin.getDataHandler().updateParty(this, false);
-			LogHandler.log(LogLevel.DEBUG, "Updated party " + name, true);
-		}
+		plugin.getDatabaseDispatcher().updateParty(this);
+		LogHandler.log(LogLevel.DEBUG, "Updated party " + name, true);
 	}
 	public void removeParty() {
 		plugin.getPartyHandler().getListParties().remove(name.toLowerCase());
 		if (Variables.dynmap_enable && Variables.dynmap_showpartyhomes) {
 			plugin.getDynmap().removeMarker(name);
 		}
-		if (!plugin.getDatabaseType().isNone()) {
-			plugin.getDataHandler().removeParty(this);
-			plugin.getPartyHandler().tag_delete(this);
-			LogHandler.log(LogLevel.DEBUG, "Removed party " + name, true);
-		}
+		plugin.getDatabaseDispatcher().removeParty(this);
+		plugin.getPartyHandler().tag_delete(this);
+		LogHandler.log(LogLevel.DEBUG, "Removed party " + name, true);
 		
 		for (Player player : onlinePlayers) {
 			// saveDB is false because getData().removeParty already delete players data
@@ -269,11 +269,14 @@ public class Party {
 	}
 	public String convertText(String text, Player player) {
 		text = text
-				.replace("%player%",	player.getName() != null ? player.getName() : plugin.getDataHandler().getOldPlayerName(player.getUniqueId()))
-				.replace("%sender%",	player.getName() != null ? player.getName() : plugin.getDataHandler().getOldPlayerName(player.getUniqueId()))
+				.replace("%player%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
+				.replace("%sender%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
 				.replace("%world%",		player.getWorld().getName())
 				.replace("%desc%",		getDescription())
 				.replace("%party%",		getName())
+				.replace("%color_name%",color != null ? color.getName() : "")
+				.replace("%color_command%",color != null ? color.getCommand() : "")
+				.replace("%color_code%",color != null ? color.getCode() : "")
 				.replace("%prefix%",	getPrefix())
 				.replace("%suffix%",	getSuffix())
 				.replace("%kills",		Integer.toString(getKills()))
@@ -285,11 +288,14 @@ public class Party {
 	}
 	public String convertText(String text, OfflinePlayer player) {
 		text = text
-				.replace("%player%",	player.getName() != null ? player.getName() : plugin.getDataHandler().getOldPlayerName(player.getUniqueId()))
-				.replace("%sender%",	player.getName() != null ? player.getName() : plugin.getDataHandler().getOldPlayerName(player.getUniqueId()))
+				.replace("%player%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
+				.replace("%sender%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
 				.replace("%world%",		"")
 				.replace("%desc%",		getDescription())
 				.replace("%party%",		getName())
+				.replace("%color_name%",color != null ? color.getName() : "")
+				.replace("%color_command%",color != null ? color.getCommand() : "")
+				.replace("%color_code%",color != null ? color.getCode() : "")
 				.replace("%prefix%",	getPrefix())
 				.replace("%suffix%",	getSuffix())
 				.replace("%kills",		Integer.toString(getKills()))
@@ -386,6 +392,19 @@ public class Party {
 	public void setPrefix(String v) {prefix = v;}
 	public String getSuffix() {return suffix;}
 	public void setSuffix(String v) {suffix = v;}
+	public PartyColor getColor() {return color;}
+	public void setColor(PartyColor v) {
+		color = v;
+	}
+	public void setColorRaw(String v) {
+		color = plugin.getPartyHandler().searchColorByName(v);
+	}
+	public String getColorRaw() {
+		String ret = "";
+		if (color != null)
+			ret = color.getName();
+		return ret;
+	}
 	public int getKills() {return kills;}
 	public void setKills(int v) {kills = v;}
 	public boolean isFixed() {return fixed;}

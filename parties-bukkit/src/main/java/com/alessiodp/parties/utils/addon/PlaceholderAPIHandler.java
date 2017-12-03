@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
-import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 
@@ -20,66 +19,57 @@ public class PlaceholderAPIHandler extends EZPlaceholderHook {
 
 	@Override
 	public String onPlaceholderRequest(Player p, String identifier) {
-			ThePlayer tp;
-			Party party;
+			ThePlayer tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
+			Party party = plugin.getPartyHandler().getParty(tp.getPartyName());
 			/*
 			 * Placeholders: %parties_IDENTIFIER%
 			 */
+			String ret = "";
 			switch (identifier) {
-			case "rank":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				return plugin.getPartyHandler().searchRank(tp.getRank()).getName();
-			case "rank_formatted":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				return ChatColor.translateAlternateColorCodes('&', plugin.getPartyHandler().searchRank(tp.getRank()).getChat());
-			case "party":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				if (!tp.getPartyName().isEmpty())
-					return ChatColor.translateAlternateColorCodes('&', tp.convertPartyText(Variables.party_placeholder, tp.getPlayer(), null));
-				return "";
-				
+			case "color_name":
+				if (party != null && party.getColor() != null)
+					ret = party.getColor().getName();
+				break;
+			case "color_command":
+				if (party != null && party.getColor() != null)
+					ret = party.getColor().getCommand();
+				break;
+			case "color_code":
+				if (party != null && party.getColor() != null)
+					ret = party.getColor().getCode();
+				break;
 			case "desc":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				if (!tp.getPartyName().isEmpty()) {
-					party = plugin.getPartyHandler().getParty(tp.getPartyName());
-					if (party != null)
-						return party.getDescription();
-				}
-				return "";
-			case "motd":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				if (!tp.getPartyName().isEmpty()) {
-					party = plugin.getPartyHandler().getParty(tp.getPartyName());
-					if (party != null)
-						return party.getMOTD();
-				}
-				return "";
-			case "prefix":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				if (!tp.getPartyName().isEmpty()) {
-					party = plugin.getPartyHandler().getParty(tp.getPartyName());
-					if (party != null)
-						return party.getPrefix();
-				}
-				return "";
-			case "suffix":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				if (!tp.getPartyName().isEmpty()) {
-					party = plugin.getPartyHandler().getParty(tp.getPartyName());
-					if (party != null)
-						return party.getSuffix();
-				}
-				return "";
+				if (party != null)
+					ret = party.getDescription();
+				break;
 			case "kills":
-				tp = plugin.getPlayerHandler().getPlayer(p.getUniqueId());
-				if (!tp.getPartyName().isEmpty()) {
-					party = plugin.getPartyHandler().getParty(tp.getPartyName());
-					if (party != null)
-						return Integer.toString(party.getKills());
-				}
-				return "";
+				if (party != null)
+					ret = Integer.toString(party.getKills());
+				break;
+			case "motd":
+				if (party != null)
+					ret = party.getMOTD();
+				break;
+			case "party":
+				if (party != null)
+					ret = party.getName();
+				break;
+			case "prefix":
+				if (party != null)
+					ret = party.getPrefix();
+				break;
+			case "rank":
+				ret = plugin.getPartyHandler().searchRank(tp.getRank()).getName();
+				break;
+			case "rank_formatted":
+				ret = ChatColor.translateAlternateColorCodes('&', plugin.getPartyHandler().searchRank(tp.getRank()).getChat());
+				break;
+			case "suffix":
+				if (party != null)
+					ret = party.getSuffix();
+				break;
 			}
-		return null;
+		return ret;
 	}
 
 }

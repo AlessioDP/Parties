@@ -53,6 +53,8 @@ permissions:
         description: Use the command /party desc
     parties.motd:
         description: Use the command /party motd
+    parties.color:
+        description: Use the command /party color
     parties.prefix:
         description: Use the command /party prefix
     parties.suffix:
@@ -117,6 +119,7 @@ permissions:
           parties.teleport: true
           parties.desc: true
           parties.motd: true
+          parties.color: true
           parties.prefix: true
           parties.suffix: true
           parties.rename: true

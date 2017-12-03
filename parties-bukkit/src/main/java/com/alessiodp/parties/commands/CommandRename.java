@@ -36,31 +36,31 @@ public class CommandRename implements CommandInterface {
 			return true;
 		}
 		Party party = null;
-		int type = -1;
+		Type type = Type.WRONGCMD;
 		if (args.length == 2) {
 			// Own party
 			if (!tp.getPartyName().isEmpty())
 				party = plugin.getPartyHandler().getParty(tp.getPartyName());
-			type = 1;
+			type = Type.OWN;
 		} else if (args.length == 3) {
 			// Another party
 			if (p.hasPermission(PartiesPermissions.RENAME_OTHERS.toString())) {
 				party = plugin.getPartyHandler().getParty(args[1]);
-				type = 2;
+				type = Type.ANOTHER;
 			}
 		}
 		
 		if (party == null) {
 			switch (type) {
-			case 1:
+			case OWN:
 				// No party
 				tp.sendMessage(Messages.noparty);
 				break;
-			case 2:
+			case ANOTHER:
 				// Party doesn't exist
 				tp.sendMessage(Messages.rename_noexist.replace("%party%", args[1]));
 				break;
-			default:
+			case WRONGCMD:
 				// Wrong command
 				if (p.hasPermission(PartiesPermissions.RENAME_OTHERS.toString()))
 					tp.sendMessage(Messages.rename_wrongcmd_admin);
@@ -70,7 +70,7 @@ public class CommandRename implements CommandInterface {
 			return true;
 		}
 		
-		if (type == 1) {
+		if (type.equals(Type.OWN)) {
 			Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
 			if (r != null && !p.hasPermission(PartiesPermissions.RENAME_OTHERS.toString()) && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
 				if (!r.havePermission(PartiesPermissions.PRIVATE_ADMIN_RENAME.toString())) {
@@ -88,7 +88,7 @@ public class CommandRename implements CommandInterface {
 		 * 
 		 * 
 		 */
-		String partyName = args[type]; // type == 1 ? args[1] : args[2]
+		String partyName = args[(type.equals(Type.OWN) ? 1 : 2)]; // type == 1 ? args[1] : args[2]
 		
 		if (partyName.length() > Variables.party_maxlengthname) {
 			tp.sendMessage(Messages.create_toolongname);
@@ -152,13 +152,11 @@ public class CommandRename implements CommandInterface {
 		 */
 		String oldPartyName = party.getName();
 		// Calling API event
-		PartiesPartyRenameEvent partiesRenameEvent = new PartiesPartyRenameEvent(oldPartyName, partyName, p, type == 2 ? true : false);
+		PartiesPartyRenameEvent partiesRenameEvent = new PartiesPartyRenameEvent(oldPartyName, partyName, p, type.equals(Type.ANOTHER) ? true : false);
 		Bukkit.getServer().getPluginManager().callEvent(partiesRenameEvent);
 		partyName = partiesRenameEvent.getNewPartyName();
 		if (!partiesRenameEvent.isCancelled()) {
-			if (!plugin.getDatabaseType().isNone()) {
-				plugin.getDataHandler().renameParty(oldPartyName, partyName);
-			}
+			plugin.getDatabaseDispatcher().renameParty(oldPartyName, partyName);
 			for (Player player : party.getOnlinePlayers()) {
 				plugin.getPlayerHandler().getPlayer(player.getUniqueId()).setPartyName(partyName);
 			}
@@ -178,5 +176,9 @@ public class CommandRename implements CommandInterface {
 			LogHandler.log(LogLevel.DEBUG, "PartiesRenameEvent is cancelled, ignoring rename of " + oldPartyName, true);
 		}
 		return true;
+	}
+	
+	private enum Type {
+		OWN, ANOTHER, WRONGCMD;
 	}
 }

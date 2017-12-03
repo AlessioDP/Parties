@@ -72,7 +72,7 @@ public class CommandKick implements CommandInterface {
 		/*
 		 * Players conflict handler
 		 */
-		HashMap<UUID, Long> listPlayersName = plugin.getDataHandler().getPlayersFromName(playerName);
+		HashMap<UUID, Long> listPlayersName = plugin.getDatabaseDispatcher().getPlayersFromName(playerName);
 		UUID[] array = new UUID[listPlayersName.size()];
 		if (listPlayersName.size() < 1) {
 			tp.sendMessage(Messages.kick_nomemberother
@@ -95,7 +95,7 @@ public class CommandKick implements CommandInterface {
 						sb.append(Messages.kick_playersconflict_player
 								.replace("%number%", Integer.toString(i))
 								.replace("%username%", newname)
-								.replace("%party%", plugin.getDataHandler().getPlayerPartyName(u))
+								.replace("%party%", plugin.getDatabaseDispatcher().getPlayerPartyName(u))
 								.replace("%date%", date.toString())
 								.replace("%time%", time.toString()) + "\n");
 						array[i-1] = u;

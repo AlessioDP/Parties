@@ -66,13 +66,13 @@ public class CommandPassword implements CommandInterface {
 		 * 
 		 */
 		
-		if (args[1].equalsIgnoreCase(Variables.tag_custom_removeword)) {
+		if (args[1].equalsIgnoreCase(Variables.command_sub_remove)) {
 			party.setPassword("");
 			party.updateParty();
 
 			party.sendBroadcastParty(p, Messages.password_removed);
 			
-			LogHandler.log(LogLevel.DEBUG, p.getName() + "[" + p.getUniqueId() + "] removed password to the party " + party.getName(), true);
+			LogHandler.log(LogLevel.MEDIUM, p.getName() + "[" + p.getUniqueId() + "] removed password to the party " + party.getName(), true);
 			return true;
 		}
 
@@ -88,7 +88,7 @@ public class CommandPassword implements CommandInterface {
 		
 		party.sendBroadcastParty(p, Messages.password_changed);
 		
-		LogHandler.log(LogLevel.DEBUG, p.getName() + "[" + p.getUniqueId() + "] set new password to the party " + party.getName(), true);
+		LogHandler.log(LogLevel.MEDIUM, p.getName() + "[" + p.getUniqueId() + "] set new password to the party " + party.getName(), true);
 		return true;
 	}
 	private String hash(String text) {

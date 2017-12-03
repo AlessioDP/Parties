@@ -1,0 +1,253 @@
+# 
+# Parties' Messages configuration file
+#
+# For a better configuration:
+# - Use Notepad++
+#   - View -> Symbols -> Show White Space and TAB (Active)
+#   - Don't use arrows, but spaces
+# - Setting format editor to YAML
+#
+#
+# Available tags:
+# ColorCodes (ex: &1, &2, &3, &a, &b, &c, &r, &l)
+# %party% = Show name of party
+# %desc% = Show party description
+# %motd% = Motd of the party
+# %kills% = Kills of the party
+# %prefix% = Prefix of the party
+# %suffix% = Suffix of the party
+# %players% = Number of players online in the party
+# %sender% or %player% = Show name of sender/player
+# %rank% = Show a customizable string (format-rank-leader and format-rank-member)
+# %message% = Show the message of player
+# %world% = Show the name of world of sender/player (ex: world_nether)
+# %group% = If PEX/GM is active will display the name of group
+# %price% = Price of the command (Only some commands, see config.yml)
+#
+# You can use \n for ENTER 
+#
+# Special tag: %permission% = Name of missing permission
+no-permission: "&cУ тебя нет права %permission% ."
+invalid-command: "&cОшибка команды."
+cant-hit-mates: "&cТы не можешь бить людей в party"
+warn-on-hit-leaders: "&c%player% попробовал ударить %victim%!"
+no-party: "&cТы еще не в party"
+configuration-reloaded: "&aКонфигурация перезагружена"
+# Special tags: %version% = The version of the update | %thisversion% = The version of your plugin
+update-available: "&9Parties %thisversion% найдено обновление: %version%"
+# Special tags: %exp% = Experience gained | %exptotal% = Total experience | %mob% = Mob type name (Ex. Skeleton, Zombie)
+exp-gained: "&bТы убил %mob% и получил %exp% опыта"
+exp-gained-from-other: "&b%player% убил %mob% и получил %exp% опыта"
+p:
+    wrong-command: "&cИспользование: Type &7/p <message>"
+create:
+    party-created: "&l&bТы создал группу. Пригласить игроков: &7/party invite."
+    name-already-exist: "&cГруппа с названием %party% уже существует. Попробуй другое."
+    already-in-party: "&cТы уже в группе!"
+    too-long-name: "&cНазвание слишком большое!"
+    too-short-name: "&cНазвание слишком маленькое!"
+    invalid-name: "&cНеизвестные символы. Используй: a-Z or 0-9."
+    censored-name: "&cНазвание имеет запрещенные слова!"
+    wrong-command: "&cИспользование: &7/party create <название>"
+accept:
+    welcome-player: "&b&lТы присоединился к группе."
+    player-joined: "&b&l%player% присоединился к группе"
+    invite-accepted: "&a%player% принял приглашение в группу"
+    accepted: "&aТы принял приглашение."
+    max-player-reached: "&cГруппа переполнена!"
+    no-invite: "&cУ тебя нет приглашений."
+    no-exist: "&cПриглашение больше не существует."
+deny:
+    invite-denied: "&7%player% пропустил приглашение в группу."
+    denied: "&7Ты упустил приглашение в группу."
+    no-invite: "&cУ тебя нет приглашений."
+    no-exist: "&cПриглашение больше не существует."
+ignore:
+    header: "&b&lИгнорируемые party:"
+    list-ignored-color: "&c"
+    list-ignored-separator: "&7, "
+    list-ignored-empty: "&7Никто"
+    party-ignored: "&7Игнорируем %party% приглашения."
+    party-deignored: "&7Ты больше не игнорируешь %party%"
+    no-exist: "&cParty не существует."
+    wrong-command: "&cИспользование: &7/party ignore [название party]"
+leave:
+    bye-player: "&b&lТы покинул группу %party%"
+    player-leaved-from-party: "&b&l%player% покинул группу."
+    party-disbanded: "&b&lГруппа распущена(лидер покинул игру)"
+info:
+    # Special tags:
+    # %leaders% = List leaders | %numberleaders% = Number of leaders
+    # %members% = List members | %numbermembers% = Number of members
+    # %online% = List online players | %numberonline% = Number of online players
+    header: "&b============ &l%party% Информация &r&b============"
+    content: "&bОписание: &7%desc%\n&bMotd: &7%motd%\n&bЛидеры: &7%leaders%\n&bУчастники: &7%numbermembers%\n&bOnline: &7%numberonline%"
+    player-online-prefix: "&7"
+    player-offline-prefix: "&8"
+    player-separator: "&8, "
+    player-empty: "&7Никого"
+    missing: "&7Упущено"
+    no-exist: "&cParty %party% не существует."
+    wrong-command: "&cИспользование: &7/party info [название Party]"
+members:
+    # Special tag: %number% (Can be maxnumber or just the number of leaders and members)
+    header: "&b&lУчастники %party%"
+    leaders: "&7Лидеры[%number%]: "
+    members: "&7Участники[%number%]: "
+    player-online-prefix: "&7"
+    player-offline-prefix: "&8"
+    someone-player: "&7Неизвестный"
+    player-separator: "&8, "
+    player-empty: "&7Никого"
+    no-exist: "&cParty %party% не существует."
+    wrong-command: "&cИспользование: &7/party members [название Party]"
+desc:
+    # Special tag: %desc% = Description of the party
+    changed: "&bОписание изменено на %desc%"
+    removed: "&bОписание удалено."
+    invalid-chars: "&cНеизвестные символы. Используй: a-Z or 0-9. Минимум 3 и максимум 16 символов."
+    censored-name: "&cОписание содержит запрещенные слова!"
+    only-leader: "&cТолько лидеры могут менять описание."
+    wrong-command: "&cИспользование: &7/party desc <description/remove>"
+motd:
+    # Special tag: %motd% = MOTD (Message of the Day) of the party
+    changed: "&bParty motd изменен"
+    removed: "&bParty motd удален"
+    header: "&bParty motd:"
+    color-motd: "&b"
+    footer: ""
+    invalid-chars: "&cНеизвестные символы. Используй ''. , /''. мин. 3 и макс. 100 символов."
+    censored-name: "&cОписание содержит запрещенные слова!"
+    only-leader: "&cТолько лидеры могут изменять motd"
+    wrong-command: "&cИспользование: &7/party motd <motd/remove>"
+chat:
+    enabled: "&aРежим чата изменен на 'party'"
+    disabled: "&aРежим чата изменен на 'глобальный'"
+    wrong-command: "&cИспользование: &7/party chat [on/off]"
+list:
+    # Special tags: %number% = Number parties online | %page% = Current list page | %maxpages% = How many pages exist
+    header: "&b============ &lСписок Party онлайн &r&b============"
+    sub-header: ""
+    no-one-online: "&7Никто"
+    format-party: "&b%party%&7[&6Онлайн %players%&7] %desc%"
+    footer: "&b================ &lСтр. %page% of %maxpages% &r&b================"
+    wrong-command: "&cИспользование: &7/party list [страница]"
+invite:
+    only-leader: "&cПриглашать в группу может только лидер."
+    only-online: "&cИгрок не в сети."
+    max-player-reached: "&cГруппа заполнена!"
+    already-party: "&c%player% уже в группе"
+    already-invite: "&c%player% уже приглашен"
+    no-permission-player: "&c%player% не имеет прав party"
+    invite-send: "&bПриглашение отправлено %player%"
+    invite-rec: "&b%player% пригласил вас в группу"
+    invite-timeout: "&7Ты упустил приглашение в party."
+    invite-noresponse: "&7%player% не принял приглашение."
+    invite-revoked-send: "&7Отменено приглашение %player%"
+    invite-revoked-rec: "&7Приглашение от  %party% отменено отправителем."
+    how-accept: "&bЧтобы принять приглашение: &6/party accept /n &bЧтобы отклонить: &6/party deny"
+    wrong-command: "&cИспользование: &7/party invite <игрок>"
+prefix:
+    changed: "&bParty prefix изменен в %prefix%"
+    removed: "&bParty prefix удален"
+    invalid-chars: "&cНеизвестные символы. Используй: a-Z или 0-9. Мин. 3 и макс. 6 символов."
+    censored-name: "&cPrefix содержит запрещенные слова!"
+    only-leader: "&cТолько лидеры могуи изменять prefix"
+    wrong-command: "&cИспользование: &7/party prefix <prefix/remove>"
+suffix:
+    changed: "&bParty suffix изменен на %suffix%"
+    removed: "&bParty suffix удален"
+    invalid-chars: "&cНеизвестные символы. Используй: a-Z или 0-9. Мин. 3 и макс. 6 символов."
+    censored-name: "&cSuffix содержит запрещенные слова!"
+    only-leader: "&cТолько лидеры могуи изменять suffix"
+    wrong-command: "&cИспользование: &7/party suffix <suffix/remove>"
+kick:
+    only-leader: "&cТолько лидеры могуд выкидывать игроков."
+    cant-kick-leader: "&cНельзя выкинуть лидера."
+    kick-send: "&b&lВыкинут %player% из party!"
+    kicked-from-party: "&bТебя выкинули из %party%"
+    kicked-player-party: "&b&l%player% выкинут из party"
+    no-member: "&c%player% не находится в party"
+    wrong-command: "&cИспользование:  &7/party kick <название>"
+delete:
+    deleted: "&aParty %party% удалена"
+    silent-delete: "&aParty %party% молча удалена"
+    warn: "&cParty удалена"
+    no-exist: "&cParty %party% не существует"
+    wrong-command: "&cИспользование: &7/party delete <название> [silent]"
+rename:
+    renamed: "&aParty переименовано с %old% в %party%"
+    broadcast-party: "&aParty переименовано в %party%!"
+    no-exist: "&cParty %party% не существует."
+    wrong-command: "&cИспользование: &7/party rename <название> <новое имя>"
+leader:
+    only-leader: "&cТолько лидеры могут назначать игроков лидерами"
+    already-leader: "&c%player% уже лидер!"
+    no-member: "&c%player% не находится в группе."
+    promoted-leader: "&b&l%player% теперь лидер группы."
+    degrade-leader: "&b&l%player% больше не лидер группы."
+    degrade-yourself: "&cТы не можешь понизить себя.!"
+    wrong-command: "&cИспользование: &7/party leader <имя>"
+sethome:
+    setted-broadcast: "&aУстановленна новая точка party-дома!"
+    only-leader: "&Только лидеры могут назнаать точку party-дома"
+    wrong-command: "&cИспользование: &7/party sethome"
+home:
+    teleported: "&7Перемещение в party-дом"
+    # Special tag: %time% = Time of cooldown
+    teleport-in: "&7Телепортация через  %time% секунд..."
+    teleport-denied: "&7Телепортация отклонена."
+    only-leader: "&cТолько лидеры могут телепортироваться в party-дом"
+    no-home: "&cДом party не установлен."
+    wrong-command: "&cИспользование: &7/party home"
+claim:
+    done: "&aПрава предоставлены."
+    removed: "&aПрава удалены."
+    only-leader: "&cТолько лидер может предоставлять права party"
+    no-manager: "&cВы должны быть менеджером утверждения party."
+    no-exist-claim: "&cУтверждение не найдено."
+    wrong-command: "&cИспользование: &7/party claim <право>\n&cПрава: trust, container & access"
+spy:
+    activated: "&7Теперь вы шпион!"
+    disabled: "&7Вы больше не шпион."
+database:
+    to-file: "&aИнформация скопирована с сервера БД в файл."
+    to-sql: "&aИнформация скопирована с файла на сервер БД."
+    sql-offline: "&cСервер БД SQL не онлайн!"
+    none: "&cНеправельная БД!"
+    wrong-command: "&cИспользование: &7/party migrate <sql/file>"
+vault:
+    create-nomoney: "&cНехваиает денег для создания party[%price%$]"
+    home-nomoney: "&cНехватает денег для телепортирования на party-дом [%price%$]"
+    sethome-nomoney: "&cНехватает денег для создания точки party-дома [%price%$]"
+    desc-nomoney: "&cНехватает денег для создания описания [%price%$]"
+    motd-nomoney: "&cНехватает денег для изменения MOTD [%price%$]"
+    prefix-nomoney: "&cНехватает денег для изменения prefix [%price%$]"
+    suffix-nomoney: "&cНехватает денег для изменения suffix [%price%$]"
+help:
+    header: "&b================= &l Party Помощь %page%/%maxpages% &r&b================="
+    help: "&b/party help [стр.] &7- Страницы помощи"
+    p: "&b/p <message> &7- отправить сообщение всем в party"
+    create: "&b/party create <название> &7- создать party"
+    accept: "&b/party accept &7- Принять приглашение"
+    deny: "&b/party deny &7- Отклонить приглашение"
+    ignore: "&b/party ignore [party] &7- Добавить/Удалить/показать игнорируемые party"
+    leave: "&b/party leave &7- Покинуть party"
+    info: "&b/party info [party] &7- Информация о party"
+    members: "&b/party members [party] &7- Пользователи party"
+    desc: "&b/party desc <description/remove> &7- Добавить/удалить описание"
+    motd: "&b/party motd <motd/remove> &7- Добавить/удалить motd"
+    chat: "&b/party chat [on/off] &7- Toggle the party chat"
+    list: "&b/party list [page] &7- Show list parties online"
+    invite: "&b/party invite <player> &7- Invite a player to your party"
+    prefix: "&b/party prefix <prefix/remove> &7- Добавить/удалить prefix "
+    suffix: "&b/party suffix <suffix/remove> &7- Добавить/удалить suffix "
+    kick: "&b/party kick <player> &7- Выкинуть игрока из party"
+    leader: "&b/party leader <player> &7- Повысить игрока до лидера"
+    spy: "&b/party spy &7- Шпионские сообщения других участников"
+    delete: "&b/party delete <party> &7- Удалить party"
+    rename: "&b/party rename <party> <newname> &7- Переименовать party"
+    reload: "&b/party reload &7- Перезагрузить конфигурацию плагина."
+    migrate: "&b/party migrate <sql/file> &7- Копировать  информацию в  сервер БД SQL/Файл"
+dont-edit-this:
+    messages-version: 7

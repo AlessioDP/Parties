@@ -73,7 +73,7 @@ public class ChatListener implements Listener {
 							String newMessage = partiesChatEvent.getMessage();
 							if (!partiesChatEvent.isCancelled()) {
 								party.sendPlayerMessage(p, newMessage);
-								if (Variables.log_chat)
+								if (Variables.storage_log_chat)
 									LogHandler.log(LogLevel.BASIC, "Chat of " + party.getName() + " by " + p.getName() + ": " + newMessage, true);
 							} else
 								LogHandler.log(LogLevel.DEBUG, "PartiesChatEvent is cancelled, ignoring chat of " + p.getName() + ": " + event.getMessage(), true);

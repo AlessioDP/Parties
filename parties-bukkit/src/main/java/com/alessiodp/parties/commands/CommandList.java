@@ -44,7 +44,7 @@ public class CommandList implements CommandInterface {
 		 */
 		
 		List<Party> parties = new ArrayList<Party>();
-		for (Party party : plugin.getDataHandler().getAllParties()) {
+		for (Party party : plugin.getDatabaseDispatcher().getAllParties()) {
 			if (party != null) {
 				party.reloadOnlinePlayers();
 				if (party.getNumberOnlinePlayers() >= Variables.list_filter)

@@ -1,4 +1,4 @@
-package com.alessiodp.parties.utils.bungeecord;
+package com.alessiodp.parties.bungeecord.handlers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -6,20 +6,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.alessiodp.parties.PartiesBungee;
-import com.alessiodp.parties.utils.enums.ConsoleColors;
+import com.alessiodp.parties.bungeecord.PartiesBungee;
+import com.alessiodp.parties.bungeecord.configuration.Variables;
+import com.alessiodp.parties.bungeecord.utils.ConsoleColors;
 
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-public class ConfigHandlerBungee {
-	PartiesBungee plugin;
-	VariablesBungee variables;
+public class ConfigHandler {
+	private PartiesBungee plugin;
 
-	public ConfigHandlerBungee(PartiesBungee instance) {
+	public ConfigHandler(PartiesBungee instance) {
 		plugin = instance;
-		variables = new VariablesBungee();
+		new Variables();
 		reloadConfig();
 	}
 	
@@ -50,12 +50,12 @@ public class ConfigHandlerBungee {
 			plugin.log(ConsoleColors.RED.getCode() + "Configuration file outdated");
 		
 		if (cfg.get("follow-party.enable") != null)
-			VariablesBungee.follow_enable = cfg.getBoolean("follow-party.enable");
+			Variables.follow_enable = cfg.getBoolean("follow-party.enable");
 		if (cfg.get("follow-party.needed-rank") != null)
-			VariablesBungee.follow_neededrank = cfg.getInt("follow-party.needed-rank");
+			Variables.follow_neededrank = cfg.getInt("follow-party.needed-rank");
 		if (cfg.get("follow-party.minimum-rank") != null)
-			VariablesBungee.follow_minimumrank = cfg.getInt("follow-party.minimum-rank");
-		VariablesBungee.follow_listserver = cfg.getStringList("follow-party.list-server");
+			Variables.follow_minimumrank = cfg.getInt("follow-party.minimum-rank");
+		Variables.follow_listserver = cfg.getStringList("follow-party.list-server");
 		
 	}
 }

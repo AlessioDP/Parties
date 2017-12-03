@@ -10,9 +10,9 @@ import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
-import com.alessiodp.parties.utils.enums.ConsoleColors;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
+import com.alessiodp.parties.utils.enums.StorageType;
 
 public class CommandMigrate implements CommandInterface {
 	private Parties plugin;
@@ -23,68 +23,63 @@ public class CommandMigrate implements CommandInterface {
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		boolean isPlayer = sender instanceof Player;
 		ThePlayer tp = isPlayer ? plugin.getPlayerHandler().getPlayer(((Player)sender).getUniqueId()) : null;
-		if (!(tp != null && Variables.database_migrate_console)) {
-			if (!(tp != null && !sender.hasPermission(PartiesPermissions.ADMIN_MIGRATE.toString()))) {
-				if (!plugin.getDatabaseType().isNone()) {
-					if (plugin.getDataHandler().isSQLEnabled()) {
-						// You can perform this command
-						if (args.length > 1) {
-							switch (args[1].toLowerCase()) {
-							case "sql":
-								if (plugin.getDataHandler().migrateYAMLtoSQL()) {
-									// Success
-									if (tp != null)
-										tp.sendMessage(Messages.migrate_tosql);
-									LogHandler.log(LogLevel.BASIC, "Database system migrated to SQL, by " + sender.getName(), true, ConsoleColors.CYAN);
+		if (tp == null || !Variables.storage_migrate_onlyconsole) {
+			// If party is null == is a console (PASS), or if it's a player => is onlyconsole false? (PASS)
+			if (tp == null || sender.hasPermission(PartiesPermissions.ADMIN_MIGRATE.toString())) {
+				StorageType databaseNow = plugin.getDatabaseType();
+				if (args.length == 3) {
+					// Migrate command
+					StorageType databaseFrom = StorageType.getExactEnum(args[1]);
+					StorageType databaseTo = StorageType.getExactEnum(args[2]);
+					if (databaseFrom != null && databaseTo != null
+							&& !databaseFrom.isNone() && !databaseTo.isNone()) {
+						// Exist these databases?
+						if (!databaseFrom.equals(databaseTo)) {
+							// Are different these databases?
+							if (!plugin.getDatabaseDispatcher().isStorageOnline(databaseFrom)) {
+								// Database from is offline
+								String msg = Messages.migrate_failed_offline
+										.replace("%database%",databaseFrom.getFormattedName());
+								sendMessage(msg, tp, sender);
+							} else if (!plugin.getDatabaseDispatcher().isStorageOnline(databaseTo)) {
+								// Database to is offline
+								String msg = Messages.migrate_failed_offline
+										.replace("%database%",databaseTo.getFormattedName());
+								sendMessage(msg, tp, sender);
+							} else {
+								// Databases online, start migration
+								if (plugin.getDatabaseDispatcher().migrateStart(databaseFrom, databaseTo)) {
+									// Migration done
+									String msg = Messages.migrate_complete
+											.replace("%database_to%", databaseTo.getFormattedName())
+											.replace("%database_from%", databaseFrom.getFormattedName());
+									sendMessage(msg, tp, sender);
+									LogHandler.log(LogLevel.BASIC, msg, isPlayer ? true : false);
 								} else {
-									// Fail
-									if (tp != null)
-										tp.sendMessage(Messages.migrate_failed);
-									LogHandler.log(LogLevel.BASIC, "Database migration failed, by " + sender.getName(), true, ConsoleColors.RED);
+									// Migration failed
+									String msg = Messages.migrate_failed_migration
+											.replace("%database_to%", databaseTo.getFormattedName())
+											.replace("%database_from%", databaseFrom.getFormattedName());
+									sendMessage(msg, tp, sender);
+									LogHandler.log(LogLevel.BASIC, msg, isPlayer ? true : false);
 								}
-									
-								
-								break;
-							case "file":
-								if (plugin.getDataHandler().migrateSQLtoYAML()) {
-									// Success
-									if (tp != null)
-										tp.sendMessage(Messages.migrate_tosql);
-									LogHandler.log(LogLevel.BASIC, "Database system migrated to YAML, by " + sender.getName(), true, ConsoleColors.CYAN);
-								} else {
-									// Fail
-									if (tp != null)
-										tp.sendMessage(Messages.migrate_failed);
-									LogHandler.log(LogLevel.BASIC, "Database migration failed, by " + sender.getName(), true, ConsoleColors.RED);
-								}
-								break;
-							default:
-								if (tp != null)
-									tp.sendMessage(Messages.migrate_wrongcmd);
-								else
-									plugin.log(Messages.migrate_wrongcmd);
 							}
 						} else {
-							// Argument missing
-							if (tp != null)
-								tp.sendMessage(Messages.migrate_wrongcmd);
-							else
-								plugin.log(Messages.migrate_wrongcmd);
+							// Same databases
+							sendMessage(Messages.migrate_failed_same, tp, sender);
 						}
 					} else {
-						// SQL Database is offline
-						if (tp != null)
-							tp.sendMessage(Messages.migrate_offlinesql);
-						LogHandler.printError(Messages.migrate_offlinesql);
+						// Wrong database (or None)
+						sendMessage(Messages.migrate_wrongdatabase, tp, sender);
 					}
 				} else {
-					// Database is set to NONE
-					if (tp != null)
-						tp.sendMessage(Messages.migrate_none);
-					LogHandler.printError(Messages.migrate_none);
+					// Shows info
+					String msg = Messages.migrate_info
+							.replace("%database%", databaseNow.getFormattedName());
+					sendMessage(msg, tp, sender);
 				}
 			} else {
-				// Sender doesn't have migrate permission
+				// No permission
 				tp.sendMessage(Messages.nopermission
 						.replace("%permission%", PartiesPermissions.ADMIN_MIGRATE.toString()));
 			}
@@ -93,5 +88,12 @@ public class CommandMigrate implements CommandInterface {
 			tp.sendMessage(Messages.invalidcommand);
 		}
 		return true;
+	}
+	
+	private void sendMessage(String msg, ThePlayer tp, CommandSender sender) {
+		if (tp != null)
+			tp.sendMessage(msg);
+		else
+			plugin.log(msg);
 	}
 }

@@ -1,24 +1,23 @@
-package com.alessiodp.parties.utils.bungeecord;
+package com.alessiodp.parties.bungeecord.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VariablesBungee {
+public class Variables {
 	public static boolean follow_enable;
 	public static int follow_neededrank;
 	public static int follow_minimumrank;
 	public static List<String> follow_listserver;
 	
-	public VariablesBungee() {
+	public Variables() {
 		loadDefaults();
 	}
 	public void loadDefaults() {
 		follow_enable = false;
 		follow_neededrank = 0;
 		follow_minimumrank = 0;
-		List<String> list = new ArrayList<String>();
-		list.add("hub");
-		list.add("lobby");
-		follow_listserver = list;
+		follow_listserver = new ArrayList<String>();
+		follow_listserver.add("hub");
+		follow_listserver.add("lobby");
 	}
 }

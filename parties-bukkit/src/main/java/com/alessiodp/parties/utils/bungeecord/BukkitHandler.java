@@ -14,25 +14,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.alessiodp.parties.Parties;
-import com.alessiodp.parties.PartiesBungee;
+import com.alessiodp.parties.bungeecord.PartiesBungee;
+import com.alessiodp.parties.bungeecord.utils.Packet;
 import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
-import com.alessiodp.parties.utils.enums.ConsoleColors;
-import com.alessiodp.parties.utils.enums.LogLevel;
 
 public class BukkitHandler implements PluginMessageListener {
-	Parties plugin;
+	private Parties plugin;
+	private String partiesChannel;
 	
 	public BukkitHandler(Parties instance) {
 		plugin = instance;
-		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, PartiesBungee.channel);
-		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, PartiesBungee.channel, this);
+		partiesChannel = PartiesBungee.CHANNEL;
+		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, partiesChannel);
+		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, partiesChannel, this);
 	}
 
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-		if (!channel.equals(PartiesBungee.channel)) {
+		if (!channel.equals(partiesChannel)) {
 			return;
 		}
 		ByteArrayInputStream stream = new ByteArrayInputStream(message);
@@ -40,7 +41,6 @@ public class BukkitHandler implements PluginMessageListener {
 		Packet packet;
 		ThePlayer tp = plugin.getPlayerHandler().getPlayer(player.getUniqueId());
 		Party party = plugin.getPartyHandler().getParty(tp.getPartyName());
-		
 		try {
 			packet = new Packet(in);
 			if (packet.getVersion().equals(plugin.getDescription().getVersion())) {
@@ -48,10 +48,11 @@ public class BukkitHandler implements PluginMessageListener {
 					if (tp.getRank() < packet.getRankNeeded())
 						return;
 					List<String> list = new ArrayList<String>();
-					for (Player pl : party.getOnlinePlayers())
+					for (Player pl : party.getOnlinePlayers()) {
 						if ((pl != player) && (plugin.getPlayerHandler().getPlayer(pl.getUniqueId()).getRank() >= packet.getRankMinimum())) {
 							list.add(pl.getUniqueId().toString());
 						}
+					}
 					packet.setInfo(list);
 					packet.setMessage(ChatColor.translateAlternateColorCodes('&', Messages.follow_following_server.replace("%server%", packet.getServer())));
 					/*
@@ -62,14 +63,15 @@ public class BukkitHandler implements PluginMessageListener {
 					packet.write(out);
 					Player p = Bukkit.getServer().getOnlinePlayers().iterator().next();
 					if (p != null) {
-						p.sendPluginMessage(plugin, PartiesBungee.channel, outstream.toByteArray());
+						PartiesBungee.debugLog("Parties packet sent back to the channel");
+						p.sendPluginMessage(plugin, partiesChannel, outstream.toByteArray());
 					}
 				}
 			} else {
-				LogHandler.log(LogLevel.BASIC, "Skipping bungeecord Parties packet. Versions don't match! (" + packet.getVersion() + ")", true, ConsoleColors.RED);
+				LogHandler.printError("Skipping Bungeecord Parties packet. Versions don't match (" + packet.getVersion() + ")");
 			}
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			LogHandler.printError("Something gone wrong with Bungeecord handler: " + ex.getMessage());
 		}
 	}
 }

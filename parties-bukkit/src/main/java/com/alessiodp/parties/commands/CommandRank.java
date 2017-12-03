@@ -66,7 +66,7 @@ public class CommandRank implements CommandInterface {
 		String playerName = args[1];
 		
 		UUID offlineUUID = null;
-		HashMap<UUID, Long> listPlayersName = plugin.getDataHandler().getPlayersFromName(playerName);
+		HashMap<UUID, Long> listPlayersName = plugin.getDatabaseDispatcher().getPlayersFromName(playerName);
 		if (listPlayersName.keySet() != null && listPlayersName.keySet().iterator() != null)
 			offlineUUID = listPlayersName.keySet().iterator().next();
 		else {

@@ -84,8 +84,8 @@ public class PlayerHandler {
 			ret = getListPlayers().get(uuid);
 			LogHandler.log(LogLevel.DEBUG, "Got player " + ret.getName() + " from list [party:" + ret.getPartyName()+ "]", true);
 		} else {
-			if (ret == null && !plugin.getDatabaseType().isNone()) {
-				ret = plugin.getDataHandler().getPlayer(uuid, false);
+			if (ret == null) {
+				ret = plugin.getDatabaseDispatcher().getPlayer(uuid);
 				if (ret != null)
 					LogHandler.log(LogLevel.DEBUG, "Got player " + ret.getName() + " from database [party:" + ret.getPartyName()+ "]", true);
 			}
@@ -155,7 +155,7 @@ public class PlayerHandler {
 		}
 	}
 	public void initSpies() {
-		listSpyPlayers = plugin.getDataHandler().getSpies(false);
+		listSpyPlayers = plugin.getDatabaseDispatcher().getSpies();
 	}
 	public boolean isSpy(UUID uuid) {
 		boolean ret = false;
@@ -173,7 +173,7 @@ public class PlayerHandler {
 			changed = true;
 		}
 		if (changed)
-			plugin.getDataHandler().updateSpies(listSpyPlayers, false);
+			plugin.getDatabaseDispatcher().updateSpies(listSpyPlayers);
 	}
 	/*
 	 * 

@@ -25,16 +25,15 @@
 |Party prefix/suffix                |Divide EXP system                    |API system|
 |Party home                         |Hide commands without permissions    |JSON support|
 |Party teleport to the leader       |Follow party in servers/worlds       |Statistics system|
-|Optional limits for members/names  |Auto use the command of the leader   |Gravity updater|
-|Create empty parties (called fixed)|Tab complete support                 |SQL or YAML database|
-|Party delete/rename                |Log system                           ||
-|                                   |Every command/message is configurable||
+|Party color customizable           |Auto use the command of the leader   |Gravity updater|
+|Optional limits for members/names  |Tab complete support                 |YAML and MySQL database|
+|Create empty parties (called fixed)|Log system                           ||
+|Party delete/rename                |Every command/message is configurable||
 
 <br>
 
 ## Downloads
 ### [Spigot page](https://www.spigotmc.org/resources/parties.3709/)
-### [PaperSpigot page]()
 ### [Bukkit page](https://dev.bukkit.org/projects/parties)
 
 <br>

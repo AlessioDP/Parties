@@ -14,6 +14,9 @@
 # %desc% = Description of the party
 # %motd% = MOTD of the party
 # %kills% = Kills of the party
+# %color_name% = Party color name
+# %color_command% = Party color command
+# %color_code% = Party color code
 # %prefix% = Prefix of the party
 # %suffix% = Suffix of the party
 # %players% = Number of players online in the party
@@ -47,63 +50,62 @@ functions:
     join-leave-messages: false
     # Enable bungeecord listener (Insert parties in bungeecord plugin folder too)
     bungeecord: false
-log:
-    # Enable log system
-    enable: false
-    # Log format
-    # %date% = Date as yyyy-MM-dd
-    # %time% = Time as HH:mm:ss
-    # %position% = Debug purpose, show caller class (USE IT TO REPORT BUGS)
-    # %level% = Mode of the message
-    # %message% = Message
-    format: "%date% [%time%] (%level%) {%position%} %message%"
-    # Log chat of parties
-    chat: true
-    # Print messages on the console
-    print-console: true
-    # Levels:
-    # 1: Basic log level
-    # 2: Log all events that interacts with the database
-    # 3: Debug level (Log a lot of events)
-    mode: 1
-    # file = Save all logs into log.txt
-    # sql = Save all logs into a SQL Database
-    type: file
-    file:
-        name: "log.txt"
-    sql:
-        url: "jdbc:mysql://localhost:3306/database"
-        username: "username"
-        password: "password"
-        varchar-size: 255
-        log-table: "log"
-database:
-    # none = Don't save parties (A reload reset everything)
-    # file = Save all data into a configuration file
-    # sql = Save all data into a SQL Database
-    type: file
-    # Command migrate can be used only via console
-    migrate-only-console: true
-    # Rename old data.yml (Empty to overwrite)
-    migration-suffix: "_backup"
-    file:
-        # Name of data-file (default: data.yml)
-        name: "data.yml"
-    sql:
-        # You can enable it to use migrate command
-        enable: false
-        url: "jdbc:mysql://localhost:3306/database"
-        username: "username"
-        password: "password"
-        tables:
+storage:
+    # What type of storage Parties should use?
+    # Available types:
+    # none = Parties data is saved into memory (A reload reset everything, disable log if used on it)
+    # yaml = Save all data into a yaml file
+    # mysql = Save all data into a MySQL Database
+    log-storage-type: none
+    database-storage-type: yaml
+    log-settings:
+        # Log format
+        # %date% = Date as yyyy-MM-dd
+        # %time% = Time as HH:mm:ss
+        # %position% = Debug purpose, show caller class (USE IT TO REPORT BUGS)
+        # %level% = Mode of the message
+        # %message% = Message
+        format: "%date% [%time%] (%level%) {%position%} %message%"
+        # Log chat of parties
+        chat: true
+        # Print messages on the console
+        print-console: true
+        # Levels:
+        # 1: Basic log level
+        # 2: Log all events that interacts with the database
+        # 3: Debug level (Log a lot of events)
+        log-level: 1
+    migrate-settings:
+        # Used to initialize MySQL database even if type set to another storage
+        force-mysql: false
+        # Command migrate can be used only via console
+        migrate-only-console: true
+        # Rename old data.yml (Empty to overwrite)
+        migration-suffix: "_backup"
+    storage-settings:
+        yaml:
+            database-name: "data.yml"
+            log-name: "log.txt"
+        mysql:
+            url: "jdbc:mysql://localhost:3306/database"
+            username: "username"
+            password: "password"
             varchar-size: 255
-            spies: "spies"
-            players: "players"
-            parties: "parties"
-    none:
-        disband-on-leader-left: true
-        # Delete empty parties after tot seconds
-        delay-delete-party: 600
+            # Size of the connection pool
+            pool-size: 10
+            # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
+            conn-lifetime: 1800000
+            # Connection timeout, drop connection if the query take too long (Default: 15 seconds = 15000ms)
+            conn-timeout: 10000
+            tables:
+                parties: "parties_parties"
+                players: "parties_players"
+                spies: "parties_spies"
+                log: "parties_log"
+        none:
+            disband-on-leader-left: true
+            # Delete empty parties after tot seconds
+            delay-delete-party: 600
 party:
     # Max members of a party (-1 is unlimited)
     max-members: -1
@@ -147,6 +149,24 @@ party:
         enable: false
         # Delay between every teleport command
         delay: 60
+    color:
+        # Enable color command
+        # By default: placeholder isn't set in messages.yml, you need to put it wherever you want
+        # Placeholders: %color_name%, %color_command% and %color_code%
+        enable: false
+        # Make here your custom colors
+        # command = /party color <command>
+        # code = code of the color
+        list-colors:
+            red:
+                command: "red"
+                code: "&c"
+            green:
+                command: "green"
+                code: "&a"
+            yourcustomcolor:
+                command: "special"
+                code: "&9&n"
     # Password system (Allows to use /party join <party>, you can still disable via permissions passwords)
     join-password:
         # Allow create parties with password (/party create <party> <password>)
@@ -207,7 +227,6 @@ description:
     length-max: 16
     # Regex of the chars (Use "\\" instead "\") (For ALL utf characters use "[\p{L}\s]+")
     allowed-chars: '[a-zA-Z0-9 .,]+'
-    remove-word: "remove"
     censored-words: []
 motd:
     length-min: 3
@@ -218,7 +237,6 @@ motd:
     # Regex of the chars (Use "\\" instead "\") (For ALL utf characters use "[\p{L}\s]+")
     allowed-chars: '[a-zA-Z0-9\\ .,]+'
     new-line-code: '\\n'
-    remove-word: "remove"
     censored-words: []
 kills:
     # Save in data.yml each kill of parties
@@ -262,7 +280,6 @@ tag:
         # Suffix are the /party suffix command
         suffix: false
         format-suffix: " [%suffix%]"
-        remove-word: "remove"
         allowed-chars: '[a-zA-Z0-9 .,]+'
         max-length: 6
         min-lenght: 3
@@ -385,6 +402,7 @@ vault:
         set-home: 0
         desc: 0
         motd: 0
+        color: 0
         prefix: 0
         suffix: 0
         teleport: 0
@@ -413,6 +431,7 @@ commands:
     command-motd: "motd"
     command-chat: "chat"
     command-invite: "invite"
+    command-color: "color"
     command-prefix: "prefix"
     command-suffix: "suffix"
     command-rank: "rank"
@@ -426,6 +445,8 @@ commands:
     sub-command-off: "off"
     # Sub-command of /party create <partyname> fixed (if enabled)
     sub-command-fixed: "fixed"
+    # Sub-command used to remove something (desc, prefix, suffix, etc..)
+    sub-command-remove: "remove"
     # Command to migrate SQL/YAML database
     command-migrate: "migrate"
     # Command for GriefPrevention support
@@ -433,4 +454,4 @@ commands:
     # Command to buy commands (Vault support)
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 15
+    config-version: 16

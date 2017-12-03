@@ -13,4 +13,10 @@
 !/parties-bukkit/src
 !/parties-bukkit/pom.xml
 
+!/parties-bungee/
+/parties-bungee/*
+!/parties-bungee/src
+!/parties-bungee/pom.xml
+
 !/images/
+!/locales/

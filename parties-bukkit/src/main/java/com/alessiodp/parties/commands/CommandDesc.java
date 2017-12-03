@@ -61,7 +61,7 @@ public class CommandDesc implements CommandInterface {
 		 * 
 		 */
 		
-		if (args[1].equalsIgnoreCase(Variables.desc_removeword)) {
+		if (args[1].equalsIgnoreCase(Variables.command_sub_remove)) {
 			party.setDescription("");
 			party.updateParty();
 

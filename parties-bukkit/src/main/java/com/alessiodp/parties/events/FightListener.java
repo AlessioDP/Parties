@@ -49,36 +49,38 @@ public class FightListener implements Listener {
 		if (Variables.friendlyfire_enable && event.getEntity() instanceof Player) {
 			Player victim = (Player) event.getEntity();
 			Player attacker = null;
-			int type = -1; // 0=Basic, 1=Arrow, 2=EnderPearl, 3=Snowball
+			DamageType type = DamageType.UNSUPPORTED; // 0=Basic, 1=Arrow, 2=EnderPearl, 3=Snowball
 			if (event.getDamager() instanceof Player)
-				type = 0;
+				type = DamageType.PLAYER;
 			else if (event.getDamager() instanceof Arrow)
-				type = 1;
+				type = DamageType.ARROW;
 			else if (event.getDamager() instanceof EnderPearl)
-				type = 2;
+				type = DamageType.ENDERPEARL;
 			else if (event.getDamager() instanceof Snowball)
-				type = 3;
+				type = DamageType.SNOWBALL;
 			
-			if (type >= 0) {
+			if (!type.equals(DamageType.UNSUPPORTED)) {
 				ProjectileSource shooterSource;
 				switch (type) {
-				case 1:
+				case PLAYER:
+					attacker = (Player) event.getDamager();
+					break;
+				case ARROW:
 					shooterSource = ((Arrow)event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
-				case 2:
+				case ENDERPEARL:
 					shooterSource = ((EnderPearl)event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
-				case 3:
+				case SNOWBALL:
 					shooterSource = ((Snowball)event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
-				default:
-					attacker = (Player) event.getDamager();
+				case UNSUPPORTED:
 				}
 				if (attacker != null) {
 					// Found right attacker
@@ -101,9 +103,9 @@ public class FightListener implements Listener {
 								party.sendFriendlyFireWarn(tpVictim, tpAttacker);
 								
 								event.setCancelled(true);
-								LogHandler.log(LogLevel.DEBUG, "Denied PvP friendly fire [type " + Integer.toString(type) + "] between A:'" + attacker.getName() + "' and V:'" + victim.getName() + "'", true);
+								LogHandler.log(LogLevel.DEBUG, "Denied PvP friendly fire [type " + type.name() + "] between A:'" + attacker.getName() + "' and V:'" + victim.getName() + "'", true);
 							} else
-								LogHandler.log(LogLevel.DEBUG, "PartiesFriendlyFireBlockedEvent is cancelled, ignoring [type " + Integer.toString(type) + "] between A:'" + attacker.getName() + "' and V:'" + victim.getName() + "'", true);
+								LogHandler.log(LogLevel.DEBUG, "PartiesFriendlyFireBlockedEvent is cancelled, ignoring [type " + type.name() + "] between A:'" + attacker.getName() + "' and V:'" + victim.getName() + "'", true);
 						}
 					}
 				}
@@ -292,17 +294,15 @@ public class FightListener implements Listener {
 							
 							// Give exp
 							for (Player pl : list) {
-								int giveType = 0;
+								ExpGiveType giveType = ExpGiveType.NORMAL_OWN;
 								if (pl.equals(killer)) {
 									// Killer
-									/*
-									if (Variables.exp_skillapi_enable)
-										SkillAPIHandler.giveExp(pl, givenExp);
-									else
-										killer.giveExp((int) givenExp);*/ 
-									SkillAPIHandler.giveExp(pl, -50);
-									if (!Variables.exp_skillapi_enable)
+									if (Variables.exp_skillapi_enable) {
+										SkillAPIHandler.giveExp(pl, -50);
+										giveType = ExpGiveType.SKILLAPI_OWN;
+									} else {
 										killer.giveExp((int) givenExp);
+									}
 									
 									tp.sendMessage(Messages.expgain
 											.replace("%exp%", Double.toString(givenExp))
@@ -312,10 +312,10 @@ public class FightListener implements Listener {
 									// Party mate
 									if (Variables.exp_skillapi_enable) {
 										SkillAPIHandler.giveExp(pl, givenExp);
-										giveType = 1;
+										giveType = ExpGiveType.SKILLAPI_OTHER;
 									} else {
 										pl.giveExp((int) givenExp);
-										giveType = 2;
+										giveType = ExpGiveType.NORMAL_OTHER;
 									}
 									plugin.getPlayerHandler().getPlayer(pl.getUniqueId()).sendMessage(Messages.expgainother
 											.replace("%exp%", Double.toString(givenExp))
@@ -323,14 +323,16 @@ public class FightListener implements Listener {
 											.replace("%mob%", event.getEntity().getType().getName()), killer);
 								}
 								switch (giveType) {
-								case 1:
-									LogHandler.log(LogLevel.DEBUG, "Giving SkillAPI exp (" + givenExp + ") to " + pl.getName(), true);
+								case NORMAL_OWN:
+									LogHandler.log(LogLevel.DEBUG, pl.getName() + " got (" + givenExp + ") exp by killing (" + event.getEntity().getName() + ")", true);
 									break;
-								case 2:
+								case NORMAL_OTHER:
 									LogHandler.log(LogLevel.DEBUG, "Giving exp (" + givenExp + ") to " + pl.getName(), true);
 									break;
-								default:
-									LogHandler.log(LogLevel.DEBUG, pl.getName() + " got (" + givenExp + ") exp by killing (" + event.getEntity().getName() + ")", true);
+								case SKILLAPI_OWN:
+									LogHandler.log(LogLevel.DEBUG, pl.getName() + " got SkillAPI exp (" + givenExp + ") by killing (" + event.getEntity().getName() + ")", true);
+								case SKILLAPI_OTHER:
+									LogHandler.log(LogLevel.DEBUG, "Giving SkillAPI exp (" + givenExp + ") to " + pl.getName(), true);
 								}
 							}
 						}
@@ -338,5 +340,13 @@ public class FightListener implements Listener {
 				}
 			}
 		}
+	}
+	
+	private enum DamageType {
+		UNSUPPORTED, PLAYER, ARROW, ENDERPEARL, SNOWBALL;
+	}
+	
+	private enum ExpGiveType {
+		NORMAL_OWN, NORMAL_OTHER, SKILLAPI_OWN, SKILLAPI_OTHER;
 	}
 }

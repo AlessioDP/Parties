@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alessiodp.parties.objects.RankObj;
+import com.alessiodp.parties.utils.PartyColor;
 import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class Variables {
@@ -21,33 +22,30 @@ public class Variables {
 	public static boolean bungeecord;
 	public static boolean joinleavemessages;
 	
-	public static boolean log_enable;
-	public static String log_format;
-	public static boolean log_chat;
-	public static boolean log_printconsole;
-	public static int log_mode;
-	public static String log_type;
-	public static String log_file_name;
-	public static String log_sql_url;
-	public static String log_sql_username;
-	public static String log_sql_password;
-	public static int log_sql_varcharsize;
-	public static String log_sql_logtable;
-	
-	public static String database_type;
-	public static boolean database_migrate_console;
-	public static String database_migrate_suffix;
-	public static boolean database_none_leaderleft;
-	public static int database_none_delay;
-	public static String database_file_name;
-	public static boolean database_sql_enable;
-	public static String database_sql_url;
-	public static String database_sql_username;
-	public static String database_sql_password;
-	public static int database_sql_varcharsize;
-	public static String database_sql_tables_spies;
-	public static String database_sql_tables_players;
-	public static String database_sql_tables_parties;
+	public static String storage_type_log;
+	public static String storage_type_database;
+	public static String storage_log_format;
+	public static boolean storage_log_chat;
+	public static boolean storage_log_printconsole;
+	public static int storage_log_level;
+	public static boolean storage_migrate_forcemysql;
+	public static boolean storage_migrate_onlyconsole;
+	public static String storage_migrate_suffix;
+	public static String storage_settings_yaml_name_database;
+	public static String storage_settings_yaml_name_log;
+	public static String storage_settings_mysql_url;
+	public static String storage_settings_mysql_username;
+	public static String storage_settings_mysql_password;
+	public static int storage_settings_mysql_varcharsize;
+	public static int storage_settings_mysql_poolsize;
+	public static int storage_settings_mysql_connlifetime;
+	public static int storage_settings_mysql_conntimeout;
+	public static String storage_settings_mysql_tables_parties;
+	public static String storage_settings_mysql_tables_players;
+	public static String storage_settings_mysql_tables_spies;
+	public static String storage_settings_mysql_tables_log;
+	public static boolean storage_settings_none_disbandonleaderleft;
+	public static int storage_settings_none_delaydeleteparty;
 	
 	public static List<Rank> rank_list;
 	public static int rank_default;
@@ -75,6 +73,9 @@ public class Variables {
 	public static boolean teleport_enable;
 	public static int teleport_delay;
 	
+	public static boolean color_enable;
+	public static List<PartyColor> color_list;
+	
 	public static boolean password_enable;
 	public static boolean password_bypassleave;
 	public static String password_allowedchars;
@@ -86,7 +87,6 @@ public class Variables {
 	public static int desc_min;
 	public static int desc_max;
 	public static String desc_allowedchars;
-	public static String desc_removeword;
 	public static List<String> desc_censored;
 	
 	public static int motd_min;
@@ -94,7 +94,6 @@ public class Variables {
 	public static int motd_delay;
 	public static String motd_allowedchars;
 	public static String motd_newline;
-	public static String motd_removeword;
 	public static List<String> motd_censored;
 	
 	public static boolean kill_enable;
@@ -118,7 +117,6 @@ public class Variables {
 	public static String tag_custom_formatprefix;
 	public static boolean tag_custom_suffix;
 	public static String tag_custom_formatsuffix;
-	public static String tag_custom_removeword;
 	public static String tag_custom_allowedchars;
 	public static int tag_custom_maxlength;
 	public static int tag_custom_minlength;
@@ -192,6 +190,7 @@ public class Variables {
 	public static double vault_command_sethome_price;
 	public static double vault_command_desc_price;
 	public static double vault_command_motd_price;
+	public static double vault_command_color_price;
 	public static double vault_command_prefix_price;
 	public static double vault_command_suffix_price;
 	public static double vault_command_teleport_price;
@@ -219,6 +218,7 @@ public class Variables {
 	public static String command_motd;
 	public static String command_chat;
 	public static String command_invite;
+	public static String command_color;
 	public static String command_prefix;
 	public static String command_suffix;
 	public static String command_rank;
@@ -232,6 +232,7 @@ public class Variables {
 	public static String command_sub_on;
 	public static String command_sub_off;
 	public static String command_sub_fixed;
+	public static String command_sub_remove;
 	public static String command_migrate;
 	public static String command_claim;
 	public static String command_confirm;
@@ -253,33 +254,30 @@ public class Variables {
 		invisibleallies = false;
 		joinleavemessages = false;
 		
-		log_enable = false;
-		log_format = "%date% [%time%] (%level%) {%position%} %message%";
-		log_chat = true;
-		log_printconsole = true;
-		log_mode = 1;
-		log_type = "file";
-		log_file_name = "log.txt";
-		log_sql_url = "jdbc:mysql://localhost:3306/database";
-		log_sql_username = "username";
-		log_sql_password = "password";
-		log_sql_varcharsize = 255;
-		log_sql_logtable = "log";
-		
-		database_type = "file";
-		database_migrate_console = true;
-		database_migrate_suffix = "_backup";
-		database_none_leaderleft = true;
-		database_none_delay = 600;
-		database_file_name = "data.yml";
-		database_sql_enable = false;
-		database_sql_url = "jdbc:mysql://localhost:3306/database";
-		database_sql_username = "username";
-		database_sql_password = "password";
-		database_sql_varcharsize = 255;
-		database_sql_tables_spies = "spies";
-		database_sql_tables_players = "players";
-		database_sql_tables_parties = "parties";
+		storage_type_log = "none";
+		storage_type_database = "yaml";
+		storage_log_format = "%date% [%time%] (%level%) {%position%} %message%";
+		storage_log_chat = true;
+		storage_log_printconsole = true;
+		storage_log_level = 1;
+		storage_migrate_forcemysql = false;
+		storage_migrate_onlyconsole = true;
+		storage_migrate_suffix = "_backup";
+		storage_settings_yaml_name_database = "data.yml";
+		storage_settings_yaml_name_log = "log.txt";
+		storage_settings_mysql_url = "jdbc:mysql://localhost:3306/database";
+		storage_settings_mysql_username = "username";
+		storage_settings_mysql_password = "password";
+		storage_settings_mysql_varcharsize = 255;
+		storage_settings_mysql_poolsize = 10;
+		storage_settings_mysql_connlifetime = 1800000;
+		storage_settings_mysql_conntimeout = 10000;
+		storage_settings_mysql_tables_parties = "parties_parties";
+		storage_settings_mysql_tables_players = "parties_players";
+		storage_settings_mysql_tables_spies = "parties_spies";
+		storage_settings_mysql_tables_log = "parties_log";
+		storage_settings_none_disbandonleaderleft = true;
+		storage_settings_none_delaydeleteparty = 600;
 		
 		List<String> perms = new ArrayList<String>();
 		rank_list = new ArrayList<Rank>();
@@ -317,9 +315,8 @@ public class Variables {
 		
 		friendlyfire_enable = true;
 		friendlyfire_warn = true;
-		List<String> list = new ArrayList<String>();
-		list.add("*");
-		friendlyfire_listworlds = list;
+		friendlyfire_listworlds = new ArrayList<String>();
+		friendlyfire_listworlds.add("*");
 		
 		invite_timeout = 20;
 		invite_revoke = true;
@@ -332,6 +329,12 @@ public class Variables {
 		teleport_enable = false;
 		teleport_delay = 60;
 		
+		color_enable = false;
+		color_list = new ArrayList<PartyColor>();
+		color_list.add(new PartyColor("red", "red", "&c"));
+		color_list.add(new PartyColor("green", "green", "&a"));
+		color_list.add(new PartyColor("yourcustomcolor", "special", "&9&n"));
+		
 		password_enable = false;
 		password_bypassleave = false;
 		password_allowedchars = "[a-zA-Z0-9]+";
@@ -343,7 +346,6 @@ public class Variables {
 		desc_min = 3;
 		desc_max = 16;
 		desc_allowedchars = "[a-zA-Z0-9 .,]+";
-		desc_removeword = "remove";
 		desc_censored = new ArrayList<String>();
 		
 		motd_min = 3;
@@ -351,7 +353,6 @@ public class Variables {
 		motd_delay = 20;
 		motd_allowedchars = "[a-zA-Z0-9\\ .,]+";
 		motd_newline = "\\n";
-		motd_removeword = "remove";
 		motd_censored = new ArrayList<String>();
 		
 		kill_enable = false;
@@ -375,7 +376,6 @@ public class Variables {
 		tag_custom_formatprefix = "[%prefix%] ";
 		tag_custom_suffix = false;
 		tag_custom_formatsuffix = " [%suffix%]";
-		tag_custom_removeword = "remove";
 		tag_custom_allowedchars = "[a-zA-Z0-9 .,]+";
 		tag_custom_maxlength = 6;
 		tag_custom_minlength = 3;
@@ -398,17 +398,14 @@ public class Variables {
 		follow_neededrank = 0;
 		follow_minimumrank = 0;
 		follow_timeoutportal = 100;
-		list = new ArrayList<String>();
-		list.add("*");
-		follow_listworlds = list;
+		follow_listworlds = new ArrayList<String>();
+		follow_listworlds.add("*");
 		
 		autocommand_enable = false;
-		list = new ArrayList<String>();
-		list.add("/pay");
-		list.add("/money");
-		autocommand_blacklist = list;
-		list = new ArrayList<String>();
-		autocommand_whitelist = list;
+		autocommand_blacklist = new ArrayList<String>();
+		autocommand_blacklist.add("/pay");
+		autocommand_blacklist.add("/money");
+		autocommand_whitelist = new ArrayList<String>();
 		
 		censor_enable = false;
 		censor_casesensitive = false;
@@ -455,6 +452,7 @@ public class Variables {
 		vault_command_sethome_price = 0;
 		vault_command_desc_price = 0;
 		vault_command_motd_price = 0;
+		vault_command_color_price = 0;
 		vault_command_prefix_price = 0;
 		vault_command_suffix_price = 0;
 		vault_command_teleport_price = 0;
@@ -482,6 +480,7 @@ public class Variables {
 		command_motd = "motd";
 		command_chat = "chat";
 		command_invite = "invite";
+		command_color = "color";
 		command_prefix = "prefix";
 		command_suffix = "suffix";
 		command_rank = "rank";
@@ -494,6 +493,7 @@ public class Variables {
 		command_sub_on = "on";
 		command_sub_off = "off";
 		command_sub_fixed = "fixed";
+		command_sub_remove = "remove";
 		command_migrate = "migrate";
 		command_claim = "claim";
 		command_confirm = "confirm";

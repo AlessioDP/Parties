@@ -14,6 +14,9 @@
 # %desc% = Description of the party
 # %motd% = MOTD of the party
 # %kills% = Kills of the party
+# %color_name% = Party color name
+# %color_command% = Party color command
+# %color_code% = Party color code
 # %prefix% = Prefix of the party
 # %suffix% = Suffix of the party
 # %players% = Number of players online in the party
@@ -160,7 +163,7 @@ list:
     header: "&b============ &lOnline Parties List &r&b============"
     sub-header: ""
     no-one-online: "&7Empty"
-    format-party: "&b%party%&7[&6Online %players%&7] %desc%"
+    format-party: "&b%party% &7[&6Online %players%&7] %desc%"
     footer: "&b================ &lPage %page% of %maxpages% &r&b================"
     wrong-command: "&cWrong variables: Type &7/party list [page]"
 invite:
@@ -176,6 +179,13 @@ invite:
     invite-revoked-send: "&7Revoked invite sent to %player%"
     invite-revoked-rec: "&7Invite received from %party% has been revoked"
     wrong-command: "&cWrong variables: Type &7/party invite <name>"
+color:
+    info: "&bYour party color is: %color_code%%color_command%"
+    empty: "&bYour party doesn't have a color"
+    changed: "&bParty color changed into %color_command%"
+    removed: "&bParty color removed"
+    wrong-color: "&cColor not found. You can select: red, green or special!"
+    wrong-command: "&cWrong variables: Type &7/party color <color>"
 prefix:
     changed: "&bParty prefix changed into %prefix%"
     removed: "&bParty prefix removed"
@@ -258,12 +268,16 @@ spy:
     activated: "&7Now you are a spy!"
     disabled: "&7You are no longer a spy"
 migrate:
-    to-file: "&aCopied data from SQL to FILE"
-    to-sql: "&aCopied data from FILE to SQL"
-    sql-offline: "&cThe SQL database must be online!"
-    none: "&cYou can't migrate with a database set to NONE!"
-    failed: "&cDatabase migration failed!"
-    wrong-command: "&cWrong variables: Type &7/party migrate <sql/file>"
+    # Special tags:
+    # %database% = Current database
+    # %database_to% & %database_from% = From/To databases
+    info: "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>"
+    complete: "&aCopied data from %database_from% to %database_to%"
+    failed-offline: "&cThe %database% database must be online!"
+    failed-migration: "&cDatabase migration from %database_from% to %database_to% failed!"
+    failed-same: "&cYou need to choose 2 different databases!"
+    wrong-database: "&cDatabase not found. You can select: YAML, MySQL!"
+    wrong-command: "&cWrong variables: Type &7/party migrate <from> <to>"
 vault:
     create-nomoney: "&cYou don't have enough money to create a party [%price%$]"
     join-nomoney: "&cYou don't have enough money to join a party [%price%$]"
@@ -315,7 +329,7 @@ help:
     rename: "&b/party rename <newname> &7- Rename the party"
     rename-others: "&b/party rename <party> <newname> &7- Renames a party"
     reload: "&b/party reload &7- Reload the configuration"
-    migrate: "&b/party migrate <sql/file> &7- Copy database into SQL/File"
+    migrate: "&b/party migrate <from> <to> &7- Copy database into a new one"
     claim: "&b/party claim <permission> &7- Grant permissions to the claim"
 dont-edit-this:
-    messages-version: 12
+    messages-version: 13

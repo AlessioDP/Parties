@@ -1,4 +1,4 @@
-package com.alessiodp.parties.utils.bungeecord;
+package com.alessiodp.parties.bungeecord.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

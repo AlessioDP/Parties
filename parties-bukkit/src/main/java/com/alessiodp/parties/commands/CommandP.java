@@ -85,7 +85,7 @@ public class CommandP implements CommandInterface {
 		if (!partiesChatEvent.isCancelled()) {
 			party.sendPlayerMessage(p, newMessage);
 			
-			if (Variables.log_chat)
+			if (Variables.storage_log_chat)
 				LogHandler.log(LogLevel.BASIC, "Chat of " + party.getName() + ": " + p.getName() + "[" + p.getUniqueId() + "]:" + newMessage, true);
 		} else
 			LogHandler.log(LogLevel.DEBUG, "PartiesChatEvent is cancelled, ignoring chat of " + p.getName() + ": " + sb.toString(), true);

@@ -121,21 +121,21 @@ public class JoinLeaveListener implements Listener {
 				
 				if (plugin.getDatabaseType().isNone()) {
 					// Start delete timeout
-					if (Variables.database_none_leaderleft && party.getLeader().equals(p.getUniqueId())) {
+					if (Variables.storage_settings_none_disbandonleaderleft && party.getLeader().equals(p.getUniqueId())) {
 						// Leader left, delete now
 						plugin.getPartyHandler().deleteTimedParty(party.getName(), true);
 					} else if (party.getOnlinePlayers().size() == 0) {
 						// All players left, start timer
-						if (Variables.database_none_delay > 0) {
+						if (Variables.storage_settings_none_delaydeleteparty > 0) {
 							plugin.getPlayerHandler().getListPlayersToDelete().add(p.getUniqueId());
 							
 							PartyDeleteTask task = (PartyDeleteTask) new PartyDeleteTask(party.getName());
-							task.runTaskLaterAsynchronously(plugin, Variables.database_none_delay * 20);
+							task.runTaskLaterAsynchronously(plugin, Variables.storage_settings_none_delaydeleteparty * 20);
 							
 							plugin.getPartyHandler().getListPartiesToDelete().put(party.getName().toLowerCase(), task.getTaskId());
 							removePlFromList = false;
 							
-							LogHandler.log(LogLevel.DEBUG, "Started PartyDeleteTask for " + Variables.database_none_delay + " seconds", true);
+							LogHandler.log(LogLevel.DEBUG, "Started PartyDeleteTask for " + Variables.storage_settings_none_delaydeleteparty + " seconds", true);
 						} else
 							plugin.getPartyHandler().deleteTimedParty(party.getName(), false);
 					}

@@ -130,6 +130,13 @@ public class Messages {
 	public static String invite_revoked_rec;
 	public static String invite_wrongcmd;
 
+	public static String color_info;
+	public static String color_empty;
+	public static String color_changed;
+	public static String color_removed;
+	public static String color_wrongcolor;
+	public static String color_wrongcmd;
+
 	public static String prefix_changed;
 	public static String prefix_removed;
 	public static String prefix_invalidchars;
@@ -201,11 +208,12 @@ public class Messages {
 	public static String spy_active;
 	public static String spy_disable;
 
-	public static String migrate_tofile;
-	public static String migrate_tosql;
-	public static String migrate_offlinesql;
-	public static String migrate_none;
-	public static String migrate_failed;
+	public static String migrate_info;
+	public static String migrate_complete;
+	public static String migrate_failed_offline;
+	public static String migrate_failed_migration;
+	public static String migrate_failed_same;
+	public static String migrate_wrongdatabase;
 	public static String migrate_wrongcmd;
 	
 	public static String vault_create_nomoney;
@@ -385,10 +393,10 @@ public class Messages {
 		list_header = "&b============ &lOnline Parties List &r&b============";
 		list_subheader = "";
 		list_offline = "&7Empty";
-		list_formatparty = "&b%party% &7- Players online: %players%";
+		list_formatparty = "&b%party% &7[&6Online %players%&7] %desc%";
 		list_footer = "&b================ &lPage %page% of %maxpages% &r&b================";
 		list_wrongcmd = "&cWrong variables: Type &7/party list [page]";
-		
+
 		invite_onlyonline = "&cYou can invite only online players";
 		invite_maxplayers = "&cThe party is full!";
 		invite_alreadyparty = "&c%player% is already in a party";
@@ -401,6 +409,13 @@ public class Messages {
 		invite_revoked_send = "&7Revoked invite sended to %player%";
 		invite_revoked_rec = "&7Invite received from %party% has been revoked";
 		invite_wrongcmd = "&cWrong variables: Type &7/party invite <name>";
+
+		color_info = "&bYour party color is: %color_code%%color_command%";
+		color_empty = "&bYour party doesn't have a color";
+		color_changed = "&bParty color changed into %color_command%";
+		color_removed = "&bParty color removed";
+		color_wrongcolor = "&cColor not found. You can select: red, green or special!";
+		color_wrongcmd = "&cWrong variables: Type &7/party color <color>";
 
 		prefix_changed = "&bParty prefix changed into %prefix%";
 		prefix_removed = "&bParty prefix removed";
@@ -477,12 +492,13 @@ public class Messages {
 		spy_active = "&7Now you are a spy!";
 		spy_disable = "&7You are no longer a spy";
 
-		migrate_tofile = "&aCopied data from SQL to FILE";
-		migrate_tosql = "&aCopied data from FILE to SQL";
-		migrate_offlinesql = "&cThe SQL database must be online!";
-		migrate_none = "&cYou can't migrate with a database set to NONE!";
-		migrate_failed = "&cDatabase migration failed!";
-		migrate_wrongcmd = "&cWrong variables: Type &7/party migrate <sql/file>";
+		migrate_info = "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>";
+		migrate_complete = "&aCopied data from %database_from% to %database_to%";
+		migrate_failed_offline = "&cThe %database% database must be online!";
+		migrate_failed_migration = "&cDatabase migration from %database_from% to %database_to% failed!";
+		migrate_failed_same = "&cYou need to choose 2 different databases!";
+		migrate_wrongdatabase = "&cDatabase not found. You can select: YAML, MySQL!";
+		migrate_wrongcmd = "&cWrong variables: Type &7/party migrate <from> <to>";
 		
 		vault_create_nomoney = "&cYou don't have enough money to create a party [%price%$]";
 		vault_join_nomoney = "&cYou don't have enough money to join a party [%price%$]";
@@ -533,7 +549,7 @@ public class Messages {
 		help_rename = "&b/party rename <newname> &7- Rename the party";
 		help_rename_others = "&b/party rename <party> <newname> &7- Renames a party";
 		help_reload = "&b/party reload &7- Reload the configuration";
-		help_migrate = "&b/party migrate <sql/file> &7- Copy database into SQL/File";
+		help_migrate = "&b/party migrate <from> <to> &7- Copy database into a new one";
 		help_claim = "&b/party claim <permission> &7- Grant permissions to the claim";
 	}
 }

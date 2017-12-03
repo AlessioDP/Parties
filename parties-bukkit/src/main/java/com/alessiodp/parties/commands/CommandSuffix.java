@@ -63,7 +63,7 @@ public class CommandSuffix implements CommandInterface {
 		 * 
 		 */
 		
-		if (args[1].equalsIgnoreCase(Variables.tag_custom_removeword)) {
+		if (args[1].equalsIgnoreCase(Variables.command_sub_remove)) {
 			party.setSuffix("");
 			party.updateParty();
 			plugin.getPartyHandler().tag_refresh(party);

@@ -29,6 +29,9 @@ public class EssentialsChatHandler implements Listener {
 						.replaceAll("\\{PARTIES_RANK_FORMATTED\\}", ChatColor.translateAlternateColorCodes('&', plugin.getPartyHandler().searchRank(tp.getRank()).getChat()))
 						.replaceAll("\\{PARTIES_DESC\\}", party.getDescription())
 						.replaceAll("\\{PARTIES_MOTD\\}", party.getMOTD())
+						.replaceAll("\\{PARTIES_COLOR_NAME\\}", party.getColor() != null ? party.getColor().getName() : "")
+						.replaceAll("\\{PARTIES_COLOR_COMMAND\\}", party.getColor() != null ? party.getColor().getCommand() : "")
+						.replaceAll("\\{PARTIES_COLOR_CODE\\}", party.getColor() != null ? party.getColor().getCode() : "")
 						.replaceAll("\\{PARTIES_PREFIX\\}", party.getPrefix())
 						.replaceAll("\\{PARTIES_SUFFIX\\}", party.getSuffix())
 						.replaceAll("\\{PARTIES_KILLS\\}", Integer.toString(party.getKills()));
@@ -39,6 +42,9 @@ public class EssentialsChatHandler implements Listener {
 						.replaceAll("\\{PARTIES_RANK_FORMATTED\\}", "")
 						.replaceAll("\\{PARTIES_DESC\\}", "")
 						.replaceAll("\\{PARTIES_MOTD\\}", "")
+						.replaceAll("\\{PARTIES_COLOR_NAME\\}", "")
+						.replaceAll("\\{PARTIES_COLOR_COMMAND\\}", "")
+						.replaceAll("\\{PARTIES_COLOR_CODE\\}", "")
 						.replaceAll("\\{PARTIES_PREFIX\\}", "")
 						.replaceAll("\\{PARTIES_SUFFIX\\}", "")
 						.replaceAll("\\{PARTIES_KILLS\\}", "");

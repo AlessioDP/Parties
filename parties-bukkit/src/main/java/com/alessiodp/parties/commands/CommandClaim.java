@@ -63,23 +63,23 @@ public class CommandClaim implements CommandInterface {
 		// Checking if command it's okay
 		// -1, 1, 2 = Something gone wrong
 		// 10, 11, 12, 13 = The command it's okay
-		int selection = -1;
+		Selection selection = Selection.FAILED_GENERAL;
 		if (args[1].equalsIgnoreCase(Variables.griefprevention_command_trust))
-			selection = 10;
+			selection = Selection.TRUST;
 		else if (args[1].equalsIgnoreCase(Variables.griefprevention_command_container))
-			selection = 11;
+			selection = Selection.CONTAINER;
 		else if (args[1].equalsIgnoreCase(Variables.griefprevention_command_access))
-			selection = 12;
+			selection = Selection.ACCESS;
 		else if (args[1].equalsIgnoreCase(Variables.griefprevention_command_remove))
-			selection = 13;
-		if (selection != -1) {
+			selection = Selection.REMOVE;
+		if (!selection.equals(Selection.FAILED_GENERAL)) {
 			Result res = plugin.getGriefPrevention().isManager(p);
 			switch (res) {
 			case NOEXIST:
-				selection = 1;
+				selection = Selection.FAILED_NOEXIST;
 				break;
 			case NOMANAGER:
-				selection = 2;
+				selection = Selection.FAILED_NOMANAGER;
 				break;
 			default:
 				// Success, selection it's okay
@@ -88,7 +88,7 @@ public class CommandClaim implements CommandInterface {
 		}
 		
 		double commandPrice = Variables.vault_command_claim_price;
-		if (selection >= 10 && Variables.vault_enable && commandPrice > 0 && !p.hasPermission(PartiesPermissions.ADMIN_VAULTBYPASS.toString())) {
+		if (!selection.isFailed() && Variables.vault_enable && commandPrice > 0 && !p.hasPermission(PartiesPermissions.ADMIN_VAULTBYPASS.toString())) {
 			OfflinePlayer buyer = Bukkit.getOfflinePlayer(p.getUniqueId());
 			if (Variables.vault_confirm_enable) {
 				if (tp.getLastCommand() != null && ((boolean)tp.getLastCommand()[2]) == true) {
@@ -127,40 +127,61 @@ public class CommandClaim implements CommandInterface {
 		 * 
 		 */
 		switch (selection) {
-		case 10:
+		case TRUST:
 			// Trust
 			plugin.getGriefPrevention().addPartyTrust(p, party);
 			break;
-		case 11:
+		case CONTAINER:
 			// Container
 			plugin.getGriefPrevention().addPartyContainer(p, party);
 			break;
-		case 12:
+		case ACCESS:
 			// Access
 			plugin.getGriefPrevention().addPartyAccess(p, party);
 			break;
-		case 13:
+		case REMOVE:
 			// Remove
 			plugin.getGriefPrevention().dropParty(p, party);
 			break;
-		case 1:
+		case FAILED_NOEXIST:
 			// Return: No exist claim
 			tp.sendMessage(Messages.claim_noexistclaim);
 			break;
-		case 2:
+		case FAILED_NOMANAGER:
 			// Return: No manager
 			tp.sendMessage(Messages.claim_nomanager);
 			break;
-		default:
+		case FAILED_GENERAL:
 			// Return: Wrong command
 			tp.sendMessage(Messages.claim_wrongcmd);
 		}
 
-		if (selection >= 10) {
+		if (!selection.isFailed()) {
 			tp.sendMessage(Messages.claim_done
 					.replace("%price%", Double.toString(commandPrice)));
 			LogHandler.log(LogLevel.MEDIUM, p.getName() + "[" + p.getUniqueId() + "] used command party claim " + args[1].toLowerCase(), true);
 		}
 		return true;
+	}
+	
+	
+	
+	private enum Selection {
+		TRUST, CONTAINER, ACCESS, REMOVE, FAILED_GENERAL, FAILED_NOEXIST, FAILED_NOMANAGER;
+		
+		public boolean isFailed() {
+			boolean ret;
+			switch (this) {
+			case FAILED_GENERAL:
+			case FAILED_NOEXIST:
+			case FAILED_NOMANAGER:
+				ret = true;
+				break;
+			default:
+				ret = false;
+			}
+			
+			return ret;
+		}
 	}
 }

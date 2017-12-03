@@ -67,7 +67,7 @@ public class ThePlayer {
 	
 	public void updatePlayer() {
 		if (!plugin.getDatabaseType().isNone())
-			plugin.getDataHandler().updatePlayer(this, false);
+			plugin.getDatabaseDispatcher().updatePlayer(this);
 		LogHandler.log(LogLevel.DEBUG, "Updated player " + name + "["+uuid+"]", true);
 	}
 	public void cleanupPlayer(boolean saveDB) {
@@ -75,8 +75,8 @@ public class ThePlayer {
 		partyName = "";
 		chatParty = false;
 		
-		if (saveDB && !plugin.getDatabaseType().isNone())
-			plugin.getDataHandler().removePlayer(uuid);
+		if (saveDB)
+			plugin.getDatabaseDispatcher().removePlayer(uuid);
 		plugin.getPartyHandler().tag_removePlayer(Bukkit.getPlayer(uuid), null);
 		LogHandler.log(LogLevel.DEBUG, "Cleaned up player " + name + "["+uuid+"]", true);
 	}
@@ -160,7 +160,7 @@ public class ThePlayer {
 			newCommands.put(Variables.command_rename, Messages.help_rename);
 		if (p.hasPermission(PartiesPermissions.ADMIN_RELOAD.toString()))
 			newCommands.put(Variables.command_reload, Messages.help_reload);
-		if (p.hasPermission(PartiesPermissions.ADMIN_MIGRATE.toString()) && !Variables.database_migrate_console)
+		if (p.hasPermission(PartiesPermissions.ADMIN_MIGRATE.toString()) && !Variables.storage_migrate_onlyconsole)
 			newCommands.put(Variables.command_migrate, Messages.help_migrate);
 
 		return newCommands;
@@ -251,7 +251,7 @@ public class ThePlayer {
 		if (message == null || message.isEmpty())
 			return;
 		String formattedMessage = message
-				.replace("%player%",	victim.getName() != null ? victim.getName() : plugin.getDataHandler().getOldPlayerName(victim.getUniqueId()))
+				.replace("%player%",	victim.getName() != null ? victim.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(victim.getUniqueId()))
 				.replace("%sender%",	getName())
 				.replace("%world%",		"");
 		
@@ -297,7 +297,7 @@ public class ThePlayer {
 	}
 	private String convertPartyText(String message, OfflinePlayer player) {
 		String formattedMessage = message;
-		String partyname = plugin.getDataHandler().getPlayerPartyName(player.getUniqueId());
+		String partyname = plugin.getDatabaseDispatcher().getPlayerPartyName(player.getUniqueId());
 		if (!partyname.isEmpty()) {
 			Party party = plugin.getPartyHandler().getParty(partyname);
 			if (party != null)

@@ -62,7 +62,7 @@ public class CommandMembers implements CommandInterface {
 		for (String str : Messages.members_content)
 			sb.append(str + "\n");
 		
-		HashMap<UUID, Object[]> playersList = plugin.getDataHandler().getPlayersRank(party.getName());
+		HashMap<UUID, Object[]> playersList = plugin.getDatabaseDispatcher().getPlayersRank(party.getName());
 		String text = sb.toString();
 		Matcher mat = Pattern.compile("%list_(.*?)%").matcher(text);
 		while (mat.find()) {

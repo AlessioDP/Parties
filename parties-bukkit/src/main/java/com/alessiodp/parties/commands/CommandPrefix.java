@@ -63,7 +63,7 @@ public class CommandPrefix implements CommandInterface {
 		 * 
 		 */
 		
-		if (args[1].equalsIgnoreCase(Variables.tag_custom_removeword) && args.length == 2) {
+		if (args[1].equalsIgnoreCase(Variables.command_sub_remove) && args.length == 2) {
 			party.setPrefix("");
 			party.updateParty();
 

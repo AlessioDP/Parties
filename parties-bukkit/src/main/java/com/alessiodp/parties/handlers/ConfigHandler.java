@@ -12,46 +12,25 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.alessiodp.parties.Parties;
-import com.alessiodp.parties.configuration.Data;
 import com.alessiodp.parties.configuration.Messages;
-import com.alessiodp.parties.configuration.SQLData;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.RankObj;
+import com.alessiodp.parties.utils.PartyColor;
 import com.alessiodp.parties.utils.enums.ConsoleColors;
-import com.alessiodp.parties.utils.enums.DatabaseType;
+import com.alessiodp.parties.utils.enums.StorageType;
 import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class ConfigHandler {
-	Parties plugin;
-	Variables variables;
-	Messages messages;
+	private Parties plugin;
+	private Variables variables;
+	private Messages messages;
 	
 	public ConfigHandler(Parties instance) {
-		boolean flag = false;
 		plugin = instance;
 		variables = new Variables();
 		messages = new Messages();
 		reloadConfig();
 		reloadMessages();
-		
-		new LogHandler(plugin);
-		
-		if (Variables.database_sql_enable) {
-			SQLData database = new SQLData(plugin, Variables.database_sql_username, Variables.database_sql_password, Variables.database_sql_url, Variables.database_sql_varcharsize);
-			if (database.isFailed()) {
-				Variables.database_sql_enable = false;
-				LogHandler.printError("Failed to open the connection with Server SQL. Database changed to File");
-			} else {
-				plugin.setSQLDatabase(database);
-				flag=true;
-			}
-		}
-		
-		DatabaseType dt = DatabaseType.getEnum(Variables.database_type);
-		if (!flag && dt.isSQL())
-			dt = DatabaseType.FILE;
-		plugin.setDatabaseType(dt);
-		plugin.setDataHandler(new Data(plugin, flag));
 	}
 	
 	@SuppressWarnings("static-access")
@@ -91,60 +70,60 @@ public class ConfigHandler {
 		if (cfg.get("functions.join-leave-messages") != null)
 			variables.joinleavemessages = cfg.getBoolean("functions.join-leave-messages");
 		
-		if (cfg.get("log.enable") != null)
-			variables.log_enable = cfg.getBoolean("log.enable");
-		if (cfg.get("log.format") != null)
-			variables.log_format = cfg.getString("log.format");
-		if (cfg.get("log.chat") != null)
-			variables.log_chat = cfg.getBoolean("log.chat");
-		if (cfg.get("log.print-console") != null)
-			variables.log_printconsole = cfg.getBoolean("log.print-console");
-		if (cfg.get("log.mode") != null)
-			variables.log_mode = cfg.getInt("log.mode");
+		if (cfg.get("storage.log-storage-type") != null)
+			variables.storage_type_log = cfg.getString("storage.log-storage-type");
+		if (cfg.get("storage.database-storage-type") != null)
+			variables.storage_type_database = cfg.getString("storage.database-storage-type");
 		
-		if (cfg.get("log.type") != null)
-			variables.log_type = cfg.getString("log.type");
-		if (cfg.get("log.file.name") != null)
-			variables.log_file_name = cfg.getString("log.file.name");
-		if (cfg.get("log.sql.url") != null)
-			variables.log_sql_url = cfg.getString("log.sql.url");
-		if (cfg.get("log.sql.varchar-size") != null)
-			variables.log_sql_varcharsize = cfg.getInt("log.sql.varchar-size");
-		if (cfg.get("log.sql.username") != null)
-			variables.log_sql_username = cfg.getString("log.sql.username");
-		if (cfg.get("log.sql.password") != null)
-			variables.log_sql_password = cfg.getString("log.sql.password");
-		if (cfg.get("log.sql.log-table") != null)
-			variables.log_sql_logtable = cfg.getString("log.sql.log-table");
+		if (cfg.get("storage.log-settings.format") != null)
+			variables.storage_log_format = cfg.getString("storage.log-settings.format");
+		if (cfg.get("storage.log-settings.chat") != null)
+			variables.storage_log_chat = cfg.getBoolean("storage.log-settings.chat");
+		if (cfg.get("storage.log-settings.print-console") != null)
+			variables.storage_log_printconsole = cfg.getBoolean("storage.log-settings.print-console");
+		if (cfg.get("storage.log-settings.log-level") != null)
+			variables.storage_log_level = cfg.getInt("storage.log-settings.log-level");
 		
-		if (cfg.get("database.type") != null)
-			variables.database_type = cfg.getString("database.type");
-		if (cfg.get("database.migrate-only-console") != null)
-			variables.database_migrate_console = cfg.getBoolean("database.migrate-only-console");
-		if (cfg.get("database.migration-suffix") != null)
-			variables.database_migrate_suffix = cfg.getString("database.migration-suffix");
-		if (cfg.get("database.none.disband-on-leader-left") != null)
-			variables.database_none_leaderleft = cfg.getBoolean("database.none.disband-on-leader-left");
-		if (cfg.get("database.none.delay-delete-party") != null)
-			variables.database_none_delay = cfg.getInt("database.none.delay-delete-party");
-		if (cfg.get("database.file.name") != null)
-			variables.database_file_name = cfg.getString("database.file.name");
-		if (cfg.get("database.sql.enable") != null)
-			variables.database_sql_enable = cfg.getBoolean("database.sql.enable");
-		if (cfg.get("database.sql.url") != null)
-			variables.database_sql_url = cfg.getString("database.sql.url");
-		if (cfg.get("database.sql.username") != null)
-			variables.database_sql_username = cfg.getString("database.sql.username");
-		if (cfg.get("database.sql.password") != null)
-			variables.database_sql_password = cfg.getString("database.sql.password");
-		if (cfg.get("database.sql.tables.varchar-size") != null)
-			variables.database_sql_varcharsize = cfg.getInt("database.sql.tables.varchar-size");
-		if (cfg.get("database.sql.tables.spies") != null)
-			variables.database_sql_tables_spies = cfg.getString("database.sql.tables.spies");
-		if (cfg.get("database.sql.tables.players") != null)
-			variables.database_sql_tables_players = cfg.getString("database.sql.tables.players");
-		if (cfg.get("database.sql.tables.parties") != null)
-			variables.database_sql_tables_parties = cfg.getString("database.sql.tables.parties");
+		if (cfg.get("storage.migrate-settings.force-mysql") != null)
+			variables.storage_migrate_forcemysql = cfg.getBoolean("storage.migrate-settings.force-mysql");
+		if (cfg.get("storage.migrate-settings.migrate-only-console") != null)
+			variables.storage_migrate_onlyconsole = cfg.getBoolean("storage.migrate-settings.migrate-only-console");
+		if (cfg.get("storage.migrate-settings.migration-suffix") != null)
+			variables.storage_migrate_suffix = cfg.getString("storage.migrate-settings.migration-suffix");
+		
+		if (cfg.get("storage.storage-settings.yaml.database-name") != null)
+			variables.storage_settings_yaml_name_database = cfg.getString("storage.storage-settings.yaml.database-name");
+		if (cfg.get("storage.storage-settings.yaml.log-name") != null)
+			variables.storage_settings_yaml_name_log = cfg.getString("storage.storage-settings.yaml.log-name");
+		
+		if (cfg.get("storage.storage-settings.mysql.url") != null)
+			variables.storage_settings_mysql_url = cfg.getString("storage.storage-settings.mysql.url");
+		if (cfg.get("storage.storage-settings.mysql.username") != null)
+			variables.storage_settings_mysql_username = cfg.getString("storage.storage-settings.mysql.username");
+		if (cfg.get("storage.storage-settings.mysql.password") != null)
+			variables.storage_settings_mysql_password = cfg.getString("storage.storage-settings.mysql.password");
+		if (cfg.get("storage.storage-settings.mysql.varchar-size") != null)
+			variables.storage_settings_mysql_varcharsize = cfg.getInt("storage.storage-settings.mysql.varchar-size");
+		if (cfg.get("storage.storage-settings.mysql.pool-size") != null)
+			variables.storage_settings_mysql_poolsize = cfg.getInt("storage.storage-settings.mysql.pool-size");
+		if (cfg.get("storage.storage-settings.mysql.conn-lifetime") != null)
+			variables.storage_settings_mysql_connlifetime = cfg.getInt("storage.storage-settings.mysql.conn-lifetime");
+		if (cfg.get("storage.storage-settings.mysql.conn-timeout") != null)
+			variables.storage_settings_mysql_conntimeout = cfg.getInt("storage.storage-settings.mysql.conn-timeout");
+		
+		if (cfg.get("storage.storage-settings.mysql.tables.parties") != null)
+			variables.storage_settings_mysql_tables_parties = cfg.getString("storage.storage-settings.mysql.tables.parties");
+		if (cfg.get("storage.storage-settings.mysql.tables.players") != null)
+			variables.storage_settings_mysql_tables_players = cfg.getString("storage.storage-settings.mysql.tables.players");
+		if (cfg.get("storage.storage-settings.mysql.tables.spies") != null)
+			variables.storage_settings_mysql_tables_spies = cfg.getString("storage.storage-settings.mysql.tables.spies");
+		if (cfg.get("storage.storage-settings.mysql.tables.log") != null)
+			variables.storage_settings_mysql_tables_log = cfg.getString("storage.storage-settings.mysql.tables.log");
+		
+		if (cfg.get("storage.storage-settings.none.disband-on-leader-left") != null)
+			variables.storage_settings_none_disbandonleaderleft = cfg.getBoolean("storage.storage-settings.none.disband-on-leader-left");
+		if (cfg.get("storage.storage-settings.none.delay-delete-party") != null)
+			variables.storage_settings_none_delaydeleteparty = cfg.getInt("storage.storage-settings.none.delay-delete-party");
 		
 		if (cfg.get("party.max-members") != null)
 			variables.party_maxmembers = cfg.getInt("party.max-members");
@@ -206,8 +185,6 @@ public class ConfigHandler {
 			variables.desc_max = cfg.getInt("description.length-max");
 		if (cfg.get("description.allowed-chars") != null)
 			variables.desc_allowedchars = cfg.getString("description.allowed-chars");
-		if (cfg.get("description.remove-word") != null)
-			variables.desc_removeword = cfg.getString("description.remove-word");
 		if (cfg.get("description.censored-words") != null)
 			variables.desc_censored = cfg.getStringList("description.censored-words");
 			
@@ -221,8 +198,6 @@ public class ConfigHandler {
 			variables.motd_allowedchars = cfg.getString("motd.allowed-chars");
 		if (cfg.get("motd.new-line-code") != null)
 			variables.motd_newline = cfg.getString("motd.new-line-code");
-		if (cfg.get("motd.remove-word") != null)
-			variables.motd_removeword = cfg.getString("motd.remove-word");
 		variables.motd_censored = cfg.getStringList("motd.censored-words");
 		
 		if (cfg.get("kills.save-kills") != null)
@@ -265,8 +240,6 @@ public class ConfigHandler {
 			variables.tag_custom_suffix = cfg.getBoolean("tag.custom-tag.suffix");
 		if (cfg.get("tag.custom-tag.format-suffix") != null)
 			variables.tag_custom_formatsuffix = cfg.getString("tag.custom-tag.format-suffix");
-		if (cfg.get("tag.custom-tag.remove-word") != null)
-			variables.tag_custom_removeword = cfg.getString("tag.custom-tag.remove-word");
 		if (cfg.get("tag.custom-tag.allowed-chars") != null)
 			variables.tag_custom_allowedchars = cfg.getString("tag.custom-tag.allowed-chars");
 		if (cfg.get("tag.custom-tag.max-length") != null)
@@ -398,6 +371,8 @@ public class ConfigHandler {
 			variables.vault_command_desc_price = cfg.getDouble("vault.price-commands.desc");
 		if (cfg.get("vault.price-commands.motd") != null)
 			variables.vault_command_motd_price = cfg.getDouble("vault.price-commands.motd");
+		if (cfg.get("vault.price-commands.color") != null)
+			variables.vault_command_color_price = cfg.getDouble("vault.price-commands.color");
 		if (cfg.get("vault.price-commands.prefix") != null)
 			variables.vault_command_prefix_price = cfg.getDouble("vault.price-commands.prefix");
 		if (cfg.get("vault.price-commands.suffix") != null)
@@ -451,6 +426,8 @@ public class ConfigHandler {
 			variables.command_chat = cfg.getString("commands.command-chat");
 		if (cfg.get("commands.command-invite") != null)
 			variables.command_invite = cfg.getString("commands.command-invite");
+		if (cfg.get("commands.command-color") != null)
+			variables.command_color = cfg.getString("commands.command-color");
 		if (cfg.get("commands.command-prefix") != null)
 			variables.command_prefix = cfg.getString("commands.command-prefix");
 		if (cfg.get("commands.command-suffix") != null)
@@ -479,6 +456,8 @@ public class ConfigHandler {
 			variables.command_sub_off = cfg.getString("commands.sub-command-off");
 		if (cfg.get("commands.sub-command-fixed") != null)
 			variables.command_sub_fixed = cfg.getString("commands.sub-command-fixed");
+		if (cfg.get("commands.sub-command-remove") != null)
+			variables.command_sub_remove = cfg.getString("commands.sub-command-remove");
 		if (cfg.get("commands.command-migrate") != null)
 			variables.command_migrate = cfg.getString("commands.command-migrate");
 		if (cfg.get("commands.command-claim") != null)
@@ -487,21 +466,27 @@ public class ConfigHandler {
 			variables.command_confirm = cfg.getString("commands.command-confirm");
 		
 		/*
+		 * Storage
+		 */
+		plugin.setDatabaseType(StorageType.getEnum(variables.storage_type_database));
+		plugin.setLogType(StorageType.getEnum(variables.storage_type_log));
+		
+		/*
 		 * Get ranks
 		 */
 		boolean bypass_restart = false;
 		List<Rank> ranks = new ArrayList<Rank>();
 		int def = -1;
-		ConfigurationSection cs = cfg.getConfigurationSection("party.ranks");
+		ConfigurationSection csRanks = cfg.getConfigurationSection("party.ranks");
 		while (!bypass_restart) {
 			bypass_restart = true;
-			if (cs != null) {
-				for (String key : cs.getKeys(false)) {
-					int rank = cs.get(key+".rank") != null ? cs.getInt(key+".rank") : 1;
-					String name = cs.get(key+".name") != null ? cs.getString(key+".name") : key;
-					String chat = cs.get(key+".chat") != null ? cs.getString(key+".chat") : name;
-					boolean dft = cs.get(key+".default") != null ? cs.getBoolean(key+".default") : false;
-					List<String> perm = cs.get(key+".permissions") != null ? cs.getStringList(key+".permissions") : new ArrayList<String>();
+			if (csRanks != null) {
+				for (String key : csRanks.getKeys(false)) {
+					int rank = csRanks.get(key+".rank") != null ? csRanks.getInt(key+".rank") : 1;
+					String name = csRanks.get(key+".name") != null ? csRanks.getString(key+".name") : key;
+					String chat = csRanks.get(key+".chat") != null ? csRanks.getString(key+".chat") : name;
+					boolean dft = csRanks.get(key+".default") != null ? csRanks.getBoolean(key+".default") : false;
+					List<String> perm = csRanks.get(key+".permissions") != null ? csRanks.getStringList(key+".permissions") : new ArrayList<String>();
 					Rank newRank = new RankObj(rank, key, name, chat, dft, perm);
 					ranks.add(newRank);
 					if (dft)
@@ -522,26 +507,47 @@ public class ConfigHandler {
 						// Normal log, LogHandler will give error
 						plugin.log(ConsoleColors.CYAN.getCode() + "Cannot find ranks! Restoring default ranks!");
 						
-						cs = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml"))).getConfigurationSection("party.ranks");
+						csRanks = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml"))).getConfigurationSection("party.ranks");
 						ranks = new ArrayList<Rank>();
 						def = -1;
 						bypass_restart = false;
 					}
 				}
 				if (bypass_restart) {
-					Variables.rank_list = (List<Rank>) ranks;
-					Variables.rank_default = def;
-					Variables.rank_last = ranks.get(ranks.size()-1).getLevel();
+					variables.rank_list = (List<Rank>) ranks;
+					variables.rank_default = def;
+					variables.rank_last = ranks.get(ranks.size()-1).getLevel();
 					bypass_restart = true;
 				}
 			} else {
 				// Normal log, LogHandler will give error
 				plugin.log(ConsoleColors.CYAN.getCode() + "Cannot find section party.ranks! Restoring default ranks!");
-				cs = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml"))).getConfigurationSection("party.ranks");
+				csRanks = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("config.yml"))).getConfigurationSection("party.ranks");
 				ranks = new ArrayList<Rank>();
 				def = -1;
 				bypass_restart = false;
 			}
+		}
+		
+		/*
+		 * Party color
+		 */
+		if (cfg.get("party.color.enable") != null)
+			variables.color_enable = cfg.getBoolean("party.color.enable");
+		
+		List<PartyColor> colors = new ArrayList<PartyColor>();
+		ConfigurationSection csColors = cfg.getConfigurationSection("party.color.list-colors");
+		if (csColors != null) {
+			for (String key : csColors.getKeys(false)) {
+				String name = key;
+				String command = csColors.getString(key + ".command", null);
+				String code = csColors.getString(key + ".code", null);
+				if (command != null && code != null) {
+					PartyColor pc = new PartyColor(name, command, code);
+					colors.add(pc);
+				}
+			}
+			variables.color_list = colors;
 		}
 	}
 	
@@ -768,6 +774,19 @@ public class ConfigHandler {
 		if (msg.get("invite.wrong-command") != null)
 			messages.invite_wrongcmd = msg.getString("invite.wrong-command");
 
+		if (msg.get("color.info") != null)
+			messages.color_info = msg.getString("color.info");
+		if (msg.get("color.empty") != null)
+			messages.color_empty = msg.getString("color.empty");
+		if (msg.get("color.changed") != null)
+			messages.color_changed = msg.getString("color.changed");
+		if (msg.get("color.removed") != null)
+			messages.color_removed = msg.getString("color.removed");
+		if (msg.get("color.wrong-color") != null)
+			messages.color_wrongcolor = msg.getString("color.wrong-color");
+		if (msg.get("color.wrong-command") != null)
+			messages.color_wrongcmd = msg.getString("color.wrong-command");
+
 		if (msg.get("prefix.changed") != null)
 			messages.prefix_changed = msg.getString("prefix.changed");
 		if (msg.get("prefix.removed") != null)
@@ -895,16 +914,18 @@ public class ConfigHandler {
 		if (msg.get("spy.disabled") != null)
 			messages.spy_disable = msg.getString("spy.disabled");
 		
-		if (msg.get("migrate.to-file") != null)
-			messages.migrate_tofile = msg.getString("migrate.to-file");
-		if (msg.get("migrate.to-sql") != null)
-			messages.migrate_tosql = msg.getString("migrate.to-sql");
-		if (msg.get("migrate.sql-offline") != null)
-			messages.migrate_offlinesql = msg.getString("migrate.sql-offline");
-		if (msg.get("migrate.none") != null)
-			messages.migrate_none = msg.getString("migrate.none");
-		if (msg.get("migrate.failed") != null)
-			messages.migrate_failed = msg.getString("migrate.failed");
+		if (msg.get("migrate.info") != null)
+			messages.migrate_info = msg.getString("migrate.info");
+		if (msg.get("migrate.complete") != null)
+			messages.migrate_complete = msg.getString("migrate.complete");
+		if (msg.get("migrate.failed-offline") != null)
+			messages.migrate_failed_offline = msg.getString("migrate.failed-offline");
+		if (msg.get("migrate.failed-migration") != null)
+			messages.migrate_failed_migration = msg.getString("migrate.failed-migration");
+		if (msg.get("migrate.failed-same") != null)
+			messages.migrate_failed_same = msg.getString("migrate.failed-same");
+		if (msg.get("migrate.wrong-database") != null)
+			messages.migrate_wrongdatabase = msg.getString("migrate.wrong-database");
 		if (msg.get("migrate.wrong-command") != null)
 			messages.migrate_wrongcmd = msg.getString("migrate.wrong-command");
 		

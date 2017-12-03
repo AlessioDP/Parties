@@ -15,9 +15,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.alessiodp.parties.configuration.Data;
-import com.alessiodp.parties.configuration.SQLData;
 import com.alessiodp.parties.configuration.Variables;
+import com.alessiodp.parties.configuration.storage.DatabaseDispatcher;
 import com.alessiodp.parties.events.*;
 import com.alessiodp.parties.commands.*;
 import com.alessiodp.parties.handlers.*;
@@ -28,7 +27,7 @@ import com.alessiodp.parties.utils.addon.*;
 import com.alessiodp.parties.utils.api.ApiHandler;
 import com.alessiodp.parties.utils.bungeecord.BukkitHandler;
 import com.alessiodp.parties.utils.enums.ConsoleColors;
-import com.alessiodp.parties.utils.enums.DatabaseType;
+import com.alessiodp.parties.utils.enums.StorageType;
 import com.alessiodp.parties.utils.enums.LogLevel;
 
 public class Parties extends JavaPlugin {
@@ -37,16 +36,16 @@ public class Parties extends JavaPlugin {
 	private ConfigHandler			config;
 	private PlayerHandler			player;
 	private PartyHandler			party;
-	private Data					database;
-	private SQLData					sqldatabase;
-	private DatabaseType			databaseType;
+	private LibraryHandler 			library;
+	private DatabaseDispatcher		databaseDispatcher;
+	private StorageType				databaseType;
+	private StorageType				logType;
 
 	private final int				curseProject = 90889;
-	private final int				configVersion = 15;
-	private final int				messageVersion = 12;
-	private final int				databaseVersion = 1;
+	private final int				configVersion = 16;
+	private final int				messageVersion = 13;
 	private final String			scoreboardprefix = "PARTY";
-	private final static boolean	isDebug = true;
+	private final static boolean	isDebug = false;
 	
 	private String					updaterNewVersion = "";
 
@@ -66,12 +65,17 @@ public class Parties extends JavaPlugin {
 		log(ConsoleColors.CYAN.getCode() + "Initializing Parties " + getDescription().getVersion());
 		
 		handle();
+		
 		LogHandler.log(LogLevel.BASE, "Parties v" + getDescription().getVersion() + " enabled", true, ConsoleColors.CYAN);
 	}
 	
 	@Override
 	public void onDisable() {
-		resetPendingPartyTask();
+		if (databaseDispatcher != null) {
+			// This is not a force close
+			getDatabaseDispatcher().stop();
+			resetPendingPartyTask();
+		}
 		log(ConsoleColors.CYAN.getCode() + "Parties disabled");
 		LogHandler.log(LogLevel.BASE, "========== Parties disabled - End of Log ==========", false);
 	}
@@ -121,7 +125,9 @@ public class Parties extends JavaPlugin {
 	private void handle() {
 		com.alessiodp.partiesapi.Parties.setApi(new ApiHandler(this));
 		config = new ConfigHandler(this);
-		// LogHandler is initialized with ConfigHandler
+		new LogHandler(this);
+		library = new LibraryHandler(this);
+		databaseDispatcher = new DatabaseDispatcher(this);
 		
 		party = new PartyHandler(this);
 		player = new PlayerHandler(this);
@@ -201,6 +207,10 @@ public class Parties extends JavaPlugin {
 			handler.register(Variables.command_join, new CommandJoin(this));
 			handler.register(Variables.command_password, new CommandPassword(this));
 			((org.apache.logging.log4j.core.Logger)LogManager.getRootLogger()).addFilter(new PasswordFilter());
+		}
+		/* Color system */
+		if (Variables.color_enable) {
+			handler.register(Variables.command_color, new CommandColor(this));
 		}
 		/* Tag system */
 		if (Variables.tag_enable && !Variables.tag_system) {
@@ -357,9 +367,9 @@ public class Parties extends JavaPlugin {
 			public String getValue() {
 				if (getDatabaseType().isNone())
 					return "None";
-				else if (getDatabaseType().isSQL() && Variables.database_sql_enable)
-					return "SQL";
-				return "File";
+				else if (getDatabaseType().isMySQL())
+					return "MySQL";
+				return "YAML";
 			}
 		});
 		metrics.addCustomChart(new Metrics.SimplePie("exp_system") {
@@ -432,13 +442,14 @@ public class Parties extends JavaPlugin {
 	public ConfigHandler getConfigHandler() {return config;}
 	public PlayerHandler getPlayerHandler() {return player;}
 	public PartyHandler getPartyHandler() {return party;}
+	public LibraryHandler getLibraryHandler() {return library;}
 	
-	public Data getDataHandler() {return database;}
-	public void setDataHandler(Data d) {database = d;}
-	public SQLData getSQLDatabase() {return sqldatabase;}
-	public void setSQLDatabase(SQLData s) {sqldatabase = s;}
-	public DatabaseType getDatabaseType() {return databaseType;}
-	public void setDatabaseType(DatabaseType dt) {databaseType = dt;}
+	public DatabaseDispatcher getDatabaseDispatcher() {return databaseDispatcher;}
+	public void setDatabaseDispatcher(DatabaseDispatcher dd) {databaseDispatcher = dd;}
+	public StorageType getDatabaseType() {return databaseType;}
+	public void setDatabaseType(StorageType dt) {databaseType = dt;}
+	public StorageType getLogType() {return logType;}
+	public void setLogType(StorageType dt) {logType = dt;}
 	
 	public GriefPreventionHandler getGriefPrevention() {return addonGriefPrevention;}
 	public boolean isPlaceholderAPIHooked() {return addonPlaceholderAPI;}
@@ -446,7 +457,6 @@ public class Parties extends JavaPlugin {
 	
 	public int getConfigVersion() {return configVersion;}
 	public int getMessagesVersion() {return messageVersion;}
-	public int getDatabaseVersion() {return databaseVersion;}
 	
 	public boolean isUpdateAvailable() {return !updaterNewVersion.isEmpty();}
 	public String getNewUpdate() {return updaterNewVersion;}

@@ -35,7 +35,7 @@ public class BanManagerHandler extends Listeners<BanManager>{
 	@EventHandler(ignoreCancelled=true)
 	public void onPlayerBan(PlayerBannedEvent event) {
 		PlayerData pl = event.getBan().getPlayer();
-		String partyname = plugin.getDataHandler().getPlayerPartyName(pl.getUUID());
+		String partyname = plugin.getDatabaseDispatcher().getPlayerPartyName(pl.getUUID());
 		if (!partyname.isEmpty()) {
 			Party party = plugin.getPartyHandler().getParty(partyname);
 			if (party != null) {
@@ -72,7 +72,7 @@ public class BanManagerHandler extends Listeners<BanManager>{
 				} else
 					LogHandler.log(LogLevel.DEBUG, "PartiesLeaveEvent is cancelled, ignoring ban of " + pl.getName(), true);
 			}
-			plugin.getDataHandler().removePlayer(pl.getUUID());
+			plugin.getDatabaseDispatcher().removePlayer(pl.getUUID());
 		}
 	}
 }

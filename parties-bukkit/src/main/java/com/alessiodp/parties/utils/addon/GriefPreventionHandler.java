@@ -40,7 +40,7 @@ public class GriefPreventionHandler {
 		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(claimer.getLocation(), false, null);
 		
 		for (UUID uuid : party.getMembers()) {
-			String name = Bukkit.getOfflinePlayer(uuid).getName() != null ? Bukkit.getOfflinePlayer(uuid).getName() : plugin.getDataHandler().getOldPlayerName(uuid);
+			String name = Bukkit.getOfflinePlayer(uuid).getName() != null ? Bukkit.getOfflinePlayer(uuid).getName() : plugin.getDatabaseDispatcher().getOldPlayerName(uuid);
 			if (name.equalsIgnoreCase(claimer.getName()))
 				continue;
 			claim.setPermission(uuid.toString(), ClaimPermission.Access);

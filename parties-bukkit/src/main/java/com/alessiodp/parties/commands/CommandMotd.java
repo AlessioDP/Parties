@@ -55,7 +55,7 @@ public class CommandMotd implements CommandInterface {
 			tp.sendMessage(Messages.motd_wrongcmd);
 			return true;
 		}
-		if (args[1].equalsIgnoreCase(Variables.motd_removeword)) {
+		if (args[1].equalsIgnoreCase(Variables.command_sub_remove)) {
 			party.setMOTD("");
 			party.updateParty();
 

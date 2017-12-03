@@ -14,6 +14,7 @@ import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
+import com.alessiodp.parties.utils.PartyColor;
 import com.alessiodp.parties.utils.addon.ProtocolHandler;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.partiesapi.events.PartiesPartyPostDeleteEvent;
@@ -42,7 +43,7 @@ public class PartyHandler {
 		tag_reset();
 		
 		if (Variables.fixedparty) {
-			List<String> lst = plugin.getDataHandler().getAllFixed();
+			List<String> lst = plugin.getDatabaseDispatcher().getAllFixed();
 			for (String party : lst) {
 				LogHandler.log(LogLevel.DEBUG, "Loading fixed party " + party, true);
 				loadParty(party);
@@ -72,11 +73,9 @@ public class PartyHandler {
 		if (name != null && !name.isEmpty()) {
 			ret = getListParties().get(name.toLowerCase());
 			if (ret == null) {
-				if (!plugin.getDatabaseType().isNone()) {
-					ret = plugin.getDataHandler().getParty(name, false);
-					if (ret != null)
-						LogHandler.log(LogLevel.DEBUG, "Got party " + ret.getName() + " from database", true);
-				}
+				ret = plugin.getDatabaseDispatcher().getParty(name);
+				if (ret != null)
+					LogHandler.log(LogLevel.DEBUG, "Got party " + ret.getName() + " from database", true);
 			} else
 				LogHandler.log(LogLevel.DEBUG, "Loaded party " + ret.getName() + " from list", true);
 		}
@@ -88,10 +87,8 @@ public class PartyHandler {
 	}
 	public boolean existParty(String name) {
 		boolean ret = false;
-		Party party = (Party)getListParties().get(name.toLowerCase());
-		if (party != null
-				|| (!plugin.getDatabaseType().isNone()
-					&& plugin.getDataHandler().existParty(name)))
+		Party party = (Party) getListParties().get(name.toLowerCase());
+		if (party != null || plugin.getDatabaseDispatcher().existParty(name))
 			ret = true;
 		return ret;
 	}
@@ -185,6 +182,29 @@ public class PartyHandler {
 	public List<Rank> getRankList() {return ranks;}
 	public void setRankList(List<Rank> ar) {ranks = ar;}
 	
+	/*
+	 * Color system
+	 */
+	public PartyColor searchColorByName(String name) {
+		PartyColor ret = null;
+		for (PartyColor pc : Variables.color_list) {
+			if (pc.getName().equalsIgnoreCase(name)) {
+				ret = pc;
+				break;
+			}
+		}
+		return ret;
+	}
+	public PartyColor searchColorByCommand(String cmd) {
+		PartyColor ret = null;
+		for (PartyColor pc : Variables.color_list) {
+			if (pc.getCommand().equalsIgnoreCase(cmd)) {
+				ret = pc;
+				break;
+			}
+		}
+		return ret;
+	}
 	/*
 	 * Scoreboard system
 	 */

@@ -1,5 +1,5 @@
 name: Parties
 author: AlessioDP
-main: com.alessiodp.parties.PartiesBungee
+main: com.alessiodp.parties.bungeecord.PartiesBungee
 version: ${project.version}
 description: Party manager for minecraft servers
