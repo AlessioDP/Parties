@@ -17,7 +17,7 @@ public class PartiesBungee extends Plugin {
 	private ConfigHandler		configHandler;
 	private BungeeHandler		bungeeHandler;
 	
-	private static final String	channel = "PartiesBungee";
+	public static final String	CHANNEL = "PartiesBungee";
 	private final int			configVersion = 1;
 	private final static boolean isDebug = true;
 	
@@ -63,7 +63,6 @@ public class PartiesBungee extends Plugin {
 	public ConfigHandler getConfigHandler() {return configHandler;}
 	public BungeeHandler getBungeeHandler() {return bungeeHandler;}
 	
-	public static String getPartiesChannel() {return channel;}
 	public int getConfigVersion() {return configVersion;}
 	
 	

@@ -1009,6 +1009,8 @@ public class ConfigHandler {
 			messages.help_list = msg.getString("help.list");
 		if (msg.get("help.invite") != null)
 			messages.help_invite = msg.getString("help.invite");
+		if (msg.get("help.color") != null)
+			messages.help_color = msg.getString("help.color");
 		if (msg.get("help.prefix") != null)
 			messages.help_prefix = msg.getString("help.prefix");
 		if (msg.get("help.suffix") != null)

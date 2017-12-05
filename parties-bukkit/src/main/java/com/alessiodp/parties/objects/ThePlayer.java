@@ -118,6 +118,8 @@ public class ThePlayer {
 				newCommands.put(Variables.command_password, Messages.help_password);
 			if (p.hasPermission(PartiesPermissions.RANK.toString()) && r.havePermission(PartiesPermissions.PRIVATE_ADMIN_RANK.toString()))
 				newCommands.put(Variables.command_rank, Messages.help_rank);
+			if (p.hasPermission(PartiesPermissions.COLOR.toString()) && r.havePermission(PartiesPermissions.PRIVATE_EDIT_COLOR.toString()) && Variables.color_enable)
+				newCommands.put(Variables.command_color, Messages.help_color);
 			if (p.hasPermission(PartiesPermissions.PREFIX.toString()) && Variables.tag_enable && !Variables.tag_system && Variables.tag_custom_prefix && r.havePermission(PartiesPermissions.PRIVATE_EDIT_PREFIX.toString()))
 				newCommands.put(Variables.command_prefix, Messages.help_prefix);
 			if (p.hasPermission(PartiesPermissions.SUFFIX.toString()) && Variables.tag_enable && !Variables.tag_system && Variables.tag_custom_suffix && r.havePermission(PartiesPermissions.PRIVATE_EDIT_SUFFIX.toString()))

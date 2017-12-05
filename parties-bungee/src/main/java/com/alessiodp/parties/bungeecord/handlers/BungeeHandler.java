@@ -27,7 +27,7 @@ public class BungeeHandler implements Listener {
 	public BungeeHandler(PartiesBungee instance) {
 		plugin = instance;
 		
-		partiesChannel = PartiesBungee.getPartiesChannel();
+		partiesChannel = PartiesBungee.CHANNEL;
 		plugin.getProxy().registerChannel(partiesChannel);
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
 	}

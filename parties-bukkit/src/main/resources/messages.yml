@@ -321,6 +321,7 @@ help:
     invite: "&b/party invite <player> &7- Invite a player to your party"
     password: "&b/party password <password/remove> &7- Change password of the party"
     rank: "&b/party rank <player> <rank> &7- Change rank of the player"
+    color: "&b/party color <color> &7- Change color of the party"
     prefix: "&b/party prefix <prefix/remove> &7- Add/remove prefix tag"
     suffix: "&b/party suffix <suffix/remove> &7- Add/remove suffix tag"
     kick: "&b/party kick <player> &7- Kick a player from your party"
@@ -332,4 +333,4 @@ help:
     migrate: "&b/party migrate <from> <to> &7- Copy database into a new one"
     claim: "&b/party claim <permission> &7- Grant permissions to the claim"
 dont-edit-this:
-    messages-version: 13
+    messages-version: 14

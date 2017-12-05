@@ -257,6 +257,7 @@ public class Messages {
 	public static String help_chat;
 	public static String help_list;
 	public static String help_invite;
+	public static String help_color;
 	public static String help_prefix;
 	public static String help_suffix;
 	public static String help_kick;
@@ -541,6 +542,7 @@ public class Messages {
 		help_invite = "&b/party invite <player> &7- Invite a player to your party";
 		help_password = "&b/party password <password/remove> &7- Change password of the party";
 		help_rank = "&b/party rank <player> <rank> &7- Change rank of the player";
+		help_color = "&b/party color <color> &7- Change color of the party";
 		help_prefix = "&b/party prefix <prefix/remove> &7- Add/remove prefix tag";
 		help_suffix = "&b/party suffix <suffix/remove> &7- Add/remove suffix tag";
 		help_kick = "&b/party kick <player> &7- Kick a player from your party";

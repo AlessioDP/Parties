@@ -43,7 +43,7 @@ public class Parties extends JavaPlugin {
 
 	private final int				curseProject = 90889;
 	private final int				configVersion = 16;
-	private final int				messageVersion = 13;
+	private final int				messageVersion = 14;
 	private final String			scoreboardprefix = "PARTY";
 	private final static boolean	isDebug = false;
 	
