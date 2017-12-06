@@ -1,14 +1,16 @@
 package com.alessiodp.parties.utils.addon;
 
-import org.bukkit.ChatColor;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.alessiodp.parties.Parties;
-import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
+import com.alessiodp.parties.utils.enums.PartiesPlaceholder;
 
 public class EssentialsChatHandler implements Listener {
 	Parties plugin;
@@ -20,36 +22,28 @@ public class EssentialsChatHandler implements Listener {
 	@EventHandler
 	public void onChatPlayer(AsyncPlayerChatEvent event) {
 		String old = event.getFormat();
-		if (old.contains("{PARTIES_")) {
+		if (old.toLowerCase().contains("{parties_")) {
+			// Bypass useless checks if parties doesn't exist
+			boolean somethingChanged = false;
 			ThePlayer tp = plugin.getPlayerHandler().getPlayer(event.getPlayer().getUniqueId());
-			if (!tp.getPartyName().isEmpty()) {
-				Party party = plugin.getPartyHandler().getParty(tp.getPartyName());
-				old = old.replaceAll("\\{PARTIES_PARTY\\}", party.convertText(Variables.party_placeholder, tp.getPlayer()))
-						.replaceAll("\\{PARTIES_RANK\\}", plugin.getPartyHandler().searchRank(tp.getRank()).getName())
-						.replaceAll("\\{PARTIES_RANK_FORMATTED\\}", ChatColor.translateAlternateColorCodes('&', plugin.getPartyHandler().searchRank(tp.getRank()).getChat()))
-						.replaceAll("\\{PARTIES_DESC\\}", party.getDescription())
-						.replaceAll("\\{PARTIES_MOTD\\}", party.getMOTD())
-						.replaceAll("\\{PARTIES_COLOR_NAME\\}", party.getColor() != null ? party.getColor().getName() : "")
-						.replaceAll("\\{PARTIES_COLOR_COMMAND\\}", party.getColor() != null ? party.getColor().getCommand() : "")
-						.replaceAll("\\{PARTIES_COLOR_CODE\\}", party.getColor() != null ? party.getColor().getCode() : "")
-						.replaceAll("\\{PARTIES_PREFIX\\}", party.getPrefix())
-						.replaceAll("\\{PARTIES_SUFFIX\\}", party.getSuffix())
-						.replaceAll("\\{PARTIES_KILLS\\}", Integer.toString(party.getKills()));
-				old = ChatColor.translateAlternateColorCodes('&', old);
-			} else {
-				old = old.replaceAll("\\{PARTIES_PARTY\\}", "")
-						.replaceAll("\\{PARTIES_RANK\\}", "")
-						.replaceAll("\\{PARTIES_RANK_FORMATTED\\}", "")
-						.replaceAll("\\{PARTIES_DESC\\}", "")
-						.replaceAll("\\{PARTIES_MOTD\\}", "")
-						.replaceAll("\\{PARTIES_COLOR_NAME\\}", "")
-						.replaceAll("\\{PARTIES_COLOR_COMMAND\\}", "")
-						.replaceAll("\\{PARTIES_COLOR_CODE\\}", "")
-						.replaceAll("\\{PARTIES_PREFIX\\}", "")
-						.replaceAll("\\{PARTIES_SUFFIX\\}", "")
-						.replaceAll("\\{PARTIES_KILLS\\}", "");
+			Party party = plugin.getPartyHandler().getParty(tp.getPartyName());
+			
+			Pattern pat = Pattern.compile("\\{parties_([a-z\\_]+)\\}", Pattern.CASE_INSENSITIVE);
+			Matcher mat = pat.matcher(old);
+			while (mat.find()) {
+				String base = mat.group(0);
+				String identifier = mat.group(1);
+				if (identifier != null) {
+					PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
+					if (ph != null) {
+						old = old.replace(base, ph.formatPlaceholder(tp, party));
+						somethingChanged = true;
+					}
+				}
 			}
-			event.setFormat(old);
+			
+			if(somethingChanged)
+				event.setFormat(old);
 		}
 	}
 }

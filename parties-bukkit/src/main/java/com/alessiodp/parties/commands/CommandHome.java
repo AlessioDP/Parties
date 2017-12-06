@@ -13,9 +13,9 @@ import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
-import com.alessiodp.partiesapi.interfaces.Rank;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
 import com.alessiodp.parties.utils.tasks.HomeTask;
@@ -58,19 +58,10 @@ public class CommandHome implements CommandInterface {
 				tp.sendMessage(Messages.noparty);
 			return true;
 		}
-		if (args.length <= 1) {
-			Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-			if (r != null && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-				if (!r.havePermission(PartiesPermissions.PRIVATE_HOME.toString())) {
-					Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_HOME.toString());
-					if (rr != null)
-						tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-					else
-						tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_HOME.toString()));
-					return true;
-				}
-			}
-		}
+		
+		if (args.length <= 1 && !PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_EDIT_DESC))
+			return true;
+		
 		if (party.getHome() == null) {
 			tp.sendMessage(Messages.home_nohome, party);
 			return true;

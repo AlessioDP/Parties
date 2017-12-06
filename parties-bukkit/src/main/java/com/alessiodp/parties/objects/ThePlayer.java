@@ -98,7 +98,7 @@ public class ThePlayer {
 				newCommands.put(Variables.command_members, Messages.help_members);
 			if (p.hasPermission(PartiesPermissions.CHAT.toString()))
 				newCommands.put(Variables.command_chat, Messages.help_chat);
-			if (p.hasPermission(PartiesPermissions.LIST.toString()))
+			if (p.hasPermission(PartiesPermissions.LIST.toString()) && Variables.list_enable)
 				newCommands.put(Variables.command_list, Messages.help_list);
 			if (p.hasPermission(PartiesPermissions.HOME_OTHERS.toString()))
 				newCommands.put(Variables.command_home, Messages.help_home_others);
@@ -118,7 +118,7 @@ public class ThePlayer {
 				newCommands.put(Variables.command_password, Messages.help_password);
 			if (p.hasPermission(PartiesPermissions.RANK.toString()) && r.havePermission(PartiesPermissions.PRIVATE_ADMIN_RANK.toString()))
 				newCommands.put(Variables.command_rank, Messages.help_rank);
-			if (p.hasPermission(PartiesPermissions.COLOR.toString()) && r.havePermission(PartiesPermissions.PRIVATE_EDIT_COLOR.toString()) && Variables.color_enable)
+			if (p.hasPermission(PartiesPermissions.COLOR.toString()) && r.havePermission(PartiesPermissions.PRIVATE_EDIT_COLOR.toString()) && Variables.color_enable && Variables.color_colorcommand)
 				newCommands.put(Variables.command_color, Messages.help_color);
 			if (p.hasPermission(PartiesPermissions.PREFIX.toString()) && Variables.tag_enable && !Variables.tag_system && Variables.tag_custom_prefix && r.havePermission(PartiesPermissions.PRIVATE_EDIT_PREFIX.toString()))
 				newCommands.put(Variables.command_prefix, Messages.help_prefix);
@@ -285,14 +285,18 @@ public class ThePlayer {
 			formattedMessage = party.convertText(formattedMessage, getPlayer());
 		else {
 			formattedMessage = message
-					.replace("%desc%",		"")
-					.replace("%party%",		"")
-					.replace("%prefix%",	"")
-					.replace("%suffix%",	"")
-					.replace("%kills",		"")
-					.replace("%players%",	"")
-					.replace("%allplayers%","")
-					.replace("%rank%",		"");
+					.replace("%desc%",			"")
+					.replace("%party%",			"")
+					.replace("%color_name%",	"")
+					.replace("%color_command%",	"")
+					.replace("%color_code%",	"")
+					.replace("%prefix%",		"")
+					.replace("%suffix%",		"")
+					.replace("%kills",			"")
+					.replace("%players%",		"")
+					.replace("%allplayers%",	"")
+					.replace("%rank_name%",		"")
+					.replace("%rank_chat%",		"");
 			formattedMessage = plugin.getPlayerHandler().setPlaceholder(formattedMessage, player);
 		}
 		return formattedMessage;
@@ -306,14 +310,18 @@ public class ThePlayer {
 				formattedMessage = party.convertText(formattedMessage, player);
 			else {
 				formattedMessage = message
-						.replace("%desc%",		"")
-						.replace("%party%",		"")
-						.replace("%prefix%",	"")
-						.replace("%suffix%",	"")
-						.replace("%kills",		"")
-						.replace("%players%",	"")
-						.replace("%allplayers%","")
-						.replace("%rank%",		"");
+						.replace("%desc%",			"")
+						.replace("%party%",			"")
+						.replace("%color_name%",	"")
+						.replace("%color_command%",	"")
+						.replace("%color_code%",	"")
+						.replace("%prefix%",		"")
+						.replace("%suffix%",		"")
+						.replace("%kills",			"")
+						.replace("%players%",		"")
+						.replace("%allplayers%",	"")
+						.replace("%rank_name%",		"")
+						.replace("%rank_chat%",		"");
 				formattedMessage = plugin.getPlayerHandler().setPlaceholder(formattedMessage, null);
 			}
 		}

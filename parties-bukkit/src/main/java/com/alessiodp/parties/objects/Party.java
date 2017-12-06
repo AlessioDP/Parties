@@ -19,12 +19,12 @@ import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.handlers.JSONHandler;
 import com.alessiodp.parties.handlers.LogHandler;
-import com.alessiodp.parties.utils.PartyColor;
 import com.alessiodp.parties.utils.addon.BanManagerHandler;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
 import com.alessiodp.parties.utils.tasks.InviteTask;
 import com.alessiodp.partiesapi.events.PartiesPlayerJoinEvent;
+import com.alessiodp.partiesapi.interfaces.Color;
 import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class Party {
@@ -41,7 +41,8 @@ public class Party {
 	private Location home;
 	private String prefix;
 	private String suffix;
-	private PartyColor color;
+	private Color color;
+	private Color temporaryColor;
 	private int kills;
 	private String password;
 	private HashMap<UUID, UUID> whoInvite;
@@ -61,6 +62,7 @@ public class Party {
 		prefix = "";
 		suffix = "";
 		color = null;
+		temporaryColor = null;
 		kills = 0;
 		password = "";
 		whoInvite = new HashMap<UUID, UUID>();
@@ -80,6 +82,7 @@ public class Party {
 		prefix = copy.prefix;
 		suffix = copy.suffix;
 		color = copy.color;
+		temporaryColor = copy.temporaryColor;
 		kills = copy.kills;
 		password = copy.password;
 		whoInvite = copy.whoInvite;
@@ -124,6 +127,7 @@ public class Party {
 			if (getMembers().contains(p.getUniqueId()))
 				ret.add(p);
 		setOnlinePlayers(ret);
+		plugin.getPartyHandler().loadDynamicColor(this);
 		plugin.getPartyHandler().tag_refresh(this);
 	}
 	
@@ -269,39 +273,41 @@ public class Party {
 	}
 	public String convertText(String text, Player player) {
 		text = text
-				.replace("%player%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
-				.replace("%sender%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
-				.replace("%world%",		player.getWorld().getName())
-				.replace("%desc%",		getDescription())
-				.replace("%party%",		getName())
-				.replace("%color_name%",color != null ? color.getName() : "")
-				.replace("%color_command%",color != null ? color.getCommand() : "")
-				.replace("%color_code%",color != null ? color.getCode() : "")
-				.replace("%prefix%",	getPrefix())
-				.replace("%suffix%",	getSuffix())
-				.replace("%kills",		Integer.toString(getKills()))
-				.replace("%players%",	Integer.toString(getNumberOnlinePlayers()))
-				.replace("%allplayers%",Integer.toString(getMembers().size()))
-				.replace("%rank%",		plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getPlayer(player.getUniqueId()).getRank()).getChat());
+				.replace("%player%",		player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
+				.replace("%sender%",		player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
+				.replace("%world%",			player.getWorld().getName())
+				.replace("%desc%",			getDescription())
+				.replace("%party%",			getName())
+				.replace("%color_name%",	getTemporaryColor() != null ? getTemporaryColor().getName() : "")
+				.replace("%color_command%",	getTemporaryColor() != null ? getTemporaryColor().getCommand() : "")
+				.replace("%color_code%",	getTemporaryColor() != null ? getTemporaryColor().getCode() : "")
+				.replace("%prefix%",		getPrefix())
+				.replace("%suffix%",		getSuffix())
+				.replace("%kills%",			Integer.toString(getKills()))
+				.replace("%players%",		Integer.toString(getNumberOnlinePlayers()))
+				.replace("%allplayers%",	Integer.toString(getMembers().size()))
+				.replace("%rank_name%",		plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getPlayer(player.getUniqueId()).getRank()).getName())
+				.replace("%rank_chat%",		plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getPlayer(player.getUniqueId()).getRank()).getChat());
 		text = plugin.getPlayerHandler().setPlaceholder(text, player);
 		return text;
 	}
 	public String convertText(String text, OfflinePlayer player) {
 		text = text
-				.replace("%player%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
-				.replace("%sender%",	player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
-				.replace("%world%",		"")
-				.replace("%desc%",		getDescription())
-				.replace("%party%",		getName())
-				.replace("%color_name%",color != null ? color.getName() : "")
-				.replace("%color_command%",color != null ? color.getCommand() : "")
-				.replace("%color_code%",color != null ? color.getCode() : "")
-				.replace("%prefix%",	getPrefix())
-				.replace("%suffix%",	getSuffix())
-				.replace("%kills",		Integer.toString(getKills()))
-				.replace("%players%",	Integer.toString(getNumberOnlinePlayers()))
-				.replace("%allplayers%",Integer.toString(getMembers().size()))
-				.replace("%rank%",		plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getPlayer(player.getUniqueId()).getRank()).getChat());
+				.replace("%player%",		player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
+				.replace("%sender%",		player.getName() != null ? player.getName() : plugin.getDatabaseDispatcher().getOldPlayerName(player.getUniqueId()))
+				.replace("%world%",			"")
+				.replace("%desc%",			getDescription())
+				.replace("%party%",			getName())
+				.replace("%color_name%",	getTemporaryColor() != null ? getTemporaryColor().getName() : "")
+				.replace("%color_command%",	getTemporaryColor() != null ? getTemporaryColor().getCommand() : "")
+				.replace("%color_code%",	getTemporaryColor() != null ? getTemporaryColor().getCode() : "")
+				.replace("%prefix%",		getPrefix())
+				.replace("%suffix%",		getSuffix())
+				.replace("%kills%",			Integer.toString(getKills()))
+				.replace("%players%",		Integer.toString(getNumberOnlinePlayers()))
+				.replace("%allplayers%",	Integer.toString(getMembers().size()))
+				.replace("%rank_name%",		plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getPlayer(player.getUniqueId()).getRank()).getName())
+				.replace("%rank_chat%",		plugin.getPartyHandler().searchRank(plugin.getPlayerHandler().getPlayer(player.getUniqueId()).getRank()).getChat());
 		text = plugin.getPlayerHandler().setPlaceholder(text, null);
 		return text;
 	}
@@ -364,8 +370,10 @@ public class Party {
 	}
 	public String getDescription() {return description;}
 	public void setDescription(String v) {description = v;}
+	
 	public String getMOTD() {return motd;}
 	public void setMOTD(String v) {motd = v;}
+	
 	public Location getHome() {return home;}
 	public void setHome(Location v) {home = v;}
 	public String getHomeRaw() {
@@ -388,14 +396,15 @@ public class Party {
 			setHome(null);
 		}
 	}
+	
 	public String getPrefix() {return prefix;}
 	public void setPrefix(String v) {prefix = v;}
+	
 	public String getSuffix() {return suffix;}
 	public void setSuffix(String v) {suffix = v;}
-	public PartyColor getColor() {return color;}
-	public void setColor(PartyColor v) {
-		color = v;
-	}
+	
+	public Color getColor() {return color;}
+	public void setColor(Color v) {color = v;}
 	public void setColorRaw(String v) {
 		color = plugin.getPartyHandler().searchColorByName(v);
 	}
@@ -405,12 +414,22 @@ public class Party {
 			ret = color.getName();
 		return ret;
 	}
+	public Color getTemporaryColor() {
+		if (color != null)
+			return color;
+		return temporaryColor;
+	}
+	public void setTemporaryColor(Color v) {temporaryColor = v;}
+	
 	public int getKills() {return kills;}
 	public void setKills(int v) {kills = v;}
+	
 	public boolean isFixed() {return fixed;}
 	public void setFixed(boolean v) {fixed=v;}
+	
 	public String getPassword() {return password;}
 	public void setPassword(String v) {password = v;}
+	
 	public HashMap<UUID, UUID> getWhoInviteMap() {return whoInvite;}
 	public HashMap<UUID, Integer> getInvitedMap() {return invited;}
 	

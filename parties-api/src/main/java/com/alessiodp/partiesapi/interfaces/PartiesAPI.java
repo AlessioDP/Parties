@@ -282,7 +282,31 @@ public interface PartiesAPI {
 	 *	@param paramParty	Party name
 	 *	@param paramSuffix	New suffix
 	 */
-	public void setPartySuffix(String paramPartparamPartyyName, String paramSuffix);
+	public void setPartySuffix(String paramParty, String paramSuffix);
+	
+	/**
+	 *	Get the color of the party paramParty
+	 *	
+	 *	@param paramParty	Party name
+	 *	
+	 *	@return Return party color, if party doesn't exist returns null
+	 */
+	public String getPartyColor(String paramParty);
+	/**
+	 *	Set the color of the party paramParty
+	 *	
+	 *	@param paramParty	Party name
+	 *	@param paramColor	New color
+	 */
+	public void setPartyColor(String paramParty, String paramColor);
+	
+	/**
+	 *	Get list of available colors
+	 *	
+	 *	
+	 *	@return Return ranks arraylist
+	 */
+	public List<Color> getColorList();
 	
 	/**
 	 *	Get the kills of the party paramParty

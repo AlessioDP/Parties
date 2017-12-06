@@ -67,7 +67,7 @@ public class CommandList implements CommandInterface {
 		default:
 			parties = orderName(parties);
 		}
-		
+		parties = limitList(parties);
 		int page = 1;
 		int maxpages = parties.size() % Variables.list_maxpages == 0 ? parties.size() / Variables.list_maxpages : (parties.size() / Variables.list_maxpages) + 1;
 		if (args.length > 1) {
@@ -179,5 +179,15 @@ public class CommandList implements CommandInterface {
 			}
 		}
 		return list;
+	}
+	private List<Party> limitList(List<Party> list) {
+		List<Party> ret = list;
+		if (Variables.list_limitparties >= 0) {
+			ret = new ArrayList<Party>();
+			for (int c=0; c < Variables.list_limitparties; c++) {
+				ret.add(list.get(c));
+			}
+		}
+		return ret;
 	}
 }

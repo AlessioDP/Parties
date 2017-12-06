@@ -15,9 +15,9 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
-import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class CommandPrefix implements CommandInterface {
 	private Parties plugin;
@@ -42,17 +42,10 @@ public class CommandPrefix implements CommandInterface {
 			tp.sendMessage(Messages.noparty);
 			return true;
 		}
-		Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-		if (r != null && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-			if (!r.havePermission(PartiesPermissions.PRIVATE_EDIT_PREFIX.toString())) {
-				Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_EDIT_PREFIX.toString());
-				if (rr != null)
-					tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-				else
-					tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_EDIT_PREFIX.toString()));
-				return true;
-			}
-		}
+		
+		if (!PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_EDIT_PREFIX))
+			return true;
+		
 		if (args.length < 2) {
 			tp.sendMessage(Messages.prefix_wrongcmd);
 			return true;

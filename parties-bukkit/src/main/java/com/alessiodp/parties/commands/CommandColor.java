@@ -13,10 +13,10 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
-import com.alessiodp.parties.utils.PartyColor;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
-import com.alessiodp.partiesapi.interfaces.Rank;
+import com.alessiodp.partiesapi.interfaces.Color;
 
 
 public class CommandColor implements CommandInterface {
@@ -42,17 +42,10 @@ public class CommandColor implements CommandInterface {
 			tp.sendMessage(Messages.noparty);
 			return true;
 		}
-		Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-		if (r != null && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-			if (!r.havePermission(PartiesPermissions.PRIVATE_EDIT_COLOR.toString())) {
-				Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_EDIT_COLOR.toString());
-				if (rr != null)
-					tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-				else
-					tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_EDIT_COLOR.toString()));
-				return true;
-			}
-		}
+		
+		if (!PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_EDIT_COLOR))
+			return true;
+		
 		if (args.length > 2) {
 			tp.sendMessage(Messages.color_wrongcmd);
 			return true;
@@ -80,7 +73,7 @@ public class CommandColor implements CommandInterface {
 			LogHandler.log(LogLevel.MEDIUM, p.getName() + "[" + p.getUniqueId() + "] removed color of the party " + party.getName(), true);
 			return true;
 		}
-		PartyColor pc = plugin.getPartyHandler().searchColorByCommand(args[1]);
+		Color pc = plugin.getPartyHandler().searchColorByCommand(args[1]);
 		if (pc == null) {
 			// Color doesn't exist
 			tp.sendMessage(Messages.color_wrongcolor);

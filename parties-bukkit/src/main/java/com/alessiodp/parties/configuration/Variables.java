@@ -3,8 +3,9 @@ package com.alessiodp.parties.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alessiodp.parties.objects.ColorObj;
 import com.alessiodp.parties.objects.RankObj;
-import com.alessiodp.parties.utils.PartyColor;
+import com.alessiodp.partiesapi.interfaces.Color;
 import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class Variables {
@@ -64,7 +65,7 @@ public class Variables {
 	
 	public static int invite_timeout;
 	public static boolean invite_revoke;
-	public static boolean invite_nopex;
+	public static boolean invite_noperm;
 	
 	public static int home_cooldown;
 	public static boolean home_cancelmove;
@@ -74,7 +75,9 @@ public class Variables {
 	public static int teleport_delay;
 	
 	public static boolean color_enable;
-	public static List<PartyColor> color_list;
+	public static boolean color_colorcommand;
+	public static boolean color_dynamic;
+	public static List<Color> color_list;
 	
 	public static boolean password_enable;
 	public static boolean password_bypassleave;
@@ -129,9 +132,11 @@ public class Variables {
 	public static String chat_partybroadcastformat;
 	public static String chat_formatgroup;
 	
+	public static boolean list_enable;
 	public static String list_orderedby;
 	public static int list_filter;
 	public static int list_maxpages;
+	public static int list_limitparties;
 	public static List<String> list_hiddenparty;
 	
 	public static boolean follow_enable;
@@ -161,6 +166,18 @@ public class Variables {
 	/*public static boolean exp_mythicmobs_enable;
 	public static boolean exp_mythicmobs_normalexp;
 	public static boolean exp_mythicmobs_skillapiexp;*/
+	
+	public static String placeholders_colorname;
+	public static String placeholders_colorcode;
+	public static String placeholders_colorcommand;
+	public static String placeholders_desc;
+	public static String placeholders_kills;
+	public static String placeholders_motd;
+	public static String placeholders_party;
+	public static String placeholders_prefix;
+	public static String placeholders_rankname;
+	public static String placeholders_rankchat;
+	public static String placeholders_suffix;
 	
 	public static boolean banmanager_enable;
 	public static boolean banmanager_muted;
@@ -320,7 +337,7 @@ public class Variables {
 		
 		invite_timeout = 20;
 		invite_revoke = true;
-		invite_nopex = true;
+		invite_noperm = true;
 		
 		home_cooldown = 0;
 		home_cancelmove = true;
@@ -330,10 +347,12 @@ public class Variables {
 		teleport_delay = 60;
 		
 		color_enable = false;
-		color_list = new ArrayList<PartyColor>();
-		color_list.add(new PartyColor("red", "red", "&c"));
-		color_list.add(new PartyColor("green", "green", "&a"));
-		color_list.add(new PartyColor("yourcustomcolor", "special", "&9&n"));
+		color_colorcommand = true;
+		color_dynamic = false;
+		color_list = new ArrayList<Color>();
+		color_list.add(new ColorObj("red", "red", "&c", -1, -1, -1));
+		color_list.add(new ColorObj("green", "green", "&a", -1, -1, -1));
+		color_list.add(new ColorObj("yourcustomcolor", "special", "&9&n", -1, -1, -1));
 		
 		password_enable = false;
 		password_bypassleave = false;
@@ -381,16 +400,18 @@ public class Variables {
 		tag_custom_minlength = 3;
 		tag_custom_censor = new ArrayList<String>();
 		
-		chat_chatformat = "&b[Party] %rank% %player%&r&7: &b%message%";
+		chat_chatformat = "&b[Party] %rank_chat% %player%&r&7: &b%message%";
 		chat_allowcolors = false;
 		chat_chatcooldown = 0;
 		chat_spychatformat = "&7[SPY] [Party:%party%] %player%: %message%";
 		chat_partybroadcastformat = "&b[Party] %message%";
 		chat_formatgroup = "[%group%] ";
 		
+		list_enable = true;
 		list_orderedby = "players";
 		list_filter = 1;
 		list_maxpages = 8;
+		list_limitparties = -1;
 		list_hiddenparty = new ArrayList<String>();
 		
 		follow_enable = false;
@@ -423,6 +444,18 @@ public class Variables {
 		/*exp_mythicmobs_enable = false;
 		exp_mythicmobs_normalexp = true;
 		exp_mythicmobs_skillapiexp = true;*/
+		
+		placeholders_colorname = "%color_name%";
+		placeholders_colorcode = "%color_code%";
+		placeholders_colorcommand = "%color_command%";
+		placeholders_desc = "%desc%";
+		placeholders_kills = "%kills%";
+		placeholders_motd = "%motd%";
+		placeholders_party = "%party%";
+		placeholders_prefix = "%prefix%";
+		placeholders_rankname = "%rank_name%";
+		placeholders_rankchat = "%rank_chat%";
+		placeholders_suffix = "%suffix%";
 		
 		banmanager_enable = false;
 		banmanager_muted = true;

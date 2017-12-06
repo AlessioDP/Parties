@@ -14,10 +14,10 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
 import com.alessiodp.partiesapi.events.PartiesPartyRenameEvent;
-import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class CommandRename implements CommandInterface {
 	private Parties plugin;
@@ -70,19 +70,8 @@ public class CommandRename implements CommandInterface {
 			return true;
 		}
 		
-		if (type.equals(Type.OWN)) {
-			Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-			if (r != null && !p.hasPermission(PartiesPermissions.RENAME_OTHERS.toString()) && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-				if (!r.havePermission(PartiesPermissions.PRIVATE_ADMIN_RENAME.toString())) {
-					Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_ADMIN_RENAME.toString());
-					if (rr != null)
-						tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-					else
-						tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_ADMIN_RENAME.toString()));
-					return true;
-				}
-			}
-		}
+		if (type.equals(Type.OWN) && !PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_ADMIN_RENAME))
+			return true;
 		/*
 		 * 
 		 * 

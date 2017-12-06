@@ -14,11 +14,11 @@ import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.configuration.Messages;
 import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
-import com.alessiodp.parties.utils.PartyColor;
 import com.alessiodp.parties.utils.addon.ProtocolHandler;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.partiesapi.events.PartiesPartyPostDeleteEvent;
 import com.alessiodp.partiesapi.events.PartiesPartyPreDeleteEvent;
+import com.alessiodp.partiesapi.interfaces.Color;
 import com.alessiodp.partiesapi.interfaces.Rank;
 
 
@@ -38,7 +38,10 @@ public class PartyHandler {
 		
 		listParty = new HashMap<String, Party>();
 		listPartyToDelete = new HashMap<String, Integer>();
-		
+	}
+	
+	public void init() {
+		// Used to avoid NullPointer to PartyHandler.class from Parties.class
 		scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 		tag_reset();
 		
@@ -50,7 +53,6 @@ public class PartyHandler {
 			}
 		}
 	}
-	
 	public void reloadParties() {
 		ranks = Variables.rank_list;
 	}
@@ -185,9 +187,9 @@ public class PartyHandler {
 	/*
 	 * Color system
 	 */
-	public PartyColor searchColorByName(String name) {
-		PartyColor ret = null;
-		for (PartyColor pc : Variables.color_list) {
+	public Color searchColorByName(String name) {
+		Color ret = null;
+		for (Color pc : Variables.color_list) {
 			if (pc.getName().equalsIgnoreCase(name)) {
 				ret = pc;
 				break;
@@ -195,15 +197,38 @@ public class PartyHandler {
 		}
 		return ret;
 	}
-	public PartyColor searchColorByCommand(String cmd) {
-		PartyColor ret = null;
-		for (PartyColor pc : Variables.color_list) {
+	public Color searchColorByCommand(String cmd) {
+		Color ret = null;
+		for (Color pc : Variables.color_list) {
 			if (pc.getCommand().equalsIgnoreCase(cmd)) {
 				ret = pc;
 				break;
 			}
 		}
 		return ret;
+	}
+	public void loadDynamicColor(Party party) {
+		if (Variables.color_enable && Variables.color_dynamic && party.getColor() == null) {
+			Color selected = null;
+			for (Color pc : Variables.color_list) {
+				boolean found = false;
+				if (pc.getDynamicMembers() > -1) {
+					if (party.getMembers().size() >= pc.getDynamicMembers())
+						found = true;
+				} else if (pc.getDynamicKills() > -1) {
+					if (party.getKills() >= pc.getDynamicKills())
+						found = true;
+				}
+				
+				if (found) {
+					if (selected == null || pc.getDynamicPriority() > selected.getDynamicPriority())
+						selected = pc;
+				}
+			}
+			
+			if (selected != null)
+				party.setTemporaryColor(selected);
+		}
 	}
 	/*
 	 * Scoreboard system

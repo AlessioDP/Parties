@@ -38,6 +38,7 @@ public class PlayerHandler {
 	}
 	
 	public void init() {
+		// Used to avoid NullPointer to PlayerHandler.class from Parties.class
 		LogHandler.log(LogLevel.DEBUG, "Initializing PlayerHandler", true);
 		reloadPlayers();
 	}

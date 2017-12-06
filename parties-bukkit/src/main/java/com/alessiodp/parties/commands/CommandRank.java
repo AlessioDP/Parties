@@ -15,6 +15,7 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
 import com.alessiodp.partiesapi.interfaces.Rank;
@@ -40,17 +41,9 @@ public class CommandRank implements CommandInterface {
 				tp.sendMessage(Messages.noparty);
 				return true;
 			}
-			Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-			if (r != null && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-				if (!r.havePermission(PartiesPermissions.PRIVATE_ADMIN_RANK.toString())) {
-					Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_ADMIN_RANK.toString());
-					if (rr != null)
-						tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-					else
-						tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_ADMIN_RANK.toString()));
-					return true;
-				}
-			}
+
+			if (!PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_ADMIN_RANK))
+				return true;
 		}
 		if (args.length != 3) {
 			tp.sendMessage(Messages.rank_wrongcmd);
@@ -101,16 +94,24 @@ public class CommandRank implements CommandInterface {
 		
 		Rank rank = plugin.getPartyHandler().searchRank(args[2]);
 		if (rank == null) {
-			tp.sendMessage(Messages.rank_wrongrank.replace("%rank%", args[2]));
+			tp.sendMessage(Messages.rank_wrongrank
+					.replace("%rank_name%", args[2])
+					.replace("%rank_chat%", args[2]));
 			return true;
 		}
 		if (rank.getLevel() == promoted.getRank()) {
-			tp.sendMessage(Messages.rank_alreadyrank.replace("%rank%", rank.getName()).replace("%player%", promotedPlayer.getName()));
+			tp.sendMessage(Messages.rank_alreadyrank
+					.replace("%rank_name%", rank.getName())
+					.replace("%rank_chat%", rank.getChat())
+					.replace("%player%", promotedPlayer.getName()));
 			return true;
 		}
 		if (!p.hasPermission(PartiesPermissions.RANK_OTHERS.toString())) {
 			if (tp.getRank() <= promoted.getRank()) {
-				tp.sendMessage(Messages.rank_lowrank.replace("%rank%", rank.getName()).replace("%player%", promotedPlayer.getName()));
+				tp.sendMessage(Messages.rank_lowrank
+						.replace("%rank_name%", rank.getName())
+						.replace("%rank_chat%", rank.getChat())
+						.replace("%player%", promotedPlayer.getName()));
 				return true;
 			}
 			if (promotedPlayer.getUniqueId().equals(p.getUniqueId())) {
@@ -122,7 +123,9 @@ public class CommandRank implements CommandInterface {
 				
 			}
 			if ((rank.getLevel() != Variables.rank_last) && (rank.getLevel() >= tp.getRank())) {
-				tp.sendMessage(Messages.rank_tohigherrank.replace("%rank%", rank.getName()));
+				tp.sendMessage(Messages.rank_tohigherrank
+						.replace("%rank_name%", rank.getName())
+						.replace("%rank_chat%", rank.getChat()));
 				return true;
 			}
 		}
@@ -140,9 +143,16 @@ public class CommandRank implements CommandInterface {
 		promoted.setRank(rank.getLevel());
 		promoted.updatePlayer();
 		
-		if (!party.getName().equalsIgnoreCase(tp.getPartyName()))
-			tp.sendMessage(Messages.rank_promoted.replace("%player%", promotedPlayer.getName()).replace("%rank%", rank.getName()));
-		party.sendBroadcastParty(p, Messages.rank_promoted.replace("%player%", promotedPlayer.getName()).replace("%rank%", rank.getName()));
+		if (!party.getName().equalsIgnoreCase(tp.getPartyName())) {
+			tp.sendMessage(Messages.rank_promoted
+					.replace("%player%", promotedPlayer.getName())
+					.replace("%rank_name%", rank.getName())
+					.replace("%rank_chat%", rank.getChat()));
+		}
+		party.sendBroadcastParty(p, Messages.rank_promoted
+				.replace("%player%", promotedPlayer.getName())
+				.replace("%rank_name%", rank.getName())
+				.replace("%rank_chat%", rank.getChat()));
 		
 		LogHandler.log(LogLevel.MEDIUM, p.getName() + "[" + p.getUniqueId() + "] set to leader "+ promotedPlayer.getName() +"["+promotedPlayer.getUniqueId()+" of " + party.getName(), true);
 		return true;

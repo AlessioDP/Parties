@@ -275,7 +275,7 @@ public class Messages {
 
 	public void loadDefaults() {
 		nopermission = "&cYou do not have access to that command";
-		nopermission_party = "&cYou need to be %rank% to perform that command";
+		nopermission_party = "&cYou need to be %rank_name% to perform that command";
 		invalidcommand = "&cInvalid command";
 		noparty = "&cYou are not in a party";
 		canthitmates = "&cYou can't hit your partymates";
@@ -457,13 +457,13 @@ public class Messages {
 		rename_wrongcmd = "&cWrong variables: Type &7/party rename <newname>";
 		rename_wrongcmd_admin = "&cWrong variables: Type &7/party rename <party> <newname>";
 		
-		rank_promoted = "&b&l%player% rank changed into %rank%";
+		rank_promoted = "&b&l%player% rank changed into %rank_name%";
 		rank_nomember = "&c%player% is not in your party";
 		rank_noparty = "&c%player% doesn't have a party";
-		rank_alreadyrank = "&c%player% is already %rank%!";
+		rank_alreadyrank = "&c%player% is already %rank_name%!";
 		rank_lowrank = "&cYou cannot edit players with an equivalent or higher rank!";
 		rank_tohigherrank = "&cYou cannot promote to a rank equivalent or higher than yours!";
-		rank_wrongrank = "&cRank '%rank%' doesn't exist!";
+		rank_wrongrank = "&cRank '%rank_name%' doesn't exist!";
 		rank_nodegradeyourself = "&cYou cannot degrade yourself!";
 		rank_nopromoteyourself = "&cYou cannot promote yourself!";
 		rank_wrongcmd = "&cWrong variables: Type &7/party rank <player> <rank>";

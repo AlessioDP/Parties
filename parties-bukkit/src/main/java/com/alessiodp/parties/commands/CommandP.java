@@ -12,11 +12,11 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
 import com.alessiodp.parties.utils.tasks.ChatTask;
 import com.alessiodp.partiesapi.events.PartiesChatEvent;
-import com.alessiodp.partiesapi.interfaces.Rank;
 
 public class CommandP implements CommandInterface {
 	private Parties plugin;
@@ -39,22 +39,15 @@ public class CommandP implements CommandInterface {
 			tp.sendMessage(Messages.noparty);
 			return true;
 		}
-		Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-		if (r != null && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-			if (!r.havePermission(PartiesPermissions.PRIVATE_SENDMESSAGE.toString())) {
-				Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_SENDMESSAGE.toString());
-				if (rr != null)
-					tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-				else
-					tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_SENDMESSAGE.toString()));
-				return true;
-			}
-		}
+		
+		if (!PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_SENDMESSAGE))
+			return true;
+		
 		if (args.length == 0) {
 			tp.sendMessage(Messages.p_wrongcmd);
 			return true;
 		}
-		if (Variables.chat_chatcooldown > 0 && !r.havePermission(PartiesPermissions.PRIVATE_BYPASSCOOLDOWN.toString())) {
+		if (Variables.chat_chatcooldown > 0 && !PlayerUtil.checkPlayerRank(tp, PartiesPermissions.PRIVATE_BYPASSCOOLDOWN)) {
 			Long unixTimestamp = plugin.getPlayerHandler().getChatCooldown().get(p.getUniqueId());
 			long unixNow = System.currentTimeMillis() / 1000L;
 			if (unixTimestamp != null) {

@@ -21,7 +21,8 @@
 # %suffix% = Suffix of the party
 # %players% = Number of players online in the party
 # %sender% or %player% = Name of the sender/player
-# %rank% = Customizable rank string (Config.yml: format-rank-leader and format-rank-member)
+# %rank_name% = Rank name
+# %rank_chat% = Customizable rank string (Config.yml: format-rank-leader and format-rank-member)
 # %message% = Message of the player
 # %world% = Name of the world where the player is (ex: world_nether)
 # %price% = Price of the command (Only some commands, see vault section)
@@ -154,6 +155,19 @@ party:
         # By default: placeholder isn't set in messages.yml, you need to put it wherever you want
         # Placeholders: %color_name%, %color_command% and %color_code%
         enable: false
+        # Enable color command (disable it if you are using dynamic colors)
+        color-command: true
+        # Give to parties a color based on their stats
+        # Add to each color a priority value and the relative statistic minimum value (Supported: kills, members)
+        # Example:
+        # red:
+        #   command: "red"
+        #   code: "&c"
+        #   dynamic:
+        #     priority: 10
+        #     kills: 100
+        #     members: 5
+        dynamic-color: false
         # Make here your custom colors
         # command = /party color <command>
         # code = code of the color
@@ -285,7 +299,7 @@ tag:
         min-lenght: 3
         censored-words: []
 chat:
-    chat-format: "&b[Party] %rank% %player%&r&7: &b%message%"
+    chat-format: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
     # Allow sending messages with color codes (&1, &2, etc..)
     allow-colors: false
     # Chat cooldown in seconds
@@ -294,6 +308,7 @@ chat:
     party-broadcast-format: "&b[Party] %message%"
     format-group: "[%name%] "
 list:
+    enable: true
     # Sort system:
     # kills = Total kills.
     # players = Total players online.
@@ -303,6 +318,8 @@ list:
     # Filter parties if number of online players is less than X.
     filter-min: 1
     parties-per-page: 8
+    # Show max X parties (-1 is unlimited)
+    limit-parties: -1
     # Hide some parties from the list (Type the name of party)
     hidden-parties: []
 follow-party:
@@ -357,6 +374,21 @@ exp:
         enable: false
         # SkillAPI sources
         exp-source: "MOB"
+placeholders:
+    # This options are used to customize Parties placeholders
+    # You can customize every external placeholder
+    # Use classic placeholders inside the option!
+    color-name: "%color_name%"
+    color-code: "%color_code%"
+    color-command: "%color_command%"
+    desc: "%desc%"
+    kills: "%kills%"
+    motd: "%motd%"
+    party: "%party%"
+    prefix: "%prefix%"
+    rank-name: "%rank_name%"
+    rank-chat: "%rank_chat%"
+    suffix: "%suffix%"
 banmanager:
     # Enable BanManager support
     enable: false
@@ -454,4 +486,4 @@ commands:
     # Command to buy commands (Vault support)
     command-confirm: "confirm"
 dont-edit-this:
-    config-version: 16
+    config-version: 17

@@ -23,6 +23,7 @@ import com.alessiodp.parties.handlers.*;
 import com.alessiodp.parties.utils.BaseCommand;
 import com.alessiodp.parties.utils.PartiesTabCompleter;
 import com.alessiodp.parties.utils.PasswordFilter;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.addon.*;
 import com.alessiodp.parties.utils.api.ApiHandler;
 import com.alessiodp.parties.utils.bungeecord.BukkitHandler;
@@ -42,8 +43,8 @@ public class Parties extends JavaPlugin {
 	private StorageType				logType;
 
 	private final int				curseProject = 90889;
-	private final int				configVersion = 16;
-	private final int				messageVersion = 14;
+	private final int				configVersion = 17;
+	private final int				messageVersion = 15;
 	private final String			scoreboardprefix = "PARTY";
 	private final static boolean	isDebug = false;
 	
@@ -130,8 +131,11 @@ public class Parties extends JavaPlugin {
 		databaseDispatcher = new DatabaseDispatcher(this);
 		
 		party = new PartyHandler(this);
+		party.init();
 		player = new PlayerHandler(this);
 		player.init();
+		
+		new PlayerUtil();
 		
 		registerListeners();
 		
@@ -174,7 +178,6 @@ public class Parties extends JavaPlugin {
 		handler.register(Variables.command_chat, new CommandChat(this));
 		handler.register(Variables.command_create, new CommandCreate(this));
 		handler.register(Variables.command_rank, new CommandRank(this));
-		handler.register(Variables.command_list, new CommandList(this));
 		handler.register(Variables.command_help, new CommandHelp(this));
 		handler.register(Variables.command_invite, new CommandInvite(this));
 		handler.register(Variables.command_accept, new CommandAccept(this));
@@ -196,6 +199,10 @@ public class Parties extends JavaPlugin {
 		handler.register(Variables.command_delete, new CommandDelete(this));
 		handler.register(Variables.command_rename, new CommandRename(this));
 		
+		/* List */
+		if (Variables.list_enable)
+			handler.register(Variables.command_list, new CommandList(this));
+		
 		/* Vault */
 		if (Variables.vault_enable && Variables.vault_confirm_enable)
 			handler.register(Variables.command_confirm, new CommandConfirm(this));
@@ -209,7 +216,7 @@ public class Parties extends JavaPlugin {
 			((org.apache.logging.log4j.core.Logger)LogManager.getRootLogger()).addFilter(new PasswordFilter());
 		}
 		/* Color system */
-		if (Variables.color_enable) {
+		if (Variables.color_enable && Variables.color_colorcommand) {
 			handler.register(Variables.command_color, new CommandColor(this));
 		}
 		/* Tag system */

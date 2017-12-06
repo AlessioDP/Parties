@@ -217,6 +217,11 @@ public class YAMLData implements DatabaseInterface {
 		str = party.getSuffix();
 		data.set("parties." + party.getName() + ".suffix", !str.isEmpty() ? str : null);
 		
+		if (Variables.color_enable) {
+			str = party.getColorRaw();
+			data.set("parties." + party.getName() + ".color", !str.isEmpty() ? str : null);
+		}
+		
 		if (Variables.kill_enable)
 			data.set("parties." + party.getName() + ".kills", party.getKills());
 		
@@ -250,6 +255,7 @@ public class YAMLData implements DatabaseInterface {
 		ret.setMOTD(data.getString("parties." + name + ".motd", ""));
 		ret.setPrefix(data.getString("parties." + name + ".prefix", ""));
 		ret.setSuffix(data.getString("parties." + name + ".suffix", ""));
+		ret.setColorRaw(data.getString("parties." + name + ".color", ""));
 		ret.setKills(data.getInt("parties." + name + ".kills", 0));
 		ret.setPassword(data.getString("parties." + name + ".password", ""));
 		ret.setHomeRaw(data.getString("parties." + name + ".home", ""));

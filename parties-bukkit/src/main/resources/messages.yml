@@ -21,7 +21,8 @@
 # %suffix% = Suffix of the party
 # %players% = Number of players online in the party
 # %sender% or %player% = Name of the sender/player
-# %rank% = Customizable rank string (Config.yml: format-rank-leader and format-rank-member)
+# %rank_name% = Rank name
+# %rank_chat% = Customizable rank string (Config.yml: format-rank-leader and format-rank-member)
 # %message% = Message of the player
 # %world% = Name of the world where the player is (ex: world_nether)
 # %price% = Price of the command (Only some commands, see config.yml)
@@ -30,7 +31,7 @@
 #
 # Special tag: %permission% = Name of the missing permission
 no-permission: "&cYou do not have access to that command"
-no-permission-in-party: "&cYou need to be %rank% to perform that command"
+no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
 invalid-command: "&cInvalid command"
 cant-hit-mates: "&cYou can't hit your partymates"
 warn-on-hit-leaders: "&c%player% tried to hit %victim%!"
@@ -230,11 +231,11 @@ rename:
     wrong-command: "&cWrong variables: Type &7/party rename <newname>"
     wrong-command-admin: "&cWrong variables: Type &7/party rename <party> <newname>"
 rank:
-    promoted: "&b&l%player% rank changed into %rank%"
+    promoted: "&b&l%player% rank changed into %rank_name%"
     no-member: "&c%player% is not in your party"
     no-party: "&c%player% doesn't have a party"
-    wrong-rank: "&cRank '%rank%' doesn't exist!"
-    already-rank: "&c%player% is already %rank%!"
+    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
+    already-rank: "&c%player% is already %rank_name%!"
     low-rank: "&cYou cannot edit players with an equivalent or higher rank!"
     to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
     no-degrade-yourself: "&cYou cannot degrade yourself!"
@@ -333,4 +334,4 @@ help:
     migrate: "&b/party migrate <from> <to> &7- Copy database into a new one"
     claim: "&b/party claim <permission> &7- Grant permissions to the claim"
 dont-edit-this:
-    messages-version: 14
+    messages-version: 15

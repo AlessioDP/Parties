@@ -14,6 +14,7 @@ import com.alessiodp.parties.configuration.Variables;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.partiesapi.enums.Status;
+import com.alessiodp.partiesapi.interfaces.Color;
 import com.alessiodp.partiesapi.interfaces.PartiesAPI;
 import com.alessiodp.partiesapi.interfaces.Rank;
 
@@ -308,6 +309,27 @@ public class ApiHandler implements PartiesAPI {
 			party.setSuffix(paramSuffix);
 			party.updateParty();
 		}
+	}
+	
+	public String getPartyColor(String paramParty) {
+		String ret = null;
+		Party party = plugin.getPartyHandler().getParty(paramParty);
+		if (party != null) {
+			ret = party.getColorRaw();
+		}
+		return ret;
+	}
+
+	public void setPartyColor(String paramParty, String paramColor) {
+		Party party = plugin.getPartyHandler().getParty(paramParty);
+		if (party != null) {
+			party.setColorRaw(paramColor);
+			party.updateParty();
+		}
+	}
+
+	public List<Color> getColorList() {
+		return Variables.color_list;
 	}
 	
 	public int getPartyKills(String paramParty) {

@@ -20,13 +20,13 @@ import com.alessiodp.parties.handlers.LogHandler;
 import com.alessiodp.parties.objects.Party;
 import com.alessiodp.parties.objects.ThePlayer;
 import com.alessiodp.parties.utils.CommandInterface;
+import com.alessiodp.parties.utils.PlayerUtil;
 import com.alessiodp.parties.utils.enums.ConsoleColors;
 import com.alessiodp.parties.utils.enums.LogLevel;
 import com.alessiodp.parties.utils.enums.PartiesPermissions;
 import com.alessiodp.partiesapi.events.PartiesPartyPostDeleteEvent;
 import com.alessiodp.partiesapi.events.PartiesPartyPreDeleteEvent;
 import com.alessiodp.partiesapi.events.PartiesPlayerLeaveEvent;
-import com.alessiodp.partiesapi.interfaces.Rank;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -50,17 +50,10 @@ public class CommandKick implements CommandInterface {
 			tp.sendMessage(Messages.noparty);
 			return true;
 		}
-		Rank r = plugin.getPartyHandler().searchRank(tp.getRank());
-		if (r != null && !p.hasPermission(PartiesPermissions.KICK_OTHERS.toString()) && !p.hasPermission(PartiesPermissions.ADMIN_RANKBYPASS.toString())) {
-			if (!r.havePermission(PartiesPermissions.PRIVATE_KICK.toString())) {
-				Rank rr = plugin.getPartyHandler().searchUpRank(tp.getRank(), PartiesPermissions.PRIVATE_KICK.toString());
-				if (rr != null)
-					tp.sendMessage(Messages.nopermission_party.replace("%rank%", rr.getName()));
-				else
-					tp.sendMessage(Messages.nopermission.replace("%permission%", PartiesPermissions.PRIVATE_KICK.toString()));
-				return true;
-			}
-		}
+		
+		if (!PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_KICK))
+			return true;
+		
 		if (args.length < 2) {
 			tp.sendMessage(Messages.kick_wrongcmd);
 			return true;
