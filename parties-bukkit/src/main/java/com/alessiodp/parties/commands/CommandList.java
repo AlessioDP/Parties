@@ -185,7 +185,11 @@ public class CommandList implements CommandInterface {
 		if (Variables.list_limitparties >= 0) {
 			ret = new ArrayList<Party>();
 			for (int c=0; c < Variables.list_limitparties; c++) {
-				ret.add(list.get(c));
+				try {
+					ret.add(list.get(c));
+				} catch (Exception ex) {
+					break;
+				}
 			}
 		}
 		return ret;
