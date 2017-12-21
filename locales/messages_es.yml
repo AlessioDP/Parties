@@ -5,96 +5,103 @@
 # - Use Notepad++
 #   - View -> Symbols -> Show White Space and TAB (Active)
 #   - Don't use arrows, but spaces
-# - Setting format editor to YAML
+# - Set format (syntax) editor to YAML
 #
 #
 # Available tags:
 # ColorCodes (ex: &1, &2, &3, &a, &b, &c, &r, &l)
-# %party% = Show name of party
-# %desc% = Show party description
-# %motd% = Motd of the party
+# %party% = Name of the party
+# %desc% = Description of the party
+# %motd% = MOTD of the party
 # %kills% = Kills of the party
+# %color_name% = Party color name
+# %color_command% = Party color command
+# %color_code% = Party color code
 # %prefix% = Prefix of the party
 # %suffix% = Suffix of the party
 # %players% = Number of players online in the party
-# %sender% or %player% = Show name of sender/player
-# %rank% = Show a customizable string (format-rank-leader and format-rank-member)
-# %message% = Show the message of player
-# %world% = Show the name of world of sender/player (ex: world_nether)
-# %group% = If PEX/GM is active will display the name of group
+# %sender% or %player% = Name of the sender/player
+# %rank_name% = Rank name
+# %rank_chat% = Customizable rank string (Config.yml: format-rank-leader and format-rank-member)
+# %message% = Message of the player
+# %world% = Name of the world where the player is (ex: world_nether)
 # %price% = Price of the command (Only some commands, see config.yml)
 #
 # You can use \n for ENTER 
 #
-# Special tag: %permission% = Name of missing permission
-no-permission: "&cTú no tienes acceso a ese comando"
-no-permission-in-party: "&cTú debes ser %rank% para usar ese comando"
+# Special tag: %permission% = Name of the missing permission
+no-permission: "&cNo tienes permisos para usar ese comando"
+no-permission-in-party: "&cNecesitas ser %rank_name% para usar ese comando"
 invalid-command: "&cComando inválido"
-cant-hit-mates: "&cTú no puedes golpear a tus compañeros"
-warn-on-hit-leaders: "&c%player% ha intentado golpear a %victim%!"
-no-party: "&cTú no estás en una party"
+cant-hit-mates: "&cNo puedes herir a tus compañeros de party"
+warn-on-hit-leaders: "&c%player% intentó herir a %victim%!"
+no-party: "&cNo estás en una party"
 configuration-reloaded: "&aConfiguración recargada"
 # Special tags: %version% = The version of the update | %thisversion% = The version of your plugin
-update-available: "&9Parties %thisversion% ha econtrado una actualización: %version%"
+update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
 # Special tags: %exp% = Experience gained | %exptotal% = Total experience | %mob% = Mob type name (Ex. Skeleton, Zombie)
-exp-gained: "&bHas matado a un %mob%, tu has ganado %exp% experiencia"
-exp-gained-from-other: "&b%player% ha matado a un %mob%, tú has ganado %exp% experiencia"
+exp-gained: "&bHas matado a %mob%, has ganado %exp% de experiencia"
+exp-gained-from-other: "&b%player% ha matado a %mob%, has ganado %exp% de experiencia"
 # Joined into a default party
-default-joined: "&bHas entrado en %party%"
+default-joined: "&bHas entrado en la party %party%"
+server-join: "&b%player% está conectado!"
+server-leave: "&7%player% está desconectado!"
 p:
-    wrong-command: "&cVariables incorrectas: Escribe &7/p <mensaje>"
+    # Special tag: %seconds% = Remaining time in seconds
+    cooldown: "&cAún tienes que esperar %seconds% segundos"
+    wrong-command: "&cVariables inválidas: Escribe &7/p <mensaje>"
 create:
-    party-created: "&l&bHas creado la party %party%\n&r&bEscribe &7/party invite &bpara invitar a tus compañeros"
-    party-fixed-created: "&l&bHas creado la party privada %party%"
-    name-already-exist: "&cEl nombre de party %party% ya exsite, elige un nombre diferente"
-    already-in-party: "&cTú ya estás en una party!"
+    party-created: "&l&bHas creado la party %party%\n&r&bEscribe &7/party invite &bpara invitar a tus amigos"
+    party-fixed-created: "&l&bHas creado la party fija %party%"
+    name-already-exist: "&cEl nombre de party %party% ya existe, escoje un nombre diferente"
+    already-in-party: "&cEstás en una party!"
     too-long-name: "&cEl nombre de la party es demasiado largo!"
     too-short-name: "&cEl nombre de la party es demasiado corto!"
-    invalid-name: "&cCarácteres inváldios. Usa: a-Z o 0-9."
+    invalid-name: "&cCarácteres inválidos. Usa: a-Z o 0-9."
     censored-name: "&cEl nombre de la party contiene palabras censuradas!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party create <nombre>"
+    wrong-command: "&cVariables inválidas: Escribe &7/party create <nombre>"
 password:
-    changed: "&aContraseña de la party cambiada"
-    removed: "&aContraseña de la party removida"
+    changed: "&aHas cambiado la contraseña de la party"
+    removed: "&aHas removido la contraseña de la party"
     # Special tags: %password% = new password of the party
     broadcast-changed: "%player% ha cambiado la contraseña de la party"
-    invalid-chars: "&cCarácteres Inválidos. Usa: a-Z o 0-9. Min 1 y máx 16 carac."
-    wrong-command: "&cVariables incorrectas: Escribe &7/party password <contraseña>"
+    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Mín 1 y máx 16 caract."
+    wrong-command: "&cVariables inválidas: Escribe &7/party password <contraseña>"
 join:
     joined: "&aTe has unido a la party %party%"
     player-joined: "&b&l%player% se ha unido a la party"
     max-player-reached: "&cLa party está llena!"
-    already-in-party: "&cTú ya estás en una party!"
+    already-in-party: "&cTu ya estás en una party!"
     wrong-password: "&cContraseña incorrecta!"
-    no-exist: "&cEstá party no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party join <party> [contaseña]"
+    no-exist: "&cEsta party no existe"
+    wrong-command: "&cVariables inválidas: Escribe &7/party join <party> [contraseña]"
 accept:
     welcome-player: "&b&lTe has unido a la party %party%"
     player-joined: "&b&l%player% se ha unido a la party"
-    invite-accepted: "&a%player% ha aceptado tu invitación"
+    invite-accepted: "&a%player% aceptó tu invitación"
     accepted: "&aHas aceptado la invitación a la party"
     max-player-reached: "&cLa party está llena!"
-    already-in-party: "&cTú ya estás en una party!"
-    no-invite: "&cTú no tienes invitaciones pendientes"
+    already-in-party: "&cTu ya estás en una party!"
+    no-invite: "&cNo tienes invitaciones pendientes"
     no-exist: "&cLa invitación ya no existe más"
 deny:
-    invite-denied: "&7%player% ha denegado tu invitación"
-    denied: "&7Has denegado la invitación a la party"
-    no-invite: "&cTú no tienes invitaciones pendientes"
+    invite-denied: "&7%player% rechazó tu invitación"
+    denied: "&7Has rechazado la invitación"
+    no-invite: "&cNo tienes invitaciones pendientes"
     no-exist: "&cLa invitación ya no existe más"
 ignore:
-    header: "&b&lLista de parties ignoradas:"
+    header: "&b&lLista de partys ignoradas:"
     list-ignored-color: "&c"
     list-ignored-separator: "&7, "
     list-ignored-empty: "&7Nadie"
     party-ignored: "&7Ignorando invitaciones de %party%"
     party-deignored: "&7Has dejado de ignorar a %party%"
     no-exist: "&cEstá party no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party ignore [party]"
+    wrong-command: "&cVariables inválidas: Escribe &7/party ignore [party]"
 leave:
     bye-player: "&b&lHas abandonado la party %party%"
-    player-leaved-from-party: "&b&l%player% ha abandonado la party"
-    party-disbanded: "&b&lLa party ha sido desactivada porque el lider se ha ido"
+    player-leaved-from-party: "&b&l%player% dejó la party"
+    party-disbanded: "&6&lLa party ha sido desarmada porque el líder se fue"
 info:
     # Special tags:
     # List rank members: %list_RANK% (Example: %list_member%, %list_moderator% (%list_leader% remember it's unique)
@@ -104,7 +111,7 @@ info:
     - "&b============ &l%party%'s Info &r&b============"
     - "&b&lDescripción&r&7: %desc%"
     - "&b&lMotd&r&7: %motd%"
-    - "&bLider&7: %list_leader%"
+    - "&bLíder&7: %list_leader%"
     - "&bMods&7: %list_moderator%"
     - "&bMiembros&7: %list_member%"
     - "&bOnline&7: %onlinenumber%"
@@ -113,15 +120,15 @@ info:
     player-separator: "&7, "
     player-empty: "&7Nadie"
     someone-player: "&6Alguien"
-    missing: "&7No tiene"
+    missing: "&7Falta"
     no-exist: "&cLa party %party% no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party info [party]"
+    wrong-command: "&cVariables inválidas: Escribe &7/party info [party]"
 members:
-    # List rank members: %list_RANK% (Example: %list_member%, %list_moderator% (%list_leader% remember it's unique)
-    # Number rank members: %number_RANK%
+    # List members of the rank: %list_RANK% (Example: %list_member%, %list_moderator% (%list_leader% remember it's unique)
+    # Members number of the rank: %number_RANK%
     content:
     - "&b&lLista de miembros de la party %party%"
-    - "&b&lLider&r&7: %list_leader%"
+    - "&b&lLíder&r&7: %list_leader%"
     - "&bMods&7: %list_moderator%"
     - "&bMiembros&7: %list_member%"
     player-online-prefix: "&b"
@@ -130,134 +137,167 @@ members:
     player-separator: "&7, "
     player-empty: "&7Nadie"
     no-exist: "&cLa party %party% no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party members [party]"
+    wrong-command: "&cVariables inválidas: Escribe &7/party members [party]"
 desc:
     # Special tag: %desc% = Description of the party
-    changed: "&bDescripción de la party cambiada a %desc%"
+    changed: "&bLa descripción de la party cambió a %desc%"
     removed: "&bDescripción de la party removida"
-    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Min 3 y máx 16 carac."
+    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Mín 3 y máx 16 caract."
     censored-name: "&cLa descripción contiene palabras censuradas!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party desc <descripción/remove>"
+    wrong-command: "&cVariables inválidas: Escribe &7/party desc <descripción/remove>"
 motd:
     # Special tag: %motd% = MOTD (Message of the Day) of the party
-    changed: "&bMotd de la party cambiado"
-    removed: "&bMotd de la party removido"
-    header: "&bEl de Motd de la Party es:"
+    changed: "&bMOTD de la party cambiado"
+    removed: "&bMOTD de la party removido"
+    header: "&bMOTD Party:"
     color-motd: "&b"
     footer: ""
-    invalid-chars: "&cCarácteres inválidos. Tú también puedes usar ''. , /''. Min 3 y máx 100 carac."
+    invalid-chars: "&cCarácteres inválidos. También puedes usar '. , /'. Mín 3 y máx 100 caract."
     censored-name: "&cLa descripción contiene palabras censuradas!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party motd <motd/remove>"
+    wrong-command: "&cVariables inválidas: Escribe &7/party motd <motd/remove>"
 chat:
-    enabled: "&aChat seleccionado a party"
-    disabled: "&aChat seleccionado a público"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party chat [on/off]"
+    enabled: "&aChat establecido como party"
+    disabled: "&aChat establecido como público"
+    wrong-command: "&cVariables inválidas: Escribe &7/party chat [on/off]"
 list:
-    # Special tags: %number% = Number parties online | %page% = Current list page | %maxpages% = How many pages exist
-    header: "&b============ &lLisa de Parties Online &r&b============"
+    # Special tags: %number% = Number of parties online | %page% = Current list page | %maxpages% = How many pages exists
+    header: "&b============ &lLista de Partys Online &r&b============"
     sub-header: ""
-    no-one-online: "&7Nadie"
-    format-party: "&b%party%&7[&6Online %players%&7] %desc%"
+    no-one-online: "&7Vacío"
+    format-party: "&b%party% &7[&6Online %players%&7] %desc%"
     footer: "&b================ &lPágina %page% de %maxpages% &r&b================"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party list [página]"
+    wrong-command: "&cVariables inválidas: Escribe &7/party list [página]"
 invite:
-    only-online: "&cTú sólo puedes invitar jugadores Online"
+    only-online: "&cSólo puedes invitar jugadores que estén conectados"
     max-player-reached: "&cLa party está llena!"
-    already-party: "&c%player% ya está en una party"
+    already-party: "&c%player% ya se encuentra en una party"
     already-invite: "&c%player% ya ha sido invitado"
-    no-permission-player: "&c%player% no tiene permisos para unirse"
-    invite-send: "&bHas invitado ha %player% a tu party"
-    invite-rec: "&b%player% te ha invitado a su party\n&bPara aceptar/rechazar su invitación escribe &7/party <accept/deny>"
-    invite-timeout: "&7Tú no has aceptado la invitación a la party"
-    invite-noresponse: "&7%player% No ha aceptado la invitación a la party"
+    no-permission-player: "&c%player% no tiene los permisos para unirse"
+    invite-send: "&bHas invitado a %player% a tu party"
+    invite-rec: "&b%player% te ha invitado a su party\n&Para aceptar/rechazar la invitación escribe &7/party <accept/deny>"
+    invite-timeout: "&7No has aceptado la invitación a la party"
+    invite-noresponse: "&7%player% no aceptó la invitación de la party"
     invite-revoked-send: "&7Invitación enviada a %player% anulada"
-    invite-revoked-rec: "&7La invitación recibida de %party% ha sido anulada"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party invite <nombre>"
+    invite-revoked-rec: "&7La invitación recibida por %party% ha sido anulada"
+    wrong-command: "&cVariables inválidas: Escribe &7/party invite <nombre>"
+color:
+    info: "&bEl color de tu party es: %color_code%%color_command%"
+    empty: "&bTu party no tiene un color"
+    changed: "&bColor de la party cambiado en %color_command%"
+    removed: "&bColor de la party removido"
+    wrong-color: "&cColor no encontrado. Puedes elegir: red, green o special!"
+    wrong-command: "&cVariables inválidas: Escribe &7/party color <color>"
 prefix:
-    changed: "&bEl prefijo de la party ha sido cambiado a %prefix%"
-    removed: "&bEl prefijo de la party ha sido removido"
-    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Min 3 y máx 6 carac."
+    changed: "&bPrefijo de la party cambiado a %prefix%"
+    removed: "&bPrefijo de la party removido"
+    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Mín 3 y máx 6 caract."
     censored-name: "&cEl prefijo contiene palabras censuradas!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party prefix <prefijo/remove>"
+    wrong-command: "&cVariables inválidas: Escribe &7/party prefix <prefijo/remove>"
 suffix:
-    changed: "&bEl sufijo de la party ha sido cambiado a %suffix%"
+    changed: "&bSufijo de la party cambiado a %suffix%"
     removed: "&bSufijo de la party removido"
-    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Min 3 y máx 6 carac."
+    invalid-chars: "&cCarácteres inválidos. Usa: a-Z o 0-9. Mín 3 y máx 6 caract."
     censored-name: "&cEl sufijo contiene palabras censuradas!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party suffix <sufijo/remove>"
+    wrong-command: "&cVariables inválidas: Escribe &7/party suffix <sufijo/remove>"
 kick:
-    kick-send: "&b&lHas hechado a %player% de tu party!"
-    kick-up-rank: "&cTú no puedes hechar a tu superior!"
-    kicked-from-party: "&bHas sido hechado de la party %party%"
-    kicked-player-party: "&b&l%player% ha sido hechado de la party"
-    kick-send-other: "&bHas hecado a %player% de la party"
-    other-no-member: "&c%player% no está en una party"
-    no-member: "&c%player% no está en tú party"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party kick <nombre>"
+    kick-send: "&aHas expulsado a %player% de tu party!"
+    kick-up-rank: "&cNo puedes expulsar a tu superior!"
+    kicked-from-party: "&bHas sido expulsado de la party %party%"
+    kicked-player-party: "&b&l%player% ha sido expulsado de la party"
+    kick-send-other: "&bHas expulsado a %player% de la party"
+    other-no-member: "&c%player% no está en la party"
+    no-member: "&c%player% no está en tu party"
+    wrong-command: "&cVariables inválidas: Escribe &7/party kick <nombre>"
+    players-conflict:
+        # Special tags:
+        # %list_players% like members/info is a list of 'player' message
+        # %number% is the number of the player
+        # %time% and %date%
+        content:
+        - "&cHemos encontrado algunos jugadores con ese nombre:"
+        - "%list_players%"
+        - "&cUsa '&7/party kick <nombredeusuario> <número>&c' para expulsar al jugador correcto"
+        player: "&7[%number%] &6%username%&7 [&b%party%&7]: última conexión %time% %date%"
 delete:
     deleted: "&aParty %party% borrada"
-    silent-delete: "&aParty %party% ha sido silenciosamente borrada"
-    warn: "&cTú party ha sido borrada"
+    silent-delete: "&aParty %party% borrada silenciosamente"
+    warn: "&6&lTu party ha sido borrada"
     no-exist: "&cLa party %party% no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party delete <party> [silent]"
+    wrong-command: "&cVariables inválidas: Escribe &7/party delete <party> [silent]"
 rename:
-    renamed: "&aEl nombre de la party %old% ha sido cambiado a %party%"
-    broadcast-party: "&aTú party ha sido renombrada a %party%!"
+    renamed: "&aLa party %old% ha sido renombrada como %party%"
+    broadcast-party: "&6Tu party ha sido renombrada como %party%!"
     no-exist: "&cLa party %party% no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party rename <party> <nuevo nombre>"
+    wrong-command: "&cVariables inválidas: Escribe &7/party rename <nuevonombre>"
+    wrong-command-admin: "&cVariables inválidas: Escribe &7/party rename <party> <nuevonombre>"
 rank:
-    promoted: "&b&l%player% ahora es %rank%"
+    promoted: "&b&lEl rango de %player% ha sido cambiado a %rank_name%"
     no-member: "&c%player% no está en tu party"
-    no-party: "&c%player% no tiene party"
-    wrong-rank: "&cEl rango '%rank%' no existe!"
-    already-rank: "&c%player% ya es %rank%!"
-    low-rank: "&cTú no puedes cambiar jugadores con el mismo rango o superior!"
-    to-higher-rank: "&cTú no puedes dar un rango equivalente o superior al tuyo!"
-    no-degrade-yourself: "&cTú no puedes descenderte a tí mismo!"
-    no-promote-yourself: "&cTú no puedes ascenderte a tí mismo!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party rank <jugador> <rango>"
+    no-party: "&c%player% no tiene una party"
+    wrong-rank: "&cEl rango '%rank_name%' no existe!"
+    already-rank: "&c%player% ya es %rank_name%!"
+    low-rank: "&cNo puedes editar jugadores con un rango equivalente o superior al tuyo!"
+    to-higher-rank: "&cNo puedes ascender a un jugador con un rango equivalente o superior al tuyo!"
+    no-degrade-yourself: "&cNo puedes descenderte a ti mismo!"
+    no-promote-yourself: "&cNo puedes ascenderte a ti mismo!"
+    wrong-command: "&cVariables inválidas: Escribe &7/party rank <jugador> <rango>"
 sethome:
-    setted-broadcast: "&aLa party tiene una nueva casa!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party sethome"
+    set-broadcast: "&aLa party tiene un nuevo hogar!"
+    wrong-command: "&cVariables inválidas: Escribe &7/party sethome"
 home:
-    teleported: "&7Telentrasportado a la casa de la party"
+    teleported: "&7Teletransportado hacia la casa de la party"
     # Special tag: %time% = Time of cooldown
     teleport-in: "&7Serás teletransportado en %time% segundos..."
-    teleport-denied: "&7Teletransportación denegada"
-    no-home: "&cLa casa de la party aún no ha sido puesta"
-    no-exist-party: "&cLa party no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party home"
+    teleport-denied: "&7Teletransporte cancelado"
+    no-home: "&cAún no hay una casa"
+    no-exist-party: "&cLa party %party% no existe"
+    wrong-command: "&cVariables inválidas: Escribe &7/party home"
+    wrong-command-admin: "&cVariables inválidas: Escribe &7/party home [party]"
+teleport:
+    teleporting: "&7Teletransportando a tus compañeros de party aquí!"
+    player-teleported: "&bTeletransportado hacia %player%"
+    # Special tag: %seconds% = Remaining time in seconds
+    delay: "&cDebes esperar %seconds% segundos!"
+    wrong-command: "&cVariables inválidas: Escribe &7/party teleport"
 claim:
-    done: "&aPermisos concedidos a la party"
-    removed: "&aPermisos removidos a la party"
-    no-manager: "&cTú debes ser el representante para poder claimear"
-    no-exist-claim: "&cNo hay ningún claim"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party claim <permisos>\n&cPermisos: trust, container & access"
+    done: "&aConcedidos permisos a la party"
+    removed: "&aRemovidos permisos a la party"
+    no-manager: "&cDebes ser el encargado para claimear"
+    no-exist-claim: "&cClaimeo no encontrado"
+    wrong-command: "&cVariables inválidas: Escribe &7/party claim <permisos>\n&cPermisos: trust, container y access"
 spy:
     activated: "&7Ahora eres un espía!"
-    disabled: "&7Ya no eres más un espía!"
-database:
-    to-file: "&aInformación copiada del SQL a un ARCHIVO"
-    to-sql: "&aInformación copiada del ARCHIVO a el SQL"
-    sql-offline: "&cLa base de datos SQL debe estar online!"
-    none: "&cNo se puede migrar desde ninguna base de datos!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party migrate <sql/file>"
+    disabled: "&7Ya no eres un espía"
+migrate:
+    # Special tags:
+    # %database% = Current database
+    # %database_to% & %database_from% = From/To databases
+    info: "&aActualmente estás usando: %database%\n&aPuedes migrar con: &7/party migrate <desde> <hacia>"
+    complete: "&aInformación copiada desde %database_from% hacia %database_to%"
+    failed-offline: "&cLa base de datos %database% debe estar conectada!"
+    failed-migration: "&cLa migración de la base de datos desde %database_from% hacia %database_to% ha fallado!"
+    failed-same: "&cDebes elegir 2 bases de datos!"
+    wrong-database: "&cBase de datos no encontrada. Puedes seleccionar: YAML, MySQL!"
+    wrong-command: "&cVariables inválidas: Escribe &7/party migrate <desde> <hacia>"
 vault:
-    create-nomoney: "&cTú no tienes suficiente dinero para crear una party [%price%$]"
-    home-nomoney: "&cTú no tienes suficiente dinero para usar el comando de casa [%price%$]"
-    sethome-nomoney: "&cTú no tienes suficiente dinero para elegir la casa [%price%$]"
-    desc-nomoney: "&cTú no tienes suficiente dinero para elegir la descripción [%price%$]"
-    motd-nomoney: "&cTú no tienes suficiente dinero para elegir el MOTD [%price%$]"
-    prefix-nomoney: "&cTú no tienes suficiente dinero para elegir el prefijo [%price%$]"
-    suffix-nomoney: "&cTú no tienes suficiente dinero para elegir el sufijo [%price%$]"
+    create-nomoney: "&cNo tienes suficiente dinero para crear una party [%price%$]"
+    join-nomoney: "&cNo tienes suficiente dinero para unirte a la party [%price%$]"
+    home-nomoney: "&cNo tienes suficiente dinero para usar el comando home [%price%$]"
+    sethome-nomoney: "&cNo tienes suficiente dinero para establecer la home [%price%$]"
+    desc-nomoney: "&cNo tienes suficiente dinero para elegir la descripción [%price%$]"
+    motd-nomoney: "&cNo tienes suficiente dinero para establecer el MOTD [%price%$]"
+    prefix-nomoney: "&cNo tienes suficiente dinero para elegir el prefijo [%price%$]"
+    suffix-nomoney: "&cNo tienes suficiente dinero para elegir el sufijo [%price%$]"
+    teleport-nomoney: "&cNo tienes suficiente dinero para realizar un teletransporte [%price%$]"
+    claim-nomoney: "&cNo tienes suficiente dinero para realizar un claimeo [%price%$]"
     confirm:
-        any-cmd: "&cCualquier comando para confirmar"
-        warn-onbuy: "&aComando '%cmd%' cuesta %price%$.\nEscribe &7/party confirm&a para usarlo."
-        confirmed: "&aEjecutando comando."
-        wrong-command: "&cVariables incorrectas: Escribe &7/party confirm"
+        any-cmd: "&cNo hay ningún comando que confirmar"
+        warn-onbuy: "&aEl comando '%cmd%' cuesta %price%$.\nEscribe &7/party confirm&a para usarlo."
+        confirmed: "&aRealizando el comando."
+        wrong-command: "&cVariables inválidas: Escribe &7/party confirm"
 follow:
     following-world: "&7Siguiendo a %player% en %world%"
-    following-server: "&7Siguiendo party en %server%"
+    following-server: "&7Siguiendo a la party en %server%"
 help:
     header: "&b================= &lAyuda de Party %page%/%maxpages% &r&b================="
     help: "&b/party help [página] &7- Muestra las páginas de ayuda"
@@ -265,30 +305,33 @@ help:
     create: "&b/party create <nombre> &7- Crea una nueva party"
     create-fixed: "&b/party create <nombre> [fixed] &7- Crea una nueva party"
     join: "&b/party join <party> [contraseña] &7- Unirse a una party"
-    accept: "&b/party accept &7- Acepta la invitación a una party"
-    deny: "&b/party deny &7- Rechaza la invitación a una party"
-    ignore: "&b/party ignore [party] &7- Añadir/remover/mostrar parties ignoradas"
-    leave: "&b/party leave &7- Salir de la party"
+    accept: "&b/party accept &7- Aceptar la invitación a una party"
+    deny: "&b/party deny &7- Rechazar la invitación a una party"
+    ignore: "&b/party ignore [party] &7- Añade/remueve/muestra las partys ignoradas"
+    leave: "&b/party leave &7- Abandona tu party"
     info: "&b/party info [party] &7- Muestra información de la party"
     members: "&b/party members [party] &7- Muestra la lista de miembros"
-    home: "&b/party home &7- Teletransportarse a la casa de tú party"
-    home-others: "&b/party home [party] &7- Teletransportarse a la casa de la party"
-    sethome: "&b/party sethome &7- Elige la casa de la party"
+    home: "&b/party home &7- Teletransporta al hogar de la party"
+    home-others: "&b/party home [party] &7- Teletranspota al hogar de la party señalada"
+    sethome: "&b/party sethome &7- Establece el hogar de la party"
+    teleport: "&b/party teleport &7- Teletransporta a tus compañeros de party hacia ti"
     desc: "&b/party desc <descripción/remove> &7- Añade/remueve la descripción"
-    motd: "&b/party motd <motd/remove> &7- Añade/remueve el MOTD"
-    chat: "&b/party chat [on/off] &7- Alternar el modo de chat"
-    list: "&b/party list [página] &7- Muestra la lista de parties online"
+    motd: "&b/party motd <motd/remove> &7- Añade/remueve el motd"
+    chat: "&b/party chat [on/off] &7- Cambia entre el chat de la party"
+    list: "&b/party list [página] &7- Lista de las partys conectadas"
     invite: "&b/party invite <jugador> &7- Invita un jugador a tu party"
-    password: "&b/party password <contraseña> &7- Cambia la contraseña de la party"
-    rank: "&b/party rank <jugador> <rango> &7- Elige el rango de un jugador"
-    prefix: "&b/party prefix <prefijo/remove> &7- Añade/remueve el prefijo"
-    suffix: "&b/party suffix <sufijo/remove> &7- Añade/remueve el sufijo"
-    kick: "&b/party kick <jugador> &7- Hecha a un jugador de tú party"
-    spy: "&b/party spy &7- Ve mensajes de otras parties"
-    delete: "&b/party delete <party> &7- Borra una party"
-    rename: "&b/party rename <party> <nuevo nombre> &7- Renombra una party"
+    password: "&b/party password <contraseña/remove> &7- Cambia la contraseña de la party"
+    rank: "&b/party rank <jugador> <rango> &7- Cambia el rango del jugador"
+    color: "&b/party color <color> &7- Cambia el color de la party"
+    prefix: "&b/party prefix <prefijo/remove> &7- Añade/remueve el tag prefijo"
+    suffix: "&b/party suffix <sufijo/remove> &7- Añade/remueve el tag sufijo"
+    kick: "&b/party kick <jugador> &7- Expulsa a un jugador de tu party"
+    spy: "&b/party spy &7- Ve los mensajes de otras partys"
+    delete: "&b/party delete <party> &7- Borra la party"
+    rename: "&b/party rename <nuevonombre> &7- Renombra la party"
+    rename-others: "&b/party rename <party> <nuevonombre> &7- Renombra una party"
     reload: "&b/party reload &7- Recarga la configuración"
-    migrate: "&b/party migrate <sql/file> &7- Copia la base de datos a SQL/Archivo"
-    claim: "&b/party claim <permisos> &7- Dar permisos en el claim"
+    migrate: "&b/party migrate <desde> <hacia> &7- Copia la base de datos hacia una nueva"
+    claim: "&b/party claim <permiso> &7- Concede permisos de claimeo"
 dont-edit-this:
-    messages-version: 11
+    messages-version: 15
