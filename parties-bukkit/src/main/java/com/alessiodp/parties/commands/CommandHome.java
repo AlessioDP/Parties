@@ -59,7 +59,7 @@ public class CommandHome implements CommandInterface {
 			return true;
 		}
 		
-		if (args.length <= 1 && !PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_EDIT_DESC))
+		if (args.length <= 1 && !PlayerUtil.checkPlayerRankAlerter(tp, PartiesPermissions.PRIVATE_HOME))
 			return true;
 		
 		if (party.getHome() == null) {

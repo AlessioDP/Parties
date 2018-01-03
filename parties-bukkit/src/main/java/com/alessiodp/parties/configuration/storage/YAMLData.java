@@ -356,7 +356,7 @@ public class YAMLData implements DatabaseInterface {
 			if (!file.exists())
 				file.createNewFile();
 			
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
 			out.println(line.getFormattedMessage());
 			out.close();
 		} catch (IOException ex) {

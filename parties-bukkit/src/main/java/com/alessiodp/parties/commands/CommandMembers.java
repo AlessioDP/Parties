@@ -78,10 +78,10 @@ public class CommandMembers implements CommandInterface {
 							list.append(Messages.members_separator);
 						}
 						OfflinePlayer op = Bukkit.getOfflinePlayer(entry.getKey());
-						if (op != null)
+						if (op != null) {
 							list.append((op.isOnline() && !isVanished((Player)op) ? Messages.members_online : Messages.members_offline)
-									+ entryName);
-						else
+									+ (entryName != null ? entryName : op.getName()));
+						} else
 							list.append(Messages.members_someone);
 						counter++;
 					}

@@ -93,7 +93,7 @@ public class CommandInfo implements CommandInterface {
 						OfflinePlayer op = Bukkit.getOfflinePlayer(entry.getKey());
 						if (op != null)
 							list.append((op.isOnline() && !isVanished((Player)op) ? Messages.members_online : Messages.members_offline)
-									+ entryName);
+									+ (entryName != null ? entryName : op.getName()));
 						else
 							list.append(Messages.info_someone);
 						counter++;
