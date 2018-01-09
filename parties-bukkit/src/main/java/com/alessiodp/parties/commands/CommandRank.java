@@ -60,7 +60,7 @@ public class CommandRank implements CommandInterface {
 		
 		UUID offlineUUID = null;
 		HashMap<UUID, Long> listPlayersName = plugin.getDatabaseDispatcher().getPlayersFromName(playerName);
-		if (listPlayersName.keySet() != null && listPlayersName.keySet().iterator() != null)
+		if (listPlayersName.keySet() != null && listPlayersName.keySet().iterator().hasNext())
 			offlineUUID = listPlayersName.keySet().iterator().next();
 		else {
 			tp.sendMessage(Messages.rank_noparty
