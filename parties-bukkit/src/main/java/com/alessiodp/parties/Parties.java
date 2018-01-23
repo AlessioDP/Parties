@@ -85,9 +85,9 @@ public class Parties extends JavaPlugin {
 		// Examples: 1.6.4, 1.8.3, 1.9.0, 1.9.0-DEV(ignored from GravityUpdater), ...
 		GravityUpdater updater;
 		if (Variables.downloadupdates) {
-			updater = new GravityUpdater(this, curseProject, this.getFile(), GravityUpdater.UpdateType.DEFAULT, false);
+			updater = new GravityUpdater(this, curseProject, getFile(), GravityUpdater.UpdateType.DEFAULT, false);
 		} else {
-			updater = new GravityUpdater(this, curseProject, this.getFile(), GravityUpdater.UpdateType.NO_DOWNLOAD, false);
+			updater = new GravityUpdater(this, curseProject, getFile(), GravityUpdater.UpdateType.NO_DOWNLOAD, false);
 		}
 		if (updater.getResult() == GravityUpdater.UpdateResult.UPDATE_AVAILABLE) {
 			String[] split = updater.getLatestName().split(GravityUpdater.DELIMETER);
@@ -146,11 +146,11 @@ public class Parties extends JavaPlugin {
 		registerMetrics();
 		
 		// Updater task
-		getServer().getScheduler().runTaskTimer(this, new Runnable() {
+		getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 			public void run() {
 				checkUpdates();
 			}
-		}, 20, 28800); // Timer of 24 hours (28800)
+		}, 20, 20*60*60*24); // Timer of 24 hours
 		
 		if (isDebug) {
 			// Debug task
@@ -420,7 +420,11 @@ public class Parties extends JavaPlugin {
 	public void reloadConfiguration() {
 		resetPendingPartyTask();
 		
-		checkUpdates();
+		getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+			public void run() {
+				checkUpdates();
+			}
+		});
 		config = new ConfigHandler(this);
 		new LogHandler(this);
 		
