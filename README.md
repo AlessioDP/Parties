@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/supports-Bukkit%2C%20Spigot%2C%20Bungeecoord-brightgreen.svg">
-  <a href="https://bstats.org/plugin/bukkit/Parties"><img src="http://alessiodp.com/unirest/makeshield.svg?plugin=parties&color=blue"></a>
+  <a href="https://bstats.org/plugin/bukkit/Parties"><img src="http://alessiodp.com/api/makeshield.svg?plugin=parties&color=blue"></a>
   <a href="https://discord.gg/683DVWR"><img src="https://img.shields.io/badge/discord-join-blue.svg"></a>
   <a href="../../issues"><img src="https://img.shields.io/badge/issue-open-red.svg"></a>
 </p>
