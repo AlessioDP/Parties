@@ -91,10 +91,6 @@ public class PartyEntity extends Party {
 			PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(uuid);
 			pp.cleanupPlayer(true);
 		}
-		for (Player player : onlinePlayers) {
-			// saveDB is false because getData().removeParty already deletes players data
-			plugin.getPlayerManager().getPlayer(player.getUniqueId()).cleanupPlayer(false);
-		}
 	}
 	public void refreshPlayers() {
 		reloadOnlinePlayers();

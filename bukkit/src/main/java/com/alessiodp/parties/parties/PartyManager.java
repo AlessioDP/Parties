@@ -78,6 +78,7 @@ public class PartyManager {
 		}
 		
 		if (ret != null) {
+			plugin.getColorManager().loadDynamicColor(ret);
 			ret.refreshPlayers();
 		}
 		return ret;

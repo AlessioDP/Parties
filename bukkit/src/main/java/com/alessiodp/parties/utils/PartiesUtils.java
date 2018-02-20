@@ -56,7 +56,6 @@ public class PartiesUtils {
 					.replace(Constants.PLACEHOLDER_PARTY_PREFIX,		party.getPrefix().isEmpty() ? emptyPlaceholder : party.getPrefix())
 					.replace(Constants.PLACEHOLDER_PARTY_SUFFIX,		party.getSuffix().isEmpty() ? emptyPlaceholder : party.getSuffix());
 		}
-		ret = PlaceholderAPIHandler.getPlaceholders(null, ret);
 		return ret;
 	}
 	

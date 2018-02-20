@@ -53,7 +53,6 @@ public class YAMLDao implements IDatabaseFile {
 			// Create data file
 			try {
 				YamlConfiguration file = new YamlConfiguration();
-				file.createSection("spies");
 				file.createSection("players");
 				file.createSection("parties");
 				file.save(ret);
@@ -142,7 +141,7 @@ public class YAMLDao implements IDatabaseFile {
 		ret.setMotd(data.getString(node + ".motd", ""));
 		ret.setPrefix(data.getString(node + ".prefix", ""));
 		ret.setSuffix(data.getString(node + ".suffix", ""));
-		ret.setColor(plugin.getColorManager().searchColorByName(data.getString(node + ".color")));
+		ret.setColor(plugin.getColorManager().searchColorByName(data.getString(node + ".color", "")));
 		ret.setKills(data.getInt(node + ".kills", 0));
 		ret.setPassword(data.getString(node + ".password", ""));
 		ret.setHome(PartiesUtils.formatHome(data.getString(node + ".home", "")));

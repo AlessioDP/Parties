@@ -44,7 +44,7 @@ public class MotdTask extends BukkitRunnable {
 					for (String str : party.getMotd().split(ConfigParties.MOTD_NEWLINECODE)) {
 						sb.append(str + "\n");
 					}
-					message.replace("%temporary_motd%", sb.toString());
+					message = message.replace("%temporary_motd%", sb.toString());
 					
 					pp.sendMessage(message);
 				}

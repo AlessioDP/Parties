@@ -1,7 +1,5 @@
 package com.alessiodp.parties.addons;
 
-import org.bukkit.Bukkit;
-
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.BanManagerHandler;
 import com.alessiodp.parties.addons.external.CrackShotHandler;
@@ -23,22 +21,16 @@ public class AddonManager {
 	}
 	
 	public void loadAddons() {
-		if (Bukkit.getPluginManager().isPluginEnabled("BanManager"))
-			new BanManagerHandler(plugin);
+		new BanManagerHandler(plugin);
 		new BungeeService(plugin);
-		if (Bukkit.getPluginManager().isPluginEnabled("CrackShot"))
-			new CrackShotHandler(plugin);
+		new CrackShotHandler(plugin);
 		new DynmapHandler(plugin);
 		new EssentialsChatHandler(plugin);
 		new GriefPreventionHandler();
 		new MythicMobsHandler(plugin);
-		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
-				new PlaceholderAPIHandler(plugin);
-		if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib"))
-			new ProtocolLibHandler(plugin);
-		if (Bukkit.getPluginManager().isPluginEnabled("SkillAPI"))
-			new SkillAPIHandler();
-		if (Bukkit.getPluginManager().isPluginEnabled("Vault"))
-			new VaultHandler(plugin);
+		new PlaceholderAPIHandler(plugin);
+		new ProtocolLibHandler(plugin);
+		new SkillAPIHandler();
+		new VaultHandler(plugin);
 	}
 }
