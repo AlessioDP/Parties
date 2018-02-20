@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.parties.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
@@ -55,6 +56,7 @@ public class PartiesUtils {
 					.replace(Constants.PLACEHOLDER_PARTY_PREFIX,		party.getPrefix().isEmpty() ? emptyPlaceholder : party.getPrefix())
 					.replace(Constants.PLACEHOLDER_PARTY_SUFFIX,		party.getSuffix().isEmpty() ? emptyPlaceholder : party.getSuffix());
 		}
+		ret = PlaceholderAPIHandler.getPlaceholders(null, ret);
 		return ret;
 	}
 	
@@ -67,6 +69,7 @@ public class PartiesUtils {
 					.replace(Constants.PLACEHOLDER_PLAYER_RANK_NAME,plugin.getRankManager().searchRankByLevel(player.getRank()).getName())
 					.replace(Constants.PLACEHOLDER_PLAYER_RANK_CHAT,plugin.getRankManager().searchRankByLevel(player.getRank()).getChat());
 		}
+		ret = PlaceholderAPIHandler.getPlaceholders(player.getPlayer(), ret);
 		return ret;
 	}
 	

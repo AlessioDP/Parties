@@ -23,17 +23,22 @@ public class AddonManager {
 	}
 	
 	public void loadAddons() {
-		new BanManagerHandler(plugin);
+		if (Bukkit.getPluginManager().isPluginEnabled("BanManager"))
+			new BanManagerHandler(plugin);
 		new BungeeService(plugin);
-		new CrackShotHandler(plugin);
+		if (Bukkit.getPluginManager().isPluginEnabled("CrackShot"))
+			new CrackShotHandler(plugin);
 		new DynmapHandler(plugin);
 		new EssentialsChatHandler(plugin);
 		new GriefPreventionHandler();
 		new MythicMobsHandler(plugin);
-		new PlaceholderAPIHandler(plugin);
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
+				new PlaceholderAPIHandler(plugin);
 		if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib"))
 			new ProtocolLibHandler(plugin);
-		new SkillAPIHandler();
-		new VaultHandler(plugin);
+		if (Bukkit.getPluginManager().isPluginEnabled("SkillAPI"))
+			new SkillAPIHandler();
+		if (Bukkit.getPluginManager().isPluginEnabled("Vault"))
+			new VaultHandler(plugin);
 	}
 }
