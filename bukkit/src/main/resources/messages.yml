@@ -1,0 +1,387 @@
+#
+# Parties main configuration file
+#
+# For a better configuration:
+# - Use Notepad++
+#   - View -> Symbols -> Show White Space and TAB (Active)
+#   - Don't use arrows (tabs), but spaces
+# - Set format (syntax) editor to YAML
+#
+# You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
+#
+
+# / = = = = = = = = = = = = = = = = \
+# |        PARTIES  MESSAGES        |
+# \ = = = = = = = = = = = = = = = = /
+parties:
+  # Special tags: %version% = The version of the update | %thisversion% = The version of your plugin
+  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  common-messages:
+    invalid-command: "&cInvalid command"
+    configuration-reloaded: "&aConfiguration reloaded"
+    not-in-party: "&cYou are not in a party"
+    party-not-found: "&cThe party %party% doesn't exist"
+    party-full: "&cThe party is full!"
+  permissions:
+    # Special tag: %permission% = Name of the missing permission
+    no-permission: "&cYou do not have access to that command"
+    no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |     MAIN COMMANDS  MESSAGES     |
+# \ = = = = = = = = = = = = = = = = /
+main-commands:
+  accept:
+    broadcast: "&b&l%player% joined the party"
+    accepted: "&aYou accepted the party invite"
+    accept-receipt: "&a%player% accepted your invite"
+    already-in-party: "&cYou are already in a party!"
+    no-invite: "&cYou have not pending invitation"
+    no-exists: "&cThe invite doesn't exist anymore"
+  
+  chat:
+    enabled: "&aChat set to party"
+    disabled: "&aChat set to public"
+    wrong-command: "&cWrong variables: Type &7/party chat [on/off]"
+  
+  create:
+    created: "&l&bYou have created the party %party%\n&r&bType &7/party invite &bto invite your friends"
+    created-fixed: "&l&bYou have created the fixed party %party%"
+    name-already-exists: "&cThe party name %party% already exists, choose a different name"
+    already-in-party: "&cYou are already in a party!"
+    name-too-long: "&cThe party name is too long!"
+    name-too-short: "&cThe party name is too short!"
+    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
+    censored: "&cThe party name contains censored words!"
+    wrong-command: "&cWrong variables: Type &7/party create <name>"
+  
+  delete:
+    deleted: "&aParty %party% deleted"
+    deleted-silently: "&aParty %party% deleted silently"
+    broadcast: "&6&lYour party has been deleted"
+    wrong-command: "&cWrong variables: Type &7/party delete <party> [silent]"
+  
+  deny:
+    denied: "&7You denied the party invite"
+    deny-receipt: "&7%player% denied your invite"
+    no-invite: "&cYou have not pending invitation"
+    no-exists: "&cThe invite doesn't exist anymore"
+  
+  ignore:
+    start-ignore: "&7Ignoring %party% invites"
+    stop-ignore: "&7You stopped ignoring %party%"
+    ignore-list:
+      header: "&b&lList ignored parties:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7None"
+    wrong-command: "&cWrong variables: Type &7/party ignore [party]"
+  
+  info:
+    # Special tags:
+    # List rank members: %list_RANK% (Example: %list_member%, %list_moderator% (%list_leader% remember it's unique)
+    # Number rank members: %number_RANK%
+    # %online% = List online players | %onlinenumber% = Number of online players
+    content:
+    - "&b============ &l%party%'s Info &r&b============"
+    - "&b&lDescription&r&7: %desc%"
+    - "&b&lMotd&r&7: %motd%"
+    - "&bLeader&7: %list_leader%"
+    - "&bMods&7: %list_moderator%"
+    - "&bMembers&7: %list_member%"
+    - "&bOnline players&7: %onlinenumber%"
+    list:
+      player-online-prefix: "&b"
+      player-offline-prefix: "&7"
+      player-separator: "&7, "
+      player-empty: "&7Nobody"
+      player-unknown: "&6Someone"
+      missing-value: "&7Miss"
+    wrong-command: "&cWrong variables: Type &7/party info [party]"
+  
+  invite:
+    sent: "&bYou invited %player% in your party"
+    player-invited: "&b%player% has invited you in his party\n&bTo accept/deny invitation type &7/party <accept/deny>"
+    timeout:
+      noresponse: "&7%player% didn't accept the party invite"
+      timeout: "&7You didn't accept the party invite"
+    revoke:
+      sent-revoked: "&7Revoked invite sent to %player%"
+      player-invite-revoked: "&7Invite received from %party% has been revoked"
+    player-offline: "&cYou can invite only online players"
+    player-no-permission: "&c%player% doesn't have the permission to join"
+    player-in-party: "&c%player% is already in a party"
+    already-invited: "&c%player% was already invited"
+    wrong-command: "&cWrong variables: Type &7/party invite <name>"
+  
+  kick:
+    sent: "&aYou kicked %player% from your party!"
+    player-kicked: "&bYou have been kicked from %party%"
+    broadcast: "&b&l%player% has been kicked from the party"
+    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
+    player-higher-rank: "&cYou cannot kick your superior!"
+    player-not-in-party: "&c%player% is not in your party"
+    player-not-in-other-party: "&c%player% is not in a party"
+    players-conflict:
+        # Special tags:
+        # %username% is the current name of the player (took from Mojang APIs)
+        # %list_players% like info is a list of 'player' message
+        # %number% is the number of the player
+        # %time% and %date%
+        content:
+        - "&cWe have found some players with that name:"
+        - "%list_players%"
+        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
+        player: "&7[%number%] &6%username%&7 [&b%party%&7]: last login %time% %date%"
+    wrong-command: "&cWrong variables: Type &7/party kick <name>"
+  
+  leave:
+    left: "&b&lYou left the party %party%"
+    broadcast: "&b&l%player% left the party"
+    party-disbanded: "&6&lThe party has been disbanded because the leader left"
+  
+  migrate:
+    # Special tags:
+    # %database% = Current database
+    # %database_to% & %database_from% = From/To databases
+    info: "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>"
+    completed: "&aCopied data from %database_from% to %database_to%"
+    failed:
+      database-offline: "&cThe %database% database must be online!"
+      failed: "&cDatabase migration from %database_from% to %database_to% failed!"
+      same-database: "&cYou need to choose 2 different databases!"
+    wrong-database: "&cDatabase not found. You can select: YAML, MySQL, SQLite!"
+    wrong-command: "&cWrong variables: Type &7/party migrate <from> <to>"
+  
+  p:
+    # Special tag: %seconds% = Remaining time in seconds
+    cooldown: "&cYou still have to wait %seconds% seconds"
+    wrong-command: "&cWrong variables: Type &7/p <message>"
+  
+  rank:
+    # Special tag: %rank_typed% = Rank wrote by the player
+    changed: "&a%player% rank changed into %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cRank '%rank_typed%' doesn't exist!"
+    same-rank: "&c%player% is already %rank_name%!"
+    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
+    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
+    changing-yourself: "&cYou cannot change yourself rank!"
+    player-not-in-party: "&c%player% is not in your party"
+    player-not-in-other-party: "&c%player% doesn't have a party"
+    wrong-command: "&cWrong variables: Type &7/party rank <player> <rank>"
+  
+  rename:
+    # Special tag: %old% = Old player name
+    renamed: "&aThe party %old% has been renamed into %party%"
+    broadcast: "&6Your party has been renamed into %party%!"
+    wrong-command: "&cWrong variables: Type &7/party rename <newname>"
+    wrong-command-admin: "&cWrong variables: Type &7/party rename <party> <newname>"
+  
+  spy:
+    enabled: "&7Now you are a spy!"
+    disabled: "&7You are no longer a spy"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |  ADDITIONAL COMMANDS  MESSAGES  |
+# \ = = = = = = = = = = = = = = = = /
+additional-commands:
+  claim:
+    claimed: "&aGranted permission to the party"
+    removed: "&aRemoved permission to the party"
+    no-manager: "&cYou need to be the manager of the claim"
+    claim-no-exists: "&cClaim not found"
+    wrong-command: "&cWrong variables: Type &7/party claim <permission>\n&cPermissions: trust, container & access"
+  
+  color:
+    info: "&bYour party color is: %color_code%%color_command%"
+    empty: "&bYour party doesn't have a color"
+    changed: "&bParty color changed into %color_command%"
+    removed: "&bParty color removed"
+    broadcast: ""
+    wrong-color: "&cColor not found. You can select: red, green or special!"
+    wrong-command: "&cWrong variables: Type &7/party color <color>"
+  
+  desc:
+    changed: "&bParty description changed"
+    removed: "&bParty description removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
+    censored: "&cThe description contains censored words!"
+    wrong-command: "&cWrong variables: Type &7/party desc <description/remove>"
+  
+  home:
+    teleported: "&7Teleported to the party home"
+    # Special tag: %time% = Time of cooldown
+    teleport-in: "&7You will be teleported in %time% seconds..."
+    teleport-denied: "&7Teleport denied"
+    no-home: "&cThere isn't a home yet"
+    no-exists: "&cThe party %party% doesn't exist"
+    wrong-command: "&cWrong variables: Type &7/party home"
+    wrong-command-admin: "&cWrong variables: Type &7/party home [party]"
+  
+  join:
+    joined: "&aYou joined the party %party%"
+    player-joined: "&b&l%player% joined in the party"
+    already-in-party: "&cYou are already in a party!"
+    wrong-password: "&cWrong password!"
+    wrong-command: "&cWrong variables: Type &7/party join <party> [password]"
+  
+  list:
+    # Special tags: %number% = Number of parties online | %page% = Current list page | %maxpages% = How many pages exists
+    header: "&b============ &lOnline Parties List &r&b============"
+    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
+    no-one: "&7No one"
+    format-party: "&b%party% &7[&6Online %onlinenumber%&7] %desc%"
+    wrong-command: "&cWrong variables: Type &7/party list [page]"
+  
+  motd:
+    changed: "&bParty MOTD changed"
+    removed: "&bParty MOTD removed"
+    broadcast: ""
+    content:
+    - "&bParty MOTD:"
+    - "&b%motd%"
+    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
+    censored: "&cThe MOTD contains censored words!"
+    wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
+  
+  notify:
+    on: "&7You have disabled notifications!"
+    off: "&7You have enabled notifications!"
+  
+  password:
+    changed: "&aParty password changed"
+    removed: "&aParty password removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+    wrong-command: "&cWrong variables: Type &7/party password <password>"
+  
+  prefix:
+    changed: "&bParty prefix changed into %prefix%"
+    removed: "&bParty prefix removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 6 chars."
+    censored: "&cThe prefix contains censored words!"
+    wrong-command: "&cWrong variables: Type &7/party prefix <prefix/remove>"
+  
+  sethome:
+    changed: ""
+    removed: "&bParty home removed"
+    broadcast: "&aThe party has a new home!"
+    wrong-command: "&cWrong variables: Type &7/party sethome [remove]"
+  
+  suffix:
+    changed: "&bParty suffix changed into %suffix%"
+    removed: "&bParty suffix removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 6 chars."
+    censored: "&cThe suffix contains censored words!"
+    wrong-command: "&cWrong variables: Type &7/party suffix <suffix/remove>"
+  
+  teleport:
+    teleporting: "&7Teleporting your party here!"
+    player-teleported: "&bTeleported to %player%"
+    # Special tag: %seconds% = Remaining time in seconds
+    cooldown: "&cYou have to wait %seconds% seconds!"
+  
+  vault:
+    # Special tag: %price% = Price of the command
+    no-money:
+      claim: "&cYou don't have enough money to perform a claim [%price%$]"
+      color: "&cYou don't have enough money to perform the color command [%price%$]"
+      create: "&cYou don't have enough money to create a party [%price%$]"
+      desc: "&cYou don't have enough money to set the description [%price%$]"
+      home: "&cYou don't have enough money to use the home command [%price%$]"
+      join: "&cYou don't have enough money to join a party [%price%$]"
+      motd: "&cYou don't have enough money to set the MOTD [%price%$]"
+      prefix: "&cYou don't have enough money to set the prefix [%price%$]"
+      sethome: "&cYou don't have enough money to set the home [%price%$]"
+      suffix: "&cYou don't have enough money to set the suffix [%price%$]"
+      teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
+    confirm:
+        warn-onbuy: "&aCommand '%cmd%' costs %price%$.\nType &7/party confirm&a to use it."
+        confirmed: "&aPerforming the command."
+        no-cmd: "&cThere is no command to confirm"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         OTHER  MESSAGES         |
+# \ = = = = = = = = = = = = = = = = /
+other:
+  follow:
+    # Special tags: %world% = New world, %server% = New server
+    following-world: "&7Following %player% in %world%"
+    following-server: "&7Following party in %server%"
+  
+  friendly-fire:
+    cant-hit-mates: "&cYou can't hit your partymates"
+    warn-on-hit-leaders: "&c%player% tried to hit %victim%!"
+  
+  exp-system:
+    # Special tags: %exp% = Experience gained | %exptotal% = Total experience | %mob% = Mob type name (Ex. Skeleton, Zombie)
+    vanilla:
+      gained: "&bGained %exp% experience for killing a %mob%"
+      gained-from-other: "&b%player% has killed a %mob%, you gained %exp% experience"
+    skillapi:
+      gained: "&bGained %exp% SkillAPI experience for killing a %mob%"
+      gained-from-other: "&b%player% has killed a %mob%, you gained %exp% SkillAPI experience"
+  
+  fixed-parties:
+    # Joined into a default party
+    default-join: "&bYou entered into %party%"
+  
+  join-leave:
+    server-join: "&b%player% is online!"
+    server-leave: "&7%player% is offline!"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |          HELP MESSAGES          |
+# \ = = = = = = = = = = = = = = = = /
+help:
+  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  footer: ""
+  console-help:
+  - "You can only make these commands:"
+  - "/party migrate - Copy database into a new one"
+  - "/party reload - Reload the configuration"
+  main-commands:
+    help: "&b/party help [page] &7- Show help pages"
+    accept: "&b/party accept &7- Accept a party invitation"
+    chat: "&b/party chat [on/off] &7- Toggle the party chat"
+    create: "&b/party create <name> &7- Create a new party"
+    create-fixed: "&b/party create <name> [fixed] &7- Create a new party"
+    delete: "&b/party delete <party> &7- Delete the party"
+    deny: "&b/party deny &7- Deny a party invitation"
+    ignore: "&b/party ignore [party] &7- Add/remove/show parties ignored"
+    info: "&b/party info [party] &7- Show party information"
+    invite: "&b/party invite <player> &7- Invite a player to your party"
+    kick: "&b/party kick <player> &7- Kick a player from your party"
+    leave: "&b/party leave &7- Leave your party"
+    migrate: "&b/party migrate <from> <to> &7- Copy database into a new one"
+    p: "&b/p <message> &7- Send a message to the party"
+    rank: "&b/party rank <player> <rank> &7- Change rank of the player"
+    reload: "&b/party reload &7- Reload the configuration"
+    rename: "&b/party rename <newname> &7- Rename the party"
+    rename-others: "&b/party rename <party> <newname> &7- Renames a party"
+    spy: "&b/party spy &7- See messages from other parties"
+  additional-commands:
+    claim: "&b/party claim <permission> &7- Grant permissions to the claim"
+    color: "&b/party color <color> &7- Change color of the party"
+    desc: "&b/party desc <description/remove> &7- Add/remove description"
+    home: "&b/party home &7- Teleport to the party home"
+    home-others: "&b/party home [party] &7- Teleport to the party home"
+    join: "&b/party join <party> [password] &7- Join into a party"
+    list: "&b/party list [page] &7- List of online parties"
+    motd: "&b/party motd <motd/remove> &7- Add/remove motd"
+    password: "&b/party password <password/remove> &7- Change password of the party"
+    prefix: "&b/party prefix <prefix/remove> &7- Add/remove prefix tag"
+    sethome: "&b/party sethome [remove] &7- Set the party home"
+    suffix: "&b/party suffix <suffix/remove> &7- Add/remove suffix tag"
+    teleport: "&b/party teleport &7- Teleport your party to you"
+
+dont-edit-this:
+  messages-version: 15

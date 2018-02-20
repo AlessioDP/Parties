@@ -3,20 +3,21 @@
 !pom.xml
 !*.md
 
-!/parties-api/
-/parties-api/*
-!/parties-api/src
-!/parties-api/pom.xml
+!/api/
+/api/*
+!/api/src
+!/api/pom.xml
 
-!/parties-bukkit/
-/parties-bukkit/*
-!/parties-bukkit/src
-!/parties-bukkit/pom.xml
+!/bukkit/
+/bukkit/*
+!/bukkit/libs
+!/bukkit/src
+!/bukkit/pom.xml
 
-!/parties-bungee/
-/parties-bungee/*
-!/parties-bungee/src
-!/parties-bungee/pom.xml
+!/bungee/
+/bungee/*
+!/bungee/src
+!/bungee/pom.xml
 
 !/images/
 !/locales/

@@ -1,0 +1,232 @@
+#
+# Parties parties-related configuration file
+#
+# For a better configuration:
+# - Use Notepad++
+#   - View -> Symbols -> Show White Space and TAB (Active)
+#   - Don't use arrows (tabs), but spaces
+# - Set format (syntax) editor to YAML
+#
+# You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
+#
+
+# / = = = = = = = = = = = = = = = = \
+# |        GENERAL  SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+general:
+  # Party members limit, -1 is unlimited
+  members-limit: -1
+  name:
+    # Regex of chars (Use \\ instead of \ if you use "text" format)
+    # For ALL utf characters use '[\p{L}\s]+'
+    allowed-characters: '[a-zA-Z0-9]+'
+    minimum-length: 3
+    maximum-length: 10
+    # Cooldown for rename command (in seconds)
+    rename-cooldown: 300
+  invite:
+    # Invite timeout in seconds
+    timeout: 20
+    # Enable revoke command  (Do again /party invite <player>)
+    revoke: true
+    # Don't invite players that doesn't have the permission to join in parties
+    prevent-invite-player-no-permission-join: true
+  chat:
+    # Allow sending messages with color codes (&1, &2, etc..)
+    allow-colors: false
+    # Enable /party chat command to toggle party chat
+    enable-toggle-command: true
+    # Chat cooldown in seconds
+    chat-cooldown: 0
+    formats:
+      party-chat: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
+      spy-alerts: "&7[SPY] [Party:%party%] %player%: %message%"
+      broadcast: "&b[Party] %message%"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |      PARTY RANKS  SETTINGS      |
+# \ = = = = = = = = = = = = = = = = /
+# Permissions List:
+#   party.(sendmessage/home/desc/motd/invite/kick/claim)
+#   party.edit.(home/desc/motd/color/prefix/suffix/password)
+#   party.admin.(rename/rank/teleport)
+#   '*'
+#
+# Not commands: party.(warnondamage/autocommand/bypasscooldown)
+# You can negate a permission with -
+# DETAILED INFO HERE: https://alessiodp.com/wiki/parties/permissions#rank_based_permissions
+ranks:
+  member:
+    rank: 5
+    name: "Member"
+    chat: "&bMember"
+    default: true
+    permissions:
+    - party.sendmessage
+    - party.home
+    - party.desc
+    - party.motd
+    - party.claim
+  moderator:
+    rank: 10
+    name: "Moderator"
+    chat: "&cModerator"
+    permissions:
+    - -party.edit.home
+    - -party.edit.desc
+    - -party.edit.motd
+    - -party.edit.color
+    - -party.edit.prefix
+    - -party.edit.suffix
+    - -party.admin.password
+    - -party.admin.rename
+    - -party.admin.rank
+    - -party.admin.teleport
+    - -party.autocommand
+    - '*'
+  leader:
+    rank: 20
+    name: "Leader"
+    chat: "&4&lLeader"
+    permissions:
+    - '*'
+
+
+# / = = = = = = = = = = = = = = = = \
+# |       ADDITIONAL SETTINGS       |
+# \ = = = = = = = = = = = = = = = = /
+additional:
+  color:
+    # Enable color command
+    # By default: color placeholder isn't set in messages.yml, you need to put it wherever you want
+    # Placeholders: %color_name%, %color_command% and %color_code%
+    enable: false
+    # Enable color command (disable it if you are using dynamic colors)
+    color-command: true
+    # Give to parties a color based on their stats
+    # Add to each color a priority value and the relative statistic minimum value (Supported: kills, members)
+    # Example:
+    # red:
+    #   command: "red"
+    #   code: "&c"
+    #   dynamic:
+    #     priority: 10
+    #     kills: 100
+    #     members: 5
+    dynamic-color: false
+    # Make here your custom colors
+    # command = /party color <command>
+    # code = code of the color
+    list-colors:
+      red:
+        command: "red"
+        code: "&c"
+      green:
+        command: "green"
+        code: "&a"
+      yourcustomcolor:
+        command: "special"
+        code: "&9&n"
+  
+  description:
+    enable: true
+    minimum-length: 3
+    maximum-length: 16
+    # Regex of chars (Use \\ instead of \ if you use "text" format)
+    # For ALL utf characters use '[\p{L}\s]+'
+    allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
+  
+  fixed-system:
+    # Allow the creation of parties without leader (they are called "fixed")
+    enable: false
+    default-party:
+      # When a player join into the server, put him into a party (if he doesn't have one)
+      enable: false
+      party: "default"
+  
+  friendly-fire:
+    # Prevent fights between players of a party
+    enable-protection: true
+    # Warn leaders on friendly fire hits
+    # Give the rank permission "party.warnondamage" to the party leaders
+    warn-players-on-fight: true
+    # Worlds protected from friendly fire ('*' = all worlds)
+    list-worlds:
+    - '*'
+    # Enable friendly fire protection for CrackShot weapons
+    crackshot:
+      enable: false
+  
+  home:
+    enable: false
+    # Party home delay before teleport, in seconds
+    # Bypass delay with the permission parties.home.%time%
+    delay: 0
+    cancel:
+      # Cancel the teleport if player is moving or he got hit
+      hit: true
+      moving: true
+      # Walk distance to deny the teleport3
+      distance: 3
+  
+  join-password:
+    # Passwor14596d system (This will enable "/party join <party>", you can still disable it via permissions)
+    # Allows the creation of a party with a password (/party create <party> <password>)
+    enable: false
+    # Regex of chars (Use \\ instead of \ if you use "text" format)
+    # For ALL utf characters use '[\p{L}\s]+'
+    allowed-characters: '[a-zA-Z0-9]+'
+    # Hashes: MD5, SHA-1, SHA-256
+    hash: "MD5"
+    encode: "UTF-8"
+    minimum-length: 1
+    maximum-length: 16
+  
+  kills:
+    enable: false
+    # Save each kill of parties
+    save-kills: true
+    which-save:
+      neutral-mobs: false
+      hostile-mobs: false
+      players: true
+  
+  list:
+    enable: true
+    # Sort system:
+    # kills = Total kills
+    # players = Total online players
+    # allplayers = Total players
+    # name = Alphabetical order
+    ordered-by: players
+    # Filter parties if number of online players is less than X.
+    filter-min: 1
+    parties-per-page: 8
+    # Show max X parties (-1 is unlimited)
+    limit-parties: -1
+    # Hide some parties from the list (Type the name of party)
+    hidden-parties: []
+  
+  motd:
+    enable: true
+    minimum-length: 3
+    maximum-length: 100
+    # Delay before motd printing in ticks (20 ticks = 1 second)
+    delay: 20
+    # Regex of chars (Use \\ instead of \ if you use "text" format)
+    # For ALL utf characters use '[\p{L}\s]+'
+    allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
+    # New line code is \n, you need to escape the first \ by adding another \ before
+    new-line-code: '\\n'
+  
+  teleport:
+    # Enable teleport command, teleport every partymate to the command sender
+    enable: false
+    # Cooldown of the command
+    cooldown: 60
+
+
+# End of configuration file
+dont-edit-this:
+    config-version: 1
