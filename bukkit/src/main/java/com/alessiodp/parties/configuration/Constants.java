@@ -2,8 +2,8 @@ package com.alessiodp.parties.configuration;
 
 public class Constants {
 	
-	public static final boolean DEBUG_ENABLED = true;
-	public static final boolean DEBUG_TIMESTAMPS = true;
+	public static final boolean DEBUG_ENABLED = false;
+	public static final boolean DEBUG_TIMESTAMPS = false;
 	
 	public static final int VERSION_CONFIG_MAIN = 18;
 	public static final int VERSION_CONFIG_PARTIES = 1;
