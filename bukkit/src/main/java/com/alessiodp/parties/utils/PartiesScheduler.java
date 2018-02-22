@@ -38,10 +38,10 @@ public class PartiesScheduler {
 		LoggerManager.log(LogLevel.DEBUG, Constants.CLASS_INIT.replace("{class}", getClass().getSimpleName()), true);
 		plugin = instance;
 		useBukkitScheduler = false;
-		commandsExecutor = new ExecutorDispatcher();
-		databaseExecutor = new ExecutorDispatcher();
-		logExecutor = new ExecutorDispatcher();
-		eventsExecutor = new ExecutorDispatcher();
+		commandsExecutor = new ExecutorDispatcher(true);
+		databaseExecutor = new ExecutorDispatcher(false);
+		logExecutor = new ExecutorDispatcher(false);
+		eventsExecutor = new ExecutorDispatcher(true);
 		
 		// Make an async task to enable bukkit scheduler
 		// This task will be started when the server completes the loading
@@ -59,14 +59,16 @@ public class PartiesScheduler {
 	
 	public class ExecutorDispatcher implements Executor {
 		private ExecutorService partiesExecutor;
+		private boolean allowBukkit;
 		
-		public ExecutorDispatcher() {
+		public ExecutorDispatcher(boolean ab) {
 			partiesExecutor = Executors.newSingleThreadExecutor();
+			allowBukkit = ab;
 		}
 
 		@Override
 		public void execute(Runnable runnable) {
-			if (useBukkitScheduler) {
+			if (allowBukkit && useBukkitScheduler) {
 				plugin.getServer().getScheduler().runTaskAsynchronously(plugin, runnable);
 			} else
 				partiesExecutor.submit(runnable);

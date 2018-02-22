@@ -16,7 +16,7 @@ public class PartyPlayer {
 	
 	public PartyPlayer(UUID uuid, int defaultRank) {
 		playerUUID = uuid;
-		name = Bukkit.getOfflinePlayer(uuid).getName();
+		name = Bukkit.getOfflinePlayer(uuid).getName() != null ? Bukkit.getOfflinePlayer(uuid).getName() : "";
 		nameTimestamp = System.currentTimeMillis();
 		rank = defaultRank;
 		partyName = "";
