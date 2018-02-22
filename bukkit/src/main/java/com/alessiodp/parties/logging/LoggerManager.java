@@ -57,8 +57,11 @@ public class LoggerManager {
 	public static String formatErrorCallTrace(String base, Exception ex) {
 		StackTraceElement st = Thread.currentThread().getStackTrace()[2];
 		String[] clss = st.getClassName().split("\\.");
-		return base.replace("{class}", clss[clss.length - 1]).replace("{method}", st.getMethodName())
-				.replace("{line}", Integer.toString(st.getLineNumber())).replace("{message}", ex.getMessage());
+		return base
+				.replace("{class}", clss[clss.length - 1])
+				.replace("{method}", st.getMethodName())
+				.replace("{line}", Integer.toString(st.getLineNumber()))
+				.replace("{message}", ex.getMessage() != null ? ex.getMessage() : ex.toString());
 	}
 	
 	private static String getCallTrace(int index) {

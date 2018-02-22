@@ -77,6 +77,9 @@ public class PartyPlayerEntity extends PartyPlayer {
 	
 	
 	public void updatePlayer() {
+		// Update timestamp
+		setNameTimestamp(System.currentTimeMillis() / 1000L);
+		
 		if (!plugin.getDatabaseManager().getDatabaseType().isNone())
 			plugin.getDatabaseManager().updatePlayer(this);
 		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_UPDATED

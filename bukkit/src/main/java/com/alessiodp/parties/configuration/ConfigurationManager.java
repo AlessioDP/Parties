@@ -82,6 +82,7 @@ public class ConfigurationManager {
 		ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES = cfg.getString("storage.storage-settings.sql-based.general-settings.tables.parties", ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES);
 		ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS = cfg.getString("storage.storage-settings.sql-based.general-settings.tables.players", ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS);
 		ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = cfg.getString("storage.storage-settings.sql-based.general-settings.tables.log", ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG);
+		ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS = cfg.getString("storage.storage-settings.sql-based.general-settings.tables.versions", ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS);
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_ADDRESS = cfg.getString("storage.storage-settings.sql-based.mysql.address", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_ADDRESS);
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_DATABASE = cfg.getString("storage.storage-settings.sql-based.mysql.database", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_DATABASE);
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USERNAME = cfg.getString("storage.storage-settings.sql-based.mysql.username", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USERNAME);
@@ -89,6 +90,7 @@ public class ConfigurationManager {
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE = cfg.getInt("storage.storage-settings.sql-based.mysql.pool-size", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME = cfg.getInt("storage.storage-settings.sql-based.mysql.connection-lifetime", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME);
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT = cfg.getInt("storage.storage-settings.sql-based.mysql.connection-timeout", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT);
+		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USESSL = cfg.getBoolean("storage.storage-settings.sql-based.mysql.use-ssl", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USESSL);
 		ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CHARSET = cfg.getString("storage.storage-settings.sql-based.mysql.charset", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CHARSET);
 		ConfigMain.STORAGE_SETTINGS_SQL_SQLITE_DBNAME = cfg.getString("storage.storage-settings.sql-based.sqlite.database-name", ConfigMain.STORAGE_SETTINGS_SQL_SQLITE_DBNAME);
 		ConfigMain.STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT = cfg.getBoolean("storage.storage-settings.none.disband-on-leader-left", ConfigMain.STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT);

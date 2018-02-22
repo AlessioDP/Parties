@@ -25,6 +25,7 @@ import com.alessiodp.parties.storage.StorageType;
 import com.alessiodp.parties.storage.interfaces.IDatabaseDispatcher;
 import com.alessiodp.parties.storage.interfaces.IDatabaseSQL;
 import com.alessiodp.parties.storage.sql.SQLTable;
+import com.alessiodp.parties.storage.sql.SQLUpgradeManager;
 import com.alessiodp.parties.storage.sql.MySQLDao;
 import com.alessiodp.parties.storage.sql.SQLiteDao;
 import com.alessiodp.parties.utils.PartiesUtils;
@@ -37,8 +38,11 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 	private StorageType databaseType;
 	private IDatabaseSQL database;
 	
+	private HashMap<SQLTable, String> schemaTables;
+	
 	public SQLDispatcher(Parties instance) {
 		plugin = instance;
+		schemaTables = new HashMap<SQLTable, String>();
 	}
 	
 	@Override
@@ -62,8 +66,8 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 		
 		if (database != null && !database.isFailed()) {
 			databaseType = type;
-			database.handleSchema();
-			database.initTables(getConnection());
+			database.handleSchema(schemaTables);
+			initTables(getConnection());
 		}
 	}
 	@Override
@@ -98,8 +102,9 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 				updatePlayer(entry.getValue(), connection);
 			
 			// Parties
-			for (Entry<String, Party> entry : data.getParties().entrySet())
+			for (Entry<String, Party> entry : data.getParties().entrySet()) {
 				updateParty(entry.getValue(), connection);
+			}
 			
 			connection.commit();
 			ret = true;
@@ -124,11 +129,11 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			
 			// Players
 			renameTable(connection, tables, SQLTable.PLAYERS.getTableName());
-			database.createTable(connection, SQLTable.PLAYERS);
+			createTable(connection, SQLTable.PLAYERS);
 			
 			// Parties
 			renameTable(connection, tables, SQLTable.PARTIES.getTableName());
-			database.createTable(connection, SQLTable.PARTIES);
+			createTable(connection, SQLTable.PARTIES);
 			
 			connection.commit();
 			ret = true;
@@ -150,7 +155,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			if (databaseType == StorageType.SQLITE)
 				query = Constants.QUERY_GENERIC_SQLITE_RENAME;
 			
-			statement.execute(query
+			statement.executeUpdate(query
 					.replace("{table}", table)
 					.replace("{newtable}", newTable));
 		}
@@ -163,6 +168,47 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 		return database.isFailed();
 	}
 	
+	public void createTable(Connection connection, SQLTable table) {
+		try (Statement statement = connection.createStatement()) {
+			String versionQuery = Constants.QUERY_CHECKVERSION_SET_MYSQL;
+			if (databaseType.isSQLite())
+				versionQuery = Constants.QUERY_CHECKVERSION_SET_SQLITE;
+			int versionValue = Constants.VERSION_DATABASE_MYSQL;
+			if (databaseType.isSQLite())
+				versionValue = Constants.VERSION_DATABASE_SQLITE;
+			
+			// Create table
+			statement.executeUpdate(SQLTable.formatSchema(schemaTables.get(table), Constants.VERSION_DATABASE_MYSQL));
+			
+			// Change version into the versions table
+			try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(versionQuery))) {
+				preStatement.setString(1, table.getTableName());
+				preStatement.setInt(2, versionValue);
+				preStatement.executeUpdate();
+			}
+		} catch (SQLException ex) {
+			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR_TABLE
+					.replace("{table}", table.name()), ex));
+		}
+	}
+	private void initTables(Connection connection) {
+		try {
+			DatabaseMetaData metadata = connection.getMetaData();
+			for (SQLTable table : SQLTable.values()) {
+				try (ResultSet rs = metadata.getTables(null, null, table.getTableName(), null)) {
+					if (rs.next()) {
+						SQLUpgradeManager.checkUpgrades(this, connection, table, databaseType); // Checking for porting
+					} else {
+						createTable(connection, table); // Create table
+					}
+				} catch (SQLException ex) {
+					LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
+				}
+			}
+		} catch (Exception ex) {
+			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
+		}
+	}
 	
 	/* 
 	 * Players
@@ -193,7 +239,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 					preStatement.setString(2, !player.getPartyName().isEmpty() ? player.getPartyName() : "");
 					preStatement.setInt(3, !player.getPartyName().isEmpty() ? player.getRank() : 0);
 					preStatement.setString(4, !player.getPartyName().isEmpty() ? player.getName() : "");
-					preStatement.setInt(5, !player.getPartyName().isEmpty() ? ((int)(System.currentTimeMillis() / 1000L)) : null);
+					preStatement.setInt(5, !player.getPartyName().isEmpty() ? ((int) player.getNameTimestamp()) : null);
 					preStatement.setBoolean(6, player.isSpy());
 					preStatement.setBoolean(7, player.isPreventNotify());
 					
@@ -267,8 +313,9 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 	}
 	private void updateParty(Party party, Connection connection) {
 		String query = Constants.QUERY_PARTY_INSERT_MYSQL;
-		if (databaseType == StorageType.SQLITE)
+		if (databaseType.isSQLite())
 			query = Constants.QUERY_PARTY_INSERT_SQLITE;
+		
 		try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(query))) {
 			preStatement.setString(1, party.getName());
 			preStatement.setString(2, party.isFixed() ? Constants.FIXED_VALUE_TEXT : party.getLeader().toString());
@@ -280,7 +327,6 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			preStatement.setInt(8, party.getKills());
 			preStatement.setString(9, party.getPassword());
 			preStatement.setString(10, PartiesUtils.formatHome(party.getHome()));
-			
 			preStatement.executeUpdate();
 		} catch (SQLException ex) {
 			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));

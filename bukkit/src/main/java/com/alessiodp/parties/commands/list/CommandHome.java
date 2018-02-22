@@ -66,7 +66,7 @@ public class CommandHome implements ICommand {
 			return;
 		}
 		
-		if (args.length == 1 && !PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_EDIT_DESC))
+		if (args.length == 1 && !PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_HOME))
 			return;
 		
 		if (party.getHome() == null) {

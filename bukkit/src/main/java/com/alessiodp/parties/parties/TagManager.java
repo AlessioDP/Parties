@@ -27,8 +27,11 @@ public class TagManager {
 			
 			// Scoreboard
 			Team t = scoreboard.getTeam(Constants.SCOREBOARD_PREFIX + party.getName().toLowerCase());
-			if (t != null)
-				t.unregister();
+			if (t != null) {
+				try {
+					t.unregister();
+				} catch (Exception ex) {}
+			}
 			
 			if ((ConfigMain.ADDITIONAL_TAG_ENABLE && ConfigMain.ADDITIONAL_TAG_ENGINE.isScoreboard()) || ConfigMain.PARTIES_SEEINVISIBLE) {
 				if (party.getOnlinePlayers().size() > 0) {
@@ -105,7 +108,9 @@ public class TagManager {
 			if (t != null) {
 				for (String e : t.getEntries())
 					t.removeEntry(e);
-				t.unregister();
+				try {
+					t.unregister();
+				} catch (Exception ex) {}
 			}
 		}
 	}

@@ -102,7 +102,7 @@ public class YAMLDao implements IDatabaseFile {
 			data.save(dataFile);
 		} catch (IOException ex) {
 			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_FILE_ERROR, ex));
-		}
+		} catch (Exception ex) {} // Used to catch a SnakeYAML exception
 	}
 	@Override
 	public void saveData(String path, Object obj) {

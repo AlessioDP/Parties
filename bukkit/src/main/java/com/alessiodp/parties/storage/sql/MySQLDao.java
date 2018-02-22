@@ -5,11 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,13 +26,8 @@ public class MySQLDao implements IDatabaseSQL {
 	private HikariDataSource hikariDataSource;
 	private boolean failed;
 	
-	private HashMap<SQLTable, String> schemaTables;
-	
-	
 	public MySQLDao(Parties instance) {
 		plugin = instance;
-		
-		schemaTables = new HashMap<SQLTable, String>();
 	}
 	
 	/*
@@ -80,6 +70,8 @@ public class MySQLDao implements IDatabaseSQL {
 		config.addDataSourceProperty("useServerPrepStmts", "true"); // If supported use PS server-side
 		config.addDataSourceProperty("useLocalSessionState", "true"); // Enable setAutoCommit
 		config.addDataSourceProperty("useLocalTransactionState", "true"); // Enable commit/rollbacks
+		config.addDataSourceProperty("allowMultiQueries", "true"); // Support multiple queries, used to create tables
+		config.addDataSourceProperty("useSSL", Boolean.toString(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USESSL));
 		
 		hikariDataSource = new HikariDataSource(config);
 	}
@@ -109,11 +101,8 @@ public class MySQLDao implements IDatabaseSQL {
 		return failed;
 	}
 	
-	/*
-	 * Tables
-	 */
 	@Override
-	public void handleSchema() {
+	public void handleSchema(HashMap<SQLTable, String> schema) {
 		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_SQL_SCHEMA_INIT.replace("{class}", getClass().getSimpleName()), true);
 		BufferedReader buff = new BufferedReader(new InputStreamReader(
 				plugin.getResource("schemas/" + Constants.DATABASE_MYSQL_SCHEMA),
@@ -135,59 +124,7 @@ public class MySQLDao implements IDatabaseSQL {
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_SQL_SCHEMA_FOUND.replace("{schema}", m.group(1)), true);
 			SQLTable table = SQLTable.getExactEnum(m.group(1));
 			if (table != null)
-				schemaTables.put(table, m.group(2));
-		}
-	}
-	
-	@Override
-	public void initTables(Connection connection) {
-		try {
-			DatabaseMetaData metadata = connection.getMetaData();
-			for (SQLTable table : SQLTable.values()) {
-				try (ResultSet rs = metadata.getTables(null, null, table.getTableName(), null)) {
-					if (rs.next())
-						checkUpgrades(connection, table); // Checking for porting
-					else
-						createTable(connection, table); // Create table
-				} catch (SQLException ex) {
-					LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
-				}
-			}
-		} catch (Exception ex) {
-			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
-		}
-	}
-	
-	@Override
-	public void checkUpgrades(Connection connection, SQLTable table) {
-		try (PreparedStatement statement = connection.prepareStatement(Constants.QUERY_MYSQL_CHECKVERSION)) {
-			statement.setString(1, connection.getCatalog());
-			statement.setString(2, table.getTableName());
-			try (ResultSet rs = statement.executeQuery()) {
-				if (rs.next()) {
-					String cmnt = rs.getString("table_comment");
-					int version = 0;
-					if (!cmnt.isEmpty())
-						version = Integer.valueOf(cmnt.split(":")[1]);
-					
-					if (version < Constants.VERSION_DATABASE_MYSQL)
-						SQLUpgradeManager.upgradeTable(this, StorageType.MYSQL, version, connection, table);
-				}
-			}
-		} catch (SQLException ex) {
-			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
-		}
-	}
-	
-	@Override
-	public void createTable(Connection connection, SQLTable table) {
-		try (Statement statement = connection.createStatement()) {
-			
-			statement.execute(SQLTable.formatSchema(schemaTables.get(table), Constants.VERSION_DATABASE_MYSQL));
-			
-		} catch (SQLException ex) {
-			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR_TABLE
-					.replace("{table}", table.name()), ex));
+				schema.put(table, m.group(2));
 		}
 	}
 }

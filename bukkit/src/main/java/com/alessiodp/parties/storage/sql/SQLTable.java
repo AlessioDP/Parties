@@ -5,7 +5,8 @@ import com.alessiodp.parties.configuration.data.ConfigMain;
 import lombok.Getter;
 
 public enum SQLTable {
-	PLAYERS, PARTIES, LOG;
+	VERSIONS, PLAYERS, PARTIES, LOG;
+	// VERSIONS must be first, it needs to be created before others.
 	
 	@Getter
 	private String tableName;
@@ -19,6 +20,7 @@ public enum SQLTable {
 		PARTIES.tableName = ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES;
 		PLAYERS.tableName = ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS;
 		LOG.tableName = ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG;
+		VERSIONS.tableName = ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS;
 		
 		varcharSize = Integer.toString(ConfigMain.STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE);
 		charset = ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CHARSET;
@@ -37,6 +39,9 @@ public enum SQLTable {
 			case "log":
 				ret = LOG;
 				break;
+			case "versions":
+				ret = VERSIONS;
+				break;
 			}
 		}
 		return ret;
@@ -51,6 +56,7 @@ public enum SQLTable {
 				.replace("{table_parties}", PARTIES.tableName)
 				.replace("{table_players}", PLAYERS.tableName)
 				.replace("{table_log}", LOG.tableName)
+				.replace("{table_versions}", VERSIONS.tableName)
 				.replace("{charset}", charset)
 				.replace("{version}", Integer.toString(version))
 				.replace("{varcharsize}", varcharSize);

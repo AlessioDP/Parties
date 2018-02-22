@@ -13,7 +13,6 @@ CREATE TABLE '{table_parties}' (
 	'password'		VARCHAR({varcharsize}) DEFAULT '',
 	'home'			VARCHAR({varcharsize}) DEFAULT '',
 	PRIMARY KEY ('name'));
-PRAGMA user_version = {version};
 /*END_PARTIES*/
 	
 /*START_PLAYERS*/
@@ -26,7 +25,6 @@ CREATE TABLE '{table_players}' (
 	'spy'		INT DEFAULT 0 NOT NULL,
 	`notify`	INT DEFAULT 0 NOT NULL,
 	PRIMARY KEY ('uuid'));
-PRAGMA user_version = {version};
 /*END_PLAYERS*/
 
 /*START_LOG*/
@@ -37,5 +35,11 @@ CREATE TABLE '{table_log}' (
 	'position'	VARCHAR({varcharsize}),
 	'message'	VARCHAR({varcharsize}),
 	PRIMARY KEY ('id'));
-PRAGMA user_version = {version};
 /*END_LOG*/
+
+/*START_VERSIONS*/
+CREATE TABLE '{table_versions}' (
+	'name'		VARCHAR({varcharsize}) NOT NULL,
+	'version'	INT NOT NULL,
+	PRIMARY KEY ('name'));
+/*END_VERSIONS*/

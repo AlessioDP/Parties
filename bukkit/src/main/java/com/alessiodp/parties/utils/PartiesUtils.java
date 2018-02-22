@@ -83,7 +83,7 @@ public class PartiesUtils {
 	public static String formatHome(Location loc) {
 		String ret = "";
 		if (loc != null) {
-			ret = loc.getWorld().getName() + ","
+			ret = (loc.getWorld() != null ? loc.getWorld().getName() : "null") + ","
 					+ loc.getBlockX() + ","
 					+ loc.getBlockY() + ","
 					+ loc.getBlockZ() + ","

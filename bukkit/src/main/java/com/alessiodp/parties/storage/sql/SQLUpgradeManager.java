@@ -9,21 +9,77 @@ import java.sql.Statement;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.storage.StorageType;
-import com.alessiodp.parties.storage.interfaces.IDatabaseSQL;
+import com.alessiodp.parties.storage.dispatchers.SQLDispatcher;
 
 public abstract class SQLUpgradeManager {
 	
-	public static void upgradeTable(IDatabaseSQL database, StorageType databaseType, int version, Connection connection, SQLTable table) {
+	public static void checkUpgrades(SQLDispatcher dispatcher, Connection connection, SQLTable table, StorageType databaseType) {
+		String checkQueryMigrate = Constants.QUERY_CHECKVERSION_SET_MYSQL;
+		if (databaseType.isSQLite())
+			checkQueryMigrate = Constants.QUERY_CHECKVERSION_SET_SQLITE;
+		
+		int version = -1;
+		// New check system
+		try (PreparedStatement statement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_CHECKVERSION))) {
+			statement.setString(1, table.getTableName());
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					version = rs.getInt("version");
+				}
+			}
+		} catch (SQLException ex) {
+			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
+		}
+		
+		// Old system, only MySQL have that
+		if (databaseType.isMySQL() && version == -1) {
+			try (PreparedStatement statement = connection.prepareStatement(Constants.QUERY_CHECKVERSION_OLD)) {
+				statement.setString(1, connection.getCatalog());
+				statement.setString(2, table.getTableName());
+				try (ResultSet rs = statement.executeQuery()) {
+					if (rs.next()) {
+						String cmnt = rs.getString("table_comment");
+						if (!cmnt.isEmpty()) {
+							version = Integer.valueOf(cmnt.split(":")[1]);
+							
+							if (version >= 3) {
+								// Only needed from new databases
+								// Send it to the version table
+								try (PreparedStatement subStatement = connection.prepareStatement(SQLTable.formatQuery(checkQueryMigrate))) {
+									subStatement.setString(1, table.getTableName());
+									subStatement.setInt(2, version);
+									subStatement.executeUpdate();
+								}
+							}
+						}
+					}
+				}
+			} catch (SQLException ex) {
+				LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
+			}
+		}
+		
+		int currentVersion = Constants.VERSION_DATABASE_MYSQL;
+		if (databaseType.isSQLite())
+			currentVersion = Constants.VERSION_DATABASE_SQLITE;
+		
+		if (version < currentVersion) {
+			// Upgrade from old upgrade system
+			upgradeTable(dispatcher, databaseType, version, connection, table);
+		}
+	}
+	
+	public static void upgradeTable(SQLDispatcher dispatcher, StorageType databaseType, int version, Connection connection, SQLTable table) {
 		try (Statement statement = connection.createStatement()) {
 			connection.setAutoCommit(false);
 			String renameQuery = Constants.QUERY_GENERIC_MYSQL_RENAME;
-			if (databaseType == StorageType.SQLITE)
-				renameQuery = Constants.QUERY_SQLITE_CHECKVERSION;
+			if (databaseType.isSQLite())
+				renameQuery = Constants.QUERY_GENERIC_SQLITE_RENAME;
 			
-			statement.execute(renameQuery
+			statement.executeUpdate(renameQuery
 					.replace("{table}", table.getTableName())
 					.replace("{newtable}", table.getTableName() + "_temp"));
-			database.createTable(connection, table);
+			dispatcher.createTable(connection, table);
 			
 			try (ResultSet rs = statement.executeQuery(Constants.QUERY_GENERIC_SELECTALL
 					.replace("{table}", table.getTableName() + "_temp"))) {
@@ -40,10 +96,14 @@ public abstract class SQLUpgradeManager {
 					// Spies
 					upgradeTableLog(rs, version, connection, databaseType);
 					break;
+				case VERSIONS:
+					// Versions
+					upgradeTableVersions(rs, version, connection, databaseType);
+					break;
 				}
 			}
 			
-			statement.execute(Constants.QUERY_GENERIC_DROP
+			statement.executeUpdate(Constants.QUERY_GENERIC_DROP
 					.replace("{table}", table.getTableName() + "_temp"));
 			connection.commit();
 		} catch (SQLException ex) {
@@ -173,5 +233,9 @@ public abstract class SQLUpgradeManager {
 				}
 			}
 		}
+	}
+
+	private static void upgradeTableVersions(ResultSet rs, int version, Connection connection, StorageType databaseType) throws SQLException {
+		// Future usage
 	}
 }

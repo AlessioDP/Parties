@@ -85,6 +85,7 @@ storage:
           parties: "parties_parties"
           players: "parties_players"
           log: "parties_log"
+          versions: "parties_versions"
       mysql:
         # <ip>:<port>
         address: "localhost:3306"
@@ -97,6 +98,8 @@ storage:
         connection-lifetime: 1800000
         # Connection timeout, drop connection if the query take too long (Default: 15 seconds = 15000ms)
         connection-timeout: 10000
+        # Property used to alert when the connection is not using a valid SSL certificate
+        use-ssl: true
         # Charset used by tables
         charset: "utf8"
       sqlite:

@@ -203,8 +203,10 @@ public class Constants {
 	/*
 	 * SQL Queries
 	 */
-	public static final String QUERY_MYSQL_CHECKVERSION = "SELECT table_comment FROM INFORMATION_SCHEMA.tables WHERE table_schema=? AND table_name=?;";
-	public static final String QUERY_SQLITE_CHECKVERSION = "PRAGMA user_version;";
+	public static final String QUERY_CHECKVERSION = "SELECT * FROM {table_versions} WHERE name=?;";
+	public static final String QUERY_CHECKVERSION_OLD = "SELECT table_comment FROM INFORMATION_SCHEMA.tables WHERE table_schema=? AND table_name=?;";
+	public static final String QUERY_CHECKVERSION_SET_MYSQL = "INSERT INTO {table_versions} (name, version) VALUES (?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), version=VALUES(version);";
+	public static final String QUERY_CHECKVERSION_SET_SQLITE = "INSERT OR REPLACE INTO {table_versions} (name, version) VALUES (?,?);";
 	
 	public static final String QUERY_GENERIC_SELECTALL = "SELECT * FROM {table};";
 	public static final String QUERY_GENERIC_DROP = "DROP TABLE {table};";

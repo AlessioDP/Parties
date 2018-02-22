@@ -13,8 +13,7 @@ CREATE TABLE `{table_parties}` (
 	`password`		VARCHAR({varcharsize}) DEFAULT '',
 	`home`			VARCHAR({varcharsize}) DEFAULT '',
 	PRIMARY KEY (`name`))
- DEFAULT CHARSET='{charset}'
- COMMENT='Database version (do not edit):{version}';
+ DEFAULT CHARSET='{charset}';
 /*END_PARTIES*/
 
 /*START_PLAYERS*/
@@ -27,8 +26,7 @@ CREATE TABLE `{table_players}` (
 	`spy`		TINYINT(1) DEFAULT 0 NOT NULL,
 	`notify`	TINYINT(1) DEFAULT 0 NOT NULL,
 	PRIMARY KEY (`uuid`))
-DEFAULT CHARSET='{charset}'
-COMMENT='Database version (do not edit):{version}';
+ DEFAULT CHARSET='{charset}';
 /*END_PLAYERS*/
 
 /*START_LOG*/
@@ -39,6 +37,13 @@ CREATE TABLE `{table_log}` (
 	`position`	VARCHAR({varcharsize}),
 	`message`	VARCHAR({varcharsize}),
 	PRIMARY KEY (`id`))
- DEFAULT CHARSET='{charset}'
- COMMENT='Database version (do not edit):{version}';
+ DEFAULT CHARSET='{charset}';
 /*END_LOG*/
+
+/*START_VERSIONS*/
+CREATE TABLE `{table_versions}` (
+	`name`		VARCHAR({varcharsize}) NOT NULL,
+	`version`	INT NOT NULL,
+	PRIMARY KEY (`name`))
+ DEFAULT CHARSET='{charset}';
+/*END_VERSIONS*/
