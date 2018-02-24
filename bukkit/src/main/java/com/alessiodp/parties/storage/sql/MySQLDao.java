@@ -71,6 +71,8 @@ public class MySQLDao implements IDatabaseSQL {
 		config.addDataSourceProperty("useLocalSessionState", "true"); // Enable setAutoCommit
 		config.addDataSourceProperty("useLocalTransactionState", "true"); // Enable commit/rollbacks
 		config.addDataSourceProperty("allowMultiQueries", "true"); // Support multiple queries, used to create tables
+		config.addDataSourceProperty("useUnicode", "true"); // Forcing the use of unicode
+		config.addDataSourceProperty("characterEncoding", "utf8"); // Setup encoding to UTF-8
 		config.addDataSourceProperty("useSSL", Boolean.toString(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USESSL));
 		
 		hikariDataSource = new HikariDataSource(config);
