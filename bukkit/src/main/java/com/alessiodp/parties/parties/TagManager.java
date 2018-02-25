@@ -26,21 +26,13 @@ public class TagManager {
 			ProtocolLibHandler.refreshParty(party);
 			
 			// Scoreboard
-			Team t = scoreboard.getTeam(Constants.SCOREBOARD_PREFIX + party.getName().toLowerCase());
-			if (t != null) {
-				try {
-					t.unregister();
-				} catch (Exception ex) {}
-			}
+			String teamName = getTagName(party);
+			Team team = scoreboard.getTeam(teamName);
 			
 			if ((ConfigMain.ADDITIONAL_TAG_ENABLE && ConfigMain.ADDITIONAL_TAG_ENGINE.isScoreboard()) || ConfigMain.PARTIES_SEEINVISIBLE) {
 				if (party.getOnlinePlayers().size() > 0) {
-					String str = Constants.SCOREBOARD_PREFIX + party.getName().toLowerCase();
-					if (str.length() > 10)
-						str = str.substring(0, 10);
-					Team team = scoreboard.getTeam(str);
-					if (team == null)
-						team = scoreboard.registerNewTeam(str);
+					if (team == null || team.getScoreboard() != null)
+						team = scoreboard.registerNewTeam(teamName);
 					
 					if (ConfigMain.ADDITIONAL_TAG_ENABLE) {
 						// Prefix/Suffix handler
@@ -77,6 +69,11 @@ public class TagManager {
 						team.addEntry(player.getName());
 					}
 				}
+			} else {
+				// Remove Scoreboard
+				if (team != null && team.getScoreboard() != null) {
+					team.unregister();
+				}
 			}
 		}
 	}
@@ -90,7 +87,7 @@ public class TagManager {
 			// Scoreboard
 			if ((ConfigMain.ADDITIONAL_TAG_ENABLE && ConfigMain.ADDITIONAL_TAG_ENGINE.isScoreboard()) || ConfigMain.PARTIES_SEEINVISIBLE) {
 				Team team = scoreboard.getEntryTeam(player.getName());
-				if (team != null && team.getName().startsWith(Constants.SCOREBOARD_PREFIX))
+				if (team != null && team.getName().startsWith(Constants.SCOREBOARD_PREFIX) && team.getScoreboard() != null)
 					team.removeEntry(player.getName());
 			}
 		}
@@ -105,15 +102,22 @@ public class TagManager {
 		// Scoreboard
 		if ((ConfigMain.ADDITIONAL_TAG_ENABLE && ConfigMain.ADDITIONAL_TAG_ENGINE.isScoreboard()) || ConfigMain.PARTIES_SEEINVISIBLE) {
 			Team t = scoreboard.getTeam(Constants.SCOREBOARD_PREFIX + party.getName().toLowerCase());
-			if (t != null) {
+			if (t != null && t.getScoreboard() != null) {
 				for (String e : t.getEntries())
 					t.removeEntry(e);
-				try {
-					t.unregister();
-				} catch (Exception ex) {}
+				
+				t.unregister();
 			}
 		}
 	}
+	
+	private String getTagName(PartyEntity party) {
+		String ret = Constants.SCOREBOARD_PREFIX + party.getName().toLowerCase();
+		if (ret.length() > 10)
+			ret = ret.substring(0, 10);
+		return ret;
+	}
+	
 	
 	public static String getPlayerPrefix(PartyPlayerEntity player, PartyEntity party) {
 		String ret = "";
