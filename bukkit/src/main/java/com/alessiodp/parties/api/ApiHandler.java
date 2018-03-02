@@ -215,7 +215,14 @@ public class ApiHandler implements PartiesAPI {
 	@Override
 	public Status createParty(PartyPlayer paramPartyPlayer, String paramPartyName) {
 		Status ret = Status.ALREADYINPARTY;
-		PartyPlayerEntity player = new PartyPlayerEntity(paramPartyPlayer, plugin);
+		// Get an instance of PartyPlayerEntity, used to save same player
+		PartyPlayerEntity player = null;
+		if (paramPartyPlayer instanceof PartyPlayerEntity) {
+			player = (PartyPlayerEntity) paramPartyPlayer;
+		} else {
+			player = (PartyPlayerEntity) getPartyPlayer(paramPartyPlayer.getPlayerUUID());
+		}
+		
 		if (player.getPartyName().isEmpty()) {
 			if (!plugin.getPartyManager().existParty(paramPartyName)) {
 				PartyEntity party = new PartyEntity(paramPartyName, plugin);

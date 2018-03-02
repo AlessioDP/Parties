@@ -31,7 +31,7 @@ public class TagManager {
 			
 			if ((ConfigMain.ADDITIONAL_TAG_ENABLE && ConfigMain.ADDITIONAL_TAG_ENGINE.isScoreboard()) || ConfigMain.PARTIES_SEEINVISIBLE) {
 				if (party.getOnlinePlayers().size() > 0) {
-					if (team == null || team.getScoreboard() != null)
+					if (team == null || team.getScoreboard() == null)
 						team = scoreboard.registerNewTeam(teamName);
 					
 					if (ConfigMain.ADDITIONAL_TAG_ENABLE) {

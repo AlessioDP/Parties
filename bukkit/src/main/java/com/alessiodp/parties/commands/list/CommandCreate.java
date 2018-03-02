@@ -119,16 +119,16 @@ public class CommandCreate implements ICommand {
 			} else {
 				// Normal creation
 				party = new PartyEntity(newPartyName, plugin);
+				
 				party.getMembers().add(pp.getPlayerUUID());
 				if (pp.getPlayer() != null)
 					party.getOnlinePlayers().add(pp.getPlayer());
+				party.setLeader(pp.getPlayerUUID());
 				plugin.getPartyManager().getListParties().put(party.getName().toLowerCase(), party);
 				
 				pp.setRank(ConfigParties.RANK_SET_HIGHER);
-				
 				pp.setPartyName(party.getName());
-		
-				party.setLeader(pp.getPlayerUUID());
+				
 				party.updateParty();
 				pp.updatePlayer();
 		
