@@ -49,27 +49,30 @@ public class FollowListener implements Listener {
 										PartyPlayerEntity ppVictim = plugin.getPlayerManager().getPlayer(pl.getUniqueId());
 										
 										if (ppVictim.getRank() >= ConfigMain.ADDITIONAL_FOLLOW_RANKMINIMUM) {
-											switch (ConfigMain.ADDITIONAL_FOLLOW_TYPE) {
-											case 1:
-												ppVictim.setPortalTimeoutTask(
-														new PortalTask(pl.getUniqueId())
-														.runTaskLaterAsynchronously(plugin, ConfigMain.ADDITIONAL_FOLLOW_TIMEOUT)
-														.getTaskId());
-												ppVictim.sendMessage(Messages.OTHER_FOLLOW_WORLD
-														.replace("%player%", player.getName())
-														.replace("%world%", player.getWorld().getName()));
-												pl.teleport(player.getWorld().getSpawnLocation());
-												break;
-											case 2:
-												ppVictim.setPortalTimeoutTask(
-														new PortalTask(pl.getUniqueId())
-														.runTaskLaterAsynchronously(plugin, ConfigMain.ADDITIONAL_FOLLOW_TIMEOUT)
-														.getTaskId());
-												ppVictim.sendMessage(Messages.OTHER_FOLLOW_WORLD
-														.replace("%player%", player.getName())
-														.replace("%world%", player.getWorld().getName()));
-												pl.teleport(player);
-											}
+											// Make it sync
+											plugin.getPartiesScheduler().runSync(() -> {
+												switch (ConfigMain.ADDITIONAL_FOLLOW_TYPE) {
+												case 1:
+													ppVictim.setPortalTimeoutTask(
+															new PortalTask(pl.getUniqueId())
+															.runTaskLaterAsynchronously(plugin, ConfigMain.ADDITIONAL_FOLLOW_TIMEOUT)
+															.getTaskId());
+													ppVictim.sendMessage(Messages.OTHER_FOLLOW_WORLD
+															.replace("%player%", player.getName())
+															.replace("%world%", player.getWorld().getName()));
+													pl.teleport(player.getWorld().getSpawnLocation());
+													break;
+												case 2:
+													ppVictim.setPortalTimeoutTask(
+															new PortalTask(pl.getUniqueId())
+															.runTaskLaterAsynchronously(plugin, ConfigMain.ADDITIONAL_FOLLOW_TIMEOUT)
+															.getTaskId());
+													ppVictim.sendMessage(Messages.OTHER_FOLLOW_WORLD
+															.replace("%player%", player.getName())
+															.replace("%world%", player.getWorld().getName()));
+													pl.teleport(player);
+												}
+											});
 										}
 									}
 								}

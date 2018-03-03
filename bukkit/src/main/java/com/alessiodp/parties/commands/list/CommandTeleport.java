@@ -77,8 +77,11 @@ public class CommandTeleport implements ICommand {
 		pp.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING);
 		for (Player pl : party.getOnlinePlayers()) {
 			if (!pl.getUniqueId().equals(p.getUniqueId())) {
-				pl.teleport(p.getLocation());
-				plugin.getPlayerManager().getPlayer(pl.getUniqueId()).sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTED, pp);
+				// Make it sync
+				plugin.getPartiesScheduler().runSync(() -> {
+					pl.teleport(p.getLocation());
+					plugin.getPlayerManager().getPlayer(pl.getUniqueId()).sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTED, pp);
+				});
 			}
 		}
 		
