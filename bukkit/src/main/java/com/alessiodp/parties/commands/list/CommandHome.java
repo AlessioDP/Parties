@@ -100,7 +100,9 @@ public class CommandHome implements ICommand {
 			pp.sendMessage(Messages.ADDCMD_HOME_TELEPORTIN
 					.replace("%time%", Integer.toString(delay)));
 		} else {
-			p.teleport(party.getHome());
+			plugin.getPartiesScheduler().runSync(() -> {
+				p.teleport(party.getHome());
+			});
 			pp.sendMessage(Messages.ADDCMD_HOME_TELEPORTED);
 		}
 		

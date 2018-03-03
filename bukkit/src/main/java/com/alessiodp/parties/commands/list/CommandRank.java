@@ -94,6 +94,7 @@ public class CommandRank implements ICommand {
 		Rank rank = plugin.getRankManager().searchRankByName(args[2]);
 		if (rank == null) {
 			pp.sendMessage(Messages.MAINCMD_RANK_WRONGRANK
+					.replace("%rank_typed%", args[2]) // TODO: Bypass, remove in future updates
 					.replace("%rank_name%", args[2])
 					.replace("%rank_chat%", args[2]));
 			return;

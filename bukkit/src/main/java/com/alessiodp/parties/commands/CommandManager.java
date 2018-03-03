@@ -13,6 +13,7 @@ import com.alessiodp.parties.commands.list.CommandAccept;
 import com.alessiodp.parties.commands.list.CommandChat;
 import com.alessiodp.parties.commands.list.CommandClaim;
 import com.alessiodp.parties.commands.list.CommandColor;
+import com.alessiodp.parties.commands.list.CommandConfirm;
 import com.alessiodp.parties.commands.list.CommandCreate;
 import com.alessiodp.parties.commands.list.CommandDelete;
 import com.alessiodp.parties.commands.list.CommandDeny;
@@ -83,6 +84,10 @@ public class CommandManager {
 		// Color
 		if (ConfigParties.COLOR_ENABLE && ConfigParties.COLOR_COLORCMD)
 			handler.register(ConfigMain.COMMANDS_CMD_COLOR, new CommandColor(plugin));
+		
+		// Confirm
+		if (ConfigMain.ADDONS_VAULT_ENABLE && ConfigMain.ADDONS_VAULT_CONFIRM_ENABLE)
+			handler.register(ConfigMain.COMMANDS_CMD_CONFIRM, new CommandConfirm(plugin));
 		
 		// Desc
 		if (ConfigParties.DESC_ENABLE)

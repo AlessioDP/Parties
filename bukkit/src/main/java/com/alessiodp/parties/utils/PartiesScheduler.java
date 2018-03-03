@@ -56,6 +56,9 @@ public class PartiesScheduler {
 		plugin.getServer().getScheduler().cancelTasks(plugin);
 	}
 	
+	public void runSync(Runnable runnable) {
+		plugin.getServer().getScheduler().runTask(plugin, runnable);
+	}
 	
 	public class ExecutorDispatcher implements Executor {
 		private ExecutorService partiesExecutor;

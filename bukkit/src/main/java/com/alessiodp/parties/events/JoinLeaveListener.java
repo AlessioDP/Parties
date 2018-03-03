@@ -114,10 +114,11 @@ public class JoinLeaveListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		globalQuit(event.getPlayer());
 	}
+	/*
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event) {
 		globalQuit(event.getPlayer());
-	}
+	}*/
 	private void globalQuit(Player p) {
 		// Make it async
 		plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {

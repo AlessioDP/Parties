@@ -37,6 +37,10 @@ public class CommandConfirm implements ICommand {
 		
 		pp.sendMessage(Messages.ADDCMD_VAULT_CONFIRM_CONFIRMED);
 		
-		pp.getPlayer().performCommand((String)packet[1]);
+		// Bukkit.isPrimaryThread() to check if is async, false == async
+		// Make it sync
+		plugin.getPartiesScheduler().runSync(() -> {
+			plugin.getServer().dispatchCommand(pp.getPlayer(), (String) packet[1]);
+		});
 	}
 }

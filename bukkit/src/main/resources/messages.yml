@@ -163,7 +163,7 @@ main-commands:
     # Special tag: %rank_typed% = Rank wrote by the player
     changed: "&a%player% rank changed into %rank_name%"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_typed%' doesn't exist!"
+    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
     same-rank: "&c%player% is already %rank_name%!"
     low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
     to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
