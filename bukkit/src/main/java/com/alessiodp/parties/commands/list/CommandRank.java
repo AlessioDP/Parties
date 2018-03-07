@@ -61,7 +61,7 @@ public class CommandRank implements ICommand {
 		// Conflict checker
 		List<PartyPlayer> listPlayers = plugin.getDatabaseManager().getPartyPlayersByName(playerName).join();
 		if (!listPlayers.isEmpty()) {
-			promoted = new PartyPlayerEntity(listPlayers.get(0), plugin);
+			promoted = plugin.getPlayerManager().getPlayer(listPlayers.get(0).getPlayerUUID());
 		} else {
 			pp.sendMessage(Messages.MAINCMD_RANK_PLAYERNOTINPARTY_OTHER
 					.replace("%player%", playerName));
@@ -137,8 +137,8 @@ public class CommandRank implements ICommand {
 			oldLeader.updatePlayer();
 			party.setLeader(promoted.getPlayerUUID());
 			party.updateParty();
-			
 		}
+		
 		promoted.setRank(rank.getLevel());
 		promoted.updatePlayer();
 		
