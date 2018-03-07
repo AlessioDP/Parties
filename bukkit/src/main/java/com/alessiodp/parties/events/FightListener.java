@@ -238,6 +238,10 @@ public class FightListener implements Listener {
 					if (ConfigMain.ADDITIONAL_EXP_HANDLE_SKILLAPI)
 						skillApiExp = SkillAPIHandler.getExp(killedMob);
 					
+					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_EXP_PREDISTRIBUTE
+							.replace("{vanilla}", Double.toString(vanillaExp))
+							.replace("{skillapi}", Double.toString(skillApiExp)), true);
+					
 					if (PartiesUtils.handleExperienceDistribution(killer, killedMob, killedMob.getType().getName(), vanillaExp, skillApiExp)) {
 						// Remove exp from vanilla event
 						event.setDroppedExp(0);

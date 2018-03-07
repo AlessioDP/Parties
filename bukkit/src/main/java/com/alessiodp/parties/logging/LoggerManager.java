@@ -49,7 +49,7 @@ public class LoggerManager {
 		}
 		
 		if (logToFile && level.getLevel() <= logLevel.getLevel()) {
-			LogLine ll = new LogLine(ConfigMain.STORAGE_LOG_FORMAT, level, getCallTrace(3), message);
+			LogLine ll = new LogLine(ConfigMain.STORAGE_LOG_FORMAT, level, getCallTrace(3 + (color == null ? 1 : 0)), message);
 			plugin.getDatabaseManager().insertLog(ll);
 		}
 	}

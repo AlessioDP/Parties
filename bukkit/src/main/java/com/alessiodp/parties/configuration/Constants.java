@@ -148,6 +148,7 @@ public class Constants {
 	
 	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to {player} with '{command}'";
 	
+	public static final String DEBUG_EXP_PREDISTRIBUTE = "Handling exp: Vanilla ({vanilla}), SkillAPI ({skillapi})";
 	public static final String DEBUG_EXP_DISTRIBUTE = "Distributing {type} exp of {entity} killed by {player}";
 	public static final String DEBUG_EXP_VANILLA_GIVE = "Giving vanilla {exp} exp to {player}";
 	public static final String DEBUG_EXP_SKILLAPI_GIVE = "Giving SkillAPI {exp} exp to {player}";

@@ -220,6 +220,11 @@ public class PartiesUtils {
 			}
 			
 			if (playersList.size() > 1) {
+				// Remove skillapi exp handler
+				if (skillApiExp > 0) {
+					SkillAPIHandler.blockEvent(killedMob);
+				}
+				
 				// Merge experience
 				switch (ConfigMain.ADDITIONAL_EXP_GIVEAS_VANILLA) {
 				case VANILLA:
