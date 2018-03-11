@@ -110,7 +110,7 @@ public class ChatListener implements Listener {
 						}
 					}
 					for (String str : ConfigMain.ADDITIONAL_AUTOCMD_WHITELIST) {
-						if (str.equalsIgnoreCase("*") && event.getMessage().toLowerCase().startsWith(str.toLowerCase())) {
+						if (str.equalsIgnoreCase("*") || event.getMessage().toLowerCase().startsWith(str.toLowerCase())) {
 							cancel = false;
 							break;
 						}
@@ -124,10 +124,13 @@ public class ChatListener implements Listener {
 								
 								for (Player pl : party.getOnlinePlayers()) {
 									if (!pl.getUniqueId().equals(event.getPlayer().getUniqueId())) {
-										pl.chat(event.getMessage() + "\t");
-										LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_AUTOCMD_PERFORM
-												.replace("{player}", pl.getName())
-												.replace("{command}", event.getMessage()), true);
+										// Make it sync
+										plugin.getPartiesScheduler().runSync(() -> {
+											pl.chat(event.getMessage() + "\t");
+											LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_AUTOCMD_PERFORM
+													.replace("{player}", pl.getName())
+													.replace("{command}", event.getMessage()), true);
+										});
 									}
 								}
 							}
