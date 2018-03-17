@@ -1,16 +1,16 @@
 package com.alessiodp.parties.commands.list;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -25,36 +25,48 @@ public class CommandColor implements ICommand {
 		plugin = parties;
 	}
 	
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.COLOR.toString())) {
+		if (!player.hasPermission(PartiesPermission.COLOR.toString())) {
 			pp.sendNoPermission(PartiesPermission.COLOR);
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
 		
 		if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_EDIT_COLOR))
-			return;
+			return false;
 		
-		if (args.length > 2) {
+		if (commandData.getArgs().length > 2) {
 			pp.sendMessage(Messages.ADDCMD_COLOR_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command handling
 		 */
-		if (args.length == 1) {
+		if (commandData.getArgs().length == 1) {
 			// Automatically pp.sendMessage put color placeholders
 			if (party.getColor() != null)
 				pp.sendMessage(Messages.ADDCMD_COLOR_INFO);
@@ -65,19 +77,19 @@ public class CommandColor implements ICommand {
 		
 		boolean isRemove = false;
 		Color color = null;
-		if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {
 			// Normal command
-			color = plugin.getColorManager().searchColorByCommand(args[1]);
+			color = plugin.getColorManager().searchColorByCommand(commandData.getArgs()[1]);
 			if (color == null) {
 				// Color doesn't exist
 				pp.sendMessage(Messages.ADDCMD_COLOR_WRONGCOLOR);
 				return;
 			}
 			
-			if (VaultHandler.payCommand(VaultHandler.VaultCommand.COLOR, pp, commandLabel, args))
+			if (VaultHandler.payCommand(VaultHandler.VaultCommand.COLOR, pp, commandData.getCommandLabel(), commandData.getArgs()))
 				return;
 		}
 		
@@ -92,14 +104,14 @@ public class CommandColor implements ICommand {
 			pp.sendMessage(Messages.ADDCMD_COLOR_REMOVED);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_COLOR_REM
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
 			pp.sendMessage(Messages.ADDCMD_COLOR_CHANGED, party);
 			party.sendBroadcast(pp, Messages.ADDCMD_COLOR_BROADCAST);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_COLOR
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName())
 					.replace("{value}", color.getName()), true);
 		}

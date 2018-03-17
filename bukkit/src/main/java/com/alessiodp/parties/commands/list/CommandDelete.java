@@ -1,16 +1,16 @@
 package com.alessiodp.parties.commands.list;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -23,36 +23,48 @@ public class CommandDelete implements ICommand {
 	public CommandDelete(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.ADMIN_DELETE.toString())) {
+		if (!player.hasPermission(PartiesPermission.ADMIN_DELETE.toString())) {
 			pp.sendNoPermission(PartiesPermission.ADMIN_DELETE);
-			return;
+			return false;
 		}
-		if (args.length < 2 || args.length > 3) {
+		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
 			pp.sendMessage(Messages.MAINCMD_DELETE_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.ADMIN_DELETE_SILENT);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
-		PartyEntity party = plugin.getPartyManager().getParty(args[1]);
+		PartyEntity party = plugin.getPartyManager().getParty(commandData.getArgs()[1]);
 		if (party == null) {
-			pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", args[1]));
+			pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", commandData.getArgs()[1]));
 			return;
 		}
 		
 		
 		boolean isSilent = false;
-		if (args.length == 3) {
-			if (p.hasPermission(PartiesPermission.ADMIN_DELETE_SILENT.toString())
-					&& args[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_SILENT)) {
+		if (commandData.getArgs().length == 3) {
+			if (commandData.havePermission(PartiesPermission.ADMIN_DELETE_SILENT)
+					&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_SILENT)) {
 				isSilent = true;
 			} else {
 				pp.sendMessage(Messages.MAINCMD_DELETE_WRONGCMD);
@@ -82,12 +94,12 @@ public class CommandDelete implements ICommand {
 			Bukkit.getServer().getPluginManager().callEvent(partiesPostDeleteEvent);
 			
 			LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_DELETE
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_DELETEEVENT_DENY
 					.replace("{party}", party.getName())
-					.replace("{player}", p.getName()), true);
+					.replace("{player}", pp.getName()), true);
 		}
 	}
 }

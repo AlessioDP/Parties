@@ -2,7 +2,7 @@ package com.alessiodp.parties.addons.libraries;
 
 public enum ILibrary {
 	HIKARI("HikariCP",
-			"2.7.4",
+			"2.7.8",
 			"%name%-%version%.jar",
 			"https://repo1.maven.org/maven2/com/zaxxer/%name%/%version%/%file%"),
 	SLF4J_API("slf4j-api",
@@ -14,7 +14,7 @@ public enum ILibrary {
 			"%name%-%version%.jar",
 			"https://repo1.maven.org/maven2/org/slf4j/%name%/%version%/%file%"),
 	SQLITE_JDBC("sqlite-jdbc",
-			"3.21.0",
+			"3.21.0.1",
 			"%name%-%version%.jar",
 			"https://repo1.maven.org/maven2/org/xerial/%name%/%version%/%file%");
 	

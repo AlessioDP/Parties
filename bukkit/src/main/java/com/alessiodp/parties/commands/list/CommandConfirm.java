@@ -1,9 +1,9 @@
 package com.alessiodp.parties.commands.list;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.Messages;
@@ -15,9 +15,16 @@ public class CommandConfirm implements ICommand {
 	public CommandConfirm(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites

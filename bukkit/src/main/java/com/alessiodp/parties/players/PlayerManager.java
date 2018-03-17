@@ -1,5 +1,6 @@
 package com.alessiodp.parties.players;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
 import com.alessiodp.parties.parties.objects.PartyEntity;
+import com.alessiodp.parties.players.objects.InviteCooldown;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
 import com.alessiodp.partiesapi.objects.PartyPlayer;
 
@@ -26,6 +28,7 @@ public class PlayerManager {
 	
 	@Getter private int homeCounts;
 	@Getter private HashMap<UUID, Long> chatCooldown;
+	@Getter private HashMap<UUID, ArrayList<InviteCooldown>> inviteCooldown;
 	@Getter private HashMap<UUID, Long> teleportCooldown;
 	
 	public PlayerManager(Parties instance) {
@@ -38,8 +41,9 @@ public class PlayerManager {
 		listPartyPlayersToDelete = new HashSet<UUID>();
 		
 		homeCounts = 0;
-		chatCooldown = new HashMap<UUID, Long>();
-		teleportCooldown = new HashMap<UUID, Long>();
+		chatCooldown = new HashMap<>();
+		inviteCooldown = new HashMap<>();
+		teleportCooldown = new HashMap<>();
 		
 		plugin.getSpyManager().refreshSpyList();
 		

@@ -1,17 +1,17 @@
 package com.alessiodp.parties.commands.list;
 
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -24,46 +24,58 @@ public class CommandSetHome implements ICommand {
 		plugin = parties;
 	}
 	
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.SETHOME.toString())) {
+		if (!player.hasPermission(PartiesPermission.SETHOME.toString())) {
 			pp.sendNoPermission(PartiesPermission.SETHOME);
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
 		
 		if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_EDIT_HOME))
-			return;
+			return false;
 		
-		if (args.length > 1 && !args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs().length > 1 && !commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
 			pp.sendMessage(Messages.ADDCMD_SETHOME_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command handling
 		 */
 		boolean isRemove = false;
 		Location home = null;
-		if (args.length > 1 && args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs().length > 1 && commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {
 			// Normal command
-			if (VaultHandler.payCommand(VaultHandler.VaultCommand.SETHOME, pp, commandLabel, args))
+			if (VaultHandler.payCommand(VaultHandler.VaultCommand.SETHOME, pp, commandData.getCommandLabel(), commandData.getArgs()))
 				return;
 			
-			home = p.getLocation();
+			home = commandData.getPlayer().getLocation();
 		}
 		
 		/*
@@ -76,14 +88,14 @@ public class CommandSetHome implements ICommand {
 			pp.sendMessage(Messages.ADDCMD_SETHOME_REMOVED);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_SETHOME_REM
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
 			pp.sendMessage(Messages.ADDCMD_SETHOME_CHANGED);
 			party.sendBroadcast(pp, Messages.ADDCMD_SETHOME_BROADCAST);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_SETHOME
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		}
 	}

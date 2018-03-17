@@ -273,6 +273,9 @@ public class ConfigurationManager {
 		ConfigParties.GENERAL_INVITE_TIMEOUT = cfg.getInt("general.invite.timeout", ConfigParties.GENERAL_INVITE_TIMEOUT);
 		ConfigParties.GENERAL_INVITE_REVOKE = cfg.getBoolean("general.invite.revoke", ConfigParties.GENERAL_INVITE_REVOKE);
 		ConfigParties.GENERAL_INVITE_PREVENTINVITEPERM = cfg.getBoolean("general.invite.prevent-invite-player-no-permission-join", ConfigParties.GENERAL_INVITE_PREVENTINVITEPERM);
+		ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE = cfg.getBoolean("general.invite.cooldown.enable", ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE);
+		ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL = cfg.getInt("general.invite.cooldown.global", ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL);
+		ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL = cfg.getInt("general.invite.cooldown.individual", ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL);
 		
 		ConfigParties.GENERAL_CHAT_ALLOWCOLORS = cfg.getBoolean("general.chat.allow-colors", ConfigParties.GENERAL_CHAT_ALLOWCOLORS);
 		ConfigParties.GENERAL_CHAT_TOGGLECHATCMD = cfg.getBoolean("general.chat.enable-toggle-command", ConfigParties.GENERAL_CHAT_TOGGLECHATCMD);
@@ -495,6 +498,8 @@ public class ConfigurationManager {
 		Messages.MAINCMD_INVITE_TIMEOUT_TIMEOUT = msg.getString("main-commands.invite.timeout.timeout", Messages.MAINCMD_INVITE_TIMEOUT_TIMEOUT);
 		Messages.MAINCMD_INVITE_REVOKE_SENT = msg.getString("main-commands.invite.revoke.sent-revoked", Messages.MAINCMD_INVITE_REVOKE_SENT);
 		Messages.MAINCMD_INVITE_REVOKE_REVOKED = msg.getString("main-commands.invite.revoke.player-invite-revoked", Messages.MAINCMD_INVITE_REVOKE_REVOKED);
+		Messages.MAINCMD_INVITE_COOLDOWN_GLOBAL = msg.getString("main-commands.invite.cooldown.global", Messages.MAINCMD_INVITE_COOLDOWN_GLOBAL);
+		Messages.MAINCMD_INVITE_COOLDOWN_INDIVIDUAL = msg.getString("main-commands.invite.cooldown.individual", Messages.MAINCMD_INVITE_COOLDOWN_INDIVIDUAL);
 		Messages.MAINCMD_INVITE_PLAYEROFFLINE = msg.getString("main-commands.invite.player-offline", Messages.MAINCMD_INVITE_PLAYEROFFLINE);
 		Messages.MAINCMD_INVITE_PLAYERNOPERM = msg.getString("main-commands.invite.player-no-permission", Messages.MAINCMD_INVITE_PLAYERNOPERM);
 		Messages.MAINCMD_INVITE_PLAYERINPARTY = msg.getString("main-commands.invite.player-in-party", Messages.MAINCMD_INVITE_PLAYERINPARTY);

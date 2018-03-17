@@ -6,8 +6,8 @@ public class Constants {
 	public static final boolean DEBUG_TIMESTAMPS = false;
 	
 	public static final int VERSION_CONFIG_MAIN = 18;
-	public static final int VERSION_CONFIG_PARTIES = 1;
-	public static final int VERSION_MESSAGES = 15;
+	public static final int VERSION_CONFIG_PARTIES = 2;
+	public static final int VERSION_MESSAGES = 16;
 	public static final int VERSION_DATABASE_YAML = 1;
 	public static final int VERSION_DATABASE_MYSQL = 3;
 	public static final int VERSION_DATABASE_SQLITE = 1;

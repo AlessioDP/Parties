@@ -3,16 +3,16 @@ package com.alessiodp.parties.commands.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -25,32 +25,48 @@ public class CommandList implements ICommand {
 	public CommandList(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.LIST.toString())) {
+		if (!player.hasPermission(PartiesPermission.LIST.toString())) {
 			pp.sendNoPermission(PartiesPermission.LIST);
-			return;
+			return false;
 		}
 		
-		if (args.length > 2) {
+		if (commandData.getArgs().length > 2) {
 			pp.sendMessage(Messages.ADDCMD_LIST_WRONGCMD);
-			return;
+			return false;
 		}
 		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.KICK_OTHERS);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		
+		/*
+		 * Command handling
+		 */
 		int selectedPage = 1;
-		if (args.length == 2) {
+		if (commandData.getArgs().length == 2) {
 			try {
-				selectedPage = Integer.parseInt(args[1]);
+				selectedPage = Integer.parseInt(commandData.getArgs()[1]);
 			} catch(NumberFormatException ex) {
 				pp.sendMessage(Messages.ADDCMD_LIST_WRONGCMD);
 				return;
 			}
 		}
+		
 		/*
 		 * Command starts
 		 */
@@ -119,7 +135,7 @@ public class CommandList implements ICommand {
 				.replace("%maxpages%",	Integer.toString(maxPages)));
 		
 		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_IGNORE_STOP
-				.replace("{player}", p.getName()), true);
+				.replace("{player}", pp.getName()), true);
 	}
 	
 	

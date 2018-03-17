@@ -3,16 +3,16 @@ package com.alessiodp.parties.commands.list;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -25,32 +25,44 @@ public class CommandRename implements ICommand {
 	public CommandRename(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.RENAME.toString())) {
+		if (!player.hasPermission(PartiesPermission.RENAME.toString())) {
 			pp.sendNoPermission(PartiesPermission.RENAME);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.RENAME_OTHERS);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
 		PartyEntity party = null;
 		Type type = Type.WRONGCMD;
-		if (args.length == 2) {
+		if (commandData.getArgs().length == 2) {
 			// Own party
 			if (!pp.getPartyName().isEmpty())
 				party = plugin.getPartyManager().getParty(pp.getPartyName());
 			type = Type.OWN;
-		} else if (args.length == 3) {
+		} else if (commandData.getArgs().length == 3) {
 			// Another party
-			if (p.hasPermission(PartiesPermission.RENAME_OTHERS.toString())) {
-				party = plugin.getPartyManager().getParty(args[1]);
+			if (commandData.havePermission(PartiesPermission.RENAME_OTHERS)) {
+				party = plugin.getPartyManager().getParty(commandData.getArgs()[1]);
 				type = Type.ANOTHER;
 			}
 		}
@@ -64,11 +76,11 @@ public class CommandRename implements ICommand {
 			case ANOTHER:
 				// Party doesn't exist
 				pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND
-						.replace("%party%", args[1]));
+						.replace("%party%", commandData.getArgs()[1]));
 				break;
 			case WRONGCMD:
 				// Wrong command
-				if (p.hasPermission(PartiesPermission.RENAME_OTHERS.toString()))
+				if (commandData.havePermission(PartiesPermission.RENAME_OTHERS))
 					pp.sendMessage(Messages.MAINCMD_RENAME_WRONGCMD_ADMIN);
 				else
 					pp.sendMessage(Messages.MAINCMD_RENAME_WRONGCMD);
@@ -79,7 +91,7 @@ public class CommandRename implements ICommand {
 		if (type.equals(Type.OWN) && !PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_ADMIN_RENAME))
 			return;
 		
-		String partyName = args[(type.equals(Type.OWN) ? 1 : 2)]; // type == 1 ? args[1] : args[2]
+		String partyName = commandData.getArgs()[(type.equals(Type.OWN) ? 1 : 2)]; // type == 1 ? args[1] : args[2]
 		
 		if (partyName.length() > ConfigParties.GENERAL_NAME_MAXLENGTH) {
 			pp.sendMessage(Messages.MAINCMD_CREATE_NAMETOOLONG);
@@ -132,13 +144,13 @@ public class CommandRename implements ICommand {
 					.replace("%old%", oldPartyName));
 			
 			LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_CREATE_FIXED
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{value}", oldPartyName)
 					.replace("{party}", party.getName()), true);
 		} else {
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_RENAMEEVENT_DENY
 					.replace("{party}", partyName)
-					.replace("{player}", p.getName()), true);
+					.replace("{player}", pp.getName()), true);
 		}
 	}
 	

@@ -109,6 +109,9 @@ main-commands:
     revoke:
       sent-revoked: "&7Revoked invite sent to %player%"
       player-invite-revoked: "&7Invite received from %party% has been revoked"
+    cooldown:
+      global: "&cYou need to wait %seconds% before invite another player"
+      individual: "&cYou need to wait %seconds% before invite again the same player"
     player-offline: "&cYou can invite only online players"
     player-no-permission: "&c%player% doesn't have the permission to join"
     player-in-party: "&c%player% is already in a party"
@@ -384,4 +387,4 @@ help:
     teleport: "&b/party teleport &7- Teleport your party to you"
 
 dont-edit-this:
-  messages-version: 15
+  messages-version: 16

@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.alessiodp.parties.Parties;
@@ -114,11 +113,7 @@ public class JoinLeaveListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		globalQuit(event.getPlayer());
 	}
-	/*
-	@EventHandler(ignoreCancelled = true)
-	public void onPlayerKick(PlayerKickEvent event) {
-		globalQuit(event.getPlayer());
-	}*/
+	
 	private void globalQuit(Player p) {
 		// Make it async
 		plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {

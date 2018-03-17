@@ -1,14 +1,14 @@
 package com.alessiodp.parties.commands.list;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
 
@@ -18,34 +18,45 @@ public class CommandIgnore implements ICommand {
 	public CommandIgnore(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.IGNORE.toString())) {
+		if (!player.hasPermission(PartiesPermission.IGNORE.toString())) {
 			pp.sendNoPermission(PartiesPermission.IGNORE);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
 		boolean isPrompt = false;
 		String ignoredParty = "";
-		if (args.length == 1) {
+		if (commandData.getArgs().length == 1) {
 			// Shows ignore list
 			isPrompt = true;
 		} else {
 			// Edit party ignore
-			if (args.length > 2) {
+			if (commandData.getArgs().length > 2) {
 				pp.sendMessage(Messages.MAINCMD_IGNORE_WRONGCMD);
 				return;
 			}
 			
-			ignoredParty = args[1];
+			ignoredParty = commandData.getArgs()[1];
 			
 			if (!plugin.getPartyManager().existParty(ignoredParty)) {
 				pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND
@@ -81,7 +92,7 @@ public class CommandIgnore implements ICommand {
 						.replace("%party%", ignoredParty));
 				
 				LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_IGNORE_START
-						.replace("{player}", p.getName())
+						.replace("{player}", pp.getName())
 						.replace("{party}", ignoredParty), true);
 			} else {
 				// Add
@@ -90,7 +101,7 @@ public class CommandIgnore implements ICommand {
 						.replace("%party%", ignoredParty));
 				
 				LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_IGNORE_STOP
-						.replace("{player}", p.getName())
+						.replace("{player}", pp.getName())
 						.replace("{party}", ignoredParty), true);
 			}
 		}

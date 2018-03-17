@@ -2,18 +2,18 @@ package com.alessiodp.parties.commands.list;
 
 import java.util.regex.Pattern;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -26,47 +26,59 @@ public class CommandDesc implements ICommand {
 		plugin = parties;
 	}
 	
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.DESC.toString())) {
+		if (!player.hasPermission(PartiesPermission.DESC.toString())) {
 			pp.sendNoPermission(PartiesPermission.DESC);
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
 		
 		if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_EDIT_DESC))
-			return;
+			return false;
 		
-		if (args.length < 2) {
+		if (commandData.getArgs().length < 2) {
 			pp.sendMessage(Messages.ADDCMD_DESC_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command handling
 		 */
 		boolean isRemove = false;
 		String description = "";
-		if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {
 			// Normal command
 			StringBuilder sb = new StringBuilder();
-			for (int word = 1; word < args.length; word++) {
+			for (int word = 1; word < commandData.getArgs().length; word++) {
 				if (sb.length() > 0)
 					sb.append(" ");
-				sb.append(args[word]);
+				sb.append(commandData.getArgs()[word]);
 			}
 			if (!Pattern.compile(ConfigParties.DESC_ALLOWEDCHARS).matcher(sb.toString()).matches()
 					|| (sb.toString().length() > ConfigParties.DESC_MAXLENGTH)
@@ -79,7 +91,7 @@ public class CommandDesc implements ICommand {
 				return;
 			}
 			
-			if (VaultHandler.payCommand(VaultHandler.VaultCommand.DESC, pp, commandLabel, args))
+			if (VaultHandler.payCommand(VaultHandler.VaultCommand.DESC, pp, commandData.getCommandLabel(), commandData.getArgs()))
 				return;
 			
 			description = sb.toString();
@@ -95,14 +107,14 @@ public class CommandDesc implements ICommand {
 			pp.sendMessage(Messages.ADDCMD_DESC_REMOVED);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_DESC_REM
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
 			pp.sendMessage(Messages.ADDCMD_DESC_CHANGED);
 			party.sendBroadcast(pp, Messages.ADDCMD_DESC_BROADCAST);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_DESC
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		}
 	}

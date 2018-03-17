@@ -73,6 +73,8 @@ public class Messages {
 	public static String MAINCMD_INVITE_TIMEOUT_TIMEOUT;
 	public static String MAINCMD_INVITE_REVOKE_SENT;
 	public static String MAINCMD_INVITE_REVOKE_REVOKED;
+	public static String MAINCMD_INVITE_COOLDOWN_GLOBAL;
+	public static String MAINCMD_INVITE_COOLDOWN_INDIVIDUAL;
 	public static String MAINCMD_INVITE_PLAYEROFFLINE;
 	public static String MAINCMD_INVITE_PLAYERNOPERM;
 	public static String MAINCMD_INVITE_PLAYERINPARTY;
@@ -362,6 +364,8 @@ public class Messages {
 		MAINCMD_INVITE_TIMEOUT_TIMEOUT = "&7You didn't accept the party invite";
 		MAINCMD_INVITE_REVOKE_SENT = "&7Revoked invite sent to %player%";
 		MAINCMD_INVITE_REVOKE_REVOKED = "&7Invite received from %party% has been revoked";
+		MAINCMD_INVITE_COOLDOWN_GLOBAL = "&cYou need to wait %seconds% before invite another player";
+		MAINCMD_INVITE_COOLDOWN_INDIVIDUAL = "&cYou need to wait %seconds% before invite again the same player";
 		MAINCMD_INVITE_PLAYEROFFLINE = "&cYou can invite only online players";
 		MAINCMD_INVITE_PLAYERNOPERM = "&c%player% doesn't have the permission to join";
 		MAINCMD_INVITE_PLAYERINPARTY = "&c%player% is already in a party";

@@ -1,16 +1,16 @@
 package com.alessiodp.parties.commands.list;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -24,33 +24,45 @@ public class CommandTeleport implements ICommand {
 		plugin = parties;
 	}
 	
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.TELEPORT.toString())) {
+		if (!player.hasPermission(PartiesPermission.TELEPORT.toString())) {
 			pp.sendNoPermission(PartiesPermission.TELEPORT);
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
 		
 		if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_ADMIN_TELEPORT))
-			return;
+			return false;
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command handling
 		 */
 		long unixNow = -1;
 		if (ConfigParties.TELEPORT_COOLDOWN > 0 && !PartiesUtils.checkPlayerRank(pp, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
-			Long unixTimestamp = plugin.getPlayerManager().getTeleportCooldown().get(p.getUniqueId());
+			Long unixTimestamp = plugin.getPlayerManager().getTeleportCooldown().get(pp.getPlayerUUID());
 			unixNow = System.currentTimeMillis() / 1000L;
 			if (unixTimestamp != null) {
 				pp.sendMessage(Messages.ADDCMD_TELEPORT_COOLDOWN
@@ -59,33 +71,33 @@ public class CommandTeleport implements ICommand {
 			}
 		}
 		
-		if (VaultHandler.payCommand(VaultHandler.VaultCommand.TELEPORT, pp, commandLabel, args))
+		if (VaultHandler.payCommand(VaultHandler.VaultCommand.TELEPORT, pp, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		/*
 		 * Command starts
 		 */
 		if (unixNow != -1) {
-			plugin.getPlayerManager().getTeleportCooldown().put(p.getUniqueId(), unixNow);
-			new TeleportTask(p.getUniqueId(), plugin.getPlayerManager()).runTaskLater(plugin, ConfigParties.TELEPORT_COOLDOWN * 20);
+			plugin.getPlayerManager().getTeleportCooldown().put(pp.getPlayerUUID(), unixNow);
+			new TeleportTask(pp.getPlayerUUID(), plugin.getPlayerManager()).runTaskLater(plugin, ConfigParties.TELEPORT_COOLDOWN * 20);
 			
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_TELEPORT_START
 					.replace("{value}", Integer.toString(ConfigParties.TELEPORT_COOLDOWN * 20))
-					.replace("{player}", p.getName()), true);
+					.replace("{player}", pp.getName()), true);
 		}
 		
 		pp.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING);
 		for (Player pl : party.getOnlinePlayers()) {
-			if (!pl.getUniqueId().equals(p.getUniqueId())) {
+			if (!pl.getUniqueId().equals(pp.getPlayerUUID())) {
 				// Make it sync
 				plugin.getPartiesScheduler().runSync(() -> {
-					pl.teleport(p.getLocation());
+					pl.teleport(commandData.getPlayer().getLocation());
 					plugin.getPlayerManager().getPlayer(pl.getUniqueId()).sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTED, pp);
 				});
 			}
 		}
 		
 		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_TELEPORT
-				.replace("{player}", p.getName()), true);
+				.replace("{player}", pp.getName()), true);
 	}
 }

@@ -10,15 +10,15 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -36,37 +36,49 @@ public class CommandKick implements ICommand {
 	public CommandKick(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.KICK.toString())) {
+		if (!player.hasPermission(PartiesPermission.KICK.toString())) {
 			pp.sendNoPermission(PartiesPermission.KICK);
-			return;
+			return false;
 		}
 		
-		if (!p.hasPermission(PartiesPermission.KICK_OTHERS.toString())) {
+		if (!player.hasPermission(PartiesPermission.KICK_OTHERS.toString())) {
 			if (pp.getPartyName().isEmpty()) {
 				pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-				return;
+				return false;
 			}
 			
 			if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_KICK))
-				return;
+				return false;
 		}
 		
-		if (args.length < 2) {
+		if (commandData.getArgs().length < 2) {
 			pp.sendMessage(Messages.MAINCMD_KICK_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.KICK_OTHERS);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
-		String playerName = args[1];
+		String playerName = commandData.getArgs()[1];
 		UUID playerUUID = null;
 		
 		// Players conflict handler
@@ -108,14 +120,14 @@ public class CommandKick implements ICommand {
 			}
 			
 			// Selection handling
-			if (args.length == 2) {
+			if (commandData.getArgs().length == 2) {
 				// Print content
 				pp.sendMessage(sb.toString());
 				return;
 			}
 			int sel = -1;
 			try {
-				sel = Integer.parseInt(args[2]);
+				sel = Integer.parseInt(commandData.getArgs()[2]);
 				playerUUID = playerSelection[sel-1];
 			} catch(Exception ex) {
 				// Problem with selection, print content
@@ -131,7 +143,7 @@ public class CommandKick implements ICommand {
 		
 		boolean otherParty = false;
 		if (party == null || !party.getMembers().contains(kickedPlayer.getUniqueId())
-				&& p.hasPermission(PartiesPermission.KICK_OTHERS.toString())) {
+				&& commandData.havePermission(PartiesPermission.KICK_OTHERS)) {
 			// Other party
 			otherParty = true;
 			party = plugin.getPartyManager().getParty(kickedPp.getPartyName());
@@ -147,7 +159,7 @@ public class CommandKick implements ICommand {
 				return;
 			}
 			
-			if (pp.getRank() < kickedPp.getRank() && !p.hasPermission(PartiesPermission.KICK_OTHERS.toString())) {
+			if (pp.getRank() < kickedPp.getRank() && !commandData.havePermission(PartiesPermission.KICK_OTHERS)) {
 				pp.sendMessage(Messages.MAINCMD_KICK_PLAYERHIGHERRANK, kickedPp);
 				return;
 			}
@@ -180,12 +192,12 @@ public class CommandKick implements ICommand {
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_KICK_DISBAND
 							.replace("{player}", kickedPp.getName())
 							.replace("{party}", party.getName())
-							.replace("{sender}", p.getName())
+							.replace("{sender}", pp.getName())
 							.replace("{other}", Boolean.toString(otherParty)), true);
 				} else
 					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_DELETEEVENT_DENY
 							.replace("{party}", party.getName())
-							.replace("{player}", p.getName()), true);
+							.replace("{player}", pp.getName()), true);
 			} else {
 				// Normal
 				party.getMembers().remove(kickedPlayer.getUniqueId());
@@ -213,13 +225,13 @@ public class CommandKick implements ICommand {
 				LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_KICK
 						.replace("{player}", kickedPp.getName())
 						.replace("{party}", party.getName())
-						.replace("{sender}", p.getName())
+						.replace("{sender}", pp.getName())
 						.replace("{other}", Boolean.toString(otherParty)), true);
 			}
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_LEAVEEVENT_DENY
 					.replace("{party}", party.getName())
-					.replace("{player}", p.getName()), true);
+					.replace("{player}", pp.getName()), true);
 	}
 	
 	

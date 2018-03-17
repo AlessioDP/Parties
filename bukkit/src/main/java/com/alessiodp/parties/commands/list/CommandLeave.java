@@ -1,15 +1,15 @@
 package com.alessiodp.parties.commands.list;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -23,23 +23,37 @@ public class CommandLeave implements ICommand {
 	public CommandLeave(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.LEAVE.toString())) {
+		if (!player.hasPermission(PartiesPermission.LEAVE.toString())) {
 			pp.sendNoPermission(PartiesPermission.LEAVE);
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		commandData.addPermission(PartiesPermission.KICK_OTHERS);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command starts
@@ -48,7 +62,7 @@ public class CommandLeave implements ICommand {
 		PartiesPlayerLeaveEvent partiesLeaveEvent = new PartiesPlayerLeaveEvent(pp, party, false, null);
 		Bukkit.getServer().getPluginManager().callEvent(partiesLeaveEvent);
 		if (!partiesLeaveEvent.isCancelled()) {
-			if (party.getLeader().equals(p.getUniqueId())) {
+			if (party.getLeader().equals(pp.getPlayerUUID())) {
 				// Is leader
 				// Calling Pre API event
 				PartiesPartyPreDeleteEvent partiesPreDeleteEvent = new PartiesPartyPreDeleteEvent(party, PartiesPartyPreDeleteEvent.DeleteCause.LEAVE, null, pp);
@@ -66,15 +80,15 @@ public class CommandLeave implements ICommand {
 					Bukkit.getServer().getPluginManager().callEvent(partiesPostDeleteEvent);
 					
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_LEAVE_DISBAND
-							.replace("{player}", p.getName())
+							.replace("{player}", pp.getName())
 							.replace("{party}", party.getName()), true);
 				} else
 					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_DELETEEVENT_DENY
 							.replace("{party}", party.getName())
-							.replace("{player}", p.getName()), true);
+							.replace("{player}", pp.getName()), true);
 			} else {
-				party.getMembers().remove(p.getUniqueId());
-				party.getOnlinePlayers().remove(p);
+				party.getMembers().remove(pp.getPlayerUUID());
+				party.getOnlinePlayers().remove(commandData.getPlayer());
 				
 				pp.cleanupPlayer(true);
 		
@@ -85,12 +99,12 @@ public class CommandLeave implements ICommand {
 				party.callChange();
 				
 				LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_LEAVE
-						.replace("{player}", p.getName())
+						.replace("{player}", pp.getName())
 						.replace("{party}", party.getName()), true);
 			}
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_LEAVEEVENT_DENY
 					.replace("{party}", party.getName())
-					.replace("{player}", p.getName()), true);
+					.replace("{player}", pp.getName()), true);
 	}
 }

@@ -31,6 +31,14 @@ general:
     revoke: true
     # Don't invite players that doesn't have the permission to join in parties
     prevent-invite-player-no-permission-join: true
+    # Enable a cooldown to prevent invite spam
+    cooldown:
+      enable: false
+      # Prevent to invite anyone for X seconds
+      global: 60
+      # Prevent to invite the same player for X seconds
+      individual: 0
+    
   chat:
     # Allow sending messages with color codes (&1, &2, etc..)
     allow-colors: false
@@ -229,4 +237,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-    config-version: 1
+  config-version: 2

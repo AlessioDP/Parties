@@ -5,17 +5,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -28,50 +28,62 @@ public class CommandPassword implements ICommand {
 		plugin = parties;
 	}
 	
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.PASSWORD.toString())) {
+		if (!player.hasPermission(PartiesPermission.PASSWORD.toString())) {
 			pp.sendNoPermission(PartiesPermission.PASSWORD);
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
 		
 		if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_EDIT_PASSWORD))
-			return;
+			return false;
 		
-		if (args.length != 2) {
+		if (commandData.getArgs().length != 2) {
 			pp.sendMessage(Messages.ADDCMD_PASSWORD_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command handling
 		 */
 		boolean isRemove = false;
 		String password = "";
-		if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {
 			// Normal command
-			if (!Pattern.compile(ConfigParties.PASSWORD_ALLOWECHARS).matcher(args[1]).matches()
-					|| (args[1].length() > ConfigParties.PASSWORD_MAXLENGTH)
-					|| (args[1].length() < ConfigParties.PASSWORD_MINLENGTH)) {
+			if (!Pattern.compile(ConfigParties.PASSWORD_ALLOWECHARS).matcher(commandData.getArgs()[1]).matches()
+					|| (commandData.getArgs()[1].length() > ConfigParties.PASSWORD_MAXLENGTH)
+					|| (commandData.getArgs()[1].length() < ConfigParties.PASSWORD_MINLENGTH)) {
 				pp.sendMessage(Messages.ADDCMD_PASSWORD_INVALID);
 				return;
 			}
 			
-			password = hash(args[1]);
+			password = hash(commandData.getArgs()[1]);
 		}
 		
 		/*
@@ -84,14 +96,14 @@ public class CommandPassword implements ICommand {
 			pp.sendMessage(Messages.ADDCMD_PASSWORD_REMOVED);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_PASSWORD_REM
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
 			pp.sendMessage(Messages.ADDCMD_PASSWORD_CHANGED);
 			party.sendBroadcast(pp, Messages.ADDCMD_PASSWORD_BROADCAST);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_PASSWORD
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		}
 	}

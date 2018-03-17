@@ -45,15 +45,15 @@ public class CommandDispatcher implements CommandExecutor {
 			if (commandLabel.equalsIgnoreCase(ConfigMain.COMMANDS_CMD_PARTY)) {
 				if (args.length > 0) {
 					if (exists(args[0])) {
-						executeAsync(args[0], sender, cmd, commandLabel, args);
+						prepareCommand(args[0], sender, cmd, commandLabel, args);
 					} else {
 						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Messages.PARTIES_COMMON_INVALIDCMD));
 					}
 				} else {
-					executeAsync(commandLabel, sender, cmd, commandLabel, args);
+					prepareCommand(commandLabel, sender, cmd, commandLabel, args);
 				}
 			} else if (commandLabel.equalsIgnoreCase(ConfigMain.COMMANDS_CMD_P)) {
-				executeAsync(commandLabel, sender, cmd, commandLabel, args);
+				prepareCommand(commandLabel, sender, cmd, commandLabel, args);
 			}
 		} else {
 			// Sender
@@ -61,7 +61,7 @@ public class CommandDispatcher implements CommandExecutor {
 				if (args.length > 0
 						&& (args[0].equalsIgnoreCase(ConfigMain.COMMANDS_CMD_RELOAD)
 								|| args[0].equalsIgnoreCase(ConfigMain.COMMANDS_CMD_MIGRATE))) {
-					executeAsync(args[0], sender, cmd, commandLabel, args);
+					prepareCommand(args[0], sender, cmd, commandLabel, args);
 				} else {
 					printHelp();
 				}
@@ -78,6 +78,31 @@ public class CommandDispatcher implements CommandExecutor {
 		}
 	}
 	
+	private void prepareCommand(String partiesCommand, CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		CommandData cd = new CommandData();
+		cd.setSender(sender);
+		cd.setCommandLabel(commandLabel);
+		cd.setArgs(args);
+		
+		if (getExecutor(partiesCommand).preRequisites(cd)) {
+			CompletableFuture.supplyAsync(() -> {
+				getExecutor(partiesCommand).onCommand(cd);
+				return true;
+			}, plugin.getPartiesScheduler().getCommandsExecutor())
+			.exceptionally(ex -> {
+				ex.printStackTrace();
+				return null;
+			});
+		}
+	}
+	/*
+	private void executeAsync(Runnable runnable) {
+		CompletableFuture.supplyAsync(() -> runnable, plugin.getPartiesScheduler().getCommandsExecutor())
+		.exceptionally(ex -> {
+			ex.printStackTrace();
+			return null;
+		});
+	}
 	private void executeAsync(String partiesCommand, CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		// cmd is not used
 		CompletableFuture.supplyAsync(() -> {
@@ -88,5 +113,5 @@ public class CommandDispatcher implements CommandExecutor {
 			ex.printStackTrace();
 			return null;
 		});
-	}
+	}*/
 }

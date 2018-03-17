@@ -1,7 +1,12 @@
 package com.alessiodp.parties.commands;
-
-import org.bukkit.command.CommandSender;
  
 public interface ICommand {
-	public void onCommand(CommandSender sender, String commandLabel, String[] args);
+	/**
+	 * Used to check player before async execution
+	 */
+	public boolean preRequisites(CommandData commandData);
+	/**
+	 * Async command
+	 */
+	public void onCommand(CommandData commandData);
 }

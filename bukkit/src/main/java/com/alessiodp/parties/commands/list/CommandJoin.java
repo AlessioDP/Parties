@@ -5,17 +5,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -27,31 +27,43 @@ public class CommandJoin implements ICommand {
 	public CommandJoin(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.JOIN.toString())) {
-			pp.sendNoPermission(PartiesPermission.INVITE);
-			return;
+		if (!player.hasPermission(PartiesPermission.JOIN.toString())) {
+			pp.sendNoPermission(PartiesPermission.JOIN);
+			return false;
 		}
 		
 		if (!pp.getPartyName().isEmpty()) {
 			pp.sendMessage(Messages.ADDCMD_JOIN_ALREADYINPARTY);
-			return;
+			return false;
 		}
-		if (args.length < 2 || args.length > 3) {
+		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
 			pp.sendMessage(Messages.ADDCMD_JOIN_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.JOIN_BYPASS);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
-		String partyName = args[1];
+		String partyName = commandData.getArgs()[1];
 		PartyEntity party = plugin.getPartyManager().getParty(partyName);
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND
@@ -59,15 +71,15 @@ public class CommandJoin implements ICommand {
 			return;
 		}
 		
-		if (args.length == 2) {
-			if (!p.hasPermission(PartiesPermission.JOIN_BYPASS.toString())) {
+		if (commandData.getArgs().length == 2) {
+			if (!commandData.havePermission(PartiesPermission.JOIN_BYPASS)) {
 				if (party.getPassword() != null && !party.getPassword().isEmpty()) {
 					pp.sendMessage(Messages.ADDCMD_JOIN_WRONGPASSWORD);
 					return;
 				}
 			}
 		} else {
-			if (!hash(args[2]).equals(party.getPassword())) {
+			if (!hash(commandData.getArgs()[2]).equals(party.getPassword())) {
 				pp.sendMessage(Messages.ADDCMD_JOIN_WRONGPASSWORD);
 				return;
 			}
@@ -79,7 +91,7 @@ public class CommandJoin implements ICommand {
 			return;
 		}
 		
-		if (VaultHandler.payCommand(VaultHandler.VaultCommand.JOIN, pp, commandLabel, args))
+		if (VaultHandler.payCommand(VaultHandler.VaultCommand.JOIN, pp, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		/*
@@ -105,11 +117,11 @@ public class CommandJoin implements ICommand {
 			party.callChange();
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_JOIN
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_JOINEVENT_DENY
-					.replace("{player}", p.getName())
+					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 	}
 	

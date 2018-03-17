@@ -1,19 +1,19 @@
 package com.alessiodp.parties.commands.list;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.GriefPreventionHandler;
-import com.alessiodp.parties.addons.external.VaultHandler;
 import com.alessiodp.parties.addons.external.GriefPreventionHandler.PermissionType;
 import com.alessiodp.parties.addons.external.GriefPreventionHandler.Result;
+import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -25,47 +25,60 @@ public class CommandClaim implements ICommand {
 	public CommandClaim(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
-
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
+		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.CLAIM.toString())) {
+		if (!player.hasPermission(PartiesPermission.CLAIM.toString())) {
 			pp.sendNoPermission(PartiesPermission.CLAIM);;
-			return;
+			return false;
 		}
 		
 		PartyEntity party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
 		if (party == null) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
 		
 		if (!PartiesUtils.checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_CLAIM))
-			return;
+			return false;
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
+		PartyEntity party = commandData.getParty();
 		
 		/*
 		 * Command handling
 		 */
-		if (args.length != 2) {
+		if (commandData.getArgs().length != 2) {
 			pp.sendMessage(Messages.ADDCMD_CLAIM_WRONGCMD);
 			return;
 		}
 		
 		Selection selection = Selection.FAILED_GENERAL;
-		if (args[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_TRUST))
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_TRUST))
 			selection = Selection.TRUST;
-		else if (args[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_CONTAINER))
+		else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_CONTAINER))
 			selection = Selection.CONTAINER;
-		else if (args[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_ACCESS))
+		else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_ACCESS))
 			selection = Selection.ACCESS;
-		else if (args[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_REMOVE))
+		else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.ADDONS_GRIEFPREVENTION_CMD_REMOVE))
 			selection = Selection.REMOVE;
 		
 		if (!selection.equals(Selection.FAILED_GENERAL)) {
-			Result res = GriefPreventionHandler.isManager(p);
+			Result res = GriefPreventionHandler.isManager(commandData.getPlayer());
 			switch (res) {
 			case NOEXIST:
 				selection = Selection.FAILED_NOEXIST;
@@ -79,7 +92,7 @@ public class CommandClaim implements ICommand {
 			}
 		}
 		
-		if (VaultHandler.payCommand(VaultHandler.VaultCommand.CLAIM, pp, commandLabel, args))
+		if (VaultHandler.payCommand(VaultHandler.VaultCommand.CLAIM, pp, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		/*
@@ -99,11 +112,11 @@ public class CommandClaim implements ICommand {
 			pp.sendMessage(Messages.ADDCMD_CLAIM_WRONGCMD);
 			break;
 		default:
-			GriefPreventionHandler.addPartyPermission(p, party, selection.getGPPermission());
+			GriefPreventionHandler.addPartyPermission(commandData.getPlayer(), party, selection.getGPPermission());
 			pp.sendMessage(Messages.ADDCMD_CLAIM_CLAIMED);
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_CLAIM
-					.replace("{player}", p.getName())
-					.replace("{value}", args[1].toLowerCase()), true);
+					.replace("{player}", pp.getName())
+					.replace("{value}", commandData.getArgs()[1].toLowerCase()), true);
 		}
 	}
 	

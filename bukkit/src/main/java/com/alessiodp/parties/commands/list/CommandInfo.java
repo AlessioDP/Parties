@@ -6,15 +6,15 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -28,34 +28,46 @@ public class CommandInfo implements ICommand {
 	public CommandInfo(Parties parties) {
 		plugin = parties;
 	}
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player)sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.INFO.toString())) {
+		if (!player.hasPermission(PartiesPermission.INFO.toString())) {
 			pp.sendNoPermission(PartiesPermission.INFO);
-			return;
+			return false;
 		}
 		
-		if (args.length == 1 && pp.getPartyName().isEmpty()) {
+		if (commandData.getArgs().length == 1 && pp.getPartyName().isEmpty()) {
 			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.INFO_OTHERS);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
 		String partyName;
-		if (args.length > 1) {
-			if (!p.hasPermission(PartiesPermission.INFO_OTHERS.toString())) {
+		if (commandData.getArgs().length > 1) {
+			if (!commandData.havePermission(PartiesPermission.INFO_OTHERS)) {
 				pp.sendNoPermission(PartiesPermission.INFO_OTHERS);
 				return;
 			}
 			
-			partyName = args[1];
+			partyName = commandData.getArgs()[1];
 		} else if (!pp.getPartyName().isEmpty()) {
 			partyName = pp.getPartyName();
 		} else {
@@ -130,7 +142,7 @@ public class CommandInfo implements ICommand {
 		pp.sendMessage(text);
 		
 		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_INFO
-				.replace("{player}", p.getName())
+				.replace("{player}", pp.getName())
 				.replace("{party}", party.getName()), true);
 	}
 }

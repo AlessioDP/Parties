@@ -4,18 +4,18 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.addons.external.VaultHandler;
+import com.alessiodp.parties.commands.CommandData;
 import com.alessiodp.parties.commands.ICommand;
 import com.alessiodp.parties.configuration.Constants;
 import com.alessiodp.parties.configuration.data.ConfigMain;
 import com.alessiodp.parties.configuration.data.ConfigParties;
 import com.alessiodp.parties.configuration.data.Messages;
-import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.logging.LogLevel;
+import com.alessiodp.parties.logging.LoggerManager;
 import com.alessiodp.parties.parties.objects.PartyEntity;
 import com.alessiodp.parties.players.PartiesPermission;
 import com.alessiodp.parties.players.objects.PartyPlayerEntity;
@@ -30,32 +30,43 @@ public class CommandCreate implements ICommand {
 		plugin = parties;
 	}
 	
-	public void onCommand(CommandSender sender, String commandLabel, String[] args) {
-		Player p = (Player) sender;
-		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+	@Override
+	public boolean preRequisites(CommandData commandData) {
+		Player player = (Player) commandData.getSender();
+		PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 		
 		/*
 		 * Checks for command prerequisites
 		 */
-		if (!p.hasPermission(PartiesPermission.CREATE.toString())) {
+		if (!player.hasPermission(PartiesPermission.CREATE.toString())) {
 			pp.sendNoPermission(PartiesPermission.CREATE);
-			return;
+			return false;
 		}
 		
 		if (!pp.getPartyName().isEmpty()) {
 			pp.sendMessage(Messages.MAINCMD_CREATE_ALREADYINPARTY);
-			return;
+			return false;
 		}
 		
-		if (args.length < 2) {
+		if (commandData.getArgs().length < 2) {
 			pp.sendMessage(Messages.MAINCMD_CREATE_WRONGCMD);
-			return;
+			return false;
 		}
+		
+		commandData.setPlayer(player);
+		commandData.setPartyPlayer(pp);
+		commandData.addPermission(PartiesPermission.ADMIN_CREATE_FIXED);
+		return true;
+	}
+	
+	@Override
+	public void onCommand(CommandData commandData) {
+		PartyPlayerEntity pp = commandData.getPartyPlayer();
 		
 		/*
 		 * Command handling
 		 */
-		String partyName = args[1];
+		String partyName = commandData.getArgs()[1];
 		if (partyName.length() > ConfigParties.GENERAL_NAME_MAXLENGTH) {
 			pp.sendMessage(Messages.MAINCMD_CREATE_NAMETOOLONG);
 			return;
@@ -81,14 +92,13 @@ public class CommandCreate implements ICommand {
 		
 		boolean isFixed = false;
 		if (ConfigParties.FIXED_ENABLE
-				&& args.length > 2
-				&& args[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_FIXED)) {
-			if (p.hasPermission(PartiesPermission.ADMIN_CREATE_FIXED.toString())) {
+				&& commandData.getArgs().length > 2
+				&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_FIXED)) {
+			if (commandData.havePermission(PartiesPermission.ADMIN_CREATE_FIXED))
 				isFixed = true;
-			}
 		}
 		
-		if (VaultHandler.payCommand(VaultHandler.VaultCommand.CREATE, pp, commandLabel, args))
+		if (VaultHandler.payCommand(VaultHandler.VaultCommand.CREATE, pp, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		/*
@@ -114,7 +124,7 @@ public class CommandCreate implements ICommand {
 				pp.sendMessage(Messages.MAINCMD_CREATE_CREATEDFIXED, party);
 				
 				LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_CREATE_FIXED
-						.replace("{player}", p.getName())
+						.replace("{player}", pp.getName())
 						.replace("{party}", party.getName()), true);
 			} else {
 				// Normal creation
@@ -137,7 +147,7 @@ public class CommandCreate implements ICommand {
 				pp.sendMessage(Messages.MAINCMD_CREATE_CREATED, party);
 				
 				LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_CREATE
-						.replace("{player}", p.getName())
+						.replace("{player}", pp.getName())
 						.replace("{party}", party.getName()), true);
 			}
 			// Calling API event
@@ -146,7 +156,7 @@ public class CommandCreate implements ICommand {
 		} else {
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_CREATEEVENT_DENY
 					.replace("{party}", partyName)
-					.replace("{player}", p.getName()), true);
+					.replace("{player}", pp.getName()), true);
 		}
 	}
 }
