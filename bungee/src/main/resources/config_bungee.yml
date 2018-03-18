@@ -1,14 +1,14 @@
 # 
-# Parties Config file
+# Parties configuration file
 #
 # For a better configuration:
 # - Use Notepad++
 #   - View -> Show White Space and TAB (Active)
 #   - Don't use arrows, but spaces
-# - Setting format editor to YAML
+# - Set format (syntax) editor to YAML
 #
 follow-party:
-    # When player join in a server whole party follow him
+    # When player join in a server, whole party follow him
     enable: false
     # Needed rank to be followed by the party (0 = all ranks)
     needed-rank: 0
@@ -19,4 +19,4 @@ follow-party:
     - hub
     - lobby
 dont-edit-this:
-    config-version: 1
+    config-version: 2

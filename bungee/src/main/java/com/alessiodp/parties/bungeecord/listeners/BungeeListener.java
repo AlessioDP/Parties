@@ -34,19 +34,24 @@ public class BungeeListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onConnect(ServerConnectEvent ev) {
+	public void onConnect(ServerConnectEvent event) {
 		/*
 		 * Connect chain starts here,
 		 * this method will sent a PartiesPacket to the player server
 		 */
-		if (ev.isCancelled())
+		if (event.isCancelled())
 			return;
-		ProxiedPlayer p = ev.getPlayer();
-		if (p.getServer() == null)
+		ProxiedPlayer proxyPlayer = event.getPlayer();
+		// Return if its not a player
+		if (proxyPlayer.getServer() == null)
 			return;
-		if (p.getServer().getInfo().equals(ev.getTarget()))
+		
+		// Return if the player is already in the server
+		if (proxyPlayer.getServer().getInfo().equals(event.getTarget()))
 			return;
-		if (!listContains(ConfigMain.follow_listserver, p.getServer().getInfo().getName()))
+		
+		// Return if the server is not into the follow list
+		if (!listContains(ConfigMain.follow_listserver, proxyPlayer.getServer().getInfo().getName()))
 			return;
 		/*
 		 * 
@@ -54,18 +59,27 @@ public class BungeeListener implements Listener {
 		try {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(stream);
-			Packet packet = new Packet(plugin.getDescription().getVersion(), ev.getTarget().getName(), ConfigMain.follow_neededrank, ConfigMain.follow_minimumrank, "", null);
+			
+			// Initialize packet
+			Packet packet = new Packet(plugin.getDescription().getVersion(),
+					event.getTarget().getName(),
+					ConfigMain.follow_neededrank,
+					ConfigMain.follow_minimumrank);
+			
+			// Write to the DataOutputStream the data
 			packet.write(out);
-			if (ev.getPlayer().getServer() != null) {
-				PartiesBungee.debugLog("Parties packet sent to " + ev.getPlayer().getServer().getInfo().getName());
-				ev.getPlayer().getServer().sendData(partiesChannel, stream.toByteArray());
+			
+			if (proxyPlayer.getServer() != null) {
+				PartiesBungee.debugLog("Parties packet sent to " + proxyPlayer.getServer().getInfo().getName());
+				proxyPlayer.getServer().sendData(partiesChannel, stream.toByteArray());
 			}
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
-	private boolean listContains(List<String> l, String str) {
-		for (String s : l) {
+	
+	private boolean listContains(List<String> list, String str) {
+		for (String s : list) {
 			if (str.equalsIgnoreCase(s) || s.equals("*"))
 				return true;
 		}
@@ -74,13 +88,14 @@ public class BungeeListener implements Listener {
 	
 	
 	@EventHandler
-	public void onPluginMessage(PluginMessageEvent ev) {
+	public void onPluginMessage(PluginMessageEvent event) {
 		/*
 		 * This method is the listener for the PartiesPacket callback
 		 */
-		if (!ev.getTag().equalsIgnoreCase(partiesChannel))
+		if (!event.getTag().equalsIgnoreCase(partiesChannel))
 			return;
-		DataInputStream data = new DataInputStream(new ByteArrayInputStream(ev.getData()));
+		
+		DataInputStream data = new DataInputStream(new ByteArrayInputStream(event.getData()));
 		try {
 			Packet packet = new Packet(data);
 			if (packet.getVersion().equals(plugin.getDescription().getVersion())) {

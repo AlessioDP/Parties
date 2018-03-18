@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Packet {
 	/*
 	 * [VERSION][SERVER][RANK_NEEDED][RANK_MINIMUM][MESSAGE][INFO]
@@ -17,26 +20,27 @@ public class Packet {
 	 * @message = Message for each player
 	 * @info = Information of the party (List players)
 	 */
-	private String version;
-	private String server;
-	private int rank_needed;
-	private int rank_minimum;
-	private String message;
-	private List<String> info;
+	@Getter private String version;
+	@Getter private String server;
+	@Getter private int rankNeeded;
+	@Getter private int rankMinimum;
+	@Getter @Setter private String message;
+	@Getter @Setter private List<String> info;
 	
-	public Packet(String a, String b, int c, int d, String f, List<String> g) {
-		version = a;
-		server = b;
-		rank_needed = c;
-		rank_minimum = d;
-		message = f;
-		info = g;
+	public Packet(String version, String server, int rank_needed, int rank_minimum) {
+		this.version = version;
+		this.server = server;
+		this.rankNeeded = rank_needed;
+		this.rankMinimum = rank_minimum;
+		message = "";
+		info = null;
 	}
+	
 	public Packet(DataInputStream data) throws IOException {
 		version = data.readUTF();
 		server = data.readUTF();
-		rank_needed = data.readInt();
-		rank_minimum = data.readInt();
+		rankNeeded = data.readInt();
+		rankMinimum = data.readInt();
 		message = data.readUTF();
 		String ar = data.readUTF();
 		info = new ArrayList<String>();
@@ -44,12 +48,11 @@ public class Packet {
 			info.add(str);
 	}
 	
-	
 	public void write(DataOutputStream out) throws IOException {
 		out.writeUTF(version);
 		out.writeUTF(server);
-		out.writeInt(rank_needed);
-		out.writeInt(rank_minimum);
+		out.writeInt(rankNeeded);
+		out.writeInt(rankMinimum);
 		out.writeUTF(message);
 		String inf = "";
 		if (info != null)
@@ -57,6 +60,8 @@ public class Packet {
 				inf += str + "\t";
 		out.writeUTF(inf);
 	}
+	
+	@Override
 	public String toString() {
 		String l = "";
 		for (String str : info) {
@@ -65,14 +70,6 @@ public class Packet {
 			else
 				l += "," + str;
 		}
-		return "[" + version + "][" + server + "][" + rank_needed + "][" + rank_minimum + "]["+message+"][" + l + "]";
+		return "[" + version + "][" + server + "][" + rankNeeded + "][" + rankMinimum + "]["+message+"][" + l + "]";
 	}
-	public String getVersion() {return version;}
-	public String getServer() {return server;}
-	public int getRankNeeded() {return rank_needed;}
-	public int getRankMinimum() {return rank_minimum;}
-	public String getMessage() {return message;}
-	public void setMessage(String msg) {message = msg;}
-	public List<String> getInfo() {return info;}
-	public void setInfo(List<String> a) {info = a;}
 }

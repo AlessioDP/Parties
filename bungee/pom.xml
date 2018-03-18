@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.alessiodp.parties</groupId>
 		<artifactId>Parties</artifactId>
-		<version>2.2.13</version>
+		<version>2.2.14</version>
 	</parent>
 	
 	<artifactId>parties-bungee</artifactId>
@@ -46,6 +46,11 @@
 			<id>bungeecord-repo</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
+		<repository>
+			<!-- Maven central for Lombok -->
+			<id>maven-central-repo</id>
+			<url>https://repo.maven.apache.org/</url>
+		</repository>
 	</repositories>
 	
 	<dependencies>
@@ -54,6 +59,13 @@
 			<artifactId>bungeecord-api</artifactId>
 			<version>${addons.bungee.version}</version>
 			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- Lombok -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.20</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
