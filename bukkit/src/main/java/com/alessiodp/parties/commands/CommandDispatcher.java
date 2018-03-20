@@ -91,7 +91,7 @@ public class CommandDispatcher implements CommandExecutor {
 			}, plugin.getPartiesScheduler().getCommandsExecutor())
 			.exceptionally(ex -> {
 				ex.printStackTrace();
-				return null;
+				return false;
 			});
 		}
 	}

@@ -61,6 +61,7 @@ public class DatabaseManager {
 		switch (getDatabaseType()) {
 		case NONE:
 			database = initNone();
+			break;
 		case YAML:
 			database = initYAML();
 			break;
@@ -76,6 +77,7 @@ public class DatabaseManager {
 		switch (getLogType()) {
 		case NONE:
 			log = initNone();
+			break;
 		case YAML:
 			log = initYAML();
 			break;

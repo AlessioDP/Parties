@@ -55,6 +55,7 @@ public class CommandP implements ICommand {
 		
 		commandData.setPlayer(player);
 		commandData.setPartyPlayer(pp);
+		commandData.setParty(party);
 		commandData.addPermission(PartiesPermission.KICK_OTHERS);
 		return true;
 	}
