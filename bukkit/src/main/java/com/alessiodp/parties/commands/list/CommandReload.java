@@ -26,10 +26,13 @@ public class CommandReload implements ICommand {
 			Player player = (Player) commandData.getSender();
 			PartyPlayerEntity pp = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 			
+			if (pp != null && !player.hasPermission(PartiesPermission.ADMIN_RELOAD.toString())) {
+				pp.sendNoPermission(PartiesPermission.ADMIN_RELOAD);
+				return false;
+			}
 			
 			commandData.setPlayer((Player) commandData.getSender());
 			commandData.setPartyPlayer(pp);
-			commandData.addPermission(PartiesPermission.ADMIN_RELOAD);
 		}
 		return true;
 	}
@@ -37,10 +40,6 @@ public class CommandReload implements ICommand {
 	@Override
 	public void onCommand(CommandData commandData) {
 		PartyPlayerEntity pp = commandData.getPartyPlayer();
-		
-		if (pp != null && !commandData.havePermission(PartiesPermission.ADMIN_RELOAD)) {
-			pp.sendNoPermission(PartiesPermission.ADMIN_RELOAD);
-		}
 		
 		plugin.reloadConfiguration();
 		
