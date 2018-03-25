@@ -1,256 +1,390 @@
-﻿# 
-# Parties' Messages configuration file
+#
+# Parties main configuration file
 #
 # For a better configuration:
 # - Use Notepad++
 #   - View -> Symbols -> Show White Space and TAB (Active)
-#   - Don't use arrows, but spaces
-# - Setting format editor to YAML
+#   - Don't use arrows (tabs), but spaces
+# - Set format (syntax) editor to YAML
 #
+# You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
 #
-# Available tags:
-# ColorCodes (ex: &1, &2, &3, &a, &b, &c, &r, &l)
-# %party% = Show name of party
-# %desc% = Show party description
-# %motd% = Motd of the party
-# %kills% = Kills of the party
-# %prefix% = Prefix of the party
-# %suffix% = Suffix of the party
-# %players% = Number of players online in the party
-# %sender% or %player% = Show name of sender/player
-# %rank% = Show a customizable string (format-rank-leader and format-rank-member)
-# %message% = Show the message of player
-# %world% = Show the name of world of sender/player (ex: world_nether)
-# %group% = If PEX/GM is active will display the name of group
-# %price% = Price of the command (Only some commands, see config.yml)
-#
-# You can use \n for ENTER 
-#
-# Special tag: %permission% = Name of missing permission
-no-permission: "&cBu işlemi gerçekleştirmek için yetkin yok."
-invalid-command: "&cBöyle bir komut yok."
-cant-hit-mates: "&cAhmak, o senin takımın arkadaşın!"
-warn-on-hit-leaders: "&c%player% adlı üye %victim% adlı parti görevlisine vurmaya çalıştı!"
-no-party: "&cBir parti üyesi değilsin!"
-configuration-reloaded: "&aKongigürasyon dosyası yenilendi!"
-# Special tags: %version% = The version of the update | %thisversion% = The version of your plugin
-update-available: "&9Bu eklenti %thisversion% ile çalışıyor, yeni eklenti ise bu: %version%"
-# Special tags: %exp% = Experience gained | %exptotal% = Total experience | %mob% = Mob type name (Ex. Skeleton, Zombie)
-exp-gained: "&b%mob% adlı yaratığı öldürdüğün için, %exp% miktarında tecrübe puanı kazandın!"
-exp-gained-from-other: "&b%player% adlı oyuncu %mob% adlı yaratığı öldürdüğü için, %exp% miktarında tecrübe puanı kazandın."
-p:
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/p <mesaj>"
-create:
-    party-created: "&l&b%party% adında bir parti oluşturdun! &7/parti invite <oyuncuismi> &bşeklinde dostlarını partine davet edebilirsin!"
-    name-already-exist: "&c%party% isminde bir parti zaten mevcut, başka bir isim seç."
+ 
+# / = = = = = = = = = = = = = = = = \
+# |        PARTIES  MESSAGES        |
+# \ = = = = = = = = = = = = = = = = /
+parties:
+  # Special tags: %version% = The version of the update | %thisversion% = The version of your plugin
+  update-available: "&9Parties''in yeni versiyonı var: %version% (Şuan: %thisversion%)"
+  common-messages:
+    invalid-command: "&cGeçersiz komut"
+    configuration-reloaded: "&Yapılandırma Yüklendi"
+    not-in-party: "&cBir partide değilsin"
+    party-not-found: "&c%party% adında bir parti yok"
+    party-full: "&cParti dolu!"
+  permissions:
+    # Special tag: %permission% = Name of the missing permission
+    no-permission: "&cBu komuta erişimin  yok"
+    no-permission-in-party: "&cBu komutu uygulamak için %rank_name% olmalısın"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |     MAIN COMMANDS  MESSAGES     |
+# \ = = = = = = = = = = = = = = = = /
+main-commands:
+  accept:
+    broadcast: "&b&l%player% partiye katıldı"
+    accepted: "&aParti isteğini kabul ettin"
+    accept-receipt: "&a%player% parti isteğini kabul etti"
+    already-in-party: "&cZaten bir partidesin"
+    no-invite: "&cBekleyen bir parti isteğin yok"
+    no-exists: "&cİstek artık mevcut değil"
+  
+  chat:
+    enabled: "&aChat partiye ayarlandı"
+    disabled: "&aChat genele ayarlandı"
+    wrong-command: "&cHatalı komut: &7/party chat [on/off] &cyazmalısın"
+  
+  create:
+    created: "&l&b%party% partisini oluşturdun\n&r&b arkadaşlarını davet etmek için &7/party invite &byaz"
+    created-fixed: "&l&b%party% düzeltilmiş partisini oluşturdun"
+    name-already-exists: "&c%party% parti ismi zaten var, başka bir tane dene"
     already-in-party: "&cZaten bir partidesin!"
-    too-long-name: "&cBu parti ismi çok mu uzun ne yaa!"
-    too-short-name: "&cKısa mı oldu bu isim ne?"
-    invalid-name: "&cDesteklenmeyen bir karakter kullandınız!"
-    censored-name: "&cParti isminiz yasaklı kelimeler içeriyor!!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party create <isim>"
-accept:
-    welcome-player: "&b&l%party% adlı partiye girdin!"
-    player-joined: "&b&l%player% adlı oyuncu partiye katıldı!"
-    invite-accepted: "&a%player% adlı oyuncu parti isteğini kabul etti!"
-    accepted: "&aParti isteğini kabul ettin!"
-    max-player-reached: "&cBu parti tıklım tıklım dolu, daha fazla üye kabul edemez!"
-    no-invite: "&cMevcut bir isteğiniz bulunmadığı için bu işlemi gerçekleştiremezsiniz!"
-    no-exist: "&cParti isteği artık mevcut değil!"
-deny:
-    invite-denied: "&7%player% adlı oyuncu parti isteiğinizi reddetti!"
-    denied: "&7Partiye katılma isteiğini reddettiniz!"
-    no-invite: "&cMevcut bir isteğiniz bulunmadığı için bu işlemi gerçekleştiremezsiniz!"
-    no-exist: "&cParti isteği artık mevcut değil!"
-ignore:
-    header: "&b&lEngellenmiş Partilerin Listesi:"
-    list-ignored-color: "&c"
-    list-ignored-separator: "&7, "
-    list-ignored-empty: "&7Hiçkimse"
-    party-ignored: "&7%party% parti isteklerini reddediyor."
-    party-deignored: "&7%party% adlı partiyi engellemeyi bıraktınız."
-    no-exist: "&cBöyle bir parti mevcut değil!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party ignore [partiismi]"
-leave:
-    bye-player: "&b&l%party% isimli partiyi terk ettiniz!"
-    player-leaved-from-party: "&b&l%player% adlı oyuncu partiyi terk etti!"
-    party-disbanded: "&b&lTüm liderler partiyi terk ettiği için, parti yok edildi!"
-info:
+    name-too-long: "&cParti ismi çok uzun!"
+    name-too-short: "&cParti ismi çok kısa!"
+    invalid-name: "&cGeçersiz karakterler. a-Z or 0-9 aralığındakileri kullan."
+    censored: "&cParti ismi sansürlü kelimeler içeriyr!"
+    wrong-command: "&cHatalı komut: &7/party create <name> &cyazmalısın"
+  
+  delete:
+    deleted: "&a%party% partisi silindi"
+    deleted-silently: "&a%party% partisi sessizce silindi"
+    broadcast: "&6&lPartin silindi"
+    wrong-command: "&cHatalı komut: &7/party delete <party> [silent] yazmalısın"
+  
+  deny:
+    denied: "&7Parti isteğini reddettin"
+    deny-receipt: "&7%player% parti isteğini reddetti"
+    no-invite: "&cBekleyen bir parti isteğin yok"
+    no-exists: "&cİstek artık mevcut değil"
+  
+  ignore:
+    start-ignore: "&7%party% parti isteği otomatik olarak reddediliyor"
+    stop-ignore: "&7%party% parti isteğini otomatik olarak reddetmeyi durdurdun"
+    ignore-list:
+      header: "&b&lOtomatik olarak reddedilen parti listesi:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7Yok"
+    wrong-command: "&cHatalı komut: &7/party ignore [party] yazmalısın"
+  
+  info:
     # Special tags:
-    # %leaders% = Liderleri listeler | %numberleaders% = Lider saıysı
-    # %members% = Üyeleri listeler | %numbermembers% = Üye sayısı
-    # %online% = Açık olan oyuncuları listeler | %numberonline% = Açık olan oyuncu sayısı
-    header: "&b======== &l%party% Adlı Partinin Bilgileri &r&b========"
-    content: "&bAçıklama: &7%desc%\n&bGünün Sözü: &7%motd%\n&bLiderler: &7%leaders%\n&bÜyeler: &7%numbermembers%\n&bAçık Olan Oyuncular: &7%numberonline%"
-    player-online-prefix: "&7"
-    player-offline-prefix: "&8"
-    player-separator: "&8, "
-    player-empty: "&7Hiçkimse"
-    missing: "&7Yok"
-    no-exist: "&c%party% &7adında bir parti yok!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party info [partiismi]"
-members:
-    # Özel tag: %number% (maxnumber ya da sadece number yazabilirsiniz)
-    header: "&b&l%party% adlı partideki üyelerin listesi"
-    leaders: "&7Liderler[%number%]: "
-    members: "&7Üyeler[%number%]: "
-    player-online-prefix: "&7"
-    player-offline-prefix: "&8"
-    someone-player: "&7Birisi"
-    player-separator: "&8, "
-    player-empty: "&7Hiçkimse"
-    no-exist: "&c%party% adında bir parti yok!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party members [partiismi]"
-desc:
-    # Özel tag: %desc% = Description of the party
-    changed: "&bPartinin açıklaması şuna değiştirildi: %desc%"
-    removed: "&bParti açıklaması kaldırıldı!"
-    invalid-chars: "&cDesteklenmeyen bir karakter girdiniz!"
-    censored-name: "&cBu açıklama çok kötü sözcükler içeriyor çok!!"
-    only-leader: "&cOops, üzgünüm ki açıklamayı sadece liderler değiştirebilir!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party desc <açıklama/remove>"
-motd:
-    # Special tag: %motd% = MOTD (Message of the Day) of the party
-    changed: "&bGünün sözü değiştirildi!"
-    removed: "&bGünün sözü kaldırıldı"
-    header: "&bPartinin günün sözü:"
-    color-motd: "&b"
-    footer: ""
-    invalid-chars: "&cDesteklenmeyen karakter kullandınız!"
-    censored-name: "&cKötü sözcük mü kullandın sanki?"
-    only-leader: "&cOops, üzgünüm ki günün sözünü sadece liderler değiştirebilir!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party motd <gününsözü/remove>"
-chat:
-    enabled: "&7Sohbetini partiye ayarladın"
-    disabled: "&7Sohbetini genel olarak ayarladın"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party chat [on/off]"
-list:
-    # Special tags: %number% = açık olan parti sayısı | %page% = gösterilen sayfa sayısı | %maxpages% = mevcut sayfa sayısı
-    header: "&b======== &lAçık Olan Partilerin Listesi &r&b========"
-    sub-header: ""
-    no-one-online: "&7Hiçkimse"
-    format-party: "&b%party%&7[&6%players% çevrimiçi oyuncu var &7] %desc%"
-    footer: "&b======== &l%maxpages% sayfa içerisinden %page% &r&b========"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party list [varsa sayfa sayısı]"
-invite:
-    only-leader: "&cSadece liderler diğer oyuncuları davet edebilir!"
-    only-online: "&cSadece açık olan oyuncuları davet edebilirsiniz!"
-    max-player-reached: "&cParti tamamen dolu yaa!"
-    already-party: "&c%player% adlı oyuncu zaten bir partinin içerisinde!"
-    already-invite: "&c%player% adlı oyuncu zaten davet edildi!"
-    no-permission-player: "&c%player% adlı oyuncunun partiye katılmak için yetkisi yok!"
-    invite-send: "&b%player% adlı oyuncuyu partine davet ettin!"
-    invite-rec: "&b%player% adlı oyuncu seni partisine davet etti!"
-    invite-timeout: "&7Parti isteğini yeterli süre içerisinde cevaplamadığınız için silindi!"
-    invite-noresponse: "&7%player% didnt accept the party invite"
-    invite-revoked-send: "&7%player% adlı oyuncuya gönderilen istek iptal edildi!"
-    invite-revoked-rec: "&7%party% adlı partiden gelen istek iptal edildi!"
-    how-accept: "&bParti isteğini şu şekilde kabul ya da reddedebilirsin: &7/party <accept/deny>"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party invite <oyuncuismi>"
-prefix:
-    changed: "&bPartinin ön eki şuna değiştirildi: %prefix%"
-    removed: "&bPartinin ön eki kaldırıldı!"
-    invalid-chars: "&cDesteklenmeyen karakterler kullandınız!"
-    censored-name: "&cKötü söz müydü o?!!"
-    only-leader: "&cSadece parti liderleri parti ön ekini değiştirebilir!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party prefix <önek/remove>"
-suffix:
-    changed: "&bParti son ekini şuna değiştirdin: %suffix%"
-    removed: "&bParti son eki kaldırıldı!"
-    invalid-chars: "&cDesteklenmeyen karakterler kullandınız!"
-    censored-name: "&cKötü söz müydü o?!!"
-    only-leader: "&cSadece parti liderleri parti ön ekini değiştirebilir!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party suffix <sonek/remove>"
-kick:
-    only-leader: "&cSadece liderler üyeleri partiden atabilir!"
-    cant-kick-leader: "&cBir lideri partiden atamazsın, eşek sıpası seni."
-    kick-send: "&b&l%player% adlı oyuncuyu partiden attınız!"
-    kicked-from-party: "&b%party% adlı partiden atıldınız!"
-    kicked-player-party: "&b&l%player% adlı oyuncu partiden atıldı!"
-    no-member: "&c%player% adlı oyuncu partinizde değil!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party kick <oyuncuismi>"
-delete:
-    deleted: "&a%party% adlı parti silindi!"
-    silent-delete: "&a%party% adlı parti usulca silindi!"
-    warn: "&cPartiniz silindi!"
-    no-exist: "&c%party% adlı bir parti mevcut değil!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party delete <partiismi>"
-rename:
-    renamed: "&a%old% adlı partinin ismi şuna değiştirildi: %party%"
-    broadcast-party: "&aParti isminiz şuna değiştirildi: %party%"
-    no-exist: "&c%party% adında bir parti mevcut değil!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party rename <şuankipartiismi> <yenipartiismi>"
-leader:
-    only-leader: "&cSadece liderler diğer oyuncuları terfi ettirebilir!"
-    already-leader: "&c%player% adlı oyuncu zaten lider!"
-    no-member: "&c%player% adında bir oyuncu partide mevcut değil!"
-    promoted-leader: "&b&l%player% adlı oyuncu zaten partinde lider!"
-    degrade-leader: "&b&l%player% adlı oyuncu artık partinizin lideri değil!"
-    degrade-yourself: "&cKendi rütbenizi indiremezsiniz!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party leader <oyuncuismi>"
-sethome:
-    setted-broadcast: "&aYeni parti evi belirlendi!"
-    only-leader: "&cSadece liderler parti evini belirleyebilir!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party sethome"
-home:
-    teleported: "&7Parti evine başarıyla ışınlandın!"
-    # Special tag: %time% = ne kadar sürede ışınlanacağı
-    teleport-in: "&7%time% saniye sonra ışınlanacaksın!"
-    teleport-denied: "&7Işınlanma iptal edildi!"
-    only-leader: "&cSadece liderler parti evine ışınlanabilir!"
-    no-home: "&cPartinin evi belirlenmemiş!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party home"
-claim:
-    done: "&aClaim iznini elde ettiniz!"
-    removed: "&aClaim izniniz kaldırıldı!"
-    only-leader: "&cSadece liderler partiye claim hakkı elde ettirebilir!"
-    no-manager: "&cClaimin yöneticisi olmanız gerekir!"
-    no-exist-claim: "&cMevcut claim bulunamadı!"
-    wrong-command: "&cDoğru kullanım şu şekildedir: &7/party claim <permission>\n&cPermissions: trust, container & access"
-spy:
-    activated: "&7Artık gizlisin!"
-    disabled: "&7Artık gizli değilsin!"
-database:
-    to-file: "&aVeriler SQL'dan FILE'a kaydedildi!"
-    to-sql: "&aVeriler SQL'dan FILE'a kaydedili!"
-    sql-offline: "&cSQL veritabanı çevrimiçi olmalı!"
-    none: "&cVeritabanında kaydedilmedi!"
-    wrong-command: "&cWDoğru kullanım şu şekildedir: &7/party migrate <sql/file>"
-vault:
-    create-nomoney: "&cParti açmak için yeterli paranız bulunmuyor, en az şu kadar paraya ihtiyacınız var -> &3%price%"
-    home-nomoney: "&cParti evine gitmek için yeterli paranız yok, en az şu kadar paraya ihtiyacınız var -> &3%price%"
-    sethome-nomoney: "&cParti evini belirlemek için yeterli paranız yok, en az şu kadar paraya ihtiyacınız var -> &3%price%"
-    desc-nomoney: "&cPartinin açıklamasını ayarlamak için yeterli paranız yok, en az şu kadar paraya ihtiyacınız var -> &3%price%"
-    motd-nomoney: "&cPartinin günün sözünü ayarlamak için yeterli paranız yok, en az şu kadar paraya ihtiyacınız var -> &3%price%"
-    prefix-nomoney: "&cParti ön ekini ayarlamak için yeterli paranız yok, en az şu kadar paraya ihtiyacınız var -> &3%price%"
-    suffix-nomoney: "&cParti son ekini ayarlamak için yeterli paranız yok, en az şu kadar paraya ihtiyacınız var -> &3%price%"
+    # List rank members: %list_RANK% (Example: %list_member%, %list_moderator% (%list_leader% remember it's unique)
+    # Number rank members: %number_RANK%
+    # %online% = List online players | %onlinenumber% = Number of online players
+    content:
+    - "&b============ &l%party% partisi bilgileri &r&b============"
+    - "&b&lAçıklama&r&7: %desc%"
+    - "&b&lMotd&r&7: %motd%"
+    - "&bLider&7: %list_leader%"
+    - "&bModeratörler&7: %list_moderator%"
+    - "&bÜyeler&7: %list_member%"
+    - "&bOnline oyuncular&7: %onlinenumber%"
+    list:
+      player-online-prefix: "&b"
+      player-offline-prefix: "&7"
+      player-separator: "&7, "
+      player-empty: "&7Kimse yok"
+      player-unknown: "&6Braz var"
+      missing-value: "&7Kayıp"
+    wrong-command: "&cHatalı komut: &7/party info [party] yazmalısın"
+  
+  invite:
+    sent: "&b%player% oyuncusuna parti isteği attın"
+    player-invited: "&b%player% seni partisine davet etti\n&bkabul etmek için &7/party <accept/deny>, reddetmek için &7/deny invitation yazmalısın"
+    timeout:
+      noresponse: "&7%player% parti isteğini reddetti"
+      timeout: "&7Parti isteğini reddettin"
+    revoke:
+      sent-revoked: "&7Revoked invite sent to %player%"
+      player-invite-revoked: "&7Invite received from %party% has been revoked"
+    cooldown:
+      global: "&cBir başka oyuncuyu davet etmeden önce %seconds% saniye beklemelisin"
+      individual: "&cAynı oyuncuya davet atmak için %seconds% saniye beklemelisinr"
+    player-offline: "&cSadece online oyuncuları davet edebilirsin"
+    player-no-permission: "&c%player% katılmak için yetkiye sahip değil"
+    player-in-party: "&c%player% zaten senin partinde"
+    already-invited: "&c%player% zaten davet edildi"
+    wrong-command: "&cHatalı komut: &7/party invite <name> yazmalısın"
+  
+  kick:
+    sent: "&a%player% oyuncusunu partiden attın!"
+    player-kicked: "&b%party% partisinden atıldın"
+    broadcast: "&b&l%player% partiden atıldı"
+    broadcast-disband: "&b&lParti dağıtıldı çünkü lider partiden atıldı"
+    player-higher-rank: "&cSenden üstün olan kişiyi partiden atamazsın!"
+    player-not-in-party: "&c%player% senin partinde değil
+    player-not-in-other-party: "&c%player% herhangi bir partide değil"
+    players-conflict:
+        # Special tags:
+        # %username% is the current name of the player (took from Mojang APIs)
+        # %list_players% like info is a list of 'player' message
+        # %number% is the number of the player
+        # %time% and %date%
+        content:
+        - "&cO isme sahip birkaç oyuncu bulundu:"
+        - "%list_players%"
+        - "&cDoğru oyuncuyu partiden atmak için '&7/party kick <username> <number>&c' yazmalısın"
+        player: "&7[%number%] &6%username%&7 [&b%party%&7]: Son oturum: %time% %date%"
+    wrong-command: "&cHatalı komut: &7/party kick <name> yazmalısın"
+  
+  leave:
+    left: "&b&l%party% partisinden ayrıldın"
+    broadcast: "&b&l%player% partisinden ayrıldı"
+    party-disbanded: "&6&lParti dağıtıldı çünkü lider ayrıldı"
+  
+  migrate:
+    # Special tags:
+    # %database% = Current database
+    # %database_to% & %database_from% = From/To databases
+    info: "&aŞuan kullanılan: %database%\n &7/party migrate <from> <to> &a ile taşıyabilirsin"
+    completed: "&aVeriler %database_from% veritabanından %database_to% veritabanına aktarıldı" 
+    failed:
+      database-offline: "&c%database% veritabanı online olmalı!"
+      failed: "&c%database_from% veritabanından %database_to% veritabanına aktarım başarız oldu!"
+      same-database: "&c2 farklı veritabanı seçmelisin!"
+    wrong-database: "&cVeritabanı bulunamadı. Seçebileceklerin: YAML, MySQL, SQLite!"
+    wrong-command: "&cHatalı komut: &7/party migrate <from> <to> yazmalısın"
+  
+  p:
+    # Special tag: %seconds% = Remaining time in seconds
+    cooldown: "&c%seconds% saniye beklemelisin"
+    wrong-command: "&cHatalı komut: &7/p <message> yazmalısın"
+  
+  rank:
+    # Special tag: %rank_typed% = Rank wrote by the player
+    changed: "&a%player% oyuncusunun yeni rütbesi : %rank_name% "
+    broadcast: ""
+    wrong-rank: "&c'%rank_name%' rütbesi mevcut değil!"
+    same-rank: "&c%player% zaten %rank_name% rütbesinde!"
+    low-rank: "&cOyuncuları sizinkine eşdeğer veya daha yüksek bir rütbeyle düzenleyemezsin!"
+    to-higher-rank: "&cOyuncuları sizinkine eşdeğer veya daha yüksek bir rütbeye yükseltemezsin!"
+    changing-yourself: "&cKendi rütbeni değiştiremezsin!"
+    player-not-in-party: "&c%player% partide değil
+    player-not-in-other-party: "&c%player% partisi yok"
+    wrong-command: "&cHatalı komut: &7/party rank <player> <rank> yazmalısın"
+  
+  rename:
+    # Special tag: %old% = Old player name
+    renamed: "&a%old% partisinin yeni ismi %party% olarak değiştirildi"
+    broadcast: "&6Partinin yeni ismi %party%! olarak değişti"
+    wrong-command: "&cHatalı komut: &7/party rename <newname> yazmalısın"
+    wrong-command-admin: "&cHatalı komut: &7/party rename <party> <newname> yazmalısın"
+  
+  spy:
+    enabled: "&7Şuan bir casussun!"
+    disabled: "&7Şuan casus değilsin
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |  ADDITIONAL COMMANDS  MESSAGES  |
+# \ = = = = = = = = = = = = = = = = /
+additional-commands:
+  claim:
+    claimed: "&aPartiye izin verildi"
+    removed: "&aPartiden izin kaldırıldı"
+    no-manager: "&cYer almada yönetici olmalısın"
+    claim-no-exists: "&cYer bulunamadı"
+    wrong-command: "&cHatalı komut: &7/party claim <permission>\n&cPermissions: trust, container & access yazmalısın"
+  
+  color:
+    info: "&bPartinin rengi: %color_code%%color_command%"
+    empty: "&bPartinin rengi yok"
+    changed: "&bPartinin rengi%color_command% olarak değişti"
+    removed: "&bParti rengi kaldırıldı"
+    broadcast: ""
+    wrong-color: "&cRenk bulunamadı Seçilebilen renkler: red, green or special!"
+    wrong-command: "&cHatalı komut: &7/party color <color> yazmalısın"
+  
+  desc:
+    changed: "&bParti açıklaması değiştirildi"
+    removed: "&bParti açıklaması kaldırıldı"
+    broadcast: ""
+    invalid-chars: "&cGeçersiz karakterler. a-Z veya 0-9 aralığında ve en az 3, en fazla 16 karakter olabilir."
+    censored: "&cAçıklama sansürlü kelimeler içeriyor!"
+    wrong-command: "&cHatalı komut: &7/party desc <description/remove> yazmalısın"
+  
+  home:
+    teleported: "&7Parti evine ışınlandın"
+    # Special tag: %time% = Time of cooldown
+    teleport-in: "&7%time% saniye içerisinde ışınlanacaksın.."
+    teleport-denied: "&7Işınlanma reddedildi"
+    no-home: "&cŞuan bir ev yok"
+    no-exists: "&c%party% partisi yok"
+    wrong-command: "&cHatalı komut: &7/party home yazmalısın"
+    wrong-command-admin: "&cHatalı komut: &7/party home [party] yazmalısın"
+  
+  join:
+    joined: "&a%party% partisine katıldın"
+    player-joined: "&b&l%player% partisine katıldı"
+    already-in-party: "&cZaten bir partidesin"
+    wrong-password: "&cHatalı şifre!"
+    wrong-command: "&cHatalı komut: &7/party join <party> [password] yazmalısın"
+  
+  list:
+    # Special tags: %number% = Number of parties online | %page% = Current list page | %maxpages% = How many pages exists
+    header: "&b============ &lOnline Parti Listesi &r&b============"
+    footer: "&b================ &lSayfa %page% / %maxpages% &r&b================"
+    no-one: "&7Hiçkimse"
+    format-party: "&b%party% &7[&6Online %onlinenumber%&7] %desc%"
+    wrong-command: "&cHatalı komut: &7/party list [page] yazmalısın"
+  
+  motd:
+    changed: "&bParti MOTD'u değiştirildi"
+    removed: "&bParti MOTD'u kaldırıldı"
+    broadcast: ""
+    content:
+    - "&bParti MOTD:"
+    - "&b%motd%"
+    invalid-chars: "&cGeçersiz karakterler.  '. , /' karakterleri kullanılabilir. En az 3, en fazla 100 karakter olabilir."
+    censored: "&cMOTD sansürlü kelimeler içeriyor!"
+    wrong-command: "&cHatalı komut: &7/party motd <motd/remove> yazmalısın"
+  
+  notify:
+    on: "&7Bildirimleri kapattın!"
+    off: "&7Bildirimleri açtın!"
+  
+  password:
+    changed: "&aParti şifresi değişti"
+    removed: "&aParti şifresi kaldırıldı"
+    broadcast: ""
+    invalid-chars: "&cGeçersiz karakterler. a-Z veya 0-9 aralığında ve en az 1, en fazla 16 karakter olabilir."
+    wrong-command: "&cHatalı komut: &7/party password <password> yazmalısın"
+  
+  prefix:
+    changed: "&bParti prefixi %prefix% olarak değiştirildi"
+    removed: "&bParti prefixi kaldırıldı"
+    broadcast: ""
+    invalid-chars: "&cGeçersiz karakterler. a-Z veya 0-9 aralığında ve en az 1, en fazla 6 karakter olabilir."
+    censored: "&cPrefix sansürlü kelimeler içeriyor!"
+    wrong-command: "&cHatalı komut: &7/party prefix <prefix/remove> yazmalısın"
+  
+  sethome:
+    changed: ""
+    removed: "&bParti evi kaldırıldı"
+    broadcast: "&aParti yeni bir eve sahip!"
+    wrong-command: "&cHatalı komut: &7/party sethome [remove] yazmalısın"
+  
+  suffix:
+    changed: "&bParti suffix %suffix% olarak değiştirildi"
+    removed: "&bParti suffix kaldırıldı"
+    broadcast: ""
+    invalid-chars: "&cGeçersiz karakterler. a-Z veya 0-9 aralığında ve en az 1, en fazla 6 karakter olabilir."
+    censored: "cSuffix sansürlü kelimeler içeriyor!"
+    wrong-command: "&cHatalı komut: &7/party suffix <suffix/remove> yazmalısın"
+  
+  teleport:
+    teleporting: "&7Partin buraya ışınlanıyor!"
+    player-teleported: "&b%player% oyuncusuna ışınlanıldı"
+    # Special tag: %seconds% = Remaining time in seconds
+    cooldown: "&c%seconds% saniye beklemelisin!"
+  
+  vault:
+    # Special tag: %price% = Price of the command
+    no-money:
+      claim: "&cYer almak için yeterli bakiyen yok [%price%$]"
+      color: "&cRenk komutu için yeterli bakiyen yok [%price%$]"
+      create: "&cParti oluşturmak için yeterli bakiyen yok [%price%$]"
+      desc: "&cAçıklamayı ayarlamak için yeterli bakiyen yok [%price%$]"
+      home: "&cEv komutunu kullanmak için yeterli bakiyen yok [%price%$]"
+      join: "&cPartiye katılmak için yeterli bakiyen yok[%price%$]"
+      motd: "&cMOTD ayarlamak için yeterli bakiyen yok[%price%$]"
+      prefix: "&cPrefix ayarlamak için yeterli bakiyen yok[%price%$]"
+      sethome: "&cEv ayarlamak için yeteri bakiyen yok[%price%$]"
+      suffix: "&cSuffix ayarlamak için yeteri bakiyen yok[%price%$]"
+      teleport: "&cIşınlanmak için yeterli bakiyen yok[%price%$]"
+    confirm:
+        warn-onbuy: "&a'%cmd%' komutunun değeri %price%$.\n Uygulamak için &7/party confirm &ayazmalısın."
+        confirmed: "&aKomut uygulanıyor."
+        no-cmd: "&cUygulanacak komut yok"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |         OTHER  MESSAGES         |
+# \ = = = = = = = = = = = = = = = = /
+other:
+  follow:
+    # Special tags: %world% = New world, %server% = New server
+    following-world: "&7%player% oyuncusu %world% bölgesinde takip ediliyor"
+    following-server: "&7%server% sunucusunda parti takip ediliyor"
+  
+  friendly-fire:
+    cant-hit-mates: "&cParti üyelerine vuramazsın"
+    warn-on-hit-leaders: "&c%player% %victim% oyuncusuna vurmaya çalıştı!"
+  
+  exp-system:
+    # Special tags: %exp% = Experience gained | %exptotal% = Total experience | %mob% = Mob type name (Ex. Skeleton, Zombie)
+    vanilla:
+      gained: "&b%mob% öldürdüğün için %exp% tecrübe puanı kazandın"
+      gained-from-other: "&b%player% %mob% öldürdüğü için %exp% tecrübe puanı kazandın"
+    skillapi:
+      gained: "&b%mob% öldürdüğün için %exp% SkillAPI tecrübe puanı kazandın"
+      gained-from-other: "&b%player% %mob% öldürdüğü için %exp% SkillAPI tecrübe puanı kazandın"
+  
+  fixed-parties:
+    # Joined into a default party
+    default-join: "&b%party% partisine girdin"
+  
+  join-leave:
+    server-join: "&b%player% şuan online!"
+    server-leave: "&7%player% şuan çevrimdışı!"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |          HELP MESSAGES          |
+# \ = = = = = = = = = = = = = = = = /
 help:
-    header: "&b==== &lParti Komutları ve Ne Işe Yaradıkları %page%/%maxpages% &r&b===="
-    help: "&b/party help [sayfa] &7- Komutları ve ne işe yaradıklarını gösterir"
-    p: "&b/p <mesaj> &7- Partiye bir mesaj yollar"
-    create: "&b/party create <isim> &7- Yeni parti yaratır"
+  header: "&b================= &lParti Yardım %page%/%maxpages% &r&b================="
+  footer: ""
+  console-help:
+  - "Sadece bu komutları kullanabilirsin:"
+  - "/party migrate - Veritabanını yenisine kopyalar"
+  - "/party reload - Yapılandırmayı yeniden yükler"
+  main-commands:
+    help: "&b/party help [page] &7- Yardım sayfasını gösterir"
     accept: "&b/party accept &7- Parti isteğini kabul eder"
-    deny: "&b/party deny &7- Parti isteğini reddeder."
-    ignore: "&b/party ignore [parti] &7- Partileri engeller/engellemelerini kaldırır/engellenen partileri gösterir"
-    leave: "&b/party leave &7- Partinizi terk etmenize yarar"
-    info: "&b/party info [parti] &7- Parti bilgisini gösterir"
-    members: "&b/party members [parti] &7- Parti üye listesini gösterir"
+    chat: "&b/party chat [on/off] &7- Parti chatini açar"
+    create: "&b/party create <name> &7- Yeni parti oluşturur"
+    create-fixed: "&b/party create <name> [fixed] &7- Yeni parti oluşturur"
+    delete: "&b/party delete <party> &7- Partiyi siler"
+    deny: "&b/party deny &7- Parti isteğini reddeder"
+    ignore: "&b/party ignore [party] &7- Otomatik olarak reddedilen partileri gösterir"
+    info: "&b/party info [party] &7- Parti bilgisinin gösterir"
+    invite: "&b/party invite <player> &7- Başka oyuncuyu partiye davet eder"
+    kick: "&b/party kick <player> &7- Oyuncuyu partiden atar"
+    leave: "&b/party leave &7- Partiden çıkar"
+    migrate: "&b/party migrate <from> <to> &7- Veritabanını yenisine kopyalar"
+    p: "&b/p <message> &7- Partiye mesaj atar
+    rank: "&b/party rank <player> <rank> &7- Oyuncunun  rütbesini değiştirir"
+    reload: "&b/party reload &7- Yapılandırmayı yeniden yükler"
+    rename: "&b/party rename <newname> &7- Rename the party"
+    rename-others: "&b/party rename <party> <newname> &7- Partiyi yeniden isimlendirir"
+    spy: "&b/party spy &7- Diğer partileren gelen mesajları gösterir"
+  additional-commands:
+    claim: "&b/party claim <permission> &7- Yer almak için yetki verir"
+    color: "&b/party color <color> &7- Parti rengini değiştirir"
+    desc: "&b/party desc <description/remove> &7- Açıklama ekler veya kaldırır"
     home: "&b/party home &7- Parti evine ışınlar"
-    sethome: "&b/party sethome &7- Parti evi belirler"
-    desc: "&b/party desc <description/remove> &7- Parti açıklaması ekler/kaldırır"
-    motd: "&b/party motd <motd/remove> &7- Partiye günün sözü ekler/kaldırır"
-    chat: "&b/party chat [on/off] &7- Parti sohbetini açar/kapatır"
-    list: "&b/party list [sayfa] &7- Açık olan partilerin listesini gösterir"
-    invite: "&b/party invite <oyuncuismi> &7- Bir oyuncuyu partiye davet eder"
-    prefix: "&b/party prefix <prefix/remove> &7- Parti ön eki ekler/kaldırır"
-    suffix: "&b/party suffix <suffix/remove> &7- Parti son eki ekler/kaldırır"
-    kick: "&b/party kick <oyuncuismi> &7- Bir üyeyi partiden atar"
-    leader: "&b/party leader <oyuncuismi> &7- Bir üyeyi lider yapar"
-    spy: "&b/party spy &7- Diğer partilerin mesajlarını gizler"
-    delete: "&b/party delete partiismi> &7- Partiyi siler"
-    rename: "&b/party rename <partisimi> <yeniisim> &7- Parti ismini değiştirir"
-    reload: "&b/party reload &7- Konfigürasyon dosyasını yeniler"
-    migrate: "&b/party migrate <sql/file> &7- Veritabanını SQL dosyasına kaydeder"
-    claim: "&b/party claim <izin> &7- Claim atmak için yetki kazandırır"
+    home-others: "&b/party home [party] &7- Parti evine ışınlar"
+    join: "&b/party join <party> [password] &7- Partiye katılır"
+    list: "&b/party list [page] &7- Online partilerin sayısını gösterir"
+    motd: "&b/party motd <motd/remove> &7- MOTD ekler veya siler"
+    password: "&b/party password <password/remove> &7- Parti şifresini değiştirir veya kaldırır"
+    prefix: "&b/party prefix <prefix/remove> &7- Prefix tagı ekler veya kaldırır"
+    sethome: "&b/party sethome [remove] &7- Parti evinin oluşturur"
+    suffix: "&b/party suffix <suffix/remove> &7- Suffix tagını ekler veya kaldırır"
+    teleport: "&b/party teleport &7- Parti üyelerini ışınlar
+ 
 dont-edit-this:
-    messages-version: 7
+  messages-version: 16
