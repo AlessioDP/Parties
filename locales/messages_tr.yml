@@ -117,14 +117,13 @@ main-commands:
     player-in-party: "&c%player% zaten senin partinde"
     already-invited: "&c%player% zaten davet edildi"
     wrong-command: "&cHatalı komut: &7/party invite <name> yazmalısın"
-  
   kick:
     sent: "&a%player% oyuncusunu partiden attın!"
     player-kicked: "&b%party% partisinden atıldın"
     broadcast: "&b&l%player% partiden atıldı"
     broadcast-disband: "&b&lParti dağıtıldı çünkü lider partiden atıldı"
     player-higher-rank: "&cSenden üstün olan kişiyi partiden atamazsın!"
-    player-not-in-party: "&c%player% senin partinde değil
+    player-not-in-party: "&c%player% senin partinde değil"
     player-not-in-other-party: "&c%player% herhangi bir partide değil"
     players-conflict:
         # Special tags:
@@ -171,7 +170,7 @@ main-commands:
     low-rank: "&cOyuncuları sizinkine eşdeğer veya daha yüksek bir rütbeyle düzenleyemezsin!"
     to-higher-rank: "&cOyuncuları sizinkine eşdeğer veya daha yüksek bir rütbeye yükseltemezsin!"
     changing-yourself: "&cKendi rütbeni değiştiremezsin!"
-    player-not-in-party: "&c%player% partide değil
+    player-not-in-party: "&c%player% partide değil"
     player-not-in-other-party: "&c%player% partisi yok"
     wrong-command: "&cHatalı komut: &7/party rank <player> <rank> yazmalısın"
   
@@ -184,7 +183,7 @@ main-commands:
   
   spy:
     enabled: "&7Şuan bir casussun!"
-    disabled: "&7Şuan casus değilsin
+    disabled: "&7Şuan casus değilsin"
  
  
 # / = = = = = = = = = = = = = = = = \
@@ -365,7 +364,7 @@ help:
     kick: "&b/party kick <player> &7- Oyuncuyu partiden atar"
     leave: "&b/party leave &7- Partiden çıkar"
     migrate: "&b/party migrate <from> <to> &7- Veritabanını yenisine kopyalar"
-    p: "&b/p <message> &7- Partiye mesaj atar
+    p: "&b/p <message> &7- Partiye mesaj atar"
     rank: "&b/party rank <player> <rank> &7- Oyuncunun  rütbesini değiştirir"
     reload: "&b/party reload &7- Yapılandırmayı yeniden yükler"
     rename: "&b/party rename <newname> &7- Rename the party"
@@ -384,7 +383,7 @@ help:
     prefix: "&b/party prefix <prefix/remove> &7- Prefix tagı ekler veya kaldırır"
     sethome: "&b/party sethome [remove] &7- Parti evinin oluşturur"
     suffix: "&b/party suffix <suffix/remove> &7- Suffix tagını ekler veya kaldırır"
-    teleport: "&b/party teleport &7- Parti üyelerini ışınlar
+    teleport: "&b/party teleport &7- Parti üyelerini ışınlar"
  
 dont-edit-this:
   messages-version: 16
