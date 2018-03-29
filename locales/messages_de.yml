@@ -1,5 +1,5 @@
-# 
-# Parties Konfigurationsdatei für die Chatnachrichten
+#
+# Parties Konfigurationsdatei für die Chatanzeigen
 #
 # Für bessere Bearbeitung:
 # - verwende Notepad++
@@ -7,333 +7,384 @@
 #   - Verwende keine Pfeile, nur Leerzeichen
 # - Ändere das Format des Editors zu YAML
 #
+# Eine Liste aller verfügbaren Tags findest du unter: https://alessiodp.com/wiki/parties/placeholders
 #
-# Verfügbare Tags:
-# Farbcodes (z.B: &1, &2, &3, &a, &b, &c, &r, &l)
-# %party% = Zeigt Namen der Gruppe
-# %desc% = Zeigt Beschreibung der Gruppe
-# %motd% = Motto der Gruppe
-# %kills% = Kills der Gruppe
-# %color_name% = Farbname der Gruppe
-# %color_command% = Farbbefehl der Gruppe
-# %color_code% = Farbcode der Gruppe
-# %prefix% = Prefix der Gruppe
-# %suffix% = Suffix der Gruppe
-# %players% = Anzahl von Spielern online in der Gruppe
-# %sender% oder %player% = Zeigt Namen des Absenders/Spielers
-# %rank_name% = Rangname
-# %rank_chat% = Zeigt Chatrang in veränderbarer Abfolge (Config.yml: format-rank-leader und format-rank-member)
-# %message% = Zeigt die Nachricht des Spielers
-# %world% = Zeigt Namen der Welt des Absenders/Spielers (z.B: world_nether)
-# %price% = Kosten des Befehles (Nur einige Befehle, siehe config.yml)
-# Damit Spieler Sonderzeichen und Umlaute in den Gruppennamen, Beschreibung, etc. benutzen können, verwende [\p{L}\w\s]+ in der config
-#
-# Für Zeilenumbrüche verwende \n [ENTER] 
-#
-# Spezielle Tags: %permission% = Name der fehlenden Rechte
-no-permission: "&cDu besitzt keine Rechte auf diesen Befehl"
-no-permission-in-party: "&cDu musst %rank_name% sein, um diesen Befehl verwenden zu dürfen"
-invalid-command: "&cUngültiger Befehl"
-cant-hit-mates: "&cDu kannst die Mitglieder deiner eigenen Gruppe nicht verletzen"
-warn-on-hit-leaders: "&c%player% versucht %victim% zu verletzen!"
-no-party: "&cDu bist kein Mitglied einer Gruppe"
-configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
-# Spezielle Tags: %version% = Die Version des Updates | %thisversion% = Die aktuelle Version des Plugins
-update-available: "&9Neue Version von Parties gefunden: %version% (Aktuell: %thisversion%)"
-# Spezielle Tags: %exp% = Erhaltene Erfahrung | %exptotal% = Totale Erfahrung | %mob% = Name der Monsterart (z.B. Skelett, Zombie)
-exp-gained: "&bDu erhälst %exp% Erfahrung (%mob%)"
-exp-gained-from-other: "&bDu erhälst %exp% Erfahrung (%mob%) von %player%"
-# Tritt einer standardmäßigen Gruppe bei
-default-joined: "&bDu bist der Gruppe %party% beigetreten"
-server-join: "&b%player% ist nun online!"
-server-leave: "&7%player% ist nun offline!"
-p:
-    # Spezielle Tags: %seconds% = Verbliebende Zeit in Sekunden
-    cooldown: "&cDu musst noch %seconds% Sekunden warten"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/p <Nachricht>"
-create:
-    party-created: "&l&bDu hast eine Gruppe namens %party% erstellt. \n&r&bVerwende &7/party invite &bum Spieler einzuladen"
-    party-fixed-created: "&l&bDu hast eine dauerhafte Gruppe namens %party% erstellt"
-    name-already-exist: "&cDer Name %party% wird bereits verwendet, bitte wähle eine andere Bezeichnung"
-    already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
-    too-long-name: "&cDer Gruppenname ist zu lang!"
-    too-short-name: "&cDer Gruppenname ist zu kurz!"
-    invalid-name: "&cUngültige Satzzeichen. Erlaubt sind: a-Z, 0-9"
-    censored-name: "&cDer Gruppenname enthält einen zensierten Wortlaut!"
-    wrong-command: "&c&cFalscher Ausdruck: Verwende &7/party create <Name>"
-password:
-    changed: "&aDas Passwort der Gruppe wurde geändert"
-    removed: "&aDas Passwort der Gruppe wurde entfernt"
-    # Spezielle Tags: %password% = Neues Passwort der Gruppe
-    broadcast-changed: "%player% änderte das Passwort der Gruppe"
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt sind: a-Z, 0-9, zwischen 3 und maximal 16 Zeichen."
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party password <Passwort>"
-join:
-    joined: "&aDu bist der Gruppe %party% beigetreten"
-    player-joined: "&b&l%player% ist der Gruppe beigetreten"
-    max-player-reached: "&cDie Gruppe ist voll!"
-    already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
-    wrong-password: "&cFalsches Passwort!"
-    no-exist: "&cDiese Gruppe existiert nicht"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party join <Gruppe> [Passwort]"
-accept:
-    welcome-player: "&b&lDu bist der Gruppe %party% beigetreten"
-    player-joined: "&b&l%player% ist der Gruppe beigetreten"
-    invite-accepted: "&a%player% hat die Einladung angenommen"
+ 
+# / = = = = = = = = = = = = = = = = \
+# |       PARTIES  MELDUNGEN        |
+# \ = = = = = = = = = = = = = = = = /
+parties:
+  # Spezielle Tags: %version% = Die Version des Updates | %thisversion% = Die aktuelle Version des Plugins
+  update-available: "&9Neue Version von Parties gefunden: %version% (Aktuell: %thisversion%)"
+  common-messages:
+    invalid-command: "&cUngültiger Befehl"
+    configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
+    not-in-party: "&cDu bist kein Mitglied einer Gruppe"
+    party-not-found: "&cDie Gruppe %party% existiert nicht"
+    party-full: "&cDiese Gruppe ist voll!"
+  permissions:
+    # Spezial Tag: %permission% = Name der fehlenden Rechte
+    no-permission: "&cDu besitzt keine Rechte auf diesen Befehl"
+    no-permission-in-party: "&cDu musst %rank_name% sein, um diesen Befehl verwenden zu dürfen"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |     HAUPTKOMMANDO-MELDUNGEN     |
+# \ = = = = = = = = = = = = = = = = /
+main-commands:
+  accept:
+    broadcast: "&b&l%player% ist der Gruppe beigetreten"
     accepted: "&aDu hast die Einladung angenommen"
-    max-player-reached: "&cDie Gruppe ist bereits voll!"
+    accept-receipt: "&a%player% hat die Einladung angenommen"
     already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
     no-invite: "&cDu besitzt keine gültige Einladung"
-    no-exist: "&cDie Einladung ist abgelaufen"
-deny:
-    invite-denied: "&7%player% hat die Einladung abgelehnt"
+    no-exists: "&cDie Einladung ist abgelaufen"
+ 
+  chat:
+    enabled: "&aBetrete Gruppenchat"
+    disabled: "&aVerlasse Gruppenchat"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party chat [on/off]"
+ 
+  create:
+    created: "&l&bDu hast eine Gruppe namens %party% erstellt\n&r&bVerwende &7/party invite &bum Spieler einzuladen"
+    created-fixed: "&l&bDu hast eine dauerhafte Gruppe namens %party% erstellt"
+    name-already-exists: "&cDer Name %party% wird bereits verwendet, bitte wähle eine andere Bezeichnung"
+    already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
+    name-too-long: "&cDer Gruppenname ist zu lang!"
+    name-too-short: "&cDer Gruppenname ist zu kurz!"
+    invalid-name: "&cUngültige Satzzeichen. Erlaubt sind: a-Z und 0-9."
+    censored: "&cDer Gruppenname enthält einen zensierten Wortlaut!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party create <Name>"
+ 
+  delete:
+    deleted: "&aDie Gruppe %party% wurde aufgelöst"
+    deleted-silently: "&aDie Gruppe %party% stillschweigend aufgelöst"
+    broadcast: "&6&lDie Gruppe wurde aufgelöst."
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party delete <Gruppe> [silent]"
+ 
+  deny:
     denied: "&7Du hast die Einladung abgelehnt"
-    no-invite: "&ccDu besitzt keine gültige Einladung"
-    no-exist: "&cDie Einladung ist abgelaufen"
-ignore:
-    header: "&b&lListe der ignorierten Gruppen:"
-    list-ignored-color: "&c"
-    list-ignored-separator: "&7, "
-    list-ignored-empty: "&7keine"
-    party-ignored: "&7Ignoriert Einladungen von %party%"
-    party-deignored: "&7Du ignorierst nicht länger %party%"
-    no-exist: "&cDiese Gruppe existiert nicht"
+    deny-receipt: "&7%player% hat die Einladung abgelehnt"
+    no-invite: "&cDu besitzt keine gültige Einladung"
+    no-exists: "&cDie Einladung ist abgelaufen"
+ 
+  ignore:
+    start-ignore: "&7Ignoriere Einladungen von %party%"
+    stop-ignore: "&7Du ignorierst nicht länger die Einladungen von %party%"
+    ignore-list:
+      header: "&b&lListe ignorierter Gruppen:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7keine"
     wrong-command: "&cFalscher Ausdruck: Verwende: &7/party ignore [Gruppe]"
-leave:
-    bye-player: "&b&lDu hast die Gruppe %party% verlassen"
-    player-leaved-from-party: "&b&l%player% hat die Gruppe verlassen"
-    party-disbanded: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
-info:
+ 
+  info:
     # Spezielle Tags:
     # Liste der Spieler mit Rang: %list_RANK% (Beispiel: %list_member%, %list_moderator% (%list_leader% ist einmalig)
     # Anzahl der Spieler mit Rang: %number_RANK%
     # %online% = Liste der Spieler online | %onlinenumber% = Anzahl der Spieler online
     content:
-    - "&b============ &lInfo zu %party% &r&b============"
+    - "&b============ &lInfos zu %party% &r&b============"
     - "&b&lBeschreibung&r&7: %desc%"
     - "&b&lMotto&r&7: %motd%"
     - "&bAnführer&7: %list_leader%"
     - "&bMods&7: %list_moderator%"
     - "&bMitglieder&7: %list_member%"
     - "&bOnline&7: %onlinenumber%"
-    player-online-prefix: "&b"
-    player-offline-prefix: "&7"
-    player-separator: "&7, "
-    player-empty: "&7keine"
-    someone-player: "&6irgendjemand"
-    missing: "&7fehlt"
-    no-exist: "&cDie Gruppe %party% existiert nicht"
+    list:
+      player-online-prefix: "&b"
+      player-offline-prefix: "&7"
+      player-separator: "&7, "
+      player-empty: "&7keine"
+      player-unknown: "&6unbekannt"
+      missing-value: "&7fehlt"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party info [Gruppe]"
-members:
-    # Spezielle Tags:
-    # Liste der Spieler mit Rang: %list_RANK% (Beispiel: %list_member%, %list_moderator% (%list_leader% ist einmalig)
-    # Anzahl der Spieler mit Rang: %number_RANK%
-    content:
-    - "&b&lListe der Mitglieder von %party%"
-    - "&b&lAnführer&r&7: %list_leader%"
-    - "&bMods&7: %list_moderator%"
-    - "&bMitglieder&7: %list_member%"
-    player-online-prefix: "&b"
-    player-offline-prefix: "&7"
-    someone-player: "&6jemand"
-    player-separator: "&7, "
-    player-empty: "&7keine"
-    no-exist: "&cDie Gruppe %party% existiert nicht"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party members [Gruppe]"
-desc:
-    # Spezial Tag: %desc% = Beschreibung der Gruppe
-    changed: "&bBeschreibung der Gruppe wurde geändert zu: %desc%"
-    removed: "&bBeschreibung der Gruppe wurde entfernt"
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z, 0-9, zwischen 3 und maximal 16 Zeichen"
-    censored-name: "&cDie Beschreibung enthält einen zensierten Wortlaut!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party desc <Beschreibung/remove>"
-motd:
-    # Spezial Tag: %motd% = MOTD (Motto des Tages) einer Gruppe
-    changed: "&bDas Motto der Gruppe wurde geändert"
-    removed: "&bDas Motto der Gruppe wurde entfernt"
-    header: "&bMotto der Gruppe:"
-    color-motd: "&b"
-    footer: ""
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: ''. , /'' zwischen 3 und maximal 100 Zeichen."
-    censored-name: "&cDas Motto enthält einen zensierten Wortlaut!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party motd <Motto/remove>"
-chat:
-    enabled: "&aBetrete Gruppenchat"
-    disabled: "&aVerlasse Gruppenchat"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party chat [on/off]"
-list:
-    # Spezielle Tags: %number% = Anzahl der Gruppen online | %page% = Aktuelle Seitenzahl | %maxpages% = Maximale Seitenzahl
-    header: "&b============ &lListe der Gruppen online &r&b============"
-    sub-header: ""
-    no-one-online: "&7keine"
-    format-party: "&b%party%&7 [&6Online %players%&7] %desc%"
-    footer: "&b================ &lSeite %page% von %maxpages% &r&b================"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party list [Seite]"
-invite:
-    only-online: "&cDu kannst nur Spieler einladen, welche auch online sind"
-    max-player-reached: "&cDie Gruppe ist voll!"
-    already-party: "&c%player% ist bereits Mitglied einer Gruppe"
-    already-invite: "&c%player% wurde bereits eingeladen"
-    no-permission-player: "&c%player% fehlen die Rechte um der Gruppe beizutreten"
-    invite-send: "&bDu hast %player% in deine Gruppe eingeladen"
-    invite-rec: "&b%player% hat dich in seine Gruppe eingeladen. \n&bUm diese anzunehmen/abzulehnen verwende &7/party <accept/deny>"
-    invite-timeout: "&7Du hast die Einladung der Gruppe nicht angenommen"
-    invite-noresponse: "&7%player% hat die Einladung nicht angenommen"
-    invite-revoked-send: "&7Die Einladung für %player% wurde widerufen"
-    invite-revoked-rec: "&7Die Einladung der Gruppe %party% wurde widerufen"
+ 
+  invite:
+    sent: "&bDu hast %player% in deine Gruppe eingeladen"
+    player-invited: "&b%player% hat dich in seine Gruppe eingeladen\n&bUm diese anzunehmen/abzulehnen verwende &7/party <accept/deny>"
+    timeout:
+      noresponse: "&7%player% hat die Einladung nicht angenommen"
+      timeout: "&7Du hast die Einladung der Gruppe nicht angenommen"
+    revoke:
+      sent-revoked: "&7Die Einladung für %player% wurde widerufen"
+      player-invite-revoked: "&7Die Einladung der Gruppe %party% wurde widerufen"
+    cooldown:
+      global: "&cDu musst %seconds% Sekunden warten, bis du wieder jemanden einladen kannst"
+      individual: "&cDu musst %seconds% Sekunden warten, bis du diesen Spieler wieder einladen kannst"
+    player-offline: "&cDu kannst nur Spieler einladen, welche auch online sind"
+    player-no-permission: "&c%player% fehlen die Rechte um der Gruppe beizutreten"
+    player-in-party: "&c%player% ist bereits Mitglied einer Gruppe"
+    already-invited: "&c%player% wurde bereits eingeladen"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party invite <Spieler>"
-color:
-    info: "&bDeine Gruppenfarbe ist: %color_code%%color_command%"
-    empty: "&bDeine Gruppe verfügt über keine Farbe"
-    changed: "&bDie Farbe der Gruppe wurde geändert zu %color_command%"
-    removed: "&bDie Farbe der Gruppe wurde entfernt"
-    wrong-color: "&cDiese Farbe ist unbekannt. Wähle: red, green oder special!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party color <Farbe>"
-prefix:
-    changed: "&bPräfix der Gruppe wurde geändert zu %prefix%"
-    removed: "&bPräfix der Gruppe wurde entfernt"
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z, 0-9, zwischen 3 und maximal 16 Zeichen."
-    censored-name: "&cDas Präfix enthält einen zensierten Wortlaut!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party prefix <Präfix/remove>"
-suffix:
-    changed: "&bSuffix der Gruppe wurde geändert zu %suffix%"
-    removed: "&bSuffix der Gruppe wurde entfernt"
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z, 0-9, zwischen 3 und maximal 6 Zeichen."
-    censored-name: "&cDas Suffix enthält einen zensierten Wortlaut!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party suffix <Suffix/remove>"
-kick:
-    kick-send: "&b&lDu hast %player% aus deiner Gruppe geworfen!"
-    kick-up-rank: "&cDu kannst deinen Vorgesetzten nicht rauswerfen!"
-    kicked-from-party: "&bDu wurdest aus der Gruppe %party% geworfen"
-    kicked-player-party: "&b&l%player% wurde aus der Gruppe geworfen"
-    kick-send-other: "&b&l%player% wurde aus der Gruppe geworfen"
-    other-no-member: "&c%player% ist kein Mitglied einer Gruppe"
-    no-member: "&c%player% ist nicht Mitglied deiner Gruppe"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party kick <Name>"
+ 
+  kick:
+    sent: "&aDu hast %player% aus deiner Gruppe geworfen!"
+    player-kicked: "&bDu wurdest aus der Gruppe %party% geworfen"
+    broadcast: "&b&l%player% wurde aus der Gruppe geworfen"
+    broadcast-disband: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
+    player-higher-rank: "&cDu kannst deinen Vorgesetzten nicht rauswerfen!"
+    player-not-in-party: "&c%player% ist nicht Mitglied deiner Gruppe"
+    player-not-in-other-party: "&c%player% ist kein Mitglied einer Gruppe"
     players-conflict:
         # Spezielle Tags:
-        # %list_players% ähnlich dem members/info und ist eine Liste von 'Spieler'-Nachrichten
+        # %username% ist der aktuelle Spielername (entnommen aus der Mojang API)
+        # %list_players% ähnlich wie info, eine Liste von 'Spielern'
         # %number% ist die Spieleranzahl
-        # %time% und %date%
+        # %time% und %date% (Uhrzeit und Datum)
         content:
         - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
         - "%list_players%"
-        - "&cVerwende '&7/party kick <username> <number>&c' um den richtigen Spieler rauszuwerfen"
+        - "&cVerwende '&7/party kick <Name> <Nummer>&c' um den richtigen Spieler rauszuwerfen"
         player: "&7[%number%] &6%username%&7 [&b%party%&7]: letzter Login %time% %date%"
-delete:
-    deleted: "&aDie Gruppe %party% wurde aufgelöst"
-    silent-delete: "&aDie Gruppe %party% stillschweigend aufgelöst"
-    warn: "&cDeine Gruppe wurde aufgelöst"
-    no-exist: "&cDie Gruppe %party% existiert nicht"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party delete <Gruppe> [silent]"
-rename:
-    renamed: "&aDie Gruppe %old% wurde umbenannt in %party%"
-    broadcast-party: "&aDeine Gruppe wurde umbenannt in %party%!"
-    no-exist: "&cDie Gruppe %party% existiert nicht"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party rename <Gruppe> <Neuer Name>"
-    wrong-command-admin: "&cFalscher Ausdruck: Verwende &7/party rename <Gruppe> <Neuer Name>"
-rank:
-    promoted: "&b&l%player% ist nun %rank_name%"
-    no-member: "&c%player% ist nicht Mitglied deiner Gruppe"
-    no-party: "&c%player% ist nicht Mitglied einer Gruppe"
-    wrong-rank: "&cDer Rang ' %rank_name%' existiert nicht!"
-    already-rank: "&c%player% ist bereits %rank_name%!"
-    low-rank: "&cDu kannst Spieler mit höherem oder gleichem Rang nicht bearbeiten!"
-    to-higher-rank: "&cDu kannst keine Ränge vergeben, welche höher oder gleich deinem sind!"
-    no-degrade-yourself: "&cDu kannst dich nicht selbst degradieren!"
-    no-promote-yourself: "&cDu kannst dich nicht selbst befördern!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party rank <Spieler> <Rang>"
-sethome:
-    set-broadcast: "&aDie Gruppe besitzt nun einen neuen Homepunkt!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party sethome"
-home:
-    teleported: "&7Teleportiere zum Homepunkt der Gruppe"
-    # Spezial Tag: %time% = Zeit für Cooldown
-    teleport-in: "&7Du wirst in %time% Sekunden teleportiert..."
-    teleport-denied: "&7Teleportation wurde verweigert"
-    no-home: "&cDer Homepunkt der Gruppe wurde noch nicht festgelegt"
-    no-exist-party: "&cDie Gruppe %party% existiert nicht"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party home"
-    wrong-command-admin: "&cFalscher Ausdruck: Verwende &7/party home [party]"
-teleport:
-    teleporting: "&7Gruppenmitglieder werden teleportiert!"
-    player-teleported: "&bTeleportiere zu %player%"
-    # Spezial Tag: %seconds% = Verbliebende Zeit in Sekunden
-    delay: "&cDu musst noch %seconds% Sekunden warten!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party teleport"
-claim:
-    done: "&aGenehmige Rechte für die Gruppe"
-    removed: "&aEntferne Rechte für die Gruppe"
-    no-manager: "&cDu musst Inhaber dieser Parzelle/Claims sein"
-    no-exist-claim: "&cEs konnte keine Parzelle/Claim gefunden werden"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party claim <Genehmigung>\n&cRechte: trust, container & access"
-spy:
-    activated: "&7Du bist nun ein Spion!"
-    disabled: "&7Du bist nicht länger ein Spion"
-migrate:
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party kick <Spieler>"
+ 
+  leave:
+    left: "&b&lDu hast die Gruppe %party% verlassen"
+    broadcast: "&b&l%player% hat die Gruppe verlassen"
+    party-disbanded: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
+ 
+  migrate:
     # Spezielle Tags:
     # %database% = Aktuelle Datenbank
-    # %database_to% & %database_from% = Von/Zu Datenbank
-    info: "&aIm Augenblick verwendest du: %database%\n&aMigriere diese mit: &7/party migrate <von> <zu>"
-    complete: "&aKopiere Daten von %database_from% zu %database_to%"
-    failed-offline: "&cDie Datenbank %database% muss online sein!"
-    failed-migration: "&cMigration der Datenbank von %database_from% zu %database_to% ist fehlgeschlagen!"
-    failed-same: "&cDu musst 2 verschiedene Datenbanken wählen!"
-    wrong-database: "&cDatenbank nicht gefunden. Bitte wähle: YAML oder MySQL!"
+    # %database_to% & %database_from% = Von/zu Datenbank
+    info: "&aZur Zeit wird %database% verwendet\n&bVerwende für die Migration &7/party migrate <von> <zu>"
+    completed: "&aDie Migration der Daten aus %database_from% zu %database_to% wurde erfolgreich abgeschlossen"
+    failed:
+      database-offline: "&cDie Datenbank %database% ist nicht online!"
+      failed: "&cDie Daten von %database_from% konnte nicht zu %database_to% migriert werden!"
+      same-database: "&cEs müssen 2 verschiedene Datenbanken ausgwählt werden!"
+    wrong-database:  "&cDatenbank nicht gefunden. Wähle bitte YAML, MySQL, SQLite!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party migrate <von> <zu>"
-vault:
-    create-nomoney: "&cEs ist nicht genügend Geld zum Erstellen einer Gruppe vorhanden [%price%$]"
-    join-nomoney: "&cEs ist nicht genügend Geld zum Betreten einer Gruppe vorhanden [%price%$]"
-    home-nomoney: "&cEs ist nicht genügend Geld zum Verwenden des Home-Befehles vorhanden [%price%$]"
-    sethome-nomoney: "&cEs ist nicht genügend Geld zum Setzen des Homepunktes vorhanden [%price%$]"
-    desc-nomoney: "&cEs ist nicht genügend Geld für eine Änderung der Beschreibung vorhanden [%price%$]"
-    motd-nomoney: "&cEs ist nicht genügend Geld für eine Änderung des MOTD vorhanden [%price%$]"
-    prefix-nomoney: "&cEs ist nicht genügend Geld für eine Änderung des Präfix vorhanden [%price%$]"
-    suffix-nomoney: "&cEs ist nicht genügend Geld für eine Änderung des Suffix vorhanden[%price%$]"
-    teleport-nomoney: "&cEs ist nicht genügend Geld für einen Teleport vorhanden [%price%$]"
-    claim-nomoney: "&cEs ist nicht genügend Geld für das 'Claimen' vorhanden [%price%$]"
+ 
+  p:
+    # Spezial Tag: %time% = Abklingzeit in Sekunden
+    cooldown: "&cDu musst noch %seconds% Sekunden warten"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/p <Nachricht>"
+ 
+  rank:
+    # Spezial Tag: %rank_typed% = Eingegebener Rang des Spielers
+    changed: "&a%player% ist nun %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cDer Rang '%rank_typed%' existiert nicht!"
+    same-rank: "&c%player% ist bereits %rank_name%!"
+    low-rank: "&cDu kannst Spieler mit höherem oder gleichem Rang nicht bearbeiten!"
+    to-higher-rank: "&cDu kannst keine Ränge vergeben, welche höher oder gleich deinem sind!"
+    changing-yourself: "&cDu kannst deinen Rang nicht ändern!"
+    player-not-in-party: "&c%player% ist kein Mitglied deiner Gruppe"
+    player-not-in-other-party: "&c%player% ist kein Mitglied einer Gruppe"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party rank <Spieler> <Rang>"
+ 
+  rename:
+    # Spezial Tag: %old% = alte Spielername
+    renamed: "&aDie Gruppe %old% wurde umbenannt zu %party%"
+    broadcast: "&6Deine Gruppe wurde umbenannt zu %party%!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party rename <Neuer Name>"
+    wrong-command-admin: "&cFalscher Ausdruck: Verwende &7/party rename <Gruppe> <Neuer Name>"
+ 
+  spy:
+    enabled: "&7Du bist nun ein Spion!"
+    disabled: "&7Du bist nicht länger ein Spion!"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# | ZUSÄTZLICHE KOMMANDO-MELDUNGEN  |
+# \ = = = = = = = = = = = = = = = = /
+additional-commands:
+  claim:
+    claimed: "&aEine Parzelle für deine Gruppe wurde erstellt"
+    removed: "&aDie Parzelle der Gruppe wurde entfernt"
+    no-manager: "&cDu musst Inhaber dieser Parzelle sein"
+    claim-no-exists: "&cEs konnte keine Parzelle gefunden werden"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party claim <Permission>\n&cRechte: trust, container & access"
+ 
+  color:
+    info: "&bDeine Gruppenfarbe ist: %color_code%%color_command%"
+    empty: "&bDeine Gruppe verfügt über keine Farbe"
+    changed: "&bDie Gruppenfarbe wurde geändert zu %color_command%"
+    removed: "&bDie Gruppenfarbe wurde entfernt"
+    broadcast: ""
+    wrong-color: "&cFarbe nicht gefunden. Du kannst wählen zwischen: red, green oder special!"
+    wrong-command: "&cFalscher Ausdruck!: Verwende &7/party color <Farbe>"
+ 
+  desc:
+    changed: "&bDie Beschreibung wurde geändert"
+    removed: "&bDie Beschreibung wurde entfernt"
+    broadcast: ""
+    invalid-chars: "&cUnbekanntes Satzzeichen, erlaubt ist a-Z und 0-9, zwischen 3 bis 16 Zeichen."
+    censored: "&cDie Beschreibung enthält einen zensierten Wortlaut!"
+    wrong-command: "&cFalscher Ausdruck! Verwende: &7/party desc <Beschreibung/remove>"
+ 
+  home:
+    teleported: "&7Teleportiere zum Gruppenhome"
+    # Spezial Tag: %time% = Abklingzeit in Sekunden
+    teleport-in: &7Du wirst teleportiert in %time%& Sekunden…"
+    teleport-denied: "&7Teleportation ist hier nicht möglich"
+    no-home: "&cEs wurde noch kein Gruppenhome gesetzt"
+    no-exists: "&cDie Gruppe %party% existiert nicht"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party home"
+    wrong-command-admin: "&cFalscher Ausdruck: Verwende &7/party home [Gruppe]"
+ 
+  join:
+    joined: "&aDu bist der Gruppe %party% beigetreten"
+    player-joined: "&b&l%player% ist der Gruppe beigetreten"
+    already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
+    wrong-password: "&cFalsches Passwort!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party join <Gruppe> [Passwort]"
+ 
+  list:
+    # Spezielle Tags: %number% = Anzahl von Gruppen online | %page% = aktuelle Seitezahl | %maxpages% = maximale Seitenzahl
+    header: "&b=========== &lListe der Gruppen Online &r&b==========="
+    footer: "&b================= &lSeite %page% von %maxpages% &r&b================="
+    no-one: "&7keine"
+    format-party: "&b%party% &7[&6Online %onlinenumber%&7] %desc%"
+    wrong-command: "&cFalscher Ausdruck! Verwende &7/party list [Seite]"
+ 
+  motd:
+    changed: "&bDas Motto der Gruppe wurde geändert"
+    removed: "&bDas Motto der Gruppe wurde entfernt"
+    broadcast: ""
+    content:
+    - "&bMotto der Gruppe:"
+    - "&b%motd%"
+    invalid-chars: "&cUnbekanntes Satzzeichen, erlaubt ist '. , /' mit 3 bis 100 Zeichen."
+    censored: "&cDas Motto enthält einen zensierten Wortlaut!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party motd <motd/remove>"
+ 
+  notify:
+    on: "&7Gruppenmeldungen sind nun aktiv!"
+    off: "&7Du erhält nun keine Gruppenmeldungen mehr!"
+ 
+  password:
+    changed: "&aDas Passwort der Gruppe wurde geändert"
+    removed: "&aDas Passwort der Gruppe wurde entfernt"
+    broadcast: ""
+    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, zwischen 1 bis 16 Zeichen."
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party password <Passwort>"
+ 
+  prefix:
+    changed: "&bPräfix der Gruppe wurde geändert zu %prefix%"
+    removed: "&bPräfix der Gruppe wurde entfernt"
+    broadcast: ""
+    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, mit wenigstens 3 Zeichen."
+    censored: "&cDas Präfix enthält einen zensierten Wortlaut!"
+    wrong-command:"&cFalscher Ausdruck: Verwende &7/party prefix <Präfix/remove>"
+ 
+  sethome:
+    changed: ""
+    removed: "&bDas Gruppenhome wurde entfernt"
+    broadcast: "&bDie Gruppe besitzt ein neues Zuhause!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party sethome [remove]"
+ 
+  suffix:
+    changed: "&bSuffix der Gruppe wurde geändert zu %suffix%"
+    removed: "&bSuffix der Gruppe wurde entfernt"
+    broadcast: ""
+    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, zwischen 3 bis 6 Zeichen."
+    censored: "&cDas Suffix enthält einen zensierten Wortlaut!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party suffix <Suffix/remove>"
+ 
+  teleport:
+    teleporting: "&7Gruppenmitglieder werden teleportiert!"
+    player-teleported: "&7Teleportiere zu %player%"
+    # Spezial Tag: %time% = Abklingzeit in Sekunden
+    cooldown: "&cDu musst noch %seconds% Sekunden warten"
+ 
+  vault:
+    # Spezial Tag: %price% = Kosten des Befehles
+    no-money:
+      claim: "&cDu besitzt nicht genügend Geld für das 'Claimen' dieser Parzelle [%price%$]"
+      color: "&cDu besitzt nicht genügend Geld, um die Farbe zu ändern [%price%$]"
+      create: "&cDu besitzt nicht genügend Geld, um eine neue Gruppe zu eröffnen [%price%$]"
+      desc: "&cDu besitzt nicht genügend Geld, um die Beschreibung zu ändern [%price%$]"
+      home: "&cDu besitzt nicht genügend Geld, um den Home-Befehl zu verwenden [%price%$]"
+      join: "&cDu besitzt nicht genügend Geld, um dieser Gruppe beizutreten [%price%$]"
+      motd: "&cDu besitzt nicht genügend Geld, um das Motto zu ändern [%price%$]"
+      prefix: "&cDu besitzt nicht genügend Geld, um das Präfix zu ändern [%price%$]"
+      sethome: "&cDu besitzt nicht genügend Geld, um das Gruppenhome zu setzen [%price%$]"
+      suffix: "&cDu besitzt nicht genügend Geld, um das Suffix zu ändern [%price%$]"
+      teleport: "&cDu besitzt nicht genügend Geld für den Teleport-Befehl [%price%$]"
     confirm:
-        any-cmd: "&cKein Befehl bestädigt"
-        warn-onbuy: "&aDer Befehl '%cmd%' kostet %price%$.\nVerwende &7/party confirm&a um zu bestätigen"
-        confirmed: "&aFühre Befehl aus."
-        wrong-command: "&cFalscher Ausdruck: Verwende &7/party confirm"
-follow:
+        warn-onbuy: "&aDer Befehl '%cmd%' kostet %price%$.\n3Verwende &7/party confirm &aum zu bestätigen."
+        confirmed: "&aFühre Befehl aus"
+        no-cmd: "&cKein Befehl bestätigt"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |        WEITERE MELDUNGEN        |
+# \ = = = = = = = = = = = = = = = = /
+other:
+  follow:
+    # Spezielle Tags: %world% = Neue Welt, %server% = Neuer Server
     following-world: "&7Folge %player% in %world%"
-    following-server: "&7Folge der Gruppe auf %server%"
+    following-server: "&Folge der Gruppe auf %server%"
+ 
+  friendly-fire:
+    cant-hit-mates: "&cDu darfst deine Gruppenmitglieder nicht angreifen!"
+    warn-on-hit-leaders: "&c%player% versucht %victim% zu töten!"
+ 
+  exp-system:
+    # Spezielle Tags: %exp% = Erhaltene Erfahrung | %exptotal% = Absolute Erfahrung | %mob% = Monstertyp (z.B. Skelett, Zombie)
+    vanilla:
+      gained: "&bDu erhälst %exp% Erfahrung (%mob%)"
+      gained-from-other: "&bDu erhälst %exp% Erfahrung (%mob%) von %player%"
+    skillapi:
+      gained: "&bDu erhälst %exp% Erfahrung durch die SkillAPI (%mob%)"
+      gained-from-other: "&bDu erhälst %exp% Erfahrung durch die SkillAPI (%mob%) von %player%"
+ 
+  fixed-parties:
+    # Betrete eine Standartgruppe
+    default-join: "&bDu bist der Gruppe %party% beigetreten"
+ 
+  join-leave:
+    server-join: "&b%player% ist nun online!"
+    server-leave: "&7%player% ist nun offline!"
+ 
+ 
+# / = = = = = = = = = = = = = = = = \
+# |           HILFESEITEN           |
+# \ = = = = = = = = = = = = = = = = /
 help:
-    header: "&b================= &lBefehlsliste %page%/%maxpages% &r&b================="
-    help: "&b/party help [Seite] &7- Zeigt weitere Befehle"
-    p: "&b/p <Nachricht> &7- Sendet Nachricht in die Gruppe"
+  header: "&b============== &lParty Befehlsliste %page%/%maxpages% &r&b=============="
+  footer: ""
+  console-help:
+  - "Du kannst nur diese Befehle verwenden:"
+  - "/party migrate - Kopiert die Datenbank in eine Neue"
+  - "/party reload - Lädt die config neu"
+  main-commands:
+    help: "&b/party help [Seite] &7- Zeigt alle Befehle"
+    accept: "&b/party accept &7- Nimmt die Einladung einer Gruppe an"
+    chat: "&b/party chat [on/off] &7- Wechselt zwischen Gruppenchat und Globalen Chat"
     create: "&b/party create <Name> &7- Erstellt eine neue Gruppe"
-    create-fixed: "&b/party create <Name> [fixed] &7- Erstellt eine neue Gruppe"
-    join: "&b/party join <Gruppe> [Passwort] &7- Trete einer Gruppe bei"
-    accept: "&b/party accept &7- Akzeptiert Einladung der Gruppe"
-    deny: "&b/party deny &7- Lehnt Einladung der Gruppe ab"
-    ignore: "&b/party ignore [Gruppe] &7- Fügt hinzu/entfernt/zeigt blockierte Gruppen"
-    leave: "&b/party leave &7- Verlässt Gruppe"
-    info: "&b/party info [Gruppe] &7- Zeigt Infos der Gruppe"
-    members: "&b/party members [Gruppe] &7- Zeigt Liste der Mitglieder"
-    home: "&b/party home &7- Teleport zum Homepunkt der Gruppe"
-    home-others: "&b/party home [Gruppe] &7- Teleport zum Homepunkt der Gruppe"
-    sethome: "&b/party sethome &7- Setzt Homepunkt der Gruppe"
-    teleport: "&b/party teleport &7- Teleportiert Gruppenmitglieder zu dir"
-    desc: "&b/party desc <Beschreibung/remove> &7- Ändert/entfernt die Beschreibung"
-    motd: "&b/party motd <Motto/remove> &7- Ändert/entfernt das Motto der Gruppe"
-    chat: "&b/party chat [on/off] &7- Schaltet den Gruppenchat ein/aus"
-    list: "&b/party list [Seite] &7- Zeigt die Liste der Gruppen mit aktiven Spielern"
-    invite: "&b/party invite <Spieler> &7- Lädt einen Spieler in deine Gruppe ein"
-    password: "&b/party password <Passwort> &7- Ändert das Passwort der Gruppe"
-    rank: "&b/party rank <Spieler> <Rang> &7- Ändert den Rang des Spielers"
-    color: "&b/party color <Farbe> &7- Ändert die Farbe deiner Gruppe"
-    prefix: "&b/party prefix <Präfix/remove> &7- Ändert/entfernt das Präfix der Gruppe"
-    suffix: "&b/party suffix <Suffix/remove> &7- Ändert/entfernt das Suffix der Gruppe"
-    kick: "&b/party kick <Spieler> &7- Wirft einen Spieler aus deiner Gruppe"
-    spy: "&b/party spy &7- Lese den Chat der Gruppen mit"
+    create-fixed: "&b/party create <Name> [fixed] &7- Erstellt eine neue feste Gruppe"
     delete: "&b/party delete <Gruppe> &7- Löst eine Gruppe auf"
-    rename: "&b/party rename <Gruppe> <Neuer Name> &7- Benennt eine Gruppe um"
-    rename-others: "&b/party rename <Gruppe> <Neuer Name> &7- Benennt eine Gruppe um"
-    reload: "&b/party reload &7- Lädt die Config neu"
-    migrate: "&b/party migrate <sql/file> &7- Kopiert die Datenbank in eine Neue"
-    claim: "&b/party claim <Recht> &7- Fügt Rechte auf die Parzelle/Claim hinzu"
+    deny: "&b/party deny &7- Lehnt die Einladung einer Gruppe ab"
+    ignore: "&b/party ignore [Gruppe] &7- Fügt hinzu/entfernt/zeigt Gruppen, die du ignorierst"
+    info: "&b/party info [Gruppe] &7- Zeigt die Infos einer Gruppe an"
+    invite: "&b/party invite <Spieler> &7- Lädt einen Spieler in deine Gruppe ein"
+    kick: "&b/party kick <Spieler> &7- Wirft einen Spieler aus deiner Gruppe"
+    leave: "&b/party leave &7- Verlässt eine Gruppe"
+    migrate: "&b/party migrate <von> <zu> &7- Migriert die Datenbank in eine Neue"
+    p: "&b/p <Nachricht> &7- Schickt eine Nachricht an deine Gruppe"
+    rank: "&b/party rank <Spieler> <Rang> &7- Ändert den Rang eines Spielers"
+    reload: "&b/party reload &7- Lädt die config neu"
+    rename: "&b/party rename <Neuer Name> &7- Benennt die Gruppe um"
+    rename-others: "&b/party rename <Gruppe> <Neuer Name> &7- Benennt eine beliebige Gruppe um"
+    spy: "&b/party spy &7- Lese jede Gruppennachricht mit"
+  additional-commands:
+    claim: "&b/party claim <Permission> &7- Fügt Rechte auf die Parzelle/Claim hinzu"
+    color: "&b/party color <Farbe> &7- Ändert die Farbe deiner Gruppe"
+    desc: "&b/party desc <Beschreibung/remove> &7- Entfernt/ändert die Beschreibung der Gruppe"
+    home: "&b/party home &7- Teleport zum Homepunkt der Gruppe"
+    home-others: "&b/party home [Gruppe] &7- Teleportiert dich zum Home anderer Gruppen"
+    join: "&b/party join <Gruppe> [Passwort] &7- Trete einer Gruppe bei"
+    list: "&b/party list [Seite] &7- Zeigt die Liste der Gruppen mit aktiven Spielern"
+    motd: "&b/party motd <Motto/remove> &7- Entfernt/ändert das Motto der Gruppe"
+    password: "&b/party password <Passwort/remove> &7- Ändert/entfernt das Passwort der Gruppe"
+    prefix: "&b/party prefix <Präfix/remove> &7- Ändert/entfernt das Präfix der Gruppe"
+    sethome: "&b/party sethome [remove] &7- Setzt/entfernt den Homepunkt der Gruppe"
+    suffix: "&b/party suffix <Suffix/remove> &7- Ändert/entfernt das Suffix der Gruppe"
+    teleport: "&b/party teleport &7- Teleportiert deine Gruppenmitglieder zu dir"
+ 
 dont-edit-this:
-    messages-version: 15
+   messages-version: 16
