@@ -252,8 +252,8 @@ additional-commands:
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party motd <motd/remove>"
  
   notify:
-    on: "&7Gruppenmeldungen sind nun aktiv!"
-    off: "&7Du erhält nun keine Gruppenmeldungen mehr!"
+    toggle-on: "&7Gruppenmeldungen sind nun aktiv!"
+    toggle-off: "&7Du erhält nun keine Gruppenmeldungen mehr!"
  
   password:
     changed: "&aDas Passwort der Gruppe wurde geändert"
@@ -387,4 +387,4 @@ help:
     teleport: "&b/party teleport &7- Teleportiert deine Gruppenmitglieder zu dir"
  
 dont-edit-this:
-   messages-version: 16
+   messages-version: 17

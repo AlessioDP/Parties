@@ -251,8 +251,8 @@ additional-commands:
     wrong-command: "&cHatalı komut: &7/party motd <motd/remove> yazmalısın"
   
   notify:
-    on: "&7Bildirimleri kapattın!"
-    off: "&7Bildirimleri açtın!"
+    toggle-on: "&7Bildirimleri kapattın!"
+    toggle-off: "&7Bildirimleri açtın!"
   
   password:
     changed: "&aParti şifresi değişti"
@@ -386,4 +386,4 @@ help:
     teleport: "&b/party teleport &7- Parti üyelerini ışınlar"
  
 dont-edit-this:
-  messages-version: 16
+  messages-version: 17

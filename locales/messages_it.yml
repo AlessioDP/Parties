@@ -252,8 +252,8 @@ additional-commands:
     wrong-command: "&cComando sbagliato: Usa &7/party motd <motd/remove>"
   
   notify:
-    on: "&7Hai disabilitato le notifiche!"
-    off: "&7Hai abilitato le notifiche!"
+    toggle-on: "&7Hai disabilitato le notifiche!"
+    toggle-off: "&7Hai abilitato le notifiche!"
   
   password:
     changed: "&aPassword del party cambiata"
@@ -387,4 +387,4 @@ help:
     teleport: "&b/party teleport &7- Teletrasporta il party da te"
 
 dont-edit-this:
-  messages-version: 16
+  messages-version: 17
