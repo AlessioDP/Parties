@@ -56,7 +56,7 @@ general:
 # |      PARTY RANKS  SETTINGS      |
 # \ = = = = = = = = = = = = = = = = /
 # Permissions List:
-#   party.(sendmessage/home/desc/motd/invite/kick/claim)
+#   party.(sendmessage/home/invite/kick/claim)
 #   party.edit.(home/desc/motd/color/prefix/suffix/password)
 #   party.admin.(rename/rank/teleport)
 #   '*'

@@ -49,11 +49,9 @@ public enum PartiesPermission {
 	
 	
 	PRIVATE_CLAIM("party.claim"),
-	PRIVATE_DESC("party.desc"),
 	PRIVATE_HOME("party.home"),
 	PRIVATE_INVITE("party.invite"),
 	PRIVATE_KICK("party.kick"),
-	PRIVATE_MOTD("party.motd"),
 	PRIVATE_SENDMESSAGE("party.sendmessage"),
 	
 	PRIVATE_EDIT_HOME("party.edit.home"),

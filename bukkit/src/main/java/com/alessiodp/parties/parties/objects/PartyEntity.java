@@ -1,7 +1,9 @@
 package com.alessiodp.parties.parties.objects;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -270,9 +272,14 @@ public class PartyEntity extends Party {
 	}
 	public int getNumberOnlinePlayers() {
 		int c = 0;
-		for (Player p : onlinePlayers) {
-			if (!PartiesUtils.isVanished(p))
-				c++;
+		try {
+			for (Player p : onlinePlayers) {
+				if (!PartiesUtils.isVanished(p))
+					c++;
+			}
+		} catch (ConcurrentModificationException ex) {
+			// Avoiding ConcurrentModificationException if the something edit the hashmap
+			c = getNumberOnlinePlayers();
 		}
 		return c;
 	}

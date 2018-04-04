@@ -264,7 +264,7 @@ public class ConfigurationManager {
 		}
 		
 		// General settings
-		ConfigParties.GENERAL_MEMBERSLIMIT = cfg.getInt("general.members-list", ConfigParties.GENERAL_MEMBERSLIMIT);
+		ConfigParties.GENERAL_MEMBERSLIMIT = cfg.getInt("general.members-limit", ConfigParties.GENERAL_MEMBERSLIMIT);
 		ConfigParties.GENERAL_NAME_ALLOWEDCHARS = cfg.getString("general.name.allowed-characters", ConfigParties.GENERAL_NAME_ALLOWEDCHARS);
 		ConfigParties.GENERAL_NAME_MINLENGTH = cfg.getInt("general.name.minimum-length", ConfigParties.GENERAL_NAME_MINLENGTH);
 		ConfigParties.GENERAL_NAME_MAXLENGTH = cfg.getInt("general.name.maximum-length", ConfigParties.GENERAL_NAME_MAXLENGTH);
