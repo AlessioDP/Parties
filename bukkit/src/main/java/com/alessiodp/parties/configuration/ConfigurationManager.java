@@ -603,8 +603,8 @@ public class ConfigurationManager {
 		Messages.ADDCMD_MOTD_CENSORED = msg.getString("additional-commands.motd.censored", Messages.ADDCMD_MOTD_CENSORED);
 		Messages.ADDCMD_MOTD_WRONGCMD = msg.getString("additional-commands.motd.wrong-command", Messages.ADDCMD_MOTD_WRONGCMD);
 		
-		Messages.ADDCMD_NOTIFY_ON = msg.getString("additional-commands.notify.on", Messages.ADDCMD_NOTIFY_ON);
-		Messages.ADDCMD_NOTIFY_OFF = msg.getString("additional-commands.notify.off", Messages.ADDCMD_NOTIFY_OFF);
+		Messages.ADDCMD_NOTIFY_ON = msg.getString("additional-commands.notify.toggle-on", Messages.ADDCMD_NOTIFY_ON);
+		Messages.ADDCMD_NOTIFY_OFF = msg.getString("additional-commands.notify.toggle-off", Messages.ADDCMD_NOTIFY_OFF);
 		
 		Messages.ADDCMD_PASSWORD_CHANGED = msg.getString("additional-commands.password.changed", Messages.ADDCMD_PASSWORD_CHANGED);
 		Messages.ADDCMD_PASSWORD_REMOVED = msg.getString("additional-commands.password.removed", Messages.ADDCMD_PASSWORD_REMOVED);

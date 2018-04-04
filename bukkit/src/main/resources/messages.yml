@@ -252,8 +252,8 @@ additional-commands:
     wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
   
   notify:
-    on: "&7You have disabled notifications!"
-    off: "&7You have enabled notifications!"
+    toggle-on: "&7You have disabled notifications!"
+    toggle-off: "&7You have enabled notifications!"
   
   password:
     changed: "&aParty password changed"
@@ -387,4 +387,4 @@ help:
     teleport: "&b/party teleport &7- Teleport your party to you"
 
 dont-edit-this:
-  messages-version: 16
+  messages-version: 17
