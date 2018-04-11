@@ -3,7 +3,6 @@ package com.alessiodp.parties.parties.objects;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;

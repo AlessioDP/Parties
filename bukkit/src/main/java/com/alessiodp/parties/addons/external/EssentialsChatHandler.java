@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -52,7 +53,7 @@ public class EssentialsChatHandler implements Listener {
 				if (identifier != null) {
 					PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
 					if (ph != null) {
-						old = old.replace(base, ph.formatPlaceholder(pp, party));
+						old = old.replace(base, ChatColor.translateAlternateColorCodes('&', ph.formatPlaceholder(pp, party)));
 						somethingChanged = true;
 					}
 				}

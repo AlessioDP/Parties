@@ -2,7 +2,7 @@ package com.alessiodp.parties.addons.libraries;
 
 public enum ILibrary {
 	HIKARI("HikariCP",
-			"2.7.8",
+			"3.1.0",
 			"%name%-%version%.jar",
 			"https://repo1.maven.org/maven2/com/zaxxer/%name%/%version%/%file%"),
 	SLF4J_API("slf4j-api",
