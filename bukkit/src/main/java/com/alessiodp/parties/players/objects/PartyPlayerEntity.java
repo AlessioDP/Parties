@@ -243,9 +243,12 @@ public class PartyPlayerEntity extends PartyPlayer {
 	
 	
 	private void send(String message) {
-		if (JSONHandler.isJSON(message))
-			JSONHandler.sendJSON(message, getPlayer());
-		else
-			getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+		Player player = getPlayer();
+		if (player != null) {
+			if (JSONHandler.isJSON(message))
+				JSONHandler.sendJSON(message, player);
+			else
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+		}
 	}
 }
