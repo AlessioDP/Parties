@@ -1,0 +1,319 @@
+# Parties main configuration file
+#
+# For a better configuration:
+# - Use Notepad++
+#   - View -> Symbols -> Show White Space and TAB (Active)
+#   - Don't use arrows (tabs), but spaces
+# - Set format (syntax) editor to YAML
+#
+# You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
+#
+
+# / = = = = = = = = = = = = = = = = \
+# |        PARTIES  SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+parties:
+  updates:
+    # Check for updates, recommended. Parties will check for updates when the server finish to load
+    check: true
+    # Send a message to admins if an update is available
+    warn: true
+  # Message upon login and logout of partymates
+  join-leave-messages: false
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        STORAGE  SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+storage:
+  # What type of storage Parties should use?
+  # Available types:
+  # none = Parties data is saved into memory (A reload reset everything, disable log if used on it)
+  # File based:
+  # * txt = Output to file (ONLY LOG)
+  # * yaml = Save all data into a YAML file (ONLY DATABASE)
+  # SQL based:
+  # * mysql = Save all data into a MySQL database
+  # * sqlite = Save all data into a SQLite database
+  log-storage-type: none
+  database-storage-type: yaml
+  log-settings:
+    # Log format
+    # %date% = Date as yyyy-MM-dd
+    # %time% = Time as HH:mm:ss
+    # %position% = Debug purpose, show caller class (USE IT TO REPORT BUGS)
+    # %level% = Mode of the message
+    # %message% = Message
+    format: "%date% [%time%] (%level%) {%position%} %message%"
+    # Log chat of parties
+    chat: true
+    # Print messages on the console
+    print-console: true
+    # Levels:
+    # 1: Basic log level
+    # 2: Log all events that interacts with the database
+    # 3: Debug level (Log a lot of events)
+    log-level: 1
+
+  migrate-settings:
+    # Used to initialize an unused database to make it migratable
+    initialize-storage:
+      yaml: false
+      mysql: false
+      sqlite: false
+    # Command migrate can be used only via console
+    migrate-only-console: true
+    # Rename old data.yml (Empty to overwrite)
+    migration-suffix: "_backup"
+
+  storage-settings:
+    file-based:
+      # File based DBs: YAML
+      txt:
+        log-name: "log.txt"
+      yaml:
+        database-name: "data.yml"
+    
+    sql-based:
+      # SQL based DBs: MySQL, SQLite
+      general-settings:
+        varchar-size: 255
+        tables:
+          parties: "parties_parties"
+          players: "parties_players"
+          log: "parties_log"
+          versions: "parties_versions"
+      mysql:
+        # <ip>:<port>
+        address: "localhost:3306"
+        database: "database"
+        username: "username"
+        password: "password"
+        # Size of the connection pool
+        pool-size: 10
+        # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
+        connection-lifetime: 1800000
+        # Connection timeout, drop connection if the query take too long (Default: 15 seconds = 15000ms)
+        connection-timeout: 10000
+        # Property used to alert when the connection is not using a valid SSL certificate
+        use-ssl: true
+        # Charset used by tables
+        charset: "utf8"
+      sqlite:
+        # SQLite is a SQL database that store data into a file
+        database-name: "database.db"
+    
+    none:
+      disband-on-leader-left: true
+      # Delete empty parties after tot seconds
+      delay-delete-party: 600
+
+
+# / = = = = = = = = = = = = = = = = \
+# |       ADDITIONAL SETTINGS       |
+# \ = = = = = = = = = = = = = = = = /
+additional:
+  auto-command:
+    # All partymates will use the same command that the leader uses (Rank permission: party.autocommand)
+    # You can configure the leader with rank permissions
+    enable: false
+    # Important: Blacklist/whitelist your commands to prevent exploits (Pay for example)
+    # Blacklist/whitelist your commands with a "start-with" check (Block /pay to prevent commands like "/pay bla bla", "/paymember bla", "/payment")
+    # If you whitelist a command, you will bypass it (if it is blacklisted)
+    # You can insert '*' for all commands
+    blacklist:
+    - "/pay"
+    - "/money"
+    whitelist: []
+  
+  censor-system:
+    # This censor system is used when a player create a party or set description/motd/etc..
+    enable: false
+    case-sensitive: false
+    contains: []
+    starts-with: []
+    ends-with: []
+
+  follow-party:
+    # When player join in a world, the party will be teleported into it
+    enable: false
+    # Type of teleport:
+    # 1 = Teleport into world spawn
+    # 2 = Same point of followed player
+    type-of-teleport: 1
+    # Minimum rank to let partymates follow you (0 = all ranks)
+    rank-needed: 0
+    # Minimum rank to follow the party (0 = all ranks)
+    minimum-rank-to-follow: 0
+    # Timeout before player can re-use portal in seconds, important to fix join portals spam (20 ticks = 1 second)
+    timeout-portal: 100
+    # List of worlds that would use follow-party feature ('*' = all worlds)
+    list-worlds:
+    - '*'
+  
+  notify:
+    # Enable notify command
+    # If an user use notify command, it will stop to receive every notification
+    enable: false
+    block:
+      invite: true
+  
+  placeholders:
+      # This options are used to customize Parties placeholders
+      # You can customize every external placeholder
+      # Use classic placeholders inside the option!
+      color-name: "%color_name%"
+      color-code: "%color_code%"
+      color-command: "%color_command%"
+      desc: "%desc%"
+      kills: "%kills%"
+      motd: "%motd%"
+      party: "%party%"
+      rank-name: "%rank_name%"
+      rank-chat: "%rank_chat%"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         ADDONS SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+addons:
+  # BanManager is used to auto kick banned users and prevents to speak into party chat if an user is muted
+  banmanager:
+    enable: false
+    prevent-chat-muted: true
+    # Warning: BanManager doesn't work good with offline-mode UUIDs
+    auto-kick-banned: true
+  
+  # You can create a mark for each party home
+  dynmap:
+    enable: false
+    hide-by-default: false
+    settings:
+      # Minimum party players to show up the marker on Dynmap
+      minimum-players: 3
+    markers:
+      layer: "Party homes"
+      # HTML Allowed. Tags: %party%, %kills%
+      label: "<b>%party%</b>'s home"
+      # Dynmap icons
+      icon: "house"
+  
+  # Give GP permissions to your entire party
+  griefprevention:
+    # This will enable "/party claim <permission>" command
+    enable: false
+    # To perform the command you need to be the Owner of the claim, or Manager
+    need-to-be-owner-claim: false
+    sub-commands:
+      trust: "trust"
+      container: "container"
+      access: "access"
+      remove: "remove"
+
+  # Give a price to each command
+  vault:
+    # Enable Vault support (Use permission 'parties.admin.vaultbypass' to bypass commands)
+    enable: false
+    confirm-command:
+      # This will enable "/party confirm" command
+      # True: use confirm command
+      # False: buy when the command is used
+      enable: true
+      # Timeout in ms
+      timeout: 10000
+    # Set a price for these commands (use doubles, 1.1, 1.5, etc..)
+    price-commands:
+      claim: 0.0
+      color: 0.0
+      create: 0.0
+      desc: 0.0
+      home: 0.0
+      join: 0.0
+      motd: 0.0
+      set-home: 0.0
+      teleport: 0.0
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        COMMANDS SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+commands:
+  # Enable tab support (/party <tab> to see every allowed command)
+  tab-support: true
+  help-pages:
+    commands-per-page: 9
+  descriptions:
+    party: "Parties help page"
+    p: "Send a party message"
+  main-commands:
+    help: "help"
+    party: "party"
+    p: "p"
+    accept: "accept"
+    chat: "chat"
+    claim: "claim"
+    color: "color"
+    confirm: "confirm"
+    create: "create"
+    delete: "delete"
+    deny: "deny"
+    desc: "desc"
+    home: "home"
+    ignore: "ignore"
+    info: "info"
+    invite: "invite"
+    join: "join"
+    kick: "kick"
+    leave: "leave"
+    list: "list"
+    migrate: "migrate"
+    motd: "motd"
+    notify: "notify"
+    password: "password"
+    rank: "rank"
+    reload: "reload"
+    rename: "rename"
+    sethome: "sethome"
+    spy: "spy"
+    teleport: "teleport"
+  sub-commands:
+    on: "on"
+    off: "off"
+    silent: "silent"
+    # Sub-command of "/party create <partyname> fixed" (if enabled)
+    fixed: "fixed"
+    # Sub-command used to remove something (desc, motd, etc..)
+    remove: "remove"
+  order:
+  - help
+  - create
+  - accept
+  - deny
+  - join
+  - ignore
+  - notify
+  - p
+  - leave
+  - invite
+  - info
+  - list
+  - chat
+  - desc
+  - motd
+  - home
+  - sethome
+  - color
+  - claim
+  - teleport
+  - password
+  - rank
+  - rename
+  - kick
+  - spy
+  - delete
+  - reload
+  - migrate
+
+# End of configuration file
+dont-edit-this:
+    version: 1

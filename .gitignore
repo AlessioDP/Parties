@@ -19,5 +19,14 @@
 !/bungee/src
 !/bungee/pom.xml
 
+!/common/
+/common/*
+!/common/src
+!/common/pom.xml
+
+!/output/
+/output/*
+!/output/pom.xml
+
 !/images/
 !/locales/

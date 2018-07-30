@@ -1,9 +1,10 @@
-name: Parties
-author: AlessioDP
-website: https://alessiodp.com/
-main: com.alessiodp.parties.Parties
-version: ${project.version}
-description: Party manager for minecraft servers
+name: ${plugin.name}
+description: ${plugin.description}
+author: ${plugin.author}
+website: ${plugin.website}
+version: ${plugin.version}
+main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
+api-version: 1.13
 softdepend: [CrackShot, Dynmap, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
 permissions:
   parties.accept:
@@ -54,8 +55,6 @@ permissions:
     description: Allow access to /party notify
   parties.password:
     description: Allow access to /party password
-  parties.prefix:
-    description: Allow access to /party prefix
   parties.rank:
     description: Allow access to /party rank
   parties.rank.others:
@@ -68,8 +67,6 @@ permissions:
     description: Allow access to /p
   parties.sethome:
     description: Allow access to /party sethome
-  parties.suffix:
-    description: Allow access to /party suffix
   parties.teleport:
     description: Allow access to /party teleport
   parties.admin.create.fixed:
@@ -117,12 +114,10 @@ permissions:
       parties.motd: true
       parties.notify: true
       parties.password: true
-      parties.prefix: true
       parties.rank: true
       parties.rename: true
       parties.sendmessage: true
       parties.sethome: true
-      parties.suffix: true
       parties.teleport: true
   parties.admin.*:
     default: op

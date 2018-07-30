@@ -3,15 +3,13 @@
 	<parent>
 		<groupId>com.alessiodp.parties</groupId>
 		<artifactId>Parties</artifactId>
-		<version>2.2.20</version>
+		<version>2.3.0</version>
 	</parent>
 	
 	<artifactId>parties-bungee</artifactId>
 	
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
-		<addons.bungee.version>1.12-SNAPSHOT</addons.bungee.version>
+		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 	
 	<build>
@@ -25,6 +23,7 @@
 				<directory>${basedir}/src/main/resources/</directory>
 				<includes>
 					<include>*.yml</include>
+					<include>bungee/*.yml</include>
 				</includes>
 			</resource>
 		</resources>
@@ -46,26 +45,37 @@
 			<id>bungeecord-repo</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
-		<repository>
-			<!-- Maven central for Lombok -->
-			<id>maven-central-repo</id>
-			<url>https://repo.maven.apache.org/</url>
-		</repository>
 	</repositories>
 	
 	<dependencies>
 		<dependency>
+			<!-- Parties Common -->
+			<groupId>com.alessiodp.parties</groupId>
+			<artifactId>parties-common</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Bungeecord API -->
 			<groupId>net.md-5</groupId>
 			<artifactId>bungeecord-api</artifactId>
-			<version>${addons.bungee.version}</version>
+			<version>${bungeecord.version}</version>
 			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- Bungeecord API Javadoc -->
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>${bungeecord.version}</version>
+			<type>javadoc</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<!-- Lombok -->
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.20</version>
+			<version>${libs.lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

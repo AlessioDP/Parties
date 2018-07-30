@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>Parties</artifactId>
+		<groupId>com.alessiodp.parties</groupId>
+		<version>2.3.0</version>
+	</parent>
+	
+	<artifactId>parties-common</artifactId>
+	
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		
+		<libs.gson.version>2.8.5</libs.gson.version>
+		<libs.configurateyaml.version>3.3</libs.configurateyaml.version>
+		<libs.hikaricp.version>3.2.0</libs.hikaricp.version>
+		<libs.sqlitejdbc.version>3.23.1</libs.sqlitejdbc.version>
+	</properties>
+	
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<directory>${basedir}/target</directory>
+		<finalName>${project.name}-${project.version}</finalName>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources/</directory>
+				<includes>
+					<include>schemas/*.sql</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencies>
+		<dependency>
+			<!-- Parties API -->
+			<groupId>com.alessiodp.partiesapi</groupId>
+			<artifactId>parties-api</artifactId>
+			<version>${parties.api.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Lombok -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${libs.lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- Google Gson -->
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${libs.gson.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- Configurate YAML -->
+			<groupId>ninja.leaping.configurate</groupId>
+			<artifactId>configurate-yaml</artifactId>
+			<version>${libs.configurateyaml.version}</version>
+		</dependency>
+		<dependency>
+			<!-- HikariCP -->
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${libs.hikaricp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- SQLite JDBC -->
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>${libs.sqlitejdbc.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
