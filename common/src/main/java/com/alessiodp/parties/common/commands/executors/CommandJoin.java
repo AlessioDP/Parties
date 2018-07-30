@@ -46,7 +46,7 @@ public class CommandJoin extends AbstractCommand {
 		}
 		
 		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.JOIN_BYPASS);
+		commandData.addPermission(PartiesPermission.ADMIN_JOIN_BYPASS);
 		return true;
 	}
 	
@@ -66,7 +66,7 @@ public class CommandJoin extends AbstractCommand {
 		}
 		
 		if (commandData.getArgs().length == 2) {
-			if (!commandData.havePermission(PartiesPermission.JOIN_BYPASS)) {
+			if (!commandData.havePermission(PartiesPermission.ADMIN_JOIN_BYPASS)) {
 				if (party.getPassword() != null && !party.getPassword().isEmpty()) {
 					pp.sendMessage(Messages.ADDCMD_JOIN_WRONGPASSWORD);
 					return;

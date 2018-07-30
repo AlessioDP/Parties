@@ -35,7 +35,7 @@ public class CommandRank extends AbstractCommand {
 			return false;
 		}
 		
-		if (!sender.hasPermission(PartiesPermission.RANK_OTHERS.toString())) {
+		if (!sender.hasPermission(PartiesPermission.ADMIN_RANK_OTHERS.toString())) {
 			if (pp.getPartyName().isEmpty()) {
 				pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
 				return false;
@@ -51,7 +51,7 @@ public class CommandRank extends AbstractCommand {
 		}
 		
 		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.RANK_OTHERS);
+		commandData.addPermission(PartiesPermission.ADMIN_RANK_OTHERS);
 		return true;
 	}
 	
@@ -77,7 +77,7 @@ public class CommandRank extends AbstractCommand {
 		
 		PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
 		
-		if (commandData.havePermission(PartiesPermission.RANK_OTHERS)) {
+		if (commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
 			party = plugin.getPartyManager().getParty(promoted.getPartyName());
 			if (party == null) {
 				pp.sendMessage(Messages.MAINCMD_RANK_PLAYERNOTINPARTY_OTHER, promoted);
@@ -91,7 +91,7 @@ public class CommandRank extends AbstractCommand {
 		}
 		
 		if (!party.getMembers().contains(promoted.getPlayerUUID())) {
-			if (!commandData.havePermission(PartiesPermission.RANK_OTHERS) || promoted.getPartyName().isEmpty()) {
+			if (!commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS) || promoted.getPartyName().isEmpty()) {
 				pp.sendMessage(Messages.MAINCMD_RANK_PLAYERNOTINPARTY, promoted);
 				return;
 			}
@@ -112,7 +112,7 @@ public class CommandRank extends AbstractCommand {
 					.replace("%player%", promoted.getName()));
 			return;
 		}
-		if (!commandData.havePermission(PartiesPermission.RANK_OTHERS)) {
+		if (!commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
 			if (pp.getRank() <= promoted.getRank()) {
 				pp.sendMessage(Messages.MAINCMD_RANK_LOWRANK
 						.replace("%rank_name%", rank.getName())

@@ -121,7 +121,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.PASSWORD);
 			if (player.hasPermission(PartiesPermission.RANK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RANK.toString()))
 				ret.add(CommonCommands.RANK);
-			else if (player.hasPermission(PartiesPermission.RENAME_OTHERS.toString())
+			else if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString())
 					|| (player.hasPermission(PartiesPermission.RENAME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RENAME.toString())))
 				ret.add(CommonCommands.RENAME);
 			if (player.hasPermission(PartiesPermission.KICK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_KICK.toString()))
@@ -143,9 +143,9 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.IGNORE);
 			if (player.hasPermission(PartiesPermission.NOTIFY.toString()))
 				ret.add(CommonCommands.NOTIFY);
-			if (player.hasPermission(PartiesPermission.KICK_OTHERS.toString()))
+			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS.toString()))
 				ret.add(CommonCommands.KICK);
-			if (player.hasPermission(PartiesPermission.RENAME_OTHERS.toString()))
+			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString()))
 				ret.add(CommonCommands.RENAME);
 		}
 		if (ConfigParties.LIST_ENABLE && player.hasPermission(PartiesPermission.LIST.toString()))

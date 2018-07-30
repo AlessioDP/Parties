@@ -38,7 +38,7 @@ public class CommandRename extends AbstractCommand {
 		}
 		
 		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.RENAME_OTHERS);
+		commandData.addPermission(PartiesPermission.ADMIN_RENAME_OTHERS);
 		return true;
 	}
 	
@@ -58,7 +58,7 @@ public class CommandRename extends AbstractCommand {
 			type = Type.OWN;
 		} else if (commandData.getArgs().length == 3) {
 			// Another party
-			if (commandData.havePermission(PartiesPermission.RENAME_OTHERS)) {
+			if (commandData.havePermission(PartiesPermission.ADMIN_RENAME_OTHERS)) {
 				party = plugin.getPartyManager().getParty(commandData.getArgs()[1]);
 				type = Type.ANOTHER;
 			}
@@ -77,7 +77,7 @@ public class CommandRename extends AbstractCommand {
 				break;
 			case WRONGCMD:
 				// Wrong command
-				if (commandData.havePermission(PartiesPermission.RENAME_OTHERS))
+				if (commandData.havePermission(PartiesPermission.ADMIN_RENAME_OTHERS))
 					pp.sendMessage(Messages.MAINCMD_RENAME_WRONGCMD_ADMIN);
 				else
 					pp.sendMessage(Messages.MAINCMD_RENAME_WRONGCMD);

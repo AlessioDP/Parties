@@ -41,7 +41,7 @@ public class CommandList extends AbstractCommand {
 		}
 		
 		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.KICK_OTHERS);
+		commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
 		return true;
 	}
 	

@@ -7,67 +7,57 @@ main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
 softdepend: [CrackShot, Dynmap, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
 permissions:
-  parties.accept:
+  parties.user.accept:
     description: Allow access to /party accept
-  parties.chat:
+  parties.user.chat:
     description: Allow access to /party chat
-  parties.claim:
-    description: Allow access to /party claim with GriefPrevention
-  parties.color:
+  parties.user.color:
     description: Allow access to /party color
-  parties.create:
+  parties.user.create:
     description: Allow access to /party create
-  parties.deny:
+  parties.user.deny:
     description: Allow access to /party deny
-  parties.desc:
+  parties.user.desc:
     description: Allow access to /party desc
-  parties.help:
+  parties.user.help:
     description: Allow access to /party or /party help
-  parties.home:
-    description: Allow access to /party home
-  parties.home.others:
-    description: Allow access to /party home on other homes
-  parties.ignore:
+  parties.user.ignore:
     description: Allow access to /party ignore
-  parties.info:
+  parties.user.info:
     description: Allow access to /party info
-  parties.info.others:
+  parties.user.info.others:
     description: Allow access to /party info on other parties
-  parties.invite:
+  parties.user.invite:
     description: Allow access to /party invite
-  parties.join:
+  parties.user.join:
     description: Allow access to /party join
-  parties.join.bypass:
-    description: Allow access to /party join in other parties without insert the password
-  parties.joindefault:
+  parties.user.joindefault:
     description: Join into the default party
-  parties.kick:
+  parties.user.kick:
     description: Allow access to /party kick
-  parties.kick.others:
-    description: Allow access to /party kick on other players
-  parties.leave:
+  parties.user.leave:
     description: Allow access to /party leave
-  parties.list:
+  parties.user.list:
     description: Allow access to /party list
-  parties.motd:
+  parties.user.motd:
     description: Allow access to /party motd
-  parties.notify:
+  parties.user.notify:
     description: Allow access to /party notify
-  parties.password:
+  parties.user.password:
     description: Allow access to /party password
-  parties.rank:
+  parties.user.rank:
     description: Allow access to /party rank
-  parties.rank.others:
-    description: Allow access to /party rank on other players
-  parties.rename:
+  parties.user.rename:
     description: Allow access to /party rename
-  parties.rename.others:
-    description: Allow access to /party rename on other parties
-  parties.sendmessage:
+  parties.user.sendmessage:
     description: Allow access to /p
-  parties.sethome:
-    description: Allow access to /party sethome
-  parties.teleport:
+  parties.user.claim:
+    description: Allow access to /party claim with GriefPrevention
+  parties.user.home:
+      description: Allow access to /party home
+  parties.user.sethome:
+      description: Allow access to /party sethome
+  parties.user.teleport:
     description: Allow access to /party teleport
   parties.admin.create.fixed:
     description: Allow access to /party create party fixed
@@ -75,67 +65,78 @@ permissions:
     description: Allow access to /party delete
   parties.admin.delete.silent:
     description: Allow access to /party delete with silent
+  parties.admin.join.bypass:
+    description: Allow access to /party join in other parties without insert the password
   parties.admin.joindefault.bypass:
     description: Bypass the default join
+  parties.admin.kick.others:
+    description: Allow access to /party kick on other players
   parties.admin.migrate:
     description: Allow access to /party migrate
-  parties.admin.rankbypass:
+  parties.admin.rank.bypass:
     description: Bypass rank restrictions
+  parties.admin.rank.others:
+    description: Allow access to /party rank on other players
   parties.admin.reload:
     description: Allow access to /party reload
+  parties.admin.rename.others:
+    description: Allow access to /party rename on other parties
   parties.admin.spy:
     description: Allow access to /party spy
   parties.admin.updates:
     description: Send a message if there is an update
+  parties.admin.home.others:
+    description: Allow access to /party home on other homes
   parties.admin.vaultbypass:
     description: Bypass commands that have a price
+
   parties.user.*:
     default: op
     description: Can use normal party commands
     children:
-      parties.accept: true
-      parties.chat: true
-      parties.claim: true
-      parties.color: true
-      parties.create: true
-      parties.deny: true
-      parties.desc: true
-      parties.help: true
-      parties.home: true
-      parties.ignore: true
-      parties.info: true
-      parties.info.others: true
-      parties.invite: true
-      parties.join: true
-      parties.joindefault: true
-      parties.kick: true
-      parties.leave: true
-      parties.list: true
-      parties.motd: true
-      parties.notify: true
-      parties.password: true
-      parties.rank: true
-      parties.rename: true
-      parties.sendmessage: true
-      parties.sethome: true
-      parties.teleport: true
+      parties.user.accept: true
+      parties.user.chat: true
+      parties.user.color: true
+      parties.user.create: true
+      parties.user.deny: true
+      parties.user.desc: true
+      parties.user.help: true
+      parties.user.ignore: true
+      parties.user.info: true
+      parties.user.info.others: true
+      parties.user.invite: true
+      parties.user.join: true
+      parties.user.joindefault: true
+      parties.user.kick: true
+      parties.user.leave: true
+      parties.user.list: true
+      parties.user.motd: true
+      parties.user.notify: true
+      parties.user.password: true
+      parties.user.rank: true
+      parties.user.rename: true
+      parties.user.sendmessage: true
+      parties.user.claim: true
+      parties.user.home: true
+      parties.user.sethome: true
+      parties.user.teleport: true
   parties.admin.*:
     default: op
     description: Can use all party commands
     children:
       parties.user.*: true
-      parties.home.others: true
-      parties.join.others: true
-      parties.kick.others: true
-      parties.rank.others: true
-      parties.rename.others: true
+      parties.admin.join.others: true
+      parties.admin.kick.others: true
+      parties.admin.rank.others: true
+      parties.admin.rename.others: true
       parties.admin.delete: true
       parties.admin.delete.silent: true
       parties.admin.fixed: true
       parties.admin.joindefault.bypass: true
       parties.admin.migrate: true
-      parties.admin.rankbypass: true
+      parties.admin.rank.bypass: true
       parties.admin.reload: true
       parties.admin.spy: true
       parties.admin.updates: true
+      parties.admin.home.others: true
       parties.admin.vaultbypass: true

@@ -42,7 +42,7 @@ public class CommandHome extends AbstractCommand {
 		}
 		
 		if (commandData.getArgs().length > 1) {
-			if (!sender.hasPermission(PartiesPermission.HOME_OTHERS.toString())) {
+			if (!sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS.toString())) {
 				pp.sendMessage(BukkitMessages.ADDCMD_HOME_WRONGCMD);
 				return false;
 			} else if (commandData.getArgs().length > 2) {

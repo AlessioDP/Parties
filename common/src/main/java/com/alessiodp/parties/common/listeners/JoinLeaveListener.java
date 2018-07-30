@@ -63,7 +63,7 @@ public abstract class JoinLeaveListener {
 							.replace("{party}", party.getName()), true);
 				} else {
 					// Party not found - checking for default one
-					if (ConfigParties.FIXED_DEFAULT_ENABLE) {
+					if (ConfigParties.FIXED_DEFAULT_ENABLE && player.hasPermission(PartiesPermission.JOINDEFAULT.toString())) {
 						party = plugin.getPartyManager().loadParty(ConfigParties.FIXED_DEFAULT_PARTY);
 						if (party != null) {
 							party.getMembers().add(pp.getPlayerUUID());

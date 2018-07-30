@@ -46,7 +46,7 @@ public class CommandKick extends AbstractCommand {
 			return false;
 		}
 		
-		if (!sender.hasPermission(PartiesPermission.KICK_OTHERS.toString())) {
+		if (!sender.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS.toString())) {
 			if (pp.getPartyName().isEmpty()) {
 				pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
 				return false;
@@ -62,7 +62,7 @@ public class CommandKick extends AbstractCommand {
 		}
 		
 		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.KICK_OTHERS);
+		commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
 		return true;
 	}
 	
@@ -134,7 +134,7 @@ public class CommandKick extends AbstractCommand {
 		
 		boolean otherParty = false;
 		if (party == null || !party.getMembers().contains(kickedPlayer.getUUID())
-				&& commandData.havePermission(PartiesPermission.KICK_OTHERS)) {
+				&& commandData.havePermission(PartiesPermission.ADMIN_KICK_OTHERS)) {
 			// Other party
 			otherParty = true;
 			party = plugin.getPartyManager().getParty(kickedPp.getPartyName());
@@ -150,7 +150,7 @@ public class CommandKick extends AbstractCommand {
 				return;
 			}
 			
-			if (pp.getRank() < kickedPp.getRank() && !commandData.havePermission(PartiesPermission.KICK_OTHERS)) {
+			if (pp.getRank() < kickedPp.getRank() && !commandData.havePermission(PartiesPermission.ADMIN_KICK_OTHERS)) {
 				pp.sendMessage(Messages.MAINCMD_KICK_PLAYERHIGHERRANK, kickedPp);
 				return;
 			}

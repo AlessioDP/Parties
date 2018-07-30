@@ -51,7 +51,7 @@ public class CommandP extends AbstractCommand {
 		
 		commandData.setPartyPlayer(pp);
 		commandData.setParty(party);
-		commandData.addPermission(PartiesPermission.KICK_OTHERS);
+		commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
 		return true;
 	}
 	

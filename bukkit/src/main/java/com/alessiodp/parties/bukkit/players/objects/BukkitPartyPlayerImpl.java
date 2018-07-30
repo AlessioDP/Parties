@@ -49,7 +49,7 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 		if (!getPartyName().isEmpty()) {
 			// Other commands
 			if (BukkitConfigParties.HOME_ENABLE) {
-				if (player.hasPermission(PartiesPermission.HOME_OTHERS.toString())
+				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS.toString())
 						|| (player.hasPermission(PartiesPermission.HOME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_HOME.toString())))
 					ret.add(BukkitCommands.HOME);
 				if (player.hasPermission(PartiesPermission.SETHOME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_HOME.toString()))
