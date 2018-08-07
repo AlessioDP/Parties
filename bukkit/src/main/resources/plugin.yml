@@ -125,17 +125,18 @@ permissions:
     description: Can use all party commands
     children:
       parties.user.*: true
-      parties.admin.join.others: true
-      parties.admin.kick.others: true
-      parties.admin.rank.others: true
       parties.admin.rename.others: true
       parties.admin.delete: true
       parties.admin.delete.silent: true
       parties.admin.fixed: true
+      parties.admin.join.others: true
       parties.admin.joindefault.bypass: true
+      parties.admin.kick.others: true
       parties.admin.migrate: true
       parties.admin.rank.bypass: true
+      parties.admin.rank.others: true
       parties.admin.reload: true
+      parties.admin.rename.others: true
       parties.admin.spy: true
       parties.admin.updates: true
       parties.admin.home.others: true

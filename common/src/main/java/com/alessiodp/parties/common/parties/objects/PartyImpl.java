@@ -224,7 +224,8 @@ public abstract class PartyImpl implements Party {
 			player.sendDirect(formattedMessage);
 		}
 		
-		String messageFormat =  plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_SPY, this, sender);
+		String messageFormat =  plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_SPY, this, sender)
+				.replace("%message%", playerMessage);
 		plugin.getSpyManager().sendMessageToSpies(messageFormat, this, sender);
 	}
 	

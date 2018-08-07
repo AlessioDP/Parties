@@ -25,9 +25,9 @@ public class BungeeConfigurationManager extends ConfigurationManager {
 		super.reload();
 		
 		// Initialize configs
-		Path configMainPath = configMain.saveConfiguration(plugin.getFolder());
-		Path configPartiesPath = configParties.saveConfiguration(plugin.getFolder());
-		Path messagesPath = messages.saveConfiguration(plugin.getFolder());
+		Path configMainPath = configMain.saveDefaultConfiguration(plugin.getFolder());
+		Path configPartiesPath = configParties.saveDefaultConfiguration(plugin.getFolder());
+		Path messagesPath = messages.saveDefaultConfiguration(plugin.getFolder());
 		
 		// Initialize ConfigurationAdapter
 		ConfigurationAdapter configMainCA = new BungeeConfigurationAdapter(configMainPath);

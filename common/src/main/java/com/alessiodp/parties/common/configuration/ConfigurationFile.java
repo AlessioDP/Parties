@@ -15,7 +15,7 @@ public abstract class ConfigurationFile {
 		plugin = instance;
 	}
 	
-	public Path saveConfiguration(Path path) {
+	public Path saveDefaultConfiguration(Path path) {
 		Path ret = path.resolve(getFileName());
 		try {
 			if (!Files.exists(path)) {

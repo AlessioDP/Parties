@@ -3,7 +3,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>Parties</artifactId>
-	<version>2.3.1</version>
+	<version>2.3.2</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -12,7 +12,7 @@
 	<licenses>
 		<license>
 			<name>AGPL-3.0</name>
-			<url>https://opensource.org/licenses/GPL-3.0</url>
+			<url>https://opensource.org/licenses/AGPL-3.0</url>
 		</license>
 	</licenses>
 	
@@ -38,6 +38,7 @@
 		<maven.compiler.version>3.7.0</maven.compiler.version>
 		<maven.shade.version>3.1.0</maven.shade.version>
 		<maven.wagon.version>3.0.0</maven.wagon.version>
+		
 		<spigot.version>1.13-R0.1-SNAPSHOT</spigot.version>
 		<bungeecord.version>1.13-SNAPSHOT</bungeecord.version>
 		
@@ -67,7 +68,7 @@
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
-			<!-- Maven central for HikariCP, Log4j, Lombok, SQLite -->
+			<!-- Maven central for HikariCP, Lombok, SQLite -->
 			<id>maven-central-repo</id>
 			<url>https://repo.maven.apache.org/</url>
 		</repository>
