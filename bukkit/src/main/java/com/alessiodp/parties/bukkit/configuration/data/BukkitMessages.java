@@ -12,6 +12,12 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_CLAIM_CLAIMNOEXISTS;
 	public static String ADDCMD_CLAIM_WRONGCMD;
 	
+	public static String ADDCMD_EXP_PARTY_GAINED;
+	public static String ADDCMD_EXP_NORMAL_GAINED_KILLER;
+	public static String ADDCMD_EXP_NORMAL_GAINED_OTHERS;
+	public static String ADDCMD_EXP_SKILLAPI_GAINED_KILLER;
+	public static String ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+	
 	public static String ADDCMD_HOME_TELEPORTED;
 	public static String ADDCMD_HOME_TELEPORTIN;
 	public static String ADDCMD_HOME_TELEPORTDENIED;
@@ -20,6 +26,12 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_HOME_NOEXISTS;
 	public static String ADDCMD_HOME_WRONGCMD;
 	public static String ADDCMD_HOME_WRONGCMD_ADMIN;
+	
+	public static String ADDCMD_PVP_ON;
+	public static String ADDCMD_PVP_OFF;
+	public static String ADDCMD_PVP_PROTECTED;
+	public static String ADDCMD_PVP_WARNHIT;
+	public static String ADDCMD_PVP_WRONGCMD;
 	
 	public static String ADDCMD_SETHOME_CHANGED;
 	public static String ADDCMD_SETHOME_REMOVED;
@@ -47,13 +59,11 @@ public class BukkitMessages extends Messages {
 	// Other messages
 	public static String OTHER_FOLLOW_WORLD;
 	
-	public static String OTHER_FRIENDLYFIRE_CANTHIT;
-	public static String OTHER_FRIENDLYFIRE_WARN;
-	
 	
 	// Help messages
 	public static String HELP_ADDCMD_CLAIM;
 	public static String HELP_ADDCMD_HOME;
+	public static String HELP_ADDCMD_PVP;
 	public static String HELP_ADDCMD_SETHOME;
 	public static String HELP_ADDCMD_TELEPORT;
 	
@@ -74,13 +84,26 @@ public class BukkitMessages extends Messages {
 		ADDCMD_CLAIM_CLAIMNOEXISTS = "&cClaim not found";
 		ADDCMD_CLAIM_WRONGCMD = "&cWrong variables: Type &7/party claim <permission>\n&cPermissions: trust, container & access";
 		
+		ADDCMD_EXP_PARTY_GAINED = "&bGained %exp% party experience for killing the mob";
+		ADDCMD_EXP_NORMAL_GAINED_KILLER = "&bGained %exp% experience for killing the mob";
+		ADDCMD_EXP_NORMAL_GAINED_OTHERS = "&b%player% has killed a mob, you gained %exp% experience";
+		ADDCMD_EXP_SKILLAPI_GAINED_KILLER = "&bGained %exp% experience for killing the mob";
+		ADDCMD_EXP_SKILLAPI_GAINED_OTHERS = "&b%player% has killed a mob, you gained %exp% experience";
+		
 		ADDCMD_HOME_TELEPORTED = "&7Teleported to the party home";
 		ADDCMD_HOME_TELEPORTIN = "&7You will be teleported in %time% seconds...";
 		ADDCMD_HOME_TELEPORTDENIED = "&7Teleport denied";
+		ADDCMD_HOME_TELEPORTWAITING = "&cYou are already waiting for the teleport!";
 		ADDCMD_HOME_NOHOME = "&cThere isn't a home yet";
 		ADDCMD_HOME_NOEXISTS = "&cThe party %party% doesn't exist";
 		ADDCMD_HOME_WRONGCMD = "&cWrong variables: Type &7/party home";
 		ADDCMD_HOME_WRONGCMD_ADMIN = "&cWrong variables: Type &7/party home [party]";
+		
+		ADDCMD_PVP_ON = "&aNow your party is protected by friendly fire";
+		ADDCMD_PVP_OFF = "&aYour party is not protected anymore by friendly fire";
+		ADDCMD_PVP_PROTECTED = "&cYou can't hit your partymates";
+		ADDCMD_PVP_WARNHIT = "&c%player% tried to hit %victim%!";
+		ADDCMD_PVP_WRONGCMD = "&cWrong variables: Type &7/party pvp [on/off]";
 		
 		ADDCMD_SETHOME_CHANGED = "";
 		ADDCMD_SETHOME_REMOVED = "&bParty home removed";
@@ -108,13 +131,11 @@ public class BukkitMessages extends Messages {
 		// Other messages
 		OTHER_FOLLOW_WORLD = "&7Following %player% in %world%";
 		
-		OTHER_FRIENDLYFIRE_CANTHIT = "&cYou can't hit your partymates";
-		OTHER_FRIENDLYFIRE_WARN = "&c%player% tried to hit %victim%!";
-		
 		
 		// Help messages
 		HELP_ADDCMD_CLAIM = "{\"text\":\"\",\"extra\":[{\"text\":\"/party claim <permission>\",\"color\":\"aqua\"},{\"text\":\" - Grant permissions to the claim\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party claim \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_HOME = "{\"text\":\"\",\"extra\":[{\"text\":\"/party home [party]\",\"color\":\"aqua\"},{\"text\":\" - Teleport to the party home\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party home \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_PVP = "{\"text\":\"\",\"extra\":[{\"text\":\"/party pvp [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle friendly fire protection\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party pvp \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_SETHOME = "{\"text\":\"\",\"extra\":[{\"text\":\"/party sethome [remove]\",\"color\":\"aqua\"},{\"text\":\" - Set the party home\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party sethome \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_TELEPORT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party teleport\",\"color\":\"aqua\"},{\"text\":\" - Teleport your party to you\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party teleport\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 	}
@@ -131,6 +152,12 @@ public class BukkitMessages extends Messages {
 		ADDCMD_CLAIM_CLAIMNOEXISTS = confAdapter.getString("additional-commands.claim.claim-no-exists", ADDCMD_CLAIM_CLAIMNOEXISTS);
 		ADDCMD_CLAIM_WRONGCMD = confAdapter.getString("additional-commands.claim.wrong-command", ADDCMD_CLAIM_WRONGCMD);
 		
+		ADDCMD_EXP_PARTY_GAINED = confAdapter.getString("additional-commands.exp.party.gained", ADDCMD_EXP_PARTY_GAINED);
+		ADDCMD_EXP_NORMAL_GAINED_KILLER = confAdapter.getString("additional-commands.exp.normal.gained-killer", ADDCMD_EXP_NORMAL_GAINED_KILLER);
+		ADDCMD_EXP_NORMAL_GAINED_OTHERS = confAdapter.getString("additional-commands.exp.normal.gained-others", ADDCMD_EXP_NORMAL_GAINED_OTHERS);
+		ADDCMD_EXP_SKILLAPI_GAINED_KILLER = confAdapter.getString("additional-commands.exp.skillapi.gained-killer", ADDCMD_EXP_SKILLAPI_GAINED_KILLER);
+		ADDCMD_EXP_SKILLAPI_GAINED_OTHERS = confAdapter.getString("additional-commands.exp.skillapi.gained-others", ADDCMD_EXP_SKILLAPI_GAINED_OTHERS);
+		
 		ADDCMD_HOME_TELEPORTED = confAdapter.getString("additional-commands.home.teleported", ADDCMD_HOME_TELEPORTED);
 		ADDCMD_HOME_TELEPORTIN = confAdapter.getString("additional-commands.home.teleport-in", ADDCMD_HOME_TELEPORTIN);
 		ADDCMD_HOME_TELEPORTDENIED = confAdapter.getString("additional-commands.home.teleport-denied", ADDCMD_HOME_TELEPORTDENIED);
@@ -139,6 +166,12 @@ public class BukkitMessages extends Messages {
 		ADDCMD_HOME_NOEXISTS = confAdapter.getString("additional-commands.home.no-exists", ADDCMD_HOME_NOEXISTS);
 		ADDCMD_HOME_WRONGCMD = confAdapter.getString("additional-commands.home.wrong-command", ADDCMD_HOME_WRONGCMD);
 		ADDCMD_HOME_WRONGCMD_ADMIN = confAdapter.getString("additional-commands.home.wrong-command-admin", ADDCMD_HOME_WRONGCMD_ADMIN);
+		
+		ADDCMD_PVP_ON = confAdapter.getString("additional-commands.pvp.toggle-on", ADDCMD_PVP_ON);
+		ADDCMD_PVP_OFF = confAdapter.getString("additional-commands.pvp.toggle-off", ADDCMD_PVP_OFF);
+		ADDCMD_PVP_PROTECTED = confAdapter.getString("additional-commands.pvp.protected", ADDCMD_PVP_PROTECTED);
+		ADDCMD_PVP_WARNHIT = confAdapter.getString("additional-commands.pvp.warn-on-attack", ADDCMD_PVP_WARNHIT);
+		ADDCMD_PVP_WRONGCMD = confAdapter.getString("additional-commands.pvp.wrong-command", ADDCMD_PVP_WRONGCMD);
 		
 		ADDCMD_SETHOME_CHANGED = confAdapter.getString("additional-commands.sethome.changed", ADDCMD_SETHOME_CHANGED);
 		ADDCMD_SETHOME_REMOVED = confAdapter.getString("additional-commands.sethome.removed", ADDCMD_SETHOME_REMOVED);
@@ -166,11 +199,9 @@ public class BukkitMessages extends Messages {
 		// Other messages
 		OTHER_FOLLOW_WORLD = confAdapter.getString("other.follow.following-world", OTHER_FOLLOW_WORLD);
 		
-		OTHER_FRIENDLYFIRE_CANTHIT = confAdapter.getString("other.friendly-fire.cant-hit-mates", OTHER_FRIENDLYFIRE_CANTHIT);
-		OTHER_FRIENDLYFIRE_WARN = confAdapter.getString("other.friendly-fire.cant-hit-mates", OTHER_FRIENDLYFIRE_WARN);
-		
 		// Help messages
 		HELP_ADDCMD_HOME = confAdapter.getString("help.additional-commands.home", HELP_ADDCMD_HOME);
+		HELP_ADDCMD_PVP = confAdapter.getString("help.additional-commands.pvp", HELP_ADDCMD_PVP);
 		HELP_ADDCMD_SETHOME = confAdapter.getString("help.additional-commands.sethome", HELP_ADDCMD_SETHOME);
 		HELP_ADDCMD_TELEPORT = confAdapter.getString("help.additional-commands.teleport", HELP_ADDCMD_TELEPORT);
 	}

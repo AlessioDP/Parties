@@ -106,7 +106,6 @@ public class YAMLDao implements IDatabaseFile {
 			
 			// Rename old data with the new name
 			Files.move(dataPath, filePath);
-			//dataFile.renameTo(backupFile);
 			createDataFile();
 			ret = true;
 		} catch (Exception ex) {

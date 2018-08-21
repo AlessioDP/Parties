@@ -41,6 +41,8 @@ public class CrackShotHandler implements Listener {
 						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
 			} else {
 				BukkitConfigParties.FRIENDLYFIRE_CRACKSHOT_ENABLE = false;
+				active = false;
+				
 				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_FAILED
 						.replace("{addon}", ADDON_NAME), true, ConsoleColor.RED);
 			}
@@ -55,9 +57,7 @@ public class CrackShotHandler implements Listener {
 				PartyPlayerImpl shooterPp = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 				Player victim = (Player) event.getVictim();
 				
-				if (!victim.getUniqueId().equals(shooterPp.getPlayerUUID())
-						&& (BukkitConfigParties.FRIENDLYFIRE_LISTWORLDS.contains("*")
-								|| BukkitConfigParties.FRIENDLYFIRE_LISTWORLDS.contains(victim.getWorld().getName()))) {
+				if (!victim.getUniqueId().equals(shooterPp.getPlayerUUID())) {
 					PartyPlayerImpl victimPp = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
 					
 					if (!shooterPp.getPartyName().isEmpty()
@@ -69,7 +69,7 @@ public class CrackShotHandler implements Listener {
 							// Friendly fire confirmed
 							BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(victimPp.getPartyName());
 							
-							shooterPp.sendMessage(BukkitMessages.OTHER_FRIENDLYFIRE_CANTHIT);
+							shooterPp.sendMessage(BukkitMessages.ADDCMD_PVP_PROTECTED);
 							party.sendFriendlyFireWarn(victimPp, shooterPp);
 							
 							event.setCancelled(true);

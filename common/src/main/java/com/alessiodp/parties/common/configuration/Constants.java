@@ -5,17 +5,17 @@ public class Constants {
 	public static final boolean DEBUG_ENABLED = false;
 	public static final boolean DEBUG_TIMESTAMPS = false;
 	
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 1;
-	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 1;
-	public static final int VERSION_BUKKIT_MESSAGES = 1;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 2;
+	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 2;
+	public static final int VERSION_BUKKIT_MESSAGES = 2;
 	
 	public static final int VERSION_BUNGEE_CONFIG_MAIN = 1;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 1;
 	public static final int VERSION_BUNGEE_MESSAGES = 1;
 	
 	public static final int VERSION_DATABASE_YAML = 1;
-	public static final int VERSION_DATABASE_MYSQL = 3;
-	public static final int VERSION_DATABASE_SQLITE = 1;
+	public static final int VERSION_DATABASE_MYSQL = 4;
+	public static final int VERSION_DATABASE_SQLITE = 2;
 	
 	public static final String FIXED_VALUE_TEXT = "fixed";
 	public static final String FIXED_VALUE_UUID = "00000000-0000-0000-0000-000000000000";
@@ -57,6 +57,10 @@ public class Constants {
 	public static final String PLACEHOLDER_PARTY_COLOR_COMMAND = "%color_command%";
 	public static final String PLACEHOLDER_PARTY_COLOR_NAME = "%color_name%";
 	public static final String PLACEHOLDER_PARTY_DESC = "%desc%";
+	public static final String PLACEHOLDER_PARTY_EXPERIENCE_TOTAL = "%experience_total%";
+	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVEL = "%experience_level%";
+	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_CURRENT = "%experience_levelup_current%";
+	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
 	public static final String PLACEHOLDER_PARTY_KILLS = "%kills%";
 	public static final String PLACEHOLDER_PARTY_MOTD = "%motd%";
 	public static final String PLACEHOLDER_PARTY_ONLINENUMBER = "%onlinenumber%";
@@ -124,6 +128,7 @@ public class Constants {
 	public static final String DEBUG_CMD_KICK_DISBAND = "{player} got kicked out (disband) from {party} by {user} [other={other}]";
 	public static final String DEBUG_CMD_LEAVE = "{player} leaved the party {party}";
 	public static final String DEBUG_CMD_LEAVE_DISBAND = "{player} leaved (disbanding) the party {party}";
+	public static final String DEBUG_CMD_LIST = "{player} used the command list";
 	public static final String DEBUG_CMD_MOTD = "{player} changed the motd of {party}";
 	public static final String DEBUG_CMD_MOTD_REM = "{player} removed the motd of {party}";
 	public static final String DEBUG_CMD_NOTIFY_ON = "{player} has enabled notify";
@@ -132,6 +137,8 @@ public class Constants {
 	public static final String DEBUG_CMD_P_TASK = "Started ChatTask for {value} by {player}";
 	public static final String DEBUG_CMD_PASSWORD = "{player} changed the password of {party}";
 	public static final String DEBUG_CMD_PASSWORD_REM = "{player} removed the password of {party}";
+	public static final String DEBUG_CMD_PVP_ON = "{player} has enabled pvp for {party}";
+	public static final String DEBUG_CMD_PVP_OFF = "{player} has disabled pvp for {party}";
 	public static final String DEBUG_CMD_TELEPORT = "{player} used command teleport";
 	public static final String DEBUG_CMD_RANK = "{player} rank changed from {value1} to {value2} by {user}";
 	public static final String DEBUG_CMD_RELOAD = "Configuration reloaded by {player}";
@@ -154,9 +161,15 @@ public class Constants {
 	
 	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to {player} with '{command}'";
 	
+	public static final String DEBUG_EXP_RECEIVED = "Received a distribute exp request. Normal experience: {normal}, SkillAPI Experience: {skillapi}.";
+	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of '{party}': {message}";
+	public static final String DEBUG_EXP_EXPRESSIONERROR = "Something gone wrong on calculate the formula '{value}': {message}";
+	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '{name}' killed by {player}";
+	
 	public static final String DEBUG_FRIENDLYFIRE_DENIED = "Denied friendly fire (type {type}) by '{player}' to '{victim}'";
 	
 	public static final String DEBUG_KILL_ADD = "Adding a kill to the party {party} by {player}";
+	
 	
 	public static final String DEBUG_API_CHATEVENT_DENY = "PartiesChatEvent is cancelled, ignoring chat of {player}: {message}";
 	public static final String DEBUG_API_CREATEEVENT_DENY = "PartiesCreateEvent is cancelled, ignoring create of {party} by {player}";
@@ -191,6 +204,7 @@ public class Constants {
 	public static final String DEBUG_SQL_CONNECTIONERROR = "Failed to connect to {storage}: {message}";
 	public static final String DEBUG_SQL_ERROR = "Error in {class} at {method}_{line}: {type} > {message} \n{stacktrace}";
 	public static final String DEBUG_SQL_ERROR_TABLE = "Error in {class} at {method}({table})_{line}: {type} > {message} \n{stacktrace}";
+	public static final String DEBUG_SQL_UPGRADING = "Upgrading the SQL table '{table}'";
 	
 	
 	/*
@@ -214,8 +228,8 @@ public class Constants {
 	public static final String QUERY_PLAYER_GETBYPARTY = "SELECT * FROM {table_players} WHERE party=?;";
 	public static final String QUERY_PLAYER_GETBYNAME = "SELECT * FROM {table_players} WHERE name=?;";
 	
-	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (name, leader, description, motd, prefix, suffix, color, kills, password, home) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE leader=VALUES(leader), description=VALUES(description), motd=VALUES(motd), prefix=VALUES(prefix), suffix=VALUES(suffix), color=VALUES(color), kills=VALUES(kills), password=VALUES(password), home=VALUES(home);";
-	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (name, leader, description, motd, prefix, suffix, color, kills, password, home) VALUES (?,?,?,?,?,?,?,?,?,?);";
+	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (name, leader, description, motd, color, kills, password, home, pvp, experience) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE leader=VALUES(leader), description=VALUES(description), motd=VALUES(motd), color=VALUES(color), kills=VALUES(kills), password=VALUES(password), home=VALUES(home), pvp=VALUES(pvp), experience=VALUES(experience);";
+	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (name, leader, description, motd, color, kills, password, home, pvp, experience) VALUES (?,?,?,?,?,?,?,?,?,?);";
 	public static final String QUERY_PARTY_GET = "SELECT * FROM {table_parties} WHERE name=?;";
 	public static final String QUERY_PARTY_GETALL = "SELECT * FROM {table_parties};";
 	public static final String QUERY_PARTY_GETALLFIXED = "SELECT * FROM {table_parties} WHERE leader='fixed';";

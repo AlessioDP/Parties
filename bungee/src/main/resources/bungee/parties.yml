@@ -87,7 +87,7 @@ ranks:
     - -party.edit.desc
     - -party.edit.motd
     - -party.edit.color
-    - -party.admin.password
+    - -party.edit.password
     - -party.admin.rename
     - -party.admin.rank
     - -party.admin.teleport

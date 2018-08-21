@@ -7,8 +7,7 @@ public enum SQLTable {
 	VERSIONS, PLAYERS, PARTIES, LOG;
 	// VERSIONS must be first, it needs to be created before others.
 	
-	@Getter
-	private String tableName;
+	@Getter private String tableName;
 	private static String varcharSize;
 	private static String charset;
 	

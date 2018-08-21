@@ -3,6 +3,7 @@ package com.alessiodp.parties.common.players.objects;
 import com.alessiodp.parties.api.interfaces.Rank;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RankImpl implements Rank {
 	
@@ -91,5 +92,23 @@ public class RankImpl implements Rank {
 			}
 		}
 		return ret;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(hardName, name, chat, level, def, permissions);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == this || other instanceof RankImpl) {
+			return Objects.equals(hardName, ((RankImpl) other).hardName)
+					&& Objects.equals(name, ((RankImpl) other).name)
+					&& Objects.equals(chat, ((RankImpl) other).chat)
+					&& level == ((RankImpl) other).level
+					&& def == ((RankImpl) other).def
+					&& Objects.equals(permissions, ((RankImpl) other).permissions);
+		}
+		return false;
 	}
 }

@@ -14,6 +14,7 @@ import com.alessiodp.parties.api.interfaces.HomeLocation;
 import com.alessiodp.parties.api.interfaces.Party;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -35,11 +36,14 @@ public abstract class PartyImpl implements Party {
 	@Getter @Setter private String description;
 	@Getter @Setter private String motd;
 	@Getter @Setter private HomeLocation home;
-	@Getter @Setter private String prefix;
-	@Getter @Setter private String suffix;
+	@Deprecated @Getter @Setter private String prefix;
+	@Deprecated @Getter @Setter private String suffix;
 	@Getter @Setter private Color color;
 	@Getter @Setter private int kills;
 	@Getter @Setter private String password;
+	@Getter @Setter private boolean friendlyFireProtected;
+	@Getter @Setter private double experience;
+	@Getter @Setter private ExpResult expResult;
 	
 	@Getter @Setter private Color dynamicColor;
 	@Getter private Set<PartyPlayerImpl> onlinePlayers;
@@ -62,6 +66,9 @@ public abstract class PartyImpl implements Party {
 		color = null;
 		kills = 0;
 		password = "";
+		friendlyFireProtected = false;
+		experience = 0;
+		expResult = new ExpResult();
 		
 		onlinePlayers = new HashSet<>();
 		inviteMap = new HashMap<>();
@@ -205,9 +212,10 @@ public abstract class PartyImpl implements Party {
 		inviteTasks.remove(to);
 	}
 	
-	
-	/*
-	 * Send Message
+	/**
+	 * Send a message into the party chat
+	 * @param sender Player that is sending the message
+	 * @param playerMessage Message to send
 	 */
 	public void sendChatMessage(PartyPlayerImpl sender, String playerMessage) {
 		if (playerMessage == null || playerMessage.isEmpty())
@@ -229,6 +237,11 @@ public abstract class PartyImpl implements Party {
 		plugin.getSpyManager().sendMessageToSpies(messageFormat, this, sender);
 	}
 	
+	/**
+	 * Send a broadcast message to the party
+	 * @param sender Player that is sending the message
+	 * @param message Message to send
+	 */
 	public void sendBroadcast(PartyPlayerImpl sender, String message) {
 		if (message == null || message.isEmpty())
 			return;
@@ -242,8 +255,8 @@ public abstract class PartyImpl implements Party {
 		}
 	}
 	
-	/*
-	 * Online players
+	/**
+	 * Reload the online players list
 	 */
 	public void reloadOnlinePlayers() {
 		onlinePlayers = new HashSet<>();
@@ -253,6 +266,11 @@ public abstract class PartyImpl implements Party {
 			}
 		}
 	}
+	
+	/**
+	 * Get the number of online players
+	 * @return Returns the number of online players, not vanished
+	 */
 	public int getNumberOnlinePlayers() {
 		int c = 0;
 		try {
@@ -267,13 +285,30 @@ public abstract class PartyImpl implements Party {
 		return c;
 	}
 	
-	/*
-	 * Current color
+	/**
+	 * Get current color
+	 * @return Returns the currently used color
 	 */
+	@Nullable
 	public Color getCurrentColor() {
 		if (getColor() != null)
 			return getColor();
 		return getDynamicColor();
+	}
+	
+	/**
+	 * Give some experience to the party
+	 * @param exp The amount of exp to give
+	 */
+	public void giveExperience(int exp) {
+		experience = experience + exp;
+		// Update party level directly after got experience
+		callChange();
+	}
+	
+	@Override
+	public int getLevel() {
+		return expResult.getLevel();
 	}
 	
 }

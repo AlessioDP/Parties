@@ -59,15 +59,8 @@ general:
 # / = = = = = = = = = = = = = = = = \
 # |      PARTY RANKS  SETTINGS      |
 # \ = = = = = = = = = = = = = = = = /
-# Permissions List:
-#   party.(sendmessage/home/invite/kick/claim)
-#   party.edit.(home/desc/motd/color/password)
-#   party.admin.(rename/rank/teleport)
-#   '*'
-#
-# Not commands: party.(warnondamage/autocommand/bypasscooldown)
+# Permissions List: https://alessiodp.com/wiki/parties/permissions#rank_based_permissions
 # You can negate a permission with -
-# DETAILED INFO HERE: https://alessiodp.com/wiki/parties/permissions#rank_based_permissions
 ranks:
   member:
     rank: 5
@@ -89,7 +82,7 @@ ranks:
     - -party.edit.desc
     - -party.edit.motd
     - -party.edit.color
-    - -party.admin.password
+    - -party.edit.password
     - -party.admin.rename
     - -party.admin.rank
     - -party.admin.teleport
@@ -157,13 +150,14 @@ additional:
   
   friendly-fire:
     # Prevent fights between players of a party
-    enable-protection: true
+    enable: true
+    # You can choose how to handle friendly fire
+    # 1. global = Protect everytime the party
+    # 2. command = Toggle the protection with '/party pvp' command
+    type: global
     # Warn leaders on friendly fire hits
     # Give the rank permission "party.warnondamage" to the party leaders
     warn-players-on-fight: true
-    # Worlds protected from friendly fire ('*' = all worlds)
-    list-worlds:
-    - '*'
     # Enable friendly fire protection for CrackShot weapons
     crackshot:
       enable: false
@@ -203,10 +197,11 @@ additional:
   list:
     enable: true
     # Sort system:
-    # kills = Total kills
-    # players = Total online players
-    # allplayers = Total players
-    # name = Alphabetical order
+    # 1. name = Alphabetical order
+    # 2. players = Total online players
+    # 3. allplayers = Total players
+    # 4. kills = Total kills
+    # 5. experience = Total experience order
     ordered-by: players
     # Filter parties if number of online players is less than X.
     filter-min: 1
@@ -237,4 +232,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 1
+  version: 2

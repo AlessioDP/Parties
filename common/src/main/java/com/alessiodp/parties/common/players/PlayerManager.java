@@ -19,8 +19,6 @@ public abstract class PlayerManager {
 	@Getter private HashMap<UUID, PartyPlayerImpl> listPartyPlayers;
 	@Getter private HashSet<UUID> listPartyPlayersToDelete;
 	
-	@Getter protected boolean bukkit_killSystem;
-	
 	
 	protected PlayerManager(PartiesPlugin instance) {
 		LoggerManager.log(LogLevel.DEBUG, Constants.CLASS_INIT.replace("{class}", getClass().getSimpleName()), true);

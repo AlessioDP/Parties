@@ -24,6 +24,10 @@ public abstract class PartyManager {
 	@Getter private HashMap<String, PartyImpl> listParties;
 	@Getter private HashMap<String, Integer> listPartiesToDelete;
 	
+	// Checks for database saving
+	@Getter protected boolean bukkit_killSystem;
+	@Getter protected boolean bukkit_expSystem;
+	
 	protected PartyManager(PartiesPlugin instance) {
 		LoggerManager.log(LogLevel.DEBUG, Constants.CLASS_INIT.replace("{class}", getClass().getSimpleName()), true);
 		plugin = instance;

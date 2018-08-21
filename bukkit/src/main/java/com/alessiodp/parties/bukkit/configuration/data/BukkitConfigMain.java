@@ -5,6 +5,7 @@ import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BukkitConfigMain extends ConfigMain {
@@ -16,6 +17,27 @@ public class BukkitConfigMain extends ConfigMain {
 	public static int			ADDITIONAL_FOLLOW_TIMEOUT;
 	public static List<String>	ADDITIONAL_FOLLOW_LISTWORLDS;
 	
+	public static boolean		ADDITIONAL_EXP_ENABLE;
+	public static boolean		ADDITIONAL_EXP_LEVELS_ENABLE;
+	public static String		ADDITIONAL_EXP_LEVELS_MODE;
+	public static double		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
+	public static String		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_MULTIPLIER;
+	public static List<Double>	ADDITIONAL_EXP_LEVELS_FIXED;
+	public static String		ADDITIONAL_EXP_LEVELS_CUSTOM_FORMULA;
+	public static boolean		ADDITIONAL_EXP_DROP_ENABLE;
+	public static boolean		ADDITIONAL_EXP_DROP_SHARING_ENABLE;
+	public static int			ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN;
+	public static int			ADDITIONAL_EXP_DROP_SHARING_RANGE;
+	public static String		ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA;
+	public static boolean		ADDITIONAL_EXP_DROP_GET_NORMAL;
+	public static boolean		ADDITIONAL_EXP_DROP_GET_SKILLAPI;
+	public static String		ADDITIONAL_EXP_DROP_CONVERT_NORMAL;
+	public static String		ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI;
+	public static boolean		ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP;
+	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE;
+	public static String		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE;
+	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE;
+	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_HANDLEONLYMMMOBS;
 	
 	// Addons settings
 	public static boolean		ADDONS_BANMANAGER_ENABLE;
@@ -58,6 +80,7 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		COMMANDS_CMD_CLAIM;
 	public static String		COMMANDS_CMD_CONFIRM;
 	public static String		COMMANDS_CMD_HOME;
+	public static String		COMMANDS_CMD_PVP;
 	public static String		COMMANDS_CMD_SETHOME;
 	public static String		COMMANDS_CMD_TELEPORT;
 	
@@ -79,6 +102,30 @@ public class BukkitConfigMain extends ConfigMain {
 		ADDITIONAL_FOLLOW_TIMEOUT = 100;
 		ADDITIONAL_FOLLOW_LISTWORLDS = new ArrayList<>();
 		ADDITIONAL_FOLLOW_LISTWORLDS.add("*");
+		
+		ADDITIONAL_EXP_LEVELS_ENABLE = true;
+		ADDITIONAL_EXP_LEVELS_MODE = "progressive";
+		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START = 100;
+		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_MULTIPLIER = "*2";
+		ADDITIONAL_EXP_LEVELS_FIXED = new LinkedList<>();
+		ADDITIONAL_EXP_LEVELS_FIXED.add(100.0);
+		ADDITIONAL_EXP_LEVELS_FIXED.add(500.0);
+		ADDITIONAL_EXP_LEVELS_FIXED.add(1000.0);
+		ADDITIONAL_EXP_LEVELS_CUSTOM_FORMULA = "2 + (Math.log(%total_exp%/100) / Math.log(2))";
+		ADDITIONAL_EXP_DROP_ENABLE = true;
+		ADDITIONAL_EXP_DROP_SHARING_ENABLE = false;
+		ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN = 1;
+		ADDITIONAL_EXP_DROP_SHARING_RANGE = 30;
+		ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA = "%exp% / %number_players%";
+		ADDITIONAL_EXP_DROP_GET_NORMAL = true;
+		ADDITIONAL_EXP_DROP_GET_SKILLAPI = false;
+		ADDITIONAL_EXP_DROP_CONVERT_NORMAL = "party";
+		ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI = "party";
+		ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP = false;
+		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE = false;
+		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE = "MOB";
+		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = false;
+		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_HANDLEONLYMMMOBS = true;
 		
 		
 		// Addons settings
@@ -122,6 +169,7 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_CLAIM = "claim";
 		COMMANDS_CMD_CONFIRM = "confirm";
 		COMMANDS_CMD_HOME = "home";
+		COMMANDS_CMD_PVP = "pvp";
 		COMMANDS_CMD_SETHOME = "sethome";
 		COMMANDS_CMD_TELEPORT = "teleport";
 		
@@ -141,6 +189,7 @@ public class BukkitConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("chat");
 		ConfigMain.COMMANDS_ORDER.add("desc");
 		ConfigMain.COMMANDS_ORDER.add("motd");
+		ConfigMain.COMMANDS_ORDER.add("pvp");
 		ConfigMain.COMMANDS_ORDER.add("home");
 		ConfigMain.COMMANDS_ORDER.add("sethome");
 		ConfigMain.COMMANDS_ORDER.add("color");
@@ -168,6 +217,30 @@ public class BukkitConfigMain extends ConfigMain {
 		ADDITIONAL_FOLLOW_RANKMINIMUM = confAdapter.getInt("additional.follow-party.minimum-rank-to-follow", ADDITIONAL_FOLLOW_RANKMINIMUM);
 		ADDITIONAL_FOLLOW_TIMEOUT = confAdapter.getInt("additional.follow-party.timeout-portal", ADDITIONAL_FOLLOW_TIMEOUT);
 		ADDITIONAL_FOLLOW_LISTWORLDS = confAdapter.getStringList("additional.follow-party.list-worlds", ADDITIONAL_FOLLOW_LISTWORLDS);
+		
+		ADDITIONAL_EXP_ENABLE = confAdapter.getBoolean("additional.exp-system.enable", ADDITIONAL_EXP_ENABLE);
+		ADDITIONAL_EXP_LEVELS_ENABLE = confAdapter.getBoolean("additional.exp-system.levels.enable", ADDITIONAL_EXP_LEVELS_ENABLE);
+		ADDITIONAL_EXP_LEVELS_MODE = confAdapter.getString("additional.exp-system.levels.mode", ADDITIONAL_EXP_LEVELS_MODE);
+		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START = confAdapter.getDouble("additional.exp-system.levels.progressive.level-start", ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START);
+		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_MULTIPLIER = confAdapter.getString("additional.exp-system.levels.progressive.level-multiplier", ADDITIONAL_EXP_LEVELS_PROGRESSIVE_MULTIPLIER);
+		for (String level : confAdapter.getStringList("additional.exp-system.levels.fixed", new LinkedList<>())) {
+			ADDITIONAL_EXP_LEVELS_FIXED.add(Double.parseDouble(level));
+		}
+		ADDITIONAL_EXP_LEVELS_CUSTOM_FORMULA = confAdapter.getString("additional.exp-system.levels.custom.formula", ADDITIONAL_EXP_LEVELS_CUSTOM_FORMULA);
+		ADDITIONAL_EXP_DROP_ENABLE = confAdapter.getBoolean("additional.exp-system.exp-drop.enable", ADDITIONAL_EXP_DROP_ENABLE);
+		ADDITIONAL_EXP_DROP_SHARING_ENABLE = confAdapter.getBoolean("additional.exp-system.exp-drop.sharing.enable", ADDITIONAL_EXP_DROP_SHARING_ENABLE);
+		ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN = confAdapter.getInt("additional.exp-system.exp-drop.sharing.if-more-than", ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN);
+		ADDITIONAL_EXP_DROP_SHARING_RANGE = confAdapter.getInt("additional.exp-system.exp-drop.sharing.range", ADDITIONAL_EXP_DROP_SHARING_RANGE);
+		ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA = confAdapter.getString("additional.exp-system.exp-drop.sharing.divide-formula", ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA);
+		ADDITIONAL_EXP_DROP_GET_NORMAL = confAdapter.getBoolean("additional.exp-system.exp-drop.exp-to-get.normal", ADDITIONAL_EXP_DROP_GET_NORMAL);
+		ADDITIONAL_EXP_DROP_GET_SKILLAPI = confAdapter.getBoolean("additional.exp-system.exp-drop.exp-to-get.skillapi", ADDITIONAL_EXP_DROP_GET_SKILLAPI);
+		ADDITIONAL_EXP_DROP_CONVERT_NORMAL = confAdapter.getString("additional.exp-system.exp-drop.convert-exp-into.normal", ADDITIONAL_EXP_DROP_CONVERT_NORMAL);
+		ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI = confAdapter.getString("additional.exp-system.exp-drop.convert-exp-into.skillapi", ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI);
+		ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP = confAdapter.getBoolean("additional.exp-system.exp-drop.convert-exp-into.remove-real-exp", ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP);
+		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE = confAdapter.getBoolean("additional.exp-system.exp-drop.addons.skillapi.enable", ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE);
+		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE = confAdapter.getString("additional.exp-system.exp-drop.addons.skillapi.exp-source", ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE);
+		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = confAdapter.getBoolean("additional.exp-system.exp-drop.addons.mythicmobs.enable", ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE);
+		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_HANDLEONLYMMMOBS = confAdapter.getBoolean("additional.exp-system.exp-drop.addons.mythicmobs.handle-only-mm-mobs", ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_HANDLEONLYMMMOBS);
 		
 		
 		// Addons settings
@@ -212,6 +285,7 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_CLAIM = confAdapter.getString("commands.main-commands.claim", COMMANDS_CMD_CLAIM);
 		COMMANDS_CMD_CONFIRM = confAdapter.getString("commands.main-commands.confirm", COMMANDS_CMD_CONFIRM);
 		COMMANDS_CMD_HOME = confAdapter.getString("commands.main-commands.home", COMMANDS_CMD_HOME);
+		COMMANDS_CMD_PVP = confAdapter.getString("commands.main-commands.pvp", COMMANDS_CMD_PVP);
 		COMMANDS_CMD_SETHOME = confAdapter.getString("commands.main-commands.sethome", COMMANDS_CMD_SETHOME);
 		COMMANDS_CMD_TELEPORT = confAdapter.getString("commands.main-commands.teleport", COMMANDS_CMD_TELEPORT);
 	}

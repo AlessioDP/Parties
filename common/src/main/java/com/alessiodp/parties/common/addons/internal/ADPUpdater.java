@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
 public class ADPUpdater {
 	private static PartiesPlugin plugin;
@@ -111,7 +112,7 @@ public class ADPUpdater {
 					Constants.UPDATER_FALLBACK_KEY +
 					"&resource=" +
 					Constants.UPDATER_FALLBACK_RESOURCE;
-			conn.getOutputStream().write(postContent.getBytes("UTF-8"));
+			conn.getOutputStream().write(postContent.getBytes(StandardCharsets.UTF_8));
 			
 			String response = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
 			// Check if is a correct version and not a message

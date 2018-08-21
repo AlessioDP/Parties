@@ -5,7 +5,7 @@ website: ${plugin.website}
 version: ${plugin.version}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
-softdepend: [CrackShot, Dynmap, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
+softdepend: [CrackShot, Dynmap, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
 permissions:
   parties.user.accept:
     description: Allow access to /party accept
@@ -55,6 +55,8 @@ permissions:
     description: Allow access to /party claim with GriefPrevention
   parties.user.home:
       description: Allow access to /party home
+  parties.user.pvp:
+    description: Allow access to /party pvp
   parties.user.sethome:
       description: Allow access to /party sethome
   parties.user.teleport:
@@ -87,6 +89,8 @@ permissions:
     description: Send a message if there is an update
   parties.admin.home.others:
     description: Allow access to /party home on other homes
+  parties.admin.pvp.bypass:
+    description: Bypass friendly fire protection
   parties.admin.vaultbypass:
     description: Bypass commands that have a price
 
@@ -118,6 +122,7 @@ permissions:
       parties.user.sendmessage: true
       parties.user.claim: true
       parties.user.home: true
+      parties.user.pvp: true
       parties.user.sethome: true
       parties.user.teleport: true
   parties.admin.*:
@@ -125,7 +130,7 @@ permissions:
     description: Can use all party commands
     children:
       parties.user.*: true
-      parties.admin.rename.others: true
+      parties.admin.create.fixed: true
       parties.admin.delete: true
       parties.admin.delete.silent: true
       parties.admin.fixed: true
@@ -140,4 +145,5 @@ permissions:
       parties.admin.spy: true
       parties.admin.updates: true
       parties.admin.home.others: true
+      parties.admin.pvp.bypass: true
       parties.admin.vaultbypass: true

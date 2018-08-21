@@ -9,11 +9,13 @@ import com.alessiodp.parties.bukkit.addons.BukkitAddonManager;
 import com.alessiodp.parties.bukkit.addons.external.MetricsHandler;
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.bukkit.commands.BukkitCommandManager;
+import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitMoveListener;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
 import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
+import com.alessiodp.parties.bukkit.players.ExpManager;
 import com.alessiodp.parties.bukkit.user.BukkitOfflineUser;
 import com.alessiodp.parties.bukkit.user.BukkitUser;
 import com.alessiodp.parties.bukkit.utils.BukkitEconomyManager;
@@ -34,6 +36,7 @@ import com.alessiodp.parties.bukkit.listeners.BukkitFollowListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitJoinLeaveListener;
 import com.alessiodp.parties.bukkit.scheduling.BukkitPartiesScheduler;
 import com.alessiodp.parties.bukkit.utils.BukkitMessageUtils;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -41,6 +44,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
 public class BukkitPartiesPlugin extends PartiesPlugin {
+	@Getter private ExpManager expManager;
 	
 	public BukkitPartiesPlugin(PartiesBootstrap instance) {
 		super(instance);
@@ -78,6 +82,7 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		partyManager = new BukkitPartyManager(this);
 		playerManager = new BukkitPlayerManager(this);
 		addonManager = new BukkitAddonManager(this);
+		expManager = new ExpManager(this);
 	}
 	
 	@Override
@@ -96,9 +101,10 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	protected void registerListeners() {
 		PluginManager pm = getBootstrap().getServer().getPluginManager();
 		pm.registerEvents(new BukkitChatListener(this), getBootstrap());
+		pm.registerEvents(new BukkitExpListener(this), getBootstrap());
+		pm.registerEvents(new BukkitFightListener(this), getBootstrap());
 		pm.registerEvents(new BukkitFollowListener(this), getBootstrap());
 		pm.registerEvents(new BukkitJoinLeaveListener(this), getBootstrap());
-		pm.registerEvents(new BukkitFightListener(this), getBootstrap());
 		pm.registerEvents(new BukkitMoveListener(this), getBootstrap());
 	}
 	

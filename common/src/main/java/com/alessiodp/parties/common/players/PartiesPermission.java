@@ -28,6 +28,7 @@ public enum PartiesPermission {
 	// Bukkit
 	CLAIM		("parties.user.claim"),
 	HOME		("parties.user.home"),
+	PVP			("parties.user.pvp"),
 	SETHOME		("parties.user.sethome"),
 	TELEPORT	("parties.user.teleport"),
 	
@@ -47,6 +48,7 @@ public enum PartiesPermission {
 	ADMIN_UPDATES				("parties.admin.updates"),
 	// Bukkit
 	ADMIN_HOME_OTHERS			("parties.admin.home.others"),
+	ADMIN_PVP_BYPASS			("parties.admin.pvp.bypass"),
 	ADMIN_VAULTBYPASS			("parties.admin.vaultbypass"),
 	
 	
@@ -61,6 +63,7 @@ public enum PartiesPermission {
 	PRIVATE_EDIT_MOTD("party.edit.motd"),
 	PRIVATE_EDIT_COLOR("party.edit.color"),
 	PRIVATE_EDIT_PASSWORD("party.edit.password"),
+	PRIVATE_EDIT_PVP("party.edit.pvp"),
 	
 	PRIVATE_ADMIN_RANK("party.admin.rank"),
 	PRIVATE_ADMIN_RENAME("party.admin.rename"),

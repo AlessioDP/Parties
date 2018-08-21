@@ -114,7 +114,9 @@ public interface Party {
 	 * Get the party prefix
 	 * 
 	 * @return Returns the prefix of the party
+	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
 	 */
+	@Deprecated
 	String getPrefix();
 	
 	/**
@@ -122,14 +124,18 @@ public interface Party {
 	 * 
 	 * @param prefix
 	 *            The prefix of the party
+	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
 	 */
+	@Deprecated
 	void setPrefix(String prefix);
 	
 	/**
 	 * Get the party suffix
 	 * 
 	 * @return Returns the suffix of the party
+	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
 	 */
+	@Deprecated
 	String getSuffix();
 	
 	/**
@@ -137,7 +143,9 @@ public interface Party {
 	 * 
 	 * @param suffix
 	 *            The suffix of the party
+	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
 	 */
+	@Deprecated
 	void setSuffix(String suffix);
 	
 	/**
@@ -184,4 +192,33 @@ public interface Party {
 	 *            The password of the party, HASHED
 	 */
 	void setPassword(String password);
+	
+	/**
+	 * Check if the party is protected from friendly fire
+	 *
+	 * @return Returns true if pvp between players is protected
+	 */
+	boolean isFriendlyFireProtected();
+	
+	/**
+	 * Get the party experience
+	 *
+	 * @return Returns the total experience of the party
+	 */
+	double getExperience();
+	
+	/**
+	 * Set the party experience
+	 *
+	 * @param experience
+	 *            The experience number to set
+	 */
+	void setExperience(double experience);
+	
+	/**
+	 * Get the current party level
+	 *
+	 * @return Returns the calculated level of the party
+	 */
+	int getLevel();
 }

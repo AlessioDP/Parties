@@ -175,11 +175,16 @@ public class FileDispatcher implements IDatabaseDispatcher {
 		if (ConfigParties.COLOR_ENABLE)
 			node.getNode("color").setValue(party.getColor() != null ? party.getColor().getName() : null);
 		
-		if (plugin.getPlayerManager().isBukkit_killSystem() && party.getKills() > 0)
+		if (plugin.getPartyManager().isBukkit_killSystem() && party.getKills() > 0)
 			node.getNode("kills").setValue(party.getKills());
 		
 		if (ConfigParties.PASSWORD_ENABLE)
 			node.getNode("password").setValue(!party.getPassword().isEmpty() ? party.getPassword() : null);
+		
+		node.getNode("pvp").setValue(party.isFriendlyFireProtected());
+		
+		if (plugin.getPartyManager().isBukkit_expSystem() && party.getExperience() > 0)
+			node.getNode("experience").setValue(party.getExperience());
 		
 		node.getNode("home").setValue(party.getHome() != null ? party.getHome().toString() : null);
 		
@@ -305,8 +310,6 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			
 			ret.setDescription(node.getNode("desc").getString(""));
 			ret.setMotd(node.getNode("motd").getString(""));
-			ret.setPrefix(node.getNode("prefix").getString(""));
-			ret.setSuffix(node.getNode("suffix").getString(""));
 			ret.setColor(
 					plugin.getColorManager().searchColorByName(
 							node.getNode("color").getString("")
@@ -315,6 +318,8 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			ret.setKills(node.getNode("kills").getInt(0));
 			ret.setPassword(node.getNode("password").getString(""));
 			ret.setHome(HomeLocationImpl.deserialize(node.getNode("home").getString("")));
+			ret.setFriendlyFireProtected(node.getNode("pvp").getBoolean(false));
+			ret.setExperience(node.getNode("experience").getDouble(0));
 			
 			// Leader check
 			String leader = node.getNode("leader").getString("");

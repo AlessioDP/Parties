@@ -4,14 +4,11 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BukkitConfigParties extends ConfigParties {
 	// Additional settings
 	public static boolean		FRIENDLYFIRE_ENABLE;
+	public static String		FRIENDLYFIRE_TYPE;
 	public static boolean		FRIENDLYFIRE_WARNONFIGHT;
-	public static List<String> FRIENDLYFIRE_LISTWORLDS;
 	public static boolean		FRIENDLYFIRE_CRACKSHOT_ENABLE;
 	
 	public static boolean		HOME_ENABLE;
@@ -39,8 +36,8 @@ public class BukkitConfigParties extends ConfigParties {
 		// Bukkit configurations
 		// Additional settings
 		FRIENDLYFIRE_ENABLE = true;
+		FRIENDLYFIRE_TYPE = "global";
 		FRIENDLYFIRE_WARNONFIGHT = true;
-		FRIENDLYFIRE_LISTWORLDS = new ArrayList<>();
 		FRIENDLYFIRE_CRACKSHOT_ENABLE = false;
 		
 		HOME_ENABLE = false;
@@ -64,9 +61,9 @@ public class BukkitConfigParties extends ConfigParties {
 		
 		// Bukkit configuration
 		// Additional settings
-		FRIENDLYFIRE_ENABLE = confAdapter.getBoolean("additional.friendly-fire.enable-protection", FRIENDLYFIRE_ENABLE);
+		FRIENDLYFIRE_ENABLE = confAdapter.getBoolean("additional.friendly-fire.enable", FRIENDLYFIRE_ENABLE);
+		FRIENDLYFIRE_TYPE = confAdapter.getString("additional.friendly-fire.type", FRIENDLYFIRE_TYPE);
 		FRIENDLYFIRE_WARNONFIGHT = confAdapter.getBoolean("additional.friendly-fire.warn-players-on-fight", FRIENDLYFIRE_WARNONFIGHT);
-		FRIENDLYFIRE_LISTWORLDS = confAdapter.getStringList("additional.friendly-fire.list-worlds", FRIENDLYFIRE_LISTWORLDS);
 		FRIENDLYFIRE_CRACKSHOT_ENABLE = confAdapter.getBoolean("additional.friendly-fire.crackshot.enable", FRIENDLYFIRE_CRACKSHOT_ENABLE);
 		
 		HOME_ENABLE = confAdapter.getBoolean("additional.home.enable", HOME_ENABLE);

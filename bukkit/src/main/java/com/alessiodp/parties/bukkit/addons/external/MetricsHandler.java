@@ -61,9 +61,31 @@ public class MetricsHandler {
 				return "YAML";
 			}
 		});
-		metrics.addCustomChart(new Metrics.SimplePie("exp_system") {
+		metrics.addCustomChart(new Metrics.SimplePie("exp_levels") {
 			@Override
 			public String getValue() {
+				if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+					switch (BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE.toLowerCase()) {
+						case "normal":
+							return "Normal";
+						case "skillapi":
+							return "SkillAPI";
+						default:
+							return "Party";
+						
+					}
+				}
+				return "Disabled";
+			}
+		});
+		metrics.addCustomChart(new Metrics.SimplePie("exp_drop") {
+			@Override
+			public String getValue() {
+				if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_DROP_ENABLE) {
+					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE)
+						return "Enabled with MM";
+					return "Enabled";
+				}
 				return "Disabled";
 			}
 		});

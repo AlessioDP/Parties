@@ -9,6 +9,7 @@ public enum BukkitCommands implements PartiesCommand {
 	CLAIM,
 	CONFIRM,
 	HOME,
+	PVP,
 	SETHOME,
 	TELEPORT;
 	
@@ -26,6 +27,8 @@ public enum BukkitCommands implements PartiesCommand {
 		BukkitCommands.CONFIRM.command = BukkitConfigMain.COMMANDS_CMD_CONFIRM;
 		BukkitCommands.HOME.command = BukkitConfigMain.COMMANDS_CMD_HOME;
 		BukkitCommands.HOME.help = BukkitMessages.HELP_ADDCMD_HOME;
+		BukkitCommands.PVP.command = BukkitConfigMain.COMMANDS_CMD_PVP;
+		BukkitCommands.PVP.help = BukkitMessages.HELP_ADDCMD_PVP;
 		BukkitCommands.SETHOME.command = BukkitConfigMain.COMMANDS_CMD_SETHOME;
 		BukkitCommands.SETHOME.help = BukkitMessages.HELP_ADDCMD_SETHOME;
 		BukkitCommands.TELEPORT.command = BukkitConfigMain.COMMANDS_CMD_TELEPORT;

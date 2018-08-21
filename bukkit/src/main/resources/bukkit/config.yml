@@ -78,6 +78,9 @@ storage:
       # SQL based DBs: MySQL, SQLite
       general-settings:
         varchar-size: 255
+        upgrade:
+          save-old-table: true
+          old-table-suffix: "_backup"
         tables:
           parties: "parties_parties"
           players: "parties_players"
@@ -134,6 +137,82 @@ additional:
     starts-with: []
     ends-with: []
 
+  exp-system:
+    # Wiki here: https://alessiodp.com/wiki/parties/expsystem
+    enable: false
+    levels:
+      enable: true
+      # Modes: progressive, fixed, custom
+      mode: progressive
+      # Make infinite levels with a progressive multiplier
+      progressive:
+        # Level 1: 100, Level 2: 200, Level 3: 400
+        level-start: 100
+        level-multiplier: "*2"
+      # Fixed levels experience cap
+      # Example: Level 1 is 100, Level 2 is 600, Level 3 is 1600
+      fixed:
+        - 100
+        - 500
+        - 1000
+      # Use a custom formula, it is a function of total experience
+      # Only for EXPERTS (math functions knowledge required)
+      # Use it only if you need a complex formula to calculate the
+      # level from the total experience
+      custom:
+        # Use javascript code here.
+        # Default formula is: f(x) = 2 log2(x/100)
+        # Use x as %total_exp% to obtain current level.
+        # By default, this is: 100, 200, 400, 800 of TOTAL experience
+        # If you use the custom mode, you cannot use anymore placeholders
+        # to calculate how many exp you need to level up.
+        formula: "2 + (Math.log(%total_exp%/100) / Math.log(2))"
+    exp-drop:
+      # Enable exp dropping
+      enable: true
+      sharing:
+        # Enable exp sharing between players
+        # Useless if you are collecting exp for the party
+        # Useful if you are collecting exp for each player
+        enable: false
+        if-more-than: 1
+        range: 30
+        # Special tags:
+        # %exp% = Experience dropped
+        # %number_players% = Number of players in range
+        divide-formula: "%exp% / %number_players%"
+      exp-to-get:
+        # Choose which kind of experience to get
+        # 1. normal = Minecraft normal experience
+        # 2. skillapi = Get the experience of each mob from SkillAPI config
+        normal: true
+        skillapi: false
+      convert-exp-into:
+        # You can choose how to transfer the exp
+        # 1. party = send the exp to the party (total experience)
+        # 2. normal = send it as vanilla Minecraft experience
+        # 3. skillapi = send it as SkillAPI experience
+        # Read the wiki for more information about exp convert
+        normal: party
+        skillapi: party
+        # When Parties get mob experience, remove it from the mob
+        # (mobs will not drop experience anymore)
+        # If you want just level up the party, you can still let your players
+        # level up, by leaving this option to false
+        remove-real-exp: false
+      addons:
+        skillapi:
+          # Enable support for SkillAPI
+          enable: false
+          exp-source: "MOB"
+        mythicmobs:
+          # Enable support for MythicMobs entities
+          # Parties will get exp and skillapi-exp of custom mobs
+          enable: false
+          # If enabled, Parties will ONLY get experience from MM drops
+          # Useful if you have customized every mob drop
+          handle-only-mm-mobs: true
+
   follow-party:
     # When player join in a world, the party will be teleported into it
     enable: false
@@ -166,6 +245,14 @@ additional:
       color-code: "%color_code%"
       color-command: "%color_command%"
       desc: "%desc%"
+      # Total experience of the party
+      experience-total: "%experience_total%"
+      # Level number of the party
+      experience-level: "%experience_level%"
+      # Current and necessary number of experience to level up.
+      # Example: 100/400 = %experience_levelup_current% / %experience_levelup_necessary%
+      experience-levelup-current: "%experience_levelup_current%"
+      experience-levelup-necessary: "%experience_levelup_necessary%"
       kills: "%kills%"
       motd: "%motd%"
       party: "%party%"
@@ -183,7 +270,7 @@ addons:
     prevent-chat-muted: true
     # Warning: BanManager doesn't work good with offline-mode UUIDs
     auto-kick-banned: true
-  
+
   # You can create a mark for each party home
   dynmap:
     enable: false
@@ -197,7 +284,7 @@ addons:
       label: "<b>%party%</b>'s home"
       # Dynmap icons
       icon: "house"
-  
+
   # Give GP permissions to your entire party
   griefprevention:
     # This will enable "/party claim <permission>" command
@@ -270,6 +357,7 @@ commands:
     motd: "motd"
     notify: "notify"
     password: "password"
+    pvp: "pvp"
     rank: "rank"
     reload: "reload"
     rename: "rename"
@@ -300,6 +388,7 @@ commands:
   - chat
   - desc
   - motd
+  - pvp
   - home
   - sethome
   - color
@@ -316,4 +405,4 @@ commands:
 
 # End of configuration file
 dont-edit-this:
-    version: 1
+    version: 2

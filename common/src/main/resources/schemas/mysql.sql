@@ -6,12 +6,12 @@ CREATE TABLE `{table_parties}` (
 	`leader`		VARCHAR({varcharsize}) NOT NULL,
 	`description`	VARCHAR({varcharsize}) DEFAULT '',
 	`motd`			VARCHAR({varcharsize}) DEFAULT '',
-	`prefix`		VARCHAR({varcharsize}) DEFAULT '',
-	`suffix`		VARCHAR({varcharsize}) DEFAULT '',
 	`color`			VARCHAR({varcharsize}) DEFAULT '',
 	`kills`			INT DEFAULT 0,
 	`password`		VARCHAR({varcharsize}) DEFAULT '',
 	`home`			VARCHAR({varcharsize}) DEFAULT '',
+	`pvp`			TINYINT(1) DEFAULT 0 NOT NULL,
+	`experience`	DOUBLE DEFAULT 0,
 	PRIMARY KEY (`name`))
  DEFAULT CHARSET='{charset}';
 /*END_PARTIES*/

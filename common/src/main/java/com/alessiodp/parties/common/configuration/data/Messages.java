@@ -276,7 +276,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_INFO_CONTENT.add("&b============ &l%party%'s Info &r&b============");
 		MAINCMD_INFO_CONTENT.add("&b&lDescription&r&7: %desc%");
 		MAINCMD_INFO_CONTENT.add("&b&lMotd&r&7: %motd%");
-		MAINCMD_INFO_CONTENT.add("&bLeader&7: %leader%");
+		MAINCMD_INFO_CONTENT.add("&bLeader&7: %list_leader%");
 		MAINCMD_INFO_CONTENT.add("&bMods&7: %list_moderator%");
 		MAINCMD_INFO_CONTENT.add("&bMembers&7: %list_member%");
 		MAINCMD_INFO_CONTENT.add("&bOnline players&7: %onlinenumber%");
@@ -331,7 +331,7 @@ public abstract class Messages extends ConfigurationFile {
 		
 		MAINCMD_RANK_CHANGED = "&a%player% rank changed into %rank_name%";
 		MAINCMD_RANK_BROADCAST = "";
-		MAINCMD_RANK_WRONGRANK = "&cRank '%rank_typed%' doesn't exist!";
+		MAINCMD_RANK_WRONGRANK = "&cRank '%rank_name%' doesn't exist!";
 		MAINCMD_RANK_SAMERANK = "&c%player% is already %rank_name%!";
 		MAINCMD_RANK_LOWRANK = "&cYou cannot edit players with an equivalent or higher rank than yours!";
 		MAINCMD_RANK_TOHIGHERRANK = "&cYou cannot promote to a rank equivalent or higher than yours!";
@@ -374,7 +374,7 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_LIST_HEADER = "&b============ &lOnline Parties List &r&b============";
 		ADDCMD_LIST_FOOTER = "&b================ &lPage %page% of %maxpages% &r&b================";
 		ADDCMD_LIST_NOONE = "&7No one";
-		ADDCMD_LIST_FORMATPARTY = "&b%party% &7[&6Online %onlinenumber%&7] %desc%";
+		ADDCMD_LIST_FORMATPARTY = "[{\"text\":\"%party%\",\"color\":\"aqua\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party info %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Show info\",\"color\":\"gold\"}]}}},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"Online %onlinenumber%\",\"color\":\"gold\"},{\"text\":\"] %desc%\",\"color\":\"gray\"}]";
 		ADDCMD_LIST_WRONGCMD = "&cWrong variables: Type &7/party list [page]";
 		
 		ADDCMD_MOTD_CHANGED = "&bParty MOTD changed";
@@ -437,7 +437,7 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_ADDCMD_LIST = "{\"text\":\"\",\"extra\":[{\"text\":\"/party list [page]\",\"color\":\"aqua\"},{\"text\":\" - List of online parties\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party list \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_MOTD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party motd <motd/remove>\",\"color\":\"aqua\"},{\"text\":\" - Add/remove motd\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party motd \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_NOTIFY = "{\"text\":\"\",\"extra\":[{\"text\":\"/party notify [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle notifications\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party notify \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_ADDCMD_PASSWORD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party teleport\",\"color\":\"aqua\"},{\"text\":\" - Teleport your party to you\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party teleport\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_PASSWORD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party password <pw/remove>\",\"color\":\"aqua\"},{\"text\":\" - Change party password\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party password \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 	}
 	
 	@Override

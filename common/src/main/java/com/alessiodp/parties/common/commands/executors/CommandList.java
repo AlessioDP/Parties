@@ -78,22 +78,7 @@ public class CommandList extends AbstractCommand {
 		}
 		
 		// Order parties
-		switch (ConfigParties.LIST_ORDEREDBY.toLowerCase()) {
-		case "kills":
-			if (!plugin.getPlayerManager().isBukkit_killSystem())
-				parties = orderName(parties);
-			else
-				parties = orderKills(parties);
-			break;
-		case "players":
-			parties = orderPlayers(parties);
-			break;
-		case "allplayers":
-			parties = orderAllPlayers(parties);
-			break;
-		default:
-			parties = orderName(parties);
-		}
+		order(parties, OrderType.parse(ConfigParties.LIST_ORDEREDBY));
 		
 		// Group up parties
 		parties = limitList(parties);
@@ -134,81 +119,51 @@ public class CommandList extends AbstractCommand {
 				.replace("%page%",		Integer.toString(selectedPage))
 				.replace("%maxpages%",	Integer.toString(maxPages)));
 		
-		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_IGNORE_STOP
+		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_LIST
 				.replace("{player}", pp.getName()), true);
 	}
 	
-	
-	private List<PartyImpl> orderName(List<PartyImpl> list) {
+	private void order(List<PartyImpl> list, OrderType order) {
 		int from;
-		
 		for (int c = 0; c < list.size() - 1;c++) {
 			from = c;
 			for (int c2 = c+1 ; c2 < list.size(); c2++) {
-				if (list.get(c2).getName().trim().compareTo(list.get(from).getName().trim()) < 0) {
+				if (switchParty(list.get(c2), list.get(from), order)) {
 					from = c2;
 				}
 			}
 			if (from != c) {
 				PartyImpl temp = list.get(c);
-				list.set(c, list.get(from)); 
+				list.set(c, list.get(from));
 				list.set(from, temp);
 			}
 		}
-		return list;
 	}
-	private List<PartyImpl> orderPlayers(List<PartyImpl> list) {
-		int from;
-		
-		for (int c=0; c < list.size() - 1;c++) {
-			from = c;
-			for (int c2 = c+1 ; c2 < list.size(); c2++) {
-				if (list.get(c2).getNumberOnlinePlayers() > list.get(from).getNumberOnlinePlayers()) {
-					from = c2;
-				}
-			}
-			if (from != c) {
-				PartyImpl temp = list.get(c);
-				list.set(c, list.get(from)); 
-				list.set(from, temp);
-			}
+	private boolean switchParty(PartyImpl first, PartyImpl second, OrderType order) {
+		boolean ret;
+		switch (order) {
+			case PLAYERS:
+				// Online players order
+				ret = first.getNumberOnlinePlayers() > second.getNumberOnlinePlayers();
+				break;
+			case ALLPLAYERS:
+				// Total players order
+				ret = first.getMembers().size() > second.getMembers().size();
+				break;
+			case KILLS:
+				// Party kills order
+				ret = first.getKills() > second.getKills();
+				break;
+			case EXPERIENCE:
+				// Party level order
+				ret = first.getExperience() > second.getExperience();
+				break;
+			default:
+				ret = first.getName().trim().compareTo(second.getName().trim()) < 0;
 		}
-		return list;
+		return ret;
 	}
-	private List<PartyImpl> orderAllPlayers(List<PartyImpl> list) {
-		int from;
-		for (int c=0; c < list.size() - 1;c++) {
-			from = c;
-			for (int c2 = c+1 ; c2 < list.size(); c2++) {
-				if (list.get(c2).getMembers().size() > list.get(from).getMembers().size()) {
-					from = c2;
-				}
-			}
-			if (from != c) {
-				PartyImpl temp = list.get(c);
-				list.set(c, list.get(from)); 
-				list.set(from, temp);
-			}
-		}
-		return list;
-	}
-	private List<PartyImpl> orderKills(List<PartyImpl> list) {
-		int from;
-		for (int c=0; c < list.size() - 1;c++) {
-			from = c;
-			for (int c2 = c+1 ; c2 < list.size(); c2++) {
-				if (list.get(c2).getKills() > list.get(from).getKills()) {
-					from = c2;
-				}
-			}
-			if (from != c) {
-				PartyImpl temp = list.get(c);
-				list.set(c, list.get(from)); 
-				list.set(from, temp);
-			}
-		}
-		return list;
-	}
+	
 	private List<PartyImpl> limitList(List<PartyImpl> list) {
 		List<PartyImpl> ret = list;
 		if (ConfigParties.LIST_LIMITPARTIES >= 0) {
@@ -222,5 +177,28 @@ public class CommandList extends AbstractCommand {
 			}
 		}
 		return ret;
+	}
+	
+	private enum OrderType {
+		NAME, PLAYERS, ALLPLAYERS, KILLS, EXPERIENCE;
+		
+		static OrderType parse(String name) {
+			OrderType ret = NAME;
+			switch (name.toLowerCase()) {
+				case "players":
+					ret = PLAYERS;
+					break;
+				case "allplayers":
+					ret = ALLPLAYERS;
+					break;
+				case "kills":
+					ret = KILLS;
+					break;
+				case "experience":
+					ret = EXPERIENCE;
+					break;
+			}
+			return ret;
+		}
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class BukkitConfigurationSectionAdapter implements ConfigurationSectionAdapter {
 	private ConfigurationSection configurationSection;
-	
+	public ConfigurationSection getConf() {return configurationSection;}
 	public BukkitConfigurationSectionAdapter(ConfigurationSection configurationSection) {
 		this.configurationSection = configurationSection;
 	}

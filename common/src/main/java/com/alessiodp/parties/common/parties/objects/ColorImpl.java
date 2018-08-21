@@ -2,6 +2,8 @@ package com.alessiodp.parties.common.parties.objects;
 
 import com.alessiodp.parties.api.interfaces.Color;
 
+import java.util.Objects;
+
 public class ColorImpl implements Color {
 	private String name;
 	private String command;
@@ -78,5 +80,23 @@ public class ColorImpl implements Color {
 	@Override
 	public int getDynamicKills() {
 		return dynamicKills;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, command, code, dynamicPriority, dynamicMembers, dynamicKills);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == this || other instanceof ColorImpl) {
+			return Objects.equals(name, ((ColorImpl) other).name)
+					&& Objects.equals(command, ((ColorImpl) other).command)
+					&& Objects.equals(code, ((ColorImpl) other).code)
+					&& dynamicPriority == ((ColorImpl) other).dynamicPriority
+					&& dynamicMembers == ((ColorImpl) other).dynamicMembers
+					&& dynamicKills == ((ColorImpl) other).dynamicKills;
+		}
+		return false;
 	}
 }

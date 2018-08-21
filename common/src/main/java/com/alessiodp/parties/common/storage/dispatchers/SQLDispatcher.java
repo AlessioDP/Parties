@@ -116,21 +116,13 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 		boolean ret = false;
 		try (Connection connection = getConnection()) {
 			connection.setAutoCommit(false);
-			//Renaming tables
-			List<String> tables = new ArrayList<>();
-			DatabaseMetaData metadata = connection.getMetaData();
-			try (ResultSet rs = metadata.getTables(null, null, "%", null)) {
-				while (rs.next()) {
-					tables.add(rs.getString(3));
-				}
-			}
 			
 			// Players
-			renameTable(connection, tables, SQLTable.PLAYERS.getTableName());
+			renameTable(connection, SQLTable.PLAYERS.getTableName(), ConfigMain.STORAGE_MIGRATE_SUFFIX);
 			createTable(connection, SQLTable.PLAYERS);
 			
 			// Parties
-			renameTable(connection, tables, SQLTable.PARTIES.getTableName());
+			renameTable(connection, SQLTable.PARTIES.getTableName(), ConfigMain.STORAGE_MIGRATE_SUFFIX);
 			createTable(connection, SQLTable.PARTIES);
 			
 			connection.commit();
@@ -140,11 +132,22 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 		}
 		return ret;
 	}
-	private void renameTable(Connection connection, List<String> existingTables, String table) throws SQLException {
-		String newTable = table + ConfigMain.STORAGE_MIGRATE_SUFFIX;
+	
+	public String renameTable(Connection connection, String table, String tableSuffix) throws SQLException {
+		String ret = "";
+		// Load existing tables
+		List<String> listTables = new ArrayList<>();
+		DatabaseMetaData metadata = connection.getMetaData();
+		try (ResultSet rs = metadata.getTables(null, null, "%", null)) {
+			while (rs.next()) {
+				listTables.add(rs.getString(3));
+			}
+		}
+		
+		String newTable = table + tableSuffix;
 		int count = 1;
-		while (existingTables.contains(newTable)) {
-			newTable = table + ConfigMain.STORAGE_MIGRATE_SUFFIX + Integer.toString(count);
+		while (listTables.contains(newTable)) {
+			newTable = table + tableSuffix + Integer.toString(count);
 			count++;
 		}
 		
@@ -156,7 +159,9 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			statement.executeUpdate(query
 					.replace("{table}", table)
 					.replace("{newtable}", newTable));
+			ret = newTable;
 		}
+		return ret;
 	}
 	
 	private Connection getConnection() {
@@ -179,10 +184,12 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			statement.executeUpdate(SQLTable.formatSchema(schemaTables.get(table), Constants.VERSION_DATABASE_MYSQL));
 			
 			// Change version into the versions table
-			try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(versionQuery))) {
-				preStatement.setString(1, table.getTableName());
-				preStatement.setInt(2, versionValue);
-				preStatement.executeUpdate();
+			if (!table.equals(SQLTable.VERSIONS)) {
+				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(versionQuery))) {
+					preStatement.setString(1, table.getTableName());
+					preStatement.setInt(2, versionValue);
+					preStatement.executeUpdate();
+				}
 			}
 		} catch (SQLException ex) {
 			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR_TABLE
@@ -324,12 +331,12 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			preStatement.setString(2, party.isFixed() ? Constants.FIXED_VALUE_TEXT : party.getLeader().toString());
 			preStatement.setString(3, party.getDescription());
 			preStatement.setString(4, party.getMotd());
-			preStatement.setString(5, party.getPrefix());
-			preStatement.setString(6, party.getSuffix());
-			preStatement.setString(7, party.getColor() != null ? party.getColor().getName() : "");
-			preStatement.setInt(8, party.getKills());
-			preStatement.setString(9, party.getPassword());
-			preStatement.setString(10, party.getHome() != null ? party.getHome().toString() : "");
+			preStatement.setString(5, party.getColor() != null ? party.getColor().getName() : "");
+			preStatement.setInt(6, party.getKills());
+			preStatement.setString(7, party.getPassword());
+			preStatement.setString(8, party.getHome() != null ? party.getHome().toString() : "");
+			preStatement.setBoolean(9, party.isFriendlyFireProtected());
+			preStatement.setDouble(10, party.getExperience());
 			preStatement.executeUpdate();
 		} catch (SQLException ex) {
 			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
@@ -533,12 +540,12 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			ret = plugin.getPartyManager().initializeParty(rs.getString("name"));
 			ret.setDescription(rs.getString("description"));
 			ret.setMotd(rs.getString("motd"));
-			ret.setPrefix(rs.getString("prefix"));
-			ret.setSuffix(rs.getString("suffix"));
 			ret.setColor(plugin.getColorManager().searchColorByName(rs.getString("color")));
 			ret.setKills(rs.getInt("kills"));
 			ret.setPassword(rs.getString("password"));
 			ret.setHome(HomeLocationImpl.deserialize(rs.getString("home")));
+			ret.setFriendlyFireProtected(rs.getBoolean("pvp"));
+			ret.setExperience(rs.getDouble("experience"));
 			String leader = rs.getString("leader");
 			if (leader != null) {
 				if (leader.equalsIgnoreCase(Constants.FIXED_VALUE_TEXT)) {

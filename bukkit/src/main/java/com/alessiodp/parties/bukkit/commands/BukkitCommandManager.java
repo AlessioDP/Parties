@@ -3,6 +3,7 @@ package com.alessiodp.parties.bukkit.commands;
 import java.lang.reflect.Field;
 
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
+import com.alessiodp.parties.bukkit.commands.executors.CommandPvp;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
@@ -54,6 +55,10 @@ public class BukkitCommandManager extends CommandManager {
 			dispatcher.register(BukkitCommands.SETHOME, new CommandSetHome(plugin));
 		}
 		
+		// Pvp
+		if (BukkitConfigParties.FRIENDLYFIRE_TYPE.equalsIgnoreCase("command"))
+			dispatcher.register(BukkitCommands.PVP, new CommandPvp(plugin));
+		
 		// Teleport
 		if (BukkitConfigParties.TELEPORT_ENABLE)
 			dispatcher.register(BukkitCommands.TELEPORT, new CommandTeleport(plugin));
@@ -93,7 +98,7 @@ public class BukkitCommandManager extends CommandManager {
 					commandParties.setTabCompleter(new TabCompleterHandler(plugin));
 			}
 			// Register p command
-			if (commandP != null && !commandParties.getPlugin().getName().equals("Parties"))
+			if (commandP != null && commandParties.getPlugin() != null && !commandParties.getPlugin().getName().equals("Parties"))
 				commandP.setExecutor((BukkitCommandDispatcher) dispatcher);
 			
 			

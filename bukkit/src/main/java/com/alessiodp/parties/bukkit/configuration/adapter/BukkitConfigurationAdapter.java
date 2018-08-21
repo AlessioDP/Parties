@@ -11,6 +11,8 @@ public class BukkitConfigurationAdapter implements ConfigurationAdapter {
 	private YamlConfiguration yaml;
 	private Path filePath;
 	
+	public YamlConfiguration getYaml() {return yaml;}
+	
 	public BukkitConfigurationAdapter(Path filePath) {
 		this.filePath = filePath;
 		reload();

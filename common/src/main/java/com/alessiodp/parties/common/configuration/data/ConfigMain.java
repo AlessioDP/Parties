@@ -31,6 +31,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STORAGE_SETTINGS_FILE_TXT_LOGNAME;
 	public static String		STORAGE_SETTINGS_FILE_YAML_DBNAME;
 	public static int			STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE;
+	public static boolean		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD;
+	public static String		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX;
 	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES;
 	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS;
 	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG;
@@ -67,6 +69,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		ADDITIONAL_PLACEHOLDER_COLOR_CODE;
 	public static String		ADDITIONAL_PLACEHOLDER_COLOR_COMMAND;
 	public static String		ADDITIONAL_PLACEHOLDER_DESC;
+	public static String		ADDITIONAL_PLACEHOLDER_EXPERIENCE_TOTAL;
+	public static String		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVEL;
+	public static String		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_CURRENT;
+	public static String		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY;
 	public static String		ADDITIONAL_PLACEHOLDER_KILLS;
 	public static String		ADDITIONAL_PLACEHOLDER_MOTD;
 	public static String		ADDITIONAL_PLACEHOLDER_PARTY;
@@ -139,6 +145,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 		STORAGE_SETTINGS_FILE_TXT_LOGNAME = "log.txt";
 		STORAGE_SETTINGS_FILE_YAML_DBNAME = "data.yml";
 		STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE = 255;
+		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD = true;
+		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX = "_backup";
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES = "parties_parties";
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS = "parties_players";
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = "parties_log";
@@ -177,6 +185,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_COLOR_CODE = "%color_code%";
 		ADDITIONAL_PLACEHOLDER_COLOR_COMMAND = "%color_command%";
 		ADDITIONAL_PLACEHOLDER_DESC = "%desc%";
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_TOTAL = "%experience_total%";
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVEL = "%experience_level%";
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_CURRENT = "%experience_levelup_current%";
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
 		ADDITIONAL_PLACEHOLDER_KILLS = "%kills%";
 		ADDITIONAL_PLACEHOLDER_MOTD = "%motd%";
 		ADDITIONAL_PLACEHOLDER_PARTY = "%party%";
@@ -244,6 +256,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 		STORAGE_SETTINGS_FILE_TXT_LOGNAME = confAdapter.getString("storage.storage-settings.file-based.txt.log-name", STORAGE_SETTINGS_FILE_TXT_LOGNAME);
 		STORAGE_SETTINGS_FILE_YAML_DBNAME = confAdapter.getString("storage.storage-settings.file-based.yaml.database-name", STORAGE_SETTINGS_FILE_YAML_DBNAME);
 		STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE = confAdapter.getInt("storage.storage-settings.sql-based.sql-based.general-settings.varchar-size", STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE);
+		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD = confAdapter.getBoolean("storage.storage-settings.sql-based.sql-based.general-settings.upgrade.save-old-table", STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD);
+		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX = confAdapter.getString("storage.storage-settings.sql-based.sql-based.general-settings.upgrade.old-table-suffix", STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX);
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.parties", STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES);
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.players", STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS);
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.log", STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG);
@@ -280,6 +294,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_COLOR_CODE = confAdapter.getString("additional.placeholders.color-code", ADDITIONAL_PLACEHOLDER_COLOR_CODE);
 		ADDITIONAL_PLACEHOLDER_COLOR_COMMAND = confAdapter.getString("additional.placeholders.color-command", ADDITIONAL_PLACEHOLDER_COLOR_COMMAND);
 		ADDITIONAL_PLACEHOLDER_DESC = confAdapter.getString("additional.placeholders.desc", ADDITIONAL_PLACEHOLDER_DESC);
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_TOTAL = confAdapter.getString("additional.placeholders.experience-total", ADDITIONAL_PLACEHOLDER_EXPERIENCE_TOTAL);
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVEL = confAdapter.getString("additional.placeholders.experience-level", ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVEL);
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_CURRENT = confAdapter.getString("additional.placeholders.experience-levelup-current", ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_CURRENT);
+		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY = confAdapter.getString("additional.placeholders.experience-levelup-necessary", ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY);
 		ADDITIONAL_PLACEHOLDER_KILLS = confAdapter.getString("additional.placeholders.kills", ADDITIONAL_PLACEHOLDER_KILLS);
 		ADDITIONAL_PLACEHOLDER_MOTD = confAdapter.getString("additional.placeholders.motd", ADDITIONAL_PLACEHOLDER_MOTD);
 		ADDITIONAL_PLACEHOLDER_PARTY = confAdapter.getString("additional.placeholders.party", ADDITIONAL_PLACEHOLDER_PARTY);
