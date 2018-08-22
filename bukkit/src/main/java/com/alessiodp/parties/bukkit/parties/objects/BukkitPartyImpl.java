@@ -16,7 +16,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
 public class BukkitPartyImpl extends PartyImpl {
 	
-	private ExpResult expResult;
 	private double experienceStampCalculateLevel;
 	
 	public BukkitPartyImpl(PartiesPlugin instance, String name) {

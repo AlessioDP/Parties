@@ -22,6 +22,7 @@ import java.util.List;
 public class ExpManager {
 	private PartiesPlugin plugin;
 	private ExpMode mode;
+	private double rangeSquared;
 	
 	private ExpConvert convertNormal;
 	private ExpConvert convertSkillapi;
@@ -29,6 +30,7 @@ public class ExpManager {
 	public ExpManager(PartiesPlugin instance) {
 		plugin = instance;
 		mode = ExpMode.parse(BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
+		rangeSquared = BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_RANGE * BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_RANGE;
 		
 		convertNormal = ExpConvert.parse(BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_NORMAL);
 		convertSkillapi = ExpConvert.parse(BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI);
@@ -114,7 +116,7 @@ public class ExpManager {
 			for (PartyPlayerImpl player : party.getOnlinePlayers()) {
 				try {
 					if (player.getPlayerUUID().equals(killer.getPlayerUUID())
-							|| (Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation) <= BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_RANGE)) {
+							|| (Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation) <= rangeSquared)) {
 						playersToShare.add(player);
 					}
 				} catch (IllegalArgumentException ignored) {
