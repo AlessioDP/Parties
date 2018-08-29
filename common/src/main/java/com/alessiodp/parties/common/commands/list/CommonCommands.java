@@ -30,7 +30,7 @@ public enum CommonCommands implements PartiesCommand {
 	JOIN,
 	LIST,
 	MOTD,
-	NOTIFY,
+	MUTE,
 	PASSWORD;
 	
 	
@@ -90,8 +90,8 @@ public enum CommonCommands implements PartiesCommand {
 		CommonCommands.LIST.help = Messages.HELP_ADDCMD_LIST;
 		CommonCommands.MOTD.command = ConfigMain.COMMANDS_CMD_MOTD;
 		CommonCommands.MOTD.help = Messages.HELP_ADDCMD_MOTD;
-		CommonCommands.NOTIFY.command = ConfigMain.COMMANDS_CMD_NOTIFY;
-		CommonCommands.NOTIFY.help = Messages.HELP_ADDCMD_NOTIFY;
+		CommonCommands.MUTE.command = ConfigMain.COMMANDS_CMD_MUTE;
+		CommonCommands.MUTE.help = Messages.HELP_ADDCMD_MUTE;
 		CommonCommands.PASSWORD.command = ConfigMain.COMMANDS_CMD_PASSWORD;
 		CommonCommands.PASSWORD.help = Messages.HELP_ADDCMD_PASSWORD;
 	}

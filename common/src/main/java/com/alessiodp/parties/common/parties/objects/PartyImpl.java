@@ -41,7 +41,7 @@ public abstract class PartyImpl implements Party {
 	@Getter @Setter private Color color;
 	@Getter @Setter private int kills;
 	@Getter @Setter private String password;
-	@Getter @Setter private boolean friendlyFireProtected;
+	@Setter private boolean protection;
 	@Getter @Setter private double experience;
 	@Getter @Setter private ExpResult expResult;
 	
@@ -66,7 +66,7 @@ public abstract class PartyImpl implements Party {
 		color = null;
 		kills = 0;
 		password = "";
-		friendlyFireProtected = false;
+		protection = false;
 		experience = 0;
 		expResult = new ExpResult();
 		
@@ -310,5 +310,13 @@ public abstract class PartyImpl implements Party {
 	public int getLevel() {
 		return expResult.getLevel();
 	}
+	
+	@Override
+	public boolean isFriendlyFireProtected() {
+		return getProtection();
+	}
+	
+	@Override
+	public boolean getProtection() {return protection;}
 	
 }

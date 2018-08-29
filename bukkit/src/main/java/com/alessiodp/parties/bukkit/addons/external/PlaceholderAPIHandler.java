@@ -19,10 +19,9 @@ public class PlaceholderAPIHandler {
 	
 	public PlaceholderAPIHandler(PartiesPlugin instance) {
 		plugin = instance;
-		init();
 	}
 	
-	private void init() {
+	public void init() {
 		active = false;
 		if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
 			hook = new PAPIHook(plugin);

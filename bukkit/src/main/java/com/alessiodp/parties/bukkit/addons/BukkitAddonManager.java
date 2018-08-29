@@ -15,20 +15,40 @@ import com.alessiodp.parties.common.addons.AddonManager;
 
 public class BukkitAddonManager extends AddonManager {
 	
+	private BanManagerHandler banManager;
+	private CrackShotHandler crackShot;
+	private DynmapHandler dynmap;
+	private EssentialsChatHandler essentialsChat;
+	private GriefPreventionHandler griefPrevention;
+	private MythicMobsHandler mythicMobs;
+	private PlaceholderAPIHandler placeholderAPI;
+	private SkillAPIHandler skillAPI;
+	private VaultHandler vault;
+	
 	public BukkitAddonManager(PartiesPlugin instance) {
 		super(instance);
+		
+		banManager = new BanManagerHandler(plugin);
+		crackShot = new CrackShotHandler((BukkitPartiesPlugin) plugin);
+		dynmap = new DynmapHandler((BukkitPartiesPlugin) plugin);
+		essentialsChat = new EssentialsChatHandler((BukkitPartiesPlugin) plugin);
+		griefPrevention = new GriefPreventionHandler();
+		mythicMobs = new MythicMobsHandler((BukkitPartiesPlugin) plugin);
+		placeholderAPI = new PlaceholderAPIHandler(plugin);
+		skillAPI = new SkillAPIHandler();
+		vault = new VaultHandler((BukkitPartiesPlugin) plugin);
 	}
 	
 	@Override
 	public void loadAddons() {
-		new BanManagerHandler(plugin);
-		new CrackShotHandler((BukkitPartiesPlugin) plugin);
-		new DynmapHandler((BukkitPartiesPlugin) plugin);
-		new EssentialsChatHandler((BukkitPartiesPlugin) plugin);
-		new GriefPreventionHandler();
-		new MythicMobsHandler((BukkitPartiesPlugin) plugin);
-		new PlaceholderAPIHandler(plugin);
-		new SkillAPIHandler();
-		new VaultHandler((BukkitPartiesPlugin) plugin);
+		banManager.init();
+		crackShot.init();
+		dynmap.init();
+		essentialsChat.init();
+		griefPrevention.init();
+		mythicMobs.init();
+		placeholderAPI.init();
+		skillAPI.init();
+		vault.init();
 	}
 }

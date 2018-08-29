@@ -74,7 +74,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	
 	public void sendFriendlyFireWarn(PartyPlayerImpl victim, PartyPlayerImpl attacker) {
 		if (BukkitConfigParties.FRIENDLYFIRE_WARNONFIGHT) {
-			String message = BukkitMessages.ADDCMD_PVP_WARNHIT
+			String message = BukkitMessages.ADDCMD_PROTECTION_WARNHIT
 					.replace(Constants.PLACEHOLDER_PLAYER_PLAYER, attacker.getName())
 					.replace(Constants.PLACEHOLDER_PLAYER_VICTIM, victim.getName());
 			
@@ -96,7 +96,7 @@ public class BukkitPartyImpl extends PartyImpl {
 			switch (BukkitConfigParties.FRIENDLYFIRE_TYPE.toLowerCase()){
 				case "command":
 					// Check for party protected field
-					ret = super.isFriendlyFireProtected();
+					ret = super.getProtection();
 					break;
 				default:
 					// Global

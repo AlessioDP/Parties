@@ -62,8 +62,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static List<String>	ADDITIONAL_CENSOR_STARTSWITH;
 	public static List<String>	ADDITIONAL_CENSOR_ENDSWITH;
 	
-	public static boolean		ADDITIONAL_NOTIFY_ENABLE;
-	public static boolean		ADDITIONAL_NOTIFY_BLOCK_INVITE;
+	public static boolean		ADDITIONAL_MUTE_ENABLE;
+	public static boolean		ADDITIONAL_MUTE_BLOCK_INVITE;
 	
 	public static String		ADDITIONAL_PLACEHOLDER_COLOR_NAME;
 	public static String		ADDITIONAL_PLACEHOLDER_COLOR_CODE;
@@ -102,7 +102,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_LIST;
 	public static String		COMMANDS_CMD_MIGRATE;
 	public static String		COMMANDS_CMD_MOTD;
-	public static String		COMMANDS_CMD_NOTIFY;
+	public static String		COMMANDS_CMD_MUTE;
 	public static String		COMMANDS_CMD_PASSWORD;
 	public static String		COMMANDS_CMD_RANK;
 	public static String		COMMANDS_CMD_RELOAD;
@@ -132,7 +132,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		// Storage settings
 		STORAGE_TYPE_LOG = "none";
 		STORAGE_TYPE_DATABASE = "yaml";
-		STORAGE_LOG_FORMAT = "%date% [%time%] (%level%) {%position%} %message%";
+		STORAGE_LOG_FORMAT = "%date% [%time%] (%level%) {%position%} %message%\n";
 		STORAGE_LOG_CHAT = true;
 		STORAGE_LOG_PRINTCONSOLE = true;
 		STORAGE_LOG_LEVEL = 1;
@@ -178,8 +178,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_CENSOR_STARTSWITH = new ArrayList<>();
 		ADDITIONAL_CENSOR_ENDSWITH = new ArrayList<>();
 		
-		ADDITIONAL_NOTIFY_ENABLE = false;
-		ADDITIONAL_NOTIFY_BLOCK_INVITE = true;
+		ADDITIONAL_MUTE_ENABLE = false;
+		ADDITIONAL_MUTE_BLOCK_INVITE = true;
 		
 		ADDITIONAL_PLACEHOLDER_COLOR_NAME = "%color_name%";
 		ADDITIONAL_PLACEHOLDER_COLOR_CODE = "%color_code%";
@@ -218,7 +218,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_LIST = "list";
 		COMMANDS_CMD_MIGRATE = "migrate";
 		COMMANDS_CMD_MOTD = "motd";
-		COMMANDS_CMD_NOTIFY = "notify";
+		COMMANDS_CMD_MUTE = "mute";
 		COMMANDS_CMD_PASSWORD = "password";
 		COMMANDS_CMD_RANK = "rank";
 		COMMANDS_CMD_RELOAD = "reload";
@@ -287,8 +287,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_CENSOR_STARTSWITH = confAdapter.getStringList("additional.censor-system.starts-with", ADDITIONAL_CENSOR_STARTSWITH);
 		ADDITIONAL_CENSOR_ENDSWITH = confAdapter.getStringList("additional.censor-system.ends-with", ADDITIONAL_CENSOR_ENDSWITH);
 		
-		ADDITIONAL_NOTIFY_ENABLE = confAdapter.getBoolean("additional.notify.enable", ADDITIONAL_NOTIFY_ENABLE);
-		ADDITIONAL_NOTIFY_BLOCK_INVITE = confAdapter.getBoolean("additional.notify.block.INVITE", ADDITIONAL_NOTIFY_BLOCK_INVITE);
+		ADDITIONAL_MUTE_ENABLE = confAdapter.getBoolean("additional.mute.enable", ADDITIONAL_MUTE_ENABLE);
+		ADDITIONAL_MUTE_BLOCK_INVITE = confAdapter.getBoolean("additional.mute.block.INVITE", ADDITIONAL_MUTE_BLOCK_INVITE);
 		
 		ADDITIONAL_PLACEHOLDER_COLOR_NAME = confAdapter.getString("additional.placeholders.color-name", ADDITIONAL_PLACEHOLDER_COLOR_NAME);
 		ADDITIONAL_PLACEHOLDER_COLOR_CODE = confAdapter.getString("additional.placeholders.color-code", ADDITIONAL_PLACEHOLDER_COLOR_CODE);
@@ -327,7 +327,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_LIST = confAdapter.getString("commands.main-commands.list", COMMANDS_CMD_LIST);
 		COMMANDS_CMD_MIGRATE = confAdapter.getString("commands.main-commands.migrate", COMMANDS_CMD_MIGRATE);
 		COMMANDS_CMD_MOTD = confAdapter.getString("commands.main-commands.motd", COMMANDS_CMD_MOTD);
-		COMMANDS_CMD_NOTIFY = confAdapter.getString("commands.main-commands.notify", COMMANDS_CMD_NOTIFY);
+		COMMANDS_CMD_MUTE = confAdapter.getString("commands.main-commands.mute", COMMANDS_CMD_MUTE);
 		COMMANDS_CMD_PASSWORD = confAdapter.getString("commands.main-commands.password", COMMANDS_CMD_PASSWORD);
 		COMMANDS_CMD_RANK = confAdapter.getString("commands.main-commands.rank", COMMANDS_CMD_RANK);
 		COMMANDS_CMD_RELOAD = confAdapter.getString("commands.main-commands.reload", COMMANDS_CMD_RELOAD);

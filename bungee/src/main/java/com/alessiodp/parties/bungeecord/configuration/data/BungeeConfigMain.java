@@ -25,7 +25,7 @@ public class BungeeConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("deny");
 		ConfigMain.COMMANDS_ORDER.add("join");
 		ConfigMain.COMMANDS_ORDER.add("ignore");
-		ConfigMain.COMMANDS_ORDER.add("notify");
+		ConfigMain.COMMANDS_ORDER.add("mute");
 		ConfigMain.COMMANDS_ORDER.add("p");
 		ConfigMain.COMMANDS_ORDER.add("leave");
 		ConfigMain.COMMANDS_ORDER.add("invite");

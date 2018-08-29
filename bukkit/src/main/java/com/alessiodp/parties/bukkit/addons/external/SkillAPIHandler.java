@@ -17,11 +17,9 @@ import java.util.UUID;
 public class SkillAPIHandler {
 	private static final String ADDON_NAME = "SkillAPI";
 	
-	public SkillAPIHandler() {
-		init();
-	}
+	public SkillAPIHandler() {}
 	
-	private void init() {
+	public void init() {
 		if (BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED

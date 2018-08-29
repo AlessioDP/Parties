@@ -192,6 +192,24 @@ public abstract class SQLUpgradeManager {
 					}
 				}
 				break;
+			case 4:
+				// Upgrading from 2.3.4
+				while (rs.next()) {
+					try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PARTY_INSERT_MYSQL))) {
+						preStatement.setString(1, rs.getString("name"));
+						preStatement.setString(2, rs.getString("leader"));
+						preStatement.setString(3, rs.getString("description"));
+						preStatement.setString(4, rs.getString("motd"));
+						preStatement.setString(5, rs.getString("color"));
+						preStatement.setInt(6, rs.getInt("kills"));
+						preStatement.setString(7, rs.getString("password"));
+						preStatement.setString(8, rs.getString("home"));
+						preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
+						preStatement.setDouble(10, rs.getDouble("experience"));
+						preStatement.executeUpdate();
+					}
+				}
+				break;
 			}
 		}
 		if (databaseType.isSQLite()) {
@@ -211,6 +229,24 @@ public abstract class SQLUpgradeManager {
 							preStatement.setString(8, rs.getString("home"));
 							preStatement.setBoolean(9, false); // Set new pvp
 							preStatement.setDouble(10, 0); // Set new experience
+							preStatement.executeUpdate();
+						}
+					}
+					break;
+				case 2:
+					while (rs.next()) {
+						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PARTY_INSERT_SQLITE))) {
+							preStatement.setString(1, rs.getString("name"));
+							preStatement.setString(2, rs.getString("leader"));
+							preStatement.setString(3, rs.getString("description"));
+							preStatement.setString(4, rs.getString("motd"));
+							// Removed prefix & suffix
+							preStatement.setString(5, rs.getString("color"));
+							preStatement.setInt(6, rs.getInt("kills"));
+							preStatement.setString(7, rs.getString("password"));
+							preStatement.setString(8, rs.getString("home"));
+							preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
+							preStatement.setDouble(10, rs.getDouble("experience"));
 							preStatement.executeUpdate();
 						}
 					}
@@ -254,7 +290,8 @@ public abstract class SQLUpgradeManager {
 				}
 				break;
 			case 3:
-				// Same table
+			case 4:
+				// Upgrading from 2.3.4
 				while (rs.next()) {
 					try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PLAYER_INSERT_MYSQL))) {
 						preStatement.setString(1, rs.getString("uuid"));
@@ -263,7 +300,7 @@ public abstract class SQLUpgradeManager {
 						preStatement.setString(4, rs.getString("name"));
 						preStatement.setInt(5, rs.getInt("timestamp"));
 						preStatement.setBoolean(6, rs.getBoolean("spy"));
-						preStatement.setBoolean(7, rs.getBoolean("notify"));
+						preStatement.setBoolean(7, rs.getBoolean("notify")); // Changed notify into mute
 						preStatement.executeUpdate();
 					}
 				}
@@ -274,7 +311,8 @@ public abstract class SQLUpgradeManager {
 			// SQLite
 			switch (version) {
 				case 1:
-					// Same table
+				case 2:
+					// Upgrading from 2.3.4
 					while (rs.next()) {
 						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PLAYER_INSERT_SQLITE))) {
 							preStatement.setString(1, rs.getString("uuid"));
@@ -283,7 +321,7 @@ public abstract class SQLUpgradeManager {
 							preStatement.setString(4, rs.getString("name"));
 							preStatement.setInt(5, rs.getInt("timestamp"));
 							preStatement.setBoolean(6, rs.getBoolean("spy"));
-							preStatement.setBoolean(7, rs.getBoolean("notify"));
+							preStatement.setBoolean(7, rs.getBoolean("notify")); // Changed notify into mute
 							preStatement.executeUpdate();
 						}
 					}
@@ -312,6 +350,7 @@ public abstract class SQLUpgradeManager {
 			case 1:
 			case 2:
 			case 3:
+			case 4:
 				// Same table
 				while (rs.next()) {
 					try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_LOG_MIGRATE))) {
@@ -329,6 +368,7 @@ public abstract class SQLUpgradeManager {
 			// SQLite
 			switch (version) {
 				case 1:
+				case 2:
 					// Same table
 					while (rs.next()) {
 						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_LOG_MIGRATE))) {

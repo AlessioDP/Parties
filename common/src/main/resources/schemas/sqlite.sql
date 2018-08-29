@@ -10,7 +10,7 @@ CREATE TABLE '{table_parties}' (
 	'kills'			INT DEFAULT 0,
 	'password'		VARCHAR({varcharsize}) DEFAULT '',
 	'home'			VARCHAR({varcharsize}) DEFAULT '',
-	'pvp'			INT DEFAULT 0 NOT NULL,
+	'protection'	INT DEFAULT 0 NOT NULL,
 	'experience'	REAL DEFAULT 0,
 	PRIMARY KEY ('name'));
 /*END_PARTIES*/
@@ -23,7 +23,7 @@ CREATE TABLE '{table_players}' (
 	'name'		VARCHAR({varcharsize}) DEFAULT '',
 	'timestamp'	INT,
 	'spy'		INT DEFAULT 0 NOT NULL,
-	`notify`	INT DEFAULT 0 NOT NULL,
+	`mute`		INT DEFAULT 0 NOT NULL,
 	PRIMARY KEY ('uuid'));
 /*END_PLAYERS*/
 

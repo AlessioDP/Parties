@@ -3,7 +3,7 @@ package com.alessiodp.parties.bukkit.commands;
 import java.lang.reflect.Field;
 
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
-import com.alessiodp.parties.bukkit.commands.executors.CommandPvp;
+import com.alessiodp.parties.bukkit.commands.executors.CommandProtection;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
@@ -55,9 +55,9 @@ public class BukkitCommandManager extends CommandManager {
 			dispatcher.register(BukkitCommands.SETHOME, new CommandSetHome(plugin));
 		}
 		
-		// Pvp
+		// Protection
 		if (BukkitConfigParties.FRIENDLYFIRE_TYPE.equalsIgnoreCase("command"))
-			dispatcher.register(BukkitCommands.PVP, new CommandPvp(plugin));
+			dispatcher.register(BukkitCommands.PROTECTION, new CommandProtection(plugin));
 		
 		// Teleport
 		if (BukkitConfigParties.TELEPORT_ENABLE)
@@ -92,13 +92,13 @@ public class BukkitCommandManager extends CommandManager {
 			PluginCommand commandP = ((BukkitPartiesBootstrap) plugin.getBootstrap()).getServer().getPluginCommand(ConfigMain.COMMANDS_CMD_P);
 			
 			// Register party command
-			if (commandParties != null && !commandParties.getPlugin().getName().equals("Parties")) {
+			if (commandParties != null && commandParties.getPlugin() != null && !commandParties.getPlugin().getName().equals("Parties")) {
 				commandParties.setExecutor((BukkitCommandDispatcher) dispatcher);
 				if (BukkitConfigMain.COMMANDS_TABSUPPORT)
 					commandParties.setTabCompleter(new TabCompleterHandler(plugin));
 			}
 			// Register p command
-			if (commandP != null && commandParties.getPlugin() != null && !commandParties.getPlugin().getName().equals("Parties"))
+			if (commandP != null && commandP.getPlugin() != null && !commandP.getPlugin().getName().equals("Parties"))
 				commandP.setExecutor((BukkitCommandDispatcher) dispatcher);
 			
 			

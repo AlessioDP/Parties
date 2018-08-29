@@ -145,7 +145,12 @@ public class ExpManager {
 						}
 						player.sendMessage(message
 								.replace("%exp%",Integer.toString(singlePlayerExperience))
-								.replace("%total_exp%",Integer.toString(experience)));
+								.replace("%total_exp%",Integer.toString(experience))
+								, killer);
+						LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_EXP_SENT
+								.replace("{exp}", Integer.toString(singlePlayerExperience))
+								.replace("{type}", type.name())
+								.replace("{player}", player.getName()), true);
 					}
 					ret = true;
 				} catch (Exception ex) {

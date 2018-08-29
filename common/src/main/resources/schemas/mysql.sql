@@ -10,7 +10,7 @@ CREATE TABLE `{table_parties}` (
 	`kills`			INT DEFAULT 0,
 	`password`		VARCHAR({varcharsize}) DEFAULT '',
 	`home`			VARCHAR({varcharsize}) DEFAULT '',
-	`pvp`			TINYINT(1) DEFAULT 0 NOT NULL,
+	`protection`	TINYINT(1) DEFAULT 0 NOT NULL,
 	`experience`	DOUBLE DEFAULT 0,
 	PRIMARY KEY (`name`))
  DEFAULT CHARSET='{charset}';
@@ -24,7 +24,7 @@ CREATE TABLE `{table_players}` (
 	`name`		VARCHAR({varcharsize}) DEFAULT '',
 	`timestamp`	INT,
 	`spy`		TINYINT(1) DEFAULT 0 NOT NULL,
-	`notify`	TINYINT(1) DEFAULT 0 NOT NULL,
+	`mute`		TINYINT(1) DEFAULT 0 NOT NULL,
 	PRIMARY KEY (`uuid`))
  DEFAULT CHARSET='{charset}';
 /*END_PLAYERS*/

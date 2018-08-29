@@ -32,7 +32,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@Getter @Setter private int rank;
 	@Getter @Setter private String partyName;
 	@Getter @Setter private boolean spy;
-	@Getter @Setter private boolean preventNotify;
+	@Getter @Setter private boolean muted;
 	
 	@Getter @Setter private UUID createID;
 	@Getter @Setter private boolean chatParty;
@@ -50,7 +50,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		rank = ConfigParties.RANK_SET_DEFAULT;
 		partyName = "";
 		spy = false;
-		preventNotify = false;
+		muted = false;
 		
 		createID = UUID.randomUUID();
 		chatParty = false;
@@ -141,8 +141,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.IGNORE);
 			if (player.hasPermission(PartiesPermission.INFO_OTHERS.toString()))
 				ret.add(CommonCommands.IGNORE);
-			if (player.hasPermission(PartiesPermission.NOTIFY.toString()))
-				ret.add(CommonCommands.NOTIFY);
+			if (player.hasPermission(PartiesPermission.MUTE.toString()))
+				ret.add(CommonCommands.MUTE);
 			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS.toString()))
 				ret.add(CommonCommands.KICK);
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString()))
@@ -217,5 +217,14 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		if (player != null) {
 			player.sendMessage(message, true);
 		}
+	}
+	
+	@Override
+	public boolean isPreventNotify() {
+		return isMuted();
+	}
+	@Override
+	public void setPreventNotify(boolean value) {
+		setMuted(value);
 	}
 }

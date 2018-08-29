@@ -85,14 +85,14 @@ public class BukkitFightListener implements Listener {
 						BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
 						
 						if (party != null && ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
-							if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PVP_BYPASS.toString())) {
+							if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 								// Calling API event
 								PartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 								plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
 								
 								if (!partiesFriendlyFireEvent.isCancelled()) {
 									// Friendly fire confirmed
-									ppAttacker.sendMessage(BukkitMessages.ADDCMD_PVP_PROTECTED);
+									ppAttacker.sendMessage(BukkitMessages.ADDCMD_PROTECTION_PROTECTED);
 									party.sendFriendlyFireWarn(ppVictim, ppAttacker);
 									
 									event.setCancelled(true);
@@ -121,7 +121,7 @@ public class BukkitFightListener implements Listener {
 			PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
 			BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
 			
-			if (party != null && party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PVP_BYPASS.toString())) {
+			if (party != null && party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 				boolean cancel = false;
 				for (PotionEffect pe : event.getEntity().getEffects()) {
 					switch (pe.getType().getName().toLowerCase()) {
@@ -152,7 +152,7 @@ public class BukkitFightListener implements Listener {
 									
 									if (!partiesFriendlyFireEvent.isCancelled()) {
 										// Friendly fire confirmed
-										ppAttacker.sendMessage(BukkitMessages.ADDCMD_PVP_PROTECTED);
+										ppAttacker.sendMessage(BukkitMessages.ADDCMD_PROTECTION_PROTECTED);
 										party.sendFriendlyFireWarn(ppVictim, ppAttacker);
 										
 										event.setIntensity(e, 0);
@@ -190,14 +190,14 @@ public class BukkitFightListener implements Listener {
 				BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
 				
 				if (party != null && ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
-					if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PVP_BYPASS.toString())) {
+					if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 						// Calling API event
 						PartiesCombustFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).prepareCombustFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 						plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
 						
 						if (!partiesFriendlyFireEvent.isCancelled()) {
 							// Friendly fire confirmed
-							ppAttacker.sendMessage(BukkitMessages.ADDCMD_PVP_PROTECTED);
+							ppAttacker.sendMessage(BukkitMessages.ADDCMD_PROTECTION_PROTECTED);
 							party.sendFriendlyFireWarn(ppVictim, ppAttacker);
 							
 							event.setCancelled(true);

@@ -87,10 +87,27 @@ public interface PartyPlayer {
 	void setSpy(boolean value);
 	
 	/**
+	 * Is the player muted?
+	 *
+	 * @return Returns true if the player is muted
+	 */
+	boolean isMuted();
+	
+	/**
+	 * Toggle player mute
+	 *
+	 * @param value
+	 *            True to mute notifications
+	 */
+	void setMuted(boolean value);
+	
+	/**
 	 * Have the player disabled the notifications?
 	 * 
-	 * @return Returns true if the player is a spy
+	 * @return Returns true if the player have disabled notifications
+	 * @deprecated Deprecated for isMuted()
 	 */
+	@Deprecated
 	boolean isPreventNotify();
 	
 	/**
@@ -98,6 +115,8 @@ public interface PartyPlayer {
 	 * 
 	 * @param value
 	 *            True to disable notifications
+	 * @deprecated Deprecated for setMuted(boolean value)
 	 */
+	@Deprecated
 	void setPreventNotify(boolean value);
 }

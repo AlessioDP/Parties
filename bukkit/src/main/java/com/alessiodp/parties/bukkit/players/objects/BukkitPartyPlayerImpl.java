@@ -61,6 +61,11 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 			// Admin commands
 			if (BukkitConfigParties.TELEPORT_ENABLE && player.hasPermission(PartiesPermission.TELEPORT.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_TELEPORT.toString()))
 				ret.add(BukkitCommands.TELEPORT);
+			if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
+					&& BukkitConfigParties.FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
+					&& player.hasPermission(PartiesPermission.PROTECTION.toString())
+					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_PROTECTION.toString()))
+				ret.add(BukkitCommands.PROTECTION);
 			
 		}
 		return ret;

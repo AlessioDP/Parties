@@ -93,9 +93,9 @@ public class CommandInvite extends AbstractCommand {
 			return;
 		}
 		
-		if (invitedPp.isPreventNotify()
-				&& ConfigMain.ADDITIONAL_NOTIFY_ENABLE
-				&& ConfigMain.ADDITIONAL_NOTIFY_BLOCK_INVITE) {
+		if (invitedPp.isMuted()
+				&& ConfigMain.ADDITIONAL_MUTE_ENABLE
+				&& ConfigMain.ADDITIONAL_MUTE_BLOCK_INVITE) {
 			// Invited player has disabled notifications, fake sent
 			pp.sendMessage(Messages.MAINCMD_INVITE_SENT, invitedPp);
 			return;

@@ -116,7 +116,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 		ConfigurationNode node = database.getRootNode().getNode("players", player.getPlayerUUID().toString());
 		
 		boolean existData = false;
-		if (!player.getPartyName().isEmpty() || player.isSpy() || player.isPreventNotify())
+		if (!player.getPartyName().isEmpty() || player.isSpy() || player.isMuted())
 			existData = true;
 		
 		if (!existData) {
@@ -134,7 +134,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			node.getNode("name", "name").setValue(player.getName());
 			node.getNode("name", "timestamp").setValue(System.currentTimeMillis() / 1000L);
 			node.getNode("options", "spy").setValue(player.isSpy() ? true : null);
-			node.getNode("options", "notify").setValue(player.isPreventNotify() ? true : null);
+			node.getNode("options", "mute").setValue(player.isMuted() ? true : null);
 		}
 		
 		try {
@@ -181,7 +181,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 		if (ConfigParties.PASSWORD_ENABLE)
 			node.getNode("password").setValue(!party.getPassword().isEmpty() ? party.getPassword() : null);
 		
-		node.getNode("pvp").setValue(party.isFriendlyFireProtected());
+		node.getNode("protection").setValue(party.getProtection());
 		
 		if (plugin.getPartyManager().isBukkit_expSystem() && party.getExperience() > 0)
 			node.getNode("experience").setValue(party.getExperience());
@@ -299,7 +299,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			ret.setRank(node.getNode("rank").getInt());
 			ret.setPartyName(node.getNode("party").getString(""));
 			ret.setSpy(node.getNode("options", "spy").getBoolean(false));
-			ret.setPreventNotify(node.getNode("options", "notify").getBoolean(false));
+			ret.setMuted(node.getNode("options", "mute").getBoolean(false));
 		}
 		return ret;
 	}
@@ -318,7 +318,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			ret.setKills(node.getNode("kills").getInt(0));
 			ret.setPassword(node.getNode("password").getString(""));
 			ret.setHome(HomeLocationImpl.deserialize(node.getNode("home").getString("")));
-			ret.setFriendlyFireProtected(node.getNode("pvp").getBoolean(false));
+			ret.setProtection(node.getNode("protection").getBoolean(false));
 			ret.setExperience(node.getNode("experience").getDouble(0));
 			
 			// Leader check

@@ -153,7 +153,7 @@ additional:
     enable: true
     # You can choose how to handle friendly fire
     # 1. global = Protect everytime the party
-    # 2. command = Toggle the protection with '/party pvp' command
+    # 2. command = Toggle the protection with '/party protection' command
     type: global
     # Warn leaders on friendly fire hits
     # Give the rank permission "party.warnondamage" to the party leaders

@@ -264,10 +264,10 @@ additional-commands:
     censored: "&cThe MOTD contains censored words!"
     wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
   
-  notify:
+  mute:
     toggle-on: "&7You have disabled notifications!"
     toggle-off: "&7You have enabled notifications!"
-    wrong-command: "&cWrong variables: Type &7/party notify [on/off]"
+    wrong-command: "&cWrong variables: Type &7/party mute [on/off]"
   
   password:
     changed: "&aParty password changed"
@@ -276,12 +276,12 @@ additional-commands:
     invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
     wrong-command: "&cWrong variables: Type &7/party password <password>"
 
-  pvp:
+  protection:
     toggle-on: "&aNow your party is protected by friendly fire"
     toggle-off: "&aYour party is not protected anymore by friendly fire"
     protected: "&cYou can't hit your partymates"
     warn-on-attack: "&c%player% tried to hit %victim%!"
-    wrong-command: "&cWrong variables: Type &7/party pvp [on/off]"
+    wrong-command: "&cWrong variables: Type &7/party protection [on/off]"
 
   sethome:
     changed: ""
@@ -366,11 +366,11 @@ help:
     join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Join into a party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - List of online parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Add/remove motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    notify: '{"text":"","extra":[{"text":"/party notify [on/off]","color":"aqua"},{"text":" - Toggle notifications","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party notify "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Toggle notifications","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    pvp: '{"text":"","extra":[{"text":"/party pvp [on/off]","color":"aqua"},{"text":" - Toggle friendly fire protection","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party pvp "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - Toggle friendly fire protection","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set the party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teleport your party to you","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 
 dont-edit-this:
-  version: 2
+  version: 3

@@ -24,10 +24,9 @@ public class DynmapHandler {
 	
 	public DynmapHandler(BukkitPartiesPlugin instance) {
 		plugin = instance;
-		init();
 	}
 	
-	private void init() {
+	public void init() {
 		active = false;
 		if (BukkitConfigMain.ADDONS_DYNMAP_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {

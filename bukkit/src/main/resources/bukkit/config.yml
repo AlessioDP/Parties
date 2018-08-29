@@ -44,7 +44,7 @@ storage:
     # %position% = Debug purpose, show caller class (USE IT TO REPORT BUGS)
     # %level% = Mode of the message
     # %message% = Message
-    format: "%date% [%time%] (%level%) {%position%} %message%"
+    format: "%date% [%time%] (%level%) {%position%} %message%\n"
     # Log chat of parties
     chat: true
     # Print messages on the console
@@ -230,9 +230,9 @@ additional:
     list-worlds:
     - '*'
   
-  notify:
-    # Enable notify command
-    # If an user use notify command, it will stop to receive every notification
+  mute:
+    # Enable mute command
+    # If an user use mute command, it will stop to receive every notification
     enable: false
     block:
       invite: true
@@ -355,9 +355,9 @@ commands:
     list: "list"
     migrate: "migrate"
     motd: "motd"
-    notify: "notify"
+    mute: "mute"
     password: "password"
-    pvp: "pvp"
+    protection: "protection"
     rank: "rank"
     reload: "reload"
     rename: "rename"
@@ -379,7 +379,7 @@ commands:
   - deny
   - join
   - ignore
-  - notify
+  - mute
   - p
   - leave
   - invite
@@ -388,7 +388,7 @@ commands:
   - chat
   - desc
   - motd
-  - pvp
+  - protection
   - home
   - sethome
   - color
@@ -405,4 +405,4 @@ commands:
 
 # End of configuration file
 dont-edit-this:
-    version: 2
+    version: 3

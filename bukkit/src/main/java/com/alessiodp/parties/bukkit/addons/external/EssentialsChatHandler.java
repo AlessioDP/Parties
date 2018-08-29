@@ -24,10 +24,9 @@ public class EssentialsChatHandler implements Listener {
 	
 	public EssentialsChatHandler(BukkitPartiesPlugin parties) {
 		plugin = parties;
-		init();
 	}
 	
-	private void init() {
+	public void init() {
 		if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 			plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
 			LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED

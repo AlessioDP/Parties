@@ -21,10 +21,9 @@ public class VaultHandler {
 	
 	public VaultHandler(BukkitPartiesPlugin instance) {
 		plugin = instance;
-		init();
 	}
 	
-	private void init() {
+	public void init() {
 		if (BukkitConfigMain.ADDONS_VAULT_ENABLE) {
 			if (plugin.getBootstrap().getServer().getPluginManager().getPlugin(ADDON_NAME) != null) {
 				if (setupEconomy()) {

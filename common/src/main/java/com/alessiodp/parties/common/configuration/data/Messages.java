@@ -164,9 +164,9 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_MOTD_CENSORED;
 	public static String ADDCMD_MOTD_WRONGCMD;
 	
-	public static String ADDCMD_NOTIFY_ON;
-	public static String ADDCMD_NOTIFY_OFF;
-	public static String ADDCMD_NOTIFY_WRONGCMD;
+	public static String ADDCMD_MUTE_ON;
+	public static String ADDCMD_MUTE_OFF;
+	public static String ADDCMD_MUTE_WRONGCMD;
 	
 	public static String ADDCMD_PASSWORD_CHANGED;
 	public static String ADDCMD_PASSWORD_REMOVED;
@@ -210,7 +210,7 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDCMD_JOIN;
 	public static String HELP_ADDCMD_LIST;
 	public static String HELP_ADDCMD_MOTD;
-	public static String HELP_ADDCMD_NOTIFY;
+	public static String HELP_ADDCMD_MUTE;
 	public static String HELP_ADDCMD_PASSWORD;
 	
 	
@@ -387,9 +387,9 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_MOTD_CENSORED = "&cThe MOTD contains censored words!";
 		ADDCMD_MOTD_WRONGCMD = "&cWrong variables: Type &7/party motd <motd/remove>";
 		
-		ADDCMD_NOTIFY_ON = "&7You have disabled notifications!";
-		ADDCMD_NOTIFY_OFF = "&7You have enabled notifications!";
-		ADDCMD_NOTIFY_WRONGCMD = "&cWrong variables: Type &7/party notify [on/off]";
+		ADDCMD_MUTE_ON = "&7You have disabled notifications!";
+		ADDCMD_MUTE_OFF = "&7You have enabled notifications!";
+		ADDCMD_MUTE_WRONGCMD = "&cWrong variables: Type &7/party mute [on/off]";
 		
 		ADDCMD_PASSWORD_CHANGED = "&aParty password changed";
 		ADDCMD_PASSWORD_REMOVED = "&aParty password removed";
@@ -436,7 +436,7 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_ADDCMD_JOIN = "{\"text\":\"\",\"extra\":[{\"text\":\"/party join <party> [password]\",\"color\":\"aqua\"},{\"text\":\" - Join into a party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party join \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_LIST = "{\"text\":\"\",\"extra\":[{\"text\":\"/party list [page]\",\"color\":\"aqua\"},{\"text\":\" - List of online parties\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party list \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_MOTD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party motd <motd/remove>\",\"color\":\"aqua\"},{\"text\":\" - Add/remove motd\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party motd \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_ADDCMD_NOTIFY = "{\"text\":\"\",\"extra\":[{\"text\":\"/party notify [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle notifications\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party notify \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_MUTE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party mute [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle notifications\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party mute \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_PASSWORD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party password <pw/remove>\",\"color\":\"aqua\"},{\"text\":\" - Change party password\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party password \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 	}
 	
@@ -598,9 +598,9 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_MOTD_CENSORED = confAdapter.getString("additional-commands.motd.censored", ADDCMD_MOTD_CENSORED);
 		ADDCMD_MOTD_WRONGCMD = confAdapter.getString("additional-commands.motd.wrong-command", ADDCMD_MOTD_WRONGCMD);
 		
-		ADDCMD_NOTIFY_ON = confAdapter.getString("additional-commands.notify.toggle-on", ADDCMD_NOTIFY_ON);
-		ADDCMD_NOTIFY_OFF = confAdapter.getString("additional-commands.notify.toggle-off", ADDCMD_NOTIFY_OFF);
-		ADDCMD_NOTIFY_WRONGCMD = confAdapter.getString("additional-commands.notify.wrong-command", ADDCMD_NOTIFY_WRONGCMD);
+		ADDCMD_MUTE_ON = confAdapter.getString("additional-commands.mute.toggle-on", ADDCMD_MUTE_ON);
+		ADDCMD_MUTE_OFF = confAdapter.getString("additional-commands.mute.toggle-off", ADDCMD_MUTE_OFF);
+		ADDCMD_MUTE_WRONGCMD = confAdapter.getString("additional-commands.mute.wrong-command", ADDCMD_MUTE_WRONGCMD);
 		
 		ADDCMD_PASSWORD_CHANGED = confAdapter.getString("additional-commands.password.changed", ADDCMD_PASSWORD_CHANGED);
 		ADDCMD_PASSWORD_REMOVED = confAdapter.getString("additional-commands.password.removed", ADDCMD_PASSWORD_REMOVED);
@@ -644,7 +644,7 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_ADDCMD_JOIN = confAdapter.getString("help.additional-commands.join", HELP_ADDCMD_JOIN);
 		HELP_ADDCMD_LIST = confAdapter.getString("help.additional-commands.list", HELP_ADDCMD_LIST);
 		HELP_ADDCMD_MOTD = confAdapter.getString("help.additional-commands.motd", HELP_ADDCMD_MOTD);
-		HELP_ADDCMD_NOTIFY = confAdapter.getString("help.additional-commands.notify", HELP_ADDCMD_NOTIFY);
+		HELP_ADDCMD_MUTE = confAdapter.getString("help.additional-commands.mute", HELP_ADDCMD_MUTE);
 		HELP_ADDCMD_PASSWORD = confAdapter.getString("help.additional-commands.password", HELP_ADDCMD_PASSWORD);
 	}
 }

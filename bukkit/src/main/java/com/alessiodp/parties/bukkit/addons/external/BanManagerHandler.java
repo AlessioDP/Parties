@@ -19,10 +19,9 @@ public class BanManagerHandler {
 	
 	public BanManagerHandler(PartiesPlugin instance) {
 		plugin = instance;
-		init();
 	}
 	
-	private void init() {
+	public void init() {
 		hook = null;
 		if (BukkitConfigMain.ADDONS_BANMANAGER_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {

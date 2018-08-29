@@ -18,7 +18,7 @@ import com.alessiodp.parties.common.commands.executors.CommandLeave;
 import com.alessiodp.parties.common.commands.executors.CommandList;
 import com.alessiodp.parties.common.commands.executors.CommandMigrate;
 import com.alessiodp.parties.common.commands.executors.CommandMotd;
-import com.alessiodp.parties.common.commands.executors.CommandNotify;
+import com.alessiodp.parties.common.commands.executors.CommandMute;
 import com.alessiodp.parties.common.commands.executors.CommandP;
 import com.alessiodp.parties.common.commands.executors.CommandParty;
 import com.alessiodp.parties.common.commands.executors.CommandPassword;
@@ -101,9 +101,9 @@ public abstract class CommandManager {
 		if (ConfigParties.MOTD_ENABLE)
 			dispatcher.register(CommonCommands.MOTD, new CommandMotd(plugin));
 		
-		// Notify
-		if (ConfigMain.ADDITIONAL_NOTIFY_ENABLE)
-			dispatcher.register(CommonCommands.NOTIFY, new CommandNotify(plugin));
+		// Mute
+		if (ConfigMain.ADDITIONAL_MUTE_ENABLE)
+			dispatcher.register(CommonCommands.MUTE, new CommandMute(plugin));
 	}
 	
 	protected abstract void setupCommands();

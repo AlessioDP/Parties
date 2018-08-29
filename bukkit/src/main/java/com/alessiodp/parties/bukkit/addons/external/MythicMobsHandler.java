@@ -18,7 +18,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,17 +35,16 @@ public class MythicMobsHandler implements Listener {
 	
 	public MythicMobsHandler(BukkitPartiesPlugin instance) {
 		plugin = instance;
-		init();
+		plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
 	}
 	
-	private void init() {
+	public void init() {
 		if (BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE
 				&& BukkitConfigMain.ADDITIONAL_EXP_ENABLE
 				&& BukkitConfigMain.ADDITIONAL_EXP_DROP_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				active = true;
 				mobsExperienceToSuppress = new ArrayList<>();
-				plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
 				
 				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
 						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
@@ -51,6 +52,7 @@ public class MythicMobsHandler implements Listener {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = false;
 				active = false;
 				
+				HandlerList.unregisterAll(this);
 				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_FAILED
 						.replace("{addon}", ADDON_NAME), true, ConsoleColor.RED);
 			}

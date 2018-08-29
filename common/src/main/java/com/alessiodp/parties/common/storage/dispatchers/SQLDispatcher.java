@@ -230,7 +230,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 	private void updatePlayer(PartyPlayerImpl player, Connection connection) {
 		try {
 			boolean existData = false;
-			if (!player.getPartyName().isEmpty() || player.isSpy() || player.isPreventNotify())
+			if (!player.getPartyName().isEmpty() || player.isSpy() || player.isMuted())
 				existData = true;
 			
 			if (existData) {
@@ -251,7 +251,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 					preStatement.setString(4, player.getName());
 					preStatement.setInt(5, (int) player.getNameTimestamp());
 					preStatement.setBoolean(6, player.isSpy());
-					preStatement.setBoolean(7, player.isPreventNotify());
+					preStatement.setBoolean(7, player.isMuted());
 					
 					preStatement.executeUpdate();
 				}
@@ -335,7 +335,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			preStatement.setInt(6, party.getKills());
 			preStatement.setString(7, party.getPassword());
 			preStatement.setString(8, party.getHome() != null ? party.getHome().toString() : "");
-			preStatement.setBoolean(9, party.isFriendlyFireProtected());
+			preStatement.setBoolean(9, party.getProtection());
 			preStatement.setDouble(10, party.getExperience());
 			preStatement.executeUpdate();
 		} catch (SQLException ex) {
@@ -528,7 +528,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			ret.setPartyName(rs.getString("party"));
 			ret.setRank(rs.getInt("rank"));
 			ret.setSpy(rs.getBoolean("spy"));
-			ret.setPreventNotify(rs.getBoolean("notify"));
+			ret.setMuted(rs.getBoolean("mute"));
 		} catch (Exception ex) {
 			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
 		}
@@ -544,7 +544,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			ret.setKills(rs.getInt("kills"));
 			ret.setPassword(rs.getString("password"));
 			ret.setHome(HomeLocationImpl.deserialize(rs.getString("home")));
-			ret.setFriendlyFireProtected(rs.getBoolean("pvp"));
+			ret.setProtection(rs.getBoolean("protection"));
 			ret.setExperience(rs.getDouble("experience"));
 			String leader = rs.getString("leader");
 			if (leader != null) {

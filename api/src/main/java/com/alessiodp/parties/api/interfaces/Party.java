@@ -194,7 +194,24 @@ public interface Party {
 	void setPassword(String password);
 	
 	/**
-	 * Check if the party is protected from friendly fire
+	 * Get the party friendly fire protection
+	 *
+	 * @return Returns true if the party is protected
+	 */
+	boolean getProtection();
+	
+	/**
+	 * Set the party friendly fire protection
+	 *
+	 * @param protection
+	 *            True if you want protect the party
+	 */
+	void setProtection(boolean protection);
+	
+	/**
+	 * Check if the party is protected from friendly fire using both
+	 * command and global protection.
+	 * Use this if you just want to check for FF.
 	 *
 	 * @return Returns true if pvp between players is protected
 	 */

@@ -18,11 +18,9 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 public class GriefPreventionHandler {
 	private static final String ADDON_NAME = "GriefPrevention";
 	
-	public GriefPreventionHandler() {
-		init();
-	}
+	public GriefPreventionHandler() {}
 	
-	private void init() {
+	public void init() {
 		if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED

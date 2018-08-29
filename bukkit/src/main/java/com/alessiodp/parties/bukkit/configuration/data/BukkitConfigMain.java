@@ -80,7 +80,7 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		COMMANDS_CMD_CLAIM;
 	public static String		COMMANDS_CMD_CONFIRM;
 	public static String		COMMANDS_CMD_HOME;
-	public static String		COMMANDS_CMD_PVP;
+	public static String		COMMANDS_CMD_PROTECTION;
 	public static String		COMMANDS_CMD_SETHOME;
 	public static String		COMMANDS_CMD_TELEPORT;
 	
@@ -169,7 +169,7 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_CLAIM = "claim";
 		COMMANDS_CMD_CONFIRM = "confirm";
 		COMMANDS_CMD_HOME = "home";
-		COMMANDS_CMD_PVP = "pvp";
+		COMMANDS_CMD_PROTECTION = "protection";
 		COMMANDS_CMD_SETHOME = "sethome";
 		COMMANDS_CMD_TELEPORT = "teleport";
 		
@@ -180,7 +180,7 @@ public class BukkitConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("deny");
 		ConfigMain.COMMANDS_ORDER.add("join");
 		ConfigMain.COMMANDS_ORDER.add("ignore");
-		ConfigMain.COMMANDS_ORDER.add("notify");
+		ConfigMain.COMMANDS_ORDER.add("mute");
 		ConfigMain.COMMANDS_ORDER.add("p");
 		ConfigMain.COMMANDS_ORDER.add("leave");
 		ConfigMain.COMMANDS_ORDER.add("invite");
@@ -189,7 +189,7 @@ public class BukkitConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("chat");
 		ConfigMain.COMMANDS_ORDER.add("desc");
 		ConfigMain.COMMANDS_ORDER.add("motd");
-		ConfigMain.COMMANDS_ORDER.add("pvp");
+		ConfigMain.COMMANDS_ORDER.add("protection");
 		ConfigMain.COMMANDS_ORDER.add("home");
 		ConfigMain.COMMANDS_ORDER.add("sethome");
 		ConfigMain.COMMANDS_ORDER.add("color");
@@ -285,7 +285,7 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_CLAIM = confAdapter.getString("commands.main-commands.claim", COMMANDS_CMD_CLAIM);
 		COMMANDS_CMD_CONFIRM = confAdapter.getString("commands.main-commands.confirm", COMMANDS_CMD_CONFIRM);
 		COMMANDS_CMD_HOME = confAdapter.getString("commands.main-commands.home", COMMANDS_CMD_HOME);
-		COMMANDS_CMD_PVP = confAdapter.getString("commands.main-commands.pvp", COMMANDS_CMD_PVP);
+		COMMANDS_CMD_PROTECTION = confAdapter.getString("commands.main-commands.protection", COMMANDS_CMD_PROTECTION);
 		COMMANDS_CMD_SETHOME = confAdapter.getString("commands.main-commands.sethome", COMMANDS_CMD_SETHOME);
 		COMMANDS_CMD_TELEPORT = confAdapter.getString("commands.main-commands.teleport", COMMANDS_CMD_TELEPORT);
 	}

@@ -26,10 +26,9 @@ public class CrackShotHandler implements Listener {
 	
 	public CrackShotHandler(BukkitPartiesPlugin instance) {
 		plugin = instance;
-		init();
 	}
 	
-	private void init() {
+	public void init() {
 		active = false;
 		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE &&
 				BukkitConfigParties.FRIENDLYFIRE_CRACKSHOT_ENABLE) {
@@ -69,7 +68,7 @@ public class CrackShotHandler implements Listener {
 							// Friendly fire confirmed
 							BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(victimPp.getPartyName());
 							
-							shooterPp.sendMessage(BukkitMessages.ADDCMD_PVP_PROTECTED);
+							shooterPp.sendMessage(BukkitMessages.ADDCMD_PROTECTION_PROTECTED);
 							party.sendFriendlyFireWarn(victimPp, shooterPp);
 							
 							event.setCancelled(true);

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.alessiodp.parties</groupId>
 		<artifactId>Parties</artifactId>
-		<version>2.3.4</version>
+		<version>2.3.5</version>
 	</parent>
 
 	<artifactId>parties-bukkit</artifactId>
@@ -111,6 +111,13 @@
 			<artifactId>spigot-api</artifactId>
 			<version>${spigot.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- Spigot API Javadoc -->
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${spigot.version}</version>
+			<type>javadoc</type>
 		</dependency>
 		<dependency>
 			<!-- Bukkit API -->
