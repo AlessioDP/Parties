@@ -9,7 +9,6 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.logging.LoggerManager;
-import com.alessiodp.parties.common.parties.objects.ExpResult;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;

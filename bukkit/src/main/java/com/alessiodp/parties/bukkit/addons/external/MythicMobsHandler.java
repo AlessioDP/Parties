@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.RegisteredListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +29,13 @@ public class MythicMobsHandler implements Listener {
 	private BukkitPartiesPlugin plugin;
 	private static final String ADDON_NAME = "MythicMobs";
 	private static boolean active;
+	private boolean registered;
 	
 	@Getter private static List<UUID> mobsExperienceToSuppress;
 	
 	public MythicMobsHandler(BukkitPartiesPlugin instance) {
 		plugin = instance;
-		plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
+		registered = false;
 	}
 	
 	public void init() {
@@ -45,6 +45,9 @@ public class MythicMobsHandler implements Listener {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				active = true;
 				mobsExperienceToSuppress = new ArrayList<>();
+				if (!registered) {
+					plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
+				}
 				
 				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
 						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
