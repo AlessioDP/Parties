@@ -200,6 +200,7 @@ public class BukkitMessages extends Messages {
 		OTHER_FOLLOW_WORLD = confAdapter.getString("other.follow.following-world", OTHER_FOLLOW_WORLD);
 		
 		// Help messages
+		HELP_ADDCMD_CLAIM = confAdapter.getString("help.additional-commands.claim", HELP_ADDCMD_CLAIM);
 		HELP_ADDCMD_HOME = confAdapter.getString("help.additional-commands.home", HELP_ADDCMD_HOME);
 		HELP_ADDCMD_PROTECTION = confAdapter.getString("help.additional-commands.protection", HELP_ADDCMD_PROTECTION);
 		HELP_ADDCMD_SETHOME = confAdapter.getString("help.additional-commands.sethome", HELP_ADDCMD_SETHOME);
