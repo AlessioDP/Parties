@@ -189,6 +189,7 @@ public class Constants {
 	
 	public static final String DEBUG_LIB_GENERAL_HOOKED = "{addon} Hooked";
 	public static final String DEBUG_LIB_GENERAL_FAILED = "Failed to hook into {addon}, disabled its features";
+	public static final String DEBUG_LIB_GENERAL_OUTDATED = "Failed to hook into {addon}, you are using an old version of that plugin";
 	public static final String DEBUG_LIB_BANMANAGER_BAN = "Party '{party}' deleted because leader got banned by {player}";
 	
 	public static final String DEBUG_DB_INIT = "Initializing {class} with {db}/{log}";
@@ -231,7 +232,8 @@ public class Constants {
 	
 	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (name, leader, description, motd, color, kills, password, home, protection, experience) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE leader=VALUES(leader), description=VALUES(description), motd=VALUES(motd), color=VALUES(color), kills=VALUES(kills), password=VALUES(password), home=VALUES(home), protection=VALUES(protection), experience=VALUES(experience);";
 	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (name, leader, description, motd, color, kills, password, home, protection, experience) VALUES (?,?,?,?,?,?,?,?,?,?);";
-	public static final String QUERY_PARTY_GET = "SELECT * FROM {table_parties} WHERE name=?;";
+	public static final String QUERY_PARTY_GET_MYSQL = "SELECT * FROM {table_parties} WHERE name=?;";
+	public static final String QUERY_PARTY_GET_SQLITE = "SELECT * FROM {table_parties} WHERE name=? COLLATE NOCASE;";
 	public static final String QUERY_PARTY_GETALL = "SELECT * FROM {table_parties};";
 	public static final String QUERY_PARTY_GETALLFIXED = "SELECT * FROM {table_parties} WHERE leader='fixed';";
 	public static final String QUERY_PARTY_RENAME_PARTIES = "UPDATE {table_parties} SET name=? WHERE name=?;";

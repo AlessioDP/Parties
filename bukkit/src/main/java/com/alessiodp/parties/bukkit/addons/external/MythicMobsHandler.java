@@ -43,14 +43,21 @@ public class MythicMobsHandler implements Listener {
 				&& BukkitConfigMain.ADDITIONAL_EXP_ENABLE
 				&& BukkitConfigMain.ADDITIONAL_EXP_DROP_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
-				active = true;
-				mobsExperienceToSuppress = new ArrayList<>();
-				if (!registered) {
-					plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
+				try {
+					Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobLootDropEvent");
+					
+					active = true;
+					mobsExperienceToSuppress = new ArrayList<>();
+					if (!registered) {
+						plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
+					}
+					
+					LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
+							.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
+				} catch (Exception ex) {
+					LoggerManager.printError(Constants.DEBUG_LIB_GENERAL_OUTDATED
+							.replace("{addon}", ADDON_NAME));
 				}
-				
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
 			} else {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = false;
 				active = false;

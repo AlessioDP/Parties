@@ -61,7 +61,6 @@ public class MySQLDao implements IDatabaseSQL {
 		config.setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
 		config.setMinimumIdle(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
 		config.setMaxLifetime(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME);
-		config.setIdleTimeout(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT);
 		
 		// Properties: https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html
 		config.addDataSourceProperty("cachePreStmts", "true"); // Enable Prepared Statement caching

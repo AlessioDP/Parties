@@ -96,8 +96,6 @@ storage:
         pool-size: 10
         # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
         connection-lifetime: 1800000
-        # Connection timeout, drop connection if the query take too long (Default: 15 seconds = 15000ms)
-        connection-timeout: 10000
         # Property used to alert when the connection is not using a valid SSL certificate
         use-ssl: true
         # Charset used by tables

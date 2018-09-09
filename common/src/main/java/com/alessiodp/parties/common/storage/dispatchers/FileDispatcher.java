@@ -241,7 +241,15 @@ public class FileDispatcher implements IDatabaseDispatcher {
 	
 	@Override
 	public boolean existParty(String party) {
-		return database.getRootNode().getNode("parties", party).getValue() != null;
+		boolean ret = false;
+		Function<Object, String> f = o -> (String) o;
+		for (ConfigurationNode partyNode : database.getRootNode().getNode("parties").getChildrenMap().values()) {
+			if (partyNode.getKey().toString().equalsIgnoreCase(party)) {
+				ret = true;
+				break;
+			}
+		}
+		return ret;
 	}
 	
 	@Override

@@ -346,9 +346,13 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 	@Override
 	public PartyImpl getParty(String party) {
 		PartyImpl ret = null;
+		String query = Constants.QUERY_PARTY_GET_MYSQL;
+		if (databaseType.isSQLite())
+			query = Constants.QUERY_PARTY_GET_SQLITE;
+		
 		try (Connection connection = getConnection()) {
 			if (connection != null) {
-				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PARTY_GET))) {
+				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(query))) {
 					preStatement.setString(1, party);
 					
 					try (ResultSet rs = preStatement.executeQuery()) {
@@ -416,9 +420,13 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 	@Override
 	public boolean existParty(String party) {
 		boolean ret = false;
+		String query = Constants.QUERY_PARTY_GET_MYSQL;
+		if (databaseType.isSQLite())
+			query = Constants.QUERY_PARTY_GET_SQLITE;
+		
 		try (Connection connection = getConnection()) {
 			if (connection != null) {
-				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PARTY_GET))) {
+				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(query))) {
 					preStatement.setString(1, party);
 					
 					try (ResultSet rs = preStatement.executeQuery()) {

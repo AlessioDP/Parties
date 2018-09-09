@@ -43,7 +43,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD;
 	public static int			STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE;
 	public static int			STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME;
-	public static int			STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT;
 	public static boolean		STORAGE_SETTINGS_SQL_MYSQL_USESSL;
 	public static String		STORAGE_SETTINGS_SQL_MYSQL_CHARSET;
 	public static String		STORAGE_SETTINGS_SQL_SQLITE_DBNAME;
@@ -157,7 +156,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD = "password";
 		STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE = 10;
 		STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME = 1800000;
-		STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT = 10000;
 		STORAGE_SETTINGS_SQL_MYSQL_USESSL = true;
 		STORAGE_SETTINGS_SQL_MYSQL_CHARSET = "utf8";
 		STORAGE_SETTINGS_SQL_SQLITE_DBNAME = "database.db";
@@ -268,7 +266,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD = confAdapter.getString("storage.storage-settings.sql-based.mysql.password", STORAGE_SETTINGS_SQL_MYSQL_PASSWORD);
 		STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE = confAdapter.getInt("storage.storage-settings.sql-based.mysql.pool-size", STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
 		STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME = confAdapter.getInt("storage.storage-settings.sql-based.mysql.connection-lifetime", STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME);
-		STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT = confAdapter.getInt("storage.storage-settings.sql-based.mysql.connection-timeout", STORAGE_SETTINGS_SQL_MYSQL_CONNTIMEOUT);
 		STORAGE_SETTINGS_SQL_MYSQL_USESSL = confAdapter.getBoolean("storage.storage-settings.sql-based.mysql.use-ssl", STORAGE_SETTINGS_SQL_MYSQL_USESSL);
 		STORAGE_SETTINGS_SQL_MYSQL_CHARSET = confAdapter.getString("storage.storage-settings.sql-based.mysql.charset", STORAGE_SETTINGS_SQL_MYSQL_CHARSET);
 		STORAGE_SETTINGS_SQL_SQLITE_DBNAME = confAdapter.getString("storage.storage-settings.sql-based.sqlite.database-name", STORAGE_SETTINGS_SQL_SQLITE_DBNAME);
