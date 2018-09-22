@@ -1,5 +1,7 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -13,8 +15,6 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.party.PartiesPartyPostDeleteEvent;
-import com.alessiodp.parties.api.events.party.PartiesPartyPreDeleteEvent;
 
 public class CommandDelete extends AbstractCommand {
 	
@@ -73,7 +73,7 @@ public class CommandDelete extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling Pre API event
-		PartiesPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.DELETE, null, pp);
+		IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.DELETE, null, pp);
 		plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 		
 		if (!partiesPreDeleteEvent.isCancelled()) {
@@ -87,7 +87,7 @@ public class CommandDelete extends AbstractCommand {
 			party.removeParty();
 			
 			// Calling Post API event
-			PartiesPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.DELETE, null, pp);
+			IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.DELETE, null, pp);
 			plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 			
 			LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_DELETE

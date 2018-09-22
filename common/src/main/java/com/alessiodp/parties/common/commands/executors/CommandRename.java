@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -13,7 +14,6 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.common.utils.PartiesUtils;
-import com.alessiodp.parties.api.events.party.PartiesPartyRenameEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 
 import java.util.regex.Pattern;
@@ -119,7 +119,7 @@ public class CommandRename extends AbstractCommand {
 		String oldPartyName = party.getName();
 		
 		// Calling API event
-		PartiesPartyRenameEvent partiesRenameEvent = plugin.getEventManager().preparePartyRenameEvent(party, partyName, pp, type.equals(Type.ANOTHER));
+		IPartyRenameEvent partiesRenameEvent = plugin.getEventManager().preparePartyRenameEvent(party, partyName, pp, type.equals(Type.ANOTHER));
 		plugin.getEventManager().callEvent(partiesRenameEvent);
 		
 		partyName = partiesRenameEvent.getNewPartyName();

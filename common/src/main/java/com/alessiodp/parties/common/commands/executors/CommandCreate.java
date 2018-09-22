@@ -1,5 +1,7 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -15,8 +17,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesUtils;
-import com.alessiodp.parties.api.events.party.PartiesPartyPostCreateEvent;
-import com.alessiodp.parties.api.events.party.PartiesPartyPreCreateEvent;
 
 import java.util.regex.Pattern;
 
@@ -102,7 +102,7 @@ public class CommandCreate extends AbstractCommand {
 		PartyImpl party;
 		
 		// Calling Pre API event
-		PartiesPartyPreCreateEvent partiesPreEvent = plugin.getEventManager().preparePartyPreCreateEvent(pp, partyName, isFixed);
+		IPartyPreCreateEvent partiesPreEvent = plugin.getEventManager().preparePartyPreCreateEvent(pp, partyName, isFixed);
 		plugin.getEventManager().callEvent(partiesPreEvent);
 		
 		String newPartyName = partiesPreEvent.getPartyName();
@@ -135,7 +135,7 @@ public class CommandCreate extends AbstractCommand {
 			}
 			
 			// Calling API event
-			PartiesPartyPostCreateEvent partiesPostEvent = plugin.getEventManager().preparePartyPostCreateEvent(pp, party);
+			IPartyPostCreateEvent partiesPostEvent = plugin.getEventManager().preparePartyPostCreateEvent(pp, party);
 			plugin.getEventManager().callEvent(partiesPostEvent);
 		} else {
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_CREATEEVENT_DENY

@@ -11,9 +11,9 @@ import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.api.events.bukkit.PartiesCombustFriendlyFireBlockedEvent;
-import com.alessiodp.parties.api.events.bukkit.PartiesFriendlyFireBlockedEvent;
-import com.alessiodp.parties.api.events.bukkit.PartiesPotionsFriendlyFireBlockedEvent;
+import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesCombustFriendlyFireBlockedEvent;
+import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireBlockedEvent;
+import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriendlyFireBlockedEvent;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EnderPearl;
@@ -87,7 +87,7 @@ public class BukkitFightListener implements Listener {
 						if (party != null && ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
 							if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 								// Calling API event
-								PartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
+								BukkitPartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 								plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
 								
 								if (!partiesFriendlyFireEvent.isCancelled()) {
@@ -147,7 +147,7 @@ public class BukkitFightListener implements Listener {
 								PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
 								if (ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
 									// Calling API event
-									PartiesPotionsFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesPotionsFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
+									BukkitPartiesPotionsFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesPotionsFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 									plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
 									
 									if (!partiesFriendlyFireEvent.isCancelled()) {
@@ -192,7 +192,7 @@ public class BukkitFightListener implements Listener {
 				if (party != null && ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
 					if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 						// Calling API event
-						PartiesCombustFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).prepareCombustFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
+						BukkitPartiesCombustFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).prepareCombustFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 						plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
 						
 						if (!partiesFriendlyFireEvent.isCancelled()) {

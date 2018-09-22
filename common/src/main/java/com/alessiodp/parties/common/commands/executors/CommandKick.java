@@ -1,5 +1,8 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -13,9 +16,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.OfflineUser;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.party.PartiesPartyPostDeleteEvent;
-import com.alessiodp.parties.api.events.party.PartiesPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.player.PartiesPlayerLeaveEvent;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -160,14 +160,14 @@ public class CommandKick extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling API event
-		PartiesPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(kickedPp, party, otherParty, pp);
+		IPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(kickedPp, party, otherParty, pp);
 		plugin.getEventManager().callEvent(partiesLeaveEvent);
 		
 		if (!partiesLeaveEvent.isCancelled()) {
 			if (party.getLeader().equals(kickedPlayer.getUUID())) {
 				// Leader
 				// Calling Pre API event
-				PartiesPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, kickedPp, pp);
+				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, kickedPp, pp);
 				plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 				
 				if (!partiesPreDeleteEvent.isCancelled()) {
@@ -179,7 +179,7 @@ public class CommandKick extends AbstractCommand {
 					party.callChange();
 					
 					// Calling Post API event
-					PartiesPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.LEAVE, kickedPp, pp);
+					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.LEAVE, kickedPp, pp);
 					plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 					
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_KICK_DISBAND

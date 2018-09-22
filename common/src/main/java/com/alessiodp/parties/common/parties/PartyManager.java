@@ -1,5 +1,7 @@
 package com.alessiodp.parties.common.parties;
 
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -8,8 +10,6 @@ import com.alessiodp.parties.common.logging.LogLevel;
 import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.party.PartiesPartyPostDeleteEvent;
-import com.alessiodp.parties.api.events.party.PartiesPartyPreDeleteEvent;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public abstract class PartyManager {
 		PartyImpl party = getParty(name);
 		if (party != null) {
 			// Calling Pre API event
-			PartiesPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.TIMEOUT, null, null);
+			IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.TIMEOUT, null, null);
 			plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 			
 			if (!partiesPreDeleteEvent.isCancelled()) {
@@ -112,7 +112,7 @@ public abstract class PartyManager {
 				
 				party.removeParty();
 				// Calling Post API event
-				PartiesPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.TIMEOUT, null, null);
+				IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.TIMEOUT, null, null);
 				plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 				
 				LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PARTY_DELETE_CAUSE

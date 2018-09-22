@@ -11,4 +11,9 @@ public interface PartiesEvent {
 	 */
 	@NotNull
 	PartiesAPI getApi();
+	
+	/**
+	 * Set the Parties API instance. Used by Parties instance to let you hook directly to the main API.
+	 */
+	void setApi(PartiesAPI instance);
 }

@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.player.IChatEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -14,7 +15,6 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.ChatTask;
 import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.api.events.player.PartiesChatEvent;
 
 public class CommandP extends AbstractCommand {
 	
@@ -94,7 +94,7 @@ public class CommandP extends AbstractCommand {
 		}
 		
 		// Calling API event
-		PartiesChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, sb.toString());
+		IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, sb.toString());
 		plugin.getEventManager().callEvent(partiesChatEvent);
 		
 		String newMessage = partiesChatEvent.getMessage();

@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.parties.objects;
 
+import com.alessiodp.parties.api.events.common.player.IPlayerJoinEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -8,7 +9,6 @@ import com.alessiodp.parties.common.logging.LogLevel;
 import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.InviteTask;
-import com.alessiodp.parties.api.events.player.PartiesPlayerJoinEvent;
 import com.alessiodp.parties.api.interfaces.Color;
 import com.alessiodp.parties.api.interfaces.HomeLocation;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -163,7 +163,7 @@ public abstract class PartyImpl implements Party {
 		PartyPlayerImpl toPp = plugin.getPlayerManager().getPlayer(to);
 		
 		// Calling API Event
-		PartiesPlayerJoinEvent partiesJoinEvent = plugin.getEventManager().preparePlayerJoinEvent(toPp, this, true, from);
+		IPlayerJoinEvent partiesJoinEvent = plugin.getEventManager().preparePlayerJoinEvent(toPp, this, true, from);
 		plugin.getEventManager().callEvent(partiesJoinEvent);
 		
 		if (!partiesJoinEvent.isCancelled()) {

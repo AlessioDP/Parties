@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.listeners;
 
+import com.alessiodp.parties.api.events.common.player.IChatEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
@@ -12,7 +13,6 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.ChatTask;
 import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.api.events.player.PartiesChatEvent;
 
 public abstract class ChatListener {
 	private PartiesPlugin plugin;
@@ -63,7 +63,7 @@ public abstract class ChatListener {
 						PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
 						
 						// Calling API event
-						PartiesChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, message);
+						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, message);
 						plugin.getEventManager().callEvent(partiesChatEvent);
 						
 						String newMessage = partiesChatEvent.getMessage();

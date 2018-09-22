@@ -2,6 +2,9 @@ package com.alessiodp.parties.bukkit.addons.external.hooks;
 
 import java.util.UUID;
 
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
@@ -12,9 +15,6 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.ConsoleColor;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.party.PartiesPartyPostDeleteEvent;
-import com.alessiodp.parties.api.events.party.PartiesPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.player.PartiesPlayerLeaveEvent;
 import org.bukkit.event.EventHandler;
 
 import me.confuser.banmanager.BanManager;
@@ -52,13 +52,13 @@ public class BMHook extends Listeners<BanManager> {
 					PartyPlayerImpl kickerPp = plugin.getPlayerManager().getPlayer(event.getBan().getActor().getUUID());
 					
 					// Calling API event
-					PartiesPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(pp, party, true, kickerPp);
+					IPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(pp, party, true, kickerPp);
 					plugin.getEventManager().callEvent(partiesLeaveEvent);
 					
 					if (!partiesLeaveEvent.isCancelled()) {
 						if (party.getLeader().equals(pl.getUUID())) {
 							// Calling Pre API event
-							PartiesPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.BAN, pp, kickerPp);
+							IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.BAN, pp, kickerPp);
 							plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 							
 							if (!partiesPreDeleteEvent.isCancelled()) {
@@ -66,7 +66,7 @@ public class BMHook extends Listeners<BanManager> {
 								
 								party.removeParty();
 								// Calling Post API event
-								PartiesPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.BAN, pp, kickerPp);
+								IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.BAN, pp, kickerPp);
 								plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 								
 								LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_LIB_BANMANAGER_BAN

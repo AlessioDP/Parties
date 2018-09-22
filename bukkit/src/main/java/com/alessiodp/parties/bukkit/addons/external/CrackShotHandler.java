@@ -10,7 +10,7 @@ import com.alessiodp.parties.common.logging.LogLevel;
 import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.ConsoleColor;
-import com.alessiodp.parties.api.events.bukkit.PartiesFriendlyFireBlockedEvent;
+import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireBlockedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -62,7 +62,7 @@ public class CrackShotHandler implements Listener {
 					if (!shooterPp.getPartyName().isEmpty()
 							&& shooterPp.getPartyName().equalsIgnoreCase(victimPp.getPartyName())) {
 						// Calling API event
-						PartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(victimPp, shooterPp, null);
+						BukkitPartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(victimPp, shooterPp, null);
 						plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
 						if (!partiesFriendlyFireEvent.isCancelled()) {
 							// Friendly fire confirmed

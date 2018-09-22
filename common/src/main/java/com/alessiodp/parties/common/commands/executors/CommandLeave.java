@@ -1,5 +1,8 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -12,9 +15,6 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.party.PartiesPartyPostDeleteEvent;
-import com.alessiodp.parties.api.events.party.PartiesPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.player.PartiesPlayerLeaveEvent;
 
 public class CommandLeave extends AbstractCommand {
 	
@@ -56,14 +56,14 @@ public class CommandLeave extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling API event
-		PartiesPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(pp, party, false, null);
+		IPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(pp, party, false, null);
 		plugin.getEventManager().callEvent(partiesLeaveEvent);
 		
 		if (!partiesLeaveEvent.isCancelled()) {
 			if (party.getLeader().equals(pp.getPlayerUUID())) {
 				// Is leader
 				// Calling Pre API event
-				PartiesPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, null, pp);
+				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, null, pp);
 				plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 				
 				if (!partiesPreDeleteEvent.isCancelled()) {
@@ -75,7 +75,7 @@ public class CommandLeave extends AbstractCommand {
 					party.callChange();
 					
 					// Calling Post API event
-					PartiesPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.LEAVE, null, pp);
+					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.LEAVE, null, pp);
 					plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 					
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_LEAVE_DISBAND

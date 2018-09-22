@@ -1,6 +1,5 @@
 package com.alessiodp.parties.bukkit.addons.external.hooks;
 
-import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
 import com.alessiodp.parties.common.configuration.Constants;

@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.commands.executors;
 
+import com.alessiodp.parties.api.events.common.player.IPlayerJoinEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -14,7 +15,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesUtils;
-import com.alessiodp.parties.api.events.player.PartiesPlayerJoinEvent;
 
 
 public class CommandJoin extends AbstractCommand {
@@ -92,7 +92,7 @@ public class CommandJoin extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling API Event
-		PartiesPlayerJoinEvent partiesJoinEvent = plugin.getEventManager().preparePlayerJoinEvent(pp, party, false, null);
+		IPlayerJoinEvent partiesJoinEvent = plugin.getEventManager().preparePlayerJoinEvent(pp, party, false, null);
 		plugin.getEventManager().callEvent(partiesJoinEvent);
 		
 		if (!partiesJoinEvent.isCancelled()) {
