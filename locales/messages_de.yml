@@ -1,5 +1,5 @@
 #
-# Parties Konfigurationsdatei für die Chatanzeigen
+# Parties Konfigurationsdatei für die Chatnachrichten
 #
 # Für bessere Bearbeitung:
 # - verwende Notepad++
@@ -46,7 +46,7 @@ main-commands:
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party chat [on/off]"
  
   create:
-    created: "&l&bDu hast eine Gruppe namens %party% erstellt\n&r&bVerwende &7/party invite &bum Spieler einzuladen"
+    created: '[{"text":"Du hast erfolgreich die Gruppe %party% erstellt.\n","color":"aqua","bold":true},{"text":"Verwende ","color":"aqua","bold":false},{"text":"/party invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/party invite "}},{"text":" um weitere Spieler einzuladen.","color":"aqua"}]'
     created-fixed: "&l&bDu hast eine dauerhafte Gruppe namens %party% erstellt"
     name-already-exists: "&cDer Name %party% wird bereits verwendet, bitte wähle eine andere Bezeichnung"
     already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
@@ -98,11 +98,10 @@ main-commands:
       player-empty: "&7keine"
       player-unknown: "&6unbekannt"
       missing-value: "&7fehlt"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party info [Gruppe]"
  
   invite:
     sent: "&bDu hast %player% in deine Gruppe eingeladen"
-    player-invited: "&b%player% hat dich in seine Gruppe eingeladen\n&bUm diese anzunehmen/abzulehnen verwende &7/party <accept/deny>"
+    player-invited: '[{"text":"%player% hat dir eine Einladung in seine Gruppe gesendet.\n","color":"aqua"},{"text":"Möchtest du diese ","color":"aqua"},{"text":"annehmen","color":"blue","bold":true,"clickEvent":{"action":"run_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Einladung annehmen","color":"gold"}]}}},{"text":" oder ","color":"aqua","bold":false},{"text":"ablehnen","color":"red","bold":true,"clickEvent":{"action":"run_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Einladung ablehnen","color":"gold"}]}}},{"text":"?\n","color":"aqua","bold":false},{"text":"Alternativ verwende ","color":"aqua"},{"text":"/party <accept/deny>","color":"gray"}]'
     timeout:
       noresponse: "&7%player% hat die Einladung nicht angenommen"
       timeout: "&7Du hast die Einladung der Gruppe nicht angenommen"
@@ -112,7 +111,7 @@ main-commands:
     cooldown:
       global: "&cDu musst %seconds% Sekunden warten, bis du wieder jemanden einladen kannst"
       individual: "&cDu musst %seconds% Sekunden warten, bis du diesen Spieler wieder einladen kannst"
-    player-offline: "&cDu kannst nur Spieler einladen, welche auch online sind"
+    player-offline: "&cDu kannst nur Spieler einladen, welche online sind"
     player-no-permission: "&c%player% fehlen die Rechte um der Gruppe beizutreten"
     player-in-party: "&c%player% ist bereits Mitglied einer Gruppe"
     already-invited: "&c%player% wurde bereits eingeladen"
@@ -128,15 +127,16 @@ main-commands:
     player-not-in-other-party: "&c%player% ist kein Mitglied einer Gruppe"
     players-conflict:
         # Spezielle Tags:
-        # %username% ist der aktuelle Spielername (entnommen aus der Mojang API)
-        # %list_players% ähnlich wie info, eine Liste von 'Spielern'
-        # %number% ist die Spieleranzahl
-        # %time% und %date% (Uhrzeit und Datum)
+        # %old_username% letzter bekannter Name des Spielers auf dem Server
+        # %username% aktueller Spielername (aus der Mojang APIs)
+        # %list_players% eine Liste von Spielern
+        # %number% Anzahl der Spieler
+        # %time% und %date%
         content:
         - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
         - "%list_players%"
         - "&cVerwende '&7/party kick <Name> <Nummer>&c' um den richtigen Spieler rauszuwerfen"
-        player: "&7[%number%] &6%username%&7 [&b%party%&7]: letzter Login %time% %date%"
+        player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: zuletzt gesehen am %date% um %time%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Wirft diesen Spieler aus der Gruppe","color":"gold"}}}'
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party kick <Spieler>"
  
   leave:
@@ -155,20 +155,19 @@ main-commands:
       failed: "&cDie Daten von %database_from% konnte nicht zu %database_to% migriert werden!"
       same-database: "&cEs müssen 2 verschiedene Datenbanken ausgwählt werden!"
     wrong-database:  "&cDatenbank nicht gefunden. Wähle bitte YAML, MySQL, SQLite!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party migrate <von> <zu>"
  
   p:
-    # Spezial Tag: %time% = Abklingzeit in Sekunden
+    # Spezial Tag: %seconds% = Abklingzeit in Sekunden
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/p <Nachricht>"
  
   rank:
-    # Spezial Tag: %rank_typed% = Eingegebener Rang des Spielers
+    # Spezial Tag: %rank_name% = Eingegebener Rang des Spielers
     changed: "&a%player% ist nun %rank_name%"
     broadcast: ""
-    wrong-rank: "&cDer Rang '%rank_typed%' existiert nicht!"
+    wrong-rank: "&cDer Rang '%rank_name%' existiert nicht!"
     same-rank: "&c%player% ist bereits %rank_name%!"
-    low-rank: "&cDu kannst Spieler mit höherem oder gleichem Rang nicht bearbeiten!"
+    low-rank: "&cDu kannst Spieler gleichen oder höheren Ranges nicht bearbeiten!"
     to-higher-rank: "&cDu kannst keine Ränge vergeben, welche höher oder gleich deinem sind!"
     changing-yourself: "&cDu kannst deinen Rang nicht ändern!"
     player-not-in-party: "&c%player% ist kein Mitglied deiner Gruppe"
@@ -215,11 +214,25 @@ additional-commands:
     censored: "&cDie Beschreibung enthält einen zensierten Wortlaut!"
     wrong-command: "&cFalscher Ausdruck! Verwende: &7/party desc <Beschreibung/remove>"
  
+  exp:
+    # Spezialle Tags:
+    # %exp% = Erhaltene Erfahrung
+    # %total_exp% = Gesamterfahrung für einen Mob
+    party:
+      gained: "&bDu erhälst %exp% Erfahrung aus der Gruppe"
+    normal:
+      gained-killer: "&bDu erhälst %exp% Erfahrung"
+      gained-others: "&b%player% erschlug einen Mob und teilt %exp% Erfahrung"
+    skillapi:
+      gained-killer: "&bDu erhälst %exp% Erfahrung"
+      gained-others: "&b%player% erschlug einen Mob und teilt %exp% Erfahrung"
+ 
   home:
     teleported: "&7Teleportiere zum Gruppenhome"
     # Spezial Tag: %time% = Abklingzeit in Sekunden
-    teleport-in: &7Du wirst teleportiert in %time%& Sekunden…"
+    teleport-in: &7Du wirst in %time%& Sekunde teleportiert..."
     teleport-denied: "&7Teleportation ist hier nicht möglich"
+    teleport-waiting: "&cDu wartest bereits auf einen Teleport!"
     no-home: "&cEs wurde noch kein Gruppenhome gesetzt"
     no-exists: "&cDie Gruppe %party% existiert nicht"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party home"
@@ -237,7 +250,7 @@ additional-commands:
     header: "&b=========== &lListe der Gruppen Online &r&b==========="
     footer: "&b================= &lSeite %page% von %maxpages% &r&b================="
     no-one: "&7keine"
-    format-party: "&b%party% &7[&6Online %onlinenumber%&7] %desc%"
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Zeige Info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cFalscher Ausdruck! Verwende &7/party list [Seite]"
  
   motd:
@@ -251,9 +264,10 @@ additional-commands:
     censored: "&cDas Motto enthält einen zensierten Wortlaut!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party motd <motd/remove>"
  
-  notify:
-    toggle-on: "&7Gruppenmeldungen sind nun aktiv!"
-    toggle-off: "&7Du erhält nun keine Gruppenmeldungen mehr!"
+  mute:
+    toggle-on: "&7Mitteilungen der Gruppe sind nun abgeschaltet!"
+    toggle-off: "&7Mitteilungen der Gruppe sind nun sichtbar!"
+    wrong-command: "&c&cFalscher Ausdruck: Verwende &7/party mute [on/off]"
  
   password:
     changed: "&aDas Passwort der Gruppe wurde geändert"
@@ -262,13 +276,12 @@ additional-commands:
     invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, zwischen 1 bis 16 Zeichen."
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party password <Passwort>"
  
-  prefix:
-    changed: "&bPräfix der Gruppe wurde geändert zu %prefix%"
-    removed: "&bPräfix der Gruppe wurde entfernt"
-    broadcast: ""
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, mit wenigstens 3 Zeichen."
-    censored: "&cDas Präfix enthält einen zensierten Wortlaut!"
-    wrong-command:"&cFalscher Ausdruck: Verwende &7/party prefix <Präfix/remove>"
+  protection:
+    toggle-on: "&aGruppenmitglieder können sich nun nicht gegenseitig verletzen"
+    toggle-off: "&aGruppenmitglieder können sich nun gegenseitig verletzen"
+    protected: "&cDu darfst deine Mitglieder deiner Gruppe nicht angreifen!"
+    warn-on-attack: "&c%player% versucht %victim% zu schlagen!"
+    wrong-command: "&cFalscher Ausdruck: Verwende &7/party protection [on/off]"
  
   sethome:
     changed: ""
@@ -276,18 +289,10 @@ additional-commands:
     broadcast: "&bDie Gruppe besitzt ein neues Zuhause!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party sethome [remove]"
  
-  suffix:
-    changed: "&bSuffix der Gruppe wurde geändert zu %suffix%"
-    removed: "&bSuffix der Gruppe wurde entfernt"
-    broadcast: ""
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, zwischen 3 bis 6 Zeichen."
-    censored: "&cDas Suffix enthält einen zensierten Wortlaut!"
-    wrong-command: "&cFalscher Ausdruck: Verwende &7/party suffix <Suffix/remove>"
- 
   teleport:
     teleporting: "&7Gruppenmitglieder werden teleportiert!"
     player-teleported: "&7Teleportiere zu %player%"
-    # Spezial Tag: %time% = Abklingzeit in Sekunden
+    # Spezial Tag: %seconds% = Abklingzeit in Sekunden
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
  
   vault:
@@ -300,13 +305,11 @@ additional-commands:
       home: "&cDu besitzt nicht genügend Geld, um den Home-Befehl zu verwenden [%price%$]"
       join: "&cDu besitzt nicht genügend Geld, um dieser Gruppe beizutreten [%price%$]"
       motd: "&cDu besitzt nicht genügend Geld, um das Motto zu ändern [%price%$]"
-      prefix: "&cDu besitzt nicht genügend Geld, um das Präfix zu ändern [%price%$]"
       sethome: "&cDu besitzt nicht genügend Geld, um das Gruppenhome zu setzen [%price%$]"
-      suffix: "&cDu besitzt nicht genügend Geld, um das Suffix zu ändern [%price%$]"
       teleport: "&cDu besitzt nicht genügend Geld für den Teleport-Befehl [%price%$]"
     confirm:
-        warn-onbuy: "&aDer Befehl '%cmd%' kostet %price%$.\n3Verwende &7/party confirm &aum zu bestätigen."
-        confirmed: "&aFühre Befehl aus"
+        warn-onbuy: '[{"text":"Command %cmd% kostet %price%$.\n","color":"green"},{"text":"Klicke hier um zu bestätigen","color":"dark_green","bold":true,"clickEvent":{"action":"run_command","value":"/party confirm"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Pay the command","color":"gold"}]}}},{"text":" oder verwende ","color":"green","bold":false},{"text":"/party confirm","color":"gray"}]'
+        confirmed: "&aFühre Befehl aus."
         no-cmd: "&cKein Befehl bestätigt"
  
  
@@ -315,22 +318,8 @@ additional-commands:
 # \ = = = = = = = = = = = = = = = = /
 other:
   follow:
-    # Spezielle Tags: %world% = Neue Welt, %server% = Neuer Server
+    # Spezielle Tags: %world% = Neue Welt
     following-world: "&7Folge %player% in %world%"
-    following-server: "&Folge der Gruppe auf %server%"
- 
-  friendly-fire:
-    cant-hit-mates: "&cDu darfst deine Gruppenmitglieder nicht angreifen!"
-    warn-on-hit-leaders: "&c%player% versucht %victim% zu töten!"
- 
-  exp-system:
-    # Spezielle Tags: %exp% = Erhaltene Erfahrung | %exptotal% = Absolute Erfahrung | %mob% = Monstertyp (z.B. Skelett, Zombie)
-    vanilla:
-      gained: "&bDu erhälst %exp% Erfahrung (%mob%)"
-      gained-from-other: "&bDu erhälst %exp% Erfahrung (%mob%) von %player%"
-    skillapi:
-      gained: "&bDu erhälst %exp% Erfahrung durch die SkillAPI (%mob%)"
-      gained-from-other: "&bDu erhälst %exp% Erfahrung durch die SkillAPI (%mob%) von %player%"
  
   fixed-parties:
     # Betrete eine Standartgruppe
@@ -352,39 +341,36 @@ help:
   - "/party migrate - Kopiert die Datenbank in eine Neue"
   - "/party reload - Lädt die config neu"
   main-commands:
-    help: "&b/party help [Seite] &7- Zeigt alle Befehle"
-    accept: "&b/party accept &7- Nimmt die Einladung einer Gruppe an"
-    chat: "&b/party chat [on/off] &7- Wechselt zwischen Gruppenchat und Globalen Chat"
-    create: "&b/party create <Name> &7- Erstellt eine neue Gruppe"
-    create-fixed: "&b/party create <Name> [fixed] &7- Erstellt eine neue feste Gruppe"
-    delete: "&b/party delete <Gruppe> &7- Löst eine Gruppe auf"
-    deny: "&b/party deny &7- Lehnt die Einladung einer Gruppe ab"
-    ignore: "&b/party ignore [Gruppe] &7- Fügt hinzu/entfernt/zeigt Gruppen, die du ignorierst"
-    info: "&b/party info [Gruppe] &7- Zeigt die Infos einer Gruppe an"
-    invite: "&b/party invite <Spieler> &7- Lädt einen Spieler in deine Gruppe ein"
-    kick: "&b/party kick <Spieler> &7- Wirft einen Spieler aus deiner Gruppe"
-    leave: "&b/party leave &7- Verlässt eine Gruppe"
-    migrate: "&b/party migrate <von> <zu> &7- Migriert die Datenbank in eine Neue"
-    p: "&b/p <Nachricht> &7- Schickt eine Nachricht an deine Gruppe"
-    rank: "&b/party rank <Spieler> <Rang> &7- Ändert den Rang eines Spielers"
-    reload: "&b/party reload &7- Lädt die config neu"
-    rename: "&b/party rename <Neuer Name> &7- Benennt die Gruppe um"
-    rename-others: "&b/party rename <Gruppe> <Neuer Name> &7- Benennt eine beliebige Gruppe um"
-    spy: "&b/party spy &7- Lese jede Gruppennachricht mit"
+    help: '{"text":"","extra":[{"text":"/party help [Seite]","color":"aqua"},{"text":" - Zeigt alle Befehle","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Nimmt die Einladung einer Gruppe an","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Wechselt zwischen Gruppenchat und Globalen Chat","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    create: '{"text":"","extra":[{"text":"/party create <Name>","color":"aqua"},{"text":" - Erstellt eine neue Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    delete: '{"text":"","extra":[{"text":"/party delete <Gruppe>","color":"aqua"},{"text":" - Löst eine Gruppe auf","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Lehnt die Einladung einer Gruppe ab","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    ignore: '{"text":"","extra":[{"text":"/party ignore [Gruppe]","color":"aqua"},{"text":" - Fügt hinzu/entfernt/zeigt Gruppe, die du ignorierst","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    info: '{"text":"","extra":[{"text":"/party info [Gruppe]","color":"aqua"},{"text":" - Zeigt die Infos einer Gruppe an","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    invite: '{"text":"","extra":[{"text":"/party invite <Spieler>","color":"aqua"},{"text":" - Lädt einen Spieler in deine Gruppe ein","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    kick: '{"text":"","extra":[{"text":"/party kick <Spieler>","color":"aqua"},{"text":" - Wirft einen Spieler aus deiner Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Verlässt eine Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    migrate: '{"text":"","extra":[{"text":"/party migrate <von> <zu>","color":"aqua"},{"text":" - Kopiert die Datenbank in eine Neue","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    p: '{"text":"","extra":[{"text":"/p <Nachricht>","color":"aqua"},{"text":" - Schickt eine Nachricht an deine Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    rank: '{"text":"","extra":[{"text":"/party rank <Spieler> <Rang>","color":"aqua"},{"text":" - Ändert den Rang eines Spielers","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Lädt die config neu","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    rename: '{"text":"","extra":[{"text":"/party rename [Gruppe] <Neuer Name>","color":"aqua"},{"text":" - Benennt die Gruppe um","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    spy: '{"text":"","extra":[{"text":"/party spy","color":"aqua"},{"text":" - Verfolgt jeden Gruppenenchat","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
   additional-commands:
-    claim: "&b/party claim <Permission> &7- Fügt Rechte auf die Parzelle/Claim hinzu"
-    color: "&b/party color <Farbe> &7- Ändert die Farbe deiner Gruppe"
-    desc: "&b/party desc <Beschreibung/remove> &7- Entfernt/ändert die Beschreibung der Gruppe"
-    home: "&b/party home &7- Teleport zum Homepunkt der Gruppe"
-    home-others: "&b/party home [Gruppe] &7- Teleportiert dich zum Home anderer Gruppen"
-    join: "&b/party join <Gruppe> [Passwort] &7- Trete einer Gruppe bei"
-    list: "&b/party list [Seite] &7- Zeigt die Liste der Gruppen mit aktiven Spielern"
-    motd: "&b/party motd <Motto/remove> &7- Entfernt/ändert das Motto der Gruppe"
-    password: "&b/party password <Passwort/remove> &7- Ändert/entfernt das Passwort der Gruppe"
-    prefix: "&b/party prefix <Präfix/remove> &7- Ändert/entfernt das Präfix der Gruppe"
-    sethome: "&b/party sethome [remove] &7- Setzt/entfernt den Homepunkt der Gruppe"
-    suffix: "&b/party suffix <Suffix/remove> &7- Ändert/entfernt das Suffix der Gruppe"
-    teleport: "&b/party teleport &7- Teleportiert deine Gruppenmitglieder zu dir"
+    claim: '{"text":"","extra":[{"text":"/party claim <Permission>","color":"aqua"},{"text":" - Fügt Rechte auf die Parzelle/Claim hinzu","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    color: '{"text":"","extra":[{"text":"/party color <Farbe>","color":"aqua"},{"text":" - Ändert die Farbe deiner Gruppe":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    desc: '{"text":"","extra":[{"text":"/party desc <Beschreibung/remove>","color":"aqua"},{"text":" - Entfernt/ändert die Beschreibung der Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    home: '{"text":"","extra":[{"text":"/party home [Gruppe]","color":"aqua"},{"text":" - Teleportiert dich zum Gruppenhome","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    join: '{"text":"","extra":[{"text":"/party join <Gruppe> [password]","color":"aqua"},{"text":" - Trete einer Gruppe bei","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    list: '{"text":"","extra":[{"text":"/party list [Seite]","color":"aqua"},{"text":" - Zeigt die Liste der Gruppen mit aktiven Spielern","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    motd: '{"text":"","extra":[{"text":"/party motd <Motto/remove>","color":"aqua"},{"text":" - Entfernt/ändert das Motto der Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Schaltet die Gruppenhinweise ein/aus","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    password: '{"text":"","extra":[{"text":"/party password <Passwort/remove>","color":"aqua"},{"text":" - Ändert/entfernt das Passwort der Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Setzt/entfernt den Homepunkt deiner Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
+    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - De/aktiviert Friendly Fire in deiner Gruppe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus","color":"gold"}}}'
+    teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teleportiert deine Gruppenmitglieder zu dir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Führe Befehl aus.","color":"gold"}}}'
  
 dont-edit-this:
-   messages-version: 17
+   version: 3
