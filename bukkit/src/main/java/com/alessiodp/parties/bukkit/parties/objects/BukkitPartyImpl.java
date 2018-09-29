@@ -26,18 +26,24 @@ public class BukkitPartyImpl extends PartyImpl {
 	public void updateParty() {
 		DynmapHandler.updatePartyMarker(this);
 		super.updateParty();
+		((BukkitPartiesPlugin)plugin).getMessageManager().sendPingUpdateParty(getName());
 	}
 	
 	@Override
-	public void renamingParty() {
-		DynmapHandler.removeMarker(getName());
-		super.renamingParty();
+	public void renameParty(String newName) {
+		String oldName = getName();
+		DynmapHandler.removeMarker(oldName);
+		
+		super.renameParty(newName);
+		
+		((BukkitPartiesPlugin)plugin).getMessageManager().sendPingRenameParty(getName(), oldName);
 	}
 	
 	@Override
 	public void removeParty() {
 		DynmapHandler.removeMarker(getName());
 		super.removeParty();
+		((BukkitPartiesPlugin)plugin).getMessageManager().sendPingRemoveParty(getName());
 	}
 	
 	@Override
@@ -61,6 +67,15 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
+	public void sendDirectBroadcast(String formattedMessage, boolean dispatchBetweenServers) {
+		super.sendDirectBroadcast(formattedMessage, dispatchBetweenServers);
+		
+		if (dispatchBetweenServers && formattedMessage != null && !formattedMessage.isEmpty()) {
+			((BukkitPartiesPlugin) plugin).getMessageManager().sendPingBroadcastMessage(getName(), formattedMessage);
+		}
+	}
+	
+	@Override
 	public void sendChatMessage(PartyPlayerImpl sender, String playerMessage) {
 		if (BukkitConfigMain.ADDONS_BANMANAGER_ENABLE) {
 			if (BukkitConfigMain.ADDONS_BANMANAGER_PREVENTCHAT
@@ -69,6 +84,15 @@ public class BukkitPartyImpl extends PartyImpl {
 			}
 		}
 		super.sendChatMessage(sender, playerMessage);
+	}
+	
+	@Override
+	public void sendDirectChatMessage(PartyPlayerImpl sender, String formattedMessage, boolean dispatchBetweenServers) {
+		super.sendDirectChatMessage(sender, formattedMessage, dispatchBetweenServers);
+		
+		if (dispatchBetweenServers && formattedMessage != null && !formattedMessage.isEmpty()) {
+			((BukkitPartiesPlugin)plugin).getMessageManager().sendPingChatMessage(getName(), sender.getPlayerUUID(), formattedMessage);
+		}
 	}
 	
 	public void sendFriendlyFireWarn(PartyPlayerImpl victim, PartyPlayerImpl attacker) {

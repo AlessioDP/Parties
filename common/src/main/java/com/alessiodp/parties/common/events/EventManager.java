@@ -6,8 +6,10 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IChatEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerJoinEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
@@ -30,8 +32,10 @@ public abstract class EventManager {
 	public abstract IPartyRenameEvent preparePartyRenameEvent(Party party, String newName, PartyPlayer player, boolean isAdmin);
 	
 	public abstract IChatEvent prepareChatEvent(PartyPlayer player, Party party, String message);
-	public abstract IPlayerJoinEvent preparePlayerJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy);
-	public abstract IPlayerLeaveEvent preparePlayerLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);
+	public abstract IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy);
+	public abstract IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy);
+	public abstract IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);
+	public abstract IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);
 	
 	public abstract void callEvent(PartiesEvent event);
 }

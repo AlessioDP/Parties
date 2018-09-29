@@ -2,7 +2,8 @@ package com.alessiodp.parties.common.commands.executors;
 
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -22,8 +23,6 @@ import com.google.gson.JsonParser;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,15 +107,14 @@ public class CommandKick extends AbstractCommand {
 							if (mojangName == null)
 								mojangName = pl.getName();
 							
-							Date date = new Date(pl.getNameTimestamp() * 1000);
-							Time time = new Time(date.getTime());
-							pp.sendMessage(Messages.MAINCMD_KICK_CONFLICT_PLAYER
+							PartyImpl party = plugin.getPartyManager().getParty(pl.getPartyName());
+							
+							String message = plugin.getMessageUtils().convertAllPlaceholders(Messages.MAINCMD_KICK_CONFLICT_PLAYER, party, pl);
+							
+							pp.sendMessage(message
 									.replace("%number%", Integer.toString(i))
 									.replace("%old_username%", playerName)
-									.replace("%username%", mojangName)
-									.replace("%party%", pl.getPartyName())
-									.replace("%date%", date.toString())
-									.replace("%time%", time.toString()));
+									.replace("%username%", mojangName));
 							i++;
 						}
 					} else {
@@ -160,14 +158,14 @@ public class CommandKick extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling API event
-		IPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(kickedPp, party, otherParty, pp);
-		plugin.getEventManager().callEvent(partiesLeaveEvent);
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(kickedPp, party, otherParty, pp);
+		plugin.getEventManager().callEvent(partiesPreLeaveEvent);
 		
-		if (!partiesLeaveEvent.isCancelled()) {
+		if (!partiesPreLeaveEvent.isCancelled()) {
 			if (party.getLeader().equals(kickedPlayer.getUUID())) {
 				// Leader
 				// Calling Pre API event
-				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, kickedPp, pp);
+				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.KICK, kickedPp, pp);
 				plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 				
 				if (!partiesPreDeleteEvent.isCancelled()) {
@@ -179,7 +177,7 @@ public class CommandKick extends AbstractCommand {
 					party.callChange();
 					
 					// Calling Post API event
-					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.LEAVE, kickedPp, pp);
+					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.KICK, kickedPp, pp);
 					plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 					
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_KICK_DISBAND
@@ -220,6 +218,10 @@ public class CommandKick extends AbstractCommand {
 						.replace("{user}", pp.getName())
 						.replace("{other}", Boolean.toString(otherParty)), true);
 			}
+			
+			// Calling API event
+			IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(kickedPp, party, otherParty, pp);
+			plugin.getEventManager().callEvent(partiesPostLeaveEvent);
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_LEAVEEVENT_DENY
 					.replace("{party}", party.getName())

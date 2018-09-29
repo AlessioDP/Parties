@@ -31,7 +31,8 @@ public enum CommonCommands implements PartiesCommand {
 	LIST,
 	MOTD,
 	MUTE,
-	PASSWORD;
+	PASSWORD,
+	TELEPORT;
 	
 	
 	@Getter private String command;
@@ -94,6 +95,8 @@ public enum CommonCommands implements PartiesCommand {
 		CommonCommands.MUTE.help = Messages.HELP_ADDCMD_MUTE;
 		CommonCommands.PASSWORD.command = ConfigMain.COMMANDS_CMD_PASSWORD;
 		CommonCommands.PASSWORD.help = Messages.HELP_ADDCMD_PASSWORD;
+		CommonCommands.TELEPORT.command = ConfigMain.COMMANDS_CMD_TELEPORT;
+		CommonCommands.TELEPORT.help = Messages.HELP_ADDCMD_TELEPORT;
 	}
 	
 	public String getType() {

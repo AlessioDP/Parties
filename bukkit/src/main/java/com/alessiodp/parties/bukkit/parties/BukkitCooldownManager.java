@@ -3,12 +3,8 @@ package com.alessiodp.parties.bukkit.parties;
 import com.alessiodp.parties.common.parties.CooldownManager;
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class BukkitCooldownManager extends CooldownManager {
 	@Getter private NumberedQueue homeQueue;
-	@Getter private HashMap<UUID, Long> teleportCooldown;
 	
 	public BukkitCooldownManager() {
 		super();
@@ -18,7 +14,6 @@ public class BukkitCooldownManager extends CooldownManager {
 	public void reload() {
 		super.reload();
 		homeQueue = new NumberedQueue();
-		teleportCooldown = new HashMap<>();
 	}
 	
 	

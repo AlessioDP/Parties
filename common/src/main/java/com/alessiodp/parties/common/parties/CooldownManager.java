@@ -10,6 +10,7 @@ import java.util.UUID;
 public abstract class CooldownManager {
 	@Getter private HashMap<UUID, Long> chatCooldown;
 	@Getter private HashMap<UUID, List<InviteCooldown>> inviteCooldown;
+	@Getter private HashMap<UUID, Long> teleportCooldown;
 	
 	protected CooldownManager() {
 		reload();
@@ -18,5 +19,6 @@ public abstract class CooldownManager {
 	public void reload() {
 		chatCooldown = new HashMap<>();
 		inviteCooldown = new HashMap<>();
+		teleportCooldown = new HashMap<>();
 	}
 }

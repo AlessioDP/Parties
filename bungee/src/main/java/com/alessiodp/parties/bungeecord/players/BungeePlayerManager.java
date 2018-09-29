@@ -13,11 +13,6 @@ public class BungeePlayerManager extends PlayerManager {
 	}
 	
 	@Override
-	public void reload() {
-		super.reload();
-	}
-	
-	@Override
 	public PartyPlayerImpl initializePlayer(UUID playerUUID) {
 		return new BungeePartyPlayerImpl(plugin, playerUUID);
 	}

@@ -1,11 +1,15 @@
 package com.alessiodp.parties.common.utils;
 
+import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
+import com.alessiodp.parties.common.logging.LoggerManager;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PartiesUtils {
 	
@@ -15,6 +19,21 @@ public class PartiesUtils {
 	public static boolean checkCensor(String phrase) {
 		boolean ret = false;
 		if (ConfigMain.ADDITIONAL_CENSOR_ENABLE) {
+			for (String regex : ConfigMain.ADDITIONAL_CENSOR_REGEXES) {
+				try {
+					Pattern pattern = Pattern.compile(regex);
+					Matcher matcher = pattern.matcher(phrase);
+					
+					if (matcher.find()) {
+						ret = true;
+						break;
+					}
+				} catch (Exception ex) {
+					LoggerManager.printError(Constants.DEBUG_CENSOR_REGEXERROR);
+					ex.printStackTrace();
+				}
+			}
+			
 			for (String cen : ConfigMain.ADDITIONAL_CENSOR_CONTAINS) {
 				// Contains
 				if (ret)

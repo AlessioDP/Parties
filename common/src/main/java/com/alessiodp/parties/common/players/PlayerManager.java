@@ -23,6 +23,9 @@ public abstract class PlayerManager {
 	protected PlayerManager(PartiesPlugin instance) {
 		LoggerManager.log(LogLevel.DEBUG, Constants.CLASS_INIT.replace("{class}", getClass().getSimpleName()), true);
 		plugin = instance;
+		// Initialize arrays, otherwise on reload there will be a NullPointException on getPlayer
+		listPartyPlayers = new HashMap<>();
+		listPartyPlayersToDelete = new HashSet<>();
 	}
 	
 	public abstract PartyPlayerImpl initializePlayer(UUID playerUUID);
@@ -51,6 +54,15 @@ public abstract class PlayerManager {
 	
 	public void unloadPlayer(UUID uuid) {
 		getListPartyPlayers().remove(uuid);
+	}
+	
+	public void reloadPlayer(UUID uuid) {
+		if (getListPartyPlayers().containsKey(uuid)) {
+			getListPartyPlayers().remove(uuid);
+			loadPlayer(uuid);
+			
+			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_RELOADED, true);
+		}
 	}
 	
 	public PartyPlayerImpl getPlayer(UUID uuid) {

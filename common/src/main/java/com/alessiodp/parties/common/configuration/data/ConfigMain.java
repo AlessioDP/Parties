@@ -2,9 +2,12 @@ package com.alessiodp.parties.common.configuration.data;
 
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.ConfigurationFile;
+import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
+import com.alessiodp.parties.common.configuration.adapter.ConfigurationSectionAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -60,6 +63,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static List<String>	ADDITIONAL_CENSOR_CONTAINS;
 	public static List<String>	ADDITIONAL_CENSOR_STARTSWITH;
 	public static List<String>	ADDITIONAL_CENSOR_ENDSWITH;
+	public static List<String>	ADDITIONAL_CENSOR_REGEXES;
 	
 	public static boolean		ADDITIONAL_MUTE_ENABLE;
 	public static boolean		ADDITIONAL_MUTE_BLOCK_INVITE;
@@ -77,6 +81,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		ADDITIONAL_PLACEHOLDER_PARTY;
 	public static String		ADDITIONAL_PLACEHOLDER_RANK_NAME;
 	public static String		ADDITIONAL_PLACEHOLDER_RANK_CHAT;
+	public static HashMap<String, String> ADDITIONAL_PLACEHOLDER_CUSTOMS;
 	
 	
 	// Commands settings
@@ -107,6 +112,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_RELOAD;
 	public static String		COMMANDS_CMD_RENAME;
 	public static String		COMMANDS_CMD_SPY;
+	public static String		COMMANDS_CMD_TELEPORT;
 	
 	public static String		COMMANDS_SUB_ON;
 	public static String		COMMANDS_SUB_OFF;
@@ -175,6 +181,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_CENSOR_CONTAINS = new ArrayList<>();
 		ADDITIONAL_CENSOR_STARTSWITH = new ArrayList<>();
 		ADDITIONAL_CENSOR_ENDSWITH = new ArrayList<>();
+		ADDITIONAL_CENSOR_REGEXES = new ArrayList<>();
 		
 		ADDITIONAL_MUTE_ENABLE = false;
 		ADDITIONAL_MUTE_BLOCK_INVITE = true;
@@ -192,6 +199,9 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_PARTY = "%party%";
 		ADDITIONAL_PLACEHOLDER_RANK_NAME = "%rank_name%";
 		ADDITIONAL_PLACEHOLDER_RANK_CHAT = "%rank_chat%";
+		ADDITIONAL_PLACEHOLDER_CUSTOMS = new HashMap<>();
+		ADDITIONAL_PLACEHOLDER_CUSTOMS.put("example1", "[%color_code%%party%] ");
+		ADDITIONAL_PLACEHOLDER_CUSTOMS.put("example2", "[%rank_chat% %party%] ");
 		
 		
 		// Commands settings
@@ -222,6 +232,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_RELOAD = "reload";
 		COMMANDS_CMD_RENAME = "rename";
 		COMMANDS_CMD_SPY = "spy";
+		COMMANDS_CMD_TELEPORT = "teleport";
 		
 		COMMANDS_SUB_ON = "on";
 		COMMANDS_SUB_OFF = "off";
@@ -283,6 +294,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_CENSOR_CONTAINS = confAdapter.getStringList("additional.censor-system.contains", ADDITIONAL_CENSOR_CONTAINS);
 		ADDITIONAL_CENSOR_STARTSWITH = confAdapter.getStringList("additional.censor-system.starts-with", ADDITIONAL_CENSOR_STARTSWITH);
 		ADDITIONAL_CENSOR_ENDSWITH = confAdapter.getStringList("additional.censor-system.ends-with", ADDITIONAL_CENSOR_ENDSWITH);
+		ADDITIONAL_CENSOR_REGEXES = confAdapter.getStringList("additional.censor-system.regexes", ADDITIONAL_CENSOR_REGEXES);
 		
 		ADDITIONAL_MUTE_ENABLE = confAdapter.getBoolean("additional.mute.enable", ADDITIONAL_MUTE_ENABLE);
 		ADDITIONAL_MUTE_BLOCK_INVITE = confAdapter.getBoolean("additional.mute.block.INVITE", ADDITIONAL_MUTE_BLOCK_INVITE);
@@ -300,6 +312,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_PARTY = confAdapter.getString("additional.placeholders.party", ADDITIONAL_PLACEHOLDER_PARTY);
 		ADDITIONAL_PLACEHOLDER_RANK_NAME = confAdapter.getString("additional.placeholders.rank-name", ADDITIONAL_PLACEHOLDER_RANK_NAME);
 		ADDITIONAL_PLACEHOLDER_RANK_CHAT = confAdapter.getString("additional.placeholders. rank-chat", ADDITIONAL_PLACEHOLDER_RANK_CHAT);
+		handlePlaceholders(confAdapter);
 		
 		
 		// Commands settings
@@ -330,6 +343,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_RELOAD = confAdapter.getString("commands.main-commands.reload", COMMANDS_CMD_RELOAD);
 		COMMANDS_CMD_RENAME = confAdapter.getString("commands.main-commands.rename", COMMANDS_CMD_RENAME);
 		COMMANDS_CMD_SPY = confAdapter.getString("commands.main-commands.spy", COMMANDS_CMD_SPY);
+		COMMANDS_CMD_TELEPORT = confAdapter.getString("commands.main-commands.teleport", COMMANDS_CMD_TELEPORT);
 		
 		COMMANDS_SUB_ON = confAdapter.getString("commands.sub-commands.on", COMMANDS_SUB_ON);
 		COMMANDS_SUB_OFF = confAdapter.getString("commands.sub-commands.off", COMMANDS_SUB_OFF);
@@ -338,5 +352,21 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_SUB_REMOVE = confAdapter.getString("commands.sub-commands.remove", COMMANDS_SUB_REMOVE);
 		
 		COMMANDS_ORDER = confAdapter.getStringList("commands.order", COMMANDS_ORDER);
+	}
+	
+	private void handlePlaceholders(ConfigurationAdapter confAdapter) {
+		HashMap<String, String> customs = new HashMap<>();
+		
+		ConfigurationSectionAdapter csPlaceholders = confAdapter.getConfigurationSection("additional.placeholders.customs");
+		if (csPlaceholders != null) {
+			for (String key : csPlaceholders.getKeys()) {
+				customs.put(key, csPlaceholders.getString(key, ""));
+			}
+			
+			ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS = customs;
+		} else {
+			// Give error: no ranks node found
+			plugin.log(Constants.CONFIGURATION_FAILED_PLACEHOLDERS_NOTFOUND);
+		}
 	}
 }

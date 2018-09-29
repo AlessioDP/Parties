@@ -2,7 +2,8 @@ package com.alessiodp.parties.common.commands.executors;
 
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -56,10 +57,10 @@ public class CommandLeave extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling API event
-		IPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(pp, party, false, null);
-		plugin.getEventManager().callEvent(partiesLeaveEvent);
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(pp, party, false, null);
+		plugin.getEventManager().callEvent(partiesPreLeaveEvent);
 		
-		if (!partiesLeaveEvent.isCancelled()) {
+		if (!partiesPreLeaveEvent.isCancelled()) {
 			if (party.getLeader().equals(pp.getPlayerUUID())) {
 				// Is leader
 				// Calling Pre API event
@@ -101,6 +102,10 @@ public class CommandLeave extends AbstractCommand {
 						.replace("{player}", pp.getName())
 						.replace("{party}", party.getName()), true);
 			}
+			
+			// Calling API event
+			IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(pp, party, false, null);
+			plugin.getEventManager().callEvent(partiesPostLeaveEvent);
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_LEAVEEVENT_DENY
 					.replace("{party}", party.getName())

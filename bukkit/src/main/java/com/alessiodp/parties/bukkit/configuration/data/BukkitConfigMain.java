@@ -9,6 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BukkitConfigMain extends ConfigMain {
+	// Parties settings
+	public static boolean		PARTIES_BUNGEECORDSYNC_ENABLE;
+	public static boolean		PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS;
+	public static boolean		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT;
+	
 	// Additional settings
 	public static boolean		ADDITIONAL_FOLLOW_ENABLE;
 	public static int			ADDITIONAL_FOLLOW_TYPE;
@@ -82,7 +87,6 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		COMMANDS_CMD_HOME;
 	public static String		COMMANDS_CMD_PROTECTION;
 	public static String		COMMANDS_CMD_SETHOME;
-	public static String		COMMANDS_CMD_TELEPORT;
 	
 	
 	public BukkitConfigMain(PartiesPlugin instance) {
@@ -94,6 +98,11 @@ public class BukkitConfigMain extends ConfigMain {
 		super.loadDefaults();
 		
 		// Bukkit configuration
+		// Parties
+		PARTIES_BUNGEECORDSYNC_ENABLE = false;
+		PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS = true;
+		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT = true;
+		
 		// Additional features
 		ADDITIONAL_FOLLOW_ENABLE = false;
 		ADDITIONAL_FOLLOW_TYPE = 1;
@@ -171,7 +180,6 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_HOME = "home";
 		COMMANDS_CMD_PROTECTION = "protection";
 		COMMANDS_CMD_SETHOME = "sethome";
-		COMMANDS_CMD_TELEPORT = "teleport";
 		
 		ConfigMain.COMMANDS_ORDER = new ArrayList<>();
 		ConfigMain.COMMANDS_ORDER.add("help");
@@ -210,6 +218,11 @@ public class BukkitConfigMain extends ConfigMain {
 		super.loadConfiguration(confAdapter);
 		
 		// Bukkit configuration
+		// Parties
+		PARTIES_BUNGEECORDSYNC_ENABLE = confAdapter.getBoolean("parties.bungeecord-sync.enable", PARTIES_BUNGEECORDSYNC_ENABLE);
+		PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS = confAdapter.getBoolean("parties.bungeecord-sync.dispatch.broadcasts", PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS);
+		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT = confAdapter.getBoolean("parties.bungeecord-sync.dispatch.chat", PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT);
+		
 		// Additional settings
 		ADDITIONAL_FOLLOW_ENABLE = confAdapter.getBoolean("additional.follow-party.enable", ADDITIONAL_FOLLOW_ENABLE);
 		ADDITIONAL_FOLLOW_TYPE = confAdapter.getInt("additional.follow-party.type-of-teleport", ADDITIONAL_FOLLOW_TYPE);
@@ -276,7 +289,6 @@ public class BukkitConfigMain extends ConfigMain {
 		ADDONS_VAULT_PRICE_TELEPORT = confAdapter.getDouble("addons.vault.price-commands.teleport", ADDONS_VAULT_PRICE_TELEPORT);
 		
 		
-		
 		// Commands settings
 		COMMANDS_TABSUPPORT = confAdapter.getBoolean("commands.tab-support", COMMANDS_TABSUPPORT);
 		COMMANDS_DESC_PARTY = confAdapter.getString("commands.descriptions.party", COMMANDS_DESC_PARTY);
@@ -287,7 +299,6 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_HOME = confAdapter.getString("commands.main-commands.home", COMMANDS_CMD_HOME);
 		COMMANDS_CMD_PROTECTION = confAdapter.getString("commands.main-commands.protection", COMMANDS_CMD_PROTECTION);
 		COMMANDS_CMD_SETHOME = confAdapter.getString("commands.main-commands.sethome", COMMANDS_CMD_SETHOME);
-		COMMANDS_CMD_TELEPORT = confAdapter.getString("commands.main-commands.teleport", COMMANDS_CMD_TELEPORT);
 	}
 	
 	@Override

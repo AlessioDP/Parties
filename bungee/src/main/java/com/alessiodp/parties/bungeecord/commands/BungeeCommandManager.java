@@ -2,10 +2,13 @@ package com.alessiodp.parties.bungeecord.commands;
 
 import com.alessiodp.parties.bungeecord.BungeePartiesPlugin;
 import com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap;
+import com.alessiodp.parties.bungeecord.commands.executors.BungeeCommandTeleport;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.CommandManager;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.logging.LogLevel;
 import com.alessiodp.parties.common.logging.LoggerManager;
 
@@ -25,6 +28,10 @@ public class BungeeCommandManager extends CommandManager {
 	protected void registerCommands() {
 		dispatcher = new BungeeCommandDispatcher(plugin);
 		super.registerCommands();
+		
+		// Teleport
+		if (ConfigParties.TELEPORT_ENABLE)
+			dispatcher.register(CommonCommands.TELEPORT, new BungeeCommandTeleport(plugin));
 	}
 	
 	@Override

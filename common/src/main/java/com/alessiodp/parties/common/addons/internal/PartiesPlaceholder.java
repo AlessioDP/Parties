@@ -20,10 +20,13 @@ public enum PartiesPlaceholder {
 	PREFIX,
 	RANK_CHAT,
 	RANK_NAME,
-	SUFFIX;
+	SUFFIX,
+	
+	CUSTOM;
 	
 	private static PartiesPlugin plugin;
 	private String format;
+	private static final String CUSTOM_PREFIX = "custom_";
 	
 	PartiesPlaceholder() {
 		format = "";
@@ -55,12 +58,27 @@ public enum PartiesPlaceholder {
 				break;
 			}
 		}
+		
+		if (identifier.toLowerCase().startsWith(CUSTOM_PREFIX)) {
+			// Custom prefix
+			ret = CUSTOM;
+		}
 		return ret;
 	}
-	public String formatPlaceholder(PartyPlayerImpl pp, PartyImpl party) {
+	public String formatPlaceholder(PartyPlayerImpl pp, PartyImpl party, String identifier) {
 		String ret = "";
 		if (party != null) {
-			ret = plugin.getMessageUtils().convertAllPlaceholders(format, party, pp);
+			if (this.equals(CUSTOM)) {
+				// Custom
+				for (String key : ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.keySet()) {
+					if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + key)) {
+						ret = plugin.getMessageUtils().convertAllPlaceholders(ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.get(key), party, pp);
+					}
+				}
+			} else {
+				// Normal
+				ret = plugin.getMessageUtils().convertAllPlaceholders(format, party, pp);
+			}
 		}
 		return ret;
 	}

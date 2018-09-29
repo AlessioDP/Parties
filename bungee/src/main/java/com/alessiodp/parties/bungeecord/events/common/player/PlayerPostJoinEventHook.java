@@ -1,6 +1,6 @@
 package com.alessiodp.parties.bungeecord.events.common.player;
 
-import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerJoinEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -8,14 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class PlayerJoinEventHook extends BungeePartiesPlayerJoinEvent {
-	private boolean cancelled;
+public class PlayerPostJoinEventHook extends BungeePartiesPlayerPostJoinEvent {
 	private PartyPlayer player;
 	private Party party;
 	private boolean isInvited;
 	private UUID invitedBy;
 	
-	public PlayerJoinEventHook(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
+	public PlayerPostJoinEventHook(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
 		this.player = player;
 		this.party = party;
 		this.isInvited = isInvited;
@@ -43,15 +42,5 @@ public class PlayerJoinEventHook extends BungeePartiesPlayerJoinEvent {
 	@Override
 	public UUID getInviter() {
 		return invitedBy;
-	}
-	
-	@Override
-	public boolean isCancelled() {
-		return cancelled;
-	}
-	
-	@Override
-	public void setCancelled(boolean cancel) {
-		cancelled = cancel;
 	}
 }

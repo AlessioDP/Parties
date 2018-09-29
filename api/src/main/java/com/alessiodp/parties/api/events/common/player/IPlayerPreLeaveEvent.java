@@ -7,7 +7,7 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface IPlayerLeaveEvent extends PartiesEvent, Cancellable {
+public interface IPlayerPreLeaveEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player that is leaveing the party
 	 * 

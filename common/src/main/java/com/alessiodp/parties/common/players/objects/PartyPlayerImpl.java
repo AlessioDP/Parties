@@ -126,6 +126,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.RENAME);
 			if (player.hasPermission(PartiesPermission.KICK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_KICK.toString()))
 				ret.add(CommonCommands.KICK);
+			if (ConfigParties.TELEPORT_ENABLE && player.hasPermission(PartiesPermission.TELEPORT.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_TELEPORT.toString()))
+				ret.add(CommonCommands.TELEPORT);
 		} else {
 			// Out of party
 			if (player.hasPermission(PartiesPermission.CREATE.toString())) {
@@ -201,6 +203,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			return;
 		PartyImpl party = plugin.getPartyManager().getParty(getPartyName());
 		String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(message, party, victim);
+		formattedMessage = plugin.getMessageUtils().convertColors(formattedMessage);
 		sendDirect(formattedMessage);
 	}
 	public void sendMessage(String message, PartyImpl party) {
@@ -208,6 +211,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			return;
 		
 		String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(message, party, this);
+		formattedMessage = plugin.getMessageUtils().convertColors(formattedMessage);
 		sendDirect(formattedMessage);
 	}
 	
@@ -215,16 +219,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	public void sendDirect(String message) {
 		User player = plugin.getPlayer(getPlayerUUID());
 		if (player != null) {
-			player.sendMessage(message, true);
+			player.sendMessage(message, false);
 		}
-	}
-	
-	@Override
-	public boolean isPreventNotify() {
-		return isMuted();
-	}
-	@Override
-	public void setPreventNotify(boolean value) {
-		setMuted(value);
 	}
 }

@@ -74,8 +74,7 @@ public class BukkitEconomyManager extends EconomyManager {
 		return denyCommand;
 	}
 	
-	@Override
-	public double getCommandValue(PaidCommand vaultCommand) {
+	private double getCommandValue(PaidCommand vaultCommand) {
 		double ret = 0;
 		switch (vaultCommand) {
 			case CLAIM:
@@ -108,8 +107,7 @@ public class BukkitEconomyManager extends EconomyManager {
 		return ret;
 	}
 	
-	@Override
-	public String getCommandMessage(PaidCommand vaultCommand, double price) {
+	private String getCommandMessage(PaidCommand vaultCommand, double price) {
 		String ret = "";
 		switch (vaultCommand) {
 			case CLAIM:

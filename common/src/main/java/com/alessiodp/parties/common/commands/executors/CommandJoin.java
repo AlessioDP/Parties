@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.commands.executors;
 
-import com.alessiodp.parties.api.events.common.player.IPlayerJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.AbstractCommand;
 import com.alessiodp.parties.common.commands.CommandData;
@@ -92,14 +93,10 @@ public class CommandJoin extends AbstractCommand {
 		 * Command starts
 		 */
 		// Calling API Event
-		IPlayerJoinEvent partiesJoinEvent = plugin.getEventManager().preparePlayerJoinEvent(pp, party, false, null);
-		plugin.getEventManager().callEvent(partiesJoinEvent);
+		IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(pp, party, false, null);
+		plugin.getEventManager().callEvent(partiesPreJoinEvent);
 		
-		if (!partiesJoinEvent.isCancelled()) {
-			pp.sendMessage(Messages.ADDCMD_JOIN_JOINED);
-			
-			party.sendBroadcast(pp, Messages.ADDCMD_JOIN_PLAYERJOINED);
-					
+		if (!partiesPreJoinEvent.isCancelled()) {
 			party.getMembers().add(pp.getPlayerUUID());
 			party.getOnlinePlayers().add(pp);
 	
@@ -110,6 +107,13 @@ public class CommandJoin extends AbstractCommand {
 			pp.updatePlayer();
 					
 			party.callChange();
+			
+			pp.sendMessage(Messages.ADDCMD_JOIN_JOINED);
+			
+			party.sendBroadcast(pp, Messages.ADDCMD_JOIN_PLAYERJOINED);
+			
+			IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(pp, party, false, null);
+			plugin.getEventManager().callEvent(partiesPostJoinEvent);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_JOIN
 					.replace("{player}", pp.getName())

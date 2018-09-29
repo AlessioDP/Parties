@@ -1,17 +1,21 @@
 package com.alessiodp.parties.common.parties.objects;
 
-import com.alessiodp.parties.api.events.common.player.IPlayerJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.logging.LogLevel;
 import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.InviteTask;
 import com.alessiodp.parties.api.interfaces.Color;
 import com.alessiodp.parties.api.interfaces.HomeLocation;
 import com.alessiodp.parties.api.interfaces.Party;
+import com.alessiodp.parties.common.user.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
@@ -36,8 +40,6 @@ public abstract class PartyImpl implements Party {
 	@Getter @Setter private String description;
 	@Getter @Setter private String motd;
 	@Getter @Setter private HomeLocation home;
-	@Deprecated @Getter @Setter private String prefix;
-	@Deprecated @Getter @Setter private String suffix;
 	@Getter @Setter private Color color;
 	@Getter @Setter private int kills;
 	@Getter @Setter private String password;
@@ -61,8 +63,6 @@ public abstract class PartyImpl implements Party {
 		description = "";
 		motd = "";
 		home = null;
-		prefix = "";
-		suffix = "";
 		color = null;
 		kills = 0;
 		password = "";
@@ -99,8 +99,17 @@ public abstract class PartyImpl implements Party {
 				.replace("{party}", getName()), true);
 	}
 	
-	public void renamingParty() {
-		// Used by Bukkit
+	public void renameParty(String newName) {
+		plugin.getPartyManager().getListParties().remove(getName());
+		
+		plugin.getDatabaseManager().renameParty(getName(), newName);
+		for (PartyPlayer partyPlayer : getOnlinePlayers()) {
+			partyPlayer.setPartyName(newName);
+		}
+		
+		setName(newName);
+		plugin.getPartyManager().getListParties().put(newName.toLowerCase(), this);
+		callChange();
 	}
 	
 	public void removeParty() {
@@ -163,10 +172,10 @@ public abstract class PartyImpl implements Party {
 		PartyPlayerImpl toPp = plugin.getPlayerManager().getPlayer(to);
 		
 		// Calling API Event
-		IPlayerJoinEvent partiesJoinEvent = plugin.getEventManager().preparePlayerJoinEvent(toPp, this, true, from);
-		plugin.getEventManager().callEvent(partiesJoinEvent);
+		IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(toPp, this, true, from);
+		plugin.getEventManager().callEvent(partiesPreJoinEvent);
 		
-		if (!partiesJoinEvent.isCancelled()) {
+		if (!partiesPreJoinEvent.isCancelled()) {
 			//Send accepted
 			fromPp.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTRECEIPT, toPp);
 			
@@ -190,6 +199,9 @@ public abstract class PartyImpl implements Party {
 			toPp.updatePlayer();
 
 			callChange();
+			
+			IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(toPp, this, true, from);
+			plugin.getEventManager().callEvent(partiesPostJoinEvent);
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_JOINEVENT_DENY
 					.replace("{player}", toPp.getName())
@@ -224,16 +236,28 @@ public abstract class PartyImpl implements Party {
 		String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_PARTY, this, sender);
 		String msg = playerMessage;
 		
-		if (ConfigParties.GENERAL_CHAT_ALLOWCOLORS)
-			msg = plugin.getMessageUtils().convertColors(msg);
+		if (ConfigParties.GENERAL_CHAT_ALLOWCOLORS) {
+			User user = plugin.getPlayer(sender.getPlayerUUID());
+			if (user != null
+					&& user.hasPermission(PartiesPermission.CHAT_COLOR.toString())
+					&& plugin.getRankManager().checkPlayerRank(sender, PartiesPermission.PRIVATE_SENDMESSAGE_COLOR)) {
+				msg = plugin.getMessageUtils().convertColors(msg);
+			}
+		}
 		
 		formattedMessage = plugin.getMessageUtils().convertColors(formattedMessage).replace("%message%", msg);
+		
+		sendDirectChatMessage(sender, formattedMessage, true);
+	}
+	
+	public void sendDirectChatMessage(PartyPlayerImpl sender, String formattedMessage, boolean dispatchBetweenServers) {
 		for (PartyPlayerImpl player : onlinePlayers) {
 			player.sendDirect(formattedMessage);
 		}
 		
-		String messageFormat =  plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_SPY, this, sender)
-				.replace("%message%", playerMessage);
+		String messageFormat =  plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_SPY, this, sender);
+		messageFormat = plugin.getMessageUtils().convertColors(messageFormat).replace("%message%", formattedMessage);
+		
 		plugin.getSpyManager().sendMessageToSpies(messageFormat, this, sender);
 	}
 	
@@ -249,6 +273,18 @@ public abstract class PartyImpl implements Party {
 		String formattedMessage = ConfigParties.GENERAL_CHAT_FORMAT_BROADCAST
 				.replace("%message%", message);
 		formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(formattedMessage, this, sender);
+		formattedMessage = plugin.getMessageUtils().convertColors(formattedMessage);
+		
+		sendDirectBroadcast(formattedMessage, true);
+	}
+	
+	/**
+	 * Send without format it a broadcast message to the party
+	 * @param formattedMessage Formatted message to send
+	 */
+	public void sendDirectBroadcast(String formattedMessage, boolean dispatchBetweenServers) {
+		if (formattedMessage == null || formattedMessage.isEmpty())
+			return;
 		
 		for (PartyPlayerImpl player : onlinePlayers) {
 			player.sendDirect(formattedMessage);

@@ -36,7 +36,8 @@ public class BungeeConfigurationAdapter implements ConfigurationAdapter {
 	
 	@Override
 	public ConfigurationSectionAdapter getConfigurationSection(String path) {
-		return new BungeeConfigurationSectionAdapter(yaml.getSection(path));
+		Configuration conf = yaml.getSection(path);
+		return conf != null ? new BungeeConfigurationSectionAdapter(conf) : null;
 	}
 	
 	@Override

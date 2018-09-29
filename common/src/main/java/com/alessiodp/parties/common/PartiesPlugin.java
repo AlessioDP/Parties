@@ -70,7 +70,9 @@ public abstract class PartiesPlugin extends AbstractPartiesBootstrap {
 		log(ConsoleColor.CYAN.getCode() + Constants.DEBUG_PARTIES_ENABLING
 				.replace("{version}", this.getVersion()));
 		
+		// Pre-handle
 		preHandle();
+		// Handle
 		handle();
 		
 		if (!getDatabaseManager().isShutdownPlugin()) {
@@ -109,7 +111,6 @@ public abstract class PartiesPlugin extends AbstractPartiesBootstrap {
 			// Storage error, shutdown plugin
 			LoggerManager.printError(Constants.DEBUG_DB_INIT_FAILED_STOP);
 			super.getBootstrap().stopPlugin();
-			return;
 		}
 		
 		rankManager = new RankManager(this);

@@ -10,8 +10,7 @@ public enum BukkitCommands implements PartiesCommand {
 	CONFIRM,
 	HOME,
 	PROTECTION,
-	SETHOME,
-	TELEPORT;
+	SETHOME;
 	
 	@Getter private String command;
 	@Getter private String help;
@@ -31,8 +30,6 @@ public enum BukkitCommands implements PartiesCommand {
 		BukkitCommands.PROTECTION.help = BukkitMessages.HELP_ADDCMD_PROTECTION;
 		BukkitCommands.SETHOME.command = BukkitConfigMain.COMMANDS_CMD_SETHOME;
 		BukkitCommands.SETHOME.help = BukkitMessages.HELP_ADDCMD_SETHOME;
-		BukkitCommands.TELEPORT.command = BukkitConfigMain.COMMANDS_CMD_TELEPORT;
-		BukkitCommands.TELEPORT.help = BukkitMessages.HELP_ADDCMD_TELEPORT;
 	}
 	
 	public String getType() {

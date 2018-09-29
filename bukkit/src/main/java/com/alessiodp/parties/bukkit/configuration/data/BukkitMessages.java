@@ -38,10 +38,6 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_SETHOME_BROADCAST;
 	public static String ADDCMD_SETHOME_WRONGCMD;
 	
-	public static String ADDCMD_TELEPORT_TELEPORTING;
-	public static String ADDCMD_TELEPORT_TELEPORTED;
-	public static String ADDCMD_TELEPORT_COOLDOWN;
-	
 	public static String ADDCMD_VAULT_NOMONEY_CLAIM;
 	public static String ADDCMD_VAULT_NOMONEY_COLOR;
 	public static String ADDCMD_VAULT_NOMONEY_CREATE;
@@ -65,7 +61,6 @@ public class BukkitMessages extends Messages {
 	public static String HELP_ADDCMD_HOME;
 	public static String HELP_ADDCMD_PROTECTION;
 	public static String HELP_ADDCMD_SETHOME;
-	public static String HELP_ADDCMD_TELEPORT;
 	
 	
 	public BukkitMessages(PartiesPlugin instance) {
@@ -110,10 +105,6 @@ public class BukkitMessages extends Messages {
 		ADDCMD_SETHOME_BROADCAST = "&aThe party has a new home!";
 		ADDCMD_SETHOME_WRONGCMD = "&cWrong variables: Type &7/party sethome [remove]";
 		
-		ADDCMD_TELEPORT_TELEPORTING = "&7Teleporting your party here!";
-		ADDCMD_TELEPORT_TELEPORTED = "&bTeleported to %player%";
-		ADDCMD_TELEPORT_COOLDOWN = "&cYou have to wait %seconds% seconds!";
-		
 		ADDCMD_VAULT_NOMONEY_CLAIM = "&cYou don't have enough money to perform a claim [%price%$]";
 		ADDCMD_VAULT_NOMONEY_COLOR = "&cYou don't have enough money to perform the color command [%price%$]";
 		ADDCMD_VAULT_NOMONEY_CREATE = "&cYou don't have enough money to create a party [%price%$]";
@@ -137,7 +128,6 @@ public class BukkitMessages extends Messages {
 		HELP_ADDCMD_HOME = "{\"text\":\"\",\"extra\":[{\"text\":\"/party home [party]\",\"color\":\"aqua\"},{\"text\":\" - Teleport to the party home\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party home \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_PROTECTION = "{\"text\":\"\",\"extra\":[{\"text\":\"/party protection [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle friendly fire protection\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party protection \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_SETHOME = "{\"text\":\"\",\"extra\":[{\"text\":\"/party sethome [remove]\",\"color\":\"aqua\"},{\"text\":\" - Set the party home\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party sethome \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_ADDCMD_TELEPORT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party teleport\",\"color\":\"aqua\"},{\"text\":\" - Teleport your party to you\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party teleport\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 	}
 	
 	@Override
@@ -178,10 +168,6 @@ public class BukkitMessages extends Messages {
 		ADDCMD_SETHOME_BROADCAST = confAdapter.getString("additional-commands.sethome.broadcast", ADDCMD_SETHOME_BROADCAST);
 		ADDCMD_SETHOME_WRONGCMD = confAdapter.getString("additional-commands.sethome.wrong-command", ADDCMD_SETHOME_WRONGCMD);
 		
-		ADDCMD_TELEPORT_TELEPORTING = confAdapter.getString("additional-commands.teleport.teleporting", ADDCMD_TELEPORT_TELEPORTING);
-		ADDCMD_TELEPORT_TELEPORTED = confAdapter.getString("additional-commands.teleport.player-teleported", ADDCMD_TELEPORT_TELEPORTED);
-		ADDCMD_TELEPORT_COOLDOWN = confAdapter.getString("additional-commands.teleport.cooldown", ADDCMD_TELEPORT_COOLDOWN);
-		
 		ADDCMD_VAULT_NOMONEY_CLAIM = confAdapter.getString("additional-commands.vault.no-money.claim", ADDCMD_VAULT_NOMONEY_CLAIM);
 		ADDCMD_VAULT_NOMONEY_COLOR = confAdapter.getString("additional-commands.vault.no-money.color", ADDCMD_VAULT_NOMONEY_COLOR);
 		ADDCMD_VAULT_NOMONEY_CREATE = confAdapter.getString("additional-commands.vault.no-money.create", ADDCMD_VAULT_NOMONEY_CREATE);
@@ -204,7 +190,6 @@ public class BukkitMessages extends Messages {
 		HELP_ADDCMD_HOME = confAdapter.getString("help.additional-commands.home", HELP_ADDCMD_HOME);
 		HELP_ADDCMD_PROTECTION = confAdapter.getString("help.additional-commands.protection", HELP_ADDCMD_PROTECTION);
 		HELP_ADDCMD_SETHOME = confAdapter.getString("help.additional-commands.sethome", HELP_ADDCMD_SETHOME);
-		HELP_ADDCMD_TELEPORT = confAdapter.getString("help.additional-commands.teleport", HELP_ADDCMD_TELEPORT);
 	}
 	
 	@Override

@@ -100,9 +100,19 @@ public class CommandInfo extends AbstractCommand {
 							OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
 							if (offlinePlayer != null) {
 								if (offlinePlayer.isOnline() && !pl.isVanished()) {
-									list.append(Messages.MAINCMD_INFO_LIST_ONLINEPREFIX);
+									list.append(
+											plugin.getMessageUtils().convertAllPlaceholders(
+													Messages.MAINCMD_INFO_LIST_ONLINEPREFIX,
+													party,
+													pl)
+									);
 								} else {
-									list.append(Messages.MAINCMD_INFO_LIST_OFFLINEPREFIX);
+									list.append(
+											plugin.getMessageUtils().convertAllPlaceholders(
+													Messages.MAINCMD_INFO_LIST_OFFLINEPREFIX,
+													party,
+													pl)
+									);
 								}
 								list.append(pl.getName());
 							} else

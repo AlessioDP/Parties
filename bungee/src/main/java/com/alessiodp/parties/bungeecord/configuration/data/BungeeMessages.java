@@ -5,6 +5,8 @@ import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.configuration.data.Messages;
 
 public class BungeeMessages extends Messages {
+	//Additional
+	public static String OTHER_FOLLOW_SERVER;
 	
 	public BungeeMessages(PartiesPlugin instance) {
 		super(instance);
@@ -15,6 +17,8 @@ public class BungeeMessages extends Messages {
 		super.loadDefaults();
 		
 		// Bungee configurations
+		// Additional
+		OTHER_FOLLOW_SERVER = "&7Following %player% in %server%";
 	}
 	
 	@Override
@@ -22,6 +26,8 @@ public class BungeeMessages extends Messages {
 		super.loadConfiguration(confAdapter);
 		
 		// Bungee configuration
+		// Additional
+		OTHER_FOLLOW_SERVER = confAdapter.getString("other.follow.following-server", OTHER_FOLLOW_SERVER);
 	}
 	
 	@Override

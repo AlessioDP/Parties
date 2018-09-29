@@ -30,9 +30,18 @@ public abstract class ChatListener {
 		boolean eventCancelled = false;
 		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
 		
-		if (!pp.getPartyName().isEmpty()
-				&& (pp.isChatParty()
-						|| (ConfigParties.GENERAL_DIRECT_ENABLED && message.startsWith(ConfigParties.GENERAL_DIRECT_PREFIX)))) {
+		boolean partyChat = false;
+		if (!pp.getPartyName().isEmpty()) {
+			if (pp.isChatParty()) {
+				partyChat = true;
+			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && message.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
+				partyChat = true;
+				message = message.substring(1);
+			}
+		}
+		
+		if (partyChat) {
+			String finalMessage = message;
 			// Make it async
 			plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {
 				if (plugin.getRankManager().checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_SENDMESSAGE)) {
@@ -63,7 +72,7 @@ public abstract class ChatListener {
 						PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
 						
 						// Calling API event
-						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, message);
+						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, finalMessage);
 						plugin.getEventManager().callEvent(partiesChatEvent);
 						
 						String newMessage = partiesChatEvent.getMessage();
@@ -77,7 +86,7 @@ public abstract class ChatListener {
 						} else
 							LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_CHATEVENT_DENY
 									.replace("{player}", pp.getName())
-									.replace("{message}", message), true);
+									.replace("{message}", finalMessage), true);
 					}
 				} else
 					pp.sendNoPermission(PartiesPermission.PRIVATE_SENDMESSAGE);

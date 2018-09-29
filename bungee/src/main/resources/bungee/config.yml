@@ -79,6 +79,9 @@ storage:
       # SQL based DBs: MySQL, SQLite
       general-settings:
         varchar-size: 255
+        upgrade:
+          save-old-table: true
+          old-table-suffix: "_backup"
         tables:
           parties: "parties_parties"
           players: "parties_players"
@@ -132,6 +135,18 @@ additional:
     contains: []
     starts-with: []
     ends-with: []
+    regexes: []
+
+  follow-party:
+    # When a player join a server, the entire party will follow him
+    enable: false
+    perform-commands:
+      enable: false
+      delay: 2000
+      commands: []
+    # List of servers allowed to join into (Regexes allowed)
+    allowed-servers:
+      - '*'
 
   mute:
     # Enable mute command
@@ -141,18 +156,21 @@ additional:
       invite: true
   
   placeholders:
-      # This options are used to customize Parties placeholders
-      # You can customize every external placeholder
-      # Use classic placeholders inside the option!
-      color-name: "%color_name%"
-      color-code: "%color_code%"
-      color-command: "%color_command%"
-      desc: "%desc%"
-      kills: "%kills%"
-      motd: "%motd%"
-      party: "%party%"
-      rank-name: "%rank_name%"
-      rank-chat: "%rank_chat%"
+    # This options are used to customize Parties placeholders
+    # You can customize every external placeholder
+    # Use classic placeholders inside the option!
+    color-name: "%color_name%"
+    color-code: "%color_code%"
+    color-command: "%color_command%"
+    desc: "%desc%"
+    kills: "%kills%"
+    motd: "%motd%"
+    party: "%party%"
+    rank-name: "%rank_name%"
+    rank-chat: "%rank_chat%"
+    customs:
+      example1: "[%color_code%%party%] "
+      example2: "[%rank_chat% %party%] "
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -187,6 +205,7 @@ commands:
     reload: "reload"
     rename: "rename"
     spy: "spy"
+    teleport: "teleport"
   sub-commands:
     on: "on"
     off: "off"
@@ -212,6 +231,7 @@ commands:
   - desc
   - motd
   - color
+  - teleport
   - password
   - rank
   - rename
@@ -223,4 +243,4 @@ commands:
 
 # End of configuration file
 dont-edit-this:
-    version: 1
+  version: 2

@@ -3,12 +3,14 @@ package com.alessiodp.parties.bukkit.commands;
 import java.lang.reflect.Field;
 
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
+import com.alessiodp.parties.bukkit.commands.executors.BukkitCommandTeleport;
 import com.alessiodp.parties.bukkit.commands.executors.CommandProtection;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.CommandManager;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.logging.LogLevel;
@@ -21,7 +23,6 @@ import com.alessiodp.parties.bukkit.commands.executors.CommandClaim;
 import com.alessiodp.parties.bukkit.commands.executors.CommandConfirm;
 import com.alessiodp.parties.bukkit.commands.executors.CommandHome;
 import com.alessiodp.parties.bukkit.commands.executors.CommandSetHome;
-import com.alessiodp.parties.bukkit.commands.executors.CommandTeleport;
 import org.bukkit.command.PluginCommand;
 
 public class BukkitCommandManager extends CommandManager {
@@ -61,7 +62,7 @@ public class BukkitCommandManager extends CommandManager {
 		
 		// Teleport
 		if (BukkitConfigParties.TELEPORT_ENABLE)
-			dispatcher.register(BukkitCommands.TELEPORT, new CommandTeleport(plugin));
+			dispatcher.register(CommonCommands.TELEPORT, new BukkitCommandTeleport(plugin));
 	}
 	
 	@Override

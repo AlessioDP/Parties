@@ -22,6 +22,8 @@ general:
     allowed-characters: '[a-zA-Z0-9]+'
     minimum-length: 3
     maximum-length: 10
+    # Cooldown for rename command (in seconds)
+    rename-cooldown: 300
   invite:
     # Invite timeout in seconds
     timeout: 20
@@ -39,6 +41,7 @@ general:
     
   chat:
     # Allow sending messages with color codes (&1, &2, etc..)
+    # Permission required
     allow-colors: false
     # Enable /party chat command to toggle party chat
     enable-toggle-command: true
@@ -53,19 +56,19 @@ general:
       spy-alerts: "&7[SPY] [Party:%party%] %player%: %message%"
       broadcast: "&b[Party] %message%"
 
+  lastseen:
+    # Options for lastseen placeholder
+    # If you use this placeholder, you will bypass vanish check
+    # Format as SimpleDateFormat of Java (example: "yyyy-MM-dd HH:mm:ss.S")
+    format-offline: "[yyyy-MM-dd]"
+    format-online: "%bOnline"
+
 
 # / = = = = = = = = = = = = = = = = \
 # |      PARTY RANKS  SETTINGS      |
 # \ = = = = = = = = = = = = = = = = /
-# Permissions List:
-#   party.(sendmessage/home/invite/kick/claim)
-#   party.edit.(home/desc/motd/color/password)
-#   party.admin.(rename/rank/teleport)
-#   '*'
-#
-# Not commands: party.(warnondamage/autocommand/bypasscooldown)
+# Permissions List: https://alessiodp.com/wiki/parties/permissions#rank_based_permissions
 # You can negate a permission with -
-# DETAILED INFO HERE: https://alessiodp.com/wiki/parties/permissions#rank_based_permissions
 ranks:
   member:
     rank: 5
@@ -153,31 +156,6 @@ additional:
       enable: false
       party: "default"
   
-  friendly-fire:
-    # Prevent fights between players of a party
-    enable-protection: true
-    # Warn leaders on friendly fire hits
-    # Give the rank permission "party.warnondamage" to the party leaders
-    warn-players-on-fight: true
-    # Worlds protected from friendly fire ('*' = all worlds)
-    list-worlds:
-    - '*'
-    # Enable friendly fire protection for CrackShot weapons
-    crackshot:
-      enable: false
-  
-  home:
-    enable: false
-    # Party home delay before teleport, in seconds
-    # Bypass delay with the permission parties.home.%time%
-    delay: 0
-    cancel:
-      # Cancel the teleport if player is moving or he got hit
-      hit: true
-      moving: true
-      # Walk distance to deny the teleport3
-      distance: 3
-  
   join-password:
     # Password system (This will enable "/party join <party>", you can still disable it via permissions)
     # Allows the creation of a party with a password (/party create <party> <password>)
@@ -190,23 +168,15 @@ additional:
     encode: "UTF-8"
     minimum-length: 1
     maximum-length: 16
-  
-  kills:
-    enable: false
-    # Save each kill of parties
-    save-kills: true
-    which-save:
-      neutral-mobs: false
-      hostile-mobs: false
-      players: true
-  
+
   list:
     enable: true
     # Sort system:
-    # kills = Total kills
-    # players = Total online players
-    # allplayers = Total players
-    # name = Alphabetical order
+    # 1. name = Alphabetical order
+    # 2. players = Total online players
+    # 3. allplayers = Total players
+    # 4. kills = Total kills
+    # 5. experience = Total experience order
     ordered-by: players
     # Filter parties if number of online players is less than X.
     filter-min: 1
@@ -227,9 +197,9 @@ additional:
     allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
     # New line code is \n, you need to escape the first \ by adding another \ before
     new-line-code: '\\n'
-  
+
   teleport:
-    # Enable teleport command, teleport every partymate to the command user
+    # Enable teleport command, teleport every partymate to the command sender
     enable: false
     # Cooldown of the command
     cooldown: 60
@@ -237,4 +207,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 1
+  version: 2

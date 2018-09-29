@@ -7,8 +7,10 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IChatEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerJoinEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.bukkit.events.bukkit.CombustFriendlyFireBlockedEventHook;
 import com.alessiodp.parties.bukkit.events.bukkit.FriendlyFireBlockedEventHook;
 import com.alessiodp.parties.bukkit.events.bukkit.PotionsFriendlyFireBlockedEventHook;
@@ -18,8 +20,10 @@ import com.alessiodp.parties.bukkit.events.common.party.PartyPreCreateEventHook;
 import com.alessiodp.parties.bukkit.events.common.party.PartyPreDeleteEventHook;
 import com.alessiodp.parties.bukkit.events.common.party.PartyRenameEventHook;
 import com.alessiodp.parties.bukkit.events.common.player.ChatEventHook;
-import com.alessiodp.parties.bukkit.events.common.player.PlayerJoinEventHook;
-import com.alessiodp.parties.bukkit.events.common.player.PlayerLeaveEventHook;
+import com.alessiodp.parties.bukkit.events.common.player.PlayerPostJoinEventHook;
+import com.alessiodp.parties.bukkit.events.common.player.PlayerPostLeaveEventHook;
+import com.alessiodp.parties.bukkit.events.common.player.PlayerPreJoinEventHook;
+import com.alessiodp.parties.bukkit.events.common.player.PlayerPreLeaveEventHook;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.events.EventManager;
 import com.alessiodp.parties.api.enums.DeleteCause;
@@ -73,13 +77,23 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPlayerJoinEvent preparePlayerJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
-		return new PlayerJoinEventHook(player, party, isInvited, invitedBy);
+	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
+		return new PlayerPreJoinEventHook(player, party, isInvited, invitedBy);
 	}
 	
 	@Override
-	public IPlayerLeaveEvent preparePlayerLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
-		return new PlayerLeaveEventHook(player, party, isKicked, kickedBy);
+	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
+		return new PlayerPostJoinEventHook(player, party, isInvited, invitedBy);
+	}
+	
+	@Override
+	public IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
+		return new PlayerPreLeaveEventHook(player, party, isKicked, kickedBy);
+	}
+	
+	@Override
+	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
+		return new PlayerPostLeaveEventHook(player, party, isKicked, kickedBy);
 	}
 	
 	public BukkitPartiesCombustFriendlyFireBlockedEvent prepareCombustFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, EntityCombustByEntityEvent originalEvent) {

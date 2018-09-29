@@ -80,23 +80,26 @@ public class CommandSetHome extends AbstractCommand {
 		/*
 		 * Command starts
 		 */
-		party.setHome(new HomeLocationImpl(
-				home.getWorld() != null ? home.getWorld().getName() : "null",
-				home.getX(),
-				home.getY(),
-				home.getZ(),
-				home.getYaw(),
-				home.getPitch()
-		));
-		party.updateParty();
-		
 		if (isRemove) {
+			party.setHome(null);
+			party.updateParty();
+			
 			pp.sendMessage(BukkitMessages.ADDCMD_SETHOME_REMOVED);
 			
 			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_SETHOME_REM
 					.replace("{player}", pp.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
+			party.setHome(new HomeLocationImpl(
+					home.getWorld() != null ? home.getWorld().getName() : "null",
+					home.getX(),
+					home.getY(),
+					home.getZ(),
+					home.getYaw(),
+					home.getPitch()
+			));
+			party.updateParty();
+			
 			pp.sendMessage(BukkitMessages.ADDCMD_SETHOME_CHANGED);
 			party.sendBroadcast(pp, BukkitMessages.ADDCMD_SETHOME_BROADCAST);
 			

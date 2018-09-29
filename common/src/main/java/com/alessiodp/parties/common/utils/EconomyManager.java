@@ -12,9 +12,6 @@ public abstract class EconomyManager {
 	
 	public abstract boolean payCommand(PaidCommand vaultCommand, PartyPlayerImpl partyPlayerImpl, String commandLabel, String[] args);
 	
-	public abstract double getCommandValue(PaidCommand vaultCommand);
-	public abstract String getCommandMessage(PaidCommand vaultCommand, double price);
-	
 	public enum PaidCommand {
 		CLAIM, COLOR, CREATE, DESC, HOME, JOIN, MOTD, SETHOME, TELEPORT
 	}

@@ -12,6 +12,7 @@ import com.alessiodp.parties.bukkit.commands.BukkitCommandManager;
 import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitMoveListener;
+import com.alessiodp.parties.bukkit.messaging.MessageManager;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
 import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
@@ -45,14 +46,10 @@ import org.bukkit.plugin.PluginManager;
 
 public class BukkitPartiesPlugin extends PartiesPlugin {
 	@Getter private ExpManager expManager;
+	@Getter private MessageManager messageManager;
 	
 	public BukkitPartiesPlugin(PartiesBootstrap instance) {
 		super(instance);
-	}
-	
-	@Override
-	public void enabling() {
-		super.enabling();
 	}
 	
 	@Override
@@ -83,6 +80,7 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		playerManager = new BukkitPlayerManager(this);
 		addonManager = new BukkitAddonManager(this);
 		expManager = new ExpManager(this);
+		messageManager = new MessageManager(this);
 	}
 	
 	@Override

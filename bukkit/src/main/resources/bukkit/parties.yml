@@ -41,6 +41,7 @@ general:
     
   chat:
     # Allow sending messages with color codes (&1, &2, etc..)
+    # Permission required
     allow-colors: false
     # Enable /party chat command to toggle party chat
     enable-toggle-command: true
@@ -54,6 +55,13 @@ general:
       party-chat: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
       spy-alerts: "&7[SPY] [Party:%party%] %player%: %message%"
       broadcast: "&b[Party] %message%"
+
+  lastseen:
+    # Options for lastseen placeholder
+    # If you use this placeholder, you will bypass vanish check
+    # Format as SimpleDateFormat of Java (example: "yyyy-MM-dd HH:mm:ss.S")
+    format-offline: "[yyyy-MM-dd]"
+    format-online: "%bOnline"
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -224,7 +232,7 @@ additional:
     new-line-code: '\\n'
   
   teleport:
-    # Enable teleport command, teleport every partymate to the command user
+    # Enable teleport command, teleport every partymate to the command sender
     enable: false
     # Cooldown of the command
     cooldown: 60
@@ -232,4 +240,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 2
+  version: 3

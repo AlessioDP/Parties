@@ -11,6 +11,8 @@ permissions:
     description: Allow access to /party accept
   parties.user.chat:
     description: Allow access to /party chat
+  parties.user.chat.color:
+    description: Send colored party messages
   parties.user.color:
     description: Allow access to /party color
   parties.user.create:

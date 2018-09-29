@@ -1,6 +1,5 @@
-package com.alessiodp.parties.bukkit.tasks;
+package com.alessiodp.parties.common.tasks;
 
-import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.logging.LogLevel;
@@ -19,7 +18,7 @@ public class TeleportTask implements Runnable {
 	
 	@Override
 	public void run() {
-		((BukkitCooldownManager) plugin.getCooldownManager()).getTeleportCooldown().remove(player);
+		plugin.getCooldownManager().getTeleportCooldown().remove(player);
 		
 		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_TELEPORT_EXPIRED
 				.replace("{player}", player.toString()), true);

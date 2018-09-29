@@ -1,25 +1,23 @@
 package com.alessiodp.parties.bukkit.events.common.player;
 
-import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerJoinEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
-public class PlayerJoinEventHook extends BukkitPartiesPlayerJoinEvent {
+public class PlayerPreLeaveEventHook extends BukkitPartiesPlayerPreLeaveEvent {
 	private boolean cancelled;
 	private PartyPlayer player;
 	private Party party;
-	private boolean isInvited;
-	private UUID invitedBy;
+	private boolean isKicked;
+	private PartyPlayer kickedBy;
 	
-	public PlayerJoinEventHook(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
+	public PlayerPreLeaveEventHook(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
 		this.player = player;
 		this.party = party;
-		this.isInvited = isInvited;
-		this.invitedBy = invitedBy;
+		this.isKicked = isKicked;
+		this.kickedBy = kickedBy;
 	}
 	
 	@NotNull
@@ -35,14 +33,14 @@ public class PlayerJoinEventHook extends BukkitPartiesPlayerJoinEvent {
 	}
 	
 	@Override
-	public boolean isInvited() {
-		return isInvited;
+	public boolean isKicked() {
+		return isKicked;
 	}
 	
 	@Nullable
 	@Override
-	public UUID getInviter() {
-		return invitedBy;
+	public PartyPlayer getKicker() {
+		return kickedBy;
 	}
 	
 	@Override

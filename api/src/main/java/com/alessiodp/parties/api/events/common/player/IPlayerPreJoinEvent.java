@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public interface IPlayerJoinEvent extends PartiesEvent, Cancellable {
+public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player that is joining inside the party
 	 * 

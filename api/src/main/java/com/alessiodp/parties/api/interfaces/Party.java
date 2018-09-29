@@ -111,44 +111,6 @@ public interface Party {
 	void setHome(HomeLocation home);
 	
 	/**
-	 * Get the party prefix
-	 * 
-	 * @return Returns the prefix of the party
-	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
-	 */
-	@Deprecated
-	String getPrefix();
-	
-	/**
-	 * Set the party prefix
-	 * 
-	 * @param prefix
-	 *            The prefix of the party
-	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
-	 */
-	@Deprecated
-	void setPrefix(String prefix);
-	
-	/**
-	 * Get the party suffix
-	 * 
-	 * @return Returns the suffix of the party
-	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
-	 */
-	@Deprecated
-	String getSuffix();
-	
-	/**
-	 * Set the party suffix
-	 * 
-	 * @param suffix
-	 *            The suffix of the party
-	 * @deprecated Prefix and suffix tag manager doesn't exist anymore
-	 */
-	@Deprecated
-	void setSuffix(String suffix);
-	
-	/**
 	 * Get the party color
 	 * 
 	 * @return Returns the {@code Color} of the party

@@ -5,13 +5,13 @@ public class Constants {
 	public static final boolean DEBUG_ENABLED = false;
 	public static final boolean DEBUG_TIMESTAMPS = false;
 	
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 3;
-	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 2;
-	public static final int VERSION_BUKKIT_MESSAGES = 3;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 4;
+	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 3;
+	public static final int VERSION_BUKKIT_MESSAGES = 4;
 	
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 1;
-	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 1;
-	public static final int VERSION_BUNGEE_MESSAGES = 1;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 2;
+	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 2;
+	public static final int VERSION_BUNGEE_MESSAGES = 2;
 	
 	public static final int VERSION_DATABASE_YAML = 1;
 	public static final int VERSION_DATABASE_MYSQL = 5;
@@ -28,6 +28,9 @@ public class Constants {
 	public static final String LIBRARY_URL = "https://repo1.maven.org/maven2/%package%/%name%/%version%/%file%";
 	
 	public static final String ONLY_PLAYERS = "You must be a player to use this command.";
+	
+	public static final String MESSAGING_CHANNEL = "BungeeCord";
+	public static final String MESSAGING_SUBCHANNEL = "Parties";
 	
 	/*
 	 * Updater
@@ -47,6 +50,7 @@ public class Constants {
 	/*
 	 * Placeholders
 	 */
+	public static final String PLACEHOLDER_LASTSEEN = "%lastseen%";
 	public static final String PLACEHOLDER_PLAYER_PLAYER = "%player%";
 	public static final String PLACEHOLDER_PLAYER_RANK_NAME = "%rank_name%";
 	public static final String PLACEHOLDER_PLAYER_RANK_CHAT = "%rank_chat%";
@@ -69,6 +73,7 @@ public class Constants {
 	/*
 	 * Configuration
 	 */
+	public static final String CONFIGURATION_FAILED_PLACEHOLDERS_NOTFOUND = "Cannot find custom placeholders list, restoring default one.";
 	public static final String CONFIGURATION_FAILED_RANK_NODEFAULT = "Cannot find default rank, set lower one.";
 	public static final String CONFIGURATION_FAILED_RANK_EMPTY = "Rank list empty, restoring default one.";
 	public static final String CONFIGURATION_FAILED_RANK_NOTFOUND = "Cannot find rank list, restoring default one.";
@@ -91,6 +96,7 @@ public class Constants {
 	public static final String DEBUG_PLAYER_JOIN_DEFAULTFAIL = "Failed to load default party {party}";
 	public static final String DEBUG_PLAYER_INIT = "Initialized player {player} ({uuid})";
 	public static final String DEBUG_PLAYER_UPDATED = "Updated player {player}";
+	public static final String DEBUG_PLAYER_RELOADED = "Reloaded player {player}";
 	public static final String DEBUG_PLAYER_CLEANUP = "Cleaning up player {player}";
 	public static final String DEBUG_PLAYER_COMPARENAME_CHANGE = "Player name changed from '{old}' to '{new}' ({uuid})";
 	public static final String DEBUG_PLAYER_COMPARENAME_NOTFOUND = "Player name of {uuid} not found into the server, getting one from database: '{name}'";
@@ -99,11 +105,17 @@ public class Constants {
 	
 	public static final String DEBUG_PARTY_INIT = "Initialized party {party}";
 	public static final String DEBUG_PARTY_UPDATED = "Updated party {party}";
+	public static final String DEBUG_PARTY_RELOADED = "Reloaded party {party}";
 	public static final String DEBUG_PARTY_REMOVED = "Removed party {party}";
 	public static final String DEBUG_PARTY_FIXED_LOAD = "Loading fixed party {party}";
 	public static final String DEBUG_PARTY_GET_DATABASE = "Got party {party} from database";
 	public static final String DEBUG_PARTY_GET_LIST = "Got party {party} from list";
 	public static final String DEBUG_PARTY_DELETE_CAUSE = "Deleted party {party} due {cause}";
+	
+	
+	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to {player} with '{command}'";
+	
+	public static final String DEBUG_CENSOR_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
 	
 	public static final String DEBUG_COMMANDS_REGISTER_PRE = "Registering commands";
 	public static final String DEBUG_COMMANDS_REGISTER_POST = "Registered {value} commands";
@@ -149,6 +161,28 @@ public class Constants {
 	public static final String DEBUG_CMD_SPY_ENABLE = "{player} now is a spy";
 	public static final String DEBUG_CMD_SPY_DISABLE = "{player} isn't a spy anymore";
 	
+	public static final String DEBUG_EXP_RECEIVED = "Received a distribute exp request. Normal experience: {normal}, SkillAPI Experience: {skillapi}";
+	public static final String DEBUG_EXP_SENT = "Sent {exp} {type} to {player}";
+	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of '{party}': {message}";
+	public static final String DEBUG_EXP_EXPRESSIONERROR = "Something gone wrong on calculate the formula '{value}': {message}";
+	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '{name}' killed by {player}";
+	
+	public static final String DEBUG_FOLLOW_SERVER_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
+	
+	public static final String DEBUG_FRIENDLYFIRE_DENIED = "Denied friendly fire (type {type}) by '{player}' to '{victim}'";
+	
+	public static final String DEBUG_KILL_ADD = "Adding a kill to the party {party} by {player}";
+	
+	public static final String DEBUG_MESSAGING_PACKET_VERSIONMISMATCH = "Parties versions does not match between servers";
+	public static final String DEBUG_MESSAGING_PACKET_READERROR = "Failed to read Parties bungeecord-sync packet";
+	public static final String DEBUG_MESSAGING_PACKET_SENDERROR = "Failed to send Parties bungeecord-sync packet";
+	public static final String DEBUG_MESSAGING_LISTEN_PLAYER_UPDATED = "Received a Parties packet, updated player {uuid}";
+	public static final String DEBUG_MESSAGING_LISTEN_PARTY_UPDATED = "Received a Parties packet, updated party {party}";
+	public static final String DEBUG_MESSAGING_LISTEN_PARTY_RENAMED = "Received a Parties packet, renamed player {party}";
+	public static final String DEBUG_MESSAGING_LISTEN_PARTY_REMOVED = "Received a Parties packet, removed player {party}";
+	public static final String DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE = "Received a Parties packet, dispatched a chat message of the party {party}";
+	public static final String DEBUG_MESSAGING_LISTEN_BROADCAST_MESSAGE = "Received a Parties packet, dispatched a broadcast message of the party {party}";
+	
 	public static final String DEBUG_TASK_CHAT_EXPIRE = "Chat cooldown expired for {uuid}";
 	public static final String DEBUG_TASK_DELETE_START = "Started PartyDeleteTask of {party} for {value} seconds";
 	public static final String DEBUG_TASK_DELETE_STOP = "Stopped PartyDeleteTask of {party}";
@@ -158,18 +192,6 @@ public class Constants {
 	public static final String DEBUG_TASK_TELEPORT_START = "Started TeleportTask for {value} by {player}";
 	public static final String DEBUG_TASK_TELEPORT_DONE = "{player} teleported to the party home";
 	public static final String DEBUG_TASK_TELEPORT_EXPIRED = "Teleport for {player} expired";
-	
-	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to {player} with '{command}'";
-	
-	public static final String DEBUG_EXP_RECEIVED = "Received a distribute exp request. Normal experience: {normal}, SkillAPI Experience: {skillapi}";
-	public static final String DEBUG_EXP_SENT = "Sent {exp} {type} to {player}";
-	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of '{party}': {message}";
-	public static final String DEBUG_EXP_EXPRESSIONERROR = "Something gone wrong on calculate the formula '{value}': {message}";
-	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '{name}' killed by {player}";
-	
-	public static final String DEBUG_FRIENDLYFIRE_DENIED = "Denied friendly fire (type {type}) by '{player}' to '{victim}'";
-	
-	public static final String DEBUG_KILL_ADD = "Adding a kill to the party {party} by {player}";
 	
 	
 	public static final String DEBUG_API_CHATEVENT_DENY = "PartiesChatEvent is cancelled, ignoring chat of {player}: {message}";

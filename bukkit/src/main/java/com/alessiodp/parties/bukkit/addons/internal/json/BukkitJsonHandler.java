@@ -10,15 +10,6 @@ public class BukkitJsonHandler implements JsonHandler {
 		serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 	}
 	
-	public static boolean isJSON(String str) {
-		try {
-			Class.forName("net.minecraft.server." + serverVersion + ".IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, str);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
 	@Override
 	public boolean sendMessage(Player player, String jsonMessage) {
 		boolean ret = false;

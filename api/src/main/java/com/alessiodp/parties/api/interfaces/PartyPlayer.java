@@ -100,23 +100,4 @@ public interface PartyPlayer {
 	 *            True to mute notifications
 	 */
 	void setMuted(boolean value);
-	
-	/**
-	 * Have the player disabled the notifications?
-	 * 
-	 * @return Returns true if the player have disabled notifications
-	 * @deprecated Deprecated for isMuted()
-	 */
-	@Deprecated
-	boolean isPreventNotify();
-	
-	/**
-	 * Enable or disable the notifications of the player
-	 * 
-	 * @param value
-	 *            True to disable notifications
-	 * @deprecated Deprecated for setMuted(boolean value)
-	 */
-	@Deprecated
-	void setPreventNotify(boolean value);
 }

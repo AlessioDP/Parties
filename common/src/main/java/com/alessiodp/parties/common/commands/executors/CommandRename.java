@@ -14,7 +14,6 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.common.utils.PartiesUtils;
-import com.alessiodp.parties.api.interfaces.PartyPlayer;
 
 import java.util.regex.Pattern;
 
@@ -124,17 +123,7 @@ public class CommandRename extends AbstractCommand {
 		
 		partyName = partiesRenameEvent.getNewPartyName();
 		if (!partiesRenameEvent.isCancelled()) {
-			party.renamingParty();
-			
-			plugin.getDatabaseManager().renameParty(oldPartyName, partyName);
-			for (PartyPlayer partyPlayer : party.getOnlinePlayers()) {
-				partyPlayer.setPartyName(partyName);
-			}
-			
-			party.setName(partyName);
-			plugin.getPartyManager().getListParties().remove(oldPartyName.toLowerCase());
-			plugin.getPartyManager().getListParties().put(partyName.toLowerCase(), party);
-			party.callChange();
+			party.renameParty(partyName);
 			
 			pp.sendMessage(Messages.MAINCMD_RENAME_RENAMED
 					.replace("%old%", oldPartyName), party);

@@ -114,6 +114,7 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_RANK_SAMERANK;
 	public static String MAINCMD_RANK_LOWRANK;
 	public static String MAINCMD_RANK_TOHIGHERRANK;
+	public static String MAINCMD_RANK_FIXEDLEADER;
 	public static String MAINCMD_RANK_CHANGINGYOURSELF;
 	public static String MAINCMD_RANK_PLAYERNOTINPARTY;
 	public static String MAINCMD_RANK_PLAYERNOTINPARTY_OTHER;
@@ -174,6 +175,10 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_PASSWORD_INVALID;
 	public static String ADDCMD_PASSWORD_WRONGCMD;
 	
+	public static String ADDCMD_TELEPORT_TELEPORTING;
+	public static String ADDCMD_TELEPORT_TELEPORTED;
+	public static String ADDCMD_TELEPORT_COOLDOWN;
+	
 	
 	// Other messages
 	public static String OTHER_FIXED_DEFAULTJOIN;
@@ -212,6 +217,7 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDCMD_MOTD;
 	public static String HELP_ADDCMD_MUTE;
 	public static String HELP_ADDCMD_PASSWORD;
+	public static String HELP_ADDCMD_TELEPORT;
 	
 	
 	protected Messages(PartiesPlugin instance) {
@@ -312,7 +318,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_KICK_CONFLICT_CONTENT.add("&cWe have found some players with that name:");
 		MAINCMD_KICK_CONFLICT_CONTENT.add("%list_players%");
 		MAINCMD_KICK_CONFLICT_CONTENT.add("&cUse '&7/party kick <username> <number>&c' to kick the right player");
-		MAINCMD_KICK_CONFLICT_PLAYER = "{\"text\":\"\",\"extra\":[{\"text\":\"[%number%] \",\"color\":\"gray\"},{\"text\":\"%username%\",\"color\":\"gold\"},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\"]: last login %time% %date%\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party kick %old_username% %number%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Kick this player\",\"color\":\"gold\"}}}";
+		MAINCMD_KICK_CONFLICT_PLAYER = "{\"text\":\"\",\"extra\":[{\"text\":\"[%number%] \",\"color\":\"gray\"},{\"text\":\"%username%\",\"color\":\"gold\"},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\"]: last login %lastseen%\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party kick %old_username% %number%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Kick this player\",\"color\":\"gold\"}}}";
 		MAINCMD_KICK_WRONGCMD = "&cWrong variables: Type &7/party kick <name>";
 		
 		MAINCMD_LEAVE_LEFT = "&b&lYou left the party %party%";
@@ -335,6 +341,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_RANK_SAMERANK = "&c%player% is already %rank_name%!";
 		MAINCMD_RANK_LOWRANK = "&cYou cannot edit players with an equivalent or higher rank than yours!";
 		MAINCMD_RANK_TOHIGHERRANK = "&cYou cannot promote to a rank equivalent or higher than yours!";
+		MAINCMD_RANK_FIXEDLEADER = "&cYou cannot make someone a leader of a fixed party!";
 		MAINCMD_RANK_CHANGINGYOURSELF = "&cYou cannot change yourself rank!";
 		MAINCMD_RANK_PLAYERNOTINPARTY = "&c%player% is not in your party";
 		MAINCMD_RANK_PLAYERNOTINPARTY_OTHER = "&c%player% doesn't have a party";
@@ -397,6 +404,9 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_PASSWORD_INVALID = "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars.";
 		ADDCMD_PASSWORD_WRONGCMD = "&cWrong variables: Type &7/party password <password>";
 		
+		ADDCMD_TELEPORT_TELEPORTING = "&7Teleporting your party here!";
+		ADDCMD_TELEPORT_TELEPORTED = "&bTeleported to %player%";
+		ADDCMD_TELEPORT_COOLDOWN = "&cYou have to wait %seconds% seconds!";
 		
 		// Other messages
 		OTHER_FIXED_DEFAULTJOIN = "&bYou entered into %party%";
@@ -438,6 +448,7 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_ADDCMD_MOTD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party motd <motd/remove>\",\"color\":\"aqua\"},{\"text\":\" - Add/remove motd\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party motd \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_MUTE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party mute [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle notifications\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party mute \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_PASSWORD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party password <pw/remove>\",\"color\":\"aqua\"},{\"text\":\" - Change party password\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party password \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_TELEPORT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party teleport\",\"color\":\"aqua\"},{\"text\":\" - Teleport your party to you\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party teleport\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 	}
 	
 	@Override
@@ -548,6 +559,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_RANK_SAMERANK = confAdapter.getString("main-commands.rank.same-rank", MAINCMD_RANK_SAMERANK);
 		MAINCMD_RANK_LOWRANK = confAdapter.getString("main-commands.rank.low-rank", MAINCMD_RANK_LOWRANK);
 		MAINCMD_RANK_TOHIGHERRANK = confAdapter.getString("main-commands.rank.to-higher-rank", MAINCMD_RANK_TOHIGHERRANK);
+		MAINCMD_RANK_FIXEDLEADER = confAdapter.getString("main-commands.rank.fixed-leader", MAINCMD_RANK_FIXEDLEADER);
 		MAINCMD_RANK_CHANGINGYOURSELF = confAdapter.getString("main-commands.rank.changing-yourself", MAINCMD_RANK_CHANGINGYOURSELF);
 		MAINCMD_RANK_PLAYERNOTINPARTY = confAdapter.getString("main-commands.rank.player-not-in-party", MAINCMD_RANK_PLAYERNOTINPARTY);
 		MAINCMD_RANK_PLAYERNOTINPARTY_OTHER = confAdapter.getString("main-commands.rank.player-not-in-other-party", MAINCMD_RANK_PLAYERNOTINPARTY_OTHER);
@@ -608,6 +620,10 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_PASSWORD_INVALID = confAdapter.getString("additional-commands.password.invalid-chars", ADDCMD_PASSWORD_INVALID);
 		ADDCMD_PASSWORD_WRONGCMD = confAdapter.getString("additional-commands.password.wrong-command", ADDCMD_PASSWORD_WRONGCMD);
 		
+		ADDCMD_TELEPORT_TELEPORTING = confAdapter.getString("additional-commands.teleport.teleporting", ADDCMD_TELEPORT_TELEPORTING);
+		ADDCMD_TELEPORT_TELEPORTED = confAdapter.getString("additional-commands.teleport.player-teleported", ADDCMD_TELEPORT_TELEPORTED);
+		ADDCMD_TELEPORT_COOLDOWN = confAdapter.getString("additional-commands.teleport.cooldown", ADDCMD_TELEPORT_COOLDOWN);
+		
 		
 		// Other messages
 		OTHER_FIXED_DEFAULTJOIN = confAdapter.getString("other.fixed-parties.default-join", OTHER_FIXED_DEFAULTJOIN);
@@ -646,5 +662,6 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_ADDCMD_MOTD = confAdapter.getString("help.additional-commands.motd", HELP_ADDCMD_MOTD);
 		HELP_ADDCMD_MUTE = confAdapter.getString("help.additional-commands.mute", HELP_ADDCMD_MUTE);
 		HELP_ADDCMD_PASSWORD = confAdapter.getString("help.additional-commands.password", HELP_ADDCMD_PASSWORD);
+		HELP_ADDCMD_TELEPORT = confAdapter.getString("help.additional-commands.teleport", HELP_ADDCMD_TELEPORT);
 	}
 }

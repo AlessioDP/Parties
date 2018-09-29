@@ -5,9 +5,15 @@ import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BungeeConfigMain extends ConfigMain {
-	
+	// Additional settings
+	public static boolean ADDITIONAL_FOLLOW_ENABLE;
+	public static boolean ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE;
+	public static int ADDITIONAL_FOLLOW_PERFORMCMD_DELAY;
+	public static List<String> ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS;
+	public static List<String> ADDITIONAL_FOLLOW_ALLOWEDSERVERS;
 	
 	public BungeeConfigMain(PartiesPlugin instance) {
 		super(instance);
@@ -18,6 +24,15 @@ public class BungeeConfigMain extends ConfigMain {
 		super.loadDefaults();
 		
 		// Bungee configuration
+		//Additional settings
+		ADDITIONAL_FOLLOW_ENABLE = false;
+		ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE = false;
+		ADDITIONAL_FOLLOW_PERFORMCMD_DELAY = 2000;
+		ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS = new ArrayList<>();
+		ADDITIONAL_FOLLOW_ALLOWEDSERVERS = new ArrayList<>();
+		ADDITIONAL_FOLLOW_ALLOWEDSERVERS.add("*");
+		
+		// Commands
 		ConfigMain.COMMANDS_ORDER = new ArrayList<>();
 		ConfigMain.COMMANDS_ORDER.add("help");
 		ConfigMain.COMMANDS_ORDER.add("create");
@@ -35,6 +50,7 @@ public class BungeeConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("desc");
 		ConfigMain.COMMANDS_ORDER.add("motd");
 		ConfigMain.COMMANDS_ORDER.add("color");
+		ConfigMain.COMMANDS_ORDER.add("teleport");
 		ConfigMain.COMMANDS_ORDER.add("password");
 		ConfigMain.COMMANDS_ORDER.add("rank");
 		ConfigMain.COMMANDS_ORDER.add("rename");
@@ -50,6 +66,12 @@ public class BungeeConfigMain extends ConfigMain {
 		super.loadConfiguration(confAdapter);
 		
 		// Bungee configuration
+		// Additional settings
+		ADDITIONAL_FOLLOW_ENABLE = confAdapter.getBoolean("additional.follow-party.enable", ADDITIONAL_FOLLOW_ENABLE);
+		ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE = confAdapter.getBoolean("additional.follow-party.perform-commands.enable", ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE);
+		ADDITIONAL_FOLLOW_PERFORMCMD_DELAY = confAdapter.getInt("additional.follow-party.perform-commands.delay", ADDITIONAL_FOLLOW_PERFORMCMD_DELAY);
+		ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS = confAdapter.getStringList("additional.follow-party.perform-commands.commands", ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS);
+		ADDITIONAL_FOLLOW_ALLOWEDSERVERS = confAdapter.getStringList("additional.follow-party.allowed-servers", ADDITIONAL_FOLLOW_ALLOWEDSERVERS);
 	}
 	
 	@Override

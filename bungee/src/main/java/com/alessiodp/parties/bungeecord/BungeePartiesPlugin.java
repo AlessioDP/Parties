@@ -10,6 +10,7 @@ import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeMessages;
 import com.alessiodp.parties.bungeecord.events.BungeeEventManager;
 import com.alessiodp.parties.bungeecord.listeners.BungeeChatListener;
+import com.alessiodp.parties.bungeecord.listeners.BungeeFollowListener;
 import com.alessiodp.parties.bungeecord.listeners.BungeeJoinLeaveListener;
 import com.alessiodp.parties.bungeecord.parties.BungeePartyManager;
 import com.alessiodp.parties.bungeecord.players.BungeePlayerManager;
@@ -38,11 +39,6 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 	
 	public BungeePartiesPlugin(PartiesBootstrap instance) {
 		super(instance);
-	}
-	
-	@Override
-	public void enabling() {
-		super.enabling();
 	}
 	
 	@Override
@@ -89,12 +85,8 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 	protected void registerListeners() {
 		PluginManager pm = getBootstrap().getProxy().getPluginManager();
 		pm.registerListener(getBootstrap(), new BungeeChatListener(this));
+		pm.registerListener(getBootstrap(), new BungeeFollowListener(this));
 		pm.registerListener(getBootstrap(), new BungeeJoinLeaveListener(this));
-	}
-	
-	@Override
-	public void reloadConfiguration() {
-	
 	}
 	
 	@Override

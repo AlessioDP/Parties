@@ -22,9 +22,6 @@ public class BukkitConfigParties extends ConfigParties {
 	public static boolean		KILLS_MOB_HOSTILE;
 	public static boolean		KILLS_MOB_PLAYERS;
 	
-	public static boolean		TELEPORT_ENABLE;
-	public static int			TELEPORT_COOLDOWN;
-	
 	
 	public BukkitConfigParties(PartiesPlugin instance) {
 		super(instance);
@@ -50,9 +47,6 @@ public class BukkitConfigParties extends ConfigParties {
 		KILLS_MOB_NEUTRAL = false;
 		KILLS_MOB_HOSTILE = false;
 		KILLS_MOB_PLAYERS = true;
-		
-		TELEPORT_ENABLE = false;
-		TELEPORT_COOLDOWN = 60;
 	}
 	
 	@Override
@@ -76,9 +70,6 @@ public class BukkitConfigParties extends ConfigParties {
 		KILLS_MOB_NEUTRAL = confAdapter.getBoolean("additional.kills.which-save.neutral-mobs", KILLS_MOB_NEUTRAL);
 		KILLS_MOB_HOSTILE = confAdapter.getBoolean("additional.kills.which-save.hostile-mobs", KILLS_MOB_HOSTILE);
 		KILLS_MOB_PLAYERS = confAdapter.getBoolean("additional.kills.which-save.players", KILLS_MOB_PLAYERS);
-		
-		TELEPORT_ENABLE = confAdapter.getBoolean("additional.teleport.enable", TELEPORT_ENABLE);
-		TELEPORT_COOLDOWN = confAdapter.getInt("additional.teleport.cooldown", TELEPORT_COOLDOWN);
 	}
 	
 	@Override

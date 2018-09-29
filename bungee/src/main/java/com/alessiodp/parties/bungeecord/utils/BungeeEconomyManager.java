@@ -14,14 +14,4 @@ public class BungeeEconomyManager extends EconomyManager {
 	public boolean payCommand(PaidCommand paidCommand, PartyPlayerImpl partyPlayerEntity, String commandLabel, String[] args) {
 		return false;
 	}
-	
-	@Override
-	public double getCommandValue(PaidCommand vaultCommand) {
-		return 0;
-	}
-	
-	@Override
-	public String getCommandMessage(PaidCommand vaultCommand, double price) {
-		return "";
-	}
 }

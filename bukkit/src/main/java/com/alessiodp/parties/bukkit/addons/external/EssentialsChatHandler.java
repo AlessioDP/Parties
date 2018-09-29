@@ -52,7 +52,7 @@ public class EssentialsChatHandler implements Listener {
 				if (identifier != null) {
 					PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
 					if (ph != null) {
-						old = old.replace(base, ChatColor.translateAlternateColorCodes('&', ph.formatPlaceholder(pp, party)));
+						old = old.replace(base, ChatColor.translateAlternateColorCodes('&', ph.formatPlaceholder(pp, party, identifier)));
 						somethingChanged = true;
 					}
 				}

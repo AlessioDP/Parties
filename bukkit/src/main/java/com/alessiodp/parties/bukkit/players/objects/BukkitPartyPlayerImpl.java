@@ -3,6 +3,7 @@ package com.alessiodp.parties.bukkit.players.objects;
 import java.util.List;
 import java.util.UUID;
 
+import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
@@ -35,6 +36,12 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	}
 	
 	@Override
+	public void updatePlayer() {
+		super.updatePlayer();
+		((BukkitPartiesPlugin)plugin).getMessageManager().sendPingUpdatePlayer(getPlayerUUID());
+	}
+	
+	@Override
 	public void cleanupPlayer(boolean saveDB) {
 		homeCooldown = null; // Reset home command (avoiding telepoting to another party home)
 		super.cleanupPlayer(saveDB);
@@ -59,8 +66,6 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 				ret.add(BukkitCommands.CLAIM);
 			
 			// Admin commands
-			if (BukkitConfigParties.TELEPORT_ENABLE && player.hasPermission(PartiesPermission.TELEPORT.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_TELEPORT.toString()))
-				ret.add(BukkitCommands.TELEPORT);
 			if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
 					&& BukkitConfigParties.FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
 					&& player.hasPermission(PartiesPermission.PROTECTION.toString())
@@ -77,14 +82,5 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 			if (meta.asBoolean()) return true;
 		}
 		return false;
-	}
-	
-	@Override
-	public void sendDirect(String message) {
-		// Overriding superclass send
-		User player = plugin.getPlayer(getPlayerUUID());
-		if (player != null) {
-			player.sendMessage(message, true);
-		}
 	}
 }

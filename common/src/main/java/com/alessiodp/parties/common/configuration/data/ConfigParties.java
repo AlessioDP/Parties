@@ -30,11 +30,14 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean		GENERAL_CHAT_ALLOWCOLORS;
 	public static boolean		GENERAL_CHAT_TOGGLECHATCMD;
 	public static int			GENERAL_CHAT_CHATCD;
-	public static boolean		GENERAL_DIRECT_ENABLED;
-	public static String		GENERAL_DIRECT_PREFIX;
+	public static boolean		GENERAL_CHAT_DIRECT_ENABLED;
+	public static String		GENERAL_CHAT_DIRECT_PREFIX;
 	public static String		GENERAL_CHAT_FORMAT_PARTY;
 	public static String		GENERAL_CHAT_FORMAT_SPY;
 	public static String		GENERAL_CHAT_FORMAT_BROADCAST;
+	
+	public static String		GENERAL_LASTSEEN_FORMATOFFLINE;
+	public static String		GENERAL_LASTSEEN_FORMATONLINE;
 	
 	
 	// Ranks settings
@@ -79,6 +82,9 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static String		MOTD_ALLOWEDCHARS;
 	public static String		MOTD_NEWLINECODE;
 	
+	public static boolean		TELEPORT_ENABLE;
+	public static int			TELEPORT_COOLDOWN;
+	
 	
 	protected ConfigParties(PartiesPlugin instance) {
 		super(instance);
@@ -101,11 +107,14 @@ public abstract class ConfigParties extends ConfigurationFile {
 		GENERAL_CHAT_ALLOWCOLORS = false;
 		GENERAL_CHAT_TOGGLECHATCMD = true;
 		GENERAL_CHAT_CHATCD = 0;
-		GENERAL_DIRECT_ENABLED = false;
-		GENERAL_DIRECT_PREFIX = "@";
+		GENERAL_CHAT_DIRECT_ENABLED = false;
+		GENERAL_CHAT_DIRECT_PREFIX = "@";
 		GENERAL_CHAT_FORMAT_PARTY = "&b[Party] %rank_chat% %player%&r&7: &b%message%";
 		GENERAL_CHAT_FORMAT_SPY = "&7[SPY] [Party:%party%] %player%: %message%";
 		GENERAL_CHAT_FORMAT_BROADCAST = "&b[Party] %message%";
+		
+		GENERAL_LASTSEEN_FORMATOFFLINE = "[yyyy-MM-dd]";
+		GENERAL_LASTSEEN_FORMATONLINE = "%bOnline";
 		
 		
 		// Ranks settings
@@ -179,6 +188,9 @@ public abstract class ConfigParties extends ConfigurationFile {
 		MOTD_DELAY = 20;
 		MOTD_ALLOWEDCHARS = "[a-zA-Z0-9\\ \\.\\,\\-\\_]+";
 		MOTD_NEWLINECODE = "\\\\n";
+		
+		TELEPORT_ENABLE = false;
+		TELEPORT_COOLDOWN = 60;
 	}
 	
 	@Override
@@ -199,12 +211,14 @@ public abstract class ConfigParties extends ConfigurationFile {
 		GENERAL_CHAT_ALLOWCOLORS = confAdapter.getBoolean("general.chat.allow-colors", GENERAL_CHAT_ALLOWCOLORS);
 		GENERAL_CHAT_TOGGLECHATCMD = confAdapter.getBoolean("general.chat.enable-toggle-command", GENERAL_CHAT_TOGGLECHATCMD);
 		GENERAL_CHAT_CHATCD = confAdapter.getInt("general.chat.chat-cooldown", GENERAL_CHAT_CHATCD);
-		
-		GENERAL_DIRECT_ENABLED = confAdapter.getBoolean("general.chat.direct.enable", GENERAL_DIRECT_ENABLED);
-		GENERAL_DIRECT_PREFIX = confAdapter.getString("general.chat.direct.prefix", GENERAL_DIRECT_PREFIX);
+		GENERAL_CHAT_DIRECT_ENABLED = confAdapter.getBoolean("general.chat.direct.enable", GENERAL_CHAT_DIRECT_ENABLED);
+		GENERAL_CHAT_DIRECT_PREFIX = confAdapter.getString("general.chat.direct.prefix", GENERAL_CHAT_DIRECT_PREFIX);
 		GENERAL_CHAT_FORMAT_PARTY = confAdapter.getString("general.chat.formats.party-chat", GENERAL_CHAT_FORMAT_PARTY);
 		GENERAL_CHAT_FORMAT_SPY = confAdapter.getString("general.chat.formats.spy-alerts", GENERAL_CHAT_FORMAT_SPY);
 		GENERAL_CHAT_FORMAT_BROADCAST = confAdapter.getString("general.chat.formats.broadcast", GENERAL_CHAT_FORMAT_BROADCAST);
+		
+		GENERAL_LASTSEEN_FORMATOFFLINE = confAdapter.getString("general.lastseen.format-offline", GENERAL_LASTSEEN_FORMATOFFLINE);
+		GENERAL_LASTSEEN_FORMATONLINE = confAdapter.getString("general.lastseen.format-online", GENERAL_LASTSEEN_FORMATONLINE);
 		
 		
 		// Ranks settings
@@ -246,6 +260,9 @@ public abstract class ConfigParties extends ConfigurationFile {
 		MOTD_DELAY = confAdapter.getInt("additional.motd.delay", MOTD_DELAY);
 		MOTD_ALLOWEDCHARS = confAdapter.getString("additional.motd.allowed-characters", MOTD_ALLOWEDCHARS);
 		MOTD_NEWLINECODE = confAdapter.getString("additional.motd.new-line-code", MOTD_NEWLINECODE);
+		
+		TELEPORT_ENABLE = confAdapter.getBoolean("additional.teleport.enable", TELEPORT_ENABLE);
+		TELEPORT_COOLDOWN = confAdapter.getInt("additional.teleport.cooldown", TELEPORT_COOLDOWN);
 	}
 	private void handleRanks(ConfigurationAdapter confAdapter) {
 		Set<RankImpl> ranks = new HashSet<>();

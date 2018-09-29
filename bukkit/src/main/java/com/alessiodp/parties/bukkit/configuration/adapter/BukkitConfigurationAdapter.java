@@ -2,6 +2,7 @@ package com.alessiodp.parties.bukkit.configuration.adapter;
 
 import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.configuration.adapter.ConfigurationSectionAdapter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.nio.file.Path;
@@ -10,8 +11,6 @@ import java.util.List;
 public class BukkitConfigurationAdapter implements ConfigurationAdapter {
 	private YamlConfiguration yaml;
 	private Path filePath;
-	
-	public YamlConfiguration getYaml() {return yaml;}
 	
 	public BukkitConfigurationAdapter(Path filePath) {
 		this.filePath = filePath;
@@ -30,7 +29,8 @@ public class BukkitConfigurationAdapter implements ConfigurationAdapter {
 	
 	@Override
 	public ConfigurationSectionAdapter getConfigurationSection(String path) {
-		return new BukkitConfigurationSectionAdapter(yaml.getConfigurationSection(path));
+		ConfigurationSection conf = yaml.getConfigurationSection(path);
+		return conf != null ? new BukkitConfigurationSectionAdapter(conf) : null;
 	}
 	
 	@Override

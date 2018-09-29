@@ -61,6 +61,15 @@ public abstract class PartyManager {
 		getListParties().remove(name.toLowerCase());
 	}
 	
+	public void reloadParty(String name) {
+		if (getListParties().containsKey(name)) {
+			PartyImpl party = plugin.getDatabaseManager().getParty(name).join();
+			getListParties().put(name, party);
+			
+			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PARTY_RELOADED, true);
+		}
+	}
+	
 	public PartyImpl getParty(String name) {
 		// Just get the party without save it into the party list
 		PartyImpl ret = null;
@@ -78,7 +87,6 @@ public abstract class PartyManager {
 		}
 		
 		if (ret != null) {
-			plugin.getColorManager().loadDynamicColor(ret);
 			ret.refreshPlayers();
 		}
 		return ret;

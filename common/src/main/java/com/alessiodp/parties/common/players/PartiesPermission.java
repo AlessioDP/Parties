@@ -5,6 +5,7 @@ public enum PartiesPermission {
 	// User
 	ACCEPT		("parties.user.accept"),
 	CHAT		("parties.user.chat"),
+	CHAT_COLOR	("parties.user.chat.color"),
 	COLOR		("parties.user.color"),
 	CREATE		("parties.user.create"),
 	DENY		("parties.user.deny"),
@@ -57,6 +58,7 @@ public enum PartiesPermission {
 	PRIVATE_INVITE("party.invite"),
 	PRIVATE_KICK("party.kick"),
 	PRIVATE_SENDMESSAGE("party.sendmessage"),
+	PRIVATE_SENDMESSAGE_COLOR("party.sendmessage.color"),
 	
 	PRIVATE_EDIT_HOME("party.edit.home"),
 	PRIVATE_EDIT_DESC("party.edit.desc"),

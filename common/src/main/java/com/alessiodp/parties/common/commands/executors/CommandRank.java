@@ -132,6 +132,10 @@ public class CommandRank extends AbstractCommand {
 				return;
 			}
 		}
+		if (party.isFixed() && rank.getLevel() == ConfigParties.RANK_SET_HIGHER) {
+			pp.sendMessage(Messages.MAINCMD_RANK_FIXEDLEADER);
+			return;
+		}
 		
 		/*
 		 * Command starts

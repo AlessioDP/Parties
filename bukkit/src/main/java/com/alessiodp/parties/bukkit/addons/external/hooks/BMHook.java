@@ -4,7 +4,8 @@ import java.util.UUID;
 
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
@@ -52,10 +53,10 @@ public class BMHook extends Listeners<BanManager> {
 					PartyPlayerImpl kickerPp = plugin.getPlayerManager().getPlayer(event.getBan().getActor().getUUID());
 					
 					// Calling API event
-					IPlayerLeaveEvent partiesLeaveEvent = plugin.getEventManager().preparePlayerLeaveEvent(pp, party, true, kickerPp);
-					plugin.getEventManager().callEvent(partiesLeaveEvent);
+					IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(pp, party, true, kickerPp);
+					plugin.getEventManager().callEvent(partiesPreLeaveEvent);
 					
-					if (!partiesLeaveEvent.isCancelled()) {
+					if (!partiesPreLeaveEvent.isCancelled()) {
 						if (party.getLeader().equals(pl.getUUID())) {
 							// Calling Pre API event
 							IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.BAN, pp, kickerPp);
@@ -86,6 +87,10 @@ public class BMHook extends Listeners<BanManager> {
 							
 							party.updateParty();
 						}
+						
+						// Calling API event
+						IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(pp, party, true, kickerPp);
+						plugin.getEventManager().callEvent(partiesPostLeaveEvent);
 					} else
 						LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_LEAVEEVENT_DENY
 								.replace("{player}", pl.getName())

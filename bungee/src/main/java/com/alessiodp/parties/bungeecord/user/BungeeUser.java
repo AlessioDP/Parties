@@ -5,6 +5,7 @@ import com.alessiodp.parties.common.user.User;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
@@ -50,5 +51,9 @@ public class BungeeUser implements User {
 	public void chat(String messageToSend) {
 		if (isPlayer())
 			((ProxiedPlayer) sender).chat(messageToSend);
+	}
+	
+	public void connectTo(ServerInfo server) {
+		((ProxiedPlayer) sender).connect(server);
 	}
 }

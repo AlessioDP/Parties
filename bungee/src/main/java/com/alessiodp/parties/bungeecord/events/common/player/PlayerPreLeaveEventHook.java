@@ -1,19 +1,19 @@
 package com.alessiodp.parties.bungeecord.events.common.player;
 
-import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerLeaveEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerLeaveEventHook extends BungeePartiesPlayerLeaveEvent {
+public class PlayerPreLeaveEventHook extends BungeePartiesPlayerPreLeaveEvent {
 	private boolean cancelled;
 	private PartyPlayer player;
 	private Party party;
 	private boolean isKicked;
 	private PartyPlayer kickedBy;
 	
-	public PlayerLeaveEventHook(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
+	public PlayerPreLeaveEventHook(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
 		this.player = player;
 		this.party = party;
 		this.isKicked = isKicked;

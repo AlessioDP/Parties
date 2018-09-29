@@ -47,9 +47,6 @@ public enum StorageType {
 	public boolean isNone() {
 		return this == NONE;
 	}
-	public boolean isYAML() {
-		return this == YAML;
-	}
 	public boolean isMySQL() {
 		return this == MYSQL;
 	}
