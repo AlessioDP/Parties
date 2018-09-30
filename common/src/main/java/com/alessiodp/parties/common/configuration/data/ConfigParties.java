@@ -36,8 +36,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static String		GENERAL_CHAT_FORMAT_SPY;
 	public static String		GENERAL_CHAT_FORMAT_BROADCAST;
 	
-	public static String		GENERAL_LASTSEEN_FORMATOFFLINE;
-	public static String		GENERAL_LASTSEEN_FORMATONLINE;
+	public static String		GENERAL_LASTSEEN_TIMEFORMAT_DATE;
+	public static String		GENERAL_LASTSEEN_TIMEFORMAT_ELAPSED;
+	public static String		GENERAL_LASTSEEN_FORMAT_OFFLINE;
+	public static String		GENERAL_LASTSEEN_FORMAT_ONLINE;
 	
 	
 	// Ranks settings
@@ -113,8 +115,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 		GENERAL_CHAT_FORMAT_SPY = "&7[SPY] [Party:%party%] %player%: %message%";
 		GENERAL_CHAT_FORMAT_BROADCAST = "&b[Party] %message%";
 		
-		GENERAL_LASTSEEN_FORMATOFFLINE = "[yyyy-MM-dd]";
-		GENERAL_LASTSEEN_FORMATONLINE = "%bOnline";
+		GENERAL_LASTSEEN_TIMEFORMAT_DATE = "yyyy-MM-dd";
+		GENERAL_LASTSEEN_TIMEFORMAT_ELAPSED = "%days% days, %hours% hours, %minutes% minutes";
+		GENERAL_LASTSEEN_FORMAT_OFFLINE = "[%time_elapsed%]";
+		GENERAL_LASTSEEN_FORMAT_ONLINE = "%bOnline";
 		
 		
 		// Ranks settings
@@ -217,8 +221,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 		GENERAL_CHAT_FORMAT_SPY = confAdapter.getString("general.chat.formats.spy-alerts", GENERAL_CHAT_FORMAT_SPY);
 		GENERAL_CHAT_FORMAT_BROADCAST = confAdapter.getString("general.chat.formats.broadcast", GENERAL_CHAT_FORMAT_BROADCAST);
 		
-		GENERAL_LASTSEEN_FORMATOFFLINE = confAdapter.getString("general.lastseen.format-offline", GENERAL_LASTSEEN_FORMATOFFLINE);
-		GENERAL_LASTSEEN_FORMATONLINE = confAdapter.getString("general.lastseen.format-online", GENERAL_LASTSEEN_FORMATONLINE);
+		GENERAL_LASTSEEN_TIMEFORMAT_DATE = confAdapter.getString("general.lastseen.time-date-format", GENERAL_LASTSEEN_TIMEFORMAT_DATE);
+		GENERAL_LASTSEEN_TIMEFORMAT_ELAPSED = confAdapter.getString("general.lastseen.time-elapsed-format", GENERAL_LASTSEEN_TIMEFORMAT_ELAPSED);
+		GENERAL_LASTSEEN_FORMAT_OFFLINE = confAdapter.getString("general.lastseen.format-offline", GENERAL_LASTSEEN_FORMAT_OFFLINE);
+		GENERAL_LASTSEEN_FORMAT_ONLINE = confAdapter.getString("general.lastseen.format-online", GENERAL_LASTSEEN_FORMAT_ONLINE);
 		
 		
 		// Ranks settings

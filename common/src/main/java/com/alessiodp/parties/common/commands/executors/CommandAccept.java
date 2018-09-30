@@ -32,7 +32,7 @@ public class CommandAccept extends AbstractCommand {
 			return false;
 		}
 		if (!pp.getPartyName().isEmpty()) {
-			pp.sendMessage(Messages.MAINCMD_ACCEPT_ALREADYINPARTY);
+			pp.sendMessage(Messages.PARTIES_COMMON_ALREADYINPARTY);
 			return false;
 		}
 		if (pp.getLastInvite().isEmpty()) {

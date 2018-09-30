@@ -14,6 +14,7 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_COMMON_INVALIDCMD;
 	public static String PARTIES_COMMON_CONFIGRELOAD;
 	public static String PARTIES_COMMON_NOTINPARTY;
+	public static String PARTIES_COMMON_ALREADYINPARTY;
 	public static String PARTIES_COMMON_PARTYNOTFOUND;
 	public static String PARTIES_COMMON_PARTYFULL;
 	
@@ -25,7 +26,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_ACCEPT_BROADCAST;
 	public static String MAINCMD_ACCEPT_ACCEPTED;
 	public static String MAINCMD_ACCEPT_ACCEPTRECEIPT;
-	public static String MAINCMD_ACCEPT_ALREADYINPARTY;
 	public static String MAINCMD_ACCEPT_NOINVITE;
 	public static String MAINCMD_ACCEPT_NOEXISTS;
 	
@@ -36,7 +36,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_CREATE_CREATED;
 	public static String MAINCMD_CREATE_CREATEDFIXED;
 	public static String MAINCMD_CREATE_NAMEEXISTS;
-	public static String MAINCMD_CREATE_ALREADYINPARTY;
 	public static String MAINCMD_CREATE_NAMETOOLONG;
 	public static String MAINCMD_CREATE_NAMETOOSHORT;
 	public static String MAINCMD_CREATE_INVALIDNAME;
@@ -62,8 +61,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_IGNORE_WRONGCMD;
 	
 	public static List<String> MAINCMD_INFO_CONTENT;
-	public static String MAINCMD_INFO_LIST_ONLINEPREFIX;
-	public static String MAINCMD_INFO_LIST_OFFLINEPREFIX;
+	public static String MAINCMD_INFO_LIST_ONLINEFORMAT;
+	public static String MAINCMD_INFO_LIST_OFFLINEFORMAT;
 	public static String MAINCMD_INFO_LIST_SEPARATOR;
 	public static String MAINCMD_INFO_LIST_EMPTY;
 	public static String MAINCMD_INFO_LIST_UNKNOWN;
@@ -147,7 +146,6 @@ public abstract class Messages extends ConfigurationFile {
 	
 	public static String ADDCMD_JOIN_JOINED;
 	public static String ADDCMD_JOIN_PLAYERJOINED;
-	public static String ADDCMD_JOIN_ALREADYINPARTY;
 	public static String ADDCMD_JOIN_WRONGPASSWORD;
 	public static String ADDCMD_JOIN_WRONGCMD;
 	
@@ -231,6 +229,7 @@ public abstract class Messages extends ConfigurationFile {
 		PARTIES_COMMON_INVALIDCMD = "&cInvalid command";
 		PARTIES_COMMON_CONFIGRELOAD = "&aConfiguration reloaded";
 		PARTIES_COMMON_NOTINPARTY = "&cYou are not in a party";
+		PARTIES_COMMON_ALREADYINPARTY = "&cYou are already in a party!";
 		PARTIES_COMMON_PARTYNOTFOUND = "&cThe party %party% doesn't exist";
 		PARTIES_COMMON_PARTYFULL = "&cThe party is full!";
 		
@@ -242,7 +241,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_ACCEPT_BROADCAST = "&b&l%player% joined the party";
 		MAINCMD_ACCEPT_ACCEPTED = "&aYou accepted the party invite";
 		MAINCMD_ACCEPT_ACCEPTRECEIPT = "&a%player% accepted your invite";
-		MAINCMD_ACCEPT_ALREADYINPARTY = "&cYou are already in a party!";
 		MAINCMD_ACCEPT_NOINVITE = "&cYou have not pending invitation";
 		MAINCMD_ACCEPT_NOEXISTS = "&cThe invite doesn't exist anymore";
 		
@@ -253,7 +251,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_CREATE_CREATED = "[{\"text\":\"You have created the party %party%.\\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]";
 		MAINCMD_CREATE_CREATEDFIXED = "&l&bYou have created the fixed party %party%";
 		MAINCMD_CREATE_NAMEEXISTS = "&cThe party name %party% already exists, choose a different name";
-		MAINCMD_CREATE_ALREADYINPARTY = "&cYou are already in a party!";
 		MAINCMD_CREATE_NAMETOOLONG = "&cThe party name is too long!";
 		MAINCMD_CREATE_NAMETOOSHORT = "&cThe party name is too short!";
 		MAINCMD_CREATE_INVALIDNAME = "&cInvalid characters. Use: a-Z or 0-9.";
@@ -286,8 +283,8 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_INFO_CONTENT.add("&bMods&7: %list_moderator%");
 		MAINCMD_INFO_CONTENT.add("&bMembers&7: %list_member%");
 		MAINCMD_INFO_CONTENT.add("&bOnline players&7: %onlinenumber%");
-		MAINCMD_INFO_LIST_ONLINEPREFIX = "&b";
-		MAINCMD_INFO_LIST_OFFLINEPREFIX = "&7";
+		MAINCMD_INFO_LIST_ONLINEFORMAT = "&b%player%";
+		MAINCMD_INFO_LIST_OFFLINEFORMAT = "&7%player%";
 		MAINCMD_INFO_LIST_SEPARATOR = "&7, ";
 		MAINCMD_INFO_LIST_EMPTY = "&7Nobody";
 		MAINCMD_INFO_LIST_UNKNOWN = "&6Someone";
@@ -374,7 +371,6 @@ public abstract class Messages extends ConfigurationFile {
 		
 		ADDCMD_JOIN_JOINED = "&aYou joined the party %party%";
 		ADDCMD_JOIN_PLAYERJOINED = "&b&l%player% joined in the party";
-		ADDCMD_JOIN_ALREADYINPARTY = "&cYou are already in a party!";
 		ADDCMD_JOIN_WRONGPASSWORD = "&cWrong password!";
 		ADDCMD_JOIN_WRONGCMD = "&cWrong variables: Type &7/party join <party> [password]";
 		
@@ -459,6 +455,7 @@ public abstract class Messages extends ConfigurationFile {
 		PARTIES_COMMON_INVALIDCMD = confAdapter.getString("parties.common-messages.invalid-command", PARTIES_COMMON_INVALIDCMD);
 		PARTIES_COMMON_CONFIGRELOAD = confAdapter.getString("parties.common-messages.configuration-reloaded", PARTIES_COMMON_CONFIGRELOAD);
 		PARTIES_COMMON_NOTINPARTY = confAdapter.getString("parties.common-messages.not-in-party", PARTIES_COMMON_NOTINPARTY);
+		PARTIES_COMMON_ALREADYINPARTY = confAdapter.getString("parties.common-messages.already-in-party", PARTIES_COMMON_ALREADYINPARTY);
 		PARTIES_COMMON_PARTYNOTFOUND = confAdapter.getString("parties.common-messages.party-not-found", PARTIES_COMMON_PARTYNOTFOUND);
 		PARTIES_COMMON_PARTYFULL = confAdapter.getString("parties.common-messages.party-full", PARTIES_COMMON_PARTYFULL);
 		
@@ -470,7 +467,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_ACCEPT_BROADCAST = confAdapter.getString("main-commands.accept.broadcast", MAINCMD_ACCEPT_BROADCAST);
 		MAINCMD_ACCEPT_ACCEPTED = confAdapter.getString("main-commands.accept.accepted", MAINCMD_ACCEPT_ACCEPTED);
 		MAINCMD_ACCEPT_ACCEPTRECEIPT = confAdapter.getString("main-commands.accept.accept-receipt", MAINCMD_ACCEPT_ACCEPTRECEIPT);
-		MAINCMD_ACCEPT_ALREADYINPARTY = confAdapter.getString("main-commands.accept.already-in-party", MAINCMD_ACCEPT_ALREADYINPARTY);
 		MAINCMD_ACCEPT_NOINVITE = confAdapter.getString("main-commands.accept.no-invite", MAINCMD_ACCEPT_NOINVITE);
 		MAINCMD_ACCEPT_NOEXISTS = confAdapter.getString("main-commands.accept.no-exists", MAINCMD_ACCEPT_NOEXISTS);
 		
@@ -481,7 +477,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_CREATE_CREATED = confAdapter.getString("main-commands.create.created", MAINCMD_CREATE_CREATED);
 		MAINCMD_CREATE_CREATEDFIXED = confAdapter.getString("main-commands.create.created-fixed", MAINCMD_CREATE_CREATEDFIXED);
 		MAINCMD_CREATE_NAMEEXISTS = confAdapter.getString("main-commands.create.name-already-exists", MAINCMD_CREATE_NAMEEXISTS);
-		MAINCMD_CREATE_ALREADYINPARTY = confAdapter.getString("main-commands.create.already-in-party", MAINCMD_CREATE_ALREADYINPARTY);
 		MAINCMD_CREATE_NAMETOOLONG = confAdapter.getString("main-commands.create.name-too-long", MAINCMD_CREATE_NAMETOOLONG);
 		MAINCMD_CREATE_NAMETOOSHORT = confAdapter.getString("main-commands.create.name-too-short", MAINCMD_CREATE_NAMETOOSHORT);
 		MAINCMD_CREATE_INVALIDNAME = confAdapter.getString("main-commands.create.invalid-name", MAINCMD_CREATE_INVALIDNAME);
@@ -507,8 +502,8 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_IGNORE_WRONGCMD = confAdapter.getString("main-commands.ignore.wrong-command", MAINCMD_IGNORE_WRONGCMD);
 		
 		MAINCMD_INFO_CONTENT = confAdapter.getStringList("main-commands.info.content", MAINCMD_INFO_CONTENT);
-		MAINCMD_INFO_LIST_ONLINEPREFIX = confAdapter.getString("main-commands.info.list.player-online-prefix", MAINCMD_INFO_LIST_ONLINEPREFIX);
-		MAINCMD_INFO_LIST_OFFLINEPREFIX = confAdapter.getString("main-commands.info.list.player-offline-prefix", MAINCMD_INFO_LIST_OFFLINEPREFIX);
+		MAINCMD_INFO_LIST_ONLINEFORMAT = confAdapter.getString("main-commands.info.list.player-online-format", MAINCMD_INFO_LIST_ONLINEFORMAT);
+		MAINCMD_INFO_LIST_OFFLINEFORMAT = confAdapter.getString("main-commands.info.list.player-offline-format", MAINCMD_INFO_LIST_OFFLINEFORMAT);
 		MAINCMD_INFO_LIST_SEPARATOR = confAdapter.getString("main-commands.info.list.player-separator", MAINCMD_INFO_LIST_SEPARATOR);
 		MAINCMD_INFO_LIST_EMPTY = confAdapter.getString("main-commands.info.list.player-empty", MAINCMD_INFO_LIST_EMPTY);
 		MAINCMD_INFO_LIST_UNKNOWN = confAdapter.getString("main-commands.info.list.player-unknown", MAINCMD_INFO_LIST_UNKNOWN);
@@ -592,7 +587,6 @@ public abstract class Messages extends ConfigurationFile {
 		
 		ADDCMD_JOIN_JOINED = confAdapter.getString("additional-commands.join.joined", ADDCMD_JOIN_JOINED);
 		ADDCMD_JOIN_PLAYERJOINED = confAdapter.getString("additional-commands.join.player-joined", ADDCMD_JOIN_PLAYERJOINED);
-		ADDCMD_JOIN_ALREADYINPARTY = confAdapter.getString("additional-commands.join.already-in-party", ADDCMD_JOIN_ALREADYINPARTY);
 		ADDCMD_JOIN_WRONGPASSWORD = confAdapter.getString("additional-commands.join.wrong-password", ADDCMD_JOIN_WRONGPASSWORD);
 		ADDCMD_JOIN_WRONGCMD = confAdapter.getString("additional-commands.join.wrong-command", ADDCMD_JOIN_WRONGCMD);
 		

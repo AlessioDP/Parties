@@ -20,6 +20,7 @@ parties:
     invalid-command: "&cInvalid command"
     configuration-reloaded: "&aConfiguration reloaded"
     not-in-party: "&cYou are not in a party"
+    already-in-party: "&cYou are already in a party!"
     party-not-found: "&cThe party %party% doesn't exist"
     party-full: "&cThe party is full!"
   permissions:
@@ -36,7 +37,6 @@ main-commands:
     broadcast: "&b&l%player% joined the party"
     accepted: "&aYou accepted the party invite"
     accept-receipt: "&a%player% accepted your invite"
-    already-in-party: "&cYou are already in a party!"
     no-invite: "&cYou have not pending invitation"
     no-exists: "&cThe invite doesn't exist anymore"
   
@@ -49,7 +49,6 @@ main-commands:
     created: '[{"text":"You have created the party %party%.\n","color":"aqua","bold":true},{"text":"Type ","color":"aqua","bold":false},{"text":"/party invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/party invite "}},{"text":" to invite your friend.","color":"aqua"}]'
     created-fixed: "&l&bYou have created the fixed party %party%"
     name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    already-in-party: "&cYou are already in a party!"
     name-too-long: "&cThe party name is too long!"
     name-too-short: "&cThe party name is too short!"
     invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
@@ -92,8 +91,8 @@ main-commands:
     - "&bMembers&7: %list_member%"
     - "&bOnline players&7: %onlinenumber%"
     list:
-      player-online-prefix: "&b"
-      player-offline-prefix: "&7"
+      player-online-format: "&b%player%"
+      player-offline-format: "&7%player%"
       player-separator: "&7, "
       player-empty: "&7Nobody"
       player-unknown: "&6Someone"
@@ -210,7 +209,6 @@ additional-commands:
   join:
     joined: "&aYou joined the party %party%"
     player-joined: "&b&l%player% joined in the party"
-    already-in-party: "&cYou are already in a party!"
     wrong-password: "&cWrong password!"
     wrong-command: "&cWrong variables: Type &7/party join <party> [password]"
 
@@ -306,4 +304,4 @@ help:
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 
 dont-edit-this:
-  version: 2
+  version: 3

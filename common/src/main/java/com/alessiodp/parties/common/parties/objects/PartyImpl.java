@@ -149,7 +149,6 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	public void cancelInvite(UUID to) {
-		plugin.getPartiesScheduler().cancelTask(inviteTasks.get(to));
 		UUID from = inviteMap.get(to);
 		
 		PartyPlayerImpl fromPp = plugin.getPlayerManager().getPlayer(from);

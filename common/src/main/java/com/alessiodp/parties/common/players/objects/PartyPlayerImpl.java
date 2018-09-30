@@ -46,7 +46,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		name = plugin.getOfflinePlayer(uuid).getName();
 		if (name == null)
 			name = "";
-		nameTimestamp = System.currentTimeMillis();
+		nameTimestamp = System.currentTimeMillis() / 1000L;
 		rank = ConfigParties.RANK_SET_DEFAULT;
 		partyName = "";
 		spy = false;

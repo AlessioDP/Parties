@@ -6,12 +6,12 @@ public class Constants {
 	public static final boolean DEBUG_TIMESTAMPS = false;
 	
 	public static final int VERSION_BUKKIT_CONFIG_MAIN = 4;
-	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 3;
-	public static final int VERSION_BUKKIT_MESSAGES = 4;
+	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 4;
+	public static final int VERSION_BUKKIT_MESSAGES = 5;
 	
 	public static final int VERSION_BUNGEE_CONFIG_MAIN = 2;
-	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 2;
-	public static final int VERSION_BUNGEE_MESSAGES = 2;
+	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 3;
+	public static final int VERSION_BUNGEE_MESSAGES = 3;
 	
 	public static final int VERSION_DATABASE_YAML = 1;
 	public static final int VERSION_DATABASE_MYSQL = 5;

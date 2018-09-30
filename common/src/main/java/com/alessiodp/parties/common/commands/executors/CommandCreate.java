@@ -40,7 +40,7 @@ public class CommandCreate extends AbstractCommand {
 		}
 		
 		if (!pp.getPartyName().isEmpty()) {
-			pp.sendMessage(Messages.MAINCMD_CREATE_ALREADYINPARTY);
+			pp.sendMessage(Messages.PARTIES_COMMON_ALREADYINPARTY);
 			return false;
 		}
 		

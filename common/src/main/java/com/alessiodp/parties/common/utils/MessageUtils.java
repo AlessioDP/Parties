@@ -8,6 +8,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -113,10 +114,35 @@ public abstract class MessageUtils {
 					replacement = emptyPlaceholder;
 					if (player != null && !player.getPartyName().isEmpty()) {
 						if (plugin.getOfflinePlayer(player.getPlayerUUID()).isOnline()) {
-							replacement = ConfigParties.GENERAL_LASTSEEN_FORMATONLINE;
+							replacement = ConfigParties.GENERAL_LASTSEEN_FORMAT_ONLINE;
 						} else {
-							replacement = new SimpleDateFormat(ConfigParties.GENERAL_LASTSEEN_FORMATOFFLINE)
-									.format(new Date(player.getNameTimestamp() * 1000));
+							replacement = ConfigParties.GENERAL_LASTSEEN_FORMAT_OFFLINE;
+							String time;
+							if (replacement.contains("%time_date%")) {
+								time = new SimpleDateFormat(ConfigParties.GENERAL_LASTSEEN_TIMEFORMAT_DATE)
+										.format(new Date(player.getNameTimestamp() * 1000));
+								replacement = replacement.replace("%time_date%", time);
+							} else if (replacement.contains("%time_elapsed%")){
+								long logTime = (System.currentTimeMillis() / 1000L) - player.getNameTimestamp();
+								
+								long days = TimeUnit.SECONDS.toDays(logTime);
+								logTime -= TimeUnit.DAYS.toSeconds(days);
+								
+								long hours = TimeUnit.SECONDS.toHours(logTime);
+								logTime -= TimeUnit.HOURS.toSeconds(hours);
+								
+								long minutes = TimeUnit.SECONDS.toMinutes(logTime);
+								logTime -= TimeUnit.MINUTES.toSeconds(days);
+								
+								long seconds = logTime;
+								
+								time = ConfigParties.GENERAL_LASTSEEN_TIMEFORMAT_ELAPSED
+										.replace("%days%", Long.toString(days))
+										.replace("%hours%", Long.toString(hours))
+										.replace("%minutes%", Long.toString(minutes))
+										.replace("%seconds%", Long.toString(seconds));
+								replacement = replacement.replace("%time_elapsed%", time);
+							}
 						}
 					}
 					ret = ret.replace(identifier, replacement);

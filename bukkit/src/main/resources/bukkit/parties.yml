@@ -60,7 +60,11 @@ general:
     # Options for lastseen placeholder
     # If you use this placeholder, you will bypass vanish check
     # Format as SimpleDateFormat of Java (example: "yyyy-MM-dd HH:mm:ss.S")
-    format-offline: "[yyyy-MM-dd]"
+    time-date-format: "yyyy-MM-dd"
+    # Special tags: %days%, %hours%, %minutes% and %seconds%
+    time-elapsed-format: "%days% days, %hours% hours, %minutes% minutes"
+    # Special tags: %time_date% and %time_elapsed%
+    format-offline: "[%time_elapsed%]"
     format-online: "%bOnline"
 
 
@@ -240,4 +244,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 3
+  version: 4

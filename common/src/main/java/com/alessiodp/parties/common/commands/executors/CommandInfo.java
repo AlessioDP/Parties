@@ -102,19 +102,19 @@ public class CommandInfo extends AbstractCommand {
 								if (offlinePlayer.isOnline() && !pl.isVanished()) {
 									list.append(
 											plugin.getMessageUtils().convertAllPlaceholders(
-													Messages.MAINCMD_INFO_LIST_ONLINEPREFIX,
+													Messages.MAINCMD_INFO_LIST_ONLINEFORMAT,
 													party,
 													pl)
 									);
 								} else {
 									list.append(
 											plugin.getMessageUtils().convertAllPlaceholders(
-													Messages.MAINCMD_INFO_LIST_OFFLINEPREFIX,
+													Messages.MAINCMD_INFO_LIST_OFFLINEFORMAT,
 													party,
 													pl)
 									);
 								}
-								list.append(pl.getName());
+								//list.append(pl.getName());
 							} else
 								list.append(Messages.MAINCMD_INFO_LIST_UNKNOWN);
 							counter++;
@@ -137,8 +137,10 @@ public class CommandInfo extends AbstractCommand {
 							sb.append(Messages.MAINCMD_INFO_LIST_SEPARATOR);
 						}
 						if (!partyPlayer.isVanished())
-							sb.append(Messages.MAINCMD_INFO_LIST_ONLINEPREFIX)
-									.append(partyPlayer.getName());
+							sb.append(plugin.getMessageUtils().convertAllPlaceholders(
+									Messages.MAINCMD_INFO_LIST_ONLINEFORMAT,
+									party,
+									partyPlayer));
 					}
 				}
 				line = line.replace("%online%", sb.toString());

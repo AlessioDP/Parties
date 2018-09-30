@@ -38,7 +38,7 @@ public class CommandJoin extends AbstractCommand {
 		}
 		
 		if (!pp.getPartyName().isEmpty()) {
-			pp.sendMessage(Messages.ADDCMD_JOIN_ALREADYINPARTY);
+			pp.sendMessage(Messages.PARTIES_COMMON_ALREADYINPARTY);
 			return false;
 		}
 		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
