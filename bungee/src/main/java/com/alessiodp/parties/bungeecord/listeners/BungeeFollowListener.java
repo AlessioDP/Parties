@@ -16,8 +16,6 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class BungeeFollowListener implements Listener {
 	private BungeePartiesPlugin plugin;
@@ -46,7 +44,9 @@ public class BungeeFollowListener implements Listener {
 					ServerInfo serverInfo = plugin.getBootstrap().getProxy().getServerInfo(playerServer);
 					for (UUID uuid : party.getMembers()) {
 						BungeeUser member = (BungeeUser) plugin.getPlayer(uuid);
-						if (member != null && !member.getUUID().equals(player.getPlayerUUID())) {
+						if (member != null
+								&& !member.getUUID().equals(player.getPlayerUUID())
+								&& !member.getServerName().equals(serverInfo.getName())) {
 							
 							plugin.getPlayerManager().getPlayer(uuid).sendMessage(BungeeMessages.OTHER_FOLLOW_SERVER
 									.replace("%server%", serverInfo.getName()));
@@ -67,20 +67,16 @@ public class BungeeFollowListener implements Listener {
 	}
 	
 	private boolean allowedServer(String serverName) {
-		boolean ret = false;
-		if (BungeeConfigMain.ADDITIONAL_FOLLOW_ALLOWEDSERVERS.contains("*"))
-			ret = true;
+		boolean ret = true;
+		if (BungeeConfigMain.ADDITIONAL_FOLLOW_BLOCKEDSERVERS.contains(serverName))
+			ret = false;
 		else {
-			for (String regex : BungeeConfigMain.ADDITIONAL_FOLLOW_ALLOWEDSERVERS) {
-				if (ret)
+			for (String regex : BungeeConfigMain.ADDITIONAL_FOLLOW_BLOCKEDSERVERS) {
+				if (!ret)
 					break;
 				try {
-					Pattern pattern = Pattern.compile(regex);
-					Matcher matcher = pattern.matcher(serverName);
-					
-					if (matcher.find()) {
-						ret = true;
-					}
+					if (serverName.matches(regex))
+						ret = false;
 				} catch (Exception ex) {
 					LoggerManager.printError(Constants.DEBUG_FOLLOW_SERVER_REGEXERROR);
 					ex.printStackTrace();

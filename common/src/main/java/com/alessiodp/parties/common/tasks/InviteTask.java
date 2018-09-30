@@ -10,18 +10,18 @@ import java.util.UUID;
 
 public class InviteTask implements Runnable {
 	private PartyImpl party;
-	private UUID from;
+	private UUID invitedPlayer;
 	
-	public InviteTask(PartyImpl party, UUID from) {
+	public InviteTask(PartyImpl party, UUID invitedPlayer) {
 		this.party = party;
-		this.from = from;
+		this.invitedPlayer = invitedPlayer;
 	}
 
 	@Override
 	public void run() {
-		party.cancelInvite(from);
+		party.cancelInvite(invitedPlayer);
 		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_INVITE_EXPIRED
 				.replace("{party}", party.getName())
-				.replace("{uuid}", from.toString()), true);
+				.replace("{uuid}", invitedPlayer.toString()), true);
 	}
 }

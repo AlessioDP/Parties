@@ -53,6 +53,10 @@ public class BungeeUser implements User {
 			((ProxiedPlayer) sender).chat(messageToSend);
 	}
 	
+	public String getServerName() {
+		return ((ProxiedPlayer) sender).getServer().getInfo().getName();
+	}
+	
 	public void connectTo(ServerInfo server) {
 		((ProxiedPlayer) sender).connect(server);
 	}

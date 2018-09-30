@@ -140,87 +140,87 @@ public abstract class PartyImpl implements Party {
 	/*
 	 * Invite
 	 */
-	public void invitePlayer(UUID from, UUID to) {
+	public void invitePlayer(UUID invitedBy, UUID invitedPlayer) {
 		int taskId = plugin.getPartiesScheduler().scheduleTaskLater(
-				new InviteTask(this, from), ConfigParties.GENERAL_INVITE_TIMEOUT);
+				new InviteTask(this, invitedPlayer), ConfigParties.GENERAL_INVITE_TIMEOUT);
 		
-		inviteMap.put(to, from);
-		inviteTasks.put(to, taskId);
+		inviteMap.put(invitedPlayer, invitedBy);
+		inviteTasks.put(invitedPlayer, taskId);
 	}
 	
-	public void cancelInvite(UUID to) {
-		UUID from = inviteMap.get(to);
+	public void cancelInvite(UUID invitedPlayer) {
+		UUID invitedBy = inviteMap.get(invitedPlayer);
 		
-		PartyPlayerImpl fromPp = plugin.getPlayerManager().getPlayer(from);
-		PartyPlayerImpl toPp = plugin.getPlayerManager().getPlayer(to);
+		PartyPlayerImpl invitedByPp = plugin.getPlayerManager().getPlayer(invitedBy);
+		PartyPlayerImpl invitedPlayerPp = plugin.getPlayerManager().getPlayer(invitedPlayer);
 		
-		fromPp.sendMessage(Messages.MAINCMD_INVITE_TIMEOUT_NORESPONSE, toPp);
-		toPp.sendMessage(Messages.MAINCMD_INVITE_TIMEOUT_TIMEOUT, fromPp);
+		invitedByPp.sendMessage(Messages.MAINCMD_INVITE_TIMEOUT_NORESPONSE, invitedPlayerPp);
+		invitedPlayerPp.sendMessage(Messages.MAINCMD_INVITE_TIMEOUT_TIMEOUT, invitedByPp);
 		
-		toPp.setLastInvite("");
+		invitedPlayerPp.setLastInvite("");
 		
-		inviteMap.remove(to);
-		inviteTasks.remove(to);
+		inviteMap.remove(invitedPlayer);
+		inviteTasks.remove(invitedPlayer);
 	}
 	
-	public void acceptInvite(UUID to) {
-		plugin.getPartiesScheduler().cancelTask(inviteTasks.get(to));
+	public void acceptInvite(UUID invitedPlayer) {
+		plugin.getPartiesScheduler().cancelTask(inviteTasks.get(invitedPlayer));
 		
-		UUID from = inviteMap.get(to);
-		PartyPlayerImpl fromPp = plugin.getPlayerManager().getPlayer(from);
-		PartyPlayerImpl toPp = plugin.getPlayerManager().getPlayer(to);
+		UUID invitedBy = inviteMap.get(invitedPlayer);
+		PartyPlayerImpl invitedByPp = plugin.getPlayerManager().getPlayer(invitedBy);
+		PartyPlayerImpl invitedPlayerPp = plugin.getPlayerManager().getPlayer(invitedPlayer);
 		
 		// Calling API Event
-		IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(toPp, this, true, from);
+		IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(invitedPlayerPp, this, true, invitedBy);
 		plugin.getEventManager().callEvent(partiesPreJoinEvent);
 		
 		if (!partiesPreJoinEvent.isCancelled()) {
 			//Send accepted
-			fromPp.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTRECEIPT, toPp);
+			invitedByPp.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTRECEIPT, invitedPlayerPp);
 			
 			//Send you accepted
-			toPp.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTED, fromPp);
+			invitedPlayerPp.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTED, invitedByPp);
 			
-			inviteMap.remove(to);
-			inviteTasks.remove(to);
-	
-			toPp.setLastInvite("");
-	
-			sendBroadcast(toPp, Messages.MAINCMD_ACCEPT_BROADCAST);
+			inviteMap.remove(invitedBy);
+			inviteTasks.remove(invitedBy);
 			
-			getMembers().add(to);
-			onlinePlayers.add(toPp);
+			invitedPlayerPp.setLastInvite("");
 	
-			toPp.setPartyName(getName());
-			toPp.setRank(ConfigParties.RANK_SET_DEFAULT);
+			sendBroadcast(invitedPlayerPp, Messages.MAINCMD_ACCEPT_BROADCAST);
+			
+			getMembers().add(invitedBy);
+			onlinePlayers.add(invitedPlayerPp);
+			
+			invitedPlayerPp.setPartyName(getName());
+			invitedPlayerPp.setRank(ConfigParties.RANK_SET_DEFAULT);
 			
 			updateParty();
-			toPp.updatePlayer();
+			invitedPlayerPp.updatePlayer();
 
 			callChange();
 			
-			IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(toPp, this, true, from);
+			IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(invitedPlayerPp, this, true, invitedBy);
 			plugin.getEventManager().callEvent(partiesPostJoinEvent);
 		} else
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_JOINEVENT_DENY
-					.replace("{player}", toPp.getName())
+					.replace("{player}", invitedPlayerPp.getName())
 					.replace("{party}", getName()), true);
 	}
 	
-	public void denyInvite(UUID to) {
-		plugin.getPartiesScheduler().cancelTask(inviteTasks.get(to));
+	public void denyInvite(UUID invitedPlayer) {
+		plugin.getPartiesScheduler().cancelTask(inviteTasks.get(invitedPlayer));
 		
-		UUID from = inviteMap.get(to);
-		PartyPlayerImpl fromTP = plugin.getPlayerManager().getPlayer(from);
-		PartyPlayerImpl toTP = plugin.getPlayerManager().getPlayer(to);
+		UUID invitedBy = inviteMap.get(invitedPlayer);
+		PartyPlayerImpl invitedByPp = plugin.getPlayerManager().getPlayer(invitedBy);
+		PartyPlayerImpl invitedPlayerPp = plugin.getPlayerManager().getPlayer(invitedPlayer);
 		
-		fromTP.sendMessage(Messages.MAINCMD_DENY_DENYRECEIPT, toTP);
-		toTP.sendMessage(Messages.MAINCMD_DENY_DENIED, fromTP);
+		invitedByPp.sendMessage(Messages.MAINCMD_DENY_DENYRECEIPT, invitedPlayerPp);
+		invitedPlayerPp.sendMessage(Messages.MAINCMD_DENY_DENIED, invitedByPp);
 		
-		toTP.setLastInvite("");
+		invitedPlayerPp.setLastInvite("");
 		
-		inviteMap.remove(to);
-		inviteTasks.remove(to);
+		inviteMap.remove(invitedPlayer);
+		inviteTasks.remove(invitedPlayer);
 	}
 	
 	/**

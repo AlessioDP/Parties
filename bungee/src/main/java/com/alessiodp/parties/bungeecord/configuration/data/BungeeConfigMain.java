@@ -13,7 +13,7 @@ public class BungeeConfigMain extends ConfigMain {
 	public static boolean ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE;
 	public static int ADDITIONAL_FOLLOW_PERFORMCMD_DELAY;
 	public static List<String> ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS;
-	public static List<String> ADDITIONAL_FOLLOW_ALLOWEDSERVERS;
+	public static List<String> ADDITIONAL_FOLLOW_BLOCKEDSERVERS;
 	
 	public BungeeConfigMain(PartiesPlugin instance) {
 		super(instance);
@@ -29,8 +29,9 @@ public class BungeeConfigMain extends ConfigMain {
 		ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE = false;
 		ADDITIONAL_FOLLOW_PERFORMCMD_DELAY = 2000;
 		ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS = new ArrayList<>();
-		ADDITIONAL_FOLLOW_ALLOWEDSERVERS = new ArrayList<>();
-		ADDITIONAL_FOLLOW_ALLOWEDSERVERS.add("*");
+		ADDITIONAL_FOLLOW_BLOCKEDSERVERS = new ArrayList<>();
+		ADDITIONAL_FOLLOW_BLOCKEDSERVERS.add("lobby");
+		ADDITIONAL_FOLLOW_BLOCKEDSERVERS.add("hub");
 		
 		// Commands
 		ConfigMain.COMMANDS_ORDER = new ArrayList<>();
@@ -71,7 +72,7 @@ public class BungeeConfigMain extends ConfigMain {
 		ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE = confAdapter.getBoolean("additional.follow-party.perform-commands.enable", ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE);
 		ADDITIONAL_FOLLOW_PERFORMCMD_DELAY = confAdapter.getInt("additional.follow-party.perform-commands.delay", ADDITIONAL_FOLLOW_PERFORMCMD_DELAY);
 		ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS = confAdapter.getStringList("additional.follow-party.perform-commands.commands", ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS);
-		ADDITIONAL_FOLLOW_ALLOWEDSERVERS = confAdapter.getStringList("additional.follow-party.allowed-servers", ADDITIONAL_FOLLOW_ALLOWEDSERVERS);
+		ADDITIONAL_FOLLOW_BLOCKEDSERVERS = confAdapter.getStringList("additional.follow-party.blocked-servers", ADDITIONAL_FOLLOW_BLOCKEDSERVERS);
 	}
 	
 	@Override

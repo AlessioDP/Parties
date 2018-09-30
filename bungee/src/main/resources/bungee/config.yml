@@ -145,8 +145,9 @@ additional:
       delay: 2000
       commands: []
     # List of servers allowed to join into (Regexes allowed)
-    allowed-servers:
-      - '*'
+    blocked-servers:
+      - "lobby"
+      - "hub"
 
   mute:
     # Enable mute command
@@ -243,4 +244,4 @@ commands:
 
 # End of configuration file
 dont-edit-this:
-  version: 2
+  version: 3

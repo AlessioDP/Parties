@@ -9,7 +9,7 @@ public class Constants {
 	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 4;
 	public static final int VERSION_BUKKIT_MESSAGES = 5;
 	
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 2;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 3;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 3;
 	public static final int VERSION_BUNGEE_MESSAGES = 3;
 	
