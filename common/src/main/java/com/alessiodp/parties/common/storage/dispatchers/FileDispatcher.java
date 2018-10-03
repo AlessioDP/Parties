@@ -290,7 +290,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			
 			Files.write(filePath, line.getFormattedMessage().getBytes(), StandardOpenOption.APPEND);
 		} catch (IOException ex) {
-			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_FILE_ERROR, ex));
+			ex.printStackTrace();
 		}
 	}
 	

@@ -513,13 +513,13 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 					preStatement.setTimestamp(1, new Timestamp(line.getDate().getTime()));
 					preStatement.setInt(2, Integer.valueOf(line.getLevel()));
 					preStatement.setString(3, line.getPosition());
-					preStatement.setString(3, line.getMessage());
+					preStatement.setString(4, line.getMessage());
 					
 					preStatement.executeUpdate();
 				}
 			}
 		} catch (SQLException ex) {
-			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
+			ex.printStackTrace();
 		}
 	}
 	
