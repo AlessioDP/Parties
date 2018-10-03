@@ -1,6 +1,6 @@
 ---
 parties:
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9Nuova versione di Parties trovata: %version% (Attuale: %thisversion%)"
   common-messages:
     invalid-command: "&cInvalid command"
     configuration-reloaded: "&aConfiguration reloaded"
