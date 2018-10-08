@@ -188,7 +188,7 @@ public abstract class PartyImpl implements Party {
 	
 			sendBroadcast(invitedPlayerPp, Messages.MAINCMD_ACCEPT_BROADCAST);
 			
-			getMembers().add(invitedBy);
+			getMembers().add(invitedPlayer);
 			onlinePlayers.add(invitedPlayerPp);
 			
 			invitedPlayerPp.setPartyName(getName());

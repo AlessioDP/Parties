@@ -31,7 +31,8 @@ public abstract class ChatListener {
 		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
 		
 		boolean partyChat = false;
-		if (!pp.getPartyName().isEmpty()) {
+		PartyImpl party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
+		if (party != null) {
 			if (pp.isChatParty()) {
 				partyChat = true;
 			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && message.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
@@ -69,8 +70,6 @@ public abstract class ChatListener {
 					}
 					
 					if (!mustWait) {
-						PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
-						
 						// Calling API event
 						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, finalMessage);
 						plugin.getEventManager().callEvent(partiesChatEvent);
