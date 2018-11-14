@@ -58,6 +58,9 @@ public abstract class JoinLeaveListener {
 						plugin.getPartiesScheduler().scheduleTaskLater(new MotdTask(plugin, player.getUUID(), pp.getCreateID()), ConfigParties.MOTD_DELAY / 20L);
 					}
 					
+					// Update timestamp
+					pp.updateNameTimestamp(System.currentTimeMillis() / 1000L);
+					
 					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_JOIN
 							.replace("{player}", player.getName())
 							.replace("{party}", party.getName()), true);
@@ -109,7 +112,7 @@ public abstract class JoinLeaveListener {
 	/**
 	 * Used by Bukkit, Bungeecord
 	 */
-	public void onPlayerQuit(User player) {
+	protected void onPlayerQuit(User player) {
 		// Make it async
 		plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {
 			PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(player.getUUID());
@@ -155,6 +158,9 @@ public abstract class JoinLeaveListener {
 							plugin.getPartyManager().unloadParty(party.getName());
 						}
 					}
+					
+					// Update timestamp
+					pp.updateNameTimestamp(System.currentTimeMillis() / 1000L);
 				}
 			}
 			if (removePlFromList)

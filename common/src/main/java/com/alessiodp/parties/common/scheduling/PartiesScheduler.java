@@ -14,8 +14,9 @@ public abstract class PartiesScheduler {
 	
 	@Getter protected ExecutorDispatcher commandsExecutor;
 	@Getter protected ExecutorDispatcher databaseExecutor;
-	@Getter protected ExecutorDispatcher logExecutor;
 	@Getter protected ExecutorDispatcher eventsExecutor;
+	@Getter protected ExecutorDispatcher logExecutor;
+	@Getter protected ExecutorDispatcher messagingExecutor;
 	
 	@Getter protected Set<Integer> currentTasks;
 	
@@ -30,8 +31,12 @@ public abstract class PartiesScheduler {
 	public void shutdown() {
 		commandsExecutor.shutdown();
 		databaseExecutor.shutdown();
-		logExecutor.shutdown();
 		eventsExecutor.shutdown();
+		logExecutor.shutdown();
+		if (messagingExecutor != null) {
+			// Used only by Bukkit
+			messagingExecutor.shutdown();
+		}
 	}
 	
 	public abstract void runSync(Runnable runnable);

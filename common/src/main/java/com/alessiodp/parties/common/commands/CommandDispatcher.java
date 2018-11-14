@@ -25,7 +25,7 @@ public abstract class CommandDispatcher {
 	}
 	
 	public void register(PartiesCommand command, AbstractCommand commandExecutor) {
-		commands.put(command.getCommand(), commandExecutor);
+		commands.put(command.getCommand().toLowerCase(), commandExecutor);
 		enabledCommands.add(command);
 	}
 	
@@ -34,7 +34,7 @@ public abstract class CommandDispatcher {
 	}
 	
 	private boolean exists(String name) {
-		return commands.containsKey(name);
+		return commands.containsKey(name.toLowerCase());
 	}
 	
 	private AbstractCommand getExecutor(String name) {
@@ -79,9 +79,9 @@ public abstract class CommandDispatcher {
 		cd.setSender(sender);
 		cd.setCommandLabel(command);
 		cd.setArgs(args);
-		if (getExecutor(subCommand).preRequisites(cd)) {
+		if (getExecutor(subCommand.toLowerCase()).preRequisites(cd)) {
 			CompletableFuture.supplyAsync(() -> {
-				getExecutor(subCommand).onCommand(cd);
+				getExecutor(subCommand.toLowerCase()).onCommand(cd);
 				return true;
 			}, plugin.getPartiesScheduler().getCommandsExecutor())
 					.exceptionally(ex -> {

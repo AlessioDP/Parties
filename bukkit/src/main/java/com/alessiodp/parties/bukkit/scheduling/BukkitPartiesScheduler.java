@@ -17,9 +17,9 @@ public class BukkitPartiesScheduler extends PartiesScheduler {
 		super(instance);
 		commandsExecutor = new BukkitExecutorDispatcher(this, true);
 		databaseExecutor = new BukkitExecutorDispatcher(this,false);
-		logExecutor = new BukkitExecutorDispatcher(this,false);
 		eventsExecutor = new BukkitExecutorDispatcher(this,true);
-		
+		logExecutor = new BukkitExecutorDispatcher(this,false);
+		messagingExecutor = new BukkitExecutorDispatcher(this,true);
 		
 		bukkitScheduler = getPlugin().getServer().getScheduler();
 		// Make an async task to enable bukkit scheduler

@@ -61,13 +61,15 @@ public abstract class PartyManager {
 		getListParties().remove(name.toLowerCase());
 	}
 	
-	public void reloadParty(String name) {
+	public boolean reloadParty(String name) {
 		if (getListParties().containsKey(name)) {
 			PartyImpl party = plugin.getDatabaseManager().getParty(name).join();
 			getListParties().put(name, party);
 			
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PARTY_RELOADED, true);
+			return true;
 		}
+		return false;
 	}
 	
 	public PartyImpl getParty(String name) {

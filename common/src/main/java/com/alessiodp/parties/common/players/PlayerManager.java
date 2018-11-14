@@ -56,13 +56,15 @@ public abstract class PlayerManager {
 		getListPartyPlayers().remove(uuid);
 	}
 	
-	public void reloadPlayer(UUID uuid) {
+	public boolean reloadPlayer(UUID uuid) {
 		if (getListPartyPlayers().containsKey(uuid)) {
 			getListPartyPlayers().remove(uuid);
 			loadPlayer(uuid);
 			
 			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_RELOADED, true);
+			return true;
 		}
+		return false;
 	}
 	
 	public PartyPlayerImpl getPlayer(UUID uuid) {

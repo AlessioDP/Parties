@@ -1,11 +1,5 @@
 #
-# Parties main configuration file
-#
-# For a better configuration:
-# - Use Notepad++
-#   - View -> Symbols -> Show White Space and TAB (Active)
-#   - Don't use arrows (tabs), but spaces
-# - Set format (syntax) editor to YAML
+# Messages configuration file
 #
 # You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
 #

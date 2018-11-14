@@ -64,9 +64,6 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	
 	
 	public void updatePlayer() {
-		// Update timestamp
-		setNameTimestamp(System.currentTimeMillis() / 1000L);
-		
 		if (!plugin.getDatabaseManager().getDatabaseType().isNone())
 			plugin.getDatabaseManager().updatePlayer(this);
 		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_UPDATED
@@ -180,6 +177,12 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 					.replace("{player}", serverName), true);
 			setName(serverName);
 		}
+	}
+	
+	public void updateNameTimestamp(long timestamp) {
+		setNameTimestamp(timestamp);
+		
+		updatePlayer();
 	}
 	
 	public boolean isVanished() {
