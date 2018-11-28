@@ -1,0 +1,229 @@
+---
+parties:
+  update-available: "&9Dostepna jest nowa wersja pluginu Parties: %version% (Aktualna: %thisversion%)"
+  common-messages:
+    invalid-command: "&cNiepoprawna komenda"
+    configuration-reloaded: "&aKonfiguracja przeladowana"
+    not-in-party: "&cNie jestes w grupie"
+    already-in-party: "&cJuz jestes w grupie!"
+    party-not-found: "&cGrupa %party% nie istnieje"
+    party-full: "&cTa grupa jest pelna!"
+  permissions:
+    no-permission: "&cNie masz uprawnien do tej komendy"
+    no-permission-in-party: "&cMusisz byc %rank_name% by wykonac ta komende"
+main-commands:
+  accept:
+    broadcast: "&b&l%player% dolaczyl do grupy"
+    accepted: "&aZaakceptowales zaproszenie do grupy"
+    accept-receipt: "&a%player% zaakceptowal twoje zaproszenie"
+    no-invite: "&cNie masz oczekujacych zaproszen"
+    no-exists: "&cZaproszenie juz nie istnieje"
+  chat:
+    enabled: "&aCzat ustawiony na grupowy"
+    disabled: "&aCzat ustawiony na publiczny"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party chat [on/off]"
+  create:
+    created: "[{\"text\":\"Stworzyles grupe o nazwie %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Wpisz \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" by zaprosic przyjaciela.\",\"color\":\"aqua\"}]"
+    created-fixed: "&l&bUtworzyles stala grupe o nazwie %party%"
+    name-already-exists: "&cGrupa o nazwie %party% juz istnieje, wybierz inna nazwe"
+    name-too-long: "&cNazwa tej grupy jest za dluga!"
+    name-too-short: "&cNazwa tej grupy jest za krotka!"
+    invalid-name: "&cBledne znaki. Uzyj: a-Z lub 0-9."
+    censored: "&cNazwa grupy zawiera niecenzuralne slowa!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party create <nazwa>"
+  delete:
+    deleted: "&cGrupa %party% usunieta"
+    deleted-silently: "&aGrupa %party% usunieta po cichu"
+    broadcast: "&6&lTwoja grupa zostala usunieta"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party delete <grupa> [po cichu]"
+  deny:
+    denied: "&7Odrzuciles zaproszenie do grupy"
+    deny-receipt: "&7%player% odrzucil twoje zaproszenie"
+    no-invite: "&cNie masz oczekujacych zaproszen"
+    no-exists: "&cZaproszenie juz nie istnieje"
+  ignore:
+    start-ignore: "&7Od teraz ignorujesz zaproszenia %party%"
+    stop-ignore: "&7Przestales ignorowac zaproszenia %party%"
+    ignore-list:
+      header: "&b&lLista ignorowanych grup:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7Brak"
+    wrong-command: "&bBledne uzycie: Wpisz &7/party ignore [grupa]"
+  info:
+    content:
+      - "&b============ &lInfo o %party% &r&b============"
+      - "&b&lOpis&r&7: %desc%"
+      - "&b&lMotd&r&7: %motd%"
+      - "&bLider&7: %list_leader%"
+      - "&bModeratorzy&7: %list_moderator%"
+      - "&bCzlonkowie&7: %list_member%"
+      - "&bGracze online&7: %onlinenumber%"
+    list:
+      player-online-format: "&b%player%"
+      player-offline-format: "&7%player%"
+      player-separator: "&7, "
+      player-empty: "&7Nikt"
+      player-unknown: "&6Ktos"
+      missing-value: "&7Zgubiony"
+  invite:
+    sent: "&bZaprosiles gracza %player% do twojej grupy"
+    player-invited: "[{\"text\":\"%player% zaprosil cie do grupy.\n\",\"color\":\"aqua\"},{\"text\":\"Czy chcesz \",\"color\":\"aqua\"},{\"text\":\"zaakceptowac\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Zaakceptuj zaproszenie\",\"color\":\"gold\"}]}}},{\"text\":\" lub \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"odrzucic\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Odrzuc zaproszenie\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Mozesz uzyc \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" by wybrac.\",\"color\":\"aqua\"}]"
+    timeout:
+      noresponse: "&7%player% nie zaakceptowal zaproszenia do grupy"
+      timeout: "&7Nie zaakceptowales zaproszenia do grupy"
+    revoke:
+      sent-revoked: "&7Anulowales zaproszenie dla %player%"
+      player-invite-revoked: "&7Zaproszenie od grupy %party% zostalo anulowane"
+    cooldown:
+      global: "&cMusisz poczekac %seconds% zanim zaprosisz kolejnego gracza"
+      individual: "&cMusisz poczekac %seconds% zanim zaprosisz tego samego gracza"
+    player-offline: "&cMozesz zaprosic wylacznie graczy online"
+    player-no-permission: "&c%player% nie ma uprawnien by dolaczyc"
+    player-in-party: "&c%player% jest juz w grupie"
+    already-invited: "&c%player% zostal juz zaproszony"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party invite <nazwa>"
+  kick:
+    sent: "&aWyrzuciles %player% z grupy!"
+    player-kicked: "&bZostales wyrzucony z grupy %party%"
+    broadcast: "&b&l%player% zostal wyrzucony z grupy"
+    broadcast-disband: "&b&lGrupa zostala rozwiazana, poniewaz lider zostal wyrzucony"
+    player-higher-rank: "&cNie mozesz wyrzucic osoby wyzszej ranga!"
+    player-not-in-party: "&c%player% nie jest w twojej grupie"
+    player-not-in-other-party: "&c%player% nie jest w zdanej grupie"
+    players-conflict:
+      content:
+        - "&cZnalezismy kilku graczy o tej nazwie:"
+        - "%list_players%"
+        - "&cUzyj '&7/party kick <nazwa gracza> <numer>&c' by wyrzucic danego gracza"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: ostatnio logowany %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Wyrzuc tego gracza","color":"gold"}}}'
+    wrong-command: "&cBledne uzycie: Uzyj &7/party kick <nazwa>"
+  leave:
+    left: "&b&lOpusciles grupe %party%"
+    broadcast: "&b&l%player% opuscil grupe"
+    party-disbanded: "&6&lGrupa zostala rozwiazana, poniewaz lider ja opuscil"
+  migrate:
+    info: "&aAktualnie uzywasz: %database%\n&aMozesz przeniesc przy uzyciu: &7/party migrate <od> <do>"
+    completed: "&aSkopiowano dane z %database_from% do %database_to%"
+    failed:
+      database-offline: "&cBaza %database% musi byc online!"
+      failed: "&cMigracja bazy danych z %database_from% do %database_to% sie nie powiodla!"
+      same-database: "&cMusisz wyznaczyc 2 rozne bazy danych!"
+    wrong-database: "&cBaza nie znaleziona. Mozesz wybrac: YAML, MySQL, SQLite!"
+  p:
+    cooldown: "&cMusisz poczekac %seconds% sekund"
+    wrong-command: "&cBledne uzycie: Wpisz &7/p <wiadomosc>"
+  rank:
+    changed: "&aStopien %player% zmieniony na %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cStopien '%rank_name%' nie istnieje!"
+    same-rank: "&c%player% juz jest %rank_name%!"
+    low-rank: "&cNie mozesz edytowac graczy z ranga ta sama lub wyzsza co twoja!"
+    to-higher-rank: "&cNie mozesz awansowac graczy z ranga ta sama lub wyzsza co twoja!"
+    fixed-leader: "&cNie mozesz zmienic lidera w grupie stalej!"
+    changing-yourself: "&cNie mozesz zmienic sobie stopnia!"
+    player-not-in-party: "&c%player% nie jest w twojej grupie"
+    player-not-in-other-party: "&c%player% nie ma zadnej grupy"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party rank <gracz> <stopien>"
+  rename:
+    renamed: "&aNazwa grupy %old% zostala zmieniona na %party%"
+    broadcast: "&6Nazwa twojej grupy zostala zmieniona na %party%!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party rename <nowa nazwa>"
+    wrong-command-admin: "&cBledne uzycie: Wpisz &7/party rename <grupa> <nowa nazwa>"
+  spy:
+    enabled: "&7Jestes teraz w trybie szpiega!"
+    disabled: "&7Nie jestes dluzej w trybie szpiega"
+additional-commands:
+  color:
+    info: "&bKolor twojej grupy to: %color_code%%color_command%"
+    empty: "&bTwoja grupa nie ma ustawionego koloru"
+    changed: "&bKolor grupy zmieniony na %color_command%"
+    removed: "&bKolor grupy usuniety"
+    broadcast: ""
+    wrong-color: "&cKolor nie znaleziony. Mozesz wybrac: red, green or special!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party color <kolor>"
+  desc:
+    changed: "&bOpis grupy zmieniony"
+    removed: "&bOpis grupy usuniety"
+    broadcast: ""
+    invalid-chars: "&cBledne znaki. Uzyj: a-Z lub 0-9. Minimum 3 i maximum 16 znakow."
+    censored: "&cOpis zawiera niecenzuralne slowa!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party desc <description/remove>"
+  join:
+    joined: "&aDolaczyles do grupy %party%"
+    player-joined: "&b&l%player% dolaczyl do grupy"
+    wrong-password: "&cBledne haslo!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party join <grupa> [haslo]"
+  list:
+    header: "&b============ &lLista grup online &r&b============"
+    footer: "&b================ &lStrona %page% z %maxpages% &r&b================"
+    no-one: "&7Brak"
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Pokaz info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    wrong-command: "&cBledne uzycie: Wpisz &7/party list [strona]"
+  motd:
+    changed: "&bMOTD grupy zmienione"
+    removed: "&bMOTD grupy usuniete"
+    broadcast: ""
+    content:
+      - "&bMOTD grupy:"
+      - "&b%motd%"
+    invalid-chars: "&cBledne znaki. Mozesz takze uzyc '. , /'. Minimum 3 i maximum 100 znakow."
+    censored: "&cMOTD zawiera niecenzuralne slowa!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party motd <motd/remove>"
+  mute:
+    toggle-on: "&7Wylaczyles powiadomienia!"
+    toggle-off: "&7Wlaczyles powiadomienia!"
+    wrong-command: "&cBledne uzycie: Wpisz &7/party mute [on/off]"
+  password:
+    changed: "&aHaslo grupy zmienione"
+    removed: "&aHaslo grupy usuniete"
+    broadcast: ""
+    invalid-chars: "&cBledne znaki. Uzyj: a-Z lub 0-9. Minimum 1 i maximum 16 znakow."
+    wrong-command: "&cBledne uzycie: Wpisz &7/party password <haslo>"
+  teleport:
+    teleporting: "&7Teleportowano tutaj twoja grupe!"
+    player-teleported: "&bTeleportowano do %player%"
+    cooldown: "&cMusisz poczekac %seconds% sekund!"
+other:
+  follow:
+    following-server: "&7Ogladanie gracza %player% na swiecie %server%"
+  fixed-parties:
+    default-join: "&bDolaczyles do grupy %party%"
+  join-leave:
+    server-join: "&b%player% jest teraz online!"
+    server-leave: "&7%player% jest teraz offline!"
+help:
+  header: "&b================= &lPomoc do grup %page%/%maxpages% &r&b================="
+  footer: ""
+  console-help:
+    - "Mozesz wykonac tylko te komendy:"
+    - "/party migrate - Kopiuj baze danych do innej"
+    - "/party reload - Przeladuj konfiguracje"
+  main-commands:
+    help: '{"text":"","extra":[{"text":"/party help [strona]","color":"aqua"},{"text":" - Pokazuje strone pomocy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Akceptuje zaproszenie do grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Przelacza czat grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    create: '{"text":"","extra":[{"text":"/party create <nazwa>","color":"aqua"},{"text":" - Tworzy nowa grupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    delete: '{"text":"","extra":[{"text":"/party delete <grupa>","color":"aqua"},{"text":" - Usuwa grupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Odrzuca zaproszenie do grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    ignore: '{"text":"","extra":[{"text":"/party ignore [grupa]","color":"aqua"},{"text":" - Dodaj/usun/pokaz ignorowane grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    info: '{"text":"","extra":[{"text":"/party info [grupa]","color":"aqua"},{"text":" - Pokaz informacje o grupie","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    invite: '{"text":"","extra":[{"text":"/party invite <gracz>","color":"aqua"},{"text":" - Zapros gracza do grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    kick: '{"text":"","extra":[{"text":"/party kick <gracz>","color":"aqua"},{"text":" - Wyrzuc gracza z grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Opusc grupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    migrate: '{"text":"","extra":[{"text":"/party migrate <od> <do>","color":"aqua"},{"text":" - Kopiuj baze danych do innej","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    p: '{"text":"","extra":[{"text":"/p <wiadomosc>","color":"aqua"},{"text":" - Wyslij wiadomosc do grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    rank: '{"text":"","extra":[{"text":"/party rank <gracz> <stopien>","color":"aqua"},{"text":" - Zmienia stopien gracza","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Przeladowuje konfiguracje","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    rename: '{"text":"","extra":[{"text":"/party rename [grupa] <nowa nazwa>","color":"aqua"},{"text":" - Zmienia nazwe grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    spy: '{"text":"","extra":[{"text":"/party spy","color":"aqua"},{"text":" - Przegladaj wiadomosci innych grup","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+  additional-commands:
+    color: '{"text":"","extra":[{"text":"/party color <kolor>","color":"aqua"},{"text":" - Zmien kolor grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    desc: '{"text":"","extra":[{"text":"/party desc <opis/remove>","color":"aqua"},{"text":" - Dodaj/usun opis","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    join: '{"text":"","extra":[{"text":"/party join <grupa> [haslo]","color":"aqua"},{"text":" - Dolacz do grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    list: '{"text":"","extra":[{"text":"/party list [strona]","color":"aqua"},{"text":" - Lista grup online","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Dodaj/usun motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Przelacz powiadomienia","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+    password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Zmien haslo grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
+dont-edit-this:
+  version: 3
