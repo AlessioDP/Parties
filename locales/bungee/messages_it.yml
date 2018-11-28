@@ -1,229 +1,229 @@
 ---
 parties:
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9Nuova versione di Parties trovata: %version% (Attuale: %thisversion%)"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
-    already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
+    invalid-command: "&cComando non valido"
+    configuration-reloaded: "&aConfigurazione ricaricata"
+    not-in-party: "&cNon sei in un party"
+    already-in-party: "&cSei già in un party!"
+    party-not-found: "&cIl party %party% non esiste"
+    party-full: "&cIl party è pieno!"
   permissions:
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
+    no-permission: "&cNon hai accesso a questo comando"
+    no-permission-in-party: "&cDevi essere almeno rank %rank_name% per eseguire questo comando"
 main-commands:
   accept:
-    broadcast: "&b&l%player% joined the party"
-    accepted: "&aYou accepted the party invite"
-    accept-receipt: "&a%player% accepted your invite"
-    no-invite: "&cYou have not pending invitation"
-    no-exists: "&cThe invite doesn't exist anymore"
+    broadcast: "&b&l%player% è entrato nel party"
+    accepted: "&aHai accettato l'invito"
+    accept-receipt: "&a%player% ha accettato il tuo invito"
+    no-invite: "&cNon hai nessun invito in attesa"
+    no-exists: "&cL'invito non esiste più"
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
-    wrong-command: "&cWrong variables: Type &7/party chat [on/off]"
+    enabled: "&aChat impostata su party"
+    disabled: "&aChat impostata su pubblica"
+    wrong-command: "&cComando sbagliato: Esegui &7/party chat [on/off]"
   create:
-    created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
-    created-fixed: "&l&bYou have created the fixed party %party%"
-    name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    name-too-long: "&cThe party name is too long!"
-    name-too-short: "&cThe party name is too short!"
-    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
-    censored: "&cThe party name contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/party create <name>"
+    created: '[{"text":"Hai creato il party %party%. ","color":"aqua","bold":true},{"text":"Esegui ","color":"aqua","bold":false},{"text":"/party invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/party invite "}},{"text":" per invitare i tuoi amici.","color":"aqua"}]'
+    created-fixed: "&l&bHai creato il party fisso %party%"
+    name-already-exists: "&cIl nome del party %party% già esiste, scegli un nome diverso"
+    name-too-long: "&cIl nome è troppo lungo!"
+    name-too-short: "&cIl nome è troppo corto!"
+    invalid-name: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9."
+    censored: "&cIl nome del party contiene delle parole censurate!"
+    wrong-command: "&cComando sbagliato: Esegui /party create <nome>"
   delete:
-    deleted: "&aParty %party% deleted"
-    deleted-silently: "&aParty %party% deleted silently"
-    broadcast: "&6&lYour party has been deleted"
-    wrong-command: "&cWrong variables: Type &7/party delete <party> [silent]"
+    deleted: "&aParty %party% cancellato"
+    deleted-silently: "&aParty %party% cancellato silenziosamente"
+    broadcast: "&6&lIl tuo party è stato cancellato"
+    wrong-command: "&6Comando sbagliato: Esegui &7/party delete <party> [silent]"
   deny:
-    denied: "&7You denied the party invite"
-    deny-receipt: "&7%player% denied your invite"
-    no-invite: "&cYou have not pending invitation"
-    no-exists: "&cThe invite doesn't exist anymore"
+    denied: "&7Hai rifiutato l'invito al party"
+    deny-receipt: "&7%player% ha rifiutato il tuo invito"
+    no-invite: "&cNon hai nessun invito in attesa"
+    no-exists: "&cL'invito non esiste più"
   ignore:
-    start-ignore: "&7Ignoring %party% invites"
-    stop-ignore: "&7You stopped ignoring %party%"
+    start-ignore: "&7Ignorando gli inviti di %party%"
+    stop-ignore: "&7Hai smesso di ignorare %party%"
     ignore-list:
-      header: "&b&lList ignored parties:"
+      header: "&b&lLista party ignorati:"
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7None"
-    wrong-command: "&cWrong variables: Type &7/party ignore [party]"
+      empty: "&7Nessuno"
+    wrong-command: "&cComando sbagliato: Esegui &7/party ignore [party]"
   info:
     content:
       - "&b============ &l%party%'s Info &r&b============"
-      - "&b&lDescription&r&7: %desc%"
+      - "&b&lDescrizione&r&7: %desc%"
       - "&b&lMotd&r&7: %motd%"
       - "&bLeader&7: %list_leader%"
-      - "&bMods&7: %list_moderator%"
-      - "&bMembers&7: %list_member%"
-      - "&bOnline players&7: %onlinenumber%"
+      - "&bMod&7: %list_moderator%"
+      - "&bMembri&7: %list_member%"
+      - "&bPlayer online&7: %onlinenumber%"
     list:
       player-online-format: "&b%player%"
       player-offline-format: "&7%player%"
       player-separator: "&7, "
-      player-empty: "&7Nobody"
-      player-unknown: "&6Someone"
-      missing-value: "&7Miss"
+      player-empty: "&7Nessuno"
+      player-unknown: "&6Qualcuno"
+      missing-value: "&7Mancante"
   invite:
-    sent: "&bYou invited %player% in your party"
-    player-invited: "[{\"text\":\"%player% has invited you in his party.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
+    sent: "&bHai invitato %player% nel party"
+    player-invited: '[{"text":"%player% ti ha invitato nel suo party. ","color":"aqua"},{"text":"Vuoi ","color":"aqua"},{"text":"accettare","color":"blue","bold":true,"clickEvent":{"action":"run_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accetta l''invito","color":"gold"}]}}},{"text":" oppure ","color":"aqua","bold":false},{"text":"rifiutare","color":"red","bold":true,"clickEvent":{"action":"run_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Rifiuta l''invito","color":"gold"}]}}},{"text":"? ","color":"aqua","bold":false},{"text":"Puoi usare ","color":"aqua"},{"text":"/party <accept/deny>","color":"gray"},{"text":" per scegliere.","color":"aqua"}]'
     timeout:
-      noresponse: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite"
+      noresponse: "&7%player% non ha accettato il tuo invito"
+      timeout: "&7Non hai accettato l'invito al party"
     revoke:
-      sent-revoked: "&7Revoked invite sent to %player%"
-      player-invite-revoked: "&7Invite received from %party% has been revoked"
+      sent-revoked: "&7Invito inviato a %player% revocato"
+      player-invite-revoked: "&7L'invito ricevuto da %party% è stato revocato"
     cooldown:
-      global: "&cYou need to wait %seconds% before invite another player"
-      individual: "&cYou need to wait %seconds% before invite again the same player"
-    player-offline: "&cYou can invite only online players"
-    player-no-permission: "&c%player% doesn't have the permission to join"
-    player-in-party: "&c%player% is already in a party"
-    already-invited: "&c%player% was already invited"
-    wrong-command: "&cWrong variables: Type &7/party invite <name>"
+      global: "&cDevi attendere %seconds% secondi prima di invitare un altro player"
+      individual: "&cDevi attendere %seconds% secondi prima di invitare lo stesso player"
+    player-offline: "&cPuoi invitare solamente i player online"
+    player-no-permission: "&c%player% non ha il permesso di entrare"
+    player-in-party: "&c%player% è già in un party"
+    already-invited: "&c%player% è stato già invitato"
+    wrong-command: "&cComando sbagliato: Esegui &7/party invite <nome>"
   kick:
-    sent: "&aYou kicked %player% from your party!"
-    player-kicked: "&bYou have been kicked from %party%"
-    broadcast: "&b&l%player% has been kicked from the party"
-    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
-    player-higher-rank: "&cYou cannot kick your superior!"
-    player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% is not in a party"
+    sent: "&aHai cacciato %player% dal party!"
+    player-kicked: "&cSei stato cacciato dal %party%"
+    broadcast: "&b&l%player% è stato cacciato dal party"
+    broadcast-disband: "&b&lIl party si è sciolto poichè il leader è stato cacciato"
+    player-higher-rank: "&cNon puoi cacciare un tuo superiore!"
+    player-not-in-party: "&c%player% non è nel tuo party"
+    player-not-in-other-party: "&c%player% non è in un party"
     players-conflict:
       content:
-        - "&cWe have found some players with that name:"
+        - "&cAbbiamo trovato qualche player con quel nome:"
         - "%list_players%"
-        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
-    wrong-command: "&cWrong variables: Type &7/party kick <name>"
+        - "&cUtilizza '&7/party kick <nome> <numero>&c' per cacciare il player giusto"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: visto l''ultima volta %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Caccia questo player","color":"gold"}}}'
+    wrong-command: "&cComando sbagliato: Esegui &7/party kick <nome>"
   leave:
-    left: "&b&lYou left the party %party%"
-    broadcast: "&b&l%player% left the party"
-    party-disbanded: "&6&lThe party has been disbanded because the leader left"
+    left: "&b&lHai lasciato il party %party%"
+    broadcast: "&b&l%player% ha lasciato il party"
+    party-disbanded: "&6&lIl party è stato sciolto poichè il leader è uscito"
   migrate:
-    info: "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>"
-    completed: "&aCopied data from %database_from% to %database_to%"
+    info: "&aAttualmente stai utilizzando: %database%\n&aPuoi effettuare la migrazione con: &7/party migrate <da> <a>"
+    completed: "&aDati copiati da %database_from% a %database_to%"
     failed:
-      database-offline: "&cThe %database% database must be online!"
-      failed: "&cDatabase migration from %database_from% to %database_to% failed!"
-      same-database: "&cYou need to choose 2 different databases!"
-    wrong-database: "&cDatabase not found. You can select: YAML, MySQL, SQLite!"
+      database-offline: "&cIl database %database% deve essere online!"
+      failed: "&cLa migrazione dei dati da %database_from% a %database_to% è fallita!"
+      same-database: "&cDevi scegliere 2 database diversi!"
+    wrong-database: "&cDatabase non trovato. Puoi selezionare: YAML, MySQL, SQLite!"
   p:
-    cooldown: "&cYou still have to wait %seconds% seconds"
-    wrong-command: "&cWrong variables: Type &7/p <message>"
+    cooldown: "&cDevi ancora aspettare %seconds% secondi"
+    wrong-command: "&cComando sbagliato: Esegui &7/p <messaggio>"
   rank:
-    changed: "&a%player% rank changed into %rank_name%"
+    changed: "&aIl rank di %player% è cambiato in %rank_name%"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
-    same-rank: "&c%player% is already %rank_name%!"
-    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
-    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
-    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
-    changing-yourself: "&cYou cannot change yourself rank!"
-    player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% doesn't have a party"
-    wrong-command: "&cWrong variables: Type &7/party rank <player> <rank>"
+    wrong-rank: "&cIl rank '%rank_name%' non esiste!"
+    same-rank: "&c%player% è già %rank_name%!"
+    low-rank: "&cNon puoi modificare i player che hanno un rank equivalente o maggiore al tuo!"
+    to-higher-rank: "&cNon puoi promuovere un player ad un rank equivalente o maggiore al tuo!"
+    fixed-leader: "&cNon puoi aggiungere un leader ad un party fisso!"
+    changing-yourself: "&cNon puoi cambiare il tuo stesso rank!"
+    player-not-in-party: "&c%player% non è nel tuo party"
+    player-not-in-other-party: "&c%player% non ha un party"
+    wrong-command: "&cComando sbagliato: Esegui &7/party rank <player> <rank>"
   rename:
-    renamed: "&aThe party %old% has been renamed into %party%"
-    broadcast: "&6Your party has been renamed into %party%!"
-    wrong-command: "&cWrong variables: Type &7/party rename <newname>"
-    wrong-command-admin: "&cWrong variables: Type &7/party rename <party> <newname>"
+    renamed: "&aIl party %old% è stato rinominato in %party%"
+    broadcast: "&6Il tuo party è stato rinominato in %party%!"
+    wrong-command: "&cComando sbagliato: Esegui &7/party rename <nuovo nome>"
+    wrong-command-admin: "&cComando sbagliato: Esegui &7/party rename <party> <nuovo nome>\""
   spy:
-    enabled: "&7Now you are a spy!"
-    disabled: "&7You are no longer a spy"
+    enabled: "&7Ora sei una spia!"
+    disabled: "&7Non sei più una spia"
 additional-commands:
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&bIl colore del tuo party è: %color_code%%color_command%"
+    empty: "&bIl tuo party non ha un colore"
+    changed: "&bIl colore del party è cambiato in %color_command%"
+    removed: "&bColore del party rimosso"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
-    wrong-command: "&cWrong variables: Type &7/party color <color>"
+    wrong-color: "&cColore non trovato. Puoi selezionare: red, green o special!"
+    wrong-command: "&cComando sbagliato: Esegui &7/party color <colore>"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&bDescrizione del party cambiata"
+    removed: "&bDescrizione del party rimossa"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/party desc <description/remove>"
+    invalid-chars: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9. Minimo 3 e massimo 16 caratteri."
+    censored: "&cLa descrizione contiene delle parole censurate!"
+    wrong-command: "&cComando sbagliato: Esegui &7/party desc <descrizione/remove>"
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
-    wrong-password: "&cWrong password!"
-    wrong-command: "&cWrong variables: Type &7/party join <party> [password]"
+    joined: "&aSei entrato nel party %party%"
+    player-joined: "&b&l%player% è entrato nel party"
+    wrong-password: "&cPassword sbagliata!"
+    wrong-command: "&cComando sbagliato: Esegui &7/party join <party> [password]"
   list:
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
-    wrong-command: "&cWrong variables: Type &7/party list [page]"
+    header: "&b============ &lLista Party Online &r&b============"
+    footer: "&b================ &lPagina %page% di %maxpages% &r&b================"
+    no-one: "&7Nessuno"
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Mostra informazioni","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    wrong-command: "&cComando sbagliato: Esegui &7/party list [pagina]"
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&bMOTD del party cambiato"
+    removed: "&bMOTD del party rimosso"
     broadcast: ""
     content:
-      - "&bParty MOTD:"
+      - "&bMOTD del party:"
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
+    invalid-chars: "&cCaratteri non validi. Puoi usare anche '. , /'. Minimo 3 e massimo 100 caratteri."
+    censored: "&cIl MOTD contiene delle parole censurate!"
+    wrong-command: "&cComando sbagliato: Esegui &7/party motd <motd/remove>"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
-    wrong-command: "&cWrong variables: Type &7/party mute [on/off]"
+    toggle-on: "&7Hai disabilitato le notifiche!"
+    toggle-off: "&7Hai attivato le notifiche!"
+    wrong-command: "&cComando sbagliato: Esegui &7/party mute [on/off]"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&aPassword del party cambiata"
+    removed: "&aPassword del party rimossa"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
-    wrong-command: "&cWrong variables: Type &7/party password <password>"
+    invalid-chars: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9. Minimo 1 e massimo 16 caratteri."
+    wrong-command: "&cComando sbagliato: Esegui &7/party password <password>"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    teleporting: "&7Teletrasportando il tuo party qui!"
+    player-teleported: "&bTeletrasportato da %player%"
+    cooldown: "&cDevi aspettare %seconds% secondi!"
 other:
   follow:
-    following-server: "&7Following %player% in %server%"
+    following-server: "&7Stai seguendo %player% in %server%"
   fixed-parties:
-    default-join: "&bYou entered into %party%"
+    default-join: "&bSei entrato in %party%"
   join-leave:
-    server-join: "&b%player% is online!"
-    server-leave: "&7%player% is offline!"
+    server-join: "&b%player% è online!"
+    server-leave: "&7%player% è offline!"
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b================= &lAiuto Party %page%/%maxpages% &r&b================="
   footer: ""
   console-help:
-    - "You can only make these commands:"
-    - "/party migrate - Copy database into a new one"
-    - "/party reload - Reload the configuration"
+    - "Puoi solamente far questi comandi:"
+    - "/party migrate - Copia il database in uno nuovo"
+    - "/party reload - Ricarica la configurazione"
   main-commands:
-    help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accept a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Toggle the party chat","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    create: '{"text":"","extra":[{"text":"/party create <name>","color":"aqua"},{"text":" - Create a new party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - Delete the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Deny a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    ignore: '{"text":"","extra":[{"text":"/party ignore [party]","color":"aqua"},{"text":" - Add/remove/show parties ignored","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - Show party information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invite a player to your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Kick a player from your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Leave your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - Copy database into a new one","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - Send a message to the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Change rank of the player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Reload the configuration","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - Renames a party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    spy: '{"text":"","extra":[{"text":"/party spy","color":"aqua"},{"text":" - See messages from other parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    help: '{"text":"","extra":[{"text":"/party help [pagina]","color":"aqua"},{"text":" - Mostra le pagine d''aiuto","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accetta l''invito al party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Imposta la chat del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    create: '{"text":"","extra":[{"text":"/party create <nome>","color":"aqua"},{"text":" - Crea un nuovo party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - Cancella un party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Rifiuta l''invito al party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    ignore: '{"text":"","extra":[{"text":"/party ignore [party]","color":"aqua"},{"text":" - Aggiungi/rimuovi/mostra i party ignorati","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - Mostra le informazioni del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invita un player nel tuo party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Caccia un player dal party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Lascia il party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    migrate: '{"text":"","extra":[{"text":"/party migrate <da> <a>","color":"aqua"},{"text":" - Copia il database in uno nuovo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    p: '{"text":"","extra":[{"text":"/p <messaggio>","color":"aqua"},{"text":" - Invia un messaggio al party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Cambia il rank del player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Ricarica la configurazione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    rename: '{"text":"","extra":[{"text":"/party rename [party] <nuovo nome>","color":"aqua"},{"text":" - Rinomina il party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    spy: '{"text":"","extra":[{"text":"/party spy","color":"aqua"},{"text":" - Mostra i messaggi degli altri party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
   additional-commands:
-    color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Change color of the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - Add/remove description","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Join into a party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - List of online parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Add/remove motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Toggle notifications","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    color: '{"text":"","extra":[{"text":"/party color <colore>","color":"aqua"},{"text":" - Cambia colore del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    desc: '{"text":"","extra":[{"text":"/party desc <descrizione/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi descrizione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Entra in un party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    list: '{"text":"","extra":[{"text":"/party list [pagina]","color":"aqua"},{"text":" - Lista dei party online","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Attiva/disattiva notifiche","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Cambia la password del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
 dont-edit-this:
   version: 3
