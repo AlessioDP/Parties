@@ -2,10 +2,10 @@
 parties:
   update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
   common-messages:
-    invalid-command: "&cInvalid command"
+    invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"
     not-in-party: "&cNo estás una party"
-    already-in-party: "&cYou are already in a party!"
+    already-in-party: "&c¡Ya estás en una party!"
     party-not-found: "&cLa party %party% no existe"
     party-full: "&c¡La party está llena!"
   permissions:
@@ -53,12 +53,12 @@ main-commands:
   info:
     content:
       - "&b============ &lInformación de %party%'s &r&b============"
-      - "&b&lDescription&r&7: %desc%"
-      - "&b&lMotd&r&7: %motd%"
-      - "&bLeader&7: %list_leader%"
-      - "&bMods&7: %list_moderator%"
-      - "&bMembers&7: %list_member%"
-      - "&bOnline players&7: %onlinenumber%"
+      - "&b&lDescripción&r&7: %desc%"
+      - "&b&lMensaje del día&7: %motd%"
+      - "&bLíder&7: %list_leader%"
+      - "&bModeradores&7: %list_moderator%"
+      - "&bMiembros&7: %list_member%"
+      - "&bJugadores conectados&7: %onlinenumber%"
     list:
       player-online-format: "&b%player%"
       player-offline-format: "&7%player%"
