@@ -1,27 +1,27 @@
 ---
 parties:
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
   common-messages:
     invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
+    configuration-reloaded: "&aLa configuración ha sido reiniciada"
+    not-in-party: "&cNo estás una party"
     already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
+    party-not-found: "&cLa party %party% no existe"
+    party-full: "&c¡La party está llena!"
   permissions:
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
+    no-permission: "&cNo tienes acceso a ese comando"
+    no-permission-in-party: "&cNecesitas ser %rank_name% para ejecutar ese comando"
 main-commands:
   accept:
-    broadcast: "&b&l%player% joined the party"
-    accepted: "&aYou accepted the party invite"
-    accept-receipt: "&a%player% accepted your invite"
-    no-invite: "&cYou have not pending invitation"
-    no-exists: "&cThe invite doesn't exist anymore"
+    broadcast: "&b&l%player% ha entrado a la party"
+    accepted: "&aHas aceptado la invitación de party"
+    accept-receipt: "&a%player% ha aceptado tu invitación"
+    no-invite: "&cNo tienes invitaciones pendientes"
+    no-exists: "&cEsta invitación ya no existe"
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
-    wrong-command: "&cWrong variables: Type &7/party chat [on/off]"
+    enabled: "&aHas establecido el chat de party"
+    disabled: "&aHas establecido el chat público"
+    wrong-command: "&cVariables incorrectas: Escribe &7/party chat [on/off]"
   create:
     created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
     created-fixed: "&l&bYou have created the fixed party %party%"
@@ -39,8 +39,8 @@ main-commands:
   deny:
     denied: "&7You denied the party invite"
     deny-receipt: "&7%player% denied your invite"
-    no-invite: "&cYou have not pending invitation"
-    no-exists: "&cThe invite doesn't exist anymore"
+    no-invite: "&cNo tienes invitaciones pendientes"
+    no-exists: "&cEsta invitación ya no existe"
   ignore:
     start-ignore: "&7Ignoring %party% invites"
     stop-ignore: "&7You stopped ignoring %party%"
