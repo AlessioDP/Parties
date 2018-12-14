@@ -53,24 +53,27 @@ public class MySQLDao implements IDatabaseSQL {
 	private void initConnection() {
 		HikariConfig config = new HikariConfig();
 		config.setPoolName("Parties");
-		config.setJdbcUrl("jdbc:mysql://"
-				+ ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_ADDRESS
-				+ "/" + ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_DATABASE);
+		
+		config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+		config.addDataSourceProperty("serverName", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_ADDRESS);
+		config.addDataSourceProperty("port", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_PORT);
+		config.addDataSourceProperty("databaseName", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_DATABASE);
+		
 		config.setUsername(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USERNAME);
 		config.setPassword(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_PASSWORD);
 		config.setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
 		config.setMinimumIdle(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
 		config.setMaxLifetime(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME);
 		
-		// Properties: https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html
-		config.addDataSourceProperty("cachePreStmts", "true"); // Enable Prepared Statement caching
+		// Properties: https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html
+		config.addDataSourceProperty("cachePrepStmts", "true"); // Enable Prepared Statement caching
 		config.addDataSourceProperty("prepStmtCacheSize", "25"); // How many PS cache, default: 25
 		config.addDataSourceProperty("useServerPrepStmts", "true"); // If supported use PS server-side
 		config.addDataSourceProperty("useLocalSessionState", "true"); // Enable setAutoCommit
 		config.addDataSourceProperty("useLocalTransactionState", "true"); // Enable commit/rollbacks
 		config.addDataSourceProperty("allowMultiQueries", "true"); // Support multiple queries, used to create tables
 		config.addDataSourceProperty("useUnicode", "true"); // Forcing the use of unicode
-		config.addDataSourceProperty("characterEncoding", "utf8"); // Setup encoding to UTF-8
+		config.addDataSourceProperty("characterEncoding", ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_CHARSET); // Setup encoding to UTF-8
 		config.addDataSourceProperty("useSSL", Boolean.toString(ConfigMain.STORAGE_SETTINGS_SQL_MYSQL_USESSL));
 		
 		hikariDataSource = new HikariDataSource(config);

@@ -41,6 +41,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG;
 	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS;
 	public static String		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS;
+	public static String		STORAGE_SETTINGS_SQL_MYSQL_PORT;
 	public static String		STORAGE_SETTINGS_SQL_MYSQL_DATABASE;
 	public static String		STORAGE_SETTINGS_SQL_MYSQL_USERNAME;
 	public static String		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD;
@@ -156,13 +157,14 @@ public abstract class ConfigMain extends ConfigurationFile {
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS = "parties_players";
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = "parties_log";
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS = "parties_versions";
-		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS = "localhost:3306";
+		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS = "localhost";
+		STORAGE_SETTINGS_SQL_MYSQL_PORT = "3306";
 		STORAGE_SETTINGS_SQL_MYSQL_DATABASE = "database";
 		STORAGE_SETTINGS_SQL_MYSQL_USERNAME = "username";
 		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD = "password";
 		STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE = 10;
 		STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME = 1800000;
-		STORAGE_SETTINGS_SQL_MYSQL_USESSL = true;
+		STORAGE_SETTINGS_SQL_MYSQL_USESSL = false;
 		STORAGE_SETTINGS_SQL_MYSQL_CHARSET = "utf8";
 		STORAGE_SETTINGS_SQL_SQLITE_DBNAME = "database.db";
 		STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT = true;
@@ -272,6 +274,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.log", STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG);
 		STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.versions", STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS);
 		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS = confAdapter.getString("storage.storage-settings.sql-based.mysql.address", STORAGE_SETTINGS_SQL_MYSQL_ADDRESS);
+		STORAGE_SETTINGS_SQL_MYSQL_PORT = confAdapter.getString("storage.storage-settings.sql-based.mysql.port", STORAGE_SETTINGS_SQL_MYSQL_PORT);
 		STORAGE_SETTINGS_SQL_MYSQL_DATABASE = confAdapter.getString("storage.storage-settings.sql-based.mysql.database", STORAGE_SETTINGS_SQL_MYSQL_DATABASE);
 		STORAGE_SETTINGS_SQL_MYSQL_USERNAME = confAdapter.getString("storage.storage-settings.sql-based.mysql.username", STORAGE_SETTINGS_SQL_MYSQL_USERNAME);
 		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD = confAdapter.getString("storage.storage-settings.sql-based.mysql.password", STORAGE_SETTINGS_SQL_MYSQL_PASSWORD);

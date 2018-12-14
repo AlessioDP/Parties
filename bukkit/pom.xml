@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.alessiodp.parties</groupId>
 		<artifactId>Parties</artifactId>
-		<version>2.4.5</version>
+		<version>2.4.6</version>
 	</parent>
 
 	<artifactId>parties-bukkit</artifactId>
@@ -15,7 +15,7 @@
 		
 		<addons.banmanager.version>5.15.0</addons.banmanager.version>
 		<addons.dynmap.version>2.5</addons.dynmap.version>
-		<addons.griefprevention.version>16.11.4</addons.griefprevention.version>
+		<addons.griefprevention.version>16.11.5</addons.griefprevention.version>
 		<addons.mythicmobs.version>4.4.1</addons.mythicmobs.version>
 		<addons.placeholderapi.version>2.9.2</addons.placeholderapi.version>
 		<addons.protocollib.version>4.4.0</addons.protocollib.version>

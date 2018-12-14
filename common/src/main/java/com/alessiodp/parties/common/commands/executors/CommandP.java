@@ -67,7 +67,7 @@ public class CommandP extends AbstractCommand {
 				&& !plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
 			Long unixTimestamp = plugin.getCooldownManager().getChatCooldown().get(pp.getPlayerUUID());
 			long unixNow = System.currentTimeMillis() / 1000L;
-			if (unixTimestamp != null) {
+			if (unixTimestamp != null && (unixNow - unixTimestamp) < ConfigParties.GENERAL_CHAT_CHATCD) {
 				pp.sendMessage(Messages.MAINCMD_P_COOLDOWN
 						.replace("%seconds%", String.valueOf(ConfigParties.GENERAL_CHAT_CHATCD - (unixNow - unixTimestamp))));
 				return;

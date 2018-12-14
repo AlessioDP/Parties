@@ -234,34 +234,34 @@ public class Constants {
 	/*
 	 * SQL Queries
 	 */
-	public static final String QUERY_CHECKVERSION = "SELECT * FROM {table_versions} WHERE name=?;";
+	public static final String QUERY_CHECKVERSION = "SELECT * FROM {table_versions} WHERE `name`=?;";
 	public static final String QUERY_CHECKVERSION_OLD = "SELECT table_comment FROM INFORMATION_SCHEMA.tables WHERE table_schema=? AND table_name=?;";
-	public static final String QUERY_CHECKVERSION_SET_MYSQL = "INSERT INTO {table_versions} (name, version) VALUES (?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), version=VALUES(version);";
-	public static final String QUERY_CHECKVERSION_SET_SQLITE = "INSERT OR REPLACE INTO {table_versions} (name, version) VALUES (?,?);";
+	public static final String QUERY_CHECKVERSION_SET_MYSQL = "INSERT INTO {table_versions} (`name`, `version`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`), `version`=VALUES(`version`);";
+	public static final String QUERY_CHECKVERSION_SET_SQLITE = "INSERT OR REPLACE INTO {table_versions} (`name`, `version`) VALUES (?,?);";
 	
 	public static final String QUERY_GENERIC_SELECTALL = "SELECT * FROM {table};";
 	public static final String QUERY_GENERIC_DROP = "DROP TABLE {table};";
 	public static final String QUERY_GENERIC_MYSQL_RENAME = "RENAME TABLE {table} TO {newtable};";
 	public static final String QUERY_GENERIC_SQLITE_RENAME = "ALTER TABLE {table} RENAME TO {newtable};";
 	
-	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (uuid, party, rank, name, timestamp, spy, mute) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE party=VALUES(party), rank=VALUES(rank), name=VALUES(name), timestamp=VALUES(timestamp), spy=VALUES(spy), mute=VALUES(mute);";
-	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (uuid, party, rank, name, timestamp, spy, mute) VALUES (?,?,?,?,?,?,?);";
-	public static final String QUERY_PLAYER_DELETE = "DELETE FROM {table_players} WHERE uuid=?;";
-	public static final String QUERY_PLAYER_GET = "SELECT * FROM {table_players} WHERE uuid=?;";
+	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (`uuid`, `party`, `rank`, `name`, `timestamp`, `spy`, `mute`) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `name`=VALUES(`name`), `timestamp`=VALUES(`timestamp`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`);";
+	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `party`, `rank`, `name`, `timestamp`, `spy`, `mute`) VALUES (?,?,?,?,?,?,?);";
+	public static final String QUERY_PLAYER_DELETE = "DELETE FROM {table_players} WHERE `uuid`=?;";
+	public static final String QUERY_PLAYER_GET = "SELECT * FROM {table_players} WHERE `uuid`=?;";
 	public static final String QUERY_PLAYER_GETALL = "SELECT * FROM {table_players};";
-	public static final String QUERY_PLAYER_GETBYPARTY = "SELECT * FROM {table_players} WHERE party=?;";
-	public static final String QUERY_PLAYER_GETBYNAME = "SELECT * FROM {table_players} WHERE name=?;";
+	public static final String QUERY_PLAYER_GETBYPARTY = "SELECT * FROM {table_players} WHERE `party`=?;";
+	public static final String QUERY_PLAYER_GETBYNAME = "SELECT * FROM {table_players} WHERE `name`=?;";
 	
-	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (name, leader, description, motd, color, kills, password, home, protection, experience) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE leader=VALUES(leader), description=VALUES(description), motd=VALUES(motd), color=VALUES(color), kills=VALUES(kills), password=VALUES(password), home=VALUES(home), protection=VALUES(protection), experience=VALUES(experience);";
-	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (name, leader, description, motd, color, kills, password, home, protection, experience) VALUES (?,?,?,?,?,?,?,?,?,?);";
-	public static final String QUERY_PARTY_GET_MYSQL = "SELECT * FROM {table_parties} WHERE name=?;";
-	public static final String QUERY_PARTY_GET_SQLITE = "SELECT * FROM {table_parties} WHERE name=? COLLATE NOCASE;";
+	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `leader`=VALUES(`leader`), `description`=VALUES(`description`), `motd`=VALUES(`motd`), `color`=VALUES(`color`), `kills`=VALUES(`kills`), `password`=VALUES(`password`), `home`=VALUES(`home`), `protection`=VALUES(`protection`), `experience`=VALUES(`experience`);";
+	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+	public static final String QUERY_PARTY_GET_MYSQL = "SELECT * FROM {table_parties} WHERE `name`=?;";
+	public static final String QUERY_PARTY_GET_SQLITE = "SELECT * FROM {table_parties} WHERE `name`=? COLLATE NOCASE;";
 	public static final String QUERY_PARTY_GETALL = "SELECT * FROM {table_parties};";
-	public static final String QUERY_PARTY_GETALLFIXED = "SELECT * FROM {table_parties} WHERE leader='fixed';";
-	public static final String QUERY_PARTY_RENAME_PARTIES = "UPDATE {table_parties} SET name=? WHERE name=?;";
-	public static final String QUERY_PARTY_RENAME_PLAYERS = "UPDATE {table_players} SET party=? WHERE party=?;";
-	public static final String QUERY_PARTY_REMOVE_PARTIES = "DELETE FROM {table_parties} WHERE name=?;";
+	public static final String QUERY_PARTY_GETALLFIXED = "SELECT * FROM {table_parties} WHERE `leader`='fixed';";
+	public static final String QUERY_PARTY_RENAME_PARTIES = "UPDATE {table_parties} SET `name`=? WHERE `name`=?;";
+	public static final String QUERY_PARTY_RENAME_PLAYERS = "UPDATE {table_players} SET `party`=? WHERE `party`=?;";
+	public static final String QUERY_PARTY_REMOVE_PARTIES = "DELETE FROM {table_parties} WHERE `name`=?;";
 	
-	public static final String QUERY_LOG_INSERT = "INSERT INTO {table_log} (date, level, position, message) VALUES (?,?,?,?);";
-	public static final String QUERY_LOG_MIGRATE = "INSERT INTO {table_log} (id, date, level, position, message) VALUES (?,?,?,?,?);";
+	public static final String QUERY_LOG_INSERT = "INSERT INTO {table_log} (`date`, `level`, `position`, `message`) VALUES (?,?,?,?);";
+	public static final String QUERY_LOG_MIGRATE = "INSERT INTO {table_log} (`id`, `date`, `level`, `position`, `message`) VALUES (?,?,?,?,?);";
 }

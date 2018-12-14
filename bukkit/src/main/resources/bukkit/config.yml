@@ -91,8 +91,8 @@ storage:
           log: "parties_log"
           versions: "parties_versions"
       mysql:
-        # <ip>:<port>
-        address: "localhost:3306"
+        address: "localhost"
+        port: "3306"
         database: "database"
         username: "username"
         password: "password"
@@ -101,7 +101,7 @@ storage:
         # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
         connection-lifetime: 1800000
         # Property used to alert when the connection is not using a valid SSL certificate
-        use-ssl: true
+        use-ssl: false
         # Charset used by tables
         charset: "utf8"
       sqlite:
