@@ -1,7 +1,7 @@
 #
 # Parties-related configuration file
 #
-# You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
+# You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
 #
 
 # / = = = = = = = = = = = = = = = = \
@@ -65,7 +65,7 @@ general:
 # / = = = = = = = = = = = = = = = = \
 # |      PARTY RANKS  SETTINGS      |
 # \ = = = = = = = = = = = = = = = = /
-# Permissions List: https://alessiodp.com/wiki/parties/permissions#rank_based_permissions
+# Permissions List: https://alessiodp.com/docs/parties/permissions/#rank_based_permissions
 # You can negate a permission with -
 ranks:
   member:

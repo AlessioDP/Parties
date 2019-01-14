@@ -1,7 +1,7 @@
 #
 # Main configuration file
 #
-# You can find a list of available tags here: https://alessiodp.com/wiki/parties/placeholders
+# You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
 #
 
 # / = = = = = = = = = = = = = = = = \
@@ -141,7 +141,7 @@ additional:
     regexes: []
 
   exp-system:
-    # Wiki here: https://alessiodp.com/wiki/parties/expsystem
+    # Documentation here: https://alessiodp.com/docs/parties/expsystem/
     enable: false
     levels:
       enable: true
@@ -195,7 +195,7 @@ additional:
         # 1. party = send the exp to the party (total experience)
         # 2. normal = send it as vanilla Minecraft experience
         # 3. skillapi = send it as SkillAPI experience
-        # Read the wiki for more information about exp convert
+        # Read the documentation for more information about exp convert
         normal: party
         skillapi: party
         # When Parties get mob experience, remove it from the mob
