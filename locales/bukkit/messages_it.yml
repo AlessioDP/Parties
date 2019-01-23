@@ -112,7 +112,7 @@ main-commands:
     wrong-database: "&cDatabase non trovato. Puoi selezionare: YAML, MySQL, SQLite!"
   p:
     cooldown: "&cDevi ancora aspettare %seconds% secondi"
-    censored: "&cThe message contains censored words!"
+    censored: "&cIl messaggio contiene delle parole censurate!"
     wrong-command: "&cComando sbagliato: Esegui &7/p <messaggio>"
   rank:
     changed: "&aIl rank di %player% è cambiato in %rank_name%"
@@ -134,10 +134,10 @@ main-commands:
   spy:
     enabled: "&7Ora sei una spia!"
     disabled: "&7Non sei più una spia"
-    wrong-command: "&cWrong variables: Type &7/party spy [on/off]"
+    wrong-command: "&cComando sbagliato: Esegui &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7- Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7- Sviluppata da &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7- Sviluppata da &6AlessioDP\n&aNuova versione trovata: &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aConcessi i permessi al party"
