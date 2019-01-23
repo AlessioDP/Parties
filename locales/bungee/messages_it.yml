@@ -24,7 +24,7 @@ main-commands:
     wrong-command: "&cComando sbagliato: Esegui &7/party chat [on/off]"
   create:
     created: '[{"text":"Hai creato il party %party%. ","color":"aqua","bold":true},{"text":"Esegui ","color":"aqua","bold":false},{"text":"/party invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/party invite "}},{"text":" per invitare i tuoi amici.","color":"aqua"}]'
-    created-fixed: "&l&bHai creato il party fisso %party%"
+    created-fixed: "&b&lHai creato il party fisso %party%"
     name-already-exists: "&cIl nome del party %party% già esiste, scegli un nome diverso"
     name-too-long: "&cIl nome è troppo lungo!"
     name-too-short: "&cIl nome è troppo corto!"
@@ -112,6 +112,7 @@ main-commands:
     wrong-database: "&cDatabase non trovato. Puoi selezionare: YAML, MySQL, SQLite!"
   p:
     cooldown: "&cDevi ancora aspettare %seconds% secondi"
+    censored: "&cIl messaggio contiene delle parole censurate!"
     wrong-command: "&cComando sbagliato: Esegui &7/p <messaggio>"
   rank:
     changed: "&aIl rank di %player% è cambiato in %rank_name%"
@@ -133,6 +134,10 @@ main-commands:
   spy:
     enabled: "&7Ora sei una spia!"
     disabled: "&7Non sei più una spia"
+    wrong-command: "&cComando sbagliato: Esegui &7/party spy [on/off]"
+  version:
+    updated: "&b&lParties &b%version% &7- Sviluppata da &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7- Sviluppata da &6AlessioDP\n&aNuova versione trovata: &2%newversion%"
 additional-commands:
   color:
     info: "&bIl colore del tuo party è: %color_code%%color_command%"
@@ -149,6 +154,10 @@ additional-commands:
     invalid-chars: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9. Minimo 3 e massimo 16 caratteri."
     censored: "&cLa descrizione contiene delle parole censurate!"
     wrong-command: "&cComando sbagliato: Esegui &7/party desc <descrizione/remove>"
+  follow:
+    toggle-on: "&aOra il tuo party seguirà il leader"
+    toggle-off: "&aIl tuo party non seguirà più il leader"
+    wrong-command: "&cComando sbagliato: Esegui &7/party follow [on/off]"
   join:
     joined: "&aSei entrato nel party %party%"
     player-joined: "&b&l%player% è entrato nel party"
@@ -214,15 +223,17 @@ help:
     migrate: '{"text":"","extra":[{"text":"/party migrate <da> <a>","color":"aqua"},{"text":" - Copia il database in uno nuovo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     p: '{"text":"","extra":[{"text":"/p <messaggio>","color":"aqua"},{"text":" - Invia un messaggio al party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Cambia il rank del player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Ricarica la configurazione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Ricarica i file di configurazione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     rename: '{"text":"","extra":[{"text":"/party rename [party] <nuovo nome>","color":"aqua"},{"text":" - Rinomina il party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    spy: '{"text":"","extra":[{"text":"/party spy","color":"aqua"},{"text":" - Mostra i messaggi degli altri party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Mostra i messaggi degli altri party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Mostra le informazioni di Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
   additional-commands:
-    color: '{"text":"","extra":[{"text":"/party color <colore>","color":"aqua"},{"text":" - Cambia colore del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    color: '{"text":"","extra":[{"text":"/party color <colore>","color":"aqua"},{"text":" - Cambia il colore del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     desc: '{"text":"","extra":[{"text":"/party desc <descrizione/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi descrizione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Entra in un party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Imposta il segui leader","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Entra nel party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [pagina]","color":"aqua"},{"text":" - Lista dei party online","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi motd del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Attiva/disattiva notifiche","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Cambia la password del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
 dont-edit-this:
