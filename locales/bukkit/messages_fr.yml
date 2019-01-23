@@ -112,6 +112,7 @@ main-commands:
     wrong-database: "&cDatabase not found. You can select: YAML, MySQL, SQLite!"
   p:
     cooldown: "&cYou still have to wait %seconds% seconds"
+    censored: "&cThe message contains censored words!"
     wrong-command: "&cWrong variables: Type &7/p <message>"
   rank:
     changed: "&a%player% rank changed into %rank_name%"
@@ -133,6 +134,10 @@ main-commands:
   spy:
     enabled: "&7Now you are a spy!"
     disabled: "&7You are no longer a spy"
+    wrong-command: "&cWrong variables: Type &7/party spy [on/off]"
+  version:
+    updated: "&b&lParties &b%version% &7- Developed by &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aGranted permission to the party"
@@ -164,6 +169,10 @@ additional-commands:
     skillapi:
       gained-killer: "&bGained %exp% experience for killing the mob"
       gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+  follow:
+    toggle-on: "&aNow your party members will follow your leader"
+    toggle-off: "&aYour party members will not follow your leader anymore"
+    wrong-command: "&cWrong variables: Type &7/party follow [on/off]"
   home:
     teleported: "&7Teleported to the party home"
     teleport-in: "&7You will be teleported in %time% seconds..."
@@ -267,10 +276,12 @@ help:
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Reload the configuration","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - Renames a party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     spy: '{"text":"","extra":[{"text":"/party spy","color":"aqua"},{"text":" - See messages from other parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Show Parties information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
   additional-commands:
     claim: '{"text":"","extra":[{"text":"/party claim <permission>","color":"aqua"},{"text":" - Grant permissions to the claim","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Change color of the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - Add/remove description","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Toggle follow leader","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     home: '{"text":"","extra":[{"text":"/party home [party]","color":"aqua"},{"text":" - Teleport to the party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Join into a party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - List of online parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
