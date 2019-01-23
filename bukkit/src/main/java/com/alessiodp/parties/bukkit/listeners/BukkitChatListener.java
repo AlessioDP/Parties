@@ -15,7 +15,7 @@ public class BukkitChatListener extends ChatListener implements Listener {
 		super(instance);
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		if (!event.isCancelled()) {
 			boolean isCancelled = super.onPlayerChat(new BukkitUser(event.getPlayer()), event.getMessage());

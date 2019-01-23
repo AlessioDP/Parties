@@ -11,7 +11,8 @@ CREATE TABLE '{table_parties}' (
 	'password'		VARCHAR({varcharsize}) DEFAULT '',
 	'home'				VARCHAR({varcharsize}) DEFAULT '',
 	'protection'	INTEGER DEFAULT 0 NOT NULL,
-	'experience'	REAL DEFAULT 0);
+	'experience'	REAL DEFAULT 0,
+	'follow'			INTEGER DEFAULT 1 NOT NULL);
 /*END_PARTIES*/
 	
 /*START_PLAYERS*/

@@ -29,6 +29,10 @@ public class ExpManager {
 	
 	public ExpManager(PartiesPlugin instance) {
 		plugin = instance;
+		reload();
+	}
+	
+	public void reload() {
 		mode = ExpMode.parse(BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
 		rangeSquared = BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_RANGE * BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_RANGE;
 		
@@ -127,7 +131,8 @@ public class ExpManager {
 				// Calculate experience for each player
 				String formula = BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA
 						.replace("%exp%", Integer.toString(experience))
-						.replace("%number_players%", Integer.toString(playersToShare.size()));
+						.replace("%number_players%", Integer.toString(playersToShare.size()))
+						.replace("%level%", Integer.toString(party.getLevel()));
 				try {
 					int singlePlayerExperience = (int) calculateExpression(formula);
 					

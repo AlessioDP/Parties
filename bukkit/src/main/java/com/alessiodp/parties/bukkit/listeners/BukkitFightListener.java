@@ -4,6 +4,7 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.events.BukkitEventManager;
 import com.alessiodp.parties.bukkit.parties.objects.BukkitPartyImpl;
+import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.logging.LogLevel;
@@ -38,7 +39,7 @@ public class BukkitFightListener implements Listener {
 		plugin = instance;
 	}
 	
-	@EventHandler
+	@EventHandler (ignoreCancelled = true)
 	public void onPlayerHit(EntityDamageByEntityEvent event) {
 		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE && event.getEntity() instanceof Player) {
 			Player victim = (Player) event.getEntity();
@@ -74,7 +75,6 @@ public class BukkitFightListener implements Listener {
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
-				case UNSUPPORTED:
 				}
 				if (attacker != null) {
 					// Found right attacker
@@ -112,7 +112,7 @@ public class BukkitFightListener implements Listener {
 			}
 		}
 	}
-	@EventHandler
+	@EventHandler (ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
 		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
 				&& event.getEntity() instanceof Player
@@ -173,7 +173,7 @@ public class BukkitFightListener implements Listener {
 			}
 		}
 	}
-	@EventHandler
+	@EventHandler (ignoreCancelled = true)
 	public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
 		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
 				&& event.getEntity() instanceof Player
@@ -217,7 +217,7 @@ public class BukkitFightListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onEntityDieKill(EntityDeathEvent event) {
 		if (BukkitConfigParties.KILLS_ENABLE) {
 			if (event.getEntity().getKiller() != null) {
@@ -247,6 +247,26 @@ public class BukkitFightListener implements Listener {
 					}
 				}
 			}
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true)
+	public void onPlayerGotHit(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player && BukkitConfigParties.HOME_HIT) {
+			// Make it async
+			plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {
+				BukkitPartyPlayerImpl partyPlayer = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(event.getEntity().getUniqueId());
+				// Check if the player is on home cooldown
+				if (partyPlayer.getHomeDelayTask() != -1) {
+					// Cancelling home task
+					plugin.getPartiesScheduler().cancelTask(partyPlayer.getHomeDelayTask());
+					partyPlayer.setHomeDelayTask(-1);
+					
+					partyPlayer.sendMessage(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED);
+					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_HOME_DENIED_FIGHT
+							.replace("{player}", partyPlayer.getName()), true);
+				}
+			});
 		}
 	}
 	

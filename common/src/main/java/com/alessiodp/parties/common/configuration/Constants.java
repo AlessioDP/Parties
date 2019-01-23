@@ -5,17 +5,17 @@ public class Constants {
 	public static final boolean DEBUG_ENABLED = false;
 	public static final boolean DEBUG_TIMESTAMPS = false;
 	
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 4;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 5;
 	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 4;
-	public static final int VERSION_BUKKIT_MESSAGES = 5;
+	public static final int VERSION_BUKKIT_MESSAGES = 6;
 	
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 3;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 4;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 3;
-	public static final int VERSION_BUNGEE_MESSAGES = 3;
+	public static final int VERSION_BUNGEE_MESSAGES = 4;
 	
 	public static final int VERSION_DATABASE_YAML = 1;
-	public static final int VERSION_DATABASE_MYSQL = 5;
-	public static final int VERSION_DATABASE_SQLITE = 3;
+	public static final int VERSION_DATABASE_MYSQL = 6;
+	public static final int VERSION_DATABASE_SQLITE = 4;
 	
 	public static final String FIXED_VALUE_TEXT = "fixed";
 	public static final String FIXED_VALUE_UUID = "00000000-0000-0000-0000-000000000000";
@@ -114,11 +114,10 @@ public class Constants {
 	
 	
 	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to {player} with '{command}'";
+	public static final String DEBUG_AUTOCMD_REGEXERROR = "Wrong regex pattern for auto command system";
 	
-	public static final String DEBUG_CENSOR_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
-	
-	public static final String DEBUG_COMMANDS_REGISTER_PRE = "Registering commands";
-	public static final String DEBUG_COMMANDS_REGISTER_POST = "Registered {value} commands";
+	public static final String DEBUG_COMMANDS_REGISTER_PARTY_EXIST = "Party command was registered by another plugin, trying to overwrite it. If you have any problem you should change it by editing config.yml.";
+	public static final String DEBUG_COMMANDS_REGISTER_P_EXIST = "P command was registered by another plugin, trying to overwrite it. If you have any problem you should change it by editing config.yml.";
 	public static final String DEBUG_CMD_ACCEPT = "{player} accepted invite for {party}";
 	public static final String DEBUG_CMD_CHAT = "{player} changed party chat to {value}";
 	public static final String DEBUG_CMD_CLAIM = "{player} claimed with {value}";
@@ -126,10 +125,16 @@ public class Constants {
 	public static final String DEBUG_CMD_COLOR_REM = "{player} removed color of the party {party}";
 	public static final String DEBUG_CMD_CREATE = "{player} created the party {party}";
 	public static final String DEBUG_CMD_CREATE_FIXED = "{player} created the fixed party {party}";
+	public static final String DEBUG_CMD_CREATE_REGEXERROR_AC = "Failed to parse allowed characters regex of create command";
+	public static final String DEBUG_CMD_CREATE_REGEXERROR_CEN = "Failed to parse censor regex of create command";
 	public static final String DEBUG_CMD_DELETE = "{player} deleted the party {party}";
 	public static final String DEBUG_CMD_DENY = "{player} deleted the party {party}";
 	public static final String DEBUG_CMD_DESC = "{player} changed the description of {party}";
 	public static final String DEBUG_CMD_DESC_REM = "{player} removed the description of {party}";
+	public static final String DEBUG_CMD_DESC_REGEXERROR_AC = "Failed to parse allowed characters regex of desc command";
+	public static final String DEBUG_CMD_DESC_REGEXERROR_CEN = "Failed to parse censor regex of desc command";
+	public static final String DEBUG_CMD_FOLLOW_ON = "{player} has enabled follow for {party}";
+	public static final String DEBUG_CMD_FOLLOW_OFF = "{player} has disabled follow for {party}";
 	public static final String DEBUG_CMD_HOME = "{player} used command home, for {party}";
 	public static final String DEBUG_CMD_IGNORE_START = "{player} started to ignore the party {party}";
 	public static final String DEBUG_CMD_IGNORE_STOP = "{player} stopped to ignore the party {party}";
@@ -143,10 +148,13 @@ public class Constants {
 	public static final String DEBUG_CMD_LIST = "{player} used the command list";
 	public static final String DEBUG_CMD_MOTD = "{player} changed the motd of {party}";
 	public static final String DEBUG_CMD_MOTD_REM = "{player} removed the motd of {party}";
+	public static final String DEBUG_CMD_MOTD_REGEXERROR_AC = "Failed to parse allowed characters regex of motd command";
+	public static final String DEBUG_CMD_MOTD_REGEXERROR_CEN = "Failed to parse censor regex of motd command";
 	public static final String DEBUG_CMD_MUTE_ON = "{player} is now muted";
 	public static final String DEBUG_CMD_MUTE_OFF = "{player} is not muted anymore";
 	public static final String DEBUG_CMD_P = "Chat of {party} by {player}: {message}";
 	public static final String DEBUG_CMD_P_TASK = "Started ChatTask for {value} by {player}";
+	public static final String DEBUG_CMD_P_REGEXERROR = "Failed to parse censor regex of p command";
 	public static final String DEBUG_CMD_PASSWORD = "{player} changed the password of {party}";
 	public static final String DEBUG_CMD_PASSWORD_REM = "{player} removed the password of {party}";
 	public static final String DEBUG_CMD_PROTECTION_ON = "{player} has enabled protection for {party}";
@@ -252,8 +260,8 @@ public class Constants {
 	public static final String QUERY_PLAYER_GETBYPARTY = "SELECT * FROM {table_players} WHERE `party`=?;";
 	public static final String QUERY_PLAYER_GETBYNAME = "SELECT * FROM {table_players} WHERE `name`=?;";
 	
-	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `leader`=VALUES(`leader`), `description`=VALUES(`description`), `motd`=VALUES(`motd`), `color`=VALUES(`color`), `kills`=VALUES(`kills`), `password`=VALUES(`password`), `home`=VALUES(`home`), `protection`=VALUES(`protection`), `experience`=VALUES(`experience`);";
-	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`, `follow`) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `leader`=VALUES(`leader`), `description`=VALUES(`description`), `motd`=VALUES(`motd`), `color`=VALUES(`color`), `kills`=VALUES(`kills`), `password`=VALUES(`password`), `home`=VALUES(`home`), `protection`=VALUES(`protection`), `experience`=VALUES(`experience`), `follow`=VALUES(`follow`);";
+	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`, `follow`) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	public static final String QUERY_PARTY_GET_MYSQL = "SELECT * FROM {table_parties} WHERE `name`=?;";
 	public static final String QUERY_PARTY_GET_SQLITE = "SELECT * FROM {table_parties} WHERE `name`=? COLLATE NOCASE;";
 	public static final String QUERY_PARTY_GETALL = "SELECT * FROM {table_parties};";

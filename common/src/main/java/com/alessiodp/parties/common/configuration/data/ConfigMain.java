@@ -6,7 +6,6 @@ import com.alessiodp.parties.common.configuration.Constants;
 import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.configuration.adapter.ConfigurationSectionAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,15 +55,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 	
 	// Additional settings
 	public static boolean		ADDITIONAL_AUTOCMD_ENABLE;
-	public static List<String>	ADDITIONAL_AUTOCMD_BLACKLIST;
-	public static List<String>	ADDITIONAL_AUTOCMD_WHITELIST;
+	public static String		ADDITIONAL_AUTOCMD_REGEXWHITELIST;
 	
-	public static boolean		ADDITIONAL_CENSOR_ENABLE;
-	public static boolean		ADDITIONAL_CENSOR_CASESENSITIVE;
-	public static List<String>	ADDITIONAL_CENSOR_CONTAINS;
-	public static List<String>	ADDITIONAL_CENSOR_STARTSWITH;
-	public static List<String>	ADDITIONAL_CENSOR_ENDSWITH;
-	public static List<String>	ADDITIONAL_CENSOR_REGEXES;
+	public static boolean		ADDITIONAL_FOLLOW_ENABLE;
+	public static boolean		ADDITIONAL_FOLLOW_TOGGLECMD;
 	
 	public static boolean		ADDITIONAL_MUTE_ENABLE;
 	public static boolean		ADDITIONAL_MUTE_BLOCK_INVITE;
@@ -86,6 +80,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	
 	
 	// Commands settings
+	public static boolean		COMMANDS_TABSUPPORT;
 	public static int			COMMANDS_HELP_PERPAGE;
 	
 	public static String		COMMANDS_CMD_HELP;
@@ -98,6 +93,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_DELETE;
 	public static String		COMMANDS_CMD_DENY;
 	public static String		COMMANDS_CMD_DESC;
+	public static String		COMMANDS_CMD_FOLLOW;
 	public static String		COMMANDS_CMD_IGNORE;
 	public static String		COMMANDS_CMD_INFO;
 	public static String		COMMANDS_CMD_INVITE;
@@ -114,6 +110,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_RENAME;
 	public static String		COMMANDS_CMD_SPY;
 	public static String		COMMANDS_CMD_TELEPORT;
+	public static String		COMMANDS_CMD_VERSION;
 	
 	public static String		COMMANDS_SUB_ON;
 	public static String		COMMANDS_SUB_OFF;
@@ -173,17 +170,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 		
 		// Additional features
 		ADDITIONAL_AUTOCMD_ENABLE = false;
-		ADDITIONAL_AUTOCMD_BLACKLIST = new ArrayList<>();
-		ADDITIONAL_AUTOCMD_BLACKLIST.add("/pay");
-		ADDITIONAL_AUTOCMD_BLACKLIST.add("/money");
-		ADDITIONAL_AUTOCMD_WHITELIST = new ArrayList<>();
+		ADDITIONAL_AUTOCMD_REGEXWHITELIST = "^(?!(\\/party|\\/pay|\\/money)).*";
 		
-		ADDITIONAL_CENSOR_ENABLE = false;
-		ADDITIONAL_CENSOR_CASESENSITIVE = false;
-		ADDITIONAL_CENSOR_CONTAINS = new ArrayList<>();
-		ADDITIONAL_CENSOR_STARTSWITH = new ArrayList<>();
-		ADDITIONAL_CENSOR_ENDSWITH = new ArrayList<>();
-		ADDITIONAL_CENSOR_REGEXES = new ArrayList<>();
+		ADDITIONAL_FOLLOW_ENABLE = false;
+		ADDITIONAL_FOLLOW_TOGGLECMD = false;
 		
 		ADDITIONAL_MUTE_ENABLE = false;
 		ADDITIONAL_MUTE_BLOCK_INVITE = true;
@@ -207,6 +197,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		
 		
 		// Commands settings
+		COMMANDS_TABSUPPORT = true;
 		COMMANDS_HELP_PERPAGE = 9;
 		
 		COMMANDS_CMD_HELP = "help";
@@ -219,6 +210,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_DELETE = "delete";
 		COMMANDS_CMD_DENY = "deny";
 		COMMANDS_CMD_DESC = "desc";
+		COMMANDS_CMD_FOLLOW = "follow";
 		COMMANDS_CMD_IGNORE = "ignore";
 		COMMANDS_CMD_INFO = "info";
 		COMMANDS_CMD_INVITE = "invite";
@@ -235,6 +227,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_RENAME = "rename";
 		COMMANDS_CMD_SPY = "spy";
 		COMMANDS_CMD_TELEPORT = "teleport";
+		COMMANDS_CMD_VERSION = "version";
 		
 		COMMANDS_SUB_ON = "on";
 		COMMANDS_SUB_OFF = "off";
@@ -289,15 +282,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 		
 		// Additional settings
 		ADDITIONAL_AUTOCMD_ENABLE = confAdapter.getBoolean("additional.auto-command.enable", ADDITIONAL_AUTOCMD_ENABLE);
-		ADDITIONAL_AUTOCMD_BLACKLIST = confAdapter.getStringList("additional.auto-command.blacklist", ADDITIONAL_AUTOCMD_BLACKLIST);
-		ADDITIONAL_AUTOCMD_WHITELIST = confAdapter.getStringList("additional.auto-command.whitelist", ADDITIONAL_AUTOCMD_WHITELIST);
+		ADDITIONAL_AUTOCMD_REGEXWHITELIST = confAdapter.getString("additional.auto-command.regex-whitelist", ADDITIONAL_AUTOCMD_REGEXWHITELIST);
 		
-		ADDITIONAL_CENSOR_ENABLE = confAdapter.getBoolean("additional.censor-system.enable", ADDITIONAL_CENSOR_ENABLE);
-		ADDITIONAL_CENSOR_CASESENSITIVE = confAdapter.getBoolean("additional.censor-system.case-sensitive", ADDITIONAL_CENSOR_CASESENSITIVE);
-		ADDITIONAL_CENSOR_CONTAINS = confAdapter.getStringList("additional.censor-system.contains", ADDITIONAL_CENSOR_CONTAINS);
-		ADDITIONAL_CENSOR_STARTSWITH = confAdapter.getStringList("additional.censor-system.starts-with", ADDITIONAL_CENSOR_STARTSWITH);
-		ADDITIONAL_CENSOR_ENDSWITH = confAdapter.getStringList("additional.censor-system.ends-with", ADDITIONAL_CENSOR_ENDSWITH);
-		ADDITIONAL_CENSOR_REGEXES = confAdapter.getStringList("additional.censor-system.regexes", ADDITIONAL_CENSOR_REGEXES);
+		ADDITIONAL_FOLLOW_ENABLE = confAdapter.getBoolean("additional.follow-party.enable", ADDITIONAL_FOLLOW_ENABLE);
+		ADDITIONAL_FOLLOW_TOGGLECMD = confAdapter.getBoolean("additional.follow-party.toggle-command", ADDITIONAL_FOLLOW_TOGGLECMD);
 		
 		ADDITIONAL_MUTE_ENABLE = confAdapter.getBoolean("additional.mute.enable", ADDITIONAL_MUTE_ENABLE);
 		ADDITIONAL_MUTE_BLOCK_INVITE = confAdapter.getBoolean("additional.mute.block.INVITE", ADDITIONAL_MUTE_BLOCK_INVITE);
@@ -319,6 +307,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		
 		
 		// Commands settings
+		COMMANDS_TABSUPPORT = confAdapter.getBoolean("commands.tab-support", COMMANDS_TABSUPPORT);
 		COMMANDS_HELP_PERPAGE = confAdapter.getInt("commands.help-pages.commands-per-page", COMMANDS_HELP_PERPAGE);
 		
 		COMMANDS_CMD_HELP = confAdapter.getString("commands.main-commands.help", COMMANDS_CMD_HELP);
@@ -331,6 +320,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_DELETE = confAdapter.getString("commands.main-commands.delete", COMMANDS_CMD_DELETE);
 		COMMANDS_CMD_DENY = confAdapter.getString("commands.main-commands.deny", COMMANDS_CMD_DENY);
 		COMMANDS_CMD_DESC = confAdapter.getString("commands.main-commands.desc", COMMANDS_CMD_DESC);
+		COMMANDS_CMD_FOLLOW = confAdapter.getString("commands.main-commands.follow", COMMANDS_CMD_FOLLOW);
 		COMMANDS_CMD_IGNORE = confAdapter.getString("commands.main-commands.ignore", COMMANDS_CMD_IGNORE);
 		COMMANDS_CMD_INFO = confAdapter.getString("commands.main-commands.info", COMMANDS_CMD_INFO);
 		COMMANDS_CMD_INVITE = confAdapter.getString("commands.main-commands.invite", COMMANDS_CMD_INVITE);
@@ -347,6 +337,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_RENAME = confAdapter.getString("commands.main-commands.rename", COMMANDS_CMD_RENAME);
 		COMMANDS_CMD_SPY = confAdapter.getString("commands.main-commands.spy", COMMANDS_CMD_SPY);
 		COMMANDS_CMD_TELEPORT = confAdapter.getString("commands.main-commands.teleport", COMMANDS_CMD_TELEPORT);
+		COMMANDS_CMD_VERSION = confAdapter.getString("commands.main-commands.version", COMMANDS_CMD_VERSION);
 		
 		COMMANDS_SUB_ON = confAdapter.getString("commands.sub-commands.on", COMMANDS_SUB_ON);
 		COMMANDS_SUB_OFF = confAdapter.getString("commands.sub-commands.off", COMMANDS_SUB_OFF);

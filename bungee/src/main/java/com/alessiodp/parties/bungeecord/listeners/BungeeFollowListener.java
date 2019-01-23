@@ -1,8 +1,10 @@
 package com.alessiodp.parties.bungeecord.listeners;
 
+import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
 import com.alessiodp.parties.bungeecord.BungeePartiesPlugin;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeMessages;
+import com.alessiodp.parties.bungeecord.events.BungeeEventManager;
 import com.alessiodp.parties.bungeecord.user.BungeeUser;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
@@ -15,6 +17,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class BungeeFollowListener implements Listener {
@@ -33,37 +36,48 @@ public class BungeeFollowListener implements Listener {
 		if (event.getPlayer().getServer() == null)
 			return;
 		
-		if (allowedServer(event.getPlayer().getServer().getInfo().getName())) {
-			PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
-			PartyImpl party = plugin.getPartyManager().getParty(player.getPartyName());
-			if (party != null) {
-				if (party.getLeader().equals(player.getPlayerUUID())) {
-					
-					// Let other players follow him
-					String playerServer = event.getPlayer().getServer().getInfo().getName();
-					ServerInfo serverInfo = plugin.getBootstrap().getProxy().getServerInfo(playerServer);
-					for (UUID uuid : party.getMembers()) {
-						BungeeUser member = (BungeeUser) plugin.getPlayer(uuid);
-						if (member != null
-								&& !member.getUUID().equals(player.getPlayerUUID())
-								&& !member.getServerName().equals(serverInfo.getName())) {
-							
-							plugin.getPlayerManager().getPlayer(uuid).sendMessage(BungeeMessages.OTHER_FOLLOW_SERVER
-									.replace("%server%", serverInfo.getName()));
-							member.connectTo(serverInfo);
-							
-							if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
-								plugin.getBootstrap().getProxy().getScheduler().schedule(plugin.getBootstrap(), () -> {
-									for (String command : BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
-										plugin.getBootstrap().getProxy().getPlayer(member.getUUID()).chat(command);
+		CompletableFuture.runAsync(() -> {
+			if (allowedServer(event.getPlayer().getServer().getInfo().getName())) {
+				PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
+				PartyImpl party = plugin.getPartyManager().getParty(player.getPartyName());
+				if (party != null && party.isFollowEnabled()) {
+					if (party.getLeader().equals(player.getPlayerUUID())) {
+						String playerServer = event.getPlayer().getServer().getInfo().getName();
+						ServerInfo serverInfo = plugin.getBootstrap().getProxy().getServerInfo(playerServer);
+						
+						// Calling API event
+						BungeePartiesPartyFollowEvent partyFollowEvent = ((BungeeEventManager) plugin.getEventManager()).preparePartyFollowEvent(party, playerServer);
+						plugin.getEventManager().callEvent(partyFollowEvent);
+						if (!partyFollowEvent.isCancelled()) {
+							// Let other players follow him
+							for (UUID uuid : party.getMembers()) {
+								BungeeUser member = (BungeeUser) plugin.getPlayer(uuid);
+								if (member != null
+										&& !member.getUUID().equals(player.getPlayerUUID())
+										&& !member.getServerName().equals(serverInfo.getName())) {
+									
+									plugin.getPlayerManager().getPlayer(uuid).sendMessage(BungeeMessages.OTHER_FOLLOW_SERVER
+											.replace("%server%", serverInfo.getName()));
+									member.connectTo(serverInfo);
+									
+									if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
+										plugin.getBootstrap().getProxy().getScheduler().schedule(plugin.getBootstrap(), () -> {
+											for (String command : BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
+												plugin.getBootstrap().getProxy().getPlayer(member.getUUID()).chat(command);
+											}
+										}, BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
 									}
-								}, BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
+								}
 							}
 						}
 					}
 				}
 			}
-		}
+		}, plugin.getPartiesScheduler().getEventsExecutor())
+				.exceptionally(ex -> {
+					ex.printStackTrace();
+					return null;
+				});
 	}
 	
 	private boolean allowedServer(String serverName) {

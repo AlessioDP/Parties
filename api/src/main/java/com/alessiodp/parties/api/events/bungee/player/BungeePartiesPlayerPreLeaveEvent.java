@@ -5,5 +5,5 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 
 public abstract class BungeePartiesPlayerPreLeaveEvent extends BungeePartiesEvent implements IPlayerPreLeaveEvent {
 	// Dummy class
-
+	
 }

@@ -1,7 +1,6 @@
 #
 # Parties-related configuration file
 #
-#
 # You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
 #
 
@@ -15,6 +14,8 @@ general:
     # Regex of chars (Use \\ instead of \ if you use "text" format)
     # For ALL utf characters use '[\p{L}\s]+'
     allowed-characters: '[a-zA-Z0-9]+'
+    # Censor party name with a regex
+    censor-regex: ''
     minimum-length: 3
     maximum-length: 10
     # Cooldown for rename command (in seconds)
@@ -33,7 +34,7 @@ general:
       global: 60
       # Prevent to invite the same player for X seconds
       individual: 0
-    
+
   chat:
     # Allow sending messages with color codes (&1, &2, etc..)
     # Permission required
@@ -42,6 +43,8 @@ general:
     enable-toggle-command: true
     # Chat cooldown in seconds
     chat-cooldown: 0
+    # Censor party message with a regex
+    censor-regex: ''
     direct:
       # Directly write in party chat by adding a prefix before (Example: @this is a party message)
       enable: false
@@ -56,7 +59,7 @@ general:
     # If you use this placeholder, you will bypass vanish check
     # Format as SimpleDateFormat of Java (example: "yyyy-MM-dd HH:mm:ss.S")
     time-date-format: "yyyy-MM-dd"
-    # Special tags: %days%, %hours% and %minutes%
+    # Special tags: %days%, %hours%, %minutes% and %seconds%
     time-elapsed-format: "%days% days, %hours% hours, %minutes% minutes"
     # Special tags: %time_date% and %time_elapsed%
     format-offline: "[%time_elapsed%]"
@@ -138,7 +141,7 @@ additional:
       yourcustomcolor:
         command: "special"
         code: "&9&n"
-  
+
   description:
     enable: true
     minimum-length: 3
@@ -146,7 +149,9 @@ additional:
     # Regex of chars (Use \\ instead of \ if you use "text" format)
     # For ALL utf characters use '[\p{L}\s]+'
     allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
-  
+    # Censor description with a regex
+    censor-regex: ''
+
   fixed-system:
     # Allow the creation of parties without leader (they are called "fixed")
     enable: false
@@ -154,7 +159,7 @@ additional:
       # When a player join into the server, put him into a party (if he doesn't have one)
       enable: false
       party: "default"
-  
+
   join-password:
     # Password system (This will enable "/party join <party>", you can still disable it via permissions)
     # Allows the creation of a party with a password (/party create <party> <password>)
@@ -184,7 +189,7 @@ additional:
     limit-parties: -1
     # Hide some parties from the list (Type the name of party)
     hidden-parties: []
-  
+
   motd:
     enable: true
     minimum-length: 3
@@ -196,6 +201,8 @@ additional:
     allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
     # New line code is \n, you need to escape the first \ by adding another \ before
     new-line-code: '\\n'
+    # Censor motd with a regex
+    censor-regex: ''
 
   teleport:
     # Enable teleport command, teleport every partymate to the command sender
@@ -206,4 +213,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 3
+  version: 4

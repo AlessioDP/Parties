@@ -55,7 +55,7 @@ public abstract class JoinLeaveListener {
 					}
 					
 					if (!party.getMotd().isEmpty()) {
-						plugin.getPartiesScheduler().scheduleTaskLater(new MotdTask(plugin, player.getUUID(), pp.getCreateID()), ConfigParties.MOTD_DELAY / 20L);
+						plugin.getPartiesScheduler().scheduleTaskLater(new MotdTask(plugin, player.getUUID(), pp.getCreateID()), ConfigParties.MOTD_DELAY);
 					}
 					
 					// Update timestamp
@@ -81,7 +81,7 @@ public abstract class JoinLeaveListener {
 							pp.updatePlayer();
 							
 							if (!party.getMotd().isEmpty()) {
-								plugin.getPartiesScheduler().scheduleTaskLater(new MotdTask(plugin, player.getUUID(), pp.getCreateID()), ConfigParties.MOTD_DELAY / 20L);
+								plugin.getPartiesScheduler().scheduleTaskLater(new MotdTask(plugin, player.getUUID(), pp.getCreateID()), ConfigParties.MOTD_DELAY);
 							}
 							
 							pp.sendMessage(Messages.OTHER_FIXED_DEFAULTJOIN, party);
@@ -142,7 +142,8 @@ public abstract class JoinLeaveListener {
 							if (ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY > 0) {
 								plugin.getPlayerManager().getListPartyPlayersToDelete().add(pp.getPlayerUUID());
 								
-								int taskId = plugin.getPartiesScheduler().scheduleTaskLater(new PartyDeleteTask(plugin, party.getName()), ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY);
+								int taskId = plugin.getPartiesScheduler().scheduleTaskLater(
+										new PartyDeleteTask(plugin, party.getName()), ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY * 20L);
 								
 								plugin.getPartyManager().getListPartiesToDelete().put(party.getName().toLowerCase(), taskId);
 								removePlFromList = false;

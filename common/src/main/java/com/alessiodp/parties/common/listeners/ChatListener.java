@@ -13,6 +13,10 @@ import com.alessiodp.parties.common.players.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.ChatTask;
 import com.alessiodp.parties.common.user.User;
+import com.alessiodp.parties.common.utils.PartiesUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class ChatListener {
 	private PartiesPlugin plugin;
@@ -49,19 +53,24 @@ public abstract class ChatListener {
 					// Chat allowed
 					boolean mustWait = false;
 					
+					if (PartiesUtils.checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, finalMessage, Constants.DEBUG_CMD_P_REGEXERROR)) {
+						pp.sendMessage(Messages.MAINCMD_P_CENSORED);
+						return;
+					}
+					
 					if (ConfigParties.GENERAL_CHAT_CHATCD > 0
 							&& !plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
 						Long unixTimestamp = plugin.getCooldownManager().getChatCooldown().get(pp.getPlayerUUID());
 						long unixNow = System.currentTimeMillis() / 1000L;
 						// Check cooldown
-						if (unixTimestamp != null) {
+						if (unixTimestamp != null && (unixNow - unixTimestamp) < ConfigParties.GENERAL_CHAT_CHATCD) {
 							pp.sendMessage(Messages.MAINCMD_P_COOLDOWN
 									.replace("%seconds%", String.valueOf(ConfigParties.GENERAL_CHAT_CHATCD - (unixNow - unixTimestamp))));
 							mustWait = true;
 						} else {
 							plugin.getCooldownManager().getChatCooldown().put(pp.getPlayerUUID(), unixNow);
 							
-							plugin.getPartiesScheduler().scheduleTaskLater(new ChatTask(plugin, pp.getPlayerUUID()), ConfigParties.GENERAL_CHAT_CHATCD);
+							plugin.getPartiesScheduler().scheduleTaskLater(new ChatTask(plugin, pp.getPlayerUUID()), ConfigParties.GENERAL_CHAT_CHATCD * 20L);
 							
 							LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_CMD_P_TASK
 									.replace("{value}", Integer.toString(ConfigParties.GENERAL_CHAT_CHATCD * 20))
@@ -110,19 +119,18 @@ public abstract class ChatListener {
 				// This is a normal command to replicate
 				// Make it async
 				plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {
-					boolean cancel = false;
+					boolean cancel = true;
 					
-					for (String str : ConfigMain.ADDITIONAL_AUTOCMD_BLACKLIST) {
-						if (str.equalsIgnoreCase("*") || message.toLowerCase().startsWith(str.toLowerCase())) {
-							cancel = true;
-							break;
-						}
-					}
-					for (String str : ConfigMain.ADDITIONAL_AUTOCMD_WHITELIST) {
-						if (str.equalsIgnoreCase("*") || message.toLowerCase().startsWith(str.toLowerCase())) {
+					try {
+						Pattern pattern = Pattern.compile(ConfigMain.ADDITIONAL_AUTOCMD_REGEXWHITELIST, Pattern.CASE_INSENSITIVE);
+						Matcher matcher = pattern.matcher(message);
+						
+						if (matcher.find()) {
 							cancel = false;
-							break;
 						}
+					} catch (Exception ex) {
+						LoggerManager.printError(Constants.DEBUG_AUTOCMD_REGEXERROR);
+						ex.printStackTrace();
 					}
 					
 					if (!cancel) {

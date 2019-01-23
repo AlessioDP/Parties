@@ -77,7 +77,7 @@ storage:
         log-name: "log.txt"
       yaml:
         database-name: "data.yml"
-    
+
     sql-based:
       # SQL based DBs: MySQL, SQLite
       general-settings:
@@ -107,7 +107,7 @@ storage:
       sqlite:
         # SQLite is a SQL database that store data into a file
         database-name: "database.db"
-    
+
     none:
       disband-on-leader-left: true
       # Delete empty parties after tot seconds
@@ -122,23 +122,10 @@ additional:
     # All partymates will use the same command that the leader uses (Rank permission: party.autocommand)
     # You can configure the leader with rank permissions
     enable: false
-    # Important: Blacklist/whitelist your commands to prevent exploits (Pay for example)
-    # Blacklist/whitelist your commands with a "start-with" check (Block /pay to prevent commands like "/pay bla bla", "/paymember bla", "/payment")
-    # If you whitelist a command, you will bypass it (if it is blacklisted)
-    # You can insert '*' for all commands
-    blacklist:
-    - "/pay"
-    - "/money"
-    whitelist: []
-  
-  censor-system:
-    # This censor system is used when a player create a party or set description/motd/etc..
-    enable: false
-    case-sensitive: false
-    contains: []
-    starts-with: []
-    ends-with: []
-    regexes: []
+    # Choose which command should be repeated
+    # You need to use regex here
+    # By default it will allows any command except /party, /pay or /money)
+    regex-whitelist: '^(?!(\/party|\/pay|\/money)).*'
 
   exp-system:
     # Documentation here: https://alessiodp.com/docs/parties/expsystem/
@@ -183,6 +170,7 @@ additional:
         # Special tags:
         # %exp% = Experience dropped
         # %number_players% = Number of players in range
+        # %level% = Current level of the party
         divide-formula: "%exp% / %number_players%"
       exp-to-get:
         # Choose which kind of experience to get
@@ -217,8 +205,10 @@ additional:
           handle-only-mm-mobs: true
 
   follow-party:
-    # When player join in a world, the party will be teleported into it
+    # When the party leader joins a world, the party will follow him
     enable: false
+    # Enable the command /party follow to toggle this feature
+    toggle-command: false
     # Type of teleport:
     # 1 = Teleport into world spawn
     # 2 = Same point of followed player
@@ -232,14 +222,14 @@ additional:
     # List of worlds that would use follow-party feature ('*' = all worlds)
     list-worlds:
     - '*'
-  
+
   mute:
     # Enable mute command
     # If an user use mute command, it will stop to receive every notification
     enable: false
     block:
       invite: true
-  
+
   placeholders:
     # This options are used to customize Parties placeholders
     # You can customize every external placeholder
@@ -351,6 +341,7 @@ commands:
     delete: "delete"
     deny: "deny"
     desc: "desc"
+    follow: "follow"
     home: "home"
     ignore: "ignore"
     info: "info"
@@ -370,6 +361,7 @@ commands:
     sethome: "sethome"
     spy: "spy"
     teleport: "teleport"
+    version: "version"
   sub-commands:
     on: "on"
     off: "off"
@@ -395,6 +387,7 @@ commands:
   - desc
   - motd
   - protection
+  - follow
   - home
   - sethome
   - color
@@ -407,8 +400,9 @@ commands:
   - spy
   - delete
   - reload
+  - version
   - migrate
 
 # End of configuration file
 dont-edit-this:
-  version: 4
+  version: 5

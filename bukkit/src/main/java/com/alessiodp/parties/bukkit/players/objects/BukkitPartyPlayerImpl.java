@@ -22,15 +22,14 @@ import lombok.Setter;
 import org.bukkit.metadata.MetadataValue;
 
 public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
-	@Getter @Setter private HomeCooldown homeCooldown;
-	
+	@Getter @Setter private int homeDelayTask;
 	@Getter @Setter private int portalTimeoutTask;
 	
 	@Getter @Setter private LastConfirmedCommand lastConfirmedCommand;
 	
 	public BukkitPartyPlayerImpl(PartiesPlugin instance, UUID uuid) {
 		super(instance, uuid);
-		homeCooldown = null;
+		homeDelayTask = -1;
 		portalTimeoutTask = -1;
 		lastConfirmedCommand = null;
 	}
@@ -43,8 +42,12 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	
 	@Override
 	public void cleanupPlayer(boolean saveDB) {
-		homeCooldown = null; // Reset home command (avoiding telepoting to another party home)
 		super.cleanupPlayer(saveDB);
+		// Reset home command (avoiding teleporting to another party)
+		if (getHomeDelayTask() != -1) {
+			plugin.getPartiesScheduler().cancelTask(getHomeDelayTask());
+			setHomeDelayTask(-1);
+		}
 	}
 	
 	@Override

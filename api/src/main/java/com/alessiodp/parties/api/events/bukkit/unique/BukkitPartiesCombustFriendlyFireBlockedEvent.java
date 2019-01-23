@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class BukkitPartiesCombustFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
 	/**
 	 * Get the victim of the event
-	 * 
+	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NotNull
@@ -17,7 +17,7 @@ public abstract class BukkitPartiesCombustFriendlyFireBlockedEvent extends Bukki
 	
 	/**
 	 * Get the attacker
-	 * 
+	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NotNull
@@ -25,7 +25,7 @@ public abstract class BukkitPartiesCombustFriendlyFireBlockedEvent extends Bukki
 	
 	/**
 	 * Get the original Bukkit event handled by Parties
-	 * 
+	 *
 	 * @return Returns the original {@link EntityCombustByEntityEvent}
 	 */
 	@NotNull

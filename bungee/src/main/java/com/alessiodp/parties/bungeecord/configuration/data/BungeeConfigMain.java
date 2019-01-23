@@ -50,6 +50,7 @@ public class BungeeConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("chat");
 		ConfigMain.COMMANDS_ORDER.add("desc");
 		ConfigMain.COMMANDS_ORDER.add("motd");
+		ConfigMain.COMMANDS_ORDER.add("follow");
 		ConfigMain.COMMANDS_ORDER.add("color");
 		ConfigMain.COMMANDS_ORDER.add("teleport");
 		ConfigMain.COMMANDS_ORDER.add("password");
@@ -59,6 +60,7 @@ public class BungeeConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("spy");
 		ConfigMain.COMMANDS_ORDER.add("delete");
 		ConfigMain.COMMANDS_ORDER.add("reload");
+		ConfigMain.COMMANDS_ORDER.add("version");
 		ConfigMain.COMMANDS_ORDER.add("migrate");
 	}
 	

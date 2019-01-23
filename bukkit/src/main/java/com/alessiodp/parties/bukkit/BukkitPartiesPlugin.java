@@ -11,10 +11,8 @@ import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.bukkit.commands.BukkitCommandManager;
 import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
-import com.alessiodp.parties.bukkit.listeners.BukkitMoveListener;
 import com.alessiodp.parties.bukkit.messaging.MessageManager;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
-import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
 import com.alessiodp.parties.bukkit.players.ExpManager;
 import com.alessiodp.parties.bukkit.user.BukkitOfflineUser;
@@ -90,7 +88,6 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		getCommandManager().setup();
 		eventManager = new BukkitEventManager(this);
 		economyManager = new BukkitEconomyManager(this);
-		cooldownManager = new BukkitCooldownManager();
 		
 		new MetricsHandler(this);
 	}
@@ -103,7 +100,13 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		pm.registerEvents(new BukkitFightListener(this), getBootstrap());
 		pm.registerEvents(new BukkitFollowListener(this), getBootstrap());
 		pm.registerEvents(new BukkitJoinLeaveListener(this), getBootstrap());
-		pm.registerEvents(new BukkitMoveListener(this), getBootstrap());
+	}
+	
+	@Override
+	public void reloadConfiguration() {
+		super.reloadConfiguration();
+		expManager.reload();
+		messageManager.reload();
 	}
 	
 	@Override

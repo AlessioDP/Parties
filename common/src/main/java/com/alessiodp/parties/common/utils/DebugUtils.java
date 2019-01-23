@@ -9,11 +9,11 @@ public class DebugUtils {
 	public static void startDebugTask(PartiesPlugin plugin) {
 		if (Constants.DEBUG_ENABLED) {
 			// Debug task
-			plugin.getPartiesScheduler().runAsyncTaskTimer(() -> {
+			plugin.getPartiesScheduler().scheduleAsyncTaskTimer(() -> {
 				int players = plugin.getPlayerManager().getListPartyPlayers().size();
 				String parties = plugin.getPartyManager().getListParties().keySet().toString();
 				debugLog("Entities = Players: " + Integer.toString(players) + " - Parties: " + parties);
-			}, 15);
+			}, 20L*15);
 		}
 	}
 	

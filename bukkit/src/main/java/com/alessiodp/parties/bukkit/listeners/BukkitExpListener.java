@@ -19,7 +19,7 @@ public class BukkitExpListener implements Listener {
 		plugin = instance;
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onEntityDie(EntityDeathEvent event) {
 		if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_DROP_ENABLE) {
 			Entity killedEntity = event.getEntity();

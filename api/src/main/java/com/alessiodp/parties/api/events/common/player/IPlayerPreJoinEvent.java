@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player that is joining inside the party
-	 * 
+	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NotNull
@@ -20,7 +20,7 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	
 	/**
 	 * Get the party
-	 * 
+	 *
 	 * @return Returns the {@link Party}
 	 */
 	@NotNull
@@ -28,14 +28,14 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	
 	/**
 	 * Has been invited?
-	 * 
+	 *
 	 * @return Returns {@code true} if the player has been invited
 	 */
 	boolean isInvited();
 	
 	/**
 	 * Get the inviter
-	 * 
+	 *
 	 * @return Returns the {@code UUID} of the inviter, {@code null} if the player joined via join command
 	 */
 	@Nullable

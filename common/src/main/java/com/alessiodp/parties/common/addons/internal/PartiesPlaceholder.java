@@ -5,6 +5,8 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
+import java.util.Map;
+
 public enum PartiesPlaceholder {
 	COLOR_CODE,
 	COLOR_COMMAND,
@@ -70,9 +72,9 @@ public enum PartiesPlaceholder {
 		if (party != null) {
 			if (this.equals(CUSTOM)) {
 				// Custom
-				for (String key : ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.keySet()) {
-					if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + key)) {
-						ret = plugin.getMessageUtils().convertAllPlaceholders(ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.get(key), party, pp);
+				for (Map.Entry<String, String> entry : ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.entrySet()) {
+					if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + entry.getKey())) {
+						ret = plugin.getMessageUtils().convertAllPlaceholders(entry.getValue(), party, pp);
 					}
 				}
 			} else {

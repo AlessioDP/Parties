@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	/**
 	 * Get the player that left the party
-	 * 
+	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NotNull
@@ -17,7 +17,7 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	
 	/**
 	 * Get the party
-	 * 
+	 *
 	 * @return Returns the the {@link Party}
 	 */
 	@NotNull
@@ -25,18 +25,18 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	
 	/**
 	 * Has the player been kicked?
-	 * 
+	 *
 	 * @return Returns {@code true} if the player has been kicked
 	 */
 	boolean isKicked();
 	
 	/**
 	 * Get the kicker
-	 * 
+	 *
 	 * @return Returns the {@link PartyPlayer} that has kicked the player, returns {@code null} if {@link #isKicked()} returns {@code false}
 	 */
 	@Nullable
 	PartyPlayer getKicker();
 	
-
+	
 }

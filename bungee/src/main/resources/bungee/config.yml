@@ -68,7 +68,7 @@ storage:
         log-name: "log.txt"
       yaml:
         database-name: "data.yml"
-    
+
     sql-based:
       # SQL based DBs: MySQL, SQLite
       general-settings:
@@ -98,7 +98,7 @@ storage:
       sqlite:
         # SQLite is a SQL database that store data into a file
         database-name: "database.db"
-    
+
     none:
       disband-on-leader-left: true
       # Delete empty parties after tot seconds
@@ -113,27 +113,16 @@ additional:
     # All partymates will use the same command that the leader uses (Rank permission: party.autocommand)
     # You can configure the leader with rank permissions
     enable: false
-    # Important: Blacklist/whitelist your commands to prevent exploits (Pay for example)
-    # Blacklist/whitelist your commands with a "start-with" check (Block /pay to prevent commands like "/pay bla bla", "/paymember bla", "/payment")
-    # If you whitelist a command, you will bypass it (if it is blacklisted)
-    # You can insert '*' for all commands
-    blacklist:
-    - "/pay"
-    - "/money"
-    whitelist: []
-  
-  censor-system:
-    # This censor system is used when a player create a party or set description/motd/etc..
-    enable: false
-    case-sensitive: false
-    contains: []
-    starts-with: []
-    ends-with: []
-    regexes: []
+    # Choose which command should be repeated
+    # You need to use regex here
+    # By default it will allows any command except /party, /pay or /money)
+    regex-whitelist: '^(?!(\/party|\/pay|\/money)).*'
 
   follow-party:
-    # When a player join a server, the entire party will follow him
+    # When the party leader joins a server, the party will follow him
     enable: false
+    # Enable the command /party follow to toggle this feature
+    toggle-command: false
     perform-commands:
       enable: false
       delay: 2000
@@ -149,7 +138,7 @@ additional:
     enable: false
     block:
       invite: true
-  
+
   placeholders:
     # This options are used to customize Parties placeholders
     # You can customize every external placeholder
@@ -172,6 +161,8 @@ additional:
 # |        COMMANDS SETTINGS        |
 # \ = = = = = = = = = = = = = = = = /
 commands:
+  # Enable tab support (/party <tab> to see every allowed command)
+  tab-support: true
   help-pages:
     commands-per-page: 9
   main-commands:
@@ -185,6 +176,7 @@ commands:
     delete: "delete"
     deny: "deny"
     desc: "desc"
+    follow: "follow"
     ignore: "ignore"
     info: "info"
     invite: "invite"
@@ -201,6 +193,7 @@ commands:
     rename: "rename"
     spy: "spy"
     teleport: "teleport"
+    version: "version"
   sub-commands:
     on: "on"
     off: "off"
@@ -225,6 +218,7 @@ commands:
   - chat
   - desc
   - motd
+  - follow
   - color
   - teleport
   - password
@@ -234,8 +228,9 @@ commands:
   - spy
   - delete
   - reload
+  - version
   - migrate
 
 # End of configuration file
 dont-edit-this:
-  version: 3
+  version: 4

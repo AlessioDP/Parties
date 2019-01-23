@@ -42,8 +42,8 @@ public abstract class PartiesScheduler {
 	public abstract void runSync(Runnable runnable);
 	public abstract void runAsync(Runnable runnable);
 	
-	public abstract void runAsyncTaskTimer(Runnable runnable, long seconds);
-	public abstract int scheduleTaskLater(Runnable runnable, long seconds);
+	public abstract int scheduleAsyncTaskTimer(Runnable runnable, long ticks);
+	public abstract int scheduleTaskLater(Runnable runnable, long ticks);
 	
 	public abstract void cancelTask(int taskId);
 }

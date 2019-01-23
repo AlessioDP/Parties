@@ -16,12 +16,19 @@ import java.util.UUID;
 
 public class MessageManager {
 	private BukkitPartiesPlugin plugin;
+	private MessageListener messageListener;
 	
 	public MessageManager(PartiesPlugin instance) {
 		plugin = (BukkitPartiesPlugin) instance;
-		if (BukkitConfigMain.PARTIES_BUNGEECORDSYNC_ENABLE) {
-			new MessageListener(plugin);
-		}
+		messageListener = new MessageListener(plugin);
+		reload();
+	}
+	
+	public void reload() {
+		if (BukkitConfigMain.PARTIES_BUNGEECORDSYNC_ENABLE)
+			messageListener.register();
+		else
+			messageListener.unregister();
 	}
 	
 	private void sendPacket(PartiesPacket packet) {

@@ -15,7 +15,6 @@ public class BukkitConfigMain extends ConfigMain {
 	public static boolean		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT;
 	
 	// Additional settings
-	public static boolean		ADDITIONAL_FOLLOW_ENABLE;
 	public static int			ADDITIONAL_FOLLOW_TYPE;
 	public static int			ADDITIONAL_FOLLOW_RANKNEEDED;
 	public static int			ADDITIONAL_FOLLOW_RANKMINIMUM;
@@ -78,7 +77,6 @@ public class BukkitConfigMain extends ConfigMain {
 	
 	
 	// Commands settings
-	public static boolean		COMMANDS_TABSUPPORT;
 	public static String		COMMANDS_DESC_PARTY;
 	public static String		COMMANDS_DESC_P;
 	
@@ -104,7 +102,6 @@ public class BukkitConfigMain extends ConfigMain {
 		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT = true;
 		
 		// Additional features
-		ADDITIONAL_FOLLOW_ENABLE = false;
 		ADDITIONAL_FOLLOW_TYPE = 1;
 		ADDITIONAL_FOLLOW_RANKNEEDED = 0;
 		ADDITIONAL_FOLLOW_RANKMINIMUM = 0;
@@ -171,7 +168,6 @@ public class BukkitConfigMain extends ConfigMain {
 		
 		
 		// Commands settings
-		COMMANDS_TABSUPPORT = true;
 		COMMANDS_DESC_PARTY = "Parties help page";
 		COMMANDS_DESC_P = "Send a party message";
 		
@@ -198,6 +194,7 @@ public class BukkitConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("desc");
 		ConfigMain.COMMANDS_ORDER.add("motd");
 		ConfigMain.COMMANDS_ORDER.add("protection");
+		ConfigMain.COMMANDS_ORDER.add("follow");
 		ConfigMain.COMMANDS_ORDER.add("home");
 		ConfigMain.COMMANDS_ORDER.add("sethome");
 		ConfigMain.COMMANDS_ORDER.add("color");
@@ -210,6 +207,7 @@ public class BukkitConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("spy");
 		ConfigMain.COMMANDS_ORDER.add("delete");
 		ConfigMain.COMMANDS_ORDER.add("reload");
+		ConfigMain.COMMANDS_ORDER.add("version");
 		ConfigMain.COMMANDS_ORDER.add("migrate");
 	}
 	
@@ -224,7 +222,6 @@ public class BukkitConfigMain extends ConfigMain {
 		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT = confAdapter.getBoolean("parties.bungeecord-sync.dispatch.chat", PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT);
 		
 		// Additional settings
-		ADDITIONAL_FOLLOW_ENABLE = confAdapter.getBoolean("additional.follow-party.enable", ADDITIONAL_FOLLOW_ENABLE);
 		ADDITIONAL_FOLLOW_TYPE = confAdapter.getInt("additional.follow-party.type-of-teleport", ADDITIONAL_FOLLOW_TYPE);
 		ADDITIONAL_FOLLOW_RANKNEEDED = confAdapter.getInt("additional.follow-party.rank-needed", ADDITIONAL_FOLLOW_RANKNEEDED);
 		ADDITIONAL_FOLLOW_RANKMINIMUM = confAdapter.getInt("additional.follow-party.minimum-rank-to-follow", ADDITIONAL_FOLLOW_RANKMINIMUM);
@@ -290,7 +287,6 @@ public class BukkitConfigMain extends ConfigMain {
 		
 		
 		// Commands settings
-		COMMANDS_TABSUPPORT = confAdapter.getBoolean("commands.tab-support", COMMANDS_TABSUPPORT);
 		COMMANDS_DESC_PARTY = confAdapter.getString("commands.descriptions.party", COMMANDS_DESC_PARTY);
 		COMMANDS_DESC_P = confAdapter.getString("commands.descriptions.p", COMMANDS_DESC_P);
 		

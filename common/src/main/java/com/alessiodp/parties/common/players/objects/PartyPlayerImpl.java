@@ -112,13 +112,18 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.DESC);
 			if (ConfigParties.MOTD_ENABLE && player.hasPermission(PartiesPermission.MOTD.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_MOTD.toString()))
 				ret.add(CommonCommands.MOTD);
+			if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE
+					&& ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD
+					&& player.hasPermission(PartiesPermission.FOLLOW.toString())
+					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_FOLLOW.toString()))
+				ret.add(CommonCommands.FOLLOW);
 			if (ConfigParties.COLOR_ENABLE && ConfigParties.COLOR_COLORCMD && player.hasPermission(PartiesPermission.COLOR.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_COLOR.toString()))
 				ret.add(CommonCommands.COLOR);
 			if (ConfigParties.PASSWORD_ENABLE && player.hasPermission(PartiesPermission.PASSWORD.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_PASSWORD.toString()))
 				ret.add(CommonCommands.PASSWORD);
 			if (player.hasPermission(PartiesPermission.RANK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RANK.toString()))
 				ret.add(CommonCommands.RANK);
-			else if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString())
+			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString())
 					|| (player.hasPermission(PartiesPermission.RENAME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RENAME.toString())))
 				ret.add(CommonCommands.RENAME);
 			if (player.hasPermission(PartiesPermission.KICK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_KICK.toString()))
@@ -155,6 +160,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			ret.add(CommonCommands.DELETE);
 		if (player.hasPermission(PartiesPermission.ADMIN_RELOAD.toString()))
 			ret.add(CommonCommands.RELOAD);
+		if (player.hasPermission(PartiesPermission.ADMIN_VERSION.toString()))
+			ret.add(CommonCommands.VERSION);
 		if (player.hasPermission(PartiesPermission.ADMIN_MIGRATE.toString()) && !ConfigMain.STORAGE_MIGRATE_ONLYCONSOLE)
 			ret.add(CommonCommands.MIGRATE);
 		

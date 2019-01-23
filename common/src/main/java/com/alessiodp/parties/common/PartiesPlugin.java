@@ -122,6 +122,7 @@ public abstract class PartiesPlugin extends AbstractPartiesBootstrap {
 		getPlayerManager().reload();
 		getAddonManager().loadAddons();
 		registerListeners();
+		cooldownManager = new CooldownManager();
 		
 		api = new ApiHandler(this);
 		Parties.setApi(api);

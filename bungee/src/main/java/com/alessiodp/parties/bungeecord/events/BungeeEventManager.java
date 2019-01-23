@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bungeecord.events;
 
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
+import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
@@ -12,6 +13,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.bungeecord.BungeePartiesPlugin;
+import com.alessiodp.parties.bungeecord.events.bungee.PartyFollowEventHook;
 import com.alessiodp.parties.bungeecord.events.common.party.PartyPostCreateEventHook;
 import com.alessiodp.parties.bungeecord.events.common.party.PartyPostDeleteEventHook;
 import com.alessiodp.parties.bungeecord.events.common.party.PartyPreCreateEventHook;
@@ -85,6 +87,10 @@ public class BungeeEventManager extends EventManager {
 	@Override
 	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
 		return new PlayerPostLeaveEventHook(player, party, isKicked, kickedBy);
+	}
+	
+	public BungeePartiesPartyFollowEvent preparePartyFollowEvent(Party party, String server) {
+		return new PartyFollowEventHook(party, server);
 	}
 	
 	@Override

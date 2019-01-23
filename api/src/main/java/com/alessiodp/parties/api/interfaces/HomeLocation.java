@@ -12,8 +12,7 @@ public interface HomeLocation {
 	/**
 	 * Set the world name
 	 *
-	 * @param world
-	 *            The world name to set
+	 * @param world The world name to set
 	 */
 	void setWorld(String world);
 	
@@ -27,8 +26,7 @@ public interface HomeLocation {
 	/**
 	 * Set the x-coordinate
 	 *
-	 * @param x
-	 *            The x-coordinate to set
+	 * @param x The x-coordinate to set
 	 */
 	void setX(double x);
 	
@@ -42,8 +40,7 @@ public interface HomeLocation {
 	/**
 	 * Set the y-coordinate
 	 *
-	 * @param y
-	 *            The y-coordinate to set
+	 * @param y The y-coordinate to set
 	 */
 	void setY(double y);
 	
@@ -57,8 +54,7 @@ public interface HomeLocation {
 	/**
 	 * Set the z-coordinate
 	 *
-	 * @param z
-	 *            The z-coordinate to set
+	 * @param z The z-coordinate to set
 	 */
 	void setZ(double z);
 	
@@ -72,8 +68,7 @@ public interface HomeLocation {
 	/**
 	 * Set the yaw
 	 *
-	 * @param yaw
-	 *            The yaw to set
+	 * @param yaw The yaw to set
 	 */
 	void setYaw(float yaw);
 	
@@ -87,8 +82,7 @@ public interface HomeLocation {
 	/**
 	 * Set the pitch
 	 *
-	 * @param pitch
-	 *            The pitch to set
+	 * @param pitch The pitch to set
 	 */
 	void setPitch(float pitch);
 }

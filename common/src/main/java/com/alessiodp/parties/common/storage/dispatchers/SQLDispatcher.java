@@ -337,6 +337,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			preStatement.setString(8, party.getHome() != null ? party.getHome().toString() : "");
 			preStatement.setBoolean(9, party.getProtection());
 			preStatement.setDouble(10, party.getExperience());
+			preStatement.setBoolean(11, party.getFollowEnabled());
 			preStatement.executeUpdate();
 		} catch (SQLException ex) {
 			LoggerManager.printError(LoggerManager.formatErrorCallTrace(Constants.DEBUG_SQL_ERROR, ex));
@@ -406,6 +407,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 						preStatement.setString(1, party.getName());
 						
 						preStatement.executeUpdate();
+						connection.commit();
 					}
 				} catch (Exception ex) {
 					connection.rollback();
@@ -511,7 +513,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			if (connection != null) {
 				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_LOG_INSERT))) {
 					preStatement.setTimestamp(1, new Timestamp(line.getDate().getTime()));
-					preStatement.setInt(2, Integer.valueOf(line.getLevel()));
+					preStatement.setInt(2, Integer.parseInt(line.getLevel()));
 					preStatement.setString(3, line.getPosition());
 					preStatement.setString(4, line.getMessage());
 					
@@ -554,6 +556,7 @@ public class SQLDispatcher implements IDatabaseDispatcher {
 			ret.setHome(HomeLocationImpl.deserialize(rs.getString("home")));
 			ret.setProtection(rs.getBoolean("protection"));
 			ret.setExperience(rs.getDouble("experience"));
+			ret.setFollowEnabled(rs.getBoolean("follow"));
 			String leader = rs.getString("leader");
 			if (leader != null) {
 				if (leader.equalsIgnoreCase(Constants.FIXED_VALUE_TEXT)) {

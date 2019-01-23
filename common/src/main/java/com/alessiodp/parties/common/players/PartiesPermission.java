@@ -10,6 +10,7 @@ public enum PartiesPermission {
 	CREATE		("parties.user.create"),
 	DENY		("parties.user.deny"),
 	DESC		("parties.user.desc"),
+	FOLLOW		("parties.user.follow"),
 	HELP		("parties.user.help"),
 	IGNORE		("parties.user.ignore"),
 	INFO		("parties.user.info"),
@@ -47,6 +48,8 @@ public enum PartiesPermission {
 	ADMIN_RENAME_OTHERS			("parties.admin.rename.others"),
 	ADMIN_SPY					("parties.admin.spy"),
 	ADMIN_UPDATES				("parties.admin.updates"),
+	ADMIN_VERSION				("parties.admin.version"),
+	
 	// Bukkit
 	ADMIN_HOME_OTHERS			("parties.admin.home.others"),
 	ADMIN_PROTECTION_BYPASS		("parties.admin.protection.bypass"),
@@ -62,6 +65,7 @@ public enum PartiesPermission {
 	
 	PRIVATE_EDIT_HOME("party.edit.home"),
 	PRIVATE_EDIT_DESC("party.edit.desc"),
+	PRIVATE_EDIT_FOLLOW("party.edit.follow"),
 	PRIVATE_EDIT_MOTD("party.edit.motd"),
 	PRIVATE_EDIT_COLOR("party.edit.color"),
 	PRIVATE_EDIT_PASSWORD("party.edit.password"),

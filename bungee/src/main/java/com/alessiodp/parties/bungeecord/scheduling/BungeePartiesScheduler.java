@@ -45,8 +45,10 @@ public class BungeePartiesScheduler extends PartiesScheduler {
 	}
 	
 	@Override
-	public void runAsyncTaskTimer(Runnable runnable, long seconds) {
-		bungeeScheduler.schedule(getPlugin(), runnable, 0, seconds, TimeUnit.SECONDS);
+	public int scheduleAsyncTaskTimer(Runnable runnable, long seconds) {
+		int taskId = bungeeScheduler.schedule(getPlugin(), runnable, seconds * 50, TimeUnit.MILLISECONDS).getId();
+		getCurrentTasks().add(taskId);
+		return taskId;
 	}
 	
 	@Override

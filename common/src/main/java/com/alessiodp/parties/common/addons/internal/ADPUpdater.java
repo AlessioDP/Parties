@@ -45,7 +45,7 @@ public class ADPUpdater {
 	
 	public static void asyncTaskCheckUpdates() {
 		if (ConfigMain.PARTIES_UPDATES_CHECK) {
-			plugin.getPartiesScheduler().runAsyncTaskTimer(ADPUpdater::checkUpdates, 60*60*24);
+			plugin.getPartiesScheduler().scheduleAsyncTaskTimer(ADPUpdater::checkUpdates, 20L*60*60*24);
 		}
 	}
 	

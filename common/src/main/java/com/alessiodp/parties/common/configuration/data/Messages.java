@@ -105,6 +105,7 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_MIGRATE_WRONGDB;
 	
 	public static String MAINCMD_P_COOLDOWN;
+	public static String MAINCMD_P_CENSORED;
 	public static String MAINCMD_P_WRONGCMD;
 	
 	public static String MAINCMD_RANK_CHANGED;
@@ -126,6 +127,10 @@ public abstract class Messages extends ConfigurationFile {
 	
 	public static String MAINCMD_SPY_ENABLED;
 	public static String MAINCMD_SPY_DISABLED;
+	public static String MAINCMD_SPY_WRONGCMD;
+	
+	public static String MAINCMD_VERSION_UPDATED;
+	public static String MAINCMD_VERSION_OUTDATED;
 
 	
 	// Additional commands messages
@@ -143,6 +148,10 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_DESC_INVALID;
 	public static String ADDCMD_DESC_CENSORED;
 	public static String ADDCMD_DESC_WRONGCMD;
+	
+	public static String ADDCMD_FOLLOW_ON;
+	public static String ADDCMD_FOLLOW_OFF;
+	public static String ADDCMD_FOLLOW_WRONGCMD;
 	
 	public static String ADDCMD_JOIN_JOINED;
 	public static String ADDCMD_JOIN_PLAYERJOINED;
@@ -207,9 +216,11 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_MAINCMD_RELOAD;
 	public static String HELP_MAINCMD_RENAME;
 	public static String HELP_MAINCMD_SPY;
+	public static String HELP_MAINCMD_VERSION;
 	
 	public static String HELP_ADDCMD_COLOR;
 	public static String HELP_ADDCMD_DESC;
+	public static String HELP_ADDCMD_FOLLOW;
 	public static String HELP_ADDCMD_JOIN;
 	public static String HELP_ADDCMD_LIST;
 	public static String HELP_ADDCMD_MOTD;
@@ -249,7 +260,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_CHAT_WRONGCMD = "&cWrong variables: Type &7/party chat [on/off]";
 		
 		MAINCMD_CREATE_CREATED = "[{\"text\":\"You have created the party %party%.\\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]";
-		MAINCMD_CREATE_CREATEDFIXED = "&l&bYou have created the fixed party %party%";
+		MAINCMD_CREATE_CREATEDFIXED = "&b&lYou have created the fixed party %party%";
 		MAINCMD_CREATE_NAMEEXISTS = "&cThe party name %party% already exists, choose a different name";
 		MAINCMD_CREATE_NAMETOOLONG = "&cThe party name is too long!";
 		MAINCMD_CREATE_NAMETOOSHORT = "&cThe party name is too short!";
@@ -330,6 +341,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_MIGRATE_WRONGDB = "&cDatabase not found. You can select: YAML, MySQL, SQLite!";
 		
 		MAINCMD_P_COOLDOWN = "&cYou still have to wait %seconds% seconds";
+		MAINCMD_P_CENSORED = "&cThe message contains censored words!";
 		MAINCMD_P_WRONGCMD = "&cWrong variables: Type &7/p <message>";
 		
 		MAINCMD_RANK_CHANGED = "&a%player% rank changed into %rank_name%";
@@ -351,6 +363,10 @@ public abstract class Messages extends ConfigurationFile {
 		
 		MAINCMD_SPY_ENABLED = "&7Now you are a spy!";
 		MAINCMD_SPY_DISABLED = "&7You are no longer a spy";
+		MAINCMD_SPY_WRONGCMD = "&cWrong variables: Type &7/party spy [on/off]";
+		
+		MAINCMD_VERSION_UPDATED = "&b&lParties &b%version% &7- Developed by &6AlessioDP";
+		MAINCMD_VERSION_OUTDATED = "&b&lParties &b%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%";
 
 		
 		// Additional commands messages
@@ -368,6 +384,10 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_DESC_INVALID = "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars.";
 		ADDCMD_DESC_CENSORED = "&cThe description contains censored words!";
 		ADDCMD_DESC_WRONGCMD = "&cWrong variables: Type &7/party desc <description/remove>";
+		
+		ADDCMD_FOLLOW_ON = "&aNow your party members will follow your leader";
+		ADDCMD_FOLLOW_OFF = "&aYour party members will not follow your leader anymore";
+		ADDCMD_FOLLOW_WRONGCMD = "&cWrong variables: Type &7/party follow [on/off]";
 		
 		ADDCMD_JOIN_JOINED = "&aYou joined the party %party%";
 		ADDCMD_JOIN_PLAYERJOINED = "&b&l%player% joined in the party";
@@ -398,7 +418,7 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_PASSWORD_REMOVED = "&aParty password removed";
 		ADDCMD_PASSWORD_BROADCAST = "";
 		ADDCMD_PASSWORD_INVALID = "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars.";
-		ADDCMD_PASSWORD_WRONGCMD = "&cWrong variables: Type &7/party password <password>";
+		ADDCMD_PASSWORD_WRONGCMD = "&cWrong variables: Type &7/party password <password/remove>";
 		
 		ADDCMD_TELEPORT_TELEPORTING = "&7Teleporting your party here!";
 		ADDCMD_TELEPORT_TELEPORTED = "&bTeleported to %player%";
@@ -421,11 +441,11 @@ public abstract class Messages extends ConfigurationFile {
 		
 		HELP_MAINCMD_HELP = "{\"text\":\"\",\"extra\":[{\"text\":\"/party help [page]\",\"color\":\"aqua\"},{\"text\":\" - Show help pages\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party help \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_ACCEPT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party accept\",\"color\":\"aqua\"},{\"text\":\" - Accept a party invitation\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_MAINCMD_CHAT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party chat [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle the party chat\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party chat \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_MAINCMD_CHAT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party chat [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle party chat\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party chat \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_CREATE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party create <name>\",\"color\":\"aqua\"},{\"text\":\" - Create a new party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party create \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_DELETE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party delete <party>\",\"color\":\"aqua\"},{\"text\":\" - Delete the party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party delete \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_DENY = "{\"text\":\"\",\"extra\":[{\"text\":\"/party deny\",\"color\":\"aqua\"},{\"text\":\" - Deny a party invitation\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_MAINCMD_IGNORE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party ignore [party]\",\"color\":\"aqua\"},{\"text\":\" - Add/remove/show parties ignored\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party ignore \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_MAINCMD_IGNORE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party ignore [party]\",\"color\":\"aqua\"},{\"text\":\" - Add/remove/show ignored parties\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party ignore \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_INFO = "{\"text\":\"\",\"extra\":[{\"text\":\"/party info [party]\",\"color\":\"aqua\"},{\"text\":\" - Show party information\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party info \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_INVITE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party invite <player>\",\"color\":\"aqua\"},{\"text\":\" - Invite a player to your party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_KICK = "{\"text\":\"\",\"extra\":[{\"text\":\"/party kick <player>\",\"color\":\"aqua\"},{\"text\":\" - Kick a player from your party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party kick \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
@@ -433,15 +453,17 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_MAINCMD_MIGRATE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party migrate <from> <to>\",\"color\":\"aqua\"},{\"text\":\" - Copy database into a new one\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party migrate \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_P = "{\"text\":\"\",\"extra\":[{\"text\":\"/p <message>\",\"color\":\"aqua\"},{\"text\":\" - Send a message to the party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/p \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_RANK = "{\"text\":\"\",\"extra\":[{\"text\":\"/party rank <player> <rank>\",\"color\":\"aqua\"},{\"text\":\" - Change rank of the player\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party rank \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_MAINCMD_RELOAD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party reload\",\"color\":\"aqua\"},{\"text\":\" - Reload the configuration\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party reload\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_MAINCMD_RENAME = "{\"text\":\"\",\"extra\":[{\"text\":\"/party rename [party] <newname>\",\"color\":\"aqua\"},{\"text\":\" - Renames a party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party rename \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_MAINCMD_SPY = "{\"text\":\"\",\"extra\":[{\"text\":\"/party spy\",\"color\":\"aqua\"},{\"text\":\" - See messages from other parties\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party spy\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_MAINCMD_RELOAD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party reload\",\"color\":\"aqua\"},{\"text\":\" - Reload Parties configuration files\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party reload\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_MAINCMD_RENAME = "{\"text\":\"\",\"extra\":[{\"text\":\"/party rename [party] <newname>\",\"color\":\"aqua\"},{\"text\":\" - Rename the party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party rename \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_MAINCMD_SPY = "{\"text\":\"\",\"extra\":[{\"text\":\"/party spy [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Spy messages of other parties\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party spy \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_MAINCMD_VERSION = "{\"text\":\"\",\"extra\":[{\"text\":\"/party version\",\"color\":\"aqua\"},{\"text\":\" - Show Parties information\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party version\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		
-		HELP_ADDCMD_COLOR = "{\"text\":\"\",\"extra\":[{\"text\":\"/party color <color>\",\"color\":\"aqua\"},{\"text\":\" - Change color of the party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party color \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_ADDCMD_DESC = "{\"text\":\"\",\"extra\":[{\"text\":\"/party desc <description/remove>\",\"color\":\"aqua\"},{\"text\":\" - Add/remove description\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party desc \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_ADDCMD_JOIN = "{\"text\":\"\",\"extra\":[{\"text\":\"/party join <party> [password]\",\"color\":\"aqua\"},{\"text\":\" - Join into a party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party join \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_COLOR = "{\"text\":\"\",\"extra\":[{\"text\":\"/party color <color>\",\"color\":\"aqua\"},{\"text\":\" - Change party color\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party color \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_DESC = "{\"text\":\"\",\"extra\":[{\"text\":\"/party desc <description/remove>\",\"color\":\"aqua\"},{\"text\":\" - Set/remove party description\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party desc \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_FOLLOW = "{\"text\":\"\",\"extra\":[{\"text\":\"/party follow [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle follow leader\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party follow \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_JOIN = "{\"text\":\"\",\"extra\":[{\"text\":\"/party join <party> [password]\",\"color\":\"aqua\"},{\"text\":\" - Join into the party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party join \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_LIST = "{\"text\":\"\",\"extra\":[{\"text\":\"/party list [page]\",\"color\":\"aqua\"},{\"text\":\" - List of online parties\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party list \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_ADDCMD_MOTD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party motd <motd/remove>\",\"color\":\"aqua\"},{\"text\":\" - Add/remove motd\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party motd \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
+		HELP_ADDCMD_MOTD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party motd <motd/remove>\",\"color\":\"aqua\"},{\"text\":\" - Set/remove party motd\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party motd \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_MUTE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party mute [on/off]\",\"color\":\"aqua\"},{\"text\":\" - Toggle notifications\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party mute \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_PASSWORD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party password <pw/remove>\",\"color\":\"aqua\"},{\"text\":\" - Change party password\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party password \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_ADDCMD_TELEPORT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party teleport\",\"color\":\"aqua\"},{\"text\":\" - Teleport your party to you\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party teleport\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
@@ -546,6 +568,7 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_MIGRATE_WRONGDB = confAdapter.getString("main-commands.migrate.wrong-database", MAINCMD_MIGRATE_WRONGDB);
 		
 		MAINCMD_P_COOLDOWN = confAdapter.getString("main-commands.p.cooldown", MAINCMD_P_COOLDOWN);
+		MAINCMD_P_CENSORED = confAdapter.getString("main-commands.p.censored", MAINCMD_P_CENSORED);
 		MAINCMD_P_WRONGCMD = confAdapter.getString("main-commands.p.wrong-command", MAINCMD_P_WRONGCMD);
 		
 		MAINCMD_RANK_CHANGED = confAdapter.getString("main-commands.rank.changed", MAINCMD_RANK_CHANGED);
@@ -567,6 +590,10 @@ public abstract class Messages extends ConfigurationFile {
 		
 		MAINCMD_SPY_ENABLED = confAdapter.getString("main-commands.spy.enabled", MAINCMD_SPY_ENABLED);
 		MAINCMD_SPY_DISABLED = confAdapter.getString("main-commands.spy.disabled", MAINCMD_SPY_DISABLED);
+		MAINCMD_SPY_WRONGCMD = confAdapter.getString("main-commands.spy.wrong-command", MAINCMD_SPY_WRONGCMD);
+		
+		MAINCMD_VERSION_UPDATED = confAdapter.getString("main-commands.version.updated", MAINCMD_VERSION_UPDATED);
+		MAINCMD_VERSION_OUTDATED = confAdapter.getString("main-commands.version.outdated", MAINCMD_VERSION_OUTDATED);
 		
 		
 		// Additional commands messages
@@ -584,6 +611,10 @@ public abstract class Messages extends ConfigurationFile {
 		ADDCMD_DESC_INVALID = confAdapter.getString("additional-commands.desc.invalid-chars", ADDCMD_DESC_INVALID);
 		ADDCMD_DESC_CENSORED = confAdapter.getString("additional-commands.desc.censored", ADDCMD_DESC_CENSORED);
 		ADDCMD_DESC_WRONGCMD = confAdapter.getString("additional-commands.desc.wrong-command", ADDCMD_DESC_WRONGCMD);
+		
+		ADDCMD_FOLLOW_ON = confAdapter.getString("additional-commands.follow.toggle-on", ADDCMD_FOLLOW_ON);
+		ADDCMD_FOLLOW_OFF = confAdapter.getString("additional-commands.follow.toggle-off", ADDCMD_FOLLOW_OFF);
+		ADDCMD_FOLLOW_WRONGCMD = confAdapter.getString("additional-commands.follow.wrong-command", ADDCMD_FOLLOW_WRONGCMD);
 		
 		ADDCMD_JOIN_JOINED = confAdapter.getString("additional-commands.join.joined", ADDCMD_JOIN_JOINED);
 		ADDCMD_JOIN_PLAYERJOINED = confAdapter.getString("additional-commands.join.player-joined", ADDCMD_JOIN_PLAYERJOINED);
@@ -648,9 +679,11 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_MAINCMD_RELOAD = confAdapter.getString("help.main-commands.reload", HELP_MAINCMD_RELOAD);
 		HELP_MAINCMD_RENAME = confAdapter.getString("help.main-commands.rename", HELP_MAINCMD_RENAME);
 		HELP_MAINCMD_SPY = confAdapter.getString("help.main-commands.spy", HELP_MAINCMD_SPY);
+		HELP_MAINCMD_VERSION = confAdapter.getString("help.main-commands.version", HELP_MAINCMD_VERSION);
 		
 		HELP_ADDCMD_COLOR = confAdapter.getString("help.additional-commands.color", HELP_ADDCMD_COLOR);
 		HELP_ADDCMD_DESC = confAdapter.getString("help.additional-commands.desc", HELP_ADDCMD_DESC);
+		HELP_ADDCMD_FOLLOW = confAdapter.getString("help.additional-commands.follow", HELP_ADDCMD_FOLLOW);
 		HELP_ADDCMD_JOIN = confAdapter.getString("help.additional-commands.join", HELP_ADDCMD_JOIN);
 		HELP_ADDCMD_LIST = confAdapter.getString("help.additional-commands.list", HELP_ADDCMD_LIST);
 		HELP_ADDCMD_MOTD = confAdapter.getString("help.additional-commands.motd", HELP_ADDCMD_MOTD);

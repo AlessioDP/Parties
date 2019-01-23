@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public interface IPartyPostCreateEvent extends PartiesEvent {
 	/**
 	 * Get the creator of the party
-	 * 
+	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NotNull
@@ -16,7 +16,7 @@ public interface IPartyPostCreateEvent extends PartiesEvent {
 	
 	/**
 	 * Get the party
-	 * 
+	 *
 	 * @return Returns the {@link Party}
 	 */
 	@NotNull

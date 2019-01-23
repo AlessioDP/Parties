@@ -18,11 +18,27 @@ import java.util.concurrent.CompletableFuture;
 
 public class MessageListener implements PluginMessageListener {
 	private BukkitPartiesPlugin plugin;
+	private boolean registered;
 	
 	public MessageListener(PartiesPlugin instance) {
 		plugin = (BukkitPartiesPlugin) instance;
-		plugin.getBootstrap().getServer().getMessenger().registerOutgoingPluginChannel(plugin.getBootstrap(), Constants.MESSAGING_CHANNEL);
-		plugin.getBootstrap().getServer().getMessenger().registerIncomingPluginChannel(plugin.getBootstrap(), Constants.MESSAGING_CHANNEL, this);
+		registered = false;
+	}
+	
+	public void register() {
+		if (!registered) {
+			plugin.getBootstrap().getServer().getMessenger().registerOutgoingPluginChannel(plugin.getBootstrap(), Constants.MESSAGING_CHANNEL);
+			plugin.getBootstrap().getServer().getMessenger().registerIncomingPluginChannel(plugin.getBootstrap(), Constants.MESSAGING_CHANNEL, this);
+			registered = true;
+		}
+	}
+	
+	public void unregister() {
+		if (registered) {
+			plugin.getBootstrap().getServer().getMessenger().unregisterOutgoingPluginChannel(plugin.getBootstrap(), Constants.MESSAGING_CHANNEL);
+			plugin.getBootstrap().getServer().getMessenger().unregisterIncomingPluginChannel(plugin.getBootstrap(), Constants.MESSAGING_CHANNEL);
+			registered = false;
+		}
 	}
 	
 	@Override

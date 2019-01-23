@@ -44,13 +44,15 @@ public class BukkitPartiesScheduler extends PartiesScheduler {
 	}
 	
 	@Override
-	public void runAsyncTaskTimer(Runnable runnable, long seconds) {
-		bukkitScheduler.runTaskTimerAsynchronously(getPlugin(), runnable, 0, seconds * 20);
+	public int scheduleAsyncTaskTimer(Runnable runnable, long ticks) {
+		int taskId = bukkitScheduler.runTaskTimerAsynchronously(getPlugin(), runnable, 0, ticks).getTaskId();
+		getCurrentTasks().add(taskId);
+		return taskId;
 	}
 	
 	@Override
-	public int scheduleTaskLater(Runnable runnable, long seconds) {
-		int taskId = bukkitScheduler.runTaskLater(getPlugin(), runnable, seconds * 20).getTaskId();
+	public int scheduleTaskLater(Runnable runnable, long ticks) {
+		int taskId = bukkitScheduler.runTaskLater(getPlugin(), runnable, ticks).getTaskId();
 		getCurrentTasks().add(taskId);
 		return taskId;
 	}

@@ -186,6 +186,10 @@ public class FileDispatcher implements IDatabaseDispatcher {
 		if (plugin.getPartyManager().isBukkit_expSystem() && party.getExperience() > 0)
 			node.getNode("experience").setValue(party.getExperience());
 		
+		if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE && ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD) {
+			node.getNode("follow").setValue(party.getFollowEnabled() ? null : false); // By default is true, so insert it only if false
+		}
+		
 		node.getNode("home").setValue(party.getHome() != null ? party.getHome().toString() : null);
 		
 		node.getNode("leader").setValue(party.isFixed() ? Constants.FIXED_VALUE_TEXT : party.getLeader().toString());
@@ -327,6 +331,7 @@ public class FileDispatcher implements IDatabaseDispatcher {
 			ret.setHome(HomeLocationImpl.deserialize(node.getNode("home").getString("")));
 			ret.setProtection(node.getNode("protection").getBoolean(false));
 			ret.setExperience(node.getNode("experience").getDouble(0));
+			ret.setFollowEnabled(node.getNode("follow").getBoolean(true));
 			
 			// Leader check
 			String leader = node.getNode("leader").getString("");

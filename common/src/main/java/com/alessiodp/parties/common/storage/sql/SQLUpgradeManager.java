@@ -58,7 +58,7 @@ public abstract class SQLUpgradeManager {
 					if (rs.next()) {
 						String cmnt = rs.getString("table_comment");
 						if (!cmnt.isEmpty()) {
-							version = Integer.valueOf(cmnt.split(":")[1]);
+							version = Integer.parseInt(cmnt.split(":")[1]);
 							
 							if (version >= 3) {
 								// Only needed from new databases
@@ -169,6 +169,7 @@ public abstract class SQLUpgradeManager {
 						preStatement.setString(8, rs.getString("home"));
 						preStatement.setBoolean(9, false);
 						preStatement.setDouble(10, 0);
+						preStatement.setBoolean(11, true);
 						preStatement.executeUpdate();
 					}
 				}
@@ -188,6 +189,7 @@ public abstract class SQLUpgradeManager {
 						preStatement.setString(8, rs.getString("home"));
 						preStatement.setBoolean(9, false); // Set new pvp
 						preStatement.setDouble(10, 0); // Set new experience
+						preStatement.setBoolean(11, true);
 						preStatement.executeUpdate();
 					}
 				}
@@ -206,6 +208,26 @@ public abstract class SQLUpgradeManager {
 						preStatement.setString(8, rs.getString("home"));
 						preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
 						preStatement.setDouble(10, rs.getDouble("experience"));
+						preStatement.setBoolean(11, true);
+						preStatement.executeUpdate();
+					}
+				}
+				break;
+			case 5:
+				// Upgrading from 2.4
+				while (rs.next()) {
+					try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PARTY_INSERT_MYSQL))) {
+						preStatement.setString(1, rs.getString("name"));
+						preStatement.setString(2, rs.getString("leader"));
+						preStatement.setString(3, rs.getString("description"));
+						preStatement.setString(4, rs.getString("motd"));
+						preStatement.setString(5, rs.getString("color"));
+						preStatement.setInt(6, rs.getInt("kills"));
+						preStatement.setString(7, rs.getString("password"));
+						preStatement.setString(8, rs.getString("home"));
+						preStatement.setBoolean(9, rs.getBoolean("protection"));
+						preStatement.setDouble(10, rs.getDouble("experience"));
+						preStatement.setBoolean(11, true); // Set new follow
 						preStatement.executeUpdate();
 					}
 				}
@@ -229,6 +251,7 @@ public abstract class SQLUpgradeManager {
 							preStatement.setString(8, rs.getString("home"));
 							preStatement.setBoolean(9, false); // Set new pvp
 							preStatement.setDouble(10, 0); // Set new experience
+							preStatement.setBoolean(11, true);
 							preStatement.executeUpdate();
 						}
 					}
@@ -247,9 +270,30 @@ public abstract class SQLUpgradeManager {
 							preStatement.setString(8, rs.getString("home"));
 							preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
 							preStatement.setDouble(10, rs.getDouble("experience"));
+							preStatement.setBoolean(11, true);
 							preStatement.executeUpdate();
 						}
 					}
+					break;
+				case 3:
+					while (rs.next()) {
+						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PARTY_INSERT_SQLITE))) {
+							preStatement.setString(1, rs.getString("name"));
+							preStatement.setString(2, rs.getString("leader"));
+							preStatement.setString(3, rs.getString("description"));
+							preStatement.setString(4, rs.getString("motd"));
+							// Removed prefix & suffix
+							preStatement.setString(5, rs.getString("color"));
+							preStatement.setInt(6, rs.getInt("kills"));
+							preStatement.setString(7, rs.getString("password"));
+							preStatement.setString(8, rs.getString("home"));
+							preStatement.setBoolean(9, rs.getBoolean("protection"));
+							preStatement.setDouble(10, rs.getDouble("experience"));
+							preStatement.setBoolean(11, true); // Set new follow
+							preStatement.executeUpdate();
+						}
+					}
+					break;
 			}
 		}
 	}
@@ -305,6 +349,21 @@ public abstract class SQLUpgradeManager {
 					}
 				}
 				break;
+			case 5:
+				// Same table
+				while (rs.next()) {
+					try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PLAYER_INSERT_MYSQL))) {
+						preStatement.setString(1, rs.getString("uuid"));
+						preStatement.setString(2, rs.getString("party"));
+						preStatement.setInt(3, rs.getInt("rank"));
+						preStatement.setString(4, rs.getString("name"));
+						preStatement.setInt(5, rs.getInt("timestamp"));
+						preStatement.setBoolean(6, rs.getBoolean("spy"));
+						preStatement.setBoolean(7, rs.getBoolean("mute"));
+						preStatement.executeUpdate();
+					}
+				}
+				break;
 			}
 		}
 		if (databaseType.isSQLite()) {
@@ -322,6 +381,21 @@ public abstract class SQLUpgradeManager {
 							preStatement.setInt(5, rs.getInt("timestamp"));
 							preStatement.setBoolean(6, rs.getBoolean("spy"));
 							preStatement.setBoolean(7, rs.getBoolean("notify")); // Changed notify into mute
+							preStatement.executeUpdate();
+						}
+					}
+					break;
+				case 3:
+					// Same table
+					while (rs.next()) {
+						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_PLAYER_INSERT_SQLITE))) {
+							preStatement.setString(1, rs.getString("uuid"));
+							preStatement.setString(2, rs.getString("party"));
+							preStatement.setInt(3, rs.getInt("rank"));
+							preStatement.setString(4, rs.getString("name"));
+							preStatement.setInt(5, rs.getInt("timestamp"));
+							preStatement.setBoolean(6, rs.getBoolean("spy"));
+							preStatement.setBoolean(7, rs.getBoolean("mute"));
 							preStatement.executeUpdate();
 						}
 					}
@@ -351,6 +425,7 @@ public abstract class SQLUpgradeManager {
 			case 2:
 			case 3:
 			case 4:
+			case 5:
 				// Same table
 				while (rs.next()) {
 					try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_LOG_MIGRATE))) {
@@ -369,6 +444,7 @@ public abstract class SQLUpgradeManager {
 			switch (version) {
 				case 1:
 				case 2:
+				case 3:
 					// Same table
 					while (rs.next()) {
 						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatQuery(Constants.QUERY_LOG_MIGRATE))) {

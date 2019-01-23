@@ -21,7 +21,7 @@ public class BukkitFollowListener implements Listener {
 		plugin = instance;
 	}
 	
-	@EventHandler
+	@EventHandler (ignoreCancelled = true)
 	public void onEntityPortalEvent(PlayerPortalEvent event) {
 		if (!event.isCancelled()) {
 			BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
@@ -32,7 +32,7 @@ public class BukkitFollowListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (ignoreCancelled = true)
 	public void onChangeWorld(PlayerChangedWorldEvent event) {
 		if (BukkitConfigMain.ADDITIONAL_FOLLOW_ENABLE) {
 			// Make it async
@@ -44,7 +44,7 @@ public class BukkitFollowListener implements Listener {
 						BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(bukkitPlayer.getUniqueId());
 						if (!pp.getPartyName().isEmpty()) {
 							PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
-							if (party != null) {
+							if (party != null && party.isFollowEnabled()) {
 								if (pp.getRank() >= BukkitConfigMain.ADDITIONAL_FOLLOW_RANKNEEDED) {
 									
 									// Init teleport
@@ -61,7 +61,7 @@ public class BukkitFollowListener implements Listener {
 													int taskId;
 													switch (BukkitConfigMain.ADDITIONAL_FOLLOW_TYPE) {
 														case 1:
-															taskId = plugin.getPartiesScheduler().scheduleTaskLater(new PortalTask(plugin, pl.getPlayerUUID()), BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT / 20L);
+															taskId = plugin.getPartiesScheduler().scheduleTaskLater(new PortalTask(plugin, pl.getPlayerUUID()), BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT);
 															ppVictim.setPortalTimeoutTask(taskId);
 															ppVictim.sendMessage(BukkitMessages.OTHER_FOLLOW_WORLD
 																	.replace("%player%", bukkitPlayer.getName())
@@ -69,7 +69,7 @@ public class BukkitFollowListener implements Listener {
 															bukkitPl.teleport(bukkitPlayer.getWorld().getSpawnLocation());
 															break;
 														case 2:
-															taskId = plugin.getPartiesScheduler().scheduleTaskLater(new PortalTask(plugin, pl.getPlayerUUID()), BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT / 20L);
+															taskId = plugin.getPartiesScheduler().scheduleTaskLater(new PortalTask(plugin, pl.getPlayerUUID()), BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT);
 															ppVictim.setPortalTimeoutTask(taskId);
 															ppVictim.sendMessage(BukkitMessages.OTHER_FOLLOW_WORLD
 																	.replace("%player%", bukkitPlayer.getName())

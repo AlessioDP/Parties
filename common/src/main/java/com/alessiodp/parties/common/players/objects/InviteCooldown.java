@@ -40,7 +40,7 @@ public class InviteCooldown {
 		List<InviteCooldown> list = plugin.getCooldownManager().getInviteCooldown().computeIfAbsent(from, k -> new ArrayList<>());
 		
 		startTime = System.currentTimeMillis() / 1000L; // Unix timestamp
-		task = plugin.getPartiesScheduler().scheduleTaskLater(new InviteCooldownTask(this), delay);
+		task = plugin.getPartiesScheduler().scheduleTaskLater(new InviteCooldownTask(this), delay * 20L);
 		list.add(this);
 	}
 	

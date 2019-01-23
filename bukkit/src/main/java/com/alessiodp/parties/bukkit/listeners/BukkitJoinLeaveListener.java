@@ -28,8 +28,9 @@ public class BukkitJoinLeaveListener extends JoinLeaveListener implements Listen
 		
 		// Remove home count if active on the player
 		BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(user.getUUID());
-		if (pp.getHomeCooldown() != null) {
-			pp.getHomeCooldown().delete();
+		if (pp.getHomeDelayTask() != -1){
+			plugin.getPartiesScheduler().cancelTask(pp.getHomeDelayTask());
+			pp.setHomeDelayTask(-1);
 		}
 	}
 }

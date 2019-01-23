@@ -5,6 +5,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.logging.LogLevel;
@@ -46,6 +47,7 @@ public abstract class PartyImpl implements Party {
 	@Setter private boolean protection;
 	@Getter @Setter private double experience;
 	@Getter @Setter private ExpResult expResult;
+	@Setter private boolean followEnabled;
 	
 	@Getter @Setter private Color dynamicColor;
 	@Getter private Set<PartyPlayerImpl> onlinePlayers;
@@ -142,7 +144,7 @@ public abstract class PartyImpl implements Party {
 	 */
 	public void invitePlayer(UUID invitedBy, UUID invitedPlayer) {
 		int taskId = plugin.getPartiesScheduler().scheduleTaskLater(
-				new InviteTask(this, invitedPlayer), ConfigParties.GENERAL_INVITE_TIMEOUT);
+				new InviteTask(this, invitedPlayer), ConfigParties.GENERAL_INVITE_TIMEOUT * 20L);
 		
 		inviteMap.put(invitedPlayer, invitedBy);
 		inviteTasks.put(invitedPlayer, taskId);
@@ -347,11 +349,27 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
+	public boolean getProtection() {return protection;}
+	
+	@Override
 	public boolean isFriendlyFireProtected() {
 		return getProtection();
 	}
 	
 	@Override
-	public boolean getProtection() {return protection;}
+	public boolean getFollowEnabled() {return followEnabled;}
+	
+	@Override
+	public boolean isFollowEnabled() {
+		boolean ret = false;
+		if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE) {
+			if (ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD) {
+				ret = getFollowEnabled();
+			} else {
+				ret = true;
+			}
+		}
+		return ret;
+	}
 	
 }

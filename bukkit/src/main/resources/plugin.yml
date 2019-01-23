@@ -21,6 +21,8 @@ permissions:
     description: Allow access to /party deny
   parties.user.desc:
     description: Allow access to /party desc
+  parties.user.follow:
+    description: Allow access to /party follow
   parties.user.help:
     description: Allow access to /party or /party help
   parties.user.ignore:
@@ -89,6 +91,8 @@ permissions:
     description: Allow access to /party spy
   parties.admin.updates:
     description: Send a message if there is an update
+  parties.admin.version:
+    description: Allow access to /party version
   parties.admin.home.others:
     description: Allow access to /party home on other homes
   parties.admin.protection.bypass:
@@ -106,6 +110,7 @@ permissions:
       parties.user.create: true
       parties.user.deny: true
       parties.user.desc: true
+      parties.user.follow: true
       parties.user.help: true
       parties.user.ignore: true
       parties.user.info: true
@@ -146,6 +151,7 @@ permissions:
       parties.admin.rename.others: true
       parties.admin.spy: true
       parties.admin.updates: true
+      parties.admin.version: true
       parties.admin.home.others: true
       parties.admin.protection.bypass: true
       parties.admin.vaultbypass: true
