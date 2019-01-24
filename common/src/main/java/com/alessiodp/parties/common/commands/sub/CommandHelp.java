@@ -49,9 +49,6 @@ public class CommandHelp extends AbstractCommand {
 		for(PartiesCommand pc : plugin.getCommandManager().getOrderedCommands()) {
 			if (allowedCommands.contains(pc)) {
 				list.add(pc.getHelp());
-				System.out.println("Adding: " + pc.getCommand());
-			} else {
-				System.out.println("Skipping: " + pc.getCommand());
 			}
 		}
 		
