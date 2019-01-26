@@ -15,7 +15,6 @@ import com.alessiodp.parties.common.logging.LogLevel;
 import com.alessiodp.parties.common.logging.LoggerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 
@@ -61,7 +60,8 @@ public class BukkitCommandManager extends CommandManager {
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_COMMANDS_REGISTER_PARTY_EXIST, true);
 					
 					if (cmd instanceof PluginCommand){
-						((PluginCommand) cmd).setExecutor((CommandExecutor) commandParty);
+						BukkitCommandImpl cmdParty = new BukkitCommandImpl(ConfigMain.COMMANDS_CMD_PARTY, commandParty);
+						((PluginCommand) cmd).setExecutor(cmdParty);
 					}
 				}
 			}
@@ -83,7 +83,8 @@ public class BukkitCommandManager extends CommandManager {
 					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_COMMANDS_REGISTER_P_EXIST, true);
 					
 					if (cmd instanceof PluginCommand){
-						((PluginCommand) cmd).setExecutor((CommandExecutor) commandP);
+						BukkitCommandImpl cmdP = new BukkitCommandImpl(ConfigMain.COMMANDS_CMD_P, commandP);
+						((PluginCommand) cmd).setExecutor(cmdP);
 					}
 				}
 			}
