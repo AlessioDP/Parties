@@ -65,75 +65,75 @@ main-commands:
       player-separator: "&7, "
       player-empty: "&7Nobody"
       player-unknown: "&6Someone"
-      missing-value: "&7Ratat"
+      missing-value: "&7Miss"
   invite:
     sent: "&bYou invited %player% in your party"
-    player-invited: "[{\"text\":\"%player% te-a invitat in echipa.\n\",\"color\":\"aqua\"},{\"text\":\"Vrei sa \",\"color\":\"aqua\"},{\"text\":\"accepti\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accepta invitatia\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"respingi\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Respinge invitatia\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Poti folosi \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" pentru a alege.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% has invited you in his party.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
     timeout:
-      noresponse: "&7%player% nu a acceptat invitatia"
-      timeout: "&7Nu ai acceptat invitatia"
+      noresponse: "&7%player% didn't accept the party invite"
+      timeout: "&7You didn't accept the party invite"
     revoke:
-      sent-revoked: "&7Invitatia trimisa jucatorului %player% a fost revocata"
-      player-invite-revoked: "&7Invitatia primita de la %party% a fost revocata"
+      sent-revoked: "&7Revoked invite sent to %player%"
+      player-invite-revoked: "&7Invite received from %party% has been revoked"
     cooldown:
-      global: "&cTrebuie sa astepti %seconds% pentru a putea invita alt jucator"
-      individual: "&cTrebuie sa astepti %seconds% pentru a invita din nou acelasi jucator"
-    player-offline: "&cPoti invita doar jucatori conectati"
-    player-no-permission: "&c%player% nu are permisiunea sa se alature"
-    player-in-party: "&c%player% este deja in echipa"
-    already-invited: "&c%player% a fost deja invitat"
-    wrong-command: "&cVariabila gresita: Scrie &7/party invite <nume>"
+      global: "&cYou need to wait %seconds% before invite another player"
+      individual: "&cYou need to wait %seconds% before invite again the same player"
+    player-offline: "&cYou can invite only online players"
+    player-no-permission: "&c%player% doesn't have the permission to join"
+    player-in-party: "&c%player% is already in a party"
+    already-invited: "&c%player% was already invited"
+    wrong-command: "&cWrong variables: Type &7/party invite <name>"
   kick:
-    sent: "&aAi dat afara pe %player% din echipa ta!"
-    player-kicked: "&bAi fost dat afara din echipa %party%"
-    broadcast: "&b&l%player% a fost dat afara din echipa"
-    broadcast-disband: "&b&lEchipa a fost stearsa pentru ca liderul a fost dat afara"
-    player-higher-rank: "&cNu iti poti da afara superiorii!"
-    player-not-in-party: "&c%player% nu este in echipa ta"
-    player-not-in-other-party: "&c%player% nu este intr-o echipa"
+    sent: "&aYou kicked %player% from your party!"
+    player-kicked: "&bYou have been kicked from %party%"
+    broadcast: "&b&l%player% has been kicked from the party"
+    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
+    player-higher-rank: "&cYou cannot kick your superior!"
+    player-not-in-party: "&c%player% is not in your party"
+    player-not-in-other-party: "&c%player% is not in a party"
     players-conflict:
       content:
-        - "&cAm gasit niste jucatori cu numele:"
+        - "&cWe have found some players with that name:"
         - "%list_players%"
-        - "&cFoloseste '&7/party kick <username> <numar>&c' pentru a da afara jucatorul corect"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: ultima conectare %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Da afara acest jucator","color":"gold"}}}'
-    wrong-command: "&cVariabile gresite: Scrie &7/party kick <nume>"
+        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+    wrong-command: "&cWrong variables: Type &7/party kick <name>"
   leave:
-    left: "&b&lAi iesit din echipa %party%"
-    broadcast: "&b&l%player% a iesit din echipa"
-    party-disbanded: "&6&lEchipa a fost stearsa pentru ca liderul a parasit-o"
+    left: "&b&lYou left the party %party%"
+    broadcast: "&b&l%player% left the party"
+    party-disbanded: "&6&lThe party has been disbanded because the leader left"
   migrate:
-    info: "&aMomentan folosesti: %database%\n&aPoti migra folosind comanda: &7/party migrate <from> <to>"
-    completed: "&aDate copiate de la %database_from% la %database_to%"
+    info: "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>"
+    completed: "&aCopied data from %database_from% to %database_to%"
     failed:
-      database-offline: "&cBaza de date %database% trebuie sa fie disponibila!"
-      failed: "&cMigrarea bazei de date %database_from% la %database_to% a esuat!"
-      same-database: "&cTrebuie sa alegi 2 baze de date diferite!"
-    wrong-database: "&cBaza de date nu a fost gasita. Poti selecta: YAML, MySQL, SQLite!"
+      database-offline: "&cThe %database% database must be online!"
+      failed: "&cDatabase migration from %database_from% to %database_to% failed!"
+      same-database: "&cYou need to choose 2 different databases!"
+    wrong-database: "&cDatabase not found. You can select: YAML, MySQL, SQLite!"
   p:
-    cooldown: "&cTot trebuie sa astepti %seconds% secunde"
+    cooldown: "&cYou still have to wait %seconds% seconds"
     censored: "&cThe message contains censored words!"
-    wrong-command: "&cVariabile gresite: Scrie &7/p <mesaj>"
+    wrong-command: "&cWrong variables: Type &7/p <message>"
   rank:
-    changed: "&aGradul jucatorului %player% a fost schimbat ca %rank_name%"
+    changed: "&a%player% rank changed into %rank_name%"
     broadcast: ""
-    wrong-rank: "&cGradul '%rank_name%' nu exista!"
-    same-rank: "&c%player% are deja gradul %rank_name%!"
-    low-rank: "&cNu poti edita jucatori cu grad asemanator sau mai mare decat al tau!"
-    to-higher-rank: "&cNu poti promova la un grad egal sau mai mare decat al tau!"
-    fixed-leader: "&cNu poti face pe cineva un lider la o echipa stabilita!"
-    changing-yourself: "&cNu iti poti schimba gradul!"
-    player-not-in-party: "&c%player% nu este in echipa ta"
-    player-not-in-other-party: "&c%player% nu este intr-o echipa"
-    wrong-command: "&cVariabile gresite: Scrie &7/party rank <jucator> <grad>"
+    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
+    same-rank: "&c%player% is already %rank_name%!"
+    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
+    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
+    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
+    changing-yourself: "&cYou cannot change yourself rank!"
+    player-not-in-party: "&c%player% is not in your party"
+    player-not-in-other-party: "&c%player% doesn't have a party"
+    wrong-command: "&cWrong variables: Type &7/party rank <player> <rank>"
   rename:
-    renamed: "&aNumele echipei %old% a fost schimbat in %party%"
-    broadcast: "&6Echipa ta si-a schimbat numele in %party%!"
-    wrong-command: "&cVariabile gresite: Scrie &7/party rename <numeNou>"
-    wrong-command-admin: "&cVariabile gresite: Scrie &7/party rename <echipa> <numeNou>"
+    renamed: "&aThe party %old% has been renamed into %party%"
+    broadcast: "&6Your party has been renamed into %party%!"
+    wrong-command: "&cWrong variables: Type &7/party rename <newname>"
+    wrong-command-admin: "&cWrong variables: Type &7/party rename <party> <newname>"
   spy:
-    enabled: "&7Acum spionezi echipele!"
-    disabled: "&7Nu mai spionezi echipele"
+    enabled: "&7Now you are a spy!"
+    disabled: "&7You are no longer a spy"
     wrong-command: "&cWrong variables: Type &7/party spy [on/off]"
   version:
     updated: "&b&lParties &b%version% &7- Developed by &6AlessioDP"
@@ -190,39 +190,39 @@ additional-commands:
     invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
     wrong-command: "&cWrong variables: Type &7/party password <password/remove>"
   teleport:
-    teleporting: "&7Teleporteaza echipa ta aici!"
-    player-teleported: "&bTeleportat la %player%"
-    cooldown: "&cTrebuie sa astepti %seconds% secunde!"
+    teleporting: "&7Teleporting your party here!"
+    player-teleported: "&bTeleported to %player%"
+    cooldown: "&cYou have to wait %seconds% seconds!"
 other:
   follow:
     following-server: "&7Following %player% in %server%"
   fixed-parties:
-    default-join: "&bAi intrat in echipa %party%"
+    default-join: "&bYou entered into %party%"
   join-leave:
-    server-join: "&b%player% este conectat!"
-    server-leave: "&7%player% nu este conectat!"
+    server-join: "&b%player% is online!"
+    server-leave: "&7%player% is offline!"
 help:
-  header: "&b================= &lAjutor echipa %page%/%maxpages% &r&b================="
+  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
   footer: ""
   console-help:
-    - "Poti folosi doar aceste comenzi:"
-    - "/party migrate - Faci o copie la baza de date in una noua"
-    - "/party reload - Reincarca setarile"
+    - "You can only make these commands:"
+    - "/party migrate - Copy database into a new one"
+    - "/party reload - Reload the configuration"
   main-commands:
-    help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Vezi paginile de ajutor","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accepta o invitatie in echipa","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
+    help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accept a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Toggle party chat","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    create: '{"text":"","extra":[{"text":"/party create <name>","color":"aqua"},{"text":" - Faci o echipa noua","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - Stergi echipa","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Respinge o invitatie in echipa","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
+    create: '{"text":"","extra":[{"text":"/party create <name>","color":"aqua"},{"text":" - Create a new party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - Delete the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Deny a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     ignore: '{"text":"","extra":[{"text":"/party ignore [party]","color":"aqua"},{"text":" - Add/remove/show ignored parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - Vezi informatii despre echipa","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invita un jucator in echipa ta","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Da afara un jucator din echipa ta","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Paraseste echipa ta","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - Copie baza de date in una noua","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" -Trimite un mesaj in echipa","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
-    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Schimba gradul jucatorului","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Ruleaza comanda","color":"gold"}}}'
+    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - Show party information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invite a player to your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Kick a player from your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Leave your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - Copy database into a new one","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - Send a message to the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Change rank of the player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Reload Parties configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - Rename the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Spy messages of other parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
