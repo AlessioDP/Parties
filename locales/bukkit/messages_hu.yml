@@ -1,0 +1,295 @@
+---
+parties:
+  update-available: "&9Új frissités elérhető: %version% (Jelenlegi verzió: %thisversion%)"
+  common-messages:
+    invalid-command: "&cIsmeretlen parancs"
+    configuration-reloaded: "&aKonfigurációs fájlok reloadolva lettek"
+    not-in-party: "&cNem vagy egy partyban se"
+    already-in-party: "&cMár egy partyban vagy!"
+    party-not-found: "&cAz %party% party nem létezik"
+    party-full: "&cA party tele van!"
+  permissions:
+    no-permission: "&cNincs jogosultságod, ehhez a parancshoz"
+    no-permission-in-party: "&cA parancs használatához a %rank_name% rangod kell legyen"
+main-commands:
+  accept:
+    broadcast: "&b&l%player% csatlakozott a partyba"
+    accepted: "&aElfogadtad a party meghívást"
+    accept-receipt: "&a%player% elfogadta a party meghívásodat"
+    no-invite: "&cNem kaptál egy meghívást se"
+    no-exists: "&cA meghívás már lejárt"
+  chat:
+    enabled: "&aChatelés a partyban"
+    disabled: "&aChatelés a publikus chaten"
+    wrong-command: "&cHelytelen használat: Használd a &7/party chat [on/off] parancsot"
+  create:
+    created: "[{\"text\":\"Létrehozztad a %party% partyt.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"Használd a /party invite \"}},{\"text\":\" parancsot hogyd meghívd a barátod.\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lLétrehozztad a %party% admin partyt"
+    name-already-exists: "&cEz a party név %party% már létezik, kérlek válassz egy másik nevet"
+    name-too-long: "&cA party neve túl hosszú!"
+    name-too-short: "&cA party neve túl rövid!"
+    invalid-name: "&cHelytelen karakterek. Használd az angol Abc betüit vagy számokat."
+    censored: "&cA party név csúnya szavakat tartalmaz!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party create <name>"
+  delete:
+    deleted: "&aA %party% partyt törölve lett"
+    deleted-silently: "&aA %party% partyt törölték"
+    broadcast: "&6&lA partyd törölve lett"
+    wrong-command: "&cHelytelen használat: Használd a &7/party delete <party>[silent]"
+  deny:
+    denied: "&7Elutasítottad a party meghívást"
+    deny-receipt: "&7%player% elutasította a meghívásodat"
+    no-invite: "&cNem kaptál egy meghívást se"
+    no-exists: "&cA meghívás már lejárt"
+  ignore:
+    start-ignore: "&7Figyelmenkivül hadja a %party% party meghívóit"
+    stop-ignore: "&7Leállítottad a némítást a %party% partyról"
+    ignore-list:
+      header: "&b&lNémítot partyk:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7-"
+    wrong-command: "&cHelytelen használat: Használd a &7/party ignore [party] parancsot"
+  info:
+    content:
+      - "&b============ &l%party% Infó &r&b============"
+      - "&b&lLeírás&r&7: %desc%"
+      - "&b&lMotd&r&7: %motd%"
+      - "&bVezető&7: %list_leader%"
+      - "&bModerátorok&7: %list_moderator%"
+      - "&bTagok&7: %list_member%"
+      - "&bOnline játékosok&7: %onlinenumber%"
+    list:
+      player-online-format: "&b%player%"
+      player-offline-format: "&7%player%"
+      player-separator: "&7, "
+      player-empty: "&7Senki"
+      player-unknown: "&6Valaki"
+      missing-value: "&7Hiányzik"
+  invite:
+    sent: "&bMeghívtad %player%-t a partydba"
+    player-invited: "[{\"text\":\"%player% meghívott a partyjába.\n\",\"color\":\"aqua\"},{\"text\":\"Szeretnél\",\"color\":\"aqua\"},{\"text\":\"csatlakozni\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Meghívás elfogadása\",\"color\":\"gold\"}]}}},{\"text\":\" vagy \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Meghívás elutasítása\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Hasznéld a \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny> parancsot\",\"color\":\"gray\"},{\"text\":\" hogy kiválaszd.\",\"color\":\"aqua\"}]"
+    timeout:
+      noresponse: "&7%player% nem fogadta el a party meghívást"
+      timeout: "&7Nem fogadtad el a party meghívást"
+    revoke:
+      sent-revoked: "&7A visszavont meghívás elküldve neki: %player%"
+      player-invite-revoked: "&7Meghívást kaptál a %party% partytól"
+    cooldown:
+      global: "&cKérlek várj %seconds% másodpercet mielött mégetszer meghívnál egy játékost"
+      individual: "&cKérlek várj %seconds% másodpercet mielött mégetszer meghívnád ugyanazt a játékost"
+    player-offline: "&cCsak elérhető játékost tudsz meghívni"
+    player-no-permission: "&c%player% nincs jogosultsága csatlakozni"
+    player-in-party: "&c%player% már egy party tagja"
+    already-invited: "&c%player% már meg lett hívva"
+    wrong-command: "&cHelytelen használat: Használd a &7/party invite <name>"
+  kick:
+    sent: "&aKirúgtad %player%-t a partydból!"
+    player-kicked: "&bKi lettél rúgva a %party% partyból"
+    broadcast: "&b&l%player% kickelve lett a partyból"
+    broadcast-disband: "&b&lA party feloszlott mert a vezető kirugott"
+    player-higher-rank: "&cNem tudod rúgni a felettesedet!"
+    player-not-in-party: "&c%player% nem a partyd tagja"
+    player-not-in-other-party: "&c%player% nincs egy partyban se"
+    players-conflict:
+      content:
+        - "&cTaláltunk néhány ilyen nevű játékost:"
+        - "%list_players%"
+        - "&cHasználd a '&7/party kick <username> <number>&c' hogy kickeld a játékost a partyból"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: Utoljára online %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Játékos kirúgása","color":"gold"}}}'
+    wrong-command: "&chelytelen használat: Használd a &7/party kick <name> parancsot"
+  leave:
+    left: "&b&lElhagytad a %party% partyt"
+    broadcast: "&b&l%player% elhagyta a partyt"
+    party-disbanded: "&6&lA party feloszlot mert a vezető kilépet"
+  migrate:
+    info: "&ajelenleg használod: %database%\n&aÖsszekötheted: &7/party migrate <from> <to>"
+    completed: "&aData másolása a%database_from%-ról a %database_to%-ra"
+    failed:
+      database-offline: "&cA %database% adatbázisnak elérhetőnek kell lennie!"
+      failed: "&cAz adatbázis összekötése a %database_from%-ról a %database_to%-re sikertelen volt!"
+      same-database: "&cKét különböző adatbázist kell választanod!"
+    wrong-database: "&cAdatbázis nem található. Válaszd ki az egyiket: YAML, MySQL, SQLite!"
+  p:
+    cooldown: "&cKérlek várj %seconds% másodpercet"
+    censored: "&cAz üzenet csúnya szót tartalmaz!"
+    wrong-command: "&cHelytelen használat: Használd a &7/p <message>"
+  rank:
+    changed: "&a%player% rangja cserélve erre %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cA '%rank_name%' nem létezik!"
+    same-rank: "&c%player% már a %rank_name% rangba van!"
+    low-rank: "&cNem szerkesztheted az azonos vagy magasabb rangú játékosokat!"
+    to-higher-rank: "&cNem támogathatod az azonos vagy magasabb rangú játékosokat!"
+    fixed-leader: "&cNem tehetsz valakit egy fix party vezetőjévé!"
+    changing-yourself: "&cNem tudod megváltoztatni a saját party rangodat!"
+    player-not-in-party: "&c%player% nem a partyd tagja"
+    player-not-in-other-party: "&c%player% nincs partyja"
+    wrong-command: "&cHelytelen használat: Használd a &7/party rank <player> <rank> parancsot"
+  rename:
+    renamed: "&aA %old% partyátlett nevezve erre %party%"
+    broadcast: "&6A partyd átlett nevezve erre %party%!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party rename <newname> parancsot"
+    wrong-command-admin: "&cHelytelen használat: Használd a &7/party rename <party> <newname> parancsot"
+  spy:
+    enabled: "&7Most kém vagy!"
+    disabled: "&7Mostmár nem vagy kém"
+    wrong-command: "&cHelytelen használat: Használd a &7/party spy [on/off]"
+  version:
+    updated: "&b&lParties &b%version% &7- Fejlesztette &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7- Fejlesztette &6AlessioDP\n&aÚj frissités található: &2%newversion%"
+additional-commands:
+  claim:
+    claimed: "&aA jogosultság megadva a partynak"
+    removed: "&aA jogosultság törölve a partytól"
+    no-manager: "&cAhhoz hogy foglalni tudj, a party vezetőjének kell lenned"
+    claim-no-exists: "&cFoglalás nem található"
+    wrong-command: "&cHelytelen használat: Használd a &7/party claim <permission>\n&cJogok: megbízható, container és hozzáférés"
+  color:
+    info: "&bA partyd színe: %color_code%%color_command%"
+    empty: "&bA partydnak nincs színe"
+    changed: "&bParty szín kicserélve erre %color_command%"
+    removed: "&bParty szín törölve"
+    broadcast: ""
+    wrong-color: "&cA szín nem található. Válaszható színek: piros, zöld vagy speciális Fontos: angolul írdbe a színek nevét!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party color <color> parancsot"
+  desc:
+    changed: "&bParty leírás cserélve lett"
+    removed: "&bParty leírás törölve lett"
+    broadcast: ""
+    invalid-chars: "&cHelytelen karakterek. Használd az angol Abc betűit vagy számokat. Minimum 3 és maximum 16 karaktert használhatsz névnek."
+    censored: "&cA leírás csúnya szót tartalmaz!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party desc <description/remove>"
+  exp:
+    party:
+      gained: "&bA party %exp% exp tapasztalatot szerzett a szörnyek megöléséért"
+    normal:
+      gained-killer: "&bKaptál %exp% exp tapasztalatot a szörny megöléséért"
+      gained-others: "&b%player% megölt egy szörnyet, ezért a party miat kaptál %exp% exp tapasztalatot"
+    skillapi:
+      gained-killer: "&bKaptál %exp% exp tapasztalatot a szörny megöléséért"
+      gained-others: "&b%player% megölt egy szörnyet, ezért a party miat kaptál %exp% exp tapasztalatot"
+  follow:
+    toggle-on: "&aA party tagjaid most követnek téged"
+    toggle-off: "&aA party tagjaid közül csak néhányan fognak követni"
+    wrong-command: "&cHelytelen használat: Használd a &7/party follow [on/off]"
+  home:
+    teleported: "&7Teleportáltál a party bázisára"
+    teleport-in: "&7Teleportálás megkezdődik %time% másodperc múlva..."
+    teleport-denied: "&7Teleportálás elutasítva"
+    teleport-waiting: "&cMár várakozol a teleportálásra!"
+    no-home: "&cA partynak nincs beállítva bázis"
+    no-exists: "&cAz %party% party nem létezik"
+    wrong-command: "&cHelytelen használat: Használd a &7/party home parancsot"
+    wrong-command-admin: "&chelytelen használat: Használd a &7/party home [party]"
+  join:
+    joined: "&aCsatlakoztál a %party% partyba"
+    player-joined: "&b&l%player% csatlakozott a partyba"
+    wrong-password: "&cHelytelen jelszó!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party join <party> [password] parancsot"
+  list:
+    header: "&b============ &lParty Lista &r&b============"
+    footer: "&b================ &l%page%/%maxpages%. oldal &r&b================"
+    no-one: "&7Senki"
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Infók","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Elérhető %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    wrong-command: "&cHelytelen használat: Használd a &7/party list [page] parancsot"
+  motd:
+    changed: "&bParty MOTD cserélve lett"
+    removed: "&bParty MOTD törölve lett"
+    broadcast: ""
+    content:
+      - "&bParty MOTD:"
+      - "&b%motd%"
+    invalid-chars: "&cHelytelen karakterek. Használd a '. , /'. jeleket. Minimum 3 és maximum 100 karaktert."
+    censored: "&cA MOTD csúnya szót tartalmaz!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party motd <motd/remove>"
+  mute:
+    toggle-on: "&7Kikapcsoltad a party üzeneteket!"
+    toggle-off: "&7Bekapcsoltad a party üzeneteit!"
+    wrong-command: "&cHelytelen használat: Használd a &7/party mute [on/off]"
+  password:
+    changed: "&aParty jelszava meg lett változtatva"
+    removed: "&aParty jelszava törölve lett"
+    broadcast: ""
+    invalid-chars: "&cHelytelen karakterek. Használd az angol Abc betűit vagy számokat. Minimum 1 és maximum 16 karaktert használhatsz névnek."
+    wrong-command: "&chelytelen használat: Használd a &7/party password <password/remove>"
+  protection:
+    toggle-on: "&aNow your party is protected by friendly fire"
+    toggle-off: "&aYour party is not protected anymore by friendly fire"
+    protected: "&cYou can't hit your partymates"
+    warn-on-attack: "&c%player% tried to hit %victim%!"
+    wrong-command: "&cWrong variables: Type &7/party protection [on/off]"
+  sethome:
+    changed: ""
+    removed: "&bParty bázisa törölve lett"
+    broadcast: "&aA partynak egy új bázis lett beállítva!"
+    wrong-command: "&cWrong variables: Type &7/party sethome [remove]"
+  teleport:
+    teleporting: "&7Teleporting your party here!"
+    player-teleported: "&bTeleported to %player%"
+    cooldown: "&cYou have to wait %seconds% seconds!"
+  vault:
+    no-money:
+      claim: "&cYou don't have enough money to perform a claim [%price%$]"
+      color: "&cYou don't have enough money to perform the color command [%price%$]"
+      create: "&cYou don't have enough money to create a party [%price%$]"
+      desc: "&cYou don't have enough money to set the description [%price%$]"
+      home: "&cYou don't have enough money to use the home command [%price%$]"
+      join: "&cYou don't have enough money to join a party [%price%$]"
+      motd: "&cYou don't have enough money to set the MOTD [%price%$]"
+      sethome: "&cYou don't have enough money to set the home [%price%$]"
+      teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
+    confirm:
+      warn-onbuy: "[{\"text\":\"Command %cmd% costs %price%$.\n\",\"color\":\"green\"},{\"text\":\"Click here to confirm\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Pay the command\",\"color\":\"gold\"}]}}},{\"text\":\" or type \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" to use it.\",\"color\":\"green\"}]"
+      confirmed: "&aPerforming the command."
+      no-cmd: "&cThere is no command to confirm"
+other:
+  follow:
+    following-world: "&7Following %player% in %world%"
+  fixed-parties:
+    default-join: "&bYou entered into %party%"
+  join-leave:
+    server-join: "&b%player% elérhető!"
+    server-leave: "&7%player% nem elérhető!"
+help:
+  header: "&b================= &lParty Segítség %page%/%maxpages%. oldal &r&b================="
+  footer: ""
+  console-help:
+    - "You can only make these commands:"
+    - "/party migrate - Átmásolja az adatbázis adatait egy újra"
+    - "/party reload - Reloadolja a konfigurációs fájlokat"
+  main-commands:
+    help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accept a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Toggle party chat","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    create: '{"text":"","extra":[{"text":"/party create <name>","color":"aqua"},{"text":" - Create a new party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - Delete the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Deny a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    ignore: '{"text":"","extra":[{"text":"/party ignore [party]","color":"aqua"},{"text":" - Add/remove/show ignored parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - Show party information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invite a player to your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Kick a player from your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Leave your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - Copy database into a new one","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - Send a message to the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Change rank of the player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Reload Parties configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - Rename the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Spy messages of other parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Show Parties information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+  additional-commands:
+    claim: '{"text":"","extra":[{"text":"/party claim <permission>","color":"aqua"},{"text":" - Grant permissions to the claim","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Change party color","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - Set/remove party description","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Toggle follow leader","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    home: '{"text":"","extra":[{"text":"/party home [party]","color":"aqua"},{"text":" - Teleport to the party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Join into the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - List of online parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Set/remove party motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Toggle notifications","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - Toggle friendly fire protection","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set/remove party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teleport your party to you","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+dont-edit-this:
+  version: 6
