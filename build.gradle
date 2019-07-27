@@ -45,6 +45,8 @@ allprojects {
 
         // Maven central
         mavenCentral()
+        // CodeMC repository - ADP Core
+        maven { url = 'https://repo.codemc.org/repository/maven-public/' }
         // Spigot repository for Spigot & Bukkit
         maven { url = 'https://hub.spigotmc.org/nexus/content/groups/public/' }
         // OSS Sonatype repository for Bungeecord
