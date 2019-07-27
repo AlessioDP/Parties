@@ -1,17 +1,17 @@
 <p align="center"><img src="logo.png"></p>
 
-# OreAnnouncer
-<b>OreAnnouncer</b> is a plugin for Minecraft servers that collects data whenever a player digs an ore (can be sset with any block).  
-You can send an alert to users/admins or just store every block they destroy to easily track x-ray players.
+# Parties
+<b>Parties</b> is an advanced plugin for Minecraft servers that allows the creation of parties (groups/clans/guilds) on your server.
+Everything is configurable and modular, if you don't want a feature, just disable it (it won't have a bad impact on the server).
 
-[Official project page here!](https://alessiodp.com/oreannouncer/)
+[Official project page here!](https://alessiodp.com/parties/)
 
 ## Downloads
-[Download from Spigot](http://www.spigotmc.org/resources/oreannouncer.33464/)  
-[Download from Bukkit](https://dev.bukkit.org/projects/oreannouncer)
+[Download from Spigot](https://www.spigotmc.org/resources/parties.3709/)  
+[Download from Bukkit](https://dev.bukkit.org/projects/parties)
 
 ## Documentation
-[Documentation page here](https://alessiodp.com/wiki/oreannouncer/).
+[Documentation page here](https://alessiodp.com/docs/parties/).
 
 ## License
-[Read the license here](https://github.com/AlessioDP/OreAnnouncer/blob/master/LICENSE).
+[Read the license here](https://github.com/AlessioDP/Parties/blob/master/LICENSE).
