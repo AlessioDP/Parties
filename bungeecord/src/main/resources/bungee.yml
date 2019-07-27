@@ -4,3 +4,4 @@ author: ${pluginAuthor}
 website: ${pluginWebsite}
 version: ${pluginVersion}
 main: com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap
+depends: [LastLoginAPI]

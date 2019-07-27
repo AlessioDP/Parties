@@ -31,6 +31,11 @@ public class LLAPIHandler {
 						.replace("{addon}", ADDON_NAME), true);
 			}
 		}
+		
+		if (!active) {
+			plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_FAILED
+					.replace("{addon}", ADDON_NAME));
+		}
 	}
 	
 	public static String getPlayerName(UUID uuid) {

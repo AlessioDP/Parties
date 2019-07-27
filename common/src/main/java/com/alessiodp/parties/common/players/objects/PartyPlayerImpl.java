@@ -38,14 +38,14 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@Getter private boolean chatParty;
 	@Getter private HashMap<PartyImpl, UUID> partyInvites;
 	@Getter private HashSet<String> ignoredParties;
-	/*@Getter */protected final ReentrantLock lock = new ReentrantLock();
+	protected final ReentrantLock lock = new ReentrantLock();
 	
 	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid) {
 		this.plugin = plugin;
 		
 		playerUUID = uuid;
 		name = plugin.getOfflinePlayer(uuid).getName();
-		if (name == null)
+		if (name == null || name.isEmpty())
 			name = LLAPIHandler.getPlayerName(playerUUID); // Use LastLoginAPI to get the name
 		rank = ConfigParties.RANK_SET_DEFAULT;
 		partyName = "";
