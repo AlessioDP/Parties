@@ -5,5 +5,8 @@ import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 
 
 public abstract class BukkitPartiesPartyPostDeleteEvent extends BukkitPartiesEvent implements IPartyPostDeleteEvent {
-	// Dummy class
+	
+	public BukkitPartiesPartyPostDeleteEvent() {
+		super(true);
+	}
 }

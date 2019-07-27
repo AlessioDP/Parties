@@ -1,9 +1,10 @@
 package com.alessiodp.parties.common.players;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
 import lombok.Getter;
 
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class SpyManager {
-	private PartiesPlugin plugin;
+	private final PartiesPlugin plugin;
 	@Getter private Set<UUID> spyList;
 	
 	public SpyManager(PartiesPlugin instance) {
@@ -20,7 +21,7 @@ public class SpyManager {
 	
 	public void reload() {
 		spyList = new HashSet<>();
-		for (PartyPlayerImpl pp : plugin.getDatabaseManager().getAllPlayers().join()) {
+		for (PartyPlayerImpl pp : plugin.getDatabaseManager().getAllPlayers()) {
 			if (pp.isSpy())
 				spyList.add(pp.getPlayerUUID());
 		}
@@ -42,7 +43,7 @@ public class SpyManager {
 					PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(uuid);
 					
 					if (!pp.getPartyName().equalsIgnoreCase(fromParty.getName())) {
-						pp.sendDirect(plugin.getMessageUtils().convertAllPlaceholders(message, fromParty, fromPlayer));
+						player.sendMessage(plugin.getMessageUtils().convertAllPlaceholders(message, fromParty, fromPlayer), false);
 					}
 				}
 			}

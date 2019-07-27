@@ -1,12 +1,10 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
-import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.utils.ConsoleColor;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.dynmap.DynmapAPI;
@@ -15,42 +13,47 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 
 public class DynmapHandler {
-	private static BukkitPartiesPlugin plugin;
+	private static PartiesPlugin plugin;
 	private static final String ADDON_NAME = "Dynmap";
 	private static boolean active;
-	private static DynmapAPI api;
 	
+	private static DynmapAPI api;
 	private static MarkerSet layer;
 	
-	public DynmapHandler(BukkitPartiesPlugin instance) {
-		plugin = instance;
+	public DynmapHandler(@NonNull PartiesPlugin parties) {
+		plugin = parties;
 	}
 	
 	public void init() {
 		active = false;
 		if (BukkitConfigMain.ADDONS_DYNMAP_ENABLE) {
-			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
-				active = true;
-				api = (DynmapAPI) plugin.getBootstrap().getServer().getPluginManager().getPlugin(ADDON_NAME);
-				MarkerAPI markerapi = api.getMarkerAPI();
-				
-				layer = markerapi.getMarkerSet("Parties");
-				
-				if (layer != null) {
-					if (!layer.getMarkerSetLabel().equals(BukkitConfigMain.ADDONS_DYNMAP_MARKER_LAYER)) {
-						layer.setMarkerSetLabel(BukkitConfigMain.ADDONS_DYNMAP_MARKER_LAYER);
+			if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
+				api = (DynmapAPI) Bukkit.getPluginManager().getPlugin(ADDON_NAME);
+				if (api != null) {
+					MarkerAPI markerapi = api.getMarkerAPI();
+					
+					layer = markerapi.getMarkerSet("Parties");
+					
+					if (layer != null) {
+						if (!layer.getMarkerSetLabel().equals(BukkitConfigMain.ADDONS_DYNMAP_MARKER_LAYER)) {
+							layer.setMarkerSetLabel(BukkitConfigMain.ADDONS_DYNMAP_MARKER_LAYER);
+						}
+					} else {
+						layer = markerapi.createMarkerSet("Parties", BukkitConfigMain.ADDONS_DYNMAP_MARKER_LAYER, null, true);
+						layer.setHideByDefault(BukkitConfigMain.ADDONS_DYNMAP_HIDEDEFAULT);
 					}
-				} else {
-					layer = markerapi.createMarkerSet("Parties", BukkitConfigMain.ADDONS_DYNMAP_MARKER_LAYER, null, true);
-					layer.setHideByDefault(BukkitConfigMain.ADDONS_DYNMAP_HIDEDEFAULT);
+					
+					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
+							.replace("{addon}", ADDON_NAME), true);
 				}
-				
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
-			} else {
+				active = true;
+			}
+			
+			if (!active) {
 				BukkitConfigMain.ADDONS_DYNMAP_ENABLE = false;
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_FAILED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.RED);
+				
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
+						.replace("{addon}", ADDON_NAME), true);
 			}
 		}
 	}

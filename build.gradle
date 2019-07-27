@@ -1,0 +1,90 @@
+buildscript {
+    repositories {
+        jcenter() // Shadow plugin
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+    }
+}
+
+defaultTasks 'clean', 'build', 'publish'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
+
+    group 'com.alessiodp.parties'
+    version '2.6.0-SNAPSHOT'
+
+    // Info
+    ext.pluginName = "Parties"
+    ext.pluginDescription = "Party manager for minecraft servers"
+    ext.pluginAuthor = "AlessioDP"
+    ext.pluginWebsite = "https://alessiodp.com/"
+
+    // Development
+    ext.adpCore = '1.2.1'
+    ext.lombok = '1.18.8'
+    ext.powermock = '2.0.2'
+
+    // Libraries
+    ext.banManager = '6.0.2'
+    ext.dynmap = '2.5'
+    ext.griefPrevention = '16.11.6'
+    ext.lastLoginApi = '1.1.0'
+    ext.mythicMobs = '4.5.3-SNAPSHOT'
+    ext.placeholderApi = '2.10.3'
+    ext.protocolLib = '4.4.0'
+    ext.vaultApi = '1.7'
+
+    // Misc
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+
+        // Maven central
+        mavenCentral()
+        // Spigot repository for Spigot & Bukkit
+        maven { url = 'https://hub.spigotmc.org/nexus/content/groups/public/' }
+        // OSS Sonatype repository for Bungeecord
+        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // JitPack repo
+        maven { url = 'https://jitpack.io' }
+        // Sponge repository for configurate
+        maven { url = 'https://repo.spongepowered.org/maven' }
+    }
+
+    dependencies {
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: project.ext.lombok
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: project.ext.lombok
+
+        testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: project.ext.powermock
+        testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: project.ext.powermock
+    }
+}
+
+dependencies {
+    compile project(':parties-api')
+    compile project(':common')
+    compile project(':bukkit')
+    compile project(':bungeecord')
+}
+
+// Disable OreAnnouncer root project jar
+jar.enabled = false
+
+shadowJar {
+    archiveBaseName  = project.ext.pluginName
+    archiveClassifier = null
+    dependencies {
+        include(dependency('com.alessiodp.parties:.*'))
+        include(dependency('com.alessiodp.core:.*'))
+    }
+
+    relocate 'com.alessiodp.core', 'com.alessiodp.parties.core'
+}
+
+artifacts {
+    archives shadowJar
+}

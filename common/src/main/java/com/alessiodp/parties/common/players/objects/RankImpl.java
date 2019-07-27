@@ -1,79 +1,33 @@
 package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.parties.api.interfaces.Rank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
 
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class RankImpl implements Rank {
+	@Getter @Setter @NonNull private String configName;
+	@Getter @Setter private String name = "";
+	@Getter @Setter private String chat = "";
+	@Getter @Setter private int level = 1;
+	@Getter @Setter private List<String> permissions;
+	private boolean def = false;
 	
-	private String hardName;
-	private String name;
-	private String chat;
-	private int level;
-	private boolean def;
-	private List<String> permissions;
-	
-	public RankImpl(int lvl, String hm, String nm, String ch, boolean dft, List<String> perm) {
-		level = lvl;
-		hardName = hm;
-		name = nm;
-		chat = ch;
-		def = dft;
-		permissions = perm;
-	}
-	
-	public void setHardName(String hardName) {
-		this.hardName = hardName;
-	}
-	
-	public String getHardName() {
-		return hardName;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setChat(String chat) {
-		this.chat = chat;
-	}
-	
-	public String getChat() {
-		return chat;
-	}
-	
-	public void setLevel(int level) {
-		this.level = level;
-	}
-	
-	public int getLevel() {
-		return level;
-	}
-	
+	@Override
 	public void setDefault(boolean def) {
 		this.def = def;
 	}
 	
+	@Override
 	public boolean isDefault() {
 		return def;
-	}
-	
-	@Deprecated
-	public boolean getDefault() {
-		return def;
-	}
-	
-	public void setPermissions(List<String> perm) {
-		permissions = perm;
-	}
-	
-	public List<String> getPermissions() {
-		return permissions;
 	}
 	
 	public boolean havePermission(String p) {
@@ -96,13 +50,13 @@ public class RankImpl implements Rank {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(hardName, name, chat, level, def, permissions);
+		return Objects.hash(configName, name, chat, level, def, permissions);
 	}
 	
 	@Override
 	public boolean equals(Object other) {
 		if (other == this || other instanceof RankImpl) {
-			return Objects.equals(hardName, ((RankImpl) other).hardName)
+			return Objects.equals(configName, ((RankImpl) other).configName)
 					&& Objects.equals(name, ((RankImpl) other).name)
 					&& Objects.equals(chat, ((RankImpl) other).chat)
 					&& level == ((RankImpl) other).level

@@ -1,71 +1,101 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.configuration.data.ConfigParties;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
+import lombok.Getter;
 
-public class CommandAccept extends AbstractCommand {
+import java.util.HashMap;
+import java.util.Map;
+
+public class CommandAccept extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandAccept(PartiesPlugin instance) {
-		super(instance);
+	public CommandAccept(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.ACCEPT.toString())) {
-			pp.sendNoPermission(PartiesPermission.ACCEPT);
-			return false;
-		}
-		if (!pp.getPartyName().isEmpty()) {
-			pp.sendMessage(Messages.PARTIES_COMMON_ALREADYINPARTY);
-			return false;
-		}
-		if (pp.getLastInvite().isEmpty()) {
-			pp.sendMessage(Messages.MAINCMD_ACCEPT_NOINVITE);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.ACCEPT);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
+		if (!partyPlayer.getPartyName().isEmpty()) {
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
+			return false;
+		}
+		
+		if (commandData.getArgs().length > 2) {
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_WRONGCMD);
+			return false;
+		}
+		
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		PartyImpl party = plugin.getPartyManager().getParty(pp.getLastInvite());
+		// Command handling
+		HashMap<String, PartyImpl> parties = new HashMap<>();
+		for (PartyImpl party : partyPlayer.getPartyInvites().keySet()) {
+			parties.put(party.getName().toLowerCase(), party);
+		}
+		
+		if (commandData.getArgs().length > 1
+			&& !parties.containsKey(commandData.getArgs()[1].toLowerCase())) {
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_NOEXISTS);
+			return;
+		}
+		
+		PartyImpl party;
+		if (parties.size() > 0) {
+			if (parties.size() == 1) {
+				party = parties.values().iterator().next();
+			} else if (commandData.getArgs().length > 1) {
+				party = parties.get(commandData.getArgs()[1].toLowerCase());
+			} else {
+				// Missing party
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_MULTIPLEINVITES);
+				for (Map.Entry<String, PartyImpl> entry : parties.entrySet()) {
+					sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_MULTIPLEINVITES_PARTY
+							.replace("%party%", entry.getKey()), entry.getValue());
+				}
+				return;
+			}
+		} else {
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_NOINVITE);
+			return;
+		}
+		
 		if (party == null) {
-			pp.sendMessage(Messages.MAINCMD_ACCEPT_NOEXISTS);
-			return;
-		}
-		if ((ConfigParties.GENERAL_MEMBERSLIMIT != -1)
-				&& (party.getMembers().size() >= ConfigParties.GENERAL_MEMBERSLIMIT)) {
-			pp.sendMessage(Messages.PARTIES_COMMON_PARTYFULL);
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_NOEXISTS);
 			return;
 		}
 		
-		/*
-		 * Command starts
-		 */
-		party.acceptInvite(pp.getPlayerUUID());
+		// Command starts
+		party.acceptInvite(partyPlayer.getPlayerUUID());
 		
-		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_ACCEPT
-				.replace("{player}", pp.getName())
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_ACCEPT
+				.replace("{player}", partyPlayer.getName())
 				.replace("{party}", party.getName()), true);
 	}
 }

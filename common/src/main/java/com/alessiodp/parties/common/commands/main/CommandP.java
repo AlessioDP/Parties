@@ -1,149 +1,140 @@
 package com.alessiodp.parties.common.commands.main;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.events.common.player.IChatEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.commands.utils.PartiesCommandExecutor;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.ChatTask;
-import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
-public abstract class CommandP extends PartiesCommandExecutor {
-	private CommandSendMessage commandSendMessage;
+public abstract class CommandP extends ADPMainCommand {
+	private final CommandSendMessage commandSendMessage;
 	
-	protected CommandP(PartiesPlugin instance) {
-		super(instance);
-		commandSendMessage = new CommandSendMessage(plugin);
+	public CommandP(PartiesPlugin plugin) {
+		super(plugin);
+		
+		commandName = ConfigMain.COMMANDS_CMD_P;
+		subCommands = new HashMap<>();
+		enabledSubCommands = new ArrayList<>();
+		tabSupport = false;
+		
+		commandSendMessage = new CommandSendMessage(plugin, this);
 	}
 	
 	@Override
 	public boolean onCommand(User sender, String command, String[] args) {
 		if (sender.isPlayer()) {
 			// Player
-			PartiesUtils.executeCommand(plugin, sender, ConfigMain.COMMANDS_CMD_P, commandSendMessage, args);
+			plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), commandSendMessage, args);
 		} else {
 			// Console
-			sender.sendMessage(Constants.ONLY_PLAYERS, false);
+			plugin.logConsole(plugin.getColorUtils().removeColors(Messages.PARTIES_COMMON_INVALIDCMD), false);
 		}
 		return true;
 	}
 	
-	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
-		return new ArrayList<>();
-	}
-	
-	private static class CommandSendMessage extends AbstractCommand {
+	private static class CommandSendMessage extends PartiesSubCommand {
+		@Getter private final boolean executableByConsole = false;
 		
-		private CommandSendMessage(PartiesPlugin instance) {
-			super(instance);
+		private CommandSendMessage(ADPPlugin plugin, ADPMainCommand mainCommand) {
+			super(plugin, mainCommand);
 		}
 		
+		@Override
 		public boolean preRequisites(CommandData commandData) {
 			User sender = commandData.getSender();
-			PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
-			/*
-			 * Checks for command prerequisites
-			 */
+			// Checks for command prerequisites
 			if (!sender.hasPermission(PartiesPermission.SENDMESSAGE.toString())) {
-				pp.sendNoPermission(PartiesPermission.SENDMESSAGE);
+				sendNoPermissionMessage(partyPlayer, PartiesPermission.SENDMESSAGE);
 				return false;
 			}
 			
-			PartyImpl party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
+			PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
 			if (party == null) {
-				pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 				return false;
 			}
-			
-			if (!plugin.getRankManager().checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_SENDMESSAGE))
-				return false;
 			
 			if (commandData.getArgs().length == 0) {
-				pp.sendMessage(Messages.MAINCMD_P_WRONGCMD);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_P_WRONGCMD);
 				return false;
 			}
 			
-			commandData.setPartyPlayer(pp);
-			commandData.setParty(party);
-			commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
+			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_SENDMESSAGE))
+				return false;
+			
+			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+			((PartiesCommandData) commandData).setParty(party);
 			return true;
 		}
 		
+		@Override
 		public void onCommand(CommandData commandData) {
-			PartyPlayerImpl pp = commandData.getPartyPlayer();
-			PartyImpl party = commandData.getParty();
+			User sender = commandData.getSender();
+			PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
+			PartyImpl party = ((PartiesCommandData) commandData).getParty();
 			
-			/*
-			 * Command handling
-			 */
-			StringBuilder sb = new StringBuilder();
-			for (String word : commandData.getArgs()) {
-				if (sb.length() > 0) {
-					sb.append(" ");
-				}
-				sb.append(word);
-			}
-			String message = sb.toString();
+			// Command handling
+			String message = plugin.getCommandManager().getCommandUtils().handleCommandString(commandData.getArgs(), 0);
 			
-			if (PartiesUtils.checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, message, Constants.DEBUG_CMD_P_REGEXERROR)) {
-				pp.sendMessage(Messages.MAINCMD_P_CENSORED);
+			if (((PartiesPlugin) plugin).getCensorUtils().checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, message, PartiesConstants.DEBUG_CMD_P_REGEXERROR)) {
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_P_CENSORED);
 				return;
 			}
 			
 			if (ConfigParties.GENERAL_CHAT_CHATCD > 0
-					&& !plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
-				Long unixTimestamp = plugin.getCooldownManager().getChatCooldown().get(pp.getPlayerUUID());
+					&& !((PartiesPlugin) plugin).getRankManager().checkPlayerRank(partyPlayer, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
+				Long unixTimestamp = ((PartiesPlugin) plugin).getCooldownManager().getChatCooldown().get(partyPlayer.getPlayerUUID());
 				long unixNow = System.currentTimeMillis() / 1000L;
 				// Check cooldown
 				if (unixTimestamp != null && (unixNow - unixTimestamp) < ConfigParties.GENERAL_CHAT_CHATCD) {
-					pp.sendMessage(Messages.MAINCMD_P_COOLDOWN
+					sendMessage(sender, partyPlayer, Messages.MAINCMD_P_COOLDOWN
 							.replace("%seconds%", String.valueOf(ConfigParties.GENERAL_CHAT_CHATCD - (unixNow - unixTimestamp))));
 					return;
 				}
 				
-				plugin.getCooldownManager().getChatCooldown().put(pp.getPlayerUUID(), unixNow);
-				plugin.getPartiesScheduler().scheduleTaskLater(
-						new ChatTask(plugin, pp.getPlayerUUID()), ConfigParties.GENERAL_INVITE_TIMEOUT * 20L);
+				((PartiesPlugin) plugin).getCooldownManager().getChatCooldown().put(partyPlayer.getPlayerUUID(), unixNow);
+				plugin.getScheduler().scheduleAsyncLater(new ChatTask((PartiesPlugin) plugin, partyPlayer.getPlayerUUID()), ConfigParties.GENERAL_INVITE_TIMEOUT, TimeUnit.SECONDS);
 				
-				LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_CMD_P_TASK
-						.replace("{value}", Integer.toString(ConfigParties.GENERAL_CHAT_CHATCD * 20))
-						.replace("{player}", pp.getName()), true);
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_P_TASK
+						.replace("{value}", Integer.toString(ConfigParties.GENERAL_CHAT_CHATCD))
+						.replace("{player}", partyPlayer.getName()), true);
 			}
-			/*
-			 * Command starts
-			 */
 			
+			// Command starts
 			// Calling API event
-			IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, message);
-			plugin.getEventManager().callEvent(partiesChatEvent);
+			IChatEvent partiesChatEvent = ((PartiesPlugin) plugin).getEventManager().prepareChatEvent(partyPlayer, party, message);
+			((PartiesPlugin) plugin).getEventManager().callEvent(partiesChatEvent);
 			
 			String newMessage = partiesChatEvent.getMessage();
 			if (!partiesChatEvent.isCancelled()) {
-				party.sendChatMessage(pp, newMessage);
+				partyPlayer.performPartyMessage(newMessage);
 				
-				if (ConfigMain.STORAGE_LOG_CHAT)
-					LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_P
+				if (ConfigParties.GENERAL_CHAT_LOG)
+					plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_P
 							.replace("{party}", party.getName())
-							.replace("{player}", pp.getName())
-							.replace("{message}", newMessage), true);
+							.replace("{player}", partyPlayer.getName())
+							.replace("{message}", newMessage), ConfigParties.GENERAL_CHAT_LOGTOCONSOLE);
 			} else
-				LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_CHATEVENT_DENY
-						.replace("{player}", pp.getName())
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_CHATEVENT_DENY
+						.replace("{player}", partyPlayer.getName())
 						.replace("{message}", message), true);
 		}
 	}

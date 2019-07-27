@@ -1,25 +1,21 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
-import com.alessiodp.parties.common.utils.ConsoleColor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 
 import com.alessiodp.parties.bukkit.addons.external.hooks.PAPIHook;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class PlaceholderAPIHandler {
-	private PartiesPlugin plugin;
+	@NonNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "PlaceholderAPI";
 	private static boolean active;
 	private static PAPIHook hook;
-	
-	public PlaceholderAPIHandler(PartiesPlugin instance) {
-		plugin = instance;
-	}
 	
 	public void init() {
 		active = false;
@@ -27,8 +23,9 @@ public class PlaceholderAPIHandler {
 			hook = new PAPIHook(plugin);
 			if (hook.register()) {
 				active = true;
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
+				
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
+						.replace("{addon}", ADDON_NAME), true);
 			}
 		}
 	}

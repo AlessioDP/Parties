@@ -1,63 +1,65 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandDelete extends AbstractCommand {
+public class CommandDelete extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = true;
 	
-	public CommandDelete(PartiesPlugin instance) {
-		super(instance);
+	public CommandDelete(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
-
+	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
-		
-		/*
-		 * Checks for command prerequisites
-		 */
-		if (!sender.hasPermission(PartiesPermission.ADMIN_DELETE.toString())) {
-			pp.sendNoPermission(PartiesPermission.ADMIN_DELETE);
-			return false;
+		if (sender.isPlayer()) {
+			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			
+			// Checks for command prerequisites
+			if (!sender.hasPermission(PartiesPermission.ADMIN_DELETE.toString())) {
+				sendNoPermissionMessage(partyPlayer, PartiesPermission.ADMIN_DELETE);
+				return false;
+			}
+			
+			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+			commandData.addPermission(PartiesPermission.ADMIN_DELETE_SILENT);
 		}
+		
 		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
-			pp.sendMessage(Messages.MAINCMD_DELETE_WRONGCMD);
+			sender.sendMessage(Messages.MAINCMD_DELETE_WRONGCMD, true);
 			return false;
 		}
-		
-		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.ADMIN_DELETE_SILENT);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command handling
-		 */
-		PartyImpl party = plugin.getPartyManager().getParty(commandData.getArgs()[1]);
+		// Command handling
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
 		if (party == null) {
-			pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", commandData.getArgs()[1]));
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", commandData.getArgs()[1]));
 			return;
 		}
 		
@@ -68,39 +70,37 @@ public class CommandDelete extends AbstractCommand {
 					&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_SILENT)) {
 				isSilent = true;
 			} else {
-				pp.sendMessage(Messages.MAINCMD_DELETE_WRONGCMD);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_DELETE_WRONGCMD);
 				return;
 			}
 		}
 		
-		/*
-		 * Command starts
-		 */
+		// Command starts
 		// Calling Pre API event
-		IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.DELETE, null, pp);
-		plugin.getEventManager().callEvent(partiesPreDeleteEvent);
+		IPartyPreDeleteEvent partiesPreDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.DELETE, null, partyPlayer);
+		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreDeleteEvent);
 		
 		if (!partiesPreDeleteEvent.isCancelled()) {
 			if (isSilent) {
-				pp.sendMessage(Messages.MAINCMD_DELETE_DELETEDSILENTLY, party);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_DELETE_DELETEDSILENTLY, party);
 			} else {
-				pp.sendMessage(Messages.MAINCMD_DELETE_DELETED, party);
-				party.sendBroadcast(pp, Messages.MAINCMD_DELETE_BROADCAST);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_DELETE_DELETED, party);
+				party.broadcastMessage(Messages.MAINCMD_DELETE_BROADCAST, partyPlayer);
 			}
 			
-			party.removeParty();
+			party.delete();
 			
 			// Calling Post API event
-			IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.DELETE, null, pp);
-			plugin.getEventManager().callEvent(partiesPostDeleteEvent);
+			IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.DELETE, null, partyPlayer);
+			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
 			
-			LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_DELETE
-					.replace("{player}", pp.getName())
+			plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_DELETE
+					.replace("{player}", sender.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
-			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_DELETEEVENT_DENY
+			plugin.getLoggerManager().log(PartiesConstants.DEBUG_API_DELETEEVENT_DENY
 					.replace("{party}", party.getName())
-					.replace("{player}", pp.getName()), true);
+					.replace("{player}", sender.getName()), true);
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class CommandDelete extends AbstractCommand {
 		if (args.length == 3 && sender.hasPermission(PartiesPermission.ADMIN_DELETE_SILENT.toString())) {
 			ret.add(ConfigMain.COMMANDS_SUB_SILENT);
 			if (!args[2].isEmpty()) {
-				ret = PartiesUtils.tabCompleteParser(ret, args[2]);
+				ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[2]);
 			}
 		}
 		return ret;

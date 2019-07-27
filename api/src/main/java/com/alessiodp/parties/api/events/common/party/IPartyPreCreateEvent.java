@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.common.party;
 import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	/**
@@ -11,7 +11,7 @@ public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	PartyPlayer getPartyPlayer();
 	
 	/**
@@ -19,7 +19,7 @@ public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the party name
 	 */
-	@NotNull
+	@NonNull
 	String getPartyName();
 	
 	/**

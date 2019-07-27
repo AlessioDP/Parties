@@ -2,11 +2,11 @@ package com.alessiodp.parties.bukkit.events.common.party;
 
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreCreateEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class PartyPreCreateEventHook extends BukkitPartiesPartyPreCreateEvent {
 	private boolean cancelled;
-	private PartyPlayer player;
+	private final PartyPlayer player;
 	private String party;
 	private boolean fixed;
 	
@@ -17,13 +17,13 @@ public class PartyPreCreateEventHook extends BukkitPartiesPartyPreCreateEvent {
 		this.fixed = fixed;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public String getPartyName() {
 		return party;

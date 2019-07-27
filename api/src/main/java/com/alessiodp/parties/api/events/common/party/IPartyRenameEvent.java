@@ -4,7 +4,7 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface IPartyRenameEvent extends PartiesEvent, Cancellable {
 	/**
@@ -12,7 +12,7 @@ public interface IPartyRenameEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NotNull
+	@NonNull
 	Party getParty();
 	
 	/**
@@ -20,7 +20,7 @@ public interface IPartyRenameEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the new name of the party
 	 */
-	@NotNull
+	@NonNull
 	String getNewPartyName();
 	
 	/**
@@ -35,7 +35,7 @@ public interface IPartyRenameEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	PartyPlayer getPartyPlayer();
 	
 	/**

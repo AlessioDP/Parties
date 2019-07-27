@@ -1,70 +1,69 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandDesc extends AbstractCommand {
+public class CommandDesc extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandDesc(PartiesPlugin instance) {
-		super(instance);
+	public CommandDesc(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.DESC.toString())) {
-			pp.sendNoPermission(PartiesPermission.DESC);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.DESC);
 			return false;
 		}
 		
-		PartyImpl party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
+		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName());
 		if (party == null) {
-			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 			return false;
 		}
 		
-		if (!plugin.getRankManager().checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_EDIT_DESC))
+		if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_EDIT_DESC))
 			return false;
 		
 		if (commandData.getArgs().length < 2) {
-			pp.sendMessage(Messages.ADDCMD_DESC_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_WRONGCMD);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
-		commandData.setParty(party);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+		((PartiesCommandData) commandData).setParty(party);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
-		PartyImpl party = commandData.getParty();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
+		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
-		/*
-		 * Command handling
-		 */
+		// Command handling
 		boolean isRemove = false;
 		String description = "";
 		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
@@ -80,39 +79,37 @@ public class CommandDesc extends AbstractCommand {
 			}
 			description = sb.toString();
 			
-			if (!PartiesUtils.checkAllowedCharacters(ConfigParties.DESC_ALLOWEDCHARS, description, Constants.DEBUG_CMD_DESC_REGEXERROR_AC)
+			if (!((PartiesPlugin) plugin).getCensorUtils().checkAllowedCharacters(ConfigParties.DESC_ALLOWEDCHARS, description, PartiesConstants.DEBUG_CMD_DESC_REGEXERROR_AC)
 					|| (description.length() > ConfigParties.DESC_MAXLENGTH)
 					|| (description.length() < ConfigParties.DESC_MINLENGTH)) {
-				pp.sendMessage(Messages.ADDCMD_DESC_INVALID);
+				sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_INVALID);
 				return;
 			}
-			if (PartiesUtils.checkCensor(ConfigParties.DESC_CENSORREGEX, description, Constants.DEBUG_CMD_DESC_REGEXERROR_CEN)) {
-				pp.sendMessage(Messages.ADDCMD_DESC_CENSORED);
+			if (((PartiesPlugin) plugin).getCensorUtils().checkCensor(ConfigParties.DESC_CENSORREGEX, description, PartiesConstants.DEBUG_CMD_DESC_REGEXERROR_CEN)) {
+				sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_CENSORED);
 				return;
 			}
 			
-			if (plugin.getEconomyManager().payCommand(EconomyManager.PaidCommand.DESC, pp, commandData.getCommandLabel(), commandData.getArgs()))
+			if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.DESC, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 				return;
 		}
 		
-		/*
-		 * Command starts
-		 */
+		// Command starts
 		party.setDescription(description);
 		party.updateParty();
 		
 		if (isRemove) {
-			pp.sendMessage(Messages.ADDCMD_DESC_REMOVED);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_REMOVED);
 			
-			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_DESC_REM
-					.replace("{player}", pp.getName())
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_DESC_REM
+					.replace("{player}", sender.getName())
 					.replace("{party}", party.getName()), true);
 		} else {
-			pp.sendMessage(Messages.ADDCMD_DESC_CHANGED);
-			party.sendBroadcast(pp, Messages.ADDCMD_DESC_BROADCAST);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_CHANGED);
+			party.broadcastMessage(Messages.ADDCMD_DESC_BROADCAST, partyPlayer);
 			
-			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_DESC
-					.replace("{player}", pp.getName())
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_DESC
+					.replace("{player}", sender.getName())
 					.replace("{party}", party.getName()), true);
 		}
 	}

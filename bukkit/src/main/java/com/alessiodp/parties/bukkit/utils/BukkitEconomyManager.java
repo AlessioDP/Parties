@@ -1,19 +1,19 @@
 package com.alessiodp.parties.bukkit.utils;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.VaultHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.common.utils.EconomyManager;
 
 public class BukkitEconomyManager extends EconomyManager {
 	
-	public BukkitEconomyManager(PartiesPlugin instance) {
-		super(instance);
+	public BukkitEconomyManager(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class BukkitEconomyManager extends EconomyManager {
 							partyPlayerEntity.setLastConfirmedCommand(null);
 						} else {
 							// Confirmed but no money
-							partyPlayerEntity.sendMessage(getCommandMessage(vaultCommand, commandPrice));
+							bukkitPlayer.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(getCommandMessage(vaultCommand, commandPrice), partyPlayerEntity), true);
 							partyPlayerEntity.setLastConfirmedCommand(null);
 							denyCommand = true;
 						}
@@ -55,9 +55,9 @@ public class BukkitEconomyManager extends EconomyManager {
 						);
 						
 						partyPlayerEntity.setLastConfirmedCommand(packet);
-						partyPlayerEntity.sendMessage(BukkitMessages.ADDCMD_VAULT_CONFIRM_WARNONBUY
+						bukkitPlayer.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_VAULT_CONFIRM_WARNONBUY
 								.replace("%cmd%", args[0])
-								.replace("%price%", Double.toString(commandPrice)));
+								.replace("%price%", Double.toString(commandPrice)), partyPlayerEntity), true);
 						denyCommand = true;
 					}
 				} else {
@@ -65,7 +65,7 @@ public class BukkitEconomyManager extends EconomyManager {
 					if (VaultHandler.getPlayerBalance(bukkitPlayer) >= commandPrice) {
 						VaultHandler.withdrawPlayer(bukkitPlayer, commandPrice);
 					} else {
-						partyPlayerEntity.sendMessage(getCommandMessage(vaultCommand, commandPrice));
+						bukkitPlayer.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(getCommandMessage(vaultCommand, commandPrice), partyPlayerEntity), true);
 						denyCommand = true;
 					}
 				}

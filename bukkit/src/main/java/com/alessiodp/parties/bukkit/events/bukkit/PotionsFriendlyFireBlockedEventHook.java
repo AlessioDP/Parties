@@ -3,13 +3,13 @@ package com.alessiodp.parties.bukkit.events.bukkit;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class PotionsFriendlyFireBlockedEventHook extends BukkitPartiesPotionsFriendlyFireBlockedEvent {
 	private boolean cancelled;
-	private PartyPlayer victim;
-	private PartyPlayer attacker;
-	private PotionSplashEvent originalEvent;
+	private final PartyPlayer victim;
+	private final PartyPlayer attacker;
+	private final PotionSplashEvent originalEvent;
 	
 	public PotionsFriendlyFireBlockedEventHook(PartyPlayer victim, PartyPlayer attacker, PotionSplashEvent originalEvent) {
 		this.victim = victim;
@@ -17,19 +17,19 @@ public class PotionsFriendlyFireBlockedEventHook extends BukkitPartiesPotionsFri
 		this.originalEvent = originalEvent;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPlayerVictim() {
 		return victim;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PotionSplashEvent getOriginalEvent() {
 		return originalEvent;

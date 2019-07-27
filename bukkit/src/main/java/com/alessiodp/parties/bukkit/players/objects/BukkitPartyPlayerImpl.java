@@ -3,56 +3,58 @@ package com.alessiodp.parties.bukkit.players.objects;
 import java.util.List;
 import java.util.UUID;
 
-import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
+import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.scheduling.CancellableTask;
+import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
+import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.list.PartiesCommand;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
 import com.alessiodp.parties.api.interfaces.Rank;
 import org.bukkit.Bukkit;
 
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
-	@Getter @Setter private int homeDelayTask;
-	@Getter @Setter private int portalTimeoutTask;
+	@Getter @Setter private CancellableTask homeDelayTask;
+	@Getter @Setter private CancellableTask portalTimeoutTask;
 	
 	@Getter @Setter private LastConfirmedCommand lastConfirmedCommand;
 	
-	public BukkitPartyPlayerImpl(PartiesPlugin instance, UUID uuid) {
-		super(instance, uuid);
-		homeDelayTask = -1;
-		portalTimeoutTask = -1;
-		lastConfirmedCommand = null;
+	public BukkitPartyPlayerImpl(PartiesPlugin plugin, UUID uuid) {
+		super(plugin, uuid);
 	}
 	
 	@Override
 	public void updatePlayer() {
 		super.updatePlayer();
-		((BukkitPartiesPlugin)plugin).getMessageManager().sendPingUpdatePlayer(getPlayerUUID());
+		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingUpdatePlayer(getPlayerUUID());
 	}
 	
 	@Override
-	public void cleanupPlayer(boolean saveDB) {
-		super.cleanupPlayer(saveDB);
-		// Reset home command (avoiding teleporting to another party)
-		if (getHomeDelayTask() != -1) {
-			plugin.getPartiesScheduler().cancelTask(getHomeDelayTask());
-			setHomeDelayTask(-1);
+	public void removeFromParty(boolean saveDB) {
+		lock.lock();
+		if (getHomeDelayTask() != null) {
+			getHomeDelayTask().cancel();
+			setHomeDelayTask(null);
 		}
+		lock.unlock();
+		super.removeFromParty(saveDB);
 	}
 	
+	
 	@Override
-	public List<PartiesCommand> getAllowedCommands() {
-		List<PartiesCommand> ret = super.getAllowedCommands();
+	public List<ADPCommand> getAllowedCommands() {
+		List<ADPCommand> ret = super.getAllowedCommands();
 		Rank rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		
@@ -80,9 +82,23 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	}
 	
 	@Override
+	public void performPartyMessage(String message) {
+		if (BukkitConfigMain.ADDONS_BANMANAGER_ENABLE
+				&& BukkitConfigMain.ADDONS_BANMANAGER_PREVENTCHAT
+				&& BanManagerHandler.isMuted(getPlayerUUID())) {
+			return;
+		}
+		
+		super.performPartyMessage(message);
+	}
+	
+	@Override
 	public boolean isVanished() {
-		for (MetadataValue meta : Bukkit.getPlayer(this.getPlayerUUID()).getMetadata("vanished")) {
-			if (meta.asBoolean()) return true;
+		Player player = Bukkit.getPlayer(this.getPlayerUUID());
+		if (player != null) {
+			for (MetadataValue meta : player.getMetadata("vanished")) {
+				if (meta.asBoolean()) return true;
+			}
 		}
 		return false;
 	}

@@ -4,7 +4,7 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface IChatEvent extends PartiesEvent, Cancellable {
 	/**
@@ -12,7 +12,7 @@ public interface IChatEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	PartyPlayer getPartyPlayer();
 	
 	/**
@@ -20,7 +20,7 @@ public interface IChatEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the the {@link Party}
 	 */
-	@NotNull
+	@NonNull
 	Party getParty();
 	
 	/**
@@ -28,7 +28,7 @@ public interface IChatEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the message
 	 */
-	@NotNull
+	@NonNull
 	String getMessage();
 	
 	/**

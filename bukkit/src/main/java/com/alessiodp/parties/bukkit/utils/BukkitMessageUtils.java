@@ -4,22 +4,16 @@ import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.MessageUtils;
-import org.bukkit.ChatColor;
 
 public class BukkitMessageUtils extends MessageUtils {
 	
-	public BukkitMessageUtils(PartiesPlugin instance) {
-		super(instance);
+	public BukkitMessageUtils(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
 	@Override
-	public String convertColors(String message) {
-		return ChatColor.translateAlternateColorCodes('&', message);
-	}
-	
-	@Override
-	public String convertPlayerPlaceholders(String message, PartyPlayerImpl player) {
-		String ret = super.convertPlayerPlaceholders(message, player);
+	public String convertPlayerPlaceholders(String message, PartyPlayerImpl player, String emptyPlaceholder) {
+		String ret = super.convertPlayerPlaceholders(message, player, emptyPlaceholder);
 		ret = PlaceholderAPIHandler.getPlaceholders(player.getPlayerUUID(), ret);
 		return ret;
 	}

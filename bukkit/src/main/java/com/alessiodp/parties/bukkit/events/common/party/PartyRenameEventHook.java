@@ -3,14 +3,14 @@ package com.alessiodp.parties.bukkit.events.common.party;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyRenameEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class PartyRenameEventHook extends BukkitPartiesPartyRenameEvent {
 	private boolean cancelled;
-	private Party party;
+	private final Party party;
 	private String newName;
-	private PartyPlayer player;
-	private boolean isAdmin;
+	private final PartyPlayer player;
+	private final boolean isAdmin;
 	
 	public PartyRenameEventHook(Party party, String newName, PartyPlayer player, boolean isAdmin) {
 		this.party = party;
@@ -19,13 +19,13 @@ public class PartyRenameEventHook extends BukkitPartiesPartyRenameEvent {
 		this.isAdmin = isAdmin;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public String getNewPartyName() {
 		return newName;
@@ -36,7 +36,7 @@ public class PartyRenameEventHook extends BukkitPartiesPartyRenameEvent {
 		newName = name;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;

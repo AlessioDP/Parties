@@ -1,97 +1,94 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.OfflineUser;
+import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.RankImpl;
-import com.alessiodp.parties.common.user.OfflineUser;
-import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.Getter;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommandInfo extends AbstractCommand {
+public class CommandInfo extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandInfo(PartiesPlugin instance) {
-		super(instance);
+	public CommandInfo(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.INFO.toString())) {
-			pp.sendNoPermission(PartiesPermission.INFO);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.INFO);
 			return false;
 		}
 		
-		if (commandData.getArgs().length == 1 && pp.getPartyName().isEmpty()) {
-			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return false;
+		PartyImpl party = null;
+		if (commandData.getArgs().length == 1) {
+			party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
+			if (party == null) {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+				return false;
+			}
 		}
 		
-		commandData.setPartyPlayer(pp);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+		((PartiesCommandData) commandData).setParty(party);
 		commandData.addPermission(PartiesPermission.INFO_OTHERS);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
+		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
-		/*
-		 * Command handling
-		 */
-		String partyName;
-		if (commandData.getArgs().length > 1) {
+		// Command handling
+		if (party == null && commandData.getArgs().length > 1) {
 			if (!commandData.havePermission(PartiesPermission.INFO_OTHERS)) {
-				pp.sendNoPermission(PartiesPermission.INFO_OTHERS);
+				sendNoPermissionMessage(partyPlayer, PartiesPermission.INFO_OTHERS);
 				return;
 			}
 			
-			partyName = commandData.getArgs()[1];
-		} else if (!pp.getPartyName().isEmpty()) {
-			partyName = pp.getPartyName();
-		} else {
-			pp.sendMessage(Messages.PARTIES_COMMON_NOTINPARTY);
-			return;
+			party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
 		}
 		
-		PartyImpl party = plugin.getPartyManager().getParty(partyName);
 		if (party == null) {
-			pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND
-					.replace("%party%", partyName));
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND
+					.replace("%party%", commandData.getArgs()[1]));
 			return;
 		}
 		
-		/*
-		 * Command starts
-		 */
+		// Command starts
 		for (String line : Messages.MAINCMD_INFO_CONTENT) {
 			// List ranks
 			Matcher mat = Pattern.compile("%list_(.*?)%").matcher(line);
 			while (mat.find()) {
-				RankImpl rr = plugin.getRankManager().searchRankByHardName(mat.group().substring(6, mat.group().length() - 1));
+				RankImpl rr = ((PartiesPlugin) plugin).getRankManager().searchRankByHardName(mat.group().substring(6, mat.group().length() - 1));
 				if (rr != null) {
 					StringBuilder list = new StringBuilder();
 					int counter = 0;
 					
 					for (UUID playerUUID : party.getMembers()) {
-						PartyPlayerImpl pl = plugin.getPlayerManager().getPlayer(playerUUID);
+						PartyPlayerImpl pl = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUUID);
 						
 						// Check rank level
 						if (pl.getRank() == rr.getLevel()) {
@@ -103,14 +100,14 @@ public class CommandInfo extends AbstractCommand {
 							if (offlinePlayer != null) {
 								if (offlinePlayer.isOnline() && !pl.isVanished()) {
 									list.append(
-											plugin.getMessageUtils().convertAllPlaceholders(
+											((PartiesPlugin) plugin).getMessageUtils().convertAllPlaceholders(
 													Messages.MAINCMD_INFO_LIST_ONLINEFORMAT,
 													party,
 													pl)
 									);
 								} else {
 									list.append(
-											plugin.getMessageUtils().convertAllPlaceholders(
+											((PartiesPlugin) plugin).getMessageUtils().convertAllPlaceholders(
 													Messages.MAINCMD_INFO_LIST_OFFLINEFORMAT,
 													party,
 													pl)
@@ -131,31 +128,31 @@ public class CommandInfo extends AbstractCommand {
 			// Online players
 			if (line.contains("%online%")) {
 				StringBuilder sb = new StringBuilder();
-				if (party.getNumberOnlinePlayers() == 0)
+				Set<PartyPlayer> list = party.getOnlineMembers(false);
+				if (list.size() == 0)
 					sb.append(Messages.MAINCMD_INFO_LIST_EMPTY);
 				else {
-					for (PartyPlayerImpl partyPlayer : party.getOnlinePlayers()) {
+					for (PartyPlayer pp : list) {
 						if (sb.length() > 0) {
 							sb.append(Messages.MAINCMD_INFO_LIST_SEPARATOR);
 						}
-						if (!partyPlayer.isVanished())
-							sb.append(plugin.getMessageUtils().convertAllPlaceholders(
-									Messages.MAINCMD_INFO_LIST_ONLINEFORMAT,
-									party,
-									partyPlayer));
+						sb.append(((PartiesPlugin) plugin).getMessageUtils().convertAllPlaceholders(
+								Messages.MAINCMD_INFO_LIST_ONLINEFORMAT,
+								party,
+								(PartyPlayerImpl) pp));
 					}
 				}
 				line = line.replace("%online%", sb.toString());
 			}
 			
 			// Other placeholders
-			line = plugin.getMessageUtils().convertPartyPlaceholders(line, party, Messages.MAINCMD_INFO_LIST_MISSING);
+			line = ((PartiesPlugin) plugin).getMessageUtils().convertPartyPlaceholders(line, party, Messages.MAINCMD_INFO_LIST_MISSING);
 			
-			pp.sendMessage(line);
+			sendMessage(sender, partyPlayer, line);
 		}
 		
-		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_INFO
-				.replace("{player}", pp.getName())
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_INFO
+				.replace("{player}", sender.getName())
 				.replace("{party}", party.getName()), true);
 	}
 }

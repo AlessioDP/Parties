@@ -1,45 +1,10 @@
 package com.alessiodp.parties.bukkit.bootstrap;
 
+import com.alessiodp.core.bukkit.bootstrap.ADPBukkitBootstrap;
 import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
-import com.alessiodp.parties.common.bootstrap.PartiesBootstrap;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-public class BukkitPartiesBootstrap extends JavaPlugin implements PartiesBootstrap {
-	private BukkitPartiesPlugin plugin;
-	
+public class BukkitPartiesBootstrap extends ADPBukkitBootstrap {
 	public BukkitPartiesBootstrap() {
 		plugin = new BukkitPartiesPlugin(this);
-	}
-	
-	@Override
-	public void onEnable() {
-		plugin.enabling();
-	}
-	@Override
-	public void onDisable() {
-		plugin.disabling();
-	}
-	
-	@Override
-	public PartiesBootstrap getBootstrap() {
-		return this;
-	}
-	
-	@Override
-	public Path getFolder() {
-		return Paths.get(super.getDataFolder().getAbsolutePath());
-	}
-	
-	@Override
-	public String getVersion() {
-		return super.getDescription().getVersion();
-	}
-	
-	@Override
-	public void stopPlugin() {
-		super.getPluginLoader().disablePlugin(this);
 	}
 }

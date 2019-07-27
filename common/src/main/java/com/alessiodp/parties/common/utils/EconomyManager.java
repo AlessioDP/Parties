@@ -2,13 +2,11 @@ package com.alessiodp.parties.common.utils;
 
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public abstract class EconomyManager {
-	protected PartiesPlugin plugin;
-	
-	protected EconomyManager(PartiesPlugin instance) {
-		plugin = instance;
-	}
+	protected final PartiesPlugin plugin;
 	
 	public abstract boolean payCommand(PaidCommand vaultCommand, PartyPlayerImpl partyPlayerImpl, String commandLabel, String[] args);
 	

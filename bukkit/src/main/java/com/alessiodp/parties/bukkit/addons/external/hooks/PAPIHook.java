@@ -1,34 +1,32 @@
 package com.alessiodp.parties.bukkit.addons.external.hooks;
 
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.OfflinePlayer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
 
+@RequiredArgsConstructor
 public class PAPIHook extends PlaceholderHook {
-	private PartiesPlugin plugin;
-	
-	public PAPIHook(PartiesPlugin instance) {
-		plugin = instance;
-	}
+	@NonNull private final PartiesPlugin plugin;
 	
 	public boolean register() {
 		boolean ret = false;
 		try {
 			Class.forName("me.clip.placeholderapi.PlaceholderHook").getMethod("onRequest", OfflinePlayer.class, String.class);
 			
-			if (PlaceholderAPI.isRegistered("parties")) {
-				PlaceholderAPI.unregisterPlaceholderHook("parties");
+			if (PlaceholderAPI.isRegistered(plugin.getPluginFallbackName())) {
+				PlaceholderAPI.unregisterPlaceholderHook(plugin.getPluginFallbackName());
 			}
-			ret = PlaceholderAPI.registerPlaceholderHook("parties", this);
+			ret = PlaceholderAPI.registerPlaceholderHook(plugin.getPluginFallbackName(), this);
 		} catch (Exception ex) {
-			LoggerManager.printError(Constants.DEBUG_LIB_GENERAL_OUTDATED
+			plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
 					.replace("{addon}", "PlaceholderAPI"));
 		}
 		return ret;
@@ -39,12 +37,12 @@ public class PAPIHook extends PlaceholderHook {
 	}
 	
 	@Override
-	public String onRequest(OfflinePlayer p, String identifier) {
-			PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(p.getUniqueId());
-			PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
-			
-			PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
-			
-			return ph != null ? ph.formatPlaceholder(pp, party, identifier) : "";
+	public String onRequest(OfflinePlayer offlinePlayer, String identifier) {
+		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
+		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
+		
+		PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
+		
+		return ph != null ? ph.formatPlaceholder(partyPlayer, party, identifier) : "";
 	}
 }

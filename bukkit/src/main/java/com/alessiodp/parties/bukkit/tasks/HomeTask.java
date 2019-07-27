@@ -1,26 +1,25 @@
 package com.alessiodp.parties.bukkit.tasks;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class HomeTask implements Runnable {
-	private PartiesPlugin plugin;
-	private BukkitPartyPlayerImpl partyPlayer;
-	private Player player;
-	private double distanceLimitSquared;
+	private final PartiesPlugin plugin;
+	private final BukkitPartyPlayerImpl partyPlayer;
+	private final Player player;
+	private final double distanceLimitSquared;
 	
-	private long startTime;
-	private Location startLocation;
+	private final long startTime;
+	private final Location startLocation;
 	
-	private long delayTime;
-	private Location homeLocation;
+	private final long delayTime;
+	private final Location homeLocation;
 	
 	public HomeTask(PartiesPlugin plugin, BukkitPartyPlayerImpl partyPlayer, Player player, long delayTime, Location homeLocation) {
 		this.plugin = plugin;
@@ -37,14 +36,16 @@ public class HomeTask implements Runnable {
 
 	@Override
 	public void run() {
-		if (partyPlayer.getHomeDelayTask() != -1) {
+		if (partyPlayer.getHomeDelayTask() != null) {
 			if (player.isOnline()) {
+				User user = plugin.getPlayer(player.getUniqueId());
+				
 				if (BukkitConfigParties.HOME_MOVING && player.getLocation().distanceSquared(startLocation) > distanceLimitSquared) {
 					// Cancel teleport
 					cancel();
 					
-					partyPlayer.sendMessage(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED);
-					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_HOME_DENIED_MOVING
+					user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer), true);
+					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_HOME_DENIED_MOVING
 							.replace("{player}", partyPlayer.getName()), true);
 					return;
 				}
@@ -52,11 +53,11 @@ public class HomeTask implements Runnable {
 				long timestamp = System.currentTimeMillis();
 				if (timestamp - startTime > delayTime) {
 					// Teleport player via sync Bukkit API
-					plugin.getPartiesScheduler().runSync(() -> {
+					plugin.getScheduler().getSyncExecutor().execute(() -> {
 						player.teleport(homeLocation);
-						partyPlayer.sendMessage(BukkitMessages.ADDCMD_HOME_TELEPORTED);
+						user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTED, partyPlayer), true);
 						
-						LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_TELEPORT_DONE
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_DONE
 								.replace("{player}", player.getName()), true);
 						
 						cancel();
@@ -69,33 +70,9 @@ public class HomeTask implements Runnable {
 	}
 	
 	private void cancel() {
-		plugin.getPartiesScheduler().cancelTask(partyPlayer.getHomeDelayTask());
-		partyPlayer.setHomeDelayTask(-1);
-	}
-	
-	/*
-	@Override
-	public void run() {
-		if (Bukkit.getOfflinePlayer(player.getPlayerUUID()).isOnline()) {
-			if (player.getHomeCooldown() != null) {
-				HomeCooldown homeCooldown = player.getHomeCooldown();
-				if (!player.getPartyName().isEmpty()) {
-					// Teleport
-					Bukkit.getPlayer(player.getPlayerUUID()).teleport(loc);
-					
-					// Send player message
-					player.sendMessage(BukkitMessages.ADDCMD_HOME_TELEPORTED
-							.replace("%price%", Double.toString(BukkitConfigMain.ADDONS_VAULT_PRICE_HOME)));
-					
-					// Set task id to -1
-					player.setHomeCooldown(null);
-					
-					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_TELEPORT_DONE
-							.replace("{player}", player.getName()), true);
-				}
-				// Remove home cooldown from the queue
-				homeCooldown.delete();
-			}
+		if (partyPlayer.getHomeDelayTask() != null) {
+			partyPlayer.getHomeDelayTask().cancel();
+			partyPlayer.setHomeDelayTask(null);
 		}
-	}*/
+	}
 }

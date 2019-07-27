@@ -1,44 +1,43 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.utils.ConsoleColor;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobLootDropEvent;
 import io.lumine.xikage.mythicmobs.drops.Drop;
 import io.lumine.xikage.mythicmobs.drops.droppables.ExperienceDrop;
 import io.lumine.xikage.mythicmobs.drops.droppables.SkillAPIDrop;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class MythicMobsHandler implements Listener {
-	private BukkitPartiesPlugin plugin;
+	@NonNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "MythicMobs";
 	private static boolean active;
-	private boolean registered;
+	private boolean registered = false;
 	
 	@Getter private static List<UUID> mobsExperienceToSuppress;
 	
-	public MythicMobsHandler(BukkitPartiesPlugin instance) {
-		plugin = instance;
-		registered = false;
-	}
-	
 	public void init() {
+		active = false;
 		if (BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE
 				&& BukkitConfigMain.ADDITIONAL_EXP_ENABLE
 				&& BukkitConfigMain.ADDITIONAL_EXP_DROP_ENABLE) {
@@ -49,22 +48,22 @@ public class MythicMobsHandler implements Listener {
 					active = true;
 					mobsExperienceToSuppress = new ArrayList<>();
 					if (!registered) {
-						plugin.getBootstrap().getServer().getPluginManager().registerEvents(this, plugin.getBootstrap());
+						Bukkit.getServer().getPluginManager().registerEvents(this, ((Plugin) plugin.getBootstrap()));
+						registered = true;
 					}
 					
-					LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
-							.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
+					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
+							.replace("{addon}", ADDON_NAME), true);
 				} catch (Exception ex) {
-					LoggerManager.printError(Constants.DEBUG_LIB_GENERAL_OUTDATED
+					plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
 							.replace("{addon}", ADDON_NAME));
 				}
 			} else {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = false;
-				active = false;
 				
 				HandlerList.unregisterAll(this);
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_FAILED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.RED);
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
+						.replace("{addon}", ADDON_NAME), true);
 			}
 		}
 	}
@@ -84,7 +83,7 @@ public class MythicMobsHandler implements Listener {
 			if (event.getKiller() != null) {
 				PartyPlayerImpl killer = plugin.getPlayerManager().getPlayer(event.getKiller().getUniqueId());
 				if (!killer.getPartyName().isEmpty()) {
-					LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_EXP_MMHANDLING
+					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_MMHANDLING
 							.replace("{name}", event.getMobType().getInternalName())
 							.replace("{player}", killer.getName()), true);
 					
@@ -102,7 +101,7 @@ public class MythicMobsHandler implements Listener {
 					}
 					
 					ExpDrop drop = new ExpDrop((int) vanillaExp, (int) skillapiExp, killer, killedEntity);
-					boolean result = plugin.getExpManager().distributeExp(drop);
+					boolean result = ((BukkitPartiesPlugin) plugin).getExpManager().distributeExp(drop);
 					if (result) {
 						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
 							// Remove exp from the event if hooked

@@ -7,16 +7,26 @@ public interface Rank {
 	/**
 	 * Set the configuration name of the rank. This should not be touched.
 	 *
-	 * @param hardname The configuration name of the rank
+	 * @param configName The configuration name of the rank
 	 */
-	void setHardName(String hardname);
+	void setConfigName(String configName);
+	
+	@Deprecated
+	default void setHardName(String hardname) {
+		setConfigName(hardname);
+	}
 	
 	/**
 	 * Get the configuration name of the rank This should not be touched.
 	 *
 	 * @return Returns the configuration name of the rank
 	 */
-	String getHardName();
+	String getConfigName();
+	
+	@Deprecated
+	default String getHardName() {
+		return getConfigName();
+	}
 	
 	/**
 	 * Set the name of the rank

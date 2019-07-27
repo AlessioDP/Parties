@@ -1,18 +1,18 @@
 package com.alessiodp.parties.common.players.objects;
 
+import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.tasks.InviteCooldownTask;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class InviteCooldown {
 	@Getter private PartiesPlugin plugin;
 	
-	@Getter private int task;
+	private CancellableTask task;
 	@Getter private long startTime;
 	
 	@Getter private UUID from;
@@ -37,19 +37,12 @@ public class InviteCooldown {
 	
 	
 	public void createTask(int delay) {
-		List<InviteCooldown> list = plugin.getCooldownManager().getInviteCooldown().computeIfAbsent(from, k -> new ArrayList<>());
-		
 		startTime = System.currentTimeMillis() / 1000L; // Unix timestamp
-		task = plugin.getPartiesScheduler().scheduleTaskLater(new InviteCooldownTask(this), delay * 20L);
-		list.add(this);
+		task = plugin.getScheduler().scheduleAsyncLater(new InviteCooldownTask(this), delay, TimeUnit.SECONDS);
 	}
 	
 	public void cancelTask() {
-		List<InviteCooldown> list = plugin.getCooldownManager().getInviteCooldown().get(from);
-		
-		if (list != null) {
-			list.remove(this);
-		}
+		task.cancel();
 	}
 	
 	public long getDiffTime() {
@@ -59,7 +52,7 @@ public class InviteCooldown {
 	public enum CooldownType {
 		GLOBAL, INDIVIDUAL;
 		
-		public int getTick() {
+		public int getCooldown() {
 			int ret = 0;
 			switch (this) {
 			case GLOBAL:

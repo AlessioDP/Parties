@@ -1,33 +1,35 @@
 package com.alessiodp.parties.bukkit.players;
 
+import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.ExpResult;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import javax.script.ScriptEngineManager;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpManager {
-	private PartiesPlugin plugin;
+	private final PartiesPlugin plugin;
 	private ExpMode mode;
 	private double rangeSquared;
 	
 	private ExpConvert convertNormal;
 	private ExpConvert convertSkillapi;
 	
-	public ExpManager(PartiesPlugin instance) {
+	public ExpManager(@NonNull PartiesPlugin instance) {
 		plugin = instance;
 		reload();
 	}
@@ -55,51 +57,57 @@ public class ExpManager {
 		PartyImpl party = plugin.getPartyManager().getParty(drop.getKiller().getPartyName());
 		
 		if (party != null) {
-			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_EXP_RECEIVED
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_RECEIVED
 					.replace("{normal}", Integer.toString(drop.getNormal()))
-					.replace("{skillapi}", Integer.toString(drop.getSkillapi())), true);
-			if (drop.getNormal() > 0) {
-				switch (convertNormal) {
-					case PARTY:
-						totalParty += drop.getNormal();
-						break;
-					case NORMAL:
-						totalNormal += drop.getNormal();
-						break;
-					case SKILLAPI:
-						totalSkillapi += drop.getNormal();
-						break;
-				}
-				ret = true;
-			}
-			if (drop.getSkillapi() > 0) {
-				switch (convertSkillapi) {
-					case PARTY:
-						totalParty += drop.getSkillapi();
-						break;
-					case NORMAL:
-						totalNormal += drop.getSkillapi();
-						break;
-					case SKILLAPI:
-						totalSkillapi += drop.getSkillapi();
-						break;
-				}
-				ret = true;
-			}
+					.replace("{skillapi}", Integer.toString(drop.getSkillApi())), true);
 			
-			// Send experience
-			if (totalParty > 0) {
-				// If sent to the party, don't share experience
-				party.giveExperience(totalParty);
-				party.updateParty();
-				drop.getKiller().sendMessage(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
-						.replace("%exp%",Integer.toString(totalParty)));
-			}
-			if (totalNormal > 0 && !shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL)) {
-				Bukkit.getPlayer(drop.getKiller().getPlayerUUID()).giveExp(totalNormal);
-			}
-			if (totalSkillapi > 0 && !shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI)) {
-				SkillAPIHandler.giveExp(drop.getKiller().getPlayerUUID(), totalSkillapi);
+			Player player = Bukkit.getPlayer(drop.getKiller().getPlayerUUID());
+			User user = plugin.getPlayer(drop.getKiller().getPlayerUUID());
+			
+			if (player != null && user != null) {
+				if (drop.getNormal() > 0) {
+					switch (convertNormal) {
+						case PARTY:
+							totalParty += drop.getNormal();
+							break;
+						case NORMAL:
+							totalNormal += drop.getNormal();
+							break;
+						case SKILLAPI:
+							totalSkillapi += drop.getNormal();
+							break;
+					}
+					ret = true;
+				}
+				if (drop.getSkillApi() > 0) {
+					switch (convertSkillapi) {
+						case PARTY:
+							totalParty += drop.getSkillApi();
+							break;
+						case NORMAL:
+							totalNormal += drop.getSkillApi();
+							break;
+						case SKILLAPI:
+							totalSkillapi += drop.getSkillApi();
+							break;
+					}
+					ret = true;
+				}
+				
+				// Send experience
+				if (totalParty > 0) {
+					// If sent to the party, don't share experience
+					party.giveExperience(totalParty);
+					party.updateParty();
+					user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
+							.replace("%exp%", Integer.toString(totalParty)), drop.getKiller()), true);
+				}
+				if (totalNormal > 0 && !shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL)) {
+					player.giveExp(totalNormal);
+				}
+				if (totalSkillapi > 0 && !shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI)) {
+					SkillAPIHandler.giveExp(player.getUniqueId(), totalSkillapi);
+				}
 			}
 		}
 		return ret;
@@ -117,11 +125,11 @@ public class ExpManager {
 			Location mobKilledLocation = killedMob.getLocation();
 			
 			// Get nearest player
-			for (PartyPlayerImpl player : party.getOnlinePlayers()) {
+			for (PartyPlayer player : party.getOnlineMembers(true)) {
 				try {
 					if (player.getPlayerUUID().equals(killer.getPlayerUUID())
 							|| (Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation) <= rangeSquared)) {
-						playersToShare.add(player);
+						playersToShare.add((PartyPlayerImpl) player);
 					}
 				} catch (IllegalArgumentException ignored) {
 				} // Ignoring different world
@@ -137,29 +145,34 @@ public class ExpManager {
 					int singlePlayerExperience = (int) calculateExpression(formula);
 					
 					for (PartyPlayerImpl player : playersToShare) {
-						String message = "";
-						switch (type) {
-							case NORMAL:
-								Bukkit.getPlayer(player.getPlayerUUID()).giveExp(singlePlayerExperience);
-								message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_OTHERS;
-								break;
-							case SKILLAPI:
-								SkillAPIHandler.giveExp(player.getPlayerUUID(), singlePlayerExperience);
-								message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
-								break;
+						Player bukkitPlayer = Bukkit.getPlayer(player.getPlayerUUID());
+						User user = plugin.getPlayer(player.getPlayerUUID());
+						if (bukkitPlayer != null && user != null) {
+							String message = "";
+							switch (type) {
+								case NORMAL:
+									bukkitPlayer.giveExp(singlePlayerExperience);
+									message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_OTHERS;
+									break;
+								case SKILLAPI:
+									SkillAPIHandler.giveExp(player.getPlayerUUID(), singlePlayerExperience);
+									message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+									break;
+							}
+							
+							user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(message
+											.replace("%exp%", Integer.toString(singlePlayerExperience))
+											.replace("%total_exp%", Integer.toString(experience))
+									, killer), true);
+							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_SENT
+									.replace("{exp}", Integer.toString(singlePlayerExperience))
+									.replace("{type}", type.name())
+									.replace("{player}", player.getName()), true);
 						}
-						player.sendMessage(message
-								.replace("%exp%",Integer.toString(singlePlayerExperience))
-								.replace("%total_exp%",Integer.toString(experience))
-								, killer);
-						LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_EXP_SENT
-								.replace("{exp}", Integer.toString(singlePlayerExperience))
-								.replace("{type}", type.name())
-								.replace("{player}", player.getName()), true);
 					}
 					ret = true;
 				} catch (Exception ex) {
-					LoggerManager.printError(Constants.DEBUG_EXP_EXPRESSIONERROR
+					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_EXP_EXPRESSIONERROR
 							.replace("{value}", formula)
 							.replace("{message}", ex.getMessage()));
 				}

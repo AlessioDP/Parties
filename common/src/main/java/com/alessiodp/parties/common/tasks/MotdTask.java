@@ -1,34 +1,31 @@
 package com.alessiodp.parties.common.tasks;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class MotdTask implements Runnable {
-	private PartiesPlugin plugin;
-	private UUID playerUUID;
-	private UUID createID;
-	
-	public MotdTask(PartiesPlugin plugin, UUID playerUUID, UUID createID) {
-		this.plugin = plugin; 
-		this.playerUUID = playerUUID;
-		this.createID = createID;
-	}
+	@NonNull private PartiesPlugin plugin;
+	@NonNull private UUID playerUUID;
+	@NonNull private UUID createID;
 
 	@Override
 	public void run() {
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(playerUUID);
+		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
 		User sender = plugin.getPlayer(playerUUID);
 		if (sender != null) {
 			
-			if (createID.equals(pp.getCreateID()) && !pp.getPartyName().isEmpty()) {
-				PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
+			if (createID.equals(partyPlayer.getCreateID()) && !partyPlayer.getPartyName().isEmpty()) {
+				PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
 				
 				if (party != null) {
 					if (!party.getMotd().isEmpty()) {
@@ -40,12 +37,12 @@ public class MotdTask implements Runnable {
 						}
 						
 						for (String line : Messages.ADDCMD_MOTD_CONTENT) {
-							line = line.replace(Constants.PLACEHOLDER_PARTY_MOTD, "%temporary_motd%"); // Used to bypass tags from convertAllPlaceholders
-							line = plugin.getMessageUtils().convertAllPlaceholders(line, party, pp);
-							line = plugin.getMessageUtils().convertColors(line);
+							line = line.replace(PartiesConstants.PLACEHOLDER_PARTY_MOTD, "%temporary_motd%"); // Used to bypass tags from convertAllPlaceholders
+							line = plugin.getMessageUtils().convertAllPlaceholders(line, party, partyPlayer);
+							line = plugin.getColorUtils().convertColors(line);
 							line = line.replace("%temporary_motd%", motd.toString());
 							
-							pp.sendMessage(line);
+							partyPlayer.sendMessage(line);
 						}
 					}
 				}

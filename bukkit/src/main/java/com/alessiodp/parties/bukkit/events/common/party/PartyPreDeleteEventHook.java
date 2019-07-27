@@ -4,15 +4,15 @@ import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreDelete
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class PartyPreDeleteEventHook extends BukkitPartiesPartyPreDeleteEvent {
 	private boolean cancelled;
-	private Party party;
-	private DeleteCause cause;
-	private PartyPlayer kickedPlayer;
-	private PartyPlayer commandSender;
+	private final Party party;
+	private final DeleteCause cause;
+	private final PartyPlayer kickedPlayer;
+	private final PartyPlayer commandSender;
 	
 	public PartyPreDeleteEventHook(Party party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
 		this.party = party;
@@ -21,13 +21,13 @@ public class PartyPreDeleteEventHook extends BukkitPartiesPartyPreDeleteEvent {
 		this.commandSender = commandSender;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public DeleteCause getCause() {
 		return cause;

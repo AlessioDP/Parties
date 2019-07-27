@@ -4,14 +4,19 @@ import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class BukkitPartiesEvent extends Event implements PartiesEvent {
 	private PartiesAPI api;
 	private static final HandlerList HANDLERS = new HandlerList();
 	
+	public BukkitPartiesEvent(boolean async) {
+		super(async);
+	}
+	
+	
 	@Override
-	@NotNull
+	@NonNull
 	public PartiesAPI getApi() {
 		return api;
 	}
@@ -22,6 +27,7 @@ public class BukkitPartiesEvent extends Event implements PartiesEvent {
 	}
 	
 	@Override
+	@NonNull
 	public HandlerList getHandlers() {
 		return HANDLERS;
 	}

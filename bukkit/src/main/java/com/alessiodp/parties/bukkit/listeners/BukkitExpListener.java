@@ -6,18 +6,16 @@ import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+@RequiredArgsConstructor
 public class BukkitExpListener implements Listener {
-	private BukkitPartiesPlugin plugin;
-	
-	public BukkitExpListener(BukkitPartiesPlugin instance) {
-		plugin = instance;
-	}
+	private final BukkitPartiesPlugin plugin;
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onEntityDie(EntityDeathEvent event) {

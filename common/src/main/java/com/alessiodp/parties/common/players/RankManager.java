@@ -1,7 +1,9 @@
 package com.alessiodp.parties.common.players;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
@@ -11,7 +13,7 @@ import lombok.Getter;
 import java.util.Set;
 
 public class RankManager {
-	private PartiesPlugin plugin;
+	private final PartiesPlugin plugin;
 	@Getter private Set<RankImpl> rankList;
 	
 	public RankManager(PartiesPlugin instance) {
@@ -50,7 +52,7 @@ public class RankManager {
 	public RankImpl searchRankByHardName(String hardName) {
 		RankImpl ret = null;
 		for (RankImpl rank : rankList) {
-			if (rank.getHardName().equalsIgnoreCase(hardName)) {
+			if (rank.getConfigName().equalsIgnoreCase(hardName)) {
 				ret = rank;
 				break;
 			}
@@ -98,19 +100,22 @@ public class RankManager {
 		return ret;
 	}
 	
-	public boolean checkPlayerRankAlerter(PartyPlayerImpl pp, PartiesPermission perm) {
+	public boolean checkPlayerRankAlerter(PartyPlayerImpl partyPlayer, PartiesPermission perm) {
 		boolean ret = true;
-		RankImpl r = searchRankByLevel(pp.getRank());
+		RankImpl r = searchRankByLevel(partyPlayer.getRank());
+		User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
 		
-		if (r != null && !plugin.getPlayer(pp.getPlayerUUID()).hasPermission(PartiesPermission.ADMIN_RANK_BYPASS.toString())) {
+		if (r != null && !user.hasPermission(PartiesPermission.ADMIN_RANK_BYPASS.toString())) {
 			if (!r.havePermission(perm.toString())) {
-				RankImpl rr = plugin.getRankManager().searchUpRank(pp.getRank(), perm.toString());
-				if (rr != null)
-					pp.sendMessage(Messages.PARTIES_PERM_NORANK
-							.replace(Constants.PLACEHOLDER_PLAYER_RANK_NAME, rr.getName())
-							.replace(Constants.PLACEHOLDER_PLAYER_RANK_CHAT, rr.getChat()));
-				else
-					pp.sendNoPermission(perm);
+				RankImpl rr = plugin.getRankManager().searchUpRank(partyPlayer.getRank(), perm.toString());
+				if (rr != null) {
+					partyPlayer.sendMessage(Messages.PARTIES_PERM_NORANK
+							.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_NAME, rr.getName())
+							.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_CHAT, rr.getChat()));
+				} else {
+					partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
+							.replace("%permission%", perm.toString()));
+				}
 				ret = false;
 			}
 		}

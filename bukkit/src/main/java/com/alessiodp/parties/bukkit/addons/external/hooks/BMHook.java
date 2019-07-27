@@ -8,14 +8,12 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.utils.ConsoleColor;
 import com.alessiodp.parties.api.enums.DeleteCause;
+import lombok.NonNull;
 import org.bukkit.event.EventHandler;
 
 import me.confuser.banmanager.BanManager;
@@ -25,10 +23,10 @@ import me.confuser.banmanager.data.PlayerData;
 import me.confuser.banmanager.events.PlayerBannedEvent;
 
 public class BMHook extends Listeners<BanManager> {
-	private PartiesPlugin plugin;
+	private final PartiesPlugin plugin;
 	
-	public BMHook(PartiesPlugin instance) {
-		plugin = instance;
+	public BMHook(@NonNull PartiesPlugin plugin) {
+		this.plugin = plugin;
 		register();
 	}
 	
@@ -40,63 +38,59 @@ public class BMHook extends Listeners<BanManager> {
 	public void onPlayerBan(PlayerBannedEvent event) {
 		if (BukkitConfigMain.ADDONS_BANMANAGER_AUTOKICK) {
 			PlayerData pl = event.getBan().getPlayer();
-			PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(pl.getUUID());
+			PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(pl.getUUID());
 			
 			// Spy listener
-			if (pp.isSpy())
-				plugin.getSpyManager().removeSpy(pp.getPlayerUUID());
+			if (partyPlayer.isSpy())
+				plugin.getSpyManager().removeSpy(partyPlayer.getPlayerUUID());
 			
 			// Party checking
-			if (!pp.getPartyName().isEmpty()) {
-				PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
+			if (!partyPlayer.getPartyName().isEmpty()) {
+				PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
 				if (party != null) {
 					PartyPlayerImpl kickerPp = plugin.getPlayerManager().getPlayer(event.getBan().getActor().getUUID());
 					
 					// Calling API event
-					IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(pp, party, true, kickerPp);
+					IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, true, kickerPp);
 					plugin.getEventManager().callEvent(partiesPreLeaveEvent);
 					
 					if (!partiesPreLeaveEvent.isCancelled()) {
-						if (party.getLeader().equals(pl.getUUID())) {
+						if (party.getLeader() != null && party.getLeader().equals(pl.getUUID())) {
 							// Calling Pre API event
-							IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.BAN, pp, kickerPp);
+							IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.BAN, partyPlayer, kickerPp);
 							plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 							
 							if (!partiesPreDeleteEvent.isCancelled()) {
-								party.sendBroadcast(pp, Messages.MAINCMD_LEAVE_DISBANDED);
+								party.broadcastMessage(Messages.MAINCMD_LEAVE_DISBANDED, partyPlayer);
 								
-								party.removeParty();
+								party.delete();
 								// Calling Post API event
-								IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.BAN, pp, kickerPp);
+								IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.BAN, partyPlayer, kickerPp);
 								plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 								
-								LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_LIB_BANMANAGER_BAN
+								plugin.getLoggerManager().log(PartiesConstants.DEBUG_LIB_BANMANAGER_BAN
 										.replace("{party}", party.getName())
-										.replace("{player}", pl.getName()), true, ConsoleColor.CYAN);
+										.replace("{player}", pl.getName()), true);
 							} else {
 								// Event is cancelled, block ban chain
-								LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_DELETEEVENT_DENY_GENERIC
+								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC
 										.replace("{party}", party.getName()), true);
 								return;
 							}
 						} else {
-							party.getMembers().remove(pl.getUUID());
-							party.getOnlinePlayers().remove(kickerPp);
+							partyPlayer.removeFromParty(true);
 							
-							party.sendBroadcast(pp, Messages.MAINCMD_KICK_BROADCAST);
-							
-							party.updateParty();
+							party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, partyPlayer);
 						}
 						
 						// Calling API event
-						IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(pp, party, true, kickerPp);
+						IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(partyPlayer, party, true, kickerPp);
 						plugin.getEventManager().callEvent(partiesPostLeaveEvent);
 					} else
-						LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_LEAVEEVENT_DENY
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY
 								.replace("{player}", pl.getName())
 								.replace("{party}", party.getName()), true);
 				}
-				pp.cleanupPlayer(true);
 			}
 		}
 	}

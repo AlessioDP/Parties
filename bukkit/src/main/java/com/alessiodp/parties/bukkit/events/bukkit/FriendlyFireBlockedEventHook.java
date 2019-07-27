@@ -3,14 +3,14 @@ package com.alessiodp.parties.bukkit.events.bukkit;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class FriendlyFireBlockedEventHook extends BukkitPartiesFriendlyFireBlockedEvent {
 	private boolean cancelled;
-	private PartyPlayer victim;
-	private PartyPlayer attacker;
-	private EntityDamageByEntityEvent originalEvent;
+	private final PartyPlayer victim;
+	private final PartyPlayer attacker;
+	private final EntityDamageByEntityEvent originalEvent;
 	
 	public FriendlyFireBlockedEventHook(PartyPlayer victim, PartyPlayer attacker, EntityDamageByEntityEvent originalEvent) {
 		this.victim = victim;
@@ -18,13 +18,13 @@ public class FriendlyFireBlockedEventHook extends BukkitPartiesFriendlyFireBlock
 		this.originalEvent = originalEvent;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPlayerVictim() {
 		return victim;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPlayerAttacker() {
 		return attacker;

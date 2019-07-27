@@ -1,10 +1,11 @@
-name: ${plugin.name}
-description: ${plugin.description}
-author: ${plugin.author}
-website: ${plugin.website}
-version: ${plugin.version}
+name: ${pluginName}
+description: ${pluginDescription}
+author: ${pluginAuthor}
+website: ${pluginWebsite}
+version: ${pluginVersion}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
+depend: [LastLoginAPI]
 softdepend: [CrackShot, Dynmap, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
 permissions:
   parties.user.accept:
@@ -77,8 +78,6 @@ permissions:
     description: Bypass the default join
   parties.admin.kick.others:
     description: Allow access to /party kick on other players
-  parties.admin.migrate:
-    description: Allow access to /party migrate
   parties.admin.rank.bypass:
     description: Bypass rank restrictions
   parties.admin.rank.others:
@@ -144,7 +143,6 @@ permissions:
       parties.admin.join.others: true
       parties.admin.joindefault.bypass: true
       parties.admin.kick.others: true
-      parties.admin.migrate: true
       parties.admin.rank.bypass: true
       parties.admin.rank.others: true
       parties.admin.reload: true

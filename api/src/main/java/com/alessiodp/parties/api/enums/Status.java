@@ -2,7 +2,9 @@ package com.alessiodp.parties.api.enums;
 
 /**
  * Status is an enum that provides a result for some Parties API methods.
+ * @deprecated No longer used
  */
+@Deprecated
 public enum Status {
 	/**
 	 * The party doesn't exist

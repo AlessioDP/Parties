@@ -3,13 +3,13 @@ package com.alessiodp.parties.bukkit.events.bukkit;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesCombustFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class CombustFriendlyFireBlockedEventHook extends BukkitPartiesCombustFriendlyFireBlockedEvent {
 	private boolean cancelled;
-	private PartyPlayer victim;
-	private PartyPlayer attacker;
-	private EntityCombustByEntityEvent originalEvent;
+	private final PartyPlayer victim;
+	private final PartyPlayer attacker;
+	private final EntityCombustByEntityEvent originalEvent;
 	
 	public CombustFriendlyFireBlockedEventHook(PartyPlayer victim, PartyPlayer attacker, EntityCombustByEntityEvent originalEvent) {
 		this.victim = victim;
@@ -17,19 +17,19 @@ public class CombustFriendlyFireBlockedEventHook extends BukkitPartiesCombustFri
 		this.originalEvent = originalEvent;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPlayerVictim() {
 		return victim;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public EntityCombustByEntityEvent getOriginalEvent() {
 		return originalEvent;

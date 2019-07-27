@@ -1,5 +1,7 @@
 package com.alessiodp.parties.api.interfaces;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.util.UUID;
 
 public interface PartyPlayer {
@@ -9,35 +11,28 @@ public interface PartyPlayer {
 	 *
 	 * @return Returns the {@link UUID} of the player
 	 */
-	UUID getPlayerUUID();
+	@NonNull UUID getPlayerUUID();
 	
 	/**
 	 * Get the name
 	 *
 	 * @return Returns the name of the player
 	 */
-	String getName();
+	@NonNull String getName();
 	
 	/**
-	 * Set the name
+	 * Get the party name
 	 *
-	 * @param name The name to set
+	 * @return Returns the party name, empty if the player is not in a party
 	 */
-	void setName(String name);
+	@NonNull String getPartyName();
 	
 	/**
-	 * Get the name timestamp
+	 * Set the party name
 	 *
-	 * @return Returns the name timestamp
+	 * @param partyName The party name to set
 	 */
-	long getNameTimestamp();
-	
-	/**
-	 * Set the name timestamp
-	 *
-	 * @param nameTimestamp The timestamp to set
-	 */
-	void setNameTimestamp(long nameTimestamp);
+	void setPartyName(@NonNull String partyName);
 	
 	/**
 	 * Get the rank level
@@ -52,20 +47,6 @@ public interface PartyPlayer {
 	 * @param rank The rank level to set
 	 */
 	void setRank(int rank);
-	
-	/**
-	 * Get the party name
-	 *
-	 * @return Returns the party name, empty if the player is not in a party
-	 */
-	String getPartyName();
-	
-	/**
-	 * Set the party name
-	 *
-	 * @param partyName The party name to set
-	 */
-	void setPartyName(String partyName);
 	
 	/**
 	 * Is the player a spy?
@@ -94,4 +75,37 @@ public interface PartyPlayer {
 	 * @param value True to mute notifications
 	 */
 	void setMuted(boolean value);
+	
+	/**
+	 * Set the name
+	 *
+	 * @param name The name to set
+	 * @deprecated Parties does not handle player names anymore (use LastLoginAPI plugin instead)
+	 */
+	@Deprecated
+	default void setName(String name) {
+		// Nothing to do
+	}
+	
+	/**
+	 * Get the name timestamp
+	 *
+	 * @return Returns the name timestamp
+	 * @deprecated Parties does not handle login timestamp anymore (use LastLoginAPI plugin instead)
+	 */
+	@Deprecated
+	default long getNameTimestamp() {
+		return 0L;
+	}
+	
+	/**
+	 * Set the name timestamp
+	 *
+	 * @param nameTimestamp The timestamp to set
+	 * @deprecated Parties does not handle login timestamp anymore (use LastLoginAPI plugin instead)
+	 */
+	@Deprecated
+	default void setNameTimestamp(long nameTimestamp) {
+		// Nothing to do
+	}
 }

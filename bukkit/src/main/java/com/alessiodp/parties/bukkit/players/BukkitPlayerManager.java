@@ -8,8 +8,8 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import java.util.UUID;
 
 public class BukkitPlayerManager extends PlayerManager {
-	public BukkitPlayerManager(PartiesPlugin instance) {
-		super(instance);
+	public BukkitPlayerManager(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
 	@Override

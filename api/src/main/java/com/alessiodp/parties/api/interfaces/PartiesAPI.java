@@ -1,57 +1,34 @@
 package com.alessiodp.parties.api.interfaces;
 
 import com.alessiodp.parties.api.enums.Status;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public interface PartiesAPI {
-	/*
-	 * ############ Parties based ############
-	 */
-	
-	/**
-	 * Send changes to the database. Used to save parties data.
-	 *
-	 * @param party The {@link Party} to save
-	 */
-	void updateParty(Party party);
-	
-	/**
-	 * Send changes to the database. Used to save players data.
-	 *
-	 * @param player The {@link PartyPlayer} to save
-	 */
-	void updatePartyPlayer(PartyPlayer player);
-	
 	/**
 	 * Reload Parties configuration files
 	 */
-	void reloadParties();
+	void reloadPlugin();
 	
 	/**
-	 * Send a broadcast message to the party paramParty; It requires a player to
-	 * send the message because Parties gets the placeholder info from the player;
-	 * If it's a broadcast unrelated on players, you can insert a {@code null}
-	 * player.
+	 * Create a party
 	 *
-	 * @param party   The {@link Party} that will see the message
-	 * @param player  The {@link PartyPlayer} who sent the message
-	 * @param message The message to broadcast
+	 * @param party  The party name
+	 * @param leader The leader of the party as {@link PartyPlayer}, null if the party should be fixed
+	 * @return Returns true if successfully created
 	 */
-	void broadcastPartyMessage(Party party, PartyPlayer player, String message);
+	boolean createParty(@NonNull String party, PartyPlayer leader);
 	
 	/**
-	 * Get online parties
+	 * Get the party by its name
 	 *
-	 * @return Returns a list of {@link Party}
+	 * @param party The name of the {@link Party}
+	 * @return Returns the {@link Party}
 	 */
-	List<Party> getOnlineParties();
-	
-	/*
-	 * ############ Player based ############
-	 */
+	Party getParty(@NonNull String party);
 	
 	/**
 	 * Get the player by his {@link UUID}
@@ -62,21 +39,11 @@ public interface PartiesAPI {
 	PartyPlayer getPartyPlayer(UUID uuid);
 	
 	/**
-	 * Add the player into the party
+	 * Get online parties
 	 *
-	 * @param player The {@link PartyPlayer} to insert
-	 * @param party  The {@link Party}
-	 * @return Returns the result of the method as {@link Status}
+	 * @return Returns a list of {@link Party}
 	 */
-	Status addPlayerIntoParty(PartyPlayer player, Party party);
-	
-	/**
-	 * Remove the player from the party
-	 *
-	 * @param player The {@link PartyPlayer} to remove
-	 * @return Returns the result of the method as {@link Status}
-	 */
-	Status removePlayerFromParty(PartyPlayer player);
+	List<Party> getOnlineParties();
 	
 	/**
 	 * Get the list of available ranks
@@ -85,34 +52,110 @@ public interface PartiesAPI {
 	 */
 	Set<Rank> getRanks();
 	
-	/*
-	 * ############ Party based ############
+	/**
+	 * Get the list of available colors
+	 *
+	 * @return Returns a set of {@link Color}
 	 */
+	Set<Color> getColors();
 	
 	/**
-	 * Get the party by its name
-	 *
-	 * @param party The name of the {@link Party}
-	 * @return Returns the {@link Party}
+	 * Reload Parties configuration files
+	 * @deprecated Use reloadPlugin()
 	 */
-	Party getParty(String party);
+	@Deprecated
+	default void reloadParties() {
+		reloadPlugin();
+	}
 	
 	/**
-	 * Create a party
+	 * Send changes to the database. Used to save parties data.
 	 *
-	 * @param player The leader of the party as {@link PartyPlayer}
-	 * @param party  The party name
-	 * @return Returns the {@link Status} of the method
+	 * @param party The {@link Party} to save
+	 * @deprecated No longer needed
 	 */
-	Status createParty(PartyPlayer player, String party);
+	@Deprecated
+	default void updateParty(Party party) {}
+	
+	/**
+	 * Send changes to the database. Used to save players data.
+	 *
+	 * @param player The {@link PartyPlayer} to save
+	 * @deprecated No longer needed
+	 */
+	@Deprecated
+	default void updatePartyPlayer(PartyPlayer player) {}
+	
+	/**
+	 * Send a broadcast message to the party paramParty; It requires a player to
+	 * send the message because Parties gets the placeholder info from the player;
+	 * If it's a broadcast unrelated on players, you can insert a {@code null}
+	 * player.
+	 *
+	 * @param party   The {@link Party} that will see the message
+	 * @param player  The {@link PartyPlayer} who sent the message
+	 * @param message The message to broadcast
+	 * @deprecated Use Party.broadcastMessage(String, PartyPlayer)
+	 */
+	@Deprecated
+	default void broadcastPartyMessage(Party party, PartyPlayer player, String message) {
+		if (party != null) {
+			party.broadcastMessage(message, player);
+		}
+	}
+	
+	/**
+	 * Add the player into the party
+	 *
+	 * @param player The {@link PartyPlayer} to insert
+	 * @param party  The {@link Party}
+	 * @return Returns the result of the method as {@link Status}
+	 * @deprecated Use Party.addMember(PartyPlayer)
+	 */
+	@Deprecated
+	default Status addPlayerIntoParty(PartyPlayer player, Party party) {
+		if (party == null || player == null)
+			return Status.NOEXIST;
+		if (!player.getPartyName().isEmpty())
+			return Status.ALREADYINPARTY;
+		if (party.addMember(player))
+			return Status.SUCCESS;
+		else
+			return Status.PARTYFULL;
+	}
+	
+	/**
+	 * Remove the player from the party
+	 *
+	 * @param player The {@link PartyPlayer} to remove
+	 * @return Returns the result of the method as {@link Status}
+	 * @deprecated Use Party.removeMember(PartyPlayer)
+	 */
+	@Deprecated
+	default Status removePlayerFromParty(PartyPlayer player) {
+		if (player == null)
+			return Status.NOEXIST;
+		Party party = getParty(player.getPartyName());
+		if (party == null)
+			return Status.NOPARTY;
+		party.removeMember(player);
+		return Status.SUCCESS;
+	}
 	
 	/**
 	 * Delete the party
 	 *
 	 * @param party The {@link Party} to delete
 	 * @return Returns the {@link Status} of the method
+	 * @deprecated Use Party.delete()
 	 */
-	Status deleteParty(Party party);
+	@Deprecated
+	default Status deleteParty(Party party) {
+		if (party == null)
+			return Status.NOEXIST;
+		party.delete();
+		return Status.SUCCESS;
+	}
 	
 	/**
 	 * Get a list of online players of the party
@@ -120,20 +163,21 @@ public interface PartiesAPI {
 	 * @param party The {@code Party}
 	 * @return Returns a list of {@code Set<PartyPlayer>}, if the party
 	 * doesn't exist returns {@code null}
+	 * @deprecated Use Party.getOnlineMembers(boolean)
 	 */
-	Set<PartyPlayer> getOnlinePlayers(Party party);
+	@Deprecated
+	default Set<PartyPlayer> getOnlinePlayers(Party party) {
+		if (party == null)
+			return null;
+		return party.getOnlineMembers(true);
+	}
 	
 	/**
 	 * Refresh the online players list of the party
 	 *
 	 * @param party The {@link Party}
+	 * @deprecated No longer needed
 	 */
-	void refreshOnlinePlayers(Party party);
-	
-	/**
-	 * Get the list of available colors
-	 *
-	 * @return Returns a set of {@link Color}
-	 */
-	Set<Color> getColors();
+	@Deprecated
+	default void refreshOnlinePlayers(Party party) {}
 }

@@ -1,10 +1,16 @@
 package com.alessiodp.parties.bukkit.configuration.data;
 
+import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import lombok.Getter;
 
 public class BukkitMessages extends Messages {
+	@Getter private final String fileName = "messages.yml";
+	@Getter private final String resourceName = "bukkit/messages.yml";
+	@Getter private final int latestVersion = PartiesConstants.VERSION_BUKKIT_MESSAGES;
+	
 	// Additional commands messages
 	public static String ADDCMD_CLAIM_CLAIMED;
 	public static String ADDCMD_CLAIM_REMOVED;
@@ -190,15 +196,5 @@ public class BukkitMessages extends Messages {
 		HELP_ADDCMD_HOME = confAdapter.getString("help.additional-commands.home", HELP_ADDCMD_HOME);
 		HELP_ADDCMD_PROTECTION = confAdapter.getString("help.additional-commands.protection", HELP_ADDCMD_PROTECTION);
 		HELP_ADDCMD_SETHOME = confAdapter.getString("help.additional-commands.sethome", HELP_ADDCMD_SETHOME);
-	}
-	
-	@Override
-	public String getFileName() {
-		return "messages.yml";
-	}
-	
-	@Override
-	public String getResourceName() {
-		return "bukkit/messages.yml";
 	}
 }

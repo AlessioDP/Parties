@@ -2,24 +2,20 @@ package com.alessiodp.parties.bukkit.addons.external;
 
 import java.util.UUID;
 
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
-import com.alessiodp.parties.common.utils.ConsoleColor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 
 import com.alessiodp.parties.bukkit.addons.external.hooks.BMHook;
 
+@RequiredArgsConstructor
 public class BanManagerHandler {
-	private PartiesPlugin plugin;
+	@NonNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "BanManager";
 	private static BMHook hook;
-	
-	public BanManagerHandler(PartiesPlugin instance) {
-		plugin = instance;
-	}
 	
 	public void init() {
 		hook = null;
@@ -27,21 +23,21 @@ public class BanManagerHandler {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				hook = new BMHook(plugin);
 				
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
+						.replace("{addon}", ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDONS_BANMANAGER_ENABLE = false;
 				
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_FAILED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.RED);
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
+						.replace("{addon}", ADDON_NAME), true);
 			}
 		}
 	}
 	
-	
 	public static boolean isMuted(UUID uuid) {
+		boolean ret = false;
 		if (hook != null)
-			return hook.isMuted(uuid);
-		return false;
+			ret = hook.isMuted(uuid);
+		return ret;
 	}
 }

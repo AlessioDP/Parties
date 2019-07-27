@@ -1,29 +1,26 @@
 package com.alessiodp.parties.common.listeners;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.events.common.player.IChatEvent;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.ChatTask;
-import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@RequiredArgsConstructor
 public abstract class ChatListener {
-	private PartiesPlugin plugin;
-	
-	protected ChatListener(PartiesPlugin instance) {
-		plugin = instance;
-	}
+	protected final PartiesPlugin plugin;
 	
 	/**
 	 * Used by Bukkit, Bungeecord
@@ -32,12 +29,12 @@ public abstract class ChatListener {
 	 */
 	protected boolean onPlayerChat(User sender, String message) {
 		boolean eventCancelled = false;
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(sender.getUUID());
 		
 		boolean partyChat = false;
-		PartyImpl party = pp.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(pp.getPartyName());
+		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(partyPlayer.getPartyName());
 		if (party != null) {
-			if (pp.isChatParty()) {
+			if (partyPlayer.isChatParty()) {
 				partyChat = true;
 			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && message.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
 				partyChat = true;
@@ -48,56 +45,58 @@ public abstract class ChatListener {
 		if (partyChat) {
 			String finalMessage = message;
 			// Make it async
-			plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {
-				if (plugin.getRankManager().checkPlayerRankAlerter(pp, PartiesPermission.PRIVATE_SENDMESSAGE)) {
+			plugin.getScheduler().runAsync(() -> {
+				if (plugin.getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_SENDMESSAGE)) {
 					// Chat allowed
 					boolean mustWait = false;
 					
-					if (PartiesUtils.checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, finalMessage, Constants.DEBUG_CMD_P_REGEXERROR)) {
-						pp.sendMessage(Messages.MAINCMD_P_CENSORED);
+					if (plugin.getCensorUtils().checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, finalMessage, PartiesConstants.DEBUG_CMD_P_REGEXERROR)) {
+						partyPlayer.sendMessage(Messages.MAINCMD_P_CENSORED);
 						return;
 					}
 					
 					if (ConfigParties.GENERAL_CHAT_CHATCD > 0
-							&& !plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
-						Long unixTimestamp = plugin.getCooldownManager().getChatCooldown().get(pp.getPlayerUUID());
+							&& !plugin.getRankManager().checkPlayerRank(partyPlayer, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
+						Long unixTimestamp = plugin.getCooldownManager().getChatCooldown().get(partyPlayer.getPlayerUUID());
 						long unixNow = System.currentTimeMillis() / 1000L;
 						// Check cooldown
 						if (unixTimestamp != null && (unixNow - unixTimestamp) < ConfigParties.GENERAL_CHAT_CHATCD) {
-							pp.sendMessage(Messages.MAINCMD_P_COOLDOWN
+							partyPlayer.sendMessage(Messages.MAINCMD_P_COOLDOWN
 									.replace("%seconds%", String.valueOf(ConfigParties.GENERAL_CHAT_CHATCD - (unixNow - unixTimestamp))));
 							mustWait = true;
 						} else {
-							plugin.getCooldownManager().getChatCooldown().put(pp.getPlayerUUID(), unixNow);
+							plugin.getCooldownManager().getChatCooldown().put(partyPlayer.getPlayerUUID(), unixNow);
 							
-							plugin.getPartiesScheduler().scheduleTaskLater(new ChatTask(plugin, pp.getPlayerUUID()), ConfigParties.GENERAL_CHAT_CHATCD * 20L);
+							plugin.getScheduler().scheduleAsyncLater(new ChatTask(plugin, partyPlayer.getPlayerUUID()), ConfigParties.GENERAL_CHAT_CHATCD, TimeUnit.SECONDS);
 							
-							LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_CMD_P_TASK
+							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_P_TASK
 									.replace("{value}", Integer.toString(ConfigParties.GENERAL_CHAT_CHATCD * 20))
-									.replace("{player}", pp.getName()), true);
+									.replace("{player}", partyPlayer.getName()), true);
 						}
 					}
 					
 					if (!mustWait) {
 						// Calling API event
-						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(pp, party, finalMessage);
+						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(partyPlayer, party, finalMessage);
 						plugin.getEventManager().callEvent(partiesChatEvent);
 						
 						String newMessage = partiesChatEvent.getMessage();
 						if (!partiesChatEvent.isCancelled()) {
-							party.sendChatMessage(pp, newMessage);
-							if (ConfigMain.STORAGE_LOG_CHAT)
-								LoggerManager.log(LogLevel.BASIC, Constants.DEBUG_CMD_P
+							partyPlayer.performPartyMessage(newMessage);
+							
+							if (ConfigParties.GENERAL_CHAT_LOG)
+								plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_P
 										.replace("{party}", party.getName())
-										.replace("{player}", pp.getName())
+										.replace("{player}", partyPlayer.getName())
 										.replace("{message}", newMessage), true);
 						} else
-							LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_API_CHATEVENT_DENY
-									.replace("{player}", pp.getName())
+							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_CHATEVENT_DENY
+									.replace("{player}", partyPlayer.getName())
 									.replace("{message}", finalMessage), true);
 					}
 				} else
-					pp.sendNoPermission(PartiesPermission.PRIVATE_SENDMESSAGE);
+					partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
+							.replace("%permission%", PartiesPermission.PRIVATE_SENDMESSAGE.toString()));
 			});
 			eventCancelled = true;
 		}
@@ -118,7 +117,7 @@ public abstract class ChatListener {
 			} else {
 				// This is a normal command to replicate
 				// Make it async
-				plugin.getPartiesScheduler().getEventsExecutor().execute(() -> {
+				plugin.getScheduler().runAsync(() -> {
 					boolean cancel = true;
 					
 					try {
@@ -129,8 +128,7 @@ public abstract class ChatListener {
 							cancel = false;
 						}
 					} catch (Exception ex) {
-						LoggerManager.printError(Constants.DEBUG_AUTOCMD_REGEXERROR);
-						ex.printStackTrace();
+						plugin.getLoggerManager().printErrorStacktrace(PartiesConstants.DEBUG_AUTOCMD_REGEXERROR, ex);
 					}
 					
 					if (!cancel) {
@@ -139,12 +137,12 @@ public abstract class ChatListener {
 							if (plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
 								PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
 								
-								for (PartyPlayerImpl pl : party.getOnlinePlayers()) {
+								for (PartyPlayer pl : party.getOnlineMembers(true)) {
 									if (!pl.getPlayerUUID().equals(sender.getUUID())) {
 										// Make it sync
-										plugin.getPartiesScheduler().runSync(() -> {
+										plugin.getScheduler().getSyncExecutor().execute(() -> {
 											plugin.getPlayer(pl.getPlayerUUID()).chat(message + "\t");
-											LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_AUTOCMD_PERFORM
+											plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_AUTOCMD_PERFORM
 													.replace("{player}", pl.getName())
 													.replace("{command}", message), true);
 										});

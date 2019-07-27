@@ -1,7 +1,7 @@
 package com.alessiodp.parties.bukkit.listeners;
 
+import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
-import com.alessiodp.parties.bukkit.user.BukkitUser;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.listeners.JoinLeaveListener;
 import org.bukkit.event.EventHandler;
@@ -18,19 +18,19 @@ public class BukkitJoinLeaveListener extends JoinLeaveListener implements Listen
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		super.onPlayerJoin(new BukkitUser(event.getPlayer()));
+		super.onPlayerJoin(new BukkitUser(plugin, event.getPlayer()));
 	}
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		BukkitUser user = new BukkitUser(event.getPlayer());
+		BukkitUser user = new BukkitUser(plugin, event.getPlayer());
 		super.onPlayerQuit(user);
 		
 		// Remove home count if active on the player
 		BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(user.getUUID());
-		if (pp.getHomeDelayTask() != -1){
-			plugin.getPartiesScheduler().cancelTask(pp.getHomeDelayTask());
-			pp.setHomeDelayTask(-1);
+		if (pp.getHomeDelayTask() != null){
+			pp.getHomeDelayTask().cancel();
+			pp.setHomeDelayTask(null);
 		}
 	}
 }

@@ -4,15 +4,20 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
+	
+	public BukkitPartiesPotionsFriendlyFireBlockedEvent() {
+		super(false);
+	}
+	
 	/**
 	 * Get the victim of the event
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	public abstract PartyPlayer getPlayerVictim();
 	
 	/**
@@ -20,7 +25,7 @@ public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends Bukki
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	public abstract PartyPlayer getPlayerAttacker();
 	
 	/**
@@ -28,6 +33,6 @@ public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends Bukki
 	 *
 	 * @return Returns the original {@link PotionSplashEvent}
 	 */
-	@NotNull
+	@NonNull
 	public abstract PotionSplashEvent getOriginalEvent();
 }

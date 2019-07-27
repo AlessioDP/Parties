@@ -1,0 +1,18 @@
+dependencies {
+    compile project(':common')
+    compile group: 'com.alessiodp.core', name: 'bungeecord', version: project.ext.adpCore
+}
+
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'bungee.yml'
+        expand([
+                'pluginVersion': project.version,
+                'pluginName': project.ext.pluginName,
+                'pluginDescription': project.ext.pluginDescription,
+                'pluginAuthor': project.ext.pluginAuthor,
+                'pluginWebsite': project.ext.pluginWebsite
+        ])
+    }
+}

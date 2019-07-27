@@ -1,10 +1,16 @@
 package com.alessiodp.parties.bukkit.configuration.data;
 
+import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
+import lombok.Getter;
 
 public class BukkitConfigParties extends ConfigParties {
+	@Getter private final String fileName = "parties.yml";
+	@Getter private final String resourceName = "bukkit/parties.yml";
+	@Getter private final int latestVersion = PartiesConstants.VERSION_BUKKIT_CONFIG_PARTIES;
+	
 	// Additional settings
 	public static boolean		FRIENDLYFIRE_ENABLE;
 	public static String		FRIENDLYFIRE_TYPE;
@@ -23,8 +29,8 @@ public class BukkitConfigParties extends ConfigParties {
 	public static boolean		KILLS_MOB_PLAYERS;
 	
 	
-	public BukkitConfigParties(PartiesPlugin instance) {
-		super(instance);
+	public BukkitConfigParties(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
 	@Override
@@ -70,15 +76,5 @@ public class BukkitConfigParties extends ConfigParties {
 		KILLS_MOB_NEUTRAL = confAdapter.getBoolean("additional.kills.which-save.neutral-mobs", KILLS_MOB_NEUTRAL);
 		KILLS_MOB_HOSTILE = confAdapter.getBoolean("additional.kills.which-save.hostile-mobs", KILLS_MOB_HOSTILE);
 		KILLS_MOB_PLAYERS = confAdapter.getBoolean("additional.kills.which-save.players", KILLS_MOB_PLAYERS);
-	}
-	
-	@Override
-	public String getFileName() {
-		return "parties.yml";
-	}
-	
-	@Override
-	public String getResourceName() {
-		return "bukkit/parties.yml";
 	}
 }

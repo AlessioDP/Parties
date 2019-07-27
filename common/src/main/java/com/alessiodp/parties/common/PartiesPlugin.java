@@ -1,166 +1,138 @@
 package com.alessiodp.parties.common;
 
-import com.alessiodp.parties.common.addons.AddonManager;
-import com.alessiodp.parties.common.addons.internal.ADPUpdater;
-import com.alessiodp.parties.common.addons.libraries.LibraryManager;
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.bootstrap.ADPBootstrap;
+import com.alessiodp.core.common.logging.ConsoleColor;
+import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.common.api.ApiHandler;
-import com.alessiodp.parties.common.bootstrap.AbstractPartiesBootstrap;
-import com.alessiodp.parties.common.bootstrap.PartiesBootstrap;
-import com.alessiodp.parties.common.commands.CommandManager;
-import com.alessiodp.parties.common.configuration.ConfigurationManager;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.events.EventManager;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.ColorManager;
 import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.PartyManager;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.RankManager;
 import com.alessiodp.parties.common.players.SpyManager;
-import com.alessiodp.parties.common.scheduling.PartiesScheduler;
-import com.alessiodp.parties.common.user.OfflineUser;
-import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.common.storage.DatabaseManager;
-import com.alessiodp.parties.common.utils.ConsoleColor;
-import com.alessiodp.parties.common.utils.DebugUtils;
+import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
+import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import com.alessiodp.parties.common.utils.MessageUtils;
 import com.alessiodp.parties.api.Parties;
-import com.alessiodp.parties.api.interfaces.PartiesAPI;
+import com.alessiodp.parties.common.utils.MessageUtils;
+import com.alessiodp.parties.common.utils.PartiesPlayerUtils;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.List;
-import java.util.UUID;
-
-public abstract class PartiesPlugin extends AbstractPartiesBootstrap {
+public abstract class PartiesPlugin extends ADPPlugin {
 	// Plugin fields
-	@Getter private static PartiesPlugin instance;
-	@Getter private PartiesAPI api;
+	@Getter private final String pluginName = PartiesConstants.PLUGIN_NAME;
+	@Getter private final String pluginFallbackName = PartiesConstants.PLUGIN_FALLBACK;
+	@Getter private final ConsoleColor consoleColor = PartiesConstants.PLUGIN_CONSOLECOLOR;
 	
-	// Common fields
-	@Getter protected ConfigurationManager configManager;
-	@Getter @Setter protected DatabaseManager databaseManager;
-	@Getter protected LibraryManager libraryManager;
-	@Getter protected MessageUtils messageUtils;
-	@Getter protected PartiesScheduler partiesScheduler;
-	
-	@Getter protected AddonManager addonManager;
+	// Parties fields
+	@Getter protected PartiesAPI api;
 	@Getter protected ColorManager colorManager;
 	@Getter protected PartyManager partyManager;
 	@Getter protected PlayerManager playerManager;
 	@Getter protected RankManager rankManager;
 	@Getter protected SpyManager spyManager;
 	
-	@Getter protected CommandManager commandManager;
+	@Getter protected CensorUtils censorUtils;
+	@Getter protected CooldownManager cooldownManager;
 	@Getter protected EventManager eventManager;
 	@Getter protected EconomyManager economyManager;
-	@Getter protected CooldownManager cooldownManager;
+	@Getter protected MessageUtils messageUtils;
 	
-	
-	protected PartiesPlugin(PartiesBootstrap instance) {
-		super(instance);
+	public PartiesPlugin(ADPBootstrap bootstrap) {
+		super(bootstrap);
 	}
 	
-	public void enabling() {
-		// Init
-		instance = this;
-		long nsTime = System.nanoTime();
-		log(ConsoleColor.CYAN.getCode() + Constants.DEBUG_PARTIES_ENABLING
-				.replace("{version}", this.getVersion()));
-		
-		// Pre-handle
-		preHandle();
-		// Handle
-		handle();
-		
-		if (!getDatabaseManager().isShutdownPlugin()) {
-			postHandle();
-			
-			LoggerManager.log(LogLevel.BASE, Constants.DEBUG_PARTIES_ENABLED
-					.replace("{version}", this.getVersion()), true, ConsoleColor.CYAN);
-			DebugUtils.debugLog(String.format("Parties loaded in %.2fms", (System.nanoTime() - nsTime) / 1000000.0));
-		}
-	}
-	public void disabling() {
-		log(ConsoleColor.CYAN.getCode() + Constants.DEBUG_PARTIES_DISABLING);
-		
-		if (databaseManager != null && !databaseManager.isShutdownPlugin()) {
-			// This is not a force close
+	@Override
+	public void onDisabling() {
+		if (databaseManager != null) {
 			getPartyManager().resetPendingPartyTask();
-			getDatabaseManager().stop();
 		}
-		
-		LoggerManager.log(LogLevel.BASE, Constants.DEBUG_PARTIES_DISABLED_LOG, false);
-		partiesScheduler.shutdown();
-		
-		log(ConsoleColor.CYAN.getCode() + Constants.DEBUG_PARTIES_DISABLED);
 	}
 	
-	/* Handle methods */
-	protected void preHandle() {
-		new LoggerManager(this);
-		libraryManager = new LibraryManager(this);
+	@Override
+	protected void initializeCore() {
+		databaseManager = new PartiesDatabaseManager(this);
 	}
-	protected void handle() {
-		getConfigManager().reload();
-		LoggerManager.reload();
+	
+	@Override
+	protected void loadCore() {
+		getConfigurationManager().reload();
+		reloadLoggerManager();
 		getDatabaseManager().reload();
-		if (getDatabaseManager().isShutdownPlugin()) {
-			// Storage error, shutdown plugin
-			LoggerManager.printError(Constants.DEBUG_DB_INIT_FAILED_STOP);
-			super.getBootstrap().stopPlugin();
-		}
-		
-		rankManager = new RankManager(this);
-		colorManager = new ColorManager();
-		spyManager = new SpyManager(this);
 	}
+	
+	@Override
 	protected void postHandle() {
+		api = new ApiHandler(this);
+		censorUtils = new CensorUtils(this);
+		colorManager = new ColorManager();
+		cooldownManager = new CooldownManager();
+		playerUtils = new PartiesPlayerUtils(this);
+		rankManager = new RankManager(this);
+		spyManager = new SpyManager(this);
+		
 		getPartyManager().reload();
 		getPlayerManager().reload();
-		getAddonManager().loadAddons();
+		getCommandManager().setup();
+		getMessenger().reload();
 		registerListeners();
-		cooldownManager = new CooldownManager();
 		
-		api = new ApiHandler(this);
+		reloadAdpUpdater();
+		getAddonManager().loadAddons();
 		Parties.setApi(api);
-		new ADPUpdater(this);
-		ADPUpdater.asyncTaskCheckUpdates();
-		DebugUtils.startDebugTask(this);
 	}
 	
-	/* Loading methods */
 	protected abstract void registerListeners();
 	
+	@Override
 	public void reloadConfiguration() {
-		// Delete pending parties
-		getPartyManager().resetPendingPartyTask();
-		
-		
-		getConfigManager().reload();
-		LoggerManager.reload();
+		getLoggerManager().logDebug(PartiesConstants.DEBUG_PLUGIN_RELOADING, true);
+		getConfigurationManager().reload();
+		reloadLoggerManager();
 		getDatabaseManager().reload();
 		
 		getRankManager().reload();
 		getColorManager().reload();
-		
 		getPartyManager().reload();
 		getPlayerManager().reload();
 		getAddonManager().loadAddons();
 		getCommandManager().setup();
+		getMessenger().reload();
 		
-		ADPUpdater.asyncCheckUpdates();
+		reloadAdpUpdater();
 	}
 	
-	/* Player methods */
-	public abstract List<User> getOnlinePlayers();
-	public abstract User getPlayer(UUID uuid);
-	public abstract User getPlayerByName(String name);
-	public abstract OfflineUser getOfflinePlayer(UUID uuid);
+	@Override
+	public PartiesDatabaseManager getDatabaseManager() {
+		return (PartiesDatabaseManager) databaseManager;
+	}
 	
-	/* Log methods */
-	public abstract void log(String message);
-	public abstract void logError(String message);
+	private void reloadLoggerManager() {
+		getLoggerManager().reload(
+				ConfigMain.PARTIES_LOGGING_DEBUG,
+				ConfigMain.PARTIES_LOGGING_SAVE_ENABLE,
+				ConfigMain.PARTIES_LOGGING_SAVE_FILE,
+				ConfigMain.PARTIES_LOGGING_SAVE_FORMAT
+		);
+	}
+	
+	private void reloadAdpUpdater() {
+		getAdpUpdater().reload(
+				getPluginFallbackName(),
+				PartiesConstants.PLUGIN_SPIGOTCODE,
+				ConfigMain.PARTIES_UPDATES_CHECK,
+				ConfigMain.PARTIES_UPDATES_WARN,
+				PartiesPermission.ADMIN_UPDATES.toString(),
+				Messages.PARTIES_UPDATEAVAILABLE
+		);
+		getAdpUpdater().asyncTaskCheckUpdates();
+	}
+	
+	public abstract boolean isBungeeCordEnabled();
 }

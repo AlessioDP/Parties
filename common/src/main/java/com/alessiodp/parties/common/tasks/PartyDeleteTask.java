@@ -1,15 +1,13 @@
 package com.alessiodp.parties.common.tasks;
 
 import com.alessiodp.parties.common.PartiesPlugin;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class PartyDeleteTask implements Runnable {
-	private PartiesPlugin plugin;
-	private String name;
-	
-	public PartyDeleteTask(PartiesPlugin instance, String name) {
-		plugin = instance;
-		this.name = name;
-	}
+	@NonNull private PartiesPlugin plugin;
+	@NonNull private String name;
 
 	@Override
 	public void run() {

@@ -4,6 +4,8 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 
 public abstract class BukkitPartiesPlayerPreLeaveEvent extends BukkitPartiesEvent implements IPlayerPreLeaveEvent {
-	// Dummy class
 	
+	public BukkitPartiesPlayerPreLeaveEvent() {
+		super(false);
+	}
 }
