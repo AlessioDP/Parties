@@ -18,6 +18,9 @@ main-commands:
     accept-receipt: "&a%player% принял ваше приглашение"
     no-invite: "&cУ вас нет ожидающих приглашения"
     no-exists: "&cПриглашения больше не существует"
+    multiple-invites: "&cChoose the party that you want accept:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party accept [party]"
   chat:
     enabled: "&aЧат теперь партии"
     disabled: "&aЧат теперь публичный"
@@ -41,6 +44,9 @@ main-commands:
     deny-receipt: "&7%player% отказался от приглашения"
     no-invite: "&cУ вас нет ожидающих приглашения"
     no-exists: "&cПриглашения больше не существует"
+    multiple-invites: "&cChoose the party that you want deny:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party deny [party]"
   ignore:
     start-ignore: "&7Вы добавили партию %party% в игнор"
     stop-ignore: "&7Вы перестали игнорировать%party%"
@@ -68,10 +74,10 @@ main-commands:
       missing-value: "&7"
   invite:
     sent: "&bВы пригласили %player% в свою партию"
-    player-invited: "[{\"text\":\"%player% пригласил вас в свою партию.\n\",\"color\":\"aqua\"},{\"text\":\"Вы хотите \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Принять приглашение\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Отклонить приглашение\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" выбирать.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% не принять приглашение"
-      timeout: "&7Вы не приняли приглашение"
+      timeout: "&7You didn't accept the party invite to %party%"
     revoke:
       sent-revoked: "&7Отозванное приглашение %player%"
       player-invite-revoked: "&7Приглашение, полученное от %party%, было отозвано"
@@ -96,20 +102,12 @@ main-commands:
         - "&cМы нашли некоторых игроков с таким именем:"
         - "%list_players%"
         - "&cИспользовать '&7/party kick <username> <number>&c' выгнать игрока"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: послед %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Выгнать этого игрока","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
     wrong-command: "&cНеверные переменные: тип &7/party kick <name>"
   leave:
     left: "&b&lТы ушел с партии %party%"
     broadcast: "&b&l%player% покинул партию"
     party-disbanded: "&6&lПартия была распущена, потому что руководство вышла из партии"
-  migrate:
-    info: "&aВы используете: %database%\n&aВы можете мигрировать с: &7/party migrate <from> <to>"
-    completed: "&aСкопированные данные из %database_from% в %database_to%"
-    failed:
-      database-offline: "&cЭта %database% база данных должна быть онлайн!"
-      failed: "&cМиграция базы данных из %database_from% в %database_to% не удалось!"
-      same-database: "&cВам нужно выбрать 2 разные базы данных!"
-    wrong-database: "&cБаза данных не найдена. Вы можете выбрать: YAML, MySQL, SQLite!"
   p:
     cooldown: "&cВам все равно придется подождать %seconds% сек"
     censored: "&cThe message contains censored words!"
@@ -125,6 +123,12 @@ main-commands:
     changing-yourself: "&cВы не можете изменить себе ранг!"
     player-not-in-party: "&c%player% не в вашей партии"
     player-not-in-other-party: "&c%player% нет партии"
+    players-conflict:
+      content:
+        - "&cМы нашли некоторых игроков с таким именем:"
+        - "%list_players%"
+        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
     wrong-command: "&cНеверные переменные: тип &7/party rank <player> <rank>"
   rename:
     renamed: "&aПартия %old% переименована в %party%"
@@ -136,8 +140,8 @@ main-commands:
     disabled: "&7Вы больше не шпион"
     wrong-command: "&cНеверные переменные: тип &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7- Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aПредоставлено разрешение партии"
@@ -256,8 +260,15 @@ help:
   footer: ""
   console-help:
     - "Вы можете сделать только эти команды:"
-    - "/party migrate - Копировать базу данных в новую"
-    - "/party reload - Обновить конфигурацию"
+    - " > party create <name> fixed - Create a new party"
+    - " > party delete <party> - Delete a party"
+    - " > party info <party> - Show party information"
+    - " > party list - List of online parties"
+    - " > party kick <player> - Kick a player from the party"
+    - " > party rank <player> <rank> - Change rank of the player"
+    - " > party reload - Reload Parties configuration files"
+    - " > party rename <party> <name> - Rename the party"
+    - " > party version - Show Parties information"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Показать страницы справки","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Выполните команду","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Принять приглашение участника","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Выполните команду","color":"gold"}}}'
@@ -270,7 +281,6 @@ help:
     invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Пригласить в партию","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Выгнать пользователя из партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Выйти из партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
-    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - Копировать базу данных в новую","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - Отправить сообщение в партию","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Изменение ранга игрока","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Обновить конфигурацию","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
@@ -292,4 +302,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Установить дом партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Телепортируйте вашу партию к вам","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
 dont-edit-this:
-  version: 6
+  version: 7
