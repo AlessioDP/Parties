@@ -18,9 +18,9 @@ main-commands:
     accept-receipt: "&a%player% a accepté votre invitation"
     no-invite: "&cVous n'avez pas d'invitation en attente"
     no-exists: "&cL'invitation n'existe plus"
-    multiple-invites: "&cChoose the party that you want accept:"
-    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party accept [party]"
+    multiple-invites: "&cChoisissez le groupe que vous voulez rejoindre :"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Cliquez ici pour accepter","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accepter l''invitation","color":"gold"}]}}}]'
+    wrong-command: "&cVariables incorrectes : Tapez &7/party accept [groupe]"
   chat:
     enabled: "&aChat mis en groupe"
     disabled: "&aChat mis en public"
@@ -44,9 +44,9 @@ main-commands:
     deny-receipt: "&7%player% a refusé votre invitation"
     no-invite: "&cVous n'avez pas d'invitation en attente"
     no-exists: "&cL'invitation n'existe plus"
-    multiple-invites: "&cChoose the party that you want deny:"
-    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party deny [party]"
+    multiple-invites: "&cChoisissez le groupe que vous ne voulez pas rejoindre :"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Cliquez ici pour refuser","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Refuser l''invitation","color":"gold"}]}}}]'
+    wrong-command: "&cVariables incorrectes : Tapez &7/party deny [groupe]"
   ignore:
     start-ignore: "&7Vous ignorez les invitations du groupe %party%"
     stop-ignore: "&7Vous avez cessé d'ignorer le groupe %party%"
@@ -74,10 +74,10 @@ main-commands:
       missing-value: "&7Manquant"
   invite:
     sent: "&bVous avez invité %player% dans votre groupe"
-    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% vous a invité dans le groupe %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Voulez-vous \",\"color\":\"aqua\"},{\"text\":\"accepter\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accepter l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\" ou \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"refuser\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\" ?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Vous pouvez utiliser \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" pour choisir.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% n'a pas accepté l'invitation du groupe"
-      timeout: "&7You didn't accept the party invite to %party%"
+      timeout: "&7Vous n'avez pas accepté l'invitation du groupe %party%"
     revoke:
       sent-revoked: "&7L'invitation envoyée à %player% a été révoquée"
       player-invite-revoked: "&7L'invitation reçue de %party% a été révoquée"
@@ -102,7 +102,7 @@ main-commands:
         - "&cNous avons trouvé des joueurs avec ce nom :"
         - "%list_players%"
         - "&cUtilisez \"&7/party kick <pseudo> <nombre>&c\" pour expulser le bon joueur"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: dernière connexion %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Expulser ce joueur","color":"gold"}}}'
     wrong-command: "&cVariables incorrectes : Tapez &7/party kick <nom>"
   leave:
     left: "&b&lVous avez quitté le groupe %party%"
@@ -127,8 +127,8 @@ main-commands:
       content:
         - "&cNous avons trouvé des joueurs avec ce nom :"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cUtilisez \"&7/party rank <pseudo> <rang> <nombre>&c\" pour changer le rang du bon joueur"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: dernière connexion %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Changer le rang de ce joueur","color":"gold"}}}'
     wrong-command: "&cVariables incorrectes : Tapez &7/party rank <joueur> <rang>"
   rename:
     renamed: "&aLe groupe %old% a été renommé en %party%"
@@ -140,8 +140,8 @@ main-commands:
     disabled: "&7Vous n'êtes plus un espion"
     wrong-command: "&cVariables incorrectes : Tapez &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Développé par &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Développé par &6AlessioDP\n&aNouvelle version trouvée : &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aPermission accordée au groupe"
@@ -260,15 +260,15 @@ help:
   footer: ""
   console-help:
     - "Vous ne pouvez exécuter que ces commandes :"
-    - " > party create <name> fixed - Create a new party"
-    - " > party delete <party> - Delete a party"
-    - " > party info <party> - Show party information"
-    - " > party list - List of online parties"
-    - " > party kick <player> - Kick a player from the party"
-    - " > party rank <player> <rank> - Change rank of the player"
-    - " > party reload - Reload Parties configuration files"
-    - " > party rename <party> <name> - Rename the party"
-    - " > party version - Show Parties information"
+    - " > party create <nom> fixed - Créer un nouveau groupe"
+    - " > party delete <groupe> - Supprimer un groupe"
+    - " > party info <groupe> - Afficher les informations du groupe"
+    - " > party list - Liste des groupes en ligne"
+    - " > party kick <joueur> - Expulser un joueur du groupe"
+    - " > party rank <joueur> <rang> - Changer le rang d'un joueur"
+    - " > party reload - Recharger les fichiers de configuration de Parties"
+    - " > party rename <groupe> <nom> - Renommer le groupe"
+    - " > party version - Afficher les informations de Parties"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Afficher les pages d''aide","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accepter une invitation de groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
