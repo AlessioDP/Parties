@@ -18,6 +18,9 @@ main-commands:
     accept-receipt: "&a%player% Davetini kabul etti"
     no-invite: "&cBekleyen Bir Davetiniz Yok"
     no-exists: "&cDavet Artık Mevcut Değil"
+    multiple-invites: "&cChoose the party that you want accept:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party accept [party]"
   chat:
     enabled: "&aParti sohbetine geçildi"
     disabled: "&aParti sohbeti kapatıldı"
@@ -41,6 +44,9 @@ main-commands:
     deny-receipt: "&7%player% Davetini Reddetti"
     no-invite: "&cBekleyen Bir Davetiniz Yok"
     no-exists: "&cDavet Artık Mevcut Değil"
+    multiple-invites: "&cChoose the party that you want deny:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party deny [party]"
   ignore:
     start-ignore: "&7Bu Parti Artık Susturuluyor %party%"
     stop-ignore: "&7Artık Bu Partiyi Susturmuyosun %party%"
@@ -68,10 +74,10 @@ main-commands:
       missing-value: "&7Miss"
   invite:
     sent: "&bSen %player% Adlı Oyuncuyu Partine Davet Ettin"
-    player-invited: "[{\"text\":\"%player% Seni partisine davet etti.\n\",\"color\":\"aqua\"},{\"text\":\"Katılmak İstersen \",\"color\":\"aqua\"},{\"text\":\"Kabul Et\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti kabul etmek için bas\",\"color\":\"gold\"}]}}},{\"text\":\" Veya \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Reddet\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti Reddet\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Diğer komutlarlar \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% Davetinizi kabul etmedi."
-      timeout: "&7Daveti kabul etmedin."
+      timeout: "&7You didn't accept the party invite to %party%"
     revoke:
       sent-revoked: "&7%player% Adlı Oyuncuya Attığınız Daveti İptal Ettiniz"
       player-invite-revoked: "&7%party% Adlı Partiden Gelen Davet İptal Edildi"
@@ -96,20 +102,12 @@ main-commands:
         - "&cBu isimde birkaç oyuncu bulduk:"
         - "%list_players%"
         - "&cBirini Partiden Atmak İçin '&7/party kick <isim> <numarası>&c' Komudunu Kullana Bilirsin"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: En Son Giriş %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
     wrong-command: "&cYanlış komut: Doğrusu &7/party kick <isim>"
   leave:
     left: "&b&l%party% adlı partiden ayrıldın"
     broadcast: "&b&l%player% Partiden Çıktı"
     party-disbanded: "&6&lParti Kapatıldı Çünkü Lider Partiden Çıktı"
-  migrate:
-    info: "&aŞuanda Bunu Kullanıyorsun: %database%\n&aBu Komut İle Dosyaları Taşıya Bilirsin: &7/party migrate <olduğu yer> <taşınılacak yer>"
-    completed: "&a%database_from% Dosyalar Buradan %database_to% Buraya Taşındı"
-    failed:
-      database-offline: "&c%database% Açık Olmak Zorunda!"
-      failed: "&cVeriTabanı %database_from% Buradan  %database_to% Buraya Taşınamadı!"
-      same-database: "&c2 Tane VeriTabanı Seçmelisin!"
-    wrong-database: "&cVeriTabanı Bulunamıyor. Şunları Seçmeyi Dene: YAML, MySQL, SQLite!"
   p:
     cooldown: "&c%seconds% Saniye Beklemelisin"
     censored: "&cBu Mesaj Kötü Şeyler İçeriyor!"
@@ -125,6 +123,12 @@ main-commands:
     changing-yourself: "&cKendi Rütbeni Değiştiremezsin!"
     player-not-in-party: "&c%player% Senin partin değil"
     player-not-in-other-party: "&c%player% Bir Partide Değil"
+    players-conflict:
+      content:
+        - "&cBu isimde birkaç oyuncu bulduk:"
+        - "%list_players%"
+        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party rank <player> <rank>"
   rename:
     renamed: "&aPartinin %old% adı artık %party% olarak değiştirildi"
@@ -136,8 +140,8 @@ main-commands:
     disabled: "&7Görünmezlikten Çıktın"
     wrong-command: "&cYanlış Komut: Doğrusu &7/party spy [on/off]"
   version:
-    updated: "&b&lParti Sürümü: &b%version% &7- Geliştiren &6AlessioDP"
-    outdated: "&b&lParti Sürümü: &b%version% &7- Geliştiren &6AlessioDP\n&aYeni Version Bulundu: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aPartiye Yetki Verildi"
@@ -256,8 +260,15 @@ help:
   footer: ""
   console-help:
     - "Sadece Bu Komutları Kullanabilirsin:"
-    - "/party migrate - DataBase yi Başka Bir Yere Kopyalar"
-    - "/party reload - Configi Yeniler"
+    - " > party create <name> fixed - Create a new party"
+    - " > party delete <party> - Delete a party"
+    - " > party info <party> - Show party information"
+    - " > party list - List of online parties"
+    - " > party kick <player> - Kick a player from the party"
+    - " > party rank <player> <rank> - Change rank of the player"
+    - " > party reload - Reload Parties configuration files"
+    - " > party rename <party> <name> - Rename the party"
+    - " > party version - Show Parties information"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [sayfa]","color":"aqua"},{"text":" - Sayfaları Gösterir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Daveti Kabul Eder","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
@@ -270,7 +281,6 @@ help:
     invite: '{"text":"","extra":[{"text":"/party invite <oyuncu>","color":"aqua"},{"text":" - Oyuncuyu Partine Çağırır","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     kick: '{"text":"","extra":[{"text":"/party kick <oyuncu>","color":"aqua"},{"text":" - Partiden Oyuncuyu Atar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Partiden Çıkarsın","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
-    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - DataBase yi Kopyalar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     p: '{"text":"","extra":[{"text":"/p <mesaj>","color":"aqua"},{"text":" - Partine Mesaj Gönderir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Oyuncunun Rütbesini Değiştirir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Parti Configini Yeniler","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
@@ -292,4 +302,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set/remove party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Partini Sana Işınlar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
 dont-edit-this:
-  version: 6
+  version: 7
