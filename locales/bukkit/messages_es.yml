@@ -18,6 +18,9 @@ main-commands:
     accept-receipt: "&a%player% ha aceptado tu invitación"
     no-invite: "&cNo tienes ninguna invitación pendiente"
     no-exists: "&cLa invitación ya no existe"
+    multiple-invites: "&cChoose the party that you want accept:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party accept [party]"
   chat:
     enabled: "&aChat establecido para el equipo"
     disabled: "&aChat establecido en publico"
@@ -41,6 +44,9 @@ main-commands:
     deny-receipt: "&7%player% ha denegado tu invitación"
     no-invite: "&cNo tienes invitaciones pendientes"
     no-exists: "&cLa invitación ya no existe"
+    multiple-invites: "&cChoose the party that you want deny:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party deny [party]"
   ignore:
     start-ignore: "&7Ignorando las invitaciones del equipo %party%"
     stop-ignore: "&7Has parado de ignorar al equipo %party%"
@@ -68,10 +74,10 @@ main-commands:
       missing-value: "&7No hay"
   invite:
     sent: "&bHas invitado al jugador %player% a tu equipo"
-    player-invited: "[{\"text\":\"%player% te ha invitado en su equipo.\n\",\"color\":\"aqua\"},{\"text\":\"Quieres \",\"color\":\"aqua\"},{\"text\":\"aceptar\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Aceptar la invitacion\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Denegar la invitacion\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Puedes usar \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" para elegir.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% no aceptó la invitación al equipo"
-      timeout: "&7No aceptaste la invitación al equipo"
+      timeout: "&7You didn't accept the party invite to %party%"
     revoke:
       sent-revoked: "&7Revocaste la invitación que enviaste a %player%"
       player-invite-revoked: "&7invitación recibida de %party% ha sido revocada"
@@ -96,20 +102,12 @@ main-commands:
         - "&cHemos encontrado algunos jugadores con ese nombre:"
         - "%list_players%"
         - "&cUsa '&7/party kick <jugador> <numero>&c' para expulsar al jugador correcto"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: último acceso %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Expulsar al jugador","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
     wrong-command: "&cVariables incorrectas: Escribe &7/party kick <nombre>"
   leave:
     left: "&b&lHas salido del equipo %party%"
     broadcast: "&b&l%player% salio de tu equipo"
     party-disbanded: "&6&lEl equipo ha sido disuelto porque el líder se fue"
-  migrate:
-    info: "&aActualmente estás usando: %database%\n&aPuedes migrar con: &7/party migrate <desde> <a>"
-    completed: "&aCopiado los datos de %database_from% a %database_to%"
-    failed:
-      database-offline: "&c La %database% base de datos debe estar en línea!"
-      failed: "&cMigración de base de datos desde %database_from% a %database_to% fallo!"
-      same-database: "&cNecesitas escoger 2 diferentes base de datos!"
-    wrong-database: "&cBase de datos no encontrada. Puedes elegir: YAML, MySQL, SQLite!"
   p:
     cooldown: "&cTodavía tienes que esperar %seconds% seconds"
     censored: "&cEl mensaje contiene palabras censuradas!"
@@ -125,6 +123,12 @@ main-commands:
     changing-yourself: "&cNo puedes cambiar tu rango!"
     player-not-in-party: "&c%player% no está en tu equipo"
     player-not-in-other-party: "&c%player% no está en ningún equipo"
+    players-conflict:
+      content:
+        - "&cHemos encontrado algunos jugadores con ese nombre:"
+        - "%list_players%"
+        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
     wrong-command: "&cVariables incorrectas: Escribe &7/party rank <jugador> <rango>"
   rename:
     renamed: "&aEl equipo %old% ha sido renombrado a %party%"
@@ -136,8 +140,8 @@ main-commands:
     disabled: "&7Ya no eres un espía"
     wrong-command: "&cVariables incorrectas: Escribe &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7- Desarrollado por &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7- Desarrollado por &6AlessioDP\n&aNueva versión encontrada: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aConcedido permiso para el equipo"
@@ -256,8 +260,15 @@ help:
   footer: ""
   console-help:
     - "Puedes ejecutar solo estos comandos:"
-    - "/party migrate - Copia la base de datos en uno nuevo"
-    - "/party reload - Recargar la config"
+    - " > party create <name> fixed - Create a new party"
+    - " > party delete <party> - Delete a party"
+    - " > party info <party> - Show party information"
+    - " > party list - List of online parties"
+    - " > party kick <player> - Kick a player from the party"
+    - " > party rank <player> <rank> - Change rank of the player"
+    - " > party reload - Reload Parties configuration files"
+    - " > party rename <party> <name> - Rename the party"
+    - " > party version - Show Parties information"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [pagina]","color":"aqua"},{"text":" - Mostrar paginas de ayuda","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Aceptar una invitacion","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
@@ -270,7 +281,6 @@ help:
     invite: '{"text":"","extra":[{"text":"/party invite <jugador>","color":"aqua"},{"text":" - Invitar a un jugador a tu equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     kick: '{"text":"","extra":[{"text":"/party kick <jugador>","color":"aqua"},{"text":" - Expulsar a un jugador de tu equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Salir de tu equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
-    migrate: '{"text":"","extra":[{"text":"/party migrate <de> <a>","color":"aqua"},{"text":" - Copia la base de datos en uno nuevo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     p: '{"text":"","extra":[{"text":"/p <mensaje>","color":"aqua"},{"text":" - Mandar mensajes al equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     rank: '{"text":"","extra":[{"text":"/party rank <jugador> <rango>","color":"aqua"},{"text":" - Cambia el rango de un jugador","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Recargar la config","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
@@ -292,4 +302,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Estabrecer la casa del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Tteletransportar su equipo a usted","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 6
+  version: 7
