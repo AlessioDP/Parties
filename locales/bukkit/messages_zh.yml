@@ -150,14 +150,14 @@ additional-commands:
     removed: "&aRemoved permission to the party"
     no-manager: "&cYou need to be the manager of the claim"
     claim-no-exists: "&cClaim not found"
-    wrong-command: "&cWrong variables: Type &7/party claim <permission>\n&cPermissions: trust, container & access"
+    wrong-command: "&c无效变量: 输入 &7/party claim <权限>\n&c权限: trust, container, access"
   color:
     info: "&bYour party color is: %color_code%%color_command%"
     empty: "&bYour party doesn't have a color"
     changed: "&bParty color changed into %color_command%"
     removed: "&bParty color removed"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
+    wrong-color: "&c该颜色找不到. 你可以选择: red, green, special"
     wrong-command: "&cWrong variables: Type &7/party color <color>"
   desc:
     changed: "&bParty description changed"

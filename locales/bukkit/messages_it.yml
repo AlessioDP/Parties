@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Nuova versione di Parties trovata: %version% (Attuale: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
+  configuration-outdated: "&cIl file di configurazione '%config%' è obsoleto!"
   common-messages:
     invalid-command: "&cComando non valido"
     configuration-reloaded: "&aConfigurazione ricaricata"
@@ -12,7 +12,7 @@ parties:
   permissions:
     no-permission: "&cNon hai accesso a questo comando"
     no-permission-in-party: "&cDevi essere almeno rank %rank_name% per eseguire questo comando"
-  out-party: "Out party"
+  out-party: "Senza party"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
