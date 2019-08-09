@@ -145,12 +145,6 @@ main-commands:
     updated: "&b&lParties &b%version% &7(%platform%) - Sviluppata da &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Sviluppata da &6AlessioDP\n&aNuova versione trovata: &2%newversion%"
 additional-commands:
-  claim:
-    claimed: "&aConcessi i permessi al party"
-    removed: "&aRimossi i permessi al party"
-    no-manager: "&cDevi essere il manager del claim"
-    claim-no-exists: "&aClaim non trovato"
-    wrong-command: "&cComando sbagliato: Esegui &7/party claim <permesso>\n&cPermessi: trust, container & access"
   color:
     info: "&bIl colore del tuo party è: %color_code%%color_command%"
     empty: "&bIl tuo party non ha un colore"
@@ -166,28 +160,10 @@ additional-commands:
     invalid-chars: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9. Minimo 3 e massimo 16 caratteri."
     censored: "&cLa descrizione contiene delle parole censurate!"
     wrong-command: "&cComando sbagliato: Esegui &7/party desc <descrizione/remove>"
-  exp:
-    party:
-      gained: "&bHai ottenuto %exp% esperienza party per aver ucciso il mob"
-    normal:
-      gained-killer: "&bHai ottenuto %exp% esperienza per aver ucciso il mob"
-      gained-others: "&b%player% ha ucciso un mob, hai ottenuto %exp% esperienza"
-    skillapi:
-      gained-killer: "&bHai ottenuto %exp% esperienza per aver ucciso il mob"
-      gained-others: "&b%player% ha ucciso un mob, hai ottenuto %exp% esperienza"
   follow:
     toggle-on: "&aOra il tuo party seguirà il leader"
     toggle-off: "&aIl tuo party non seguirà più il leader"
     wrong-command: "&cComando sbagliato: Esegui &7/party follow [on/off]"
-  home:
-    teleported: "&7Teletrasportato alla home del party"
-    teleport-in: "&7Sarai teletrasportato in %time% secondi..."
-    teleport-denied: "&7Teletrasporto annullato"
-    teleport-waiting: "&cStai già aspettando per il teletrasporto!"
-    no-home: "&cNon esiste ancora una home"
-    no-exists: "&cIl party %party% non esiste"
-    wrong-command: "&cComando sbagliato: Esegui &7/party home"
-    wrong-command-admin: "&cComando sbagliato: Esegui &7/party home [party]"
   join:
     joined: "&aSei entrato nel party %party%"
     player-joined: "&b&l%player% è entrato nel party"
@@ -219,39 +195,13 @@ additional-commands:
     broadcast: ""
     invalid-chars: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9. Minimo 1 e massimo 16 caratteri."
     wrong-command: "&cComando sbagliato: Esegui &7/party password <password>"
-  protection:
-    toggle-on: "&aOra il tuo party è protetto dal fuoco amico"
-    toggle-off: "&aIl tuo party non è più protetto dal fuoco amico"
-    protected: "&cNon puoi colpire i tuoi compagni"
-    warn-on-attack: "&c%player% ha provato a colpire %victim%!"
-    wrong-command: "&cComando sbagliato: Esegui &7/party protection [on/off]"
-  sethome:
-    changed: ""
-    removed: "&cHome del party rimossa"
-    broadcast: "&aIl party ha una nuova home!"
-    wrong-command: "&cComando sbagliato: Esegui &7/party sethome [remove]"
   teleport:
     teleporting: "&7Teletrasportando il tuo party qui!"
     player-teleported: "&bTeletrasportato da %player%"
     cooldown: "&cDevi aspettare %seconds% secondi!"
-  vault:
-    no-money:
-      claim: "&cNon hai abbastanza soldi per eseguire il comando claim [%price%$]"
-      color: "&cNon hai abbastanza soldi per eseguire il comando color [%price%$]"
-      create: "&cNon hai abbastanza soldi per creare un party [%price%$]"
-      desc: "&cNon hai abbastanza soldi per impostare la descrizione [%price%$]"
-      home: "&cNon hai abbastanza soldi per eseguire il comando home [%price%$]"
-      join: "&cNon hai abbastanza soldi per entrare in un party [%price%$]"
-      motd: "&cNon hai abbastanza soldi per impostare il MOTD [%price%$]"
-      sethome: "&cNon hai abbastanza soldi per impostare la home [%price%$]"
-      teleport: "&cNon hai abbastanza soldi per eseguire il comando teleport [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"Il comando %cmd% costa %price%$.\n\",\"color\":\"green\"},{\"text\":\"Clicca qui per confermare\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Paga il comando\",\"color\":\"gold\"}]}}},{\"text\":\" oppure esegui \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" per confermarlo.\",\"color\":\"green\"}]"
-      confirmed: "&aEseguendo il comando."
-      no-cmd: "&cNon ci sta nessun comando da confermare"
 other:
   follow:
-    following-world: "&7Stai seguendo %player% in %world%"
+    following-server: "&7Stai seguendo %player% in %server%"
   fixed-parties:
     default-join: "&bSei entrato in %party%"
   join-leave:
@@ -290,18 +240,13 @@ help:
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Mostra i messaggi degli altri party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Mostra le informazioni di Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
   additional-commands:
-    claim: '{"text":"","extra":[{"text":"/party claim <permesso>","color":"aqua"},{"text":" - Concedi i permessi del claim","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     color: '{"text":"","extra":[{"text":"/party color <colore>","color":"aqua"},{"text":" - Cambia il colore del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     desc: '{"text":"","extra":[{"text":"/party desc <descrizione/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi descrizione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Imposta il segui leader","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    home: '{"text":"","extra":[{"text":"/party home [party]","color":"aqua"},{"text":" - Teletrasportati alla home del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Entra nel party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [pagina]","color":"aqua"},{"text":" - Lista dei party online","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Aggiungi/rimuovi motd del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Attiva/disattiva notifiche","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Cambia la password del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - Attiva/disattiva la protezione dal fuoco amico","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Imposta/rimuovi la home del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teletrasporta i tuoi compagni da te","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
 dont-edit-this:
-  version: 8
+  version: 6

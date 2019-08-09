@@ -145,12 +145,6 @@ main-commands:
     updated: "&b&lParties &b%version% &7(%platform%) - Développé par &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Développé par &6AlessioDP\n&aNouvelle version trouvée : &2%newversion%"
 additional-commands:
-  claim:
-    claimed: "&aPermission accordée au groupe"
-    removed: "&aPermission retirée au groupe"
-    no-manager: "&cVous devez être l'administrateur du claim"
-    claim-no-exists: "&cClaim non trouvé"
-    wrong-command: "&cVariables incorrectes : Tapez &7/party claim <permission>\n&cPermissions : trust, container & access"
   color:
     info: "&bLa couleur de votre groupe est : %color_code%%color_command%"
     empty: "&bVotre groupe n'a pas de couleur"
@@ -166,28 +160,10 @@ additional-commands:
     invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 3 et maximum 16 caractères."
     censored: "&cLa description contient des mots censurés !"
     wrong-command: "&cVariables incorrectes : Tapez &7/party desc <description/remove>"
-  exp:
-    party:
-      gained: "&bVous avez gagné %exp% expérience de groupe pour avoir tué la créature"
-    normal:
-      gained-killer: "&bVous avez gagné %exp% expérience pour avoir tué la créature"
-      gained-others: "&b%player% a tué une créature, vous avez gagné %exp% expérience"
-    skillapi:
-      gained-killer: "&bVous avez gagné %exp% expérience pour avoir tué la créature"
-      gained-others: "&b%player% a tué une créature, vous avez gagné %exp% expérience"
   follow:
     toggle-on: "&aLes membres de votre groupe suivront à présent votre chef"
     toggle-off: "&aLes membres de votre groupe ne suivront plus votre chef"
     wrong-command: "&cVariables incorrectes : Tapez &7/party follow [on/off]"
-  home:
-    teleported: "&7Vous avez été téléporté au home du groupe"
-    teleport-in: "&7Vous serez téléporté dans %time% secondes..."
-    teleport-denied: "&7Téléportation refusée"
-    teleport-waiting: "&cVous attendez déjà la téléportation !"
-    no-home: "&cIl n'y a pas encore de home"
-    no-exists: "&cLe groupe %party% n'existe pas"
-    wrong-command: "&cVariables incorrectes : Tapez &7/party home"
-    wrong-command-admin: "&cVariables incorrectes : Tapez &7/party home [groupe]"
   join:
     joined: "&aVous avez rejoint le groupe %party%"
     player-joined: "&b&l%player% a rejoint le groupe"
@@ -219,39 +195,13 @@ additional-commands:
     broadcast: ""
     invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 1 et maximum 16 caractères."
     wrong-command: "&cVariables incorrectes : Tapez &7/party password <mot de passe/remove>"
-  protection:
-    toggle-on: "&aVotre groupe est à présent protégé du feu allié"
-    toggle-off: "&aVotre groupe n'est plus protégé du feu allié"
-    protected: "&cVous ne pouvez pas frapper vos coéquipiers"
-    warn-on-attack: "&c%player% a essayé de frapper %victim% !"
-    wrong-command: "&cVariables incorrectes : Tapez &7/party protection [on/off]"
-  sethome:
-    changed: ""
-    removed: "&bHome du groupe retiré"
-    broadcast: "&aLe groupe a un nouveau home !"
-    wrong-command: "&cVariables incorrectes : Tapez &7/party sethome [remove]"
   teleport:
     teleporting: "&7Téléportation de votre groupe ici !"
     player-teleported: "&bVous avez été téléporté vers %player%"
     cooldown: "&cVous devez attendre %seconds% secondes !"
-  vault:
-    no-money:
-      claim: "&cVous n'avez pas assez d'argent pour réaliser un claim [%price%$]"
-      color: "&cVous n'avez pas assez d'argent pour exécuter la commande pour la couleur [%price%$]"
-      create: "&cVous n'avez pas assez d'argent pour créer un groupe [%price%$]"
-      desc: "&cVous n'avez pas assez d'argent pour définir la description [%price%$]"
-      home: "&cVous n'avez pas assez d'argent pour utiliser la commande home [%price%$]"
-      join: "&cVous n'avez pas assez d'argent pour rejoindre un groupe [%price%$]"
-      motd: "&cVous n'avez pas assez d'argent pour définir le MOTD [%price%$]"
-      sethome: "&cVous n'avez pas assez d'argent pour installer le home [%price%$]"
-      teleport: "&cVous n'avez pas assez d'argent pour effectuer une téléportation [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"La commande %cmd% coûte %price%$.\n\",\"color\":\"green\"},{\"text\":\"Cliquez ici pour confirmer\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Payer la commande\",\"color\":\"gold\"}]}}},{\"text\":\" ou tapez \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" pour l'utiliser.\",\"color\":\"green\"}]"
-      confirmed: "&aExécution de la commande."
-      no-cmd: "&cIl n'y a aucune commande à confirmer"
 other:
   follow:
-    following-world: "&7Vous suivez %player% dans %world%"
+    following-server: "&7Vous suivez %player% dans %server%"
   fixed-parties:
     default-join: "&bVous êtes entré dans le groupe %party%"
   join-leave:
@@ -290,18 +240,13 @@ help:
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Espionner les messages des autres groupes","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Afficher les informations du plugin Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
   additional-commands:
-    claim: '{"text":"","extra":[{"text":"/party claim <permission>","color":"aqua"},{"text":" - Accorder des permissions au claim","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     color: '{"text":"","extra":[{"text":"/party color <couleur>","color":"aqua"},{"text":" - Changer la couleur du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     desc: "{\"text\":\"\",\"extra\":[{\"text\":\"/party desc <description/remove>\",\"color\":\"aqua\"},{\"text\":\" - Définir/\nsupprimer la description du groupe\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party desc \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Exécuter la commande\",\"color\":\"gold\"}}}"
     follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Activer ou désactiver le suivi du chef","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
-    home: '{"text":"","extra":[{"text":"/party home [groupe]","color":"aqua"},{"text":" - Se téléporter au home du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     join: '{"text":"","extra":[{"text":"/party join <groupe> [mot de passe]","color":"aqua"},{"text":" - Rejoindre le groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - Liste des groupes en ligne","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Définir/retirer le MOTD du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Activer ou désactiver les notifications","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <mot de passe/remove>","color":"aqua"},{"text":" - Changer le mot de passe du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
-    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - Activer ou désactiver le feu allié","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
-    sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Définir/supprimer le home du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
-    teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Téléporter votre groupe vers vous","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
 dont-edit-this:
-  version: 8
+  version: 6

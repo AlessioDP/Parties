@@ -51,7 +51,7 @@ main-commands:
   deny:
     denied: "&7Has denegado la invitación al equipo"
     deny-receipt: "&7%player% ha denegado tu invitación"
-    no-invite: "&cNo tienes invitaciones pendientes"
+    no-invite: "&cNo tienes ninguna invitación pendiente"
     no-exists: "&cLa invitación ya no existe"
     multiple-invites: "&cChoose the party that you want deny:"
     multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
@@ -123,7 +123,7 @@ main-commands:
     to-higher-rank: "&cNo puedes ascender a un rango equivalente o superior al tuyo!"
     fixed-leader: "&cNo puedes hacer de alguien un líder de un equipo fijo!"
     changing-yourself: "&cNo puedes cambiar tu rango!"
-    player-not-in-party: "&c%player% no está en tu equipo"
+    player-not-in-party: "&c%player% no esta en tu equipo"
     player-not-in-other-party: "&c%player% no está en ningún equipo"
     players-conflict:
       content:
@@ -145,12 +145,6 @@ main-commands:
     updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 additional-commands:
-  claim:
-    claimed: "&aConcedido permiso para el equipo"
-    removed: "&aPermiso removido para el equipo"
-    no-manager: "&cNecesitas ser el administrador de la reclamación"
-    claim-no-exists: "&cClaim no encontrado"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party claim <permiso>\n&cPermisos: trust, container & access"
   color:
     info: "&bEl color de tu equipo es: %color_code%%color_command%"
     empty: "&bTu equipo no tiene color"
@@ -166,28 +160,10 @@ additional-commands:
     invalid-chars: "&cCaracteres invalidos. Usa: a-Z or 0-9. Minimo 3 y maximo 16 caracteres."
     censored: "&cLa description contiene caracteres invalidos!"
     wrong-command: "&cVariables incorrectas: Escribe &7/party desc <descripcion/remover>"
-  exp:
-    party:
-      gained: "&bGanas %exp% experiencia de equipo por matar a un mob/monstruo"
-    normal:
-      gained-killer: "&bGanas %exp% experiencia por matar a un mob/monstruo"
-      gained-others: "&b%player% ha matado a un monstruo, has ganado %exp% experiencia"
-    skillapi:
-      gained-killer: "&bGanas %exp% experiencia por matar monstruos"
-      gained-others: "&b%player% ha matado a un monstruo, tu ganas %exp% experiencia"
   follow:
     toggle-on: "&aAhora los miembros de tu equipo seguirán a tu líder"
     toggle-off: "&aLos miembros de tu equipo ya no seguirán a tu líde"
     wrong-command: "&cVariables incorrectas: Escribe &7/party follow [on/off]"
-  home:
-    teleported: "&7Teletransportado a casa del equipo"
-    teleport-in: "&7Seras teletransportado en %time% segundos..."
-    teleport-denied: "&7Teletransporte denegado"
-    teleport-waiting: "&cYa estas esperando para teletransportarte!"
-    no-home: "&cNo hay una casa establecida para el equipo"
-    no-exists: "&cEl equipo %party% no existe"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party home"
-    wrong-command-admin: "&cVariables incorrectas: Escribe &7/party home [equipo]"
   join:
     joined: "&aHas entrado al equipo %party%"
     player-joined: "&b&l%player% ha entrado al equipo"
@@ -219,39 +195,13 @@ additional-commands:
     broadcast: ""
     invalid-chars: "&cCaracteres invalidos. Usa: a-Z or 0-9. Minimo 1 y maximo 16 caracteres."
     wrong-command: "&cVariables incorrectas: Escribe &7/party password <contraseña/remove>"
-  protection:
-    toggle-on: "&aAhora tu equipo esta protegido del fuego amigo"
-    toggle-off: "&aAhora tu equipo ya no esta protegido del fuego amigo"
-    protected: "&cNo puedes atacar a tus compañeros"
-    warn-on-attack: "&c%player% ha intentado atacar ha %victim%!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party proteccion [on/off]"
-  sethome:
-    changed: ""
-    removed: "&bCasa de equipo removida"
-    broadcast: "&aEl equipo tiene una nueva casa!"
-    wrong-command: "&cVariables incorrectas: Escribe &7/party sethome [remover]"
   teleport:
     teleporting: "&7Teletransportando a la casa de tu equipo!"
     player-teleported: "&bTeletransportado a %player%"
     cooldown: "&cTienes que esperar %seconds% segundos!"
-  vault:
-    no-money:
-      claim: "&cNo tienes suficiente dinero para realizar un reclamo [%price%$]"
-      color: "&cNo tienes suficiente dinero para ejecutar el comando de color [%price%$]"
-      create: "&cNo tienes suficiente dinero para crear un equipo [%price%$]"
-      desc: "&cNo tienes suficiente dinero para poner una descripción [%price%$]"
-      home: "&cNo tienes suficiente dinero para usar el comando de viaje a casa [%price%$]"
-      join: "&cNo tienes suficiente dinero para entrar al equipo [%price%$]"
-      motd: "&cNo tienes suficiente dinero para poner un MOTD [%price%$]"
-      sethome: "&cNo tienes suficiente dinero para establecer una casa [%price%$]"
-      teleport: "&cNo tienes suficiente dinero realizar un teletransporte [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"El comando %cmd% cuesta %price%$.\n\",\"color\":\"green\"},{\"text\":\"Click aqui para confirmar\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Pagar el comando\",\"color\":\"gold\"}]}}},{\"text\":\" o escribe \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" para usarlo.\",\"color\":\"green\"}]"
-      confirmed: "&aEjecutando el comando."
-      no-cmd: "&cEste no es un comando valido"
 other:
   follow:
-    following-world: "&7Siguiendo %player% en %world%"
+    following-server: "&7Siguiendo %player% en %server%"
   fixed-parties:
     default-join: "&bEntraste al equipo %party%"
   join-leave:
@@ -290,18 +240,13 @@ help:
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Ver mensajes de otros equipos.","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Mostrar información de Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
   additional-commands:
-    claim: '{"text":"","extra":[{"text":"/party claim <permiso>","color":"aqua"},{"text":" - Conceder permisos al reclamo.","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Cambiar el color del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     desc: '{"text":"","extra":[{"text":"/party desc <descripcion/remove>","color":"aqua"},{"text":" - Agregar/remover la descripcion","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Alternar sigue al lider","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
-    home: '{"text":"","extra":[{"text":"/party home [equipo]","color":"aqua"},{"text":" - Teletransportarse a la casa del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     join: '{"text":"","extra":[{"text":"/party join <equipo> [contraseña]","color":"aqua"},{"text":" - Entrar al equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [pagina]","color":"aqua"},{"text":" - Lista de equipos en linea","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Agregar/remover motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Alternar notificaciones","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <contraseña/remove>","color":"aqua"},{"text":" - Cambiar la contraseña del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
-    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - Alternar el fuego amigo del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
-    sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Estabrecer la casa del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
-    teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Tteletransportar su equipo a usted","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 8
+  version: 6

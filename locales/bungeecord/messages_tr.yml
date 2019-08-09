@@ -1,10 +1,7 @@
 ---
 parties:
   update-available: "&9Parti pluginin Yeni sürümü bulundu: %version% (Şuanki sürüm: %thisversion%)"
-<<<<<<< HEAD
   configuration-outdated: "&cThe configuration file '%config%' is outdated!"
-=======
->>>>>>> master
   common-messages:
     invalid-command: "&cBilinmeyen Komut"
     configuration-reloaded: "&aConfig Yenilendi"
@@ -15,7 +12,6 @@ parties:
   permissions:
     no-permission: "&cBu Komutu Yazmak İçin Yetkin Yok"
     no-permission-in-party: "&cBu Komutu Yazabilmek İçin %rank_name% Rankında Olmalısın"
-<<<<<<< HEAD
   out-party: "Out party"
   list:
     player-online-format: "&b%player%"
@@ -24,8 +20,6 @@ parties:
     player-empty: "&7Kimse"
     player-unknown: "&6Birileri"
     missing-value: "&7Miss"
-=======
->>>>>>> master
 main-commands:
   accept:
     broadcast: "&b&l%player% partiye katıldı"
@@ -33,12 +27,9 @@ main-commands:
     accept-receipt: "&a%player% Davetini kabul etti"
     no-invite: "&cBekleyen Bir Davetiniz Yok"
     no-exists: "&cDavet Artık Mevcut Değil"
-<<<<<<< HEAD
     multiple-invites: "&cKabul etmek istediğiniz partiyi seçin:"
     multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Kabul etmek için tıklayın","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Daveti kabul ettin","color":"gold"}]}}}]'
     wrong-command: "&cYanlış kullanım: &7/party accept [parti ismi] komutunu deneyin"
-=======
->>>>>>> master
   chat:
     enabled: "&aParti sohbetine geçildi"
     disabled: "&aParti sohbeti kapatıldı"
@@ -62,12 +53,9 @@ main-commands:
     deny-receipt: "&7%player% Davetini Reddetti"
     no-invite: "&cBekleyen Bir Davetiniz Yok"
     no-exists: "&cDavet Artık Mevcut Değil"
-<<<<<<< HEAD
     multiple-invites: "&cReddetmek istediğiniz partiyi seçin:"
     multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Reddetmek için tıklayın","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Daveti reddetiniz","color":"gold"}]}}}]'
     wrong-command: "&cYanlış kullanım: &7/party deny [parti ismi] komutunu deneyin"
-=======
->>>>>>> master
   ignore:
     start-ignore: "&7Bu Parti Artık Susturuluyor %party%"
     stop-ignore: "&7Artık Bu Partiyi Susturmuyosun %party%"
@@ -86,28 +74,12 @@ main-commands:
       - "&bModlar&7: %list_moderator%"
       - "&bÜyeler&7: %list_member%"
       - "&bAçık üyeler&7: %onlinenumber%"
-<<<<<<< HEAD
   invite:
     sent: "&bSen %player% Adlı Oyuncuyu Partine Davet Ettin"
     player-invited: "[{\"text\":\"%player% seni %party% adlı partisine davet etti.\n\",\"color\":\"aqua\"},{\"text\":\"Katılmak için \",\"color\":\"aqua\"},{\"text\":\"kabul et\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti kabul ettin\",\"color\":\"gold\"}]}}},{\"text\":\" ya da\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"reddet\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti reddetin\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party <accept/deny> \",\"color\":\"aqua\"},{\"text\":\"komutlarınıda \",\"color\":\"gray\"},{\"text\":\" yazmayı seçebilirsin.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% Davetinizi kabul etmedi."
       timeout: "&7%party% adlı partiden gelen daveti kabul etmedin"
-=======
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Kimse"
-      player-unknown: "&6Birileri"
-      missing-value: "&7Miss"
-  invite:
-    sent: "&bSen %player% Adlı Oyuncuyu Partine Davet Ettin"
-    player-invited: "[{\"text\":\"%player% Seni partisine davet etti.\n\",\"color\":\"aqua\"},{\"text\":\"Katılmak İstersen \",\"color\":\"aqua\"},{\"text\":\"Kabul Et\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti kabul etmek için bas\",\"color\":\"gold\"}]}}},{\"text\":\" Veya \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Reddet\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti Reddet\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Diğer komutlarlar \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
-    timeout:
-      noresponse: "&7%player% Davetinizi kabul etmedi."
-      timeout: "&7Daveti kabul etmedin."
->>>>>>> master
     revoke:
       sent-revoked: "&7%player% Adlı Oyuncuya Attığınız Daveti İptal Ettiniz"
       player-invite-revoked: "&7%party% Adlı Partiden Gelen Davet İptal Edildi"
@@ -132,27 +104,12 @@ main-commands:
         - "&cBu isimde birkaç oyuncu bulduk:"
         - "%list_players%"
         - "&cBirini Partiden Atmak İçin '&7/party kick <isim> <numarası>&c' Komudunu Kullana Bilirsin"
-<<<<<<< HEAD
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: son giriş %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Bu oyuncuyu at","color":"gold"}}}'
-=======
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: En Son Giriş %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
->>>>>>> master
     wrong-command: "&cYanlış komut: Doğrusu &7/party kick <isim>"
   leave:
     left: "&b&l%party% adlı partiden ayrıldın"
     broadcast: "&b&l%player% Partiden Çıktı"
     party-disbanded: "&6&lParti Kapatıldı Çünkü Lider Partiden Çıktı"
-<<<<<<< HEAD
-=======
-  migrate:
-    info: "&aŞuanda Bunu Kullanıyorsun: %database%\n&aBu Komut İle Dosyaları Taşıya Bilirsin: &7/party migrate <olduğu yer> <taşınılacak yer>"
-    completed: "&a%database_from% Dosyalar Buradan %database_to% Buraya Taşındı"
-    failed:
-      database-offline: "&c%database% Açık Olmak Zorunda!"
-      failed: "&cVeriTabanı %database_from% Buradan  %database_to% Buraya Taşınamadı!"
-      same-database: "&c2 Tane VeriTabanı Seçmelisin!"
-    wrong-database: "&cVeriTabanı Bulunamıyor. Şunları Seçmeyi Dene: YAML, MySQL, SQLite!"
->>>>>>> master
   p:
     cooldown: "&c%seconds% Saniye Beklemelisin"
     censored: "&cBu Mesaj Kötü Şeyler İçeriyor!"
@@ -168,15 +125,12 @@ main-commands:
     changing-yourself: "&cKendi Rütbeni Değiştiremezsin!"
     player-not-in-party: "&c%player% Senin partin değil"
     player-not-in-other-party: "&c%player% Bir Partide Değil"
-<<<<<<< HEAD
     players-conflict:
       content:
         - "&cBu isimde birkaç oyuncu bulduk:"
         - "%list_players%"
         - "&cOyuncu'nun rütbesini düzeltmek için &7/party rank <isim> <rütbe> <sayı>&c komutunu kullanın"
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: en son giriş %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Bu oyuncunun rütbesini değiştir","color":"gold"}}}'
-=======
->>>>>>> master
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party rank <player> <rank>"
   rename:
     renamed: "&aPartinin %old% adı artık %party% olarak değiştirildi"
@@ -188,20 +142,9 @@ main-commands:
     disabled: "&7Görünmezlikten Çıktın"
     wrong-command: "&cYanlış Komut: Doğrusu &7/party spy [on/off]"
   version:
-<<<<<<< HEAD
     updated: "&b&lParties &b%version% &7(%platform%) - Geliştiren &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Geliştiren &6AlessioDP\n&aYeni version bulundu: &2%newversion%"
-=======
-    updated: "&b&lParti Sürümü: &b%version% &7- Geliştiren &6AlessioDP"
-    outdated: "&b&lParti Sürümü: &b%version% &7- Geliştiren &6AlessioDP\n&aYeni Version Bulundu: &2%newversion%"
->>>>>>> master
 additional-commands:
-  claim:
-    claimed: "&aPartiye Yetki Verildi"
-    removed: "&aParti Yetkileri Silindi"
-    no-manager: "&cClaim Atmak İçin Yönetici Olması Lazım"
-    claim-no-exists: "&cClaim Bulunamadı"
-    wrong-command: "&cYanlış Komut: Doğrusu &7/party claim <yetki>\n&cYetkiler: trust, container & access"
   color:
     info: "&bPartinin Şuanki Rengi: %color_code%%color_command%"
     empty: "&bPartinde Bir Renk Seçilmemiş"
@@ -217,28 +160,10 @@ additional-commands:
     invalid-chars: "&cBilinmeyen karakterler. Şunu dene: a-Z or 0-9. Minimum 3 ve maksimum 16 karakter."
     censored: "&cBu Açıklama Yasaklı Kelimleler İçeriyor!"
     wrong-command: "&cYanlış komut: Şunu dene &7/party desc <descriptio/remove>"
-  exp:
-    party:
-      gained: "&bYaratık kesmekten %exp% tecrübe puanı kazanıldı"
-    normal:
-      gained-killer: "&bYaratık Kesmekten %exp% Tecrübe Puanı Kazanıldı"
-      gained-others: "&b%player% Yaratık Kesti, %exp% Tecrübe Kazandın"
-    skillapi:
-      gained-killer: "&bYaratık Kesmekten %exp% Tecrübe Puanı Kazanıldı"
-      gained-others: "&b%player% Yaratık Kesti, %exp% Tecrübe Kazandın"
   follow:
     toggle-on: "&aŞimdi parti üyeleriniz liderinizi takip edecek"
     toggle-off: "&aArtık Bu Parti Parti Liderini Takip Etmiyor"
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party follow [on/off]"
-  home:
-    teleported: "&7Partş Evine Işınlanıldı"
-    teleport-in: "&7%time% Saniye Sonra Işınlanacaksın..."
-    teleport-denied: "&7Işınlanma Reddedildi"
-    teleport-waiting: "&cIşınlanmak İçin Beklemelisin!"
-    no-home: "&cEv Belirlenmemiş"
-    no-exists: "&cBu Pari %party% Bulunamıyor"
-    wrong-command: "&cYanlış komut: Doğrusu &7/party home"
-    wrong-command-admin: "&cYanlış komut: Doğrusu &7/party home [parti]"
   join:
     joined: "&a%party% adlı partiye katıldın"
     player-joined: "&b&l%player% Partiye Hoşgeldin."
@@ -270,39 +195,13 @@ additional-commands:
     broadcast: ""
     invalid-chars: "&cBilinmeyen karakterler. Şunları kullanın: a-Z or 0-9. Minimum 1 ve maksimum 16 karakter."
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party password <password/remove>"
-  protection:
-    toggle-on: "&aBu Partide Birbirine Vurulma Kapalı"
-    toggle-off: "&aBu Partide Birbirine Vurma Açık"
-    protected: "&cParti Arkadaşlarına Vuramazsın!"
-    warn-on-attack: "&c%player% Adlı Oyuncu %victim% Adlı Oyuncuya Saldırmaya Çalıştıyor!"
-    wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party protection [on/off]"
-  sethome:
-    changed: ""
-    removed: "&bParti Evi Silindi"
-    broadcast: "&aParti Yeni Bir Eve Sahip!"
-    wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party sethome [remove]"
   teleport:
     teleporting: "&7Partini Buraya Işınla!"
     player-teleported: "&b%player% Adlı Kişiye Işınlanıldı"
     cooldown: "&c%seconds% Saniye Beklemelisin!"
-  vault:
-    no-money:
-      claim: "&cBurayı Almak İçin Yeterli Paran Yok[%price%$]"
-      color: "&c Renk Değiştirmek İçin Yeterli Paran Yok[%price%$]"
-      create: "&cParti Oluşturmak İçin Yeterli Paran Yok [%price%$]"
-      desc: "&cAçıklama Eklemek İçin Yeterli Paran Yok [%price%$]"
-      home: "&cHome Komudunu Kullanmak İçin Yeterli Paran Yok[%price%$]"
-      join: "&cPartiye Katılmak İçin Yeterli Paran Yok [%price%$]"
-      motd: "&cMOTD Eklemek İçin Yeterli Paran Yok [%price%$]"
-      sethome: "&cEv Belirlemek İçin Yeterli Paran Yok [%price%$]"
-      teleport: "&cIşınlanmak İçin Yeterli Paran Yok [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"Command %cmd% costs %price%$.\n\",\"color\":\"green\"},{\"text\":\"Doğrulamak İçin Tıkla\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Parayı Ödemek İçin\",\"color\":\"gold\"}]}}},{\"text\":\" or type \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" Yazın.\",\"color\":\"green\"}]"
-      confirmed: "&aKomutu Gerçekleştirmek İçin."
-      no-cmd: "&cDoğrulanacak Komut"
 other:
   follow:
-    following-world: "&7Takip Edilen %player% Bu Dünyada %world%"
+    following-server: "&7Takip Edilen %player% Adlı Oyuncu, Sunucunun Bu Bölümünde Oynuyor %server%"
   fixed-parties:
     default-join: "&b%party% Adlı Partiye Katıldın"
   join-leave:
@@ -313,7 +212,6 @@ help:
   footer: ""
   console-help:
     - "Sadece Bu Komutları Kullanabilirsin:"
-<<<<<<< HEAD
     - " > party create <isim> fixed - Yeni bir parti oluşturursun"
     - " > /paty delete <parti> - Partiyi siler"
     - " > party info <party> - Parti bilgilerini gösterir"
@@ -323,10 +221,6 @@ help:
     - " > party reload - Dosyaları yeniden yükler"
     - " > party rename <parti> <isim> - Parti nin ismini değiştirir"
     - " > party version - Parties eklentisinin bilgilerini gösterir"
-=======
-    - "/party migrate - DataBase yi Başka Bir Yere Kopyalar"
-    - "/party reload - Configi Yeniler"
->>>>>>> master
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [sayfa]","color":"aqua"},{"text":" - Sayfaları Gösterir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Daveti Kabul Eder","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
@@ -339,10 +233,6 @@ help:
     invite: '{"text":"","extra":[{"text":"/party invite <oyuncu>","color":"aqua"},{"text":" - Oyuncuyu Partine Çağırır","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     kick: '{"text":"","extra":[{"text":"/party kick <oyuncu>","color":"aqua"},{"text":" - Partiden Oyuncuyu Atar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Partiden Çıkarsın","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
-<<<<<<< HEAD
-=======
-    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - DataBase yi Kopyalar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
->>>>>>> master
     p: '{"text":"","extra":[{"text":"/p <mesaj>","color":"aqua"},{"text":" - Partine Mesaj Gönderir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Oyuncunun Rütbesini Değiştirir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Parti Configini Yeniler","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
@@ -350,18 +240,13 @@ help:
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Mesajlarını Diğer Partilerden Gizler","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Parti Sürümünü Gösterir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
   additional-commands:
-    claim: '{"text":"","extra":[{"text":"/party claim <permission>","color":"aqua"},{"text":" - Partiye Yetki Verir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Parti Rengini Değiştirir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - Set/remove Parti Açıklaması Ekler","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Parti Liderini Takip Eder","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
-    home: '{"text":"","extra":[{"text":"/party home [party]","color":"aqua"},{"text":" - Parti Evine Işınlar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party home "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     join: '{"text":"","extra":[{"text":"/party join <parti> [şifre]","color":"aqua"},{"text":" - Partiye Katıl","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [sayfa]","color":"aqua"},{"text":" - Açık Sunucuları Listeler","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Set/remove parti motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Bildirimleri değiştirir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Parti Şifresini Değiştirir","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
-    protection: '{"text":"","extra":[{"text":"/party protection [on/off]","color":"aqua"},{"text":" - Dost Ateşini Kapa/Aç","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party protection "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
-    sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set/remove party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
-    teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Partini Sana Işınlar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
 dont-edit-this:
-  version: 8
+  version: 6
