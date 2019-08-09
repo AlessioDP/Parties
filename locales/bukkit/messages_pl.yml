@@ -104,7 +104,7 @@ main-commands:
         - "&cZnalezismy kilku graczy o tej nazwie:"
         - "%list_players%"
         - "&cUzyj '&7/party kick <nazwa gracza> <numer>&c' by wyrzucic danego gracza"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: ostatnio logowany %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Wyrzuc tego gracza","color":"gold"}}}'
     wrong-command: "&cBledne uzycie: Uzyj &7/party kick <nazwa>"
   leave:
     left: "&b&lOpusciles grupe %party%"
