@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Parti pluginin Yeni sürümü bulundu: %version% (Şuanki sürüm: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
+  configuration-outdated: "&cDosya '%config%' yapılandırılması eski. Yeni Party eklentisinde yok!"
   common-messages:
     invalid-command: "&cBilinmeyen Komut"
     configuration-reloaded: "&aConfig Yenilendi"
@@ -12,7 +12,7 @@ parties:
   permissions:
     no-permission: "&cBu Komutu Yazmak İçin Yetkin Yok"
     no-permission-in-party: "&cBu Komutu Yazabilmek İçin %rank_name% Rankında Olmalısın"
-  out-party: "Out party"
+  out-party: "Eklenti dışı"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
