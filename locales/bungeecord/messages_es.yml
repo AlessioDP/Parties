@@ -1,6 +1,7 @@
 ---
 parties:
   update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
   common-messages:
     invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"
@@ -11,6 +12,14 @@ parties:
   permissions:
     no-permission: "&cNo tienes acceso a ese comando"
     no-permission-in-party: "&cNecesitas ser %rank_name% para ejecutar ese comando"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Nadie"
+    player-unknown: "&6Alguien"
+    missing-value: "&7No hay"
 main-commands:
   accept:
     broadcast: "&b&l%player% ha entrado al equipo"
@@ -65,13 +74,6 @@ main-commands:
       - "&bModeradores&7: %list_moderator%"
       - "&bMiembros&7: %list_member%"
       - "&bJugadores conectados&7: %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Nadie"
-      player-unknown: "&6Alguien"
-      missing-value: "&7No hay"
   invite:
     sent: "&bHas invitado al jugador %player% a tu equipo"
     player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
@@ -247,4 +249,4 @@ help:
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Alternar notificaciones","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <contraseña/remove>","color":"aqua"},{"text":" - Cambiar la contraseña del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 5
+  version: 6
