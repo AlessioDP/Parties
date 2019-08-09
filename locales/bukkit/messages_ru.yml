@@ -1,6 +1,7 @@
 ---
 parties:
   update-available: "&9Новая версия партии: %version% (Текущая: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
   common-messages:
     invalid-command: "&cНедопустимая команда"
     configuration-reloaded: "&aПерезагрузка конфигурации"
@@ -11,6 +12,14 @@ parties:
   permissions:
     no-permission: "&cУ вас нет доступа к этой команде"
     no-permission-in-party: "&cВам нужно быть %rank_name% чтобы выполнить эту команду"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Никто"
+    player-unknown: "&6Нет игроков"
+    missing-value: "&7"
 main-commands:
   accept:
     broadcast: "&b&l%player% вступил в партию"
@@ -65,13 +74,6 @@ main-commands:
       - "&bМодераторы&7: %list_moderator%"
       - "&bИгроки&7: %list_member%"
       - "&bОнлайн пользователей&7: %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Никто"
-      player-unknown: "&6Нет игроков"
-      missing-value: "&7"
   invite:
     sent: "&bВы пригласили %player% в свою партию"
     player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
@@ -302,4 +304,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Установить дом партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Телепортируйте вашу партию к вам","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
 dont-edit-this:
-  version: 7
+  version: 8
