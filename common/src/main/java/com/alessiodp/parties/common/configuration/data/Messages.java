@@ -1,15 +1,16 @@
 package com.alessiodp.parties.common.configuration.data;
 
-import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Messages extends ConfigurationFile {
+public abstract class Messages extends PartiesConfigurationFile {
 	// Parties messages
 	public static String PARTIES_UPDATEAVAILABLE;
+	public static String PARTIES_CONFIGURATION_OUTDATED;
 	
 	public static String PARTIES_COMMON_INVALIDCMD;
 	public static String PARTIES_COMMON_CONFIGRELOAD;
@@ -20,6 +21,15 @@ public abstract class Messages extends ConfigurationFile {
 	
 	public static String PARTIES_PERM_NOPERM;
 	public static String PARTIES_PERM_NORANK;
+	
+	public static String PARTIES_OUT_PARTY;
+	
+	public static String PARTIES_LIST_ONLINEFORMAT;
+	public static String PARTIES_LIST_OFFLINEFORMAT;
+	public static String PARTIES_LIST_SEPARATOR;
+	public static String PARTIES_LIST_EMPTY;
+	public static String PARTIES_LIST_UNKNOWN;
+	public static String PARTIES_LIST_MISSING;
 	
 	
 	// Main commands messages
@@ -67,12 +77,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_IGNORE_WRONGCMD;
 	
 	public static List<String> MAINCMD_INFO_CONTENT;
-	public static String MAINCMD_INFO_LIST_ONLINEFORMAT;
-	public static String MAINCMD_INFO_LIST_OFFLINEFORMAT;
-	public static String MAINCMD_INFO_LIST_SEPARATOR;
-	public static String MAINCMD_INFO_LIST_EMPTY;
-	public static String MAINCMD_INFO_LIST_UNKNOWN;
-	public static String MAINCMD_INFO_LIST_MISSING;
 	
 	public static String MAINCMD_INVITE_SENT;
 	public static String MAINCMD_INVITE_PLAYERINVITED;
@@ -237,6 +241,7 @@ public abstract class Messages extends ConfigurationFile {
 	public void loadDefaults() {
 		// Parties messages
 		PARTIES_UPDATEAVAILABLE = "&9New version of Parties found: %version% (Current: %thisversion%)";
+		PARTIES_CONFIGURATION_OUTDATED = "&cThe configuration file '%config%' is outdated!";
 		
 		PARTIES_COMMON_INVALIDCMD = "&cInvalid command";
 		PARTIES_COMMON_CONFIGRELOAD = "&aConfiguration reloaded";
@@ -247,6 +252,15 @@ public abstract class Messages extends ConfigurationFile {
 		
 		PARTIES_PERM_NOPERM = "&cYou do not have access to that command";
 		PARTIES_PERM_NORANK = "&cYou need to be %rank_name% to perform that command";
+		
+		PARTIES_OUT_PARTY = "Out party";
+		
+		PARTIES_LIST_ONLINEFORMAT = "&b%player%";
+		PARTIES_LIST_OFFLINEFORMAT = "&7%player%";
+		PARTIES_LIST_SEPARATOR = "&7, ";
+		PARTIES_LIST_EMPTY = "&7Nobody";
+		PARTIES_LIST_UNKNOWN = "&6Someone";
+		PARTIES_LIST_MISSING = "&7Miss";
 		
 		
 		// Main commands messages
@@ -301,12 +315,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_INFO_CONTENT.add("&bMods&7: %list_moderator%");
 		MAINCMD_INFO_CONTENT.add("&bMembers&7: %list_member%");
 		MAINCMD_INFO_CONTENT.add("&bOnline players&7: %onlinenumber%");
-		MAINCMD_INFO_LIST_ONLINEFORMAT = "&b%player%";
-		MAINCMD_INFO_LIST_OFFLINEFORMAT = "&7%player%";
-		MAINCMD_INFO_LIST_SEPARATOR = "&7, ";
-		MAINCMD_INFO_LIST_EMPTY = "&7Nobody";
-		MAINCMD_INFO_LIST_UNKNOWN = "&6Someone";
-		MAINCMD_INFO_LIST_MISSING = "&7Miss";
 		
 		MAINCMD_INVITE_SENT = "&bYou invited %player% in your party";
 		MAINCMD_INVITE_PLAYERINVITED = "[{\"text\":\"%player% has invited you to the party %party%.\\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]";
@@ -484,6 +492,7 @@ public abstract class Messages extends ConfigurationFile {
 	public void loadConfiguration(ConfigurationAdapter confAdapter) {
 		// Parties messages
 		PARTIES_UPDATEAVAILABLE = confAdapter.getString("parties.update-available", PARTIES_UPDATEAVAILABLE);
+		PARTIES_CONFIGURATION_OUTDATED = confAdapter.getString("parties.configuration-outdated", PARTIES_CONFIGURATION_OUTDATED);
 		
 		PARTIES_COMMON_INVALIDCMD = confAdapter.getString("parties.common-messages.invalid-command", PARTIES_COMMON_INVALIDCMD);
 		PARTIES_COMMON_CONFIGRELOAD = confAdapter.getString("parties.common-messages.configuration-reloaded", PARTIES_COMMON_CONFIGRELOAD);
@@ -494,6 +503,15 @@ public abstract class Messages extends ConfigurationFile {
 		
 		PARTIES_PERM_NOPERM = confAdapter.getString("parties.permissions.no-permission", PARTIES_PERM_NOPERM);
 		PARTIES_PERM_NORANK = confAdapter.getString("parties.permissions.no-permission-in-party", PARTIES_PERM_NORANK);
+		
+		PARTIES_OUT_PARTY = confAdapter.getString("parties.out-party", PARTIES_OUT_PARTY);
+		
+		PARTIES_LIST_ONLINEFORMAT = confAdapter.getString("parties.list.player-online-format", PARTIES_LIST_ONLINEFORMAT);
+		PARTIES_LIST_OFFLINEFORMAT = confAdapter.getString("parties.list.player-offline-format", PARTIES_LIST_OFFLINEFORMAT);
+		PARTIES_LIST_SEPARATOR = confAdapter.getString("parties.list.player-separator", PARTIES_LIST_SEPARATOR);
+		PARTIES_LIST_EMPTY = confAdapter.getString("parties.list.player-empty", PARTIES_LIST_EMPTY);
+		PARTIES_LIST_UNKNOWN = confAdapter.getString("parties.list.player-unknown", PARTIES_LIST_UNKNOWN);
+		PARTIES_LIST_MISSING = confAdapter.getString("parties.list.missing-value", PARTIES_LIST_MISSING);
 		
 		
 		// Main commands messages
@@ -540,12 +558,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_IGNORE_WRONGCMD = confAdapter.getString("main-commands.ignore.wrong-command", MAINCMD_IGNORE_WRONGCMD);
 		
 		MAINCMD_INFO_CONTENT = confAdapter.getStringList("main-commands.info.content", MAINCMD_INFO_CONTENT);
-		MAINCMD_INFO_LIST_ONLINEFORMAT = confAdapter.getString("main-commands.info.list.player-online-format", MAINCMD_INFO_LIST_ONLINEFORMAT);
-		MAINCMD_INFO_LIST_OFFLINEFORMAT = confAdapter.getString("main-commands.info.list.player-offline-format", MAINCMD_INFO_LIST_OFFLINEFORMAT);
-		MAINCMD_INFO_LIST_SEPARATOR = confAdapter.getString("main-commands.info.list.player-separator", MAINCMD_INFO_LIST_SEPARATOR);
-		MAINCMD_INFO_LIST_EMPTY = confAdapter.getString("main-commands.info.list.player-empty", MAINCMD_INFO_LIST_EMPTY);
-		MAINCMD_INFO_LIST_UNKNOWN = confAdapter.getString("main-commands.info.list.player-unknown", MAINCMD_INFO_LIST_UNKNOWN);
-		MAINCMD_INFO_LIST_MISSING = confAdapter.getString("main-commands.info.list.missing-value", MAINCMD_INFO_LIST_MISSING);
 		
 		MAINCMD_INVITE_SENT = confAdapter.getString("main-commands.invite.sent", MAINCMD_INVITE_SENT);
 		MAINCMD_INVITE_PLAYERINVITED = confAdapter.getString("main-commands.invite.player-invited", MAINCMD_INVITE_PLAYERINVITED);

@@ -54,8 +54,10 @@ general:
       prefix: "@"
     formats:
       party-chat: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
-      spy-alerts: "&7[SPY] [Party:%party%] %player%: %message%"
       broadcast: "&b[Party] %message%"
+      spy:
+        party-chat: "&7[SPY] [%party%] %player%: %message%"
+        broadcast: "&7[SPY] [%party%]: %message%"
 
 
 # / = = = = = = = = = = = = = = = = \

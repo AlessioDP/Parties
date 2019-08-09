@@ -86,14 +86,8 @@ public abstract class JoinLeaveListener {
 				if (ConfigMain.PARTIES_JOINLEAVEMESSAGES && party != null) {
 					party.broadcastMessage(Messages.OTHER_JOINLEAVE_SERVERJOIN, partyPlayer);
 				}
-			}
-			
-			if (ConfigMain.PARTIES_UPDATES_WARN
-					&& player.hasPermission(PartiesPermission.ADMIN_UPDATES.toString())
-					&& !plugin.getAdpUpdater().getFoundVersion().isEmpty()) {
-				partyPlayer.sendMessage(Messages.PARTIES_UPDATEAVAILABLE
-						.replace("%version%", plugin.getAdpUpdater().getFoundVersion())
-						.replace("%thisversion%", plugin.getVersion()));
+				
+				plugin.getPlayerManager().sendLoginAlert(partyPlayer);
 			}
 		});
 	}

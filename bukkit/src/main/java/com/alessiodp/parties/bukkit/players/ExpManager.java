@@ -98,7 +98,7 @@ public class ExpManager {
 				if (totalParty > 0) {
 					// If sent to the party, don't share experience
 					party.giveExperience(totalParty);
-					party.updateParty();
+					
 					user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
 							.replace("%exp%", Integer.toString(totalParty)), drop.getKiller()), true);
 				}
@@ -194,6 +194,7 @@ public class ExpManager {
 					break;
 				case CUSTOM:
 					ret = calculateLevelCustom(experience);
+					break;
 			}
 		}
 		return ret;
@@ -254,13 +255,16 @@ public class ExpManager {
 		PROGRESSIVE, FIXED, CUSTOM;
 		
 		public static ExpMode parse(String name) {
-			ExpMode ret = PROGRESSIVE;
+			ExpMode ret;
 			switch (name.toLowerCase()) {
 				case "fixed":
 					ret = FIXED;
 					break;
 				case "custom":
 					ret = CUSTOM;
+					break;
+				default:
+					ret = PROGRESSIVE;
 					break;
 			}
 			return ret;
@@ -271,13 +275,16 @@ public class ExpManager {
 		NORMAL, SKILLAPI, PARTY;
 		
 		public static ExpConvert parse(String name) {
-			ExpConvert ret = PARTY;
+			ExpConvert ret;
 			switch (name.toLowerCase()) {
 				case "normal":
 					ret = NORMAL;
 					break;
 				case "skillapi":
 					ret = SKILLAPI;
+					break;
+				default:
+					ret = PARTY;
 					break;
 			}
 			return ret;

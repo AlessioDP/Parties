@@ -15,9 +15,9 @@ public class BungeePartiesConfigurationManager extends PartiesConfigurationManag
 	public BungeePartiesConfigurationManager(PartiesPlugin plugin) {
 		super(plugin);
 		
+		getConfigs().add(new BungeeMessages(plugin));
 		getConfigs().add(new BungeeConfigMain(plugin));
 		getConfigs().add(new BungeeConfigParties(plugin));
-		getConfigs().add(new BungeeMessages(plugin));
 	}
 	
 	@Override

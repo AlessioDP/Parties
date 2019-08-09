@@ -1,9 +1,8 @@
-package com.alessiodp.parties.common.players;
+package com.alessiodp.parties.common.players.spy;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.utils.PartiesPermission;
-import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
@@ -35,16 +34,12 @@ public class SpyManager {
 		spyList.remove(uuid);
 	}
 	
-	public void sendMessageToSpies(String message, PartyImpl fromParty, PartyPlayerImpl fromPlayer) {
-		for (UUID uuid : spyList) {
-			User player = plugin.getPlayer(uuid);
-			if (player != null) {
-				if (player.hasPermission(PartiesPermission.ADMIN_SPY.toString())) {
-					PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(uuid);
-					
-					if (!pp.getPartyName().equalsIgnoreCase(fromParty.getName())) {
-						player.sendMessage(plugin.getMessageUtils().convertAllPlaceholders(message, fromParty, fromPlayer), false);
-					}
+	public void sendSpyMessage(SpyMessage message) {
+		if (message.getMessage() != null && !message.getMessage().isEmpty()) {
+			for (UUID uuid : spyList) {
+				User player = plugin.getPlayer(uuid);
+				if (player != null && player.hasPermission(PartiesPermission.ADMIN_SPY.toString())) {
+					player.sendMessage(message.toMessage(), false);
 				}
 			}
 		}

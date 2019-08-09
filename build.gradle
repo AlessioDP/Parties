@@ -14,7 +14,7 @@ allprojects {
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.parties'
-    version '2.6.0'
+    version '2.6.1-SNAPSHOT'
 
     // Info
     ext.pluginName = "Parties"
@@ -23,7 +23,7 @@ allprojects {
     ext.pluginWebsite = "https://alessiodp.com/"
 
     // Development
-    ext.adpCore = '1.2.1'
+    ext.adpCore = '1.2.2'
     ext.lombok = '1.18.8'
     ext.powermock = '2.0.2'
 
@@ -32,7 +32,7 @@ allprojects {
     ext.dynmap = '2.5'
     ext.griefPrevention = '16.11.6'
     ext.lastLoginApi = '1.1.0'
-    ext.mythicMobs = '4.5.3-SNAPSHOT'
+    ext.mythicMobs = '4.6.0-SNAPSHOT'
     ext.placeholderApi = '2.10.3'
     ext.protocolLib = '4.4.0'
     ext.vaultApi = '1.7'

@@ -28,17 +28,6 @@ CREATE TABLE `{table_players}` (
  DEFAULT CHARSET='{charset}';
 /*END_PLAYERS*/
 
-/*START_LOG*/
-CREATE TABLE `{table_log}` (
-	`id`		INT NOT NULL AUTO_INCREMENT,
-	`date`		DATETIME,
-	`level`		TINYINT,
-	`position`	VARCHAR({varcharsize}),
-	`message`	VARCHAR({varcharsize}),
-	PRIMARY KEY (`id`))
- DEFAULT CHARSET='{charset}';
-/*END_LOG*/
-
 /*START_VERSIONS*/
 CREATE TABLE `{table_versions}` (
 	`name`		VARCHAR({varcharsize}) NOT NULL,

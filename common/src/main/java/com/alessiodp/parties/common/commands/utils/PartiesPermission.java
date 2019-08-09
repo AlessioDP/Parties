@@ -37,6 +37,7 @@ public enum PartiesPermission implements ADPPermission {
 	TELEPORT	("parties.user.teleport"),
 	
 	// Admin
+	ADMIN_ALERTS				("parties.admin.alerts"),
 	ADMIN_CREATE_FIXED			("parties.admin.create.fixed"),
 	ADMIN_DELETE				("parties.admin.delete"),
 	ADMIN_DELETE_SILENT			("parties.admin.delete.silent"),
@@ -48,7 +49,6 @@ public enum PartiesPermission implements ADPPermission {
 	ADMIN_RELOAD				("parties.admin.reload"),
 	ADMIN_RENAME_OTHERS			("parties.admin.rename.others"),
 	ADMIN_SPY					("parties.admin.spy"),
-	ADMIN_UPDATES				("parties.admin.updates"),
 	ADMIN_VERSION				("parties.admin.version"),
 	
 	// Bukkit

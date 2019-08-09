@@ -136,49 +136,45 @@ public class CommandRank extends PartiesSubCommand {
 			return;
 		}
 		
-		PartyImpl party = partyPlayer != null ? ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName()) : null;
+		PartyImpl party = promotedPp != null ? ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName()) : null;
 		
-		boolean otherParty = false;
-		if (party == null || !party.getMembers().contains(promotedPlayer.getUUID())) {
+		boolean otherParty = (party == null || !party.getMembers().contains(promotedPlayer.getUUID()));
+		
+		if (otherParty) {
 			// Other party
-			otherParty = true;
-			if (commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
-				party = ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName());
-				
-				if (party == null) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_PLAYERNOTINPARTY_OTHER, promotedPp);
-					return;
-				}
-			} else {
+			party = ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName());
+			
+			if (sender.isPlayer() && !commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_PLAYERNOTINPARTY, promotedPp);
 				return;
 			}
-		} else {
-			// Same party
 			
-			if (sender.isPlayer() && !commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
-				// Do not bypass rank restrictions
-				if (rank.getLevel() == promotedPp.getRank()) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_SAMERANK
-							.replace("%rank_name%", rank.getName())
-							.replace("%rank_chat%", rank.getChat())
-							.replace("%player%", promotedPlayer.getName()));
-					return;
-				}
-				
-				if (partyPlayer.getRank() <= promotedPp.getRank()) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_LOWRANK
-							.replace("%rank_name%", rank.getName())
-							.replace("%rank_chat%", rank.getChat())
-							.replace("%player%", promotedPlayer.getName()));
-					return;
-				}
-				if ((rank.getLevel() != ConfigParties.RANK_SET_HIGHER) && (rank.getLevel() >= partyPlayer.getRank())) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_TOHIGHERRANK
-							.replace("%rank_name%", rank.getName())
-							.replace("%rank_chat%", rank.getChat()));
-					return;
-				}
+			if (party == null) {
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_PLAYERNOTINPARTY_OTHER, promotedPp);
+				return;
+			}
+		} else if (sender.isPlayer() && !commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
+			// Do not bypass rank restrictions
+			if (rank.getLevel() == promotedPp.getRank()) {
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_SAMERANK
+						.replace("%rank_name%", rank.getName())
+						.replace("%rank_chat%", rank.getChat())
+						.replace("%player%", promotedPlayer.getName()));
+				return;
+			}
+			
+			if (partyPlayer.getRank() <= promotedPp.getRank()) {
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_LOWRANK
+						.replace("%rank_name%", rank.getName())
+						.replace("%rank_chat%", rank.getChat())
+						.replace("%player%", promotedPlayer.getName()));
+				return;
+			}
+			if ((rank.getLevel() != ConfigParties.RANK_SET_HIGHER) && (rank.getLevel() >= partyPlayer.getRank())) {
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_TOHIGHERRANK
+						.replace("%rank_name%", rank.getName())
+						.replace("%rank_chat%", rank.getChat()));
+				return;
 			}
 		}
 		

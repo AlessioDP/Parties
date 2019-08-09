@@ -75,7 +75,9 @@ public interface PartiesAPI {
 	 * @deprecated No longer needed
 	 */
 	@Deprecated
-	default void updateParty(Party party) {}
+	default void updateParty(Party party) {
+		// Nothing to do
+	}
 	
 	/**
 	 * Send changes to the database. Used to save players data.
@@ -84,7 +86,9 @@ public interface PartiesAPI {
 	 * @deprecated No longer needed
 	 */
 	@Deprecated
-	default void updatePartyPlayer(PartyPlayer player) {}
+	default void updatePartyPlayer(PartyPlayer player) {
+		// Nothing to do
+	}
 	
 	/**
 	 * Send a broadcast message to the party paramParty; It requires a player to
@@ -179,5 +183,7 @@ public interface PartiesAPI {
 	 * @deprecated No longer needed
 	 */
 	@Deprecated
-	default void refreshOnlinePlayers(Party party) {}
+	default void refreshOnlinePlayers(Party party) {
+		// Nothing to do
+	}
 }

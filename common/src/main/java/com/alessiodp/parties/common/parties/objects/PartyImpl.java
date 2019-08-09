@@ -14,6 +14,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.players.objects.InviteCooldown;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.players.spy.SpyMessage;
 import com.alessiodp.parties.common.tasks.InviteTask;
 import lombok.Getter;
 import lombok.Setter;
@@ -419,6 +420,12 @@ public abstract class PartyImpl implements Party {
 		for (PartyPlayer player : getOnlineMembers(true)) {
 			((PartyPlayerImpl) player).sendMessage(message, this);
 		}
+		
+		plugin.getSpyManager().sendSpyMessage(new SpyMessage(plugin)
+				.setType(SpyMessage.SpyType.BROADCAST)
+				.setMessage(message)
+				.setParty(this)
+				.setPlayer(null));
 	}
 	
 	public void dispatchChatMessage(PartyPlayerImpl sender, String message, boolean dispatchBetweenServers) {
@@ -428,11 +435,6 @@ public abstract class PartyImpl implements Party {
 		for (PartyPlayer player : getOnlineMembers(true)) {
 			((PartyPlayerImpl) player).sendMessage(message, this);
 		}
-		
-		String messageFormat =  plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_SPY, this, sender);
-		messageFormat = plugin.getColorUtils().convertColors(messageFormat).replace("%message%", message);
-		
-		plugin.getSpyManager().sendMessageToSpies(messageFormat, this, sender);
 	}
 	
 	/**

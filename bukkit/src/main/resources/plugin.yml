@@ -66,6 +66,8 @@ permissions:
       description: Allow access to /party sethome
   parties.user.teleport:
     description: Allow access to /party teleport
+  parties.admin.alerts:
+    description: Send an alert if there is an error
   parties.admin.create.fixed:
     description: Allow access to /party create party fixed
   parties.admin.delete:
@@ -88,8 +90,6 @@ permissions:
     description: Allow access to /party rename on other parties
   parties.admin.spy:
     description: Allow access to /party spy
-  parties.admin.updates:
-    description: Send a message if there is an update
   parties.admin.version:
     description: Allow access to /party version
   parties.admin.home.others:
@@ -136,6 +136,7 @@ permissions:
     description: Can use all party commands
     children:
       parties.user.*: true
+      parties.admin.alerts: true
       parties.admin.create.fixed: true
       parties.admin.delete: true
       parties.admin.delete.silent: true
@@ -148,7 +149,6 @@ permissions:
       parties.admin.reload: true
       parties.admin.rename.others: true
       parties.admin.spy: true
-      parties.admin.updates: true
       parties.admin.version: true
       parties.admin.home.others: true
       parties.admin.protection.bypass: true

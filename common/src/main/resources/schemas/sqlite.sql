@@ -24,15 +24,6 @@ CREATE TABLE '{table_players}' (
 	`mute`			INTEGER DEFAULT 0 NOT NULL);
 /*END_PLAYERS*/
 
-/*START_LOG*/
-CREATE TABLE '{table_log}' (
-	'id'			INTEGER PRIMARY KEY AUTOINCREMENT,
-		'date'		DATETIME,
-	'level'			TINYINT,
-	'position'		VARCHAR({varcharsize}),
-	'message'		VARCHAR({varcharsize}));
-/*END_LOG*/
-
 /*START_VERSIONS*/
 CREATE TABLE '{table_versions}' (
 	'name'		VARCHAR({varcharsize}) NOT NULL PRIMARY KEY,

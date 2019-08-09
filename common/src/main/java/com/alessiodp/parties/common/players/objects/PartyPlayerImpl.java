@@ -12,6 +12,7 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.api.interfaces.Rank;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.common.players.spy.SpyMessage;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -207,7 +208,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		if (!message.isEmpty()) {
 			PartyImpl party = plugin.getPartyManager().getPartyOfPlayer(this);
 			if (party != null) {
-				String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_PARTY, party, this);
+				String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_CHAT, party, this);
 				String chatMessage = message;
 				
 				if (ConfigParties.GENERAL_CHAT_ALLOWCOLORS) {
@@ -222,6 +223,12 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				formattedMessage = plugin.getColorUtils().convertColors(formattedMessage).replace("%message%", chatMessage);
 				
 				party.dispatchChatMessage(this, formattedMessage, true);
+				
+				plugin.getSpyManager().sendSpyMessage(new SpyMessage(plugin)
+						.setType(SpyMessage.SpyType.MESSAGE)
+						.setMessage(chatMessage)
+						.setParty(party)
+						.setPlayer(this));
 			}
 		}
 	}

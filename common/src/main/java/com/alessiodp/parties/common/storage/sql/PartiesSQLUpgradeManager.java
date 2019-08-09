@@ -1,7 +1,6 @@
 package com.alessiodp.parties.common.storage.sql;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.dispatchers.SQLDispatcher;
 import com.alessiodp.core.common.storage.sql.ISQLTable;
@@ -9,7 +8,6 @@ import com.alessiodp.core.common.storage.sql.mysql.SQLUpgradeManager;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import lombok.NonNull;
-import org.checkerframework.checker.units.qual.C;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -55,118 +53,29 @@ public class PartiesSQLUpgradeManager extends SQLUpgradeManager {
 				case 0:
 				case 1:
 					// Upgrading from 1.7/2.0
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("descr"));
-							preStatement.setString(4, rs.getString("motd"));
-							preStatement.setString(5, "");
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, false);
-							preStatement.setDouble(10, 0);
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePartiesFrom17to20(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL));
 					break;
 				case 2:
 					// Upgrading from 2.1
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("descr")); // Renamed descr to description
-							preStatement.setString(4, rs.getString("motd"));
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, false);
-							preStatement.setDouble(10, 0);
-							preStatement.setBoolean(11, true);
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePartiesFrom21(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL));
 					break;
 				case 3:
 					// Upgrading from 2.3.2
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							// Removed prefix & suffix
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, false); // Set new pvp
-							preStatement.setDouble(10, 0); // Set new experience
-							preStatement.setBoolean(11, true);
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePartiesFrom232(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL));
 					break;
 				case 4:
 					// Upgrading from 2.3.4
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
-							preStatement.setDouble(10, rs.getDouble("experience"));
-							preStatement.setBoolean(11, true);
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePartiesFrom234(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL));
 					break;
 				case 5:
 					// Upgrading from 2.4
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, rs.getBoolean("protection"));
-							preStatement.setDouble(10, rs.getDouble("experience"));
-							preStatement.setBoolean(11, true); // Set new follow
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePartiesFrom24(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL));
 					break;
 				case 6:
 				case 7:
+				default:
 					// Same table
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, rs.getBoolean("protection"));
-							preStatement.setDouble(10, rs.getDouble("experience"));
-							preStatement.setBoolean(11, rs.getBoolean("follow"));
-							preStatement.executeUpdate();
-						}
-					}
+					samePartiesTable(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_MYSQL));
 					break;
 			}
 		}
@@ -174,81 +83,21 @@ public class PartiesSQLUpgradeManager extends SQLUpgradeManager {
 			// SQLite
 			switch (currentVersion) {
 				case 1:
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							// Removed prefix & suffix
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, false); // Set new pvp
-							preStatement.setDouble(10, 0); // Set new experience
-							preStatement.setBoolean(11, true);
-							preStatement.executeUpdate();
-						}
-					}
+					// Upgrading from 2.3.2
+					upgradePartiesFrom232(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE));
 					break;
 				case 2:
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							// Removed prefix & suffix
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
-							preStatement.setDouble(10, rs.getDouble("experience"));
-							preStatement.setBoolean(11, true);
-							preStatement.executeUpdate();
-						}
-					}
+					// Upgrading from 2.3.4
+					upgradePartiesFrom234(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE));
 					break;
 				case 3:
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							// Removed prefix & suffix
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, rs.getBoolean("protection"));
-							preStatement.setDouble(10, rs.getDouble("experience"));
-							preStatement.setBoolean(11, true); // Set new follow
-							preStatement.executeUpdate();
-						}
-					}
+					// Upgrading from 2.4
+					upgradePartiesFrom24(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE));
 					break;
 				case 4:
 				case 5:
-					// Same table
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("name"));
-							preStatement.setString(2, rs.getString("leader"));
-							preStatement.setString(3, rs.getString("description"));
-							preStatement.setString(4, rs.getString("motd"));
-							preStatement.setString(5, rs.getString("color"));
-							preStatement.setInt(6, rs.getInt("kills"));
-							preStatement.setString(7, rs.getString("password"));
-							preStatement.setString(8, rs.getString("home"));
-							preStatement.setBoolean(9, rs.getBoolean("protection"));
-							preStatement.setDouble(10, rs.getDouble("experience"));
-							preStatement.setBoolean(11, rs.getBoolean("follow"));
-							preStatement.executeUpdate();
-						}
-					}
+				default:
+					samePartiesTable(connection, rs, formatQuery(PartiesConstants.QUERY_PARTY_INSERT_SQLITE));
 					break;
 			}
 		}
@@ -260,118 +109,237 @@ public class PartiesSQLUpgradeManager extends SQLUpgradeManager {
 			switch (currentVersion) {
 				case 0:
 					// Upgrading from 1.7
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("nickname"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, false);
-							preStatement.setBoolean(5, false);
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePlayersFrom17(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL));
 					break;
 				case 1:
 				case 2:
 					// Upgrading from 2.0/2.1
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, false);
-							preStatement.setBoolean(5, false);
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePlayersFrom20to21(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL));
 					break;
 				case 3:
 				case 4:
 					// Upgrading from 2.3.4
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, rs.getBoolean("spy"));
-							preStatement.setBoolean(5, rs.getBoolean("notify")); // Changed notify into mute
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePlayersFrom234(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL));
 					break;
 				case 5:
 				case 6:
 					// Upgrading from 2.5
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							// Removed name and timestamp
-							preStatement.setBoolean(4, rs.getBoolean("spy"));
-							preStatement.setBoolean(5, rs.getBoolean("mute"));
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePlayersFrom25(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL));
+					break;
 				case 7:
+				default:
 					// Same table
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, rs.getBoolean("spy"));
-							preStatement.setBoolean(5, rs.getBoolean("mute"));
-							preStatement.executeUpdate();
-						}
-					}
+					samePlayersTable(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_MYSQL));
 					break;
 			}
 		}
 		if (storageType.equals(StorageType.SQLITE)) {
 			// SQLite
-			switch (currentVersion ) {
+			switch (currentVersion) {
 				case 1:
 				case 2:
 					// Upgrading from 2.3.4
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, rs.getBoolean("spy"));
-							preStatement.setBoolean(5, rs.getBoolean("notify")); // Changed notify into mute
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePlayersFrom234(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_SQLITE));
 					break;
 				case 3:
 				case 4:
 					// Upgrading from 2.5
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, rs.getBoolean("spy"));
-							preStatement.setBoolean(5, rs.getBoolean("mute"));
-							preStatement.executeUpdate();
-						}
-					}
+					upgradePlayersFrom25(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_SQLITE));
 					break;
 				case 5:
-					// Same table
-					while (rs.next()) {
-						try (PreparedStatement preStatement = connection.prepareStatement(formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_SQLITE))) {
-							preStatement.setString(1, rs.getString("uuid"));
-							preStatement.setString(2, rs.getString("party"));
-							preStatement.setInt(3, rs.getInt("rank"));
-							preStatement.setBoolean(4, rs.getBoolean("spy"));
-							preStatement.setBoolean(5, rs.getBoolean("mute"));
-							preStatement.executeUpdate();
-						}
-					}
+				default:
+					samePlayersTable(connection, rs, formatQuery(PartiesConstants.QUERY_PLAYER_INSERT_SQLITE));
 					break;
+			}
+		}
+	}
+	
+	private void upgradePartiesFrom17to20(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 1.7-2.0
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("name"));
+				preStatement.setString(2, rs.getString("leader"));
+				preStatement.setString(3, rs.getString("descr"));
+				preStatement.setString(4, rs.getString("motd"));
+				preStatement.setString(5, ""); // Added color
+				preStatement.setInt(6, rs.getInt("kills"));
+				preStatement.setString(7, rs.getString("password"));
+				preStatement.setString(8, rs.getString("home"));
+				preStatement.setBoolean(9, false);
+				preStatement.setDouble(10, 0);
+				preStatement.setBoolean(11, true);
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePartiesFrom21(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.1
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("name"));
+				preStatement.setString(2, rs.getString("leader"));
+				preStatement.setString(3, rs.getString("descr")); // Renamed descr to description
+				preStatement.setString(4, rs.getString("motd"));
+				preStatement.setString(5, rs.getString("color"));
+				preStatement.setInt(6, rs.getInt("kills"));
+				preStatement.setString(7, rs.getString("password"));
+				preStatement.setString(8, rs.getString("home"));
+				preStatement.setBoolean(9, false);
+				preStatement.setDouble(10, 0);
+				preStatement.setBoolean(11, true);
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePartiesFrom232(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.3.2
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("name"));
+				preStatement.setString(2, rs.getString("leader"));
+				preStatement.setString(3, rs.getString("description"));
+				preStatement.setString(4, rs.getString("motd"));
+				// Removed prefix & suffix
+				preStatement.setString(5, rs.getString("color"));
+				preStatement.setInt(6, rs.getInt("kills"));
+				preStatement.setString(7, rs.getString("password"));
+				preStatement.setString(8, rs.getString("home"));
+				preStatement.setBoolean(9, false); // Set new pvp
+				preStatement.setDouble(10, 0); // Set new experience
+				preStatement.setBoolean(11, true);
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePartiesFrom234(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.3.4
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("name"));
+				preStatement.setString(2, rs.getString("leader"));
+				preStatement.setString(3, rs.getString("description"));
+				preStatement.setString(4, rs.getString("motd"));
+				preStatement.setString(5, rs.getString("color"));
+				preStatement.setInt(6, rs.getInt("kills"));
+				preStatement.setString(7, rs.getString("password"));
+				preStatement.setString(8, rs.getString("home"));
+				preStatement.setBoolean(9, rs.getBoolean("pvp")); // Changed pvp into protection
+				preStatement.setDouble(10, rs.getDouble("experience"));
+				preStatement.setBoolean(11, true);
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePartiesFrom24(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.4
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("name"));
+				preStatement.setString(2, rs.getString("leader"));
+				preStatement.setString(3, rs.getString("description"));
+				preStatement.setString(4, rs.getString("motd"));
+				preStatement.setString(5, rs.getString("color"));
+				preStatement.setInt(6, rs.getInt("kills"));
+				preStatement.setString(7, rs.getString("password"));
+				preStatement.setString(8, rs.getString("home"));
+				preStatement.setBoolean(9, rs.getBoolean("protection"));
+				preStatement.setDouble(10, rs.getDouble("experience"));
+				preStatement.setBoolean(11, true); // Set new follow
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void samePartiesTable(Connection connection, ResultSet rs, String query) throws SQLException {
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("name"));
+				preStatement.setString(2, rs.getString("leader"));
+				preStatement.setString(3, rs.getString("description"));
+				preStatement.setString(4, rs.getString("motd"));
+				preStatement.setString(5, rs.getString("color"));
+				preStatement.setInt(6, rs.getInt("kills"));
+				preStatement.setString(7, rs.getString("password"));
+				preStatement.setString(8, rs.getString("home"));
+				preStatement.setBoolean(9, rs.getBoolean("protection"));
+				preStatement.setDouble(10, rs.getDouble("experience"));
+				preStatement.setBoolean(11, rs.getBoolean("follow"));
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePlayersFrom17(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 1.7
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("nickname"));
+				preStatement.setString(2, rs.getString("party"));
+				preStatement.setInt(3, rs.getInt("rank"));
+				preStatement.setBoolean(4, false);
+				preStatement.setBoolean(5, false);
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePlayersFrom20to21(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.0-2.1
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("uuid"));
+				preStatement.setString(2, rs.getString("party"));
+				preStatement.setInt(3, rs.getInt("rank"));
+				preStatement.setBoolean(4, false);
+				preStatement.setBoolean(5, false);
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePlayersFrom234(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.3.4
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("uuid"));
+				preStatement.setString(2, rs.getString("party"));
+				preStatement.setInt(3, rs.getInt("rank"));
+				preStatement.setBoolean(4, rs.getBoolean("spy"));
+				preStatement.setBoolean(5, rs.getBoolean("notify")); // Changed notify into mute
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void upgradePlayersFrom25(Connection connection, ResultSet rs, String query) throws SQLException {
+		// Upgrading from 2.5
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("uuid"));
+				preStatement.setString(2, rs.getString("party"));
+				preStatement.setInt(3, rs.getInt("rank"));
+				// Removed name and timestamp
+				preStatement.setBoolean(4, rs.getBoolean("spy"));
+				preStatement.setBoolean(5, rs.getBoolean("mute"));
+				preStatement.executeUpdate();
+			}
+		}
+	}
+	
+	private void samePlayersTable(Connection connection, ResultSet rs, String query) throws SQLException {
+		while (rs.next()) {
+			try (PreparedStatement preStatement = connection.prepareStatement(query)) {
+				preStatement.setString(1, rs.getString("uuid"));
+				preStatement.setString(2, rs.getString("party"));
+				preStatement.setInt(3, rs.getInt("rank"));
+				preStatement.setBoolean(4, rs.getBoolean("spy"));
+				preStatement.setBoolean(5, rs.getBoolean("mute"));
+				preStatement.executeUpdate();
 			}
 		}
 	}

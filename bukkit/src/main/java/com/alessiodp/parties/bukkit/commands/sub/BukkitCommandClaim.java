@@ -115,6 +115,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_CLAIM
 					.replace("{player}", sender.getName())
 					.replace("{value}", commandData.getArgs()[1].toLowerCase()), true);
+			break;
 		}
 	}
 	
@@ -147,6 +148,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 				break;
 			default:
 				ret = GriefPreventionHandler.PermissionType.REMOVE;
+				break;
 			}
 			return ret;
 		}

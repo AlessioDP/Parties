@@ -13,7 +13,19 @@ parties:
     check: true
     # Send a message to admins if an update is available
     warn: true
-  # Message upon login and logout of partymates
+
+  logging:
+    # Enable debug messages
+    debug: false
+    save-file:
+      # Save to file log messages
+      enable: false
+      # Format of messages
+      format: "%date% [%time%] %message%\n"
+      # Log file name
+      file: "log.txt"
+
+  # Messages upon login and logout of party-mates
   join-leave-messages: false
 
 
@@ -21,16 +33,12 @@ parties:
 # |        STORAGE  SETTINGS        |
 # \ = = = = = = = = = = = = = = = = /
 storage:
-  # What type of storage Parties should use?
-  # Available types:
-  # none = Parties data is saved into memory (A reload reset everything, disable log if used on it)
-  # File based:
-  # * txt = Output to file (ONLY LOG)
-  # * yaml = Save all data into a YAML file (ONLY DATABASE)
-  # SQL based:
-  # * mysql = Save all data into a MySQL database
-  # * sqlite = Save all data into a SQLite database
-  log-storage-type: none
+  # What type of storage the plugin should use?
+  # Database storage types:
+  # => none       | The data will be saved into memory (A reload reset everything)
+  # => yaml       | [File] Save the data into a YAML file (default)
+  # => mysql      | [Remote] Save the data into a MySQL database
+  # => sqlite     | [File]   Save the data into a SQLite database
   database-storage-type: yaml
   log-settings:
     # Log format
@@ -51,47 +59,42 @@ storage:
     log-level: 1
 
   storage-settings:
-    file-based:
-      # File based DBs: YAML
-      txt:
-        log-name: "log.txt"
-      yaml:
-        database-name: "data.yml"
-
-    sql-based:
-      # SQL based DBs: MySQL, SQLite
-      general-settings:
-        varchar-size: 255
-        upgrade:
-          save-old-table: true
-          old-table-suffix: "_backup"
-        tables:
-          parties: "parties_parties"
-          players: "parties_players"
-          log: "parties_log"
-          versions: "parties_versions"
-      mysql:
-        address: "localhost"
-        port: "3306"
-        database: "database"
-        username: "username"
-        password: "password"
-        # Size of the connection pool
-        pool-size: 10
-        # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
-        connection-lifetime: 1800000
-        # Property used to alert when the connection is not using a valid SSL certificate
-        use-ssl: false
-        # Charset used by tables
-        charset: "utf8"
-      sqlite:
-        # SQLite is a SQL database that store data into a file
-        database-name: "database.db"
-
     none:
       disband-on-leader-left: true
       # Delete empty parties after tot seconds
       delay-delete-party: 600
+
+    yaml:
+      database-file: "database.yml"
+
+    # SQL based databases:
+    general-sql-settings:
+      varchar-size: 255
+      upgrade:
+        save-old-table: true
+        old-table-suffix: "_backup"
+      tables:
+        parties: "parties_parties"
+        players: "parties_players"
+        versions: "parties_versions"
+
+    sqlite:
+      database-file: "database.db"
+
+    mysql:
+      address: "localhost"
+      port: "3306"
+      database: "database"
+      username: "username"
+      password: "password"
+      # Size of the connection pool
+      pool-size: 10
+      # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
+      connection-lifetime: 1800000
+      # Property used to alert when the connection is not using a valid SSL certificate
+      use-ssl: false
+      # Charset used by tables
+      charset: "utf8"
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -138,6 +141,8 @@ additional:
     desc: "%desc%"
     kills: "%kills%"
     motd: "%motd%"
+    # Show this placeholder only if out of a party
+    out-party: "%out_party%"
     party: "%party%"
     rank-name: "%rank_name%"
     rank-chat: "%rank_chat%"
@@ -220,4 +225,4 @@ commands:
 
 # End of configuration file
 dont-edit-this:
-  version: 5
+  version: 6

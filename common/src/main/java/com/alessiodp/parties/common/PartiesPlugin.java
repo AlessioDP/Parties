@@ -15,7 +15,7 @@ import com.alessiodp.parties.common.parties.PartyManager;
 import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.RankManager;
-import com.alessiodp.parties.common.players.SpyManager;
+import com.alessiodp.parties.common.players.spy.SpyManager;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.EconomyManager;
@@ -23,6 +23,8 @@ import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.common.utils.MessageUtils;
 import com.alessiodp.parties.common.utils.PartiesPlayerUtils;
 import lombok.Getter;
+
+import java.util.ArrayList;
 
 public abstract class PartiesPlugin extends ADPPlugin {
 	// Plugin fields
@@ -44,6 +46,8 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Getter protected EconomyManager economyManager;
 	@Getter protected MessageUtils messageUtils;
 	
+	@Getter private ArrayList<String> loginAlerts;
+	
 	public PartiesPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
 	}
@@ -57,6 +61,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	@Override
 	protected void initializeCore() {
+		loginAlerts = new ArrayList<>();
 		databaseManager = new PartiesDatabaseManager(this);
 	}
 	
@@ -93,6 +98,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Override
 	public void reloadConfiguration() {
 		getLoggerManager().logDebug(PartiesConstants.DEBUG_PLUGIN_RELOADING, true);
+		loginAlerts.clear();
 		getConfigurationManager().reload();
 		reloadLoggerManager();
 		getDatabaseManager().reload();
@@ -128,7 +134,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 				PartiesConstants.PLUGIN_SPIGOTCODE,
 				ConfigMain.PARTIES_UPDATES_CHECK,
 				ConfigMain.PARTIES_UPDATES_WARN,
-				PartiesPermission.ADMIN_UPDATES.toString(),
+				PartiesPermission.ADMIN_ALERTS.toString(),
 				Messages.PARTIES_UPDATEAVAILABLE
 		);
 		getAdpUpdater().asyncTaskCheckUpdates();

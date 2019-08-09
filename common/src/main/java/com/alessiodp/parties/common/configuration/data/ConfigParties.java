@@ -1,9 +1,9 @@
 package com.alessiodp.parties.common.configuration.data;
 
-import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.ColorImpl;
 import com.alessiodp.parties.common.players.objects.RankImpl;
@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ConfigParties extends ConfigurationFile {
+public abstract class ConfigParties extends PartiesConfigurationFile {
 	// General settings
 	public static int GENERAL_MEMBERSLIMIT;
 	public static String GENERAL_NAME_ALLOWEDCHARS;
@@ -36,9 +36,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean GENERAL_CHAT_LOGTOCONSOLE;
 	public static boolean GENERAL_CHAT_DIRECT_ENABLED;
 	public static String GENERAL_CHAT_DIRECT_PREFIX;
-	public static String GENERAL_CHAT_FORMAT_PARTY;
-	public static String GENERAL_CHAT_FORMAT_SPY;
+	public static String GENERAL_CHAT_FORMAT_CHAT;
 	public static String GENERAL_CHAT_FORMAT_BROADCAST;
+	public static String GENERAL_CHAT_FORMAT_SPY_CHAT;
+	public static String GENERAL_CHAT_FORMAT_SPY_BROADCAST;
 	
 	
 	// Ranks settings
@@ -117,9 +118,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 		GENERAL_CHAT_LOGTOCONSOLE = false;
 		GENERAL_CHAT_DIRECT_ENABLED = false;
 		GENERAL_CHAT_DIRECT_PREFIX = "@";
-		GENERAL_CHAT_FORMAT_PARTY = "&b[Party] %rank_chat% %player%&r&7: &b%message%";
-		GENERAL_CHAT_FORMAT_SPY = "&7[SPY] [Party:%party%] %player%: %message%";
+		GENERAL_CHAT_FORMAT_CHAT = "&b[Party] %rank_chat% %player%&r&7: &b%message%";
 		GENERAL_CHAT_FORMAT_BROADCAST = "&b[Party] %message%";
+		GENERAL_CHAT_FORMAT_SPY_CHAT = "&7[SPY] [%party%] %player%: %message%";
+		GENERAL_CHAT_FORMAT_SPY_BROADCAST = "&7[SPY] [%party%]: %message%";
 		
 		
 		// Ranks settings
@@ -224,9 +226,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 		GENERAL_CHAT_LOGTOCONSOLE = confAdapter.getBoolean("general.chat.log-to-console", GENERAL_CHAT_LOGTOCONSOLE);
 		GENERAL_CHAT_DIRECT_ENABLED = confAdapter.getBoolean("general.chat.direct.enable", GENERAL_CHAT_DIRECT_ENABLED);
 		GENERAL_CHAT_DIRECT_PREFIX = confAdapter.getString("general.chat.direct.prefix", GENERAL_CHAT_DIRECT_PREFIX);
-		GENERAL_CHAT_FORMAT_PARTY = confAdapter.getString("general.chat.formats.party-chat", GENERAL_CHAT_FORMAT_PARTY);
-		GENERAL_CHAT_FORMAT_SPY = confAdapter.getString("general.chat.formats.spy-alerts", GENERAL_CHAT_FORMAT_SPY);
+		GENERAL_CHAT_FORMAT_CHAT = confAdapter.getString("general.chat.formats.party-chat", GENERAL_CHAT_FORMAT_CHAT);
 		GENERAL_CHAT_FORMAT_BROADCAST = confAdapter.getString("general.chat.formats.broadcast", GENERAL_CHAT_FORMAT_BROADCAST);
+		GENERAL_CHAT_FORMAT_SPY_CHAT = confAdapter.getString("general.chat.formats.spy.party-chat", GENERAL_CHAT_FORMAT_SPY_CHAT);
+		GENERAL_CHAT_FORMAT_SPY_BROADCAST = confAdapter.getString("general.chat.formats.spy.broadcast", GENERAL_CHAT_FORMAT_SPY_BROADCAST);
 		
 		
 		// Ranks settings

@@ -5,7 +5,7 @@ repositories {
 
     maven { url = 'https://ci.frostcast.net/plugin/repository/everything/' } // BanManager repo
     maven { url = 'http://repo.mikeprimm.com/' } // Dynmap repo
-    maven { url = 'http://dev.lumine.io:8081/repository/maven-public/' } // MythicMobs repo
+    maven { url = 'http://mvn.lumine.io/repository/maven-public/' } // MythicMobs repo
     maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' } // PlaceholderAPI
     maven { url = 'http://repo.dmulloy2.net/nexus/repository/public/' } // ProtocolLib repo
     maven { url = 'http://nexus.hc.to/content/repositories/pub_releases/' } // Vault repo

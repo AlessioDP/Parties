@@ -83,9 +83,8 @@ public interface Party {
 		// Remove players
 		for (UUID uuid : getMembers()) {
 			PartyPlayer partyPlayer = Parties.getApi().getPartyPlayer(uuid);
-			if (partyPlayer != null) {
-				if (!members.contains(uuid))
-					removeMember(partyPlayer);
+			if (partyPlayer != null && !members.contains(uuid)) {
+				removeMember(partyPlayer);
 			}
 			
 		}

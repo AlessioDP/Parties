@@ -1,12 +1,18 @@
 package com.alessiodp.parties.common.utils;
 
+import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.players.objects.RankImpl;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +20,7 @@ import java.util.regex.Pattern;
 public abstract class MessageUtils {
 	private final PartiesPlugin plugin;
 	private final Pattern PLACEHOLDER_PATTERN = Pattern.compile("([%][^%]+[%])");
+	private final Pattern PLACEHOLDER_PATTERN_LIST = Pattern.compile(PartiesConstants.PLACEHOLDER_PARTY_LIST, Pattern.CASE_INSENSITIVE);
 	
 	public String convertPartyPlaceholders(String message, PartyImpl party) {
 		return convertPartyPlaceholders(message, party, "");
@@ -62,8 +69,35 @@ public abstract class MessageUtils {
 					replacement = party != null ? Integer.toString(party.getKills()) : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
 					break;
+				case PartiesConstants.PLACEHOLDER_PARTY_LIST_ONLINE:
+					StringBuilder sb = new StringBuilder();
+					replacement = emptyPlaceholder;
+					if (party != null) {
+						Set<PartyPlayer> list = party.getOnlineMembers(false);
+						if (list.size() == 0)
+							sb.append(Messages.PARTIES_LIST_EMPTY);
+						else {
+							for (PartyPlayer pp : list) {
+								if (sb.length() > 0) {
+									sb.append(Messages.PARTIES_LIST_SEPARATOR);
+								}
+								sb.append(plugin.getMessageUtils().convertAllPlaceholders(
+										Messages.PARTIES_LIST_ONLINEFORMAT,
+										party,
+										(PartyPlayerImpl) pp));
+							}
+						}
+						replacement = sb.toString();
+					}
+					ret = ret.replace(identifier, replacement);
+					
+					break;
 				case PartiesConstants.PLACEHOLDER_PARTY_MOTD:
 					replacement = party != null && !party.getMotd().isEmpty() ? party.getMotd() : emptyPlaceholder;
+					ret = ret.replace(identifier, replacement);
+					break;
+				case PartiesConstants.PLACEHOLDER_PARTY_OUT:
+					replacement = party == null ? Messages.PARTIES_OUT_PARTY : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
 					break;
 				case PartiesConstants.PLACEHOLDER_PARTY_ONLINENUMBER:
@@ -75,6 +109,57 @@ public abstract class MessageUtils {
 					ret = ret.replace(identifier, replacement);
 					break;
 				
+			}
+			
+			// List party placeholder
+			Matcher matcherMaterial = PLACEHOLDER_PATTERN_LIST.matcher(identifier);
+			if (matcherMaterial.find()) {
+				String identifierRank = matcherMaterial.group();
+				if (party == null) {
+					ret = ret.replace(identifierRank, emptyPlaceholder);
+				} else {
+					RankImpl rank = plugin.getRankManager().searchRankByHardName(matcherMaterial.group(1));
+					if (rank != null) {
+						StringBuilder list = new StringBuilder();
+						int number = 0;
+						
+						for (UUID playerUUID : party.getMembers()) {
+							PartyPlayerImpl pl = plugin.getPlayerManager().getPlayer(playerUUID);
+							
+							// Check rank level
+							if (pl.getRank() == rank.getLevel()) {
+								if (list.length() > 0) {
+									list.append(Messages.PARTIES_LIST_SEPARATOR);
+								}
+								
+								OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
+								if (offlinePlayer != null) {
+									if (offlinePlayer.isOnline() && !pl.isVanished()) {
+										list.append(
+												plugin.getMessageUtils().convertAllPlaceholders(
+														Messages.PARTIES_LIST_ONLINEFORMAT,
+														party,
+														pl)
+										);
+									} else {
+										list.append(
+												plugin.getMessageUtils().convertAllPlaceholders(
+														Messages.PARTIES_LIST_OFFLINEFORMAT,
+														party,
+														pl)
+										);
+									}
+								} else
+									list.append(Messages.PARTIES_LIST_UNKNOWN);
+								number++;
+							}
+						}
+						
+						ret = ret
+								.replace(identifierRank, list.toString().isEmpty() ? Messages.PARTIES_LIST_EMPTY : list.toString())
+								.replace("%number_" + identifierRank.substring(6, identifierRank.length() - 1) + "%", Integer.toString(number));
+					}
+				}
 			}
 		}
 		return ret;

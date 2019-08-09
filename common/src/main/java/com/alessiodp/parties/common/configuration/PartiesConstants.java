@@ -12,12 +12,12 @@ public class PartiesConstants {
 	
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 6;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 7;
 	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 5;
-	public static final int VERSION_BUKKIT_MESSAGES = 7;
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 5;
+	public static final int VERSION_BUKKIT_MESSAGES = 8;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 6;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 4;
-	public static final int VERSION_BUNGEE_MESSAGES = 5;
+	public static final int VERSION_BUNGEE_MESSAGES = 6;
 	public static final int VERSION_DATABASE_YAML = 1;
 	public static final int VERSION_DATABASE_MYSQL = 7;
 	public static final int VERSION_DATABASE_SQLITE = 5;
@@ -42,8 +42,12 @@ public class PartiesConstants {
 	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_CURRENT = "%experience_levelup_current%";
 	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
 	public static final String PLACEHOLDER_PARTY_KILLS = "%kills%";
+	public static final String PLACEHOLDER_PARTY_LIST = "%list_([^%]+)%";
+	public static final String PLACEHOLDER_PARTY_LIST_ONLINE = "%online%";
 	public static final String PLACEHOLDER_PARTY_MOTD = "%motd%";
 	public static final String PLACEHOLDER_PARTY_ONLINENUMBER = "%onlinenumber%";
+	public static final String PLACEHOLDER_PARTY_OUT = "%out_party%";
+	
 	public static final String PLACEHOLDER_PARTY_PARTY = "%party%";
 	
 	// SQL queries
@@ -158,6 +162,8 @@ public class PartiesConstants {
 	public static final String DEBUG_EXP_SENT = "Sent {exp} {type} to {player}";
 	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of '{party}': {message}";
 	public static final String DEBUG_EXP_EXPRESSIONERROR = "Something gone wrong on calculate the formula '{value}': {message}";
+	public static final String DEBUG_EXP_REMOVINGEXP = "Removing exp from normal={value1} and skillapi={value2}";
+	public static final String DEBUG_EXP_MMBYPASS = "Bypassing vanilla event due to MythicMob kill";
 	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '{name}' killed by {player}";
 	
 	public static final String DEBUG_FOLLOW_SERVER_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";

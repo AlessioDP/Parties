@@ -12,6 +12,9 @@ parties:
   # => %version%     = New version found
   # => %thisversion% = Version installed
   update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  # Special tag:
+  # => %config%      = The config file name that is outdated
+  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
   common-messages:
     invalid-command: "&cInvalid command"
     configuration-reloaded: "&aConfiguration reloaded"
@@ -21,9 +24,18 @@ parties:
     party-full: "&cThe party is full!"
   permissions:
     # Special tag:
-    # => %permission%   = Name of the missing permission
+    # => %permission%   = Missing permission
     no-permission: "&cYou do not have access to that command"
     no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Nobody"
+    player-unknown: "&6Someone"
+    missing-value: "&7Miss"
+
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -95,13 +107,6 @@ main-commands:
     - "&bMods&7: %list_moderator%"
     - "&bMembers&7: %list_member%"
     - "&bOnline players&7: %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Nobody"
-      player-unknown: "&6Someone"
-      missing-value: "&7Miss"
 
   invite:
     sent: "&bYou invited %player% in your party"
@@ -340,4 +345,4 @@ help:
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 
 dont-edit-this:
-  version: 5
+  version: 6

@@ -1,16 +1,16 @@
 package com.alessiodp.parties.common.configuration.data;
 
-import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 
 import java.util.HashMap;
 import java.util.List;
 
 
-public abstract class ConfigMain extends ConfigurationFile {
+public abstract class ConfigMain extends PartiesConfigurationFile {
 	// Parties settings
 	public static boolean		PARTIES_UPDATES_CHECK;
 	public static boolean		PARTIES_UPDATES_WARN;
@@ -64,6 +64,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY;
 	public static String		ADDITIONAL_PLACEHOLDER_KILLS;
 	public static String		ADDITIONAL_PLACEHOLDER_MOTD;
+	public static String		ADDITIONAL_PLACEHOLDER_OUTPARTY;
 	public static String		ADDITIONAL_PLACEHOLDER_PARTY;
 	public static String		ADDITIONAL_PLACEHOLDER_RANK_NAME;
 	public static String		ADDITIONAL_PLACEHOLDER_RANK_CHAT;
@@ -170,6 +171,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
 		ADDITIONAL_PLACEHOLDER_KILLS = "%kills%";
 		ADDITIONAL_PLACEHOLDER_MOTD = "%motd%";
+		ADDITIONAL_PLACEHOLDER_OUTPARTY = "%out_party%";
 		ADDITIONAL_PLACEHOLDER_PARTY = "%party%";
 		ADDITIONAL_PLACEHOLDER_RANK_NAME = "%rank_name%";
 		ADDITIONAL_PLACEHOLDER_RANK_CHAT = "%rank_chat%";
@@ -272,6 +274,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY = confAdapter.getString("additional.placeholders.experience-levelup-necessary", ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY);
 		ADDITIONAL_PLACEHOLDER_KILLS = confAdapter.getString("additional.placeholders.kills", ADDITIONAL_PLACEHOLDER_KILLS);
 		ADDITIONAL_PLACEHOLDER_MOTD = confAdapter.getString("additional.placeholders.motd", ADDITIONAL_PLACEHOLDER_MOTD);
+		ADDITIONAL_PLACEHOLDER_OUTPARTY = confAdapter.getString("additional.placeholders.out-party", ADDITIONAL_PLACEHOLDER_OUTPARTY);
 		ADDITIONAL_PLACEHOLDER_PARTY = confAdapter.getString("additional.placeholders.party", ADDITIONAL_PLACEHOLDER_PARTY);
 		ADDITIONAL_PLACEHOLDER_RANK_NAME = confAdapter.getString("additional.placeholders.rank-name", ADDITIONAL_PLACEHOLDER_RANK_NAME);
 		ADDITIONAL_PLACEHOLDER_RANK_CHAT = confAdapter.getString("additional.placeholders. rank-chat", ADDITIONAL_PLACEHOLDER_RANK_CHAT);

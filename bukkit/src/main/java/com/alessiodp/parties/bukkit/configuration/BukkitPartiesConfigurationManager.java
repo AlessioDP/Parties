@@ -15,9 +15,9 @@ public class BukkitPartiesConfigurationManager extends PartiesConfigurationManag
 	public BukkitPartiesConfigurationManager(PartiesPlugin plugin) {
 		super(plugin);
 		
+		getConfigs().add(new BukkitMessages(plugin));
 		getConfigs().add(new BukkitConfigMain(plugin));
 		getConfigs().add(new BukkitConfigParties(plugin));
-		getConfigs().add(new BukkitMessages(plugin));
 	}
 	
 	@Override
