@@ -30,20 +30,21 @@ public abstract class ChatListener {
 	protected boolean onPlayerChat(User sender, String message) {
 		boolean eventCancelled = false;
 		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		String parsedMessage = message;
 		
 		boolean partyChat = false;
 		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(partyPlayer.getPartyName());
 		if (party != null) {
 			if (partyPlayer.isChatParty()) {
 				partyChat = true;
-			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && message.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
+			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && parsedMessage.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
 				partyChat = true;
-				message = message.substring(1);
+				parsedMessage = parsedMessage.substring(1);
 			}
 		}
 		
 		if (partyChat) {
-			String finalMessage = message;
+			final String finalMessage = parsedMessage;
 			// Make it async
 			plugin.getScheduler().runAsync(() -> {
 				if (plugin.getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_SENDMESSAGE)) {
@@ -133,20 +134,19 @@ public abstract class ChatListener {
 					
 					if (!cancel) {
 						PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
-						if (!pp.getPartyName().isEmpty()) {
-							if (plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
-								PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
-								
-								for (PartyPlayer pl : party.getOnlineMembers(true)) {
-									if (!pl.getPlayerUUID().equals(sender.getUUID())) {
-										// Make it sync
-										plugin.getScheduler().getSyncExecutor().execute(() -> {
-											plugin.getPlayer(pl.getPlayerUUID()).chat(message + "\t");
-											plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_AUTOCMD_PERFORM
-													.replace("{player}", pl.getName())
-													.replace("{command}", message), true);
-										});
-									}
+						if (!pp.getPartyName().isEmpty()
+								&& plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
+							PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
+							
+							for (PartyPlayer pl : party.getOnlineMembers(true)) {
+								if (!pl.getPlayerUUID().equals(sender.getUUID())) {
+									// Make it sync
+									plugin.getScheduler().getSyncExecutor().execute(() -> {
+										plugin.getPlayer(pl.getPlayerUUID()).chat(message + "\t");
+										plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_AUTOCMD_PERFORM
+												.replace("{player}", pl.getName())
+												.replace("{command}", message), true);
+									});
 								}
 							}
 						}

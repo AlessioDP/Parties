@@ -52,14 +52,12 @@ public class ColorManager {
 				if (pc.getDynamicMembers() > -1) {
 					if (party.getMembers().size() >= pc.getDynamicMembers())
 						found = true;
-				} else if (pc.getDynamicKills() > -1) {
-					if (party.getKills() >= pc.getDynamicKills())
-						found = true;
+				} else if (pc.getDynamicKills() > -1 && party.getKills() >= pc.getDynamicKills()) {
+					found = true;
 				}
 				
-				if (found) {
-					if (selected == null || pc.getDynamicPriority() > selected.getDynamicPriority())
-						selected = pc;
+				if (found && (selected == null || pc.getDynamicPriority() > selected.getDynamicPriority())) {
+					selected = pc;
 				}
 			}
 			

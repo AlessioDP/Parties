@@ -36,34 +36,34 @@ public class BungeeFollowListener implements Listener {
 			if (allowedServer(event.getPlayer().getServer().getInfo().getName())) {
 				PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 				PartyImpl party = plugin.getPartyManager().getParty(player.getPartyName());
-				if (party != null && party.isFollowEnabled()) {
-					if (party.getLeader().equals(player.getPlayerUUID())) {
-						String playerServer = event.getPlayer().getServer().getInfo().getName();
-						ServerInfo serverInfo = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getServerInfo(playerServer);
-						
-						// Calling API event
-						BungeePartiesPartyFollowEvent partyFollowEvent = ((BungeeEventManager) plugin.getEventManager()).preparePartyFollowEvent(party, playerServer);
-						plugin.getEventManager().callEvent(partyFollowEvent);
-						if (!partyFollowEvent.isCancelled()) {
-							// Let other players follow him
-							for (UUID uuid : party.getMembers()) {
-								BungeeUser member = (BungeeUser) plugin.getPlayer(uuid);
-								if (member != null
-										&& !member.getUUID().equals(player.getPlayerUUID())
-										&& !member.getServerName().equals(serverInfo.getName())) {
-									
-									member.sendMessage(BungeeMessages.OTHER_FOLLOW_SERVER
-											.replace("%server%", serverInfo.getName()), true);
-									member.connectTo(serverInfo);
-									
-									if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
-										// Schedule it later
-										plugin.getScheduler().scheduleAsyncLater(() -> {
-											for (String command : BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
-												((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(member.getUUID()).chat(command);
-											}
-										}, BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
-									}
+				if (party != null
+						&& party.isFollowEnabled()
+						&& party.getLeader().equals(player.getPlayerUUID())) {
+					String playerServer = event.getPlayer().getServer().getInfo().getName();
+					ServerInfo serverInfo = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getServerInfo(playerServer);
+					
+					// Calling API event
+					BungeePartiesPartyFollowEvent partyFollowEvent = ((BungeeEventManager) plugin.getEventManager()).preparePartyFollowEvent(party, playerServer);
+					plugin.getEventManager().callEvent(partyFollowEvent);
+					if (!partyFollowEvent.isCancelled()) {
+						// Let other players follow him
+						for (UUID uuid : party.getMembers()) {
+							BungeeUser member = (BungeeUser) plugin.getPlayer(uuid);
+							if (member != null
+									&& !member.getUUID().equals(player.getPlayerUUID())
+									&& !member.getServerName().equals(serverInfo.getName())) {
+								
+								member.sendMessage(BungeeMessages.OTHER_FOLLOW_SERVER
+										.replace("%server%", serverInfo.getName()), true);
+								member.connectTo(serverInfo);
+								
+								if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
+									// Schedule it later
+									plugin.getScheduler().scheduleAsyncLater(() -> {
+										for (String command : BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
+											((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(member.getUUID()).chat(command);
+										}
+									}, BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
 								}
 							}
 						}

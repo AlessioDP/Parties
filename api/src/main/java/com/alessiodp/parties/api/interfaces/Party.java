@@ -73,9 +73,8 @@ public interface Party {
 		// Add players
 		for (UUID uuid : members) {
 			PartyPlayer partyPlayer = Parties.getApi().getPartyPlayer(uuid);
-			if (partyPlayer != null) {
-				if (!getMembers().contains(uuid))
-					addMember(partyPlayer);
+			if (partyPlayer != null && !getMembers().contains(uuid)) {
+				addMember(partyPlayer);
 			}
 			
 		}

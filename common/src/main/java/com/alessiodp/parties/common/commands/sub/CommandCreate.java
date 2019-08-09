@@ -92,9 +92,9 @@ public class CommandCreate extends PartiesSubCommand {
 		boolean isFixed = false;
 		if (ConfigParties.FIXED_ENABLE
 				&& commandData.getArgs().length > 2
-				&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_FIXED)) {
-			if (commandData.havePermission(PartiesPermission.ADMIN_CREATE_FIXED))
-				isFixed = true;
+				&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_FIXED)
+				&& commandData.havePermission(PartiesPermission.ADMIN_CREATE_FIXED)) {
+			isFixed = true;
 		}
 		
 		if (partyPlayer == null && !isFixed) {

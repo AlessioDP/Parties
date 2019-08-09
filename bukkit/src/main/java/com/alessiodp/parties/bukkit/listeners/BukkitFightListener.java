@@ -134,6 +134,10 @@ public class BukkitFightListener implements Listener {
 					case "weakness":
 					case "unluck":
 						cancel = true;
+						break;
+					default:
+						// Do not cancel
+						break;
 					}
 					if (cancel)
 						break;

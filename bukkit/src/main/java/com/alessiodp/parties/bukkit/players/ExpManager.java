@@ -76,6 +76,9 @@ public class ExpManager {
 						case SKILLAPI:
 							totalSkillapi += drop.getNormal();
 							break;
+						default:
+							// Convert option not set
+							return false;
 					}
 					ret = true;
 				}
@@ -90,6 +93,9 @@ public class ExpManager {
 						case SKILLAPI:
 							totalSkillapi += drop.getSkillApi();
 							break;
+						default:
+							// Convert option not set
+							return false;
 					}
 					ret = true;
 				}
@@ -157,6 +163,9 @@ public class ExpManager {
 								case SKILLAPI:
 									SkillAPIHandler.giveExp(player.getPlayerUUID(), singlePlayerExperience);
 									message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+									break;
+								default:
+									// Nothing to do
 									break;
 							}
 							

@@ -67,11 +67,10 @@ public class CommandJoin extends PartiesSubCommand {
 		}
 		
 		if (commandData.getArgs().length == 2) {
-			if (!commandData.havePermission(PartiesPermission.ADMIN_JOIN_BYPASS)) {
-				if (!party.getPassword().isEmpty()) {
-					sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGPASSWORD);
-					return;
-				}
+			if (!commandData.havePermission(PartiesPermission.ADMIN_JOIN_BYPASS)
+					&& !party.getPassword().isEmpty()) {
+				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGPASSWORD);
+				return;
 			}
 		} else {
 			if (!HashUtils.hashText(commandData.getArgs()[2]).equals(party.getPassword())) {

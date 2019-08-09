@@ -189,6 +189,9 @@ public abstract class MessageUtils {
 					replacement = player != null && !player.getPartyName().isEmpty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getChat() : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
 					break;
+				default:
+					// Nothing to do
+					break;
 			}
 		}
 		return ret;

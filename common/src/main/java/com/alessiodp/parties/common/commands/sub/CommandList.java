@@ -65,12 +65,10 @@ public class CommandList extends PartiesSubCommand {
 		// Get all parties
 		List<PartyImpl> parties = new ArrayList<>();
 		for (PartyImpl party : ((PartiesPlugin) plugin).getDatabaseManager().getAllParties()) {
-			if (party != null) {
-				if (!ConfigParties.LIST_HIDDENPARTIES.contains(party.getName())) {
-					party.refreshOnlineMembers();
-					if (party.getOnlineMembers(false).size() >= ConfigParties.LIST_FILTERMIN)
-						parties.add(party);
-				}
+			if (party != null && !ConfigParties.LIST_HIDDENPARTIES.contains(party.getName())) {
+				party.refreshOnlineMembers();
+				if (party.getOnlineMembers(false).size() >= ConfigParties.LIST_FILTERMIN)
+					parties.add(party);
 			}
 		}
 		
@@ -157,6 +155,7 @@ public class CommandList extends PartiesSubCommand {
 				break;
 			default:
 				ret = first.getName().trim().compareTo(second.getName().trim()) < 0;
+				break;
 		}
 		return ret;
 	}

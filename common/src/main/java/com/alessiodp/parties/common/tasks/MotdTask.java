@@ -22,29 +22,25 @@ public class MotdTask implements Runnable {
 	public void run() {
 		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
 		User sender = plugin.getPlayer(playerUUID);
-		if (sender != null) {
-			
-			if (createID.equals(partyPlayer.getCreateID()) && !partyPlayer.getPartyName().isEmpty()) {
+		if (sender != null
+			&& createID.equals(partyPlayer.getCreateID())
+			&& !partyPlayer.getPartyName().isEmpty()) {
 				PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
 				
-				if (party != null) {
-					if (!party.getMotd().isEmpty()) {
-						// Formatting motd
-						StringBuilder motd = new StringBuilder();
-						for (String str : party.getMotd().split(ConfigParties.MOTD_NEWLINECODE)) {
-							motd.append(str)
-									.append("\n");
-						}
-						
-						for (String line : Messages.ADDCMD_MOTD_CONTENT) {
-							line = line.replace(PartiesConstants.PLACEHOLDER_PARTY_MOTD, "%temporary_motd%"); // Used to bypass tags from convertAllPlaceholders
-							line = plugin.getMessageUtils().convertAllPlaceholders(line, party, partyPlayer);
-							line = plugin.getColorUtils().convertColors(line);
-							line = line.replace("%temporary_motd%", motd.toString());
-							
-							partyPlayer.sendMessage(line);
-						}
-					}
+			if (party != null && !party.getMotd().isEmpty()) {
+				// Formatting motd
+				StringBuilder motd = new StringBuilder();
+				for (String str : party.getMotd().split(ConfigParties.MOTD_NEWLINECODE)) {
+					motd.append(str).append("\n");
+				}
+				
+				for (String line : Messages.ADDCMD_MOTD_CONTENT) {
+					line = line.replace(PartiesConstants.PLACEHOLDER_PARTY_MOTD, "%temporary_motd%"); // Used to bypass tags from convertAllPlaceholders
+					line = plugin.getMessageUtils().convertAllPlaceholders(line, party, partyPlayer);
+					line = plugin.getColorUtils().convertColors(line);
+					line = line.replace("%temporary_motd%", motd.toString());
+					
+					partyPlayer.sendMessage(line);
 				}
 			}
 		}

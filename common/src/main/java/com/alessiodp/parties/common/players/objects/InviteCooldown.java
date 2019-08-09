@@ -60,6 +60,10 @@ public class InviteCooldown {
 				break;
 			case INDIVIDUAL:
 				ret = ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL;
+				break;
+			default:
+				// Nothing to do
+				break;
 			}
 			return ret;
 		}

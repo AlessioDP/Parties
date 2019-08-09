@@ -17,11 +17,11 @@ public class BungeeChatListener extends ChatListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerChat(ChatEvent event) {
-		if (!event.isCancelled() && event.getSender() instanceof ProxiedPlayer) {
-			if (!event.getMessage().startsWith("/")) {
-				boolean isCancelled = super.onPlayerChat(new BungeeUser(plugin, (ProxiedPlayer) event.getSender()), event.getMessage());
-				event.setCancelled(isCancelled);
-			}
+		if (!event.isCancelled()
+				&& event.getSender() instanceof ProxiedPlayer
+				&& !event.getMessage().startsWith("/")) {
+			boolean isCancelled = super.onPlayerChat(new BungeeUser(plugin, (ProxiedPlayer) event.getSender()), event.getMessage());
+			event.setCancelled(isCancelled);
 		}
 	}
 }

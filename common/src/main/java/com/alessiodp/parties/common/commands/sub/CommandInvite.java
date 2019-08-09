@@ -118,21 +118,24 @@ public class CommandInvite extends PartiesSubCommand {
 				for (InviteCooldown ic : list) {
 					long diff = ic.getDiffTime();
 					
-					if (ic.getType() == InviteCooldown.CooldownType.GLOBAL
-							|| ic.getInvited().equals(invitedPlayer.getUUID())) {
-						if (diff < ic.getType().getCooldown()) {
-							String msg = "";
-							switch (ic.getType()) {
-							case GLOBAL:
-								msg = Messages.MAINCMD_INVITE_COOLDOWN_GLOBAL;
-								break;
-							case INDIVIDUAL:
-								msg = Messages.MAINCMD_INVITE_COOLDOWN_INDIVIDUAL;
-							}
-							
-							sendMessage(sender, partyPlayer, msg.replace("%seconds%", String.valueOf(ic.getType().getCooldown() - diff)));
-							return;
+					if ((ic.getType() == InviteCooldown.CooldownType.GLOBAL
+							|| ic.getInvited().equals(invitedPlayer.getUUID()))
+								&& diff < ic.getType().getCooldown()) {
+						String msg = "";
+						switch (ic.getType()) {
+						case GLOBAL:
+							msg = Messages.MAINCMD_INVITE_COOLDOWN_GLOBAL;
+							break;
+						case INDIVIDUAL:
+							msg = Messages.MAINCMD_INVITE_COOLDOWN_INDIVIDUAL;
+							break;
+						default:
+							// Nothing to do
+							break;
 						}
+						
+						sendMessage(sender, partyPlayer, msg.replace("%seconds%", String.valueOf(ic.getType().getCooldown() - diff)));
+						return;
 					}
 				}
 			}

@@ -108,11 +108,10 @@ public class BukkitPartyImpl extends PartyImpl {
 					.replace(PartiesConstants.PLACEHOLDER_PLAYER_VICTIM, victim.getName());
 			
 			for (PartyPlayer onlineP : getOnlineMembers(true)) {
-				if (!onlineP.getPlayerUUID().equals(attacker.getPlayerUUID())) {
-					if (!plugin.getRankManager().checkPlayerRank((PartyPlayerImpl) onlineP, PartiesPermission.PRIVATE_WARNONDAMAGE)) {
-						User user = plugin.getPlayer(onlineP.getPlayerUUID());
-						user.sendMessage(plugin.getMessageUtils().convertAllPlaceholders(message, this, (PartyPlayerImpl) onlineP), true);
-					}
+				if (!onlineP.getPlayerUUID().equals(attacker.getPlayerUUID())
+						&& !plugin.getRankManager().checkPlayerRank((PartyPlayerImpl) onlineP, PartiesPermission.PRIVATE_WARNONDAMAGE)) {
+					User user = plugin.getPlayer(onlineP.getPlayerUUID());
+					user.sendMessage(plugin.getMessageUtils().convertAllPlaceholders(message, this, (PartyPlayerImpl) onlineP), true);
 				}
 			}
 		}

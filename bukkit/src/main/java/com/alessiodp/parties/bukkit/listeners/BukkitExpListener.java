@@ -39,19 +39,17 @@ public class BukkitExpListener implements Listener {
 					
 					ExpDrop drop = new ExpDrop((int) vanillaExp, (int) skillapiExp, killer, killedEntity);
 					boolean result = plugin.getExpManager().distributeExp(drop);
-					if (result) {
-						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
-							// Remove exp from vanilla event if hooked
-							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
-								event.setDroppedExp(0);
-							// Remove exp drop from SkillAPI
-							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)
-								SkillAPIHandler.fakeEntity(killedEntity);
-							
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_REMOVINGEXP
-									.replace("{value1}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL))
-									.replace("{value2}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)), true);
-						}
+					if (result && BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
+						// Remove exp from vanilla event if hooked
+						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
+							event.setDroppedExp(0);
+						// Remove exp drop from SkillAPI
+						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)
+							SkillAPIHandler.fakeEntity(killedEntity);
+						
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_REMOVINGEXP
+								.replace("{value1}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL))
+								.replace("{value2}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)), true);
 					}
 				}
 			}
