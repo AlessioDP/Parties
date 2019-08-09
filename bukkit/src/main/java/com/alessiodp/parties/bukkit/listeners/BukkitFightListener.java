@@ -84,31 +84,32 @@ public class BukkitFightListener implements Listener {
 						PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
 						BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
 						
-						if (party != null && ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
-							if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
-								// Calling API event
-								BukkitPartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
-								plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
+						if (party != null
+								&& ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())
+								&& party.isFriendlyFireProtected()
+								&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
+							// Calling API event
+							BukkitPartiesFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
+							plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
+							
+							if (!partiesFriendlyFireEvent.isCancelled()) {
+								// Friendly fire confirmed
+								User userAttacker = plugin.getPlayer(attacker.getUniqueId());
+								userAttacker.sendMessage(
+										plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
+										, true);
+								party.warnFriendlyFire(ppVictim, ppAttacker);
 								
-								if (!partiesFriendlyFireEvent.isCancelled()) {
-									// Friendly fire confirmed
-									User userAttacker = plugin.getPlayer(attacker.getUniqueId());
-									userAttacker.sendMessage(
-											plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
-											, true);
-									party.warnFriendlyFire(ppVictim, ppAttacker);
-									
-									event.setCancelled(true);
-									plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
-											.replace("{type}", type.name())
-											.replace("{player}", attacker.getName())
-											.replace("{victim}", victim.getName()), true);
-								} else
-									plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
-											.replace("{type}", type.name())
-											.replace("{player}", attacker.getName())
-											.replace("{victim}", victim.getName()), true);
-							}
+								event.setCancelled(true);
+								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
+										.replace("{type}", type.name())
+										.replace("{player}", attacker.getName())
+										.replace("{victim}", victim.getName()), true);
+							} else
+								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
+										.replace("{type}", type.name())
+										.replace("{player}", attacker.getName())
+										.replace("{victim}", victim.getName()), true);
 						}
 					}
 				}

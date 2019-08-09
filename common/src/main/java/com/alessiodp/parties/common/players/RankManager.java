@@ -92,10 +92,10 @@ public class RankManager {
 		boolean ret = true;
 		RankImpl r = searchRankByLevel(pp.getRank());
 		
-		if (r != null && !plugin.getPlayer(pp.getPlayerUUID()).hasPermission(PartiesPermission.ADMIN_RANK_BYPASS.toString())) {
-			if (!r.havePermission(perm.toString())) {
+		if (r != null
+				&& !plugin.getPlayer(pp.getPlayerUUID()).hasPermission(PartiesPermission.ADMIN_RANK_BYPASS.toString())
+				&& !r.havePermission(perm.toString())) {
 				ret = false;
-			}
 		}
 		return ret;
 	}

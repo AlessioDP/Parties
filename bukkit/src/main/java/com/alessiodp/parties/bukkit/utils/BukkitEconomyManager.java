@@ -139,6 +139,7 @@ public class BukkitEconomyManager extends EconomyManager {
 				break;
 			case TELEPORT:
 				ret = BukkitMessages.ADDCMD_VAULT_NOMONEY_TELEPORT;
+				break;
 			default:
 				// Nothing to do
 				break;
