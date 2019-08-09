@@ -1,6 +1,7 @@
 ---
 parties:
   update-available: "&9Dostepna jest nowa wersja pluginu Parties: %version% (Aktualna: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
   common-messages:
     invalid-command: "&cNiepoprawna komenda"
     configuration-reloaded: "&aKonfiguracja przeladowana"
@@ -11,6 +12,14 @@ parties:
   permissions:
     no-permission: "&cNie masz uprawnien do tej komendy"
     no-permission-in-party: "&cMusisz byc %rank_name% by wykonac ta komende"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Nikt"
+    player-unknown: "&6Ktos"
+    missing-value: "&7Zgubiony"
 main-commands:
   accept:
     broadcast: "&b&l%player% dolaczyl do grupy"
@@ -65,13 +74,6 @@ main-commands:
       - "&bModeratorzy&7: %list_moderator%"
       - "&bCzlonkowie&7: %list_member%"
       - "&bGracze online&7: %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Nikt"
-      player-unknown: "&6Ktos"
-      missing-value: "&7Zgubiony"
   invite:
     sent: "&bZaprosiles gracza %player% do twojej grupy"
     player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
@@ -247,4 +249,4 @@ help:
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Przelacz powiadomienia","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Zmien haslo grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
 dont-edit-this:
-  version: 5
+  version: 6
