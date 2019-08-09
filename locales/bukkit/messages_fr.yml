@@ -1,6 +1,7 @@
 ---
 parties:
   update-available: "&9Nouvelle version de Parties trouvée : %version% (Actuelle : %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
   common-messages:
     invalid-command: "&cCommande invalide"
     configuration-reloaded: "&aConfiguration rechargée"
@@ -11,6 +12,14 @@ parties:
   permissions:
     no-permission: "&cVous n'avez pas accès à cette commande"
     no-permission-in-party: "&cVous devez être %rank_name% pour exécuter cette commande"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Personne"
+    player-unknown: "&6Quelqu'un"
+    missing-value: "&7Manquant"
 main-commands:
   accept:
     broadcast: "&b&l%player% a rejoint le groupe"
@@ -65,13 +74,6 @@ main-commands:
       - "&bModérateurs&7 : %list_moderator%"
       - "&bMembres&7 : %list_member%"
       - "&bJoueurs en ligne&7 : %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Personne"
-      player-unknown: "&6Quelqu'un"
-      missing-value: "&7Manquant"
   invite:
     sent: "&bVous avez invité %player% dans votre groupe"
     player-invited: "[{\"text\":\"%player% vous a invité dans le groupe %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Voulez-vous \",\"color\":\"aqua\"},{\"text\":\"accepter\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accepter l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\" ou \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"refuser\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\" ?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Vous pouvez utiliser \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" pour choisir.\",\"color\":\"aqua\"}]"
@@ -302,4 +304,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Définir/supprimer le home du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Téléporter votre groupe vers vous","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
 dont-edit-this:
-  version: 7
+  version: 8
