@@ -104,7 +104,7 @@ main-commands:
         - "&cHemos encontrado algunos jugadores con ese nombre:"
         - "%list_players%"
         - "&cUsa '&7/party kick <jugador> <numero>&c' para expulsar al jugador correcto"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: último acceso %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Expulsar al jugador","color":"gold"}}}'
     wrong-command: "&cVariables incorrectas: Escribe &7/party kick <nombre>"
   leave:
     left: "&b&lHas salido del equipo %party%"
@@ -142,8 +142,8 @@ main-commands:
     disabled: "&7Ya no eres un espía"
     wrong-command: "&cVariables incorrectas: Escribe &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Desarrollado por &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Desarrollado por &6AlessioDP\n&aNueva versión encontrada: &2%newversion%"
 additional-commands:
   claim:
     claimed: "&aConcedido permiso para el equipo"
