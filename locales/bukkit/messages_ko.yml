@@ -1,6 +1,7 @@
 ---
 parties:
   update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
   common-messages:
     invalid-command: "&cInvalid command"
     configuration-reloaded: "&aConfiguration reloaded"
@@ -11,6 +12,14 @@ parties:
   permissions:
     no-permission: "&cYou do not have access to that command"
     no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Nobody"
+    player-unknown: "&6Someone"
+    missing-value: "&7Miss"
 main-commands:
   accept:
     broadcast: "&b&l%player% joined the party"
@@ -65,13 +74,6 @@ main-commands:
       - "&bMods&7: %list_moderator%"
       - "&bMembers&7: %list_member%"
       - "&bOnline players&7: %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Nobody"
-      player-unknown: "&6Someone"
-      missing-value: "&7Miss"
   invite:
     sent: "&bYou invited %player% in your party"
     player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
@@ -302,4 +304,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set/remove party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teleport your party to you","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 dont-edit-this:
-  version: 7
+  version: 8
