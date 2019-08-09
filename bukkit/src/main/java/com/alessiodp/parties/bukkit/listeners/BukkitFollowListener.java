@@ -75,6 +75,9 @@ public class BukkitFollowListener implements Listener {
 												case 2:
 													bukkitPl.teleport(bukkitPlayer);
 													break;
+												default:
+													// Nothing to do
+													break;
 											}
 										});
 									}

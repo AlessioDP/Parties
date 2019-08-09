@@ -204,6 +204,9 @@ public class ExpManager {
 				case CUSTOM:
 					ret = calculateLevelCustom(experience);
 					break;
+				default:
+					// Nothing to do
+					break;
 			}
 		}
 		return ret;

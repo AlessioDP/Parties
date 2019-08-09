@@ -193,6 +193,9 @@ public class CommandList extends PartiesSubCommand {
 				case "experience":
 					ret = EXPERIENCE;
 					break;
+				default:
+					// Nothing to do
+					break;
 			}
 			return ret;
 		}

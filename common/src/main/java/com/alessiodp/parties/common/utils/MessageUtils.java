@@ -108,6 +108,9 @@ public abstract class MessageUtils {
 					replacement = party != null ? party.getName() : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
 					break;
+				default:
+					// Nothing to do
+					break;
 				
 			}
 			

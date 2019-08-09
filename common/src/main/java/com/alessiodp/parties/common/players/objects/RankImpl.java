@@ -33,7 +33,7 @@ public class RankImpl implements Rank {
 	public boolean havePermission(String p) {
 		boolean ret = false;
 		for (String perm : permissions) {
-			if (perm.equals("*")) {
+			if ("*".equals(perm)) {
 				ret = true;
 				break;
 			}

@@ -105,19 +105,19 @@ public class RankManager {
 		RankImpl r = searchRankByLevel(partyPlayer.getRank());
 		User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
 		
-		if (r != null && !user.hasPermission(PartiesPermission.ADMIN_RANK_BYPASS.toString())) {
-			if (!r.havePermission(perm.toString())) {
-				RankImpl rr = plugin.getRankManager().searchUpRank(partyPlayer.getRank(), perm.toString());
-				if (rr != null) {
-					partyPlayer.sendMessage(Messages.PARTIES_PERM_NORANK
-							.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_NAME, rr.getName())
-							.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_CHAT, rr.getChat()));
-				} else {
-					partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
-							.replace("%permission%", perm.toString()));
-				}
-				ret = false;
+		if (r != null
+				&& !user.hasPermission(PartiesPermission.ADMIN_RANK_BYPASS.toString())
+				&& !r.havePermission(perm.toString())) {
+			RankImpl rr = plugin.getRankManager().searchUpRank(partyPlayer.getRank(), perm.toString());
+			if (rr != null) {
+				partyPlayer.sendMessage(Messages.PARTIES_PERM_NORANK
+						.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_NAME, rr.getName())
+						.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_CHAT, rr.getChat()));
+			} else {
+				partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
+						.replace("%permission%", perm.toString()));
 			}
+			ret = false;
 		}
 		return ret;
 	}

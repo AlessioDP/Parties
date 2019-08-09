@@ -72,6 +72,9 @@ public class BukkitFightListener implements Listener {
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
+				default:
+					// Nothing to do
+					break;
 				}
 				if (attacker != null) {
 					// Found right attacker
@@ -196,31 +199,32 @@ public class BukkitFightListener implements Listener {
 				PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
 				BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
 				
-				if (party != null && ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
-					if (party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
-						// Calling API event
-						BukkitPartiesCombustFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).prepareCombustFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
-						plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
+				if (party != null
+						&& ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())
+						&& party.isFriendlyFireProtected()
+						&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
+					// Calling API event
+					BukkitPartiesCombustFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).prepareCombustFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
+					plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
+					
+					if (!partiesFriendlyFireEvent.isCancelled()) {
+						// Friendly fire confirmed
+						User userAttacker = plugin.getPlayer(attacker.getUniqueId());
+						userAttacker.sendMessage(
+								plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
+								, true);
+						party.warnFriendlyFire(ppVictim, ppAttacker);
 						
-						if (!partiesFriendlyFireEvent.isCancelled()) {
-							// Friendly fire confirmed
-							User userAttacker = plugin.getPlayer(attacker.getUniqueId());
-							userAttacker.sendMessage(
-									plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
-									, true);
-							party.warnFriendlyFire(ppVictim, ppAttacker);
-							
-							event.setCancelled(true);
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
-									.replace("{type}", "entity combust")
-									.replace("{player}", attacker.getName())
-									.replace("{victim}", victim.getName()), true);
-						} else
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
-									.replace("{type}", "entity combust")
-									.replace("{player}", attacker.getName())
-									.replace("{victim}", victim.getName()), true);
-					}
+						event.setCancelled(true);
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
+								.replace("{type}", "entity combust")
+								.replace("{player}", attacker.getName())
+								.replace("{victim}", victim.getName()), true);
+					} else
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
+								.replace("{type}", "entity combust")
+								.replace("{player}", attacker.getName())
+								.replace("{victim}", victim.getName()), true);
 				}
 			}
 			
@@ -229,32 +233,31 @@ public class BukkitFightListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onEntityDieKill(EntityDeathEvent event) {
-		if (BukkitConfigParties.KILLS_ENABLE) {
-			if (event.getEntity().getKiller() != null) {
-				Player killer = event.getEntity().getKiller();
-				PartyPlayerImpl ppKiller = plugin.getPlayerManager().getPlayer(killer.getUniqueId());
+		if (BukkitConfigParties.KILLS_ENABLE
+				&& event.getEntity().getKiller() != null) {
+			Player killer = event.getEntity().getKiller();
+			PartyPlayerImpl ppKiller = plugin.getPlayerManager().getPlayer(killer.getUniqueId());
+			
+			if (!ppKiller.getPartyName().isEmpty()) {
+				PartyImpl party = plugin.getPartyManager().getParty(ppKiller.getPartyName());
+				boolean gotKill = false;
 				
-				if (!ppKiller.getPartyName().isEmpty()) {
-					PartyImpl party = plugin.getPartyManager().getParty(ppKiller.getPartyName());
-					boolean gotKill = false;
-					
-					if (BukkitConfigParties.KILLS_MOB_HOSTILE
-							&& event.getEntity() instanceof Monster)
-						gotKill = true;
-					else if (BukkitConfigParties.KILLS_MOB_NEUTRAL
-							&& event.getEntity() instanceof Animals)
-						gotKill = true;
-					else if (BukkitConfigParties.KILLS_MOB_PLAYERS
-							&& event.getEntity() instanceof Player)
-						gotKill = true;
-					
-					if (gotKill) {
-						party.setKills(party.getKills() + 1);
-						party.updateParty();
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_KILL_ADD
-								.replace("{party}", party.getName())
-								.replace("{player}", killer.getName()), true);
-					}
+				if (BukkitConfigParties.KILLS_MOB_HOSTILE
+						&& event.getEntity() instanceof Monster)
+					gotKill = true;
+				else if (BukkitConfigParties.KILLS_MOB_NEUTRAL
+						&& event.getEntity() instanceof Animals)
+					gotKill = true;
+				else if (BukkitConfigParties.KILLS_MOB_PLAYERS
+						&& event.getEntity() instanceof Player)
+					gotKill = true;
+				
+				if (gotKill) {
+					party.setKills(party.getKills() + 1);
+					party.updateParty();
+					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_KILL_ADD
+							.replace("{party}", party.getName())
+							.replace("{player}", killer.getName()), true);
 				}
 			}
 		}

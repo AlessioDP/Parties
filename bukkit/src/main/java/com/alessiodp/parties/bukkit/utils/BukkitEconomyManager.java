@@ -103,6 +103,9 @@ public class BukkitEconomyManager extends EconomyManager {
 				break;
 			case TELEPORT:
 				ret = BukkitConfigMain.ADDONS_VAULT_PRICE_TELEPORT;
+			default:
+				// Nothing to do
+				break;
 		}
 		return ret;
 	}
@@ -136,6 +139,9 @@ public class BukkitEconomyManager extends EconomyManager {
 				break;
 			case TELEPORT:
 				ret = BukkitMessages.ADDCMD_VAULT_NOMONEY_TELEPORT;
+			default:
+				// Nothing to do
+				break;
 		}
 		ret = ret.replace("%price%", Double.toString(price));
 		
