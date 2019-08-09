@@ -1,38 +1,39 @@
 package com.alessiodp.parties.common.players;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
 public abstract class PlayerManager {
-	protected PartiesPlugin plugin;
+	protected final PartiesPlugin plugin;
 	
 	@Getter private HashMap<UUID, PartyPlayerImpl> listPartyPlayers;
 	@Getter private HashSet<UUID> listPartyPlayersToDelete;
 	
 	
-	protected PlayerManager(PartiesPlugin instance) {
-		LoggerManager.log(LogLevel.DEBUG, Constants.CLASS_INIT.replace("{class}", getClass().getSimpleName()), true);
+	protected PlayerManager(@NonNull PartiesPlugin instance) {
 		plugin = instance;
-		// Initialize arrays, otherwise on reload there will be a NullPointException on getPlayer
 		listPartyPlayers = new HashMap<>();
 		listPartyPlayersToDelete = new HashSet<>();
 	}
 	
-	public abstract PartyPlayerImpl initializePlayer(UUID playerUUID);
-	
 	public void reload() {
-		listPartyPlayers = new HashMap<>();
-		listPartyPlayersToDelete = new HashSet<>();
+		listPartyPlayers.clear();
+		listPartyPlayersToDelete.clear();
+		
+		plugin.getLoginAlerts().add(Messages.PARTIES_UPDATEAVAILABLE
+						.replace("%version%", plugin.getAdpUpdater().getFoundVersion())
+						.replace("%thisversion%", plugin.getVersion()));
 		
 		plugin.getSpyManager().reload();
 		
@@ -41,10 +42,13 @@ public abstract class PlayerManager {
 			
 			PartyImpl party = plugin.getPartyManager().loadParty(pp.getPartyName());
 			if (party != null)
-				party.getOnlinePlayers().add(pp);
+				party.addOnlineMember(pp);
 		}
+		
+		sendLoginAlerts();
 	}
 	
+	public abstract PartyPlayerImpl initializePlayer(UUID playerUUID);
 	
 	public PartyPlayerImpl loadPlayer(UUID uuid) {
 		PartyPlayerImpl ret = getPlayer(uuid);
@@ -57,11 +61,13 @@ public abstract class PlayerManager {
 	}
 	
 	public boolean reloadPlayer(UUID uuid) {
+		// Reload the player from database
+		// Used by packet PLAYER_UPDATED
 		if (getListPartyPlayers().containsKey(uuid)) {
 			getListPartyPlayers().remove(uuid);
 			loadPlayer(uuid);
 			
-			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_RELOADED, true);
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_RELOADED, true);
 			return true;
 		}
 		return false;
@@ -72,27 +78,40 @@ public abstract class PlayerManager {
 		if (getListPartyPlayers().containsKey(uuid)) {
 			// Get player from online list
 			ret = getListPartyPlayers().get(uuid);
-			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_GET_LIST
+			
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_LIST
 					.replace("{player}", ret.getName())
 					.replace("{party}", ret.getPartyName()), true);
 		} else {
 			// Get player from database
-			ret = plugin.getDatabaseManager().getPlayer(uuid).join();
-			if (ret != null) {
-				// Compare name
-				User user = plugin.getPlayer(ret.getPlayerUUID());
-				if (user != null) {
-					ret.compareName(user.getName());
-				}
-				LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_GET_DATABASE
+			ret = plugin.getDatabaseManager().getPlayer(uuid);
+			
+			// Load new player
+			if (ret == null) {
+				ret = initializePlayer(uuid);
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_NEW
+						.replace("{player}", ret.getName()), true);
+			} else {
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_DATABASE
 						.replace("{player}", ret.getName())
 						.replace("{party}", ret.getPartyName()), true);
 			}
-			
-			// Load new player
-			if (ret == null)
-				ret = initializePlayer(uuid);
 		}
 		return ret;
+	}
+	
+	public void sendLoginAlerts() {
+		for (PartyPlayerImpl partyPlayer : getListPartyPlayers().values()) {
+			sendLoginAlert(partyPlayer);
+		}
+	}
+	
+	public void sendLoginAlert(PartyPlayerImpl partyPlayer) {
+		User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
+		if (user != null && user.hasPermission(PartiesPermission.ADMIN_ALERTS.toString())) {
+			for (String alert : plugin.getLoginAlerts()) {
+				partyPlayer.sendMessage(alert);
+			}
+		}
 	}
 }

@@ -1,46 +1,46 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
+import lombok.Getter;
 
-public class CommandIgnore extends AbstractCommand {
+public class CommandIgnore extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandIgnore(PartiesPlugin instance) {
-		super(instance);
+	public CommandIgnore(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.IGNORE.toString())) {
-			pp.sendNoPermission(PartiesPermission.IGNORE);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.IGNORE);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command handling
-		 */
+		// Command handling
 		boolean isPrompt = false;
 		String ignoredParty = "";
 		if (commandData.getArgs().length == 1) {
@@ -49,25 +49,23 @@ public class CommandIgnore extends AbstractCommand {
 		} else {
 			// Edit party ignore
 			if (commandData.getArgs().length > 2) {
-				pp.sendMessage(Messages.MAINCMD_IGNORE_WRONGCMD);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_IGNORE_WRONGCMD);
 				return;
 			}
 			
 			ignoredParty = commandData.getArgs()[1];
 			
-			if (!plugin.getPartyManager().existParty(ignoredParty)) {
-				pp.sendMessage(Messages.PARTIES_COMMON_PARTYNOTFOUND
+			if (!((PartiesPlugin) plugin).getPartyManager().existParty(ignoredParty)) {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND
 						.replace("%party%", ignoredParty));
 				return;
 			}
 		}
 		
-		/*
-		 * Command starts
-		 */
+		// Command starts
 		if (isPrompt) {
 			StringBuilder builder = new StringBuilder();
-			for (String name : pp.getIgnoredParties()) {
+			for (String name : partyPlayer.getIgnoredParties()) {
 				if (builder.length() > 0) {
 					builder.append(Messages.MAINCMD_IGNORE_LIST_SEPARATOR);
 				}
@@ -76,30 +74,30 @@ public class CommandIgnore extends AbstractCommand {
 			}
 			
 			String ignores = builder.toString();
-			if (pp.getIgnoredParties().size() == 0)
+			if (partyPlayer.getIgnoredParties().size() == 0)
 				ignores = Messages.MAINCMD_IGNORE_LIST_EMPTY;
 			
-			pp.sendMessage(Messages.MAINCMD_IGNORE_LIST_HEADER
-					.replace("%number%", Integer.toString(pp.getIgnoredParties().size())));
-			pp.sendMessage(ignores);
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_IGNORE_LIST_HEADER
+					.replace("%number%", Integer.toString(partyPlayer.getIgnoredParties().size())));
+			sendMessage(sender, partyPlayer, ignores);
 		} else {
-			if (pp.getIgnoredParties().contains(ignoredParty)) {
+			if (partyPlayer.getIgnoredParties().contains(ignoredParty)) {
 				// Remove
-				pp.getIgnoredParties().remove(ignoredParty);
-				pp.sendMessage(Messages.MAINCMD_IGNORE_STOP
+				partyPlayer.getIgnoredParties().remove(ignoredParty);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_IGNORE_STOP
 						.replace("%party%", ignoredParty));
 				
-				LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_IGNORE_START
-						.replace("{player}", pp.getName())
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_IGNORE_START
+						.replace("{player}", sender.getName())
 						.replace("{party}", ignoredParty), true);
 			} else {
 				// Add
-				pp.getIgnoredParties().add(ignoredParty);
-				pp.sendMessage(Messages.MAINCMD_IGNORE_START
+				partyPlayer.getIgnoredParties().add(ignoredParty);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_IGNORE_START
 						.replace("%party%", ignoredParty));
 				
-				LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_IGNORE_STOP
-						.replace("{player}", pp.getName())
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_IGNORE_STOP
+						.replace("{player}", sender.getName())
 						.replace("{party}", ignoredParty), true);
 			}
 		}

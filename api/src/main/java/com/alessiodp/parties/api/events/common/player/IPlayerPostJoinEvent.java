@@ -3,8 +3,8 @@ package com.alessiodp.parties.api.events.common.player;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
@@ -14,7 +14,7 @@ public interface IPlayerPostJoinEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	PartyPlayer getPartyPlayer();
 	
 	/**
@@ -22,7 +22,7 @@ public interface IPlayerPostJoinEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NotNull
+	@NonNull
 	Party getParty();
 	
 	/**

@@ -1,6 +1,11 @@
 package com.alessiodp.parties.api.interfaces;
 
+import com.alessiodp.parties.api.Parties;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface Party {
@@ -10,42 +15,116 @@ public interface Party {
 	 *
 	 * @return Returns the name of the party
 	 */
-	String getName();
+	@NonNull String getName();
+	
+	/**
+	 * Delete the party
+	 */
+	void delete();
+	
+	/**
+	 * Rename the party
+	 *
+	 * @param newName The name to set
+	 */
+	void rename(@NonNull String newName);
 	
 	/**
 	 * Set the party name
 	 *
 	 * @param name The name to set
+	 * @deprecated Use rename(String)
 	 */
-	void setName(String name);
+	@Deprecated
+	default void setName(String name) {
+		rename(name);
+	}
 	
 	/**
 	 * Get the party members sub
 	 *
 	 * @return Returns the members sub of the party
 	 */
-	List<UUID> getMembers();
+	@NonNull List<UUID> getMembers();
+	
+	/**
+	 * Add the player to the party
+	 *
+	 * @param partyPlayer The {@link PartyPlayer} to add
+	 * @return Returns true if successfully added
+	 */
+	boolean addMember(@NonNull PartyPlayer partyPlayer);
+	
+	/**
+	 * Remove the player from the party
+	 *
+	 * @param partyPlayer The {@link PartyPlayer} to remove
+	 */
+	void removeMember(@NonNull PartyPlayer partyPlayer);
 	
 	/**
 	 * Set the party members sub
 	 *
 	 * @param members The sub composed by members UUIDs
+	 * @deprecated Use addMember(PartyPlayer) or removeMember(PartyPlayer)
 	 */
-	void setMembers(List<UUID> members);
+	@Deprecated
+	default void setMembers(List<UUID> members) {
+		// Add players
+		for (UUID uuid : members) {
+			PartyPlayer partyPlayer = Parties.getApi().getPartyPlayer(uuid);
+			if (partyPlayer != null) {
+				if (!getMembers().contains(uuid))
+					addMember(partyPlayer);
+			}
+			
+		}
+		
+		// Remove players
+		for (UUID uuid : getMembers()) {
+			PartyPlayer partyPlayer = Parties.getApi().getPartyPlayer(uuid);
+			if (partyPlayer != null && !members.contains(uuid)) {
+				removeMember(partyPlayer);
+			}
+			
+		}
+	}
+	
+	/**
+	 * Get a list of online members
+	 *
+	 * @param bypassVanish Bypass player with vanish?
+	 * @return Returns an unmodifiable {@code Set<PartyPlayer>}
+	 */
+	@NonNull Set<PartyPlayer> getOnlineMembers(boolean bypassVanish);
 	
 	/**
 	 * Get the party leader
 	 *
-	 * @return Returns the {@link UUID} of the party leader
+	 * @return Returns the {@link UUID} of the party leader, can be magic if the party is fixed
 	 */
-	UUID getLeader();
+	@Nullable UUID getLeader();
+	
+	/**
+	 * Change the party leader
+	 *
+	 * @param leaderPartyPlayer The {@link PartyPlayer} to promote as leader
+	 */
+	void changeLeader(@NonNull PartyPlayer leaderPartyPlayer);
 	
 	/**
 	 * Set the party leader
 	 *
 	 * @param leader The {@link UUID} of the leader
+	 * @deprecated Use changeLeader(PartyPlayer)
 	 */
-	void setLeader(UUID leader);
+	@Deprecated
+	default void setLeader(UUID leader) {
+		PartyPlayer partyPlayer = Parties.getApi().getPartyPlayer(leader);
+		if (partyPlayer != null) {
+			changeLeader(partyPlayer);
+		}
+	}
 	
 	/**
 	 * Is the party fixed?
@@ -58,64 +137,78 @@ public interface Party {
 	 * Toggle a fixed party
 	 *
 	 * @param fixed {@code True} to be fixed
+	 * @param newLeader New leader to set, null if setting Party as fixed
 	 */
-	void setFixed(boolean fixed);
+	void setFixed(boolean fixed, @Nullable PartyPlayer newLeader);
+	
+	/**
+	 * Toggle a fixed party
+	 *
+	 * @param fixed {@code True} to be fixed
+	 * @deprecated Use setFixed(boolean, PartyPlayer)
+	 */
+	@Deprecated
+	default void setFixed(boolean fixed) {
+		UUID firstMember = getMembers().size() > 0 ? getMembers().get(0) : null;
+		PartyPlayer partyPlayer = firstMember != null ? Parties.getApi().getPartyPlayer(firstMember) : null;
+		setFixed(fixed, partyPlayer);
+	}
 	
 	/**
 	 * Get the party description
 	 *
 	 * @return Returns party description
 	 */
-	String getDescription();
+	@NonNull String getDescription();
 	
 	/**
 	 * Set the party description
 	 *
 	 * @param description The description of the party
 	 */
-	void setDescription(String description);
+	void setDescription(@NonNull String description);
 	
 	/**
 	 * Get the Message Of The Day of the party
 	 *
 	 * @return Returns the MOTD of the party
 	 */
-	String getMotd();
+	@NonNull String getMotd();
 	
 	/**
 	 * Set the Message Of The Day of the party
 	 *
 	 * @param motd The MOTD of the party
 	 */
-	void setMotd(String motd);
+	void setMotd(@NonNull String motd);
 	
 	/**
 	 * Get the home of the party
 	 *
 	 * @return Returns the {@link HomeLocation} of the party home
 	 */
-	HomeLocation getHome();
+	@Nullable HomeLocation getHome();
 	
 	/**
 	 * Set the home of the party
 	 *
 	 * @param home The {@code HomeLocation} of the party home
 	 */
-	void setHome(HomeLocation home);
+	void setHome(@Nullable HomeLocation home);
 	
 	/**
 	 * Get the party color
 	 *
 	 * @return Returns the {@code Color} of the party
 	 */
-	Color getColor();
+	@Nullable Color getColor();
 	
 	/**
 	 * Set the party color
 	 *
 	 * @param color The {@code Color} of the party
 	 */
-	void setColor(Color color);
+	void setColor(@Nullable Color color);
 	
 	/**
 	 * Get the kills number of the party
@@ -136,14 +229,14 @@ public interface Party {
 	 *
 	 * @return Returns the password of the party, HASHED
 	 */
-	String getPassword();
+	@NonNull String getPassword();
 	
 	/**
 	 * Set the party password
 	 *
 	 * @param password The password of the party, HASHED
 	 */
-	void setPassword(String password);
+	void setPassword(@NonNull String password);
 	
 	/**
 	 * Get the party friendly fire protection
@@ -193,8 +286,12 @@ public interface Party {
 	 * Get the party follow option
 	 *
 	 * @return Returns true if the party have follow option enabled
+	 * @deprecated Use isFollowEnabled()
 	 */
-	boolean getFollowEnabled();
+	@Deprecated
+	default boolean getFollowEnabled() {
+		return isFollowEnabled();
+	}
 	
 	/**
 	 * Set the party follow option
@@ -209,4 +306,14 @@ public interface Party {
 	 * @return Returns true if follow option is enabled
 	 */
 	boolean isFollowEnabled();
+	
+	/**
+	 * Send a broadcast message to the party.
+	 * It requires a player to send the message because Parties gets the placeholder info from the player.
+	 * The player can be null if its a general broadcast.
+	 *
+	 * @param message The message to broadcast
+	 * @param player  The {@link PartyPlayer} who sent the message
+	 */
+	void broadcastMessage(@Nullable String message, @Nullable PartyPlayer player);
 }

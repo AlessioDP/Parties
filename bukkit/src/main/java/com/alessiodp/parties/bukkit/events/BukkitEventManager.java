@@ -1,6 +1,6 @@
 package com.alessiodp.parties.bukkit.events;
 
-import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
+import com.alessiodp.core.bukkit.events.BukkitEventDispatcher;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
@@ -27,13 +27,11 @@ import com.alessiodp.parties.bukkit.events.common.player.PlayerPreLeaveEventHook
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.events.EventManager;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesCombustFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -41,9 +39,8 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import java.util.UUID;
 
 public class BukkitEventManager extends EventManager {
-	
-	public BukkitEventManager(PartiesPlugin instance) {
-		super(instance);
+	public BukkitEventManager(PartiesPlugin plugin) {
+		super(plugin, new BukkitEventDispatcher(plugin));
 	}
 	
 	@Override
@@ -106,12 +103,5 @@ public class BukkitEventManager extends EventManager {
 	
 	public BukkitPartiesPotionsFriendlyFireBlockedEvent preparePartiesPotionsFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, PotionSplashEvent originalEvent) {
 		return new PotionsFriendlyFireBlockedEventHook(victim, attacker, originalEvent);
-	}
-	
-	@Override
-	public void callEvent(PartiesEvent event) {
-		BukkitPartiesEvent bukkitEvent = (BukkitPartiesEvent) event;
-		bukkitEvent.setApi(plugin.getApi());
-		Bukkit.getPluginManager().callEvent(bukkitEvent);
 	}
 }

@@ -1,15 +1,16 @@
 package com.alessiodp.parties.common.configuration.data;
 
+import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.ConfigurationFile;
-import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Messages extends ConfigurationFile {
+public abstract class Messages extends PartiesConfigurationFile {
 	// Parties messages
 	public static String PARTIES_UPDATEAVAILABLE;
+	public static String PARTIES_CONFIGURATION_OUTDATED;
 	
 	public static String PARTIES_COMMON_INVALIDCMD;
 	public static String PARTIES_COMMON_CONFIGRELOAD;
@@ -21,6 +22,15 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_PERM_NOPERM;
 	public static String PARTIES_PERM_NORANK;
 	
+	public static String PARTIES_OUT_PARTY;
+	
+	public static String PARTIES_LIST_ONLINEFORMAT;
+	public static String PARTIES_LIST_OFFLINEFORMAT;
+	public static String PARTIES_LIST_SEPARATOR;
+	public static String PARTIES_LIST_EMPTY;
+	public static String PARTIES_LIST_UNKNOWN;
+	public static String PARTIES_LIST_MISSING;
+	
 	
 	// Main commands messages
 	public static String MAINCMD_ACCEPT_BROADCAST;
@@ -28,6 +38,9 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_ACCEPT_ACCEPTRECEIPT;
 	public static String MAINCMD_ACCEPT_NOINVITE;
 	public static String MAINCMD_ACCEPT_NOEXISTS;
+	public static String MAINCMD_ACCEPT_MULTIPLEINVITES;
+	public static String MAINCMD_ACCEPT_MULTIPLEINVITES_PARTY;
+	public static String MAINCMD_ACCEPT_WRONGCMD;
 	
 	public static String MAINCMD_CHAT_ENABLED;
 	public static String MAINCMD_CHAT_DISABLED;
@@ -51,6 +64,9 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_DENY_DENYRECEIPT;
 	public static String MAINCMD_DENY_NOINVITE;
 	public static String MAINCMD_DENY_NOEXISTS;
+	public static String MAINCMD_DENY_MULTIPLEINVITES;
+	public static String MAINCMD_DENY_MULTIPLEINVITES_PARTY;
+	public static String MAINCMD_DENY_WRONGCMD;
 	
 	public static String MAINCMD_IGNORE_START;
 	public static String MAINCMD_IGNORE_STOP;
@@ -61,12 +77,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_IGNORE_WRONGCMD;
 	
 	public static List<String> MAINCMD_INFO_CONTENT;
-	public static String MAINCMD_INFO_LIST_ONLINEFORMAT;
-	public static String MAINCMD_INFO_LIST_OFFLINEFORMAT;
-	public static String MAINCMD_INFO_LIST_SEPARATOR;
-	public static String MAINCMD_INFO_LIST_EMPTY;
-	public static String MAINCMD_INFO_LIST_UNKNOWN;
-	public static String MAINCMD_INFO_LIST_MISSING;
 	
 	public static String MAINCMD_INVITE_SENT;
 	public static String MAINCMD_INVITE_PLAYERINVITED;
@@ -97,13 +107,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_LEAVE_BROADCAST;
 	public static String MAINCMD_LEAVE_DISBANDED;
 	
-	public static String MAINCMD_MIGRATE_INFO;
-	public static String MAINCMD_MIGRATE_COMPLETED;
-	public static String MAINCMD_MIGRATE_FAILED_DBOFFLINE;
-	public static String MAINCMD_MIGRATE_FAILED_FAILED;
-	public static String MAINCMD_MIGRATE_FAILED_SAMEDB;
-	public static String MAINCMD_MIGRATE_WRONGDB;
-	
 	public static String MAINCMD_P_COOLDOWN;
 	public static String MAINCMD_P_CENSORED;
 	public static String MAINCMD_P_WRONGCMD;
@@ -118,6 +121,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_RANK_CHANGINGYOURSELF;
 	public static String MAINCMD_RANK_PLAYERNOTINPARTY;
 	public static String MAINCMD_RANK_PLAYERNOTINPARTY_OTHER;
+	public static List<String> MAINCMD_RANK_CONFLICT_CONTENT;
+	public static String MAINCMD_RANK_CONFLICT_PLAYER;
 	public static String MAINCMD_RANK_WRONGCMD;
 	
 	public static String MAINCMD_RENAME_RENAMED;
@@ -210,7 +215,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_MAINCMD_INVITE;
 	public static String HELP_MAINCMD_KICK;
 	public static String HELP_MAINCMD_LEAVE;
-	public static String HELP_MAINCMD_MIGRATE;
 	public static String HELP_MAINCMD_P;
 	public static String HELP_MAINCMD_RANK;
 	public static String HELP_MAINCMD_RELOAD;
@@ -229,13 +233,15 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDCMD_TELEPORT;
 	
 	
-	protected Messages(PartiesPlugin instance) {
-		super(instance);
+	protected Messages(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
+	@Override
 	public void loadDefaults() {
 		// Parties messages
 		PARTIES_UPDATEAVAILABLE = "&9New version of Parties found: %version% (Current: %thisversion%)";
+		PARTIES_CONFIGURATION_OUTDATED = "&cThe configuration file '%config%' is outdated!";
 		
 		PARTIES_COMMON_INVALIDCMD = "&cInvalid command";
 		PARTIES_COMMON_CONFIGRELOAD = "&aConfiguration reloaded";
@@ -247,6 +253,15 @@ public abstract class Messages extends ConfigurationFile {
 		PARTIES_PERM_NOPERM = "&cYou do not have access to that command";
 		PARTIES_PERM_NORANK = "&cYou need to be %rank_name% to perform that command";
 		
+		PARTIES_OUT_PARTY = "Out party";
+		
+		PARTIES_LIST_ONLINEFORMAT = "&b%player%";
+		PARTIES_LIST_OFFLINEFORMAT = "&7%player%";
+		PARTIES_LIST_SEPARATOR = "&7, ";
+		PARTIES_LIST_EMPTY = "&7Nobody";
+		PARTIES_LIST_UNKNOWN = "&6Someone";
+		PARTIES_LIST_MISSING = "&7Miss";
+		
 		
 		// Main commands messages
 		MAINCMD_ACCEPT_BROADCAST = "&b&l%player% joined the party";
@@ -254,6 +269,9 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_ACCEPT_ACCEPTRECEIPT = "&a%player% accepted your invite";
 		MAINCMD_ACCEPT_NOINVITE = "&cYou have not pending invitation";
 		MAINCMD_ACCEPT_NOEXISTS = "&cThe invite doesn't exist anymore";
+		MAINCMD_ACCEPT_MULTIPLEINVITES = "&cChoose the party that you want accept:";
+		MAINCMD_ACCEPT_MULTIPLEINVITES_PARTY = "[{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\" - Click here to accept\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}}]";
+		MAINCMD_ACCEPT_WRONGCMD = "&cWrong variables: Type &7/party accept [party]";
 		
 		MAINCMD_CHAT_ENABLED = "&aChat set to party";
 		MAINCMD_CHAT_DISABLED = "&aChat set to public";
@@ -277,6 +295,9 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_DENY_DENYRECEIPT = "&7%player% denied your invite";
 		MAINCMD_DENY_NOINVITE = "&cYou have not pending invitation";
 		MAINCMD_DENY_NOEXISTS = "&cThe invite doesn't exist anymore";
+		MAINCMD_DENY_MULTIPLEINVITES = "&cChoose the party that you want deny:";
+		MAINCMD_DENY_MULTIPLEINVITES_PARTY = "[{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\" - Click here to deny\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}}]";
+		MAINCMD_DENY_WRONGCMD = "&cWrong variables: Type &7/party deny [party]";
 		
 		MAINCMD_IGNORE_START = "&7Ignoring %party% invites";
 		MAINCMD_IGNORE_STOP = "&7You stopped ignoring %party%";
@@ -294,17 +315,11 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_INFO_CONTENT.add("&bMods&7: %list_moderator%");
 		MAINCMD_INFO_CONTENT.add("&bMembers&7: %list_member%");
 		MAINCMD_INFO_CONTENT.add("&bOnline players&7: %onlinenumber%");
-		MAINCMD_INFO_LIST_ONLINEFORMAT = "&b%player%";
-		MAINCMD_INFO_LIST_OFFLINEFORMAT = "&7%player%";
-		MAINCMD_INFO_LIST_SEPARATOR = "&7, ";
-		MAINCMD_INFO_LIST_EMPTY = "&7Nobody";
-		MAINCMD_INFO_LIST_UNKNOWN = "&6Someone";
-		MAINCMD_INFO_LIST_MISSING = "&7Miss";
 		
 		MAINCMD_INVITE_SENT = "&bYou invited %player% in your party";
-		MAINCMD_INVITE_PLAYERINVITED = "[{\"text\":\"%player% has invited you in his party.\\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]";
+		MAINCMD_INVITE_PLAYERINVITED = "[{\"text\":\"%player% has invited you to the party %party%.\\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]";
 		MAINCMD_INVITE_TIMEOUT_NORESPONSE = "&7%player% didn't accept the party invite";
-		MAINCMD_INVITE_TIMEOUT_TIMEOUT = "&7You didn't accept the party invite";
+		MAINCMD_INVITE_TIMEOUT_TIMEOUT = "&7You didn't accept the party invite to %party%";
 		MAINCMD_INVITE_REVOKE_SENT = "&7Revoked invite sent to %player%";
 		MAINCMD_INVITE_REVOKE_REVOKED = "&7Invite received from %party% has been revoked";
 		MAINCMD_INVITE_COOLDOWN_GLOBAL = "&cYou need to wait %seconds% before invite another player";
@@ -326,19 +341,12 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_KICK_CONFLICT_CONTENT.add("&cWe have found some players with that name:");
 		MAINCMD_KICK_CONFLICT_CONTENT.add("%list_players%");
 		MAINCMD_KICK_CONFLICT_CONTENT.add("&cUse '&7/party kick <username> <number>&c' to kick the right player");
-		MAINCMD_KICK_CONFLICT_PLAYER = "{\"text\":\"\",\"extra\":[{\"text\":\"[%number%] \",\"color\":\"gray\"},{\"text\":\"%username%\",\"color\":\"gold\"},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\"]: last login %lastseen%\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party kick %old_username% %number%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Kick this player\",\"color\":\"gold\"}}}";
+		MAINCMD_KICK_CONFLICT_PLAYER = "{\"text\":\"\",\"extra\":[{\"text\":\"[%number%] \",\"color\":\"gray\"},{\"text\":\"%username%\",\"color\":\"gold\"},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\"]: last login %lastloginapi_last_logout_date%\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party kick %username% %number%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Kick this player\",\"color\":\"gold\"}}}";
 		MAINCMD_KICK_WRONGCMD = "&cWrong variables: Type &7/party kick <name>";
 		
 		MAINCMD_LEAVE_LEFT = "&b&lYou left the party %party%";
 		MAINCMD_LEAVE_BROADCAST = "&b&l%player% left the party";
 		MAINCMD_LEAVE_DISBANDED = "&6&lThe party has been disbanded because the leader left";
-		
-		MAINCMD_MIGRATE_INFO = "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>";
-		MAINCMD_MIGRATE_COMPLETED = "&aCopied data from %database_from% to %database_to%";
-		MAINCMD_MIGRATE_FAILED_DBOFFLINE = "&cThe %database% database must be online!";
-		MAINCMD_MIGRATE_FAILED_FAILED = "&cDatabase migration from %database_from% to %database_to% failed!";
-		MAINCMD_MIGRATE_FAILED_SAMEDB = "&cYou need to choose 2 different databases!";
-		MAINCMD_MIGRATE_WRONGDB = "&cDatabase not found. You can select: YAML, MySQL, SQLite!";
 		
 		MAINCMD_P_COOLDOWN = "&cYou still have to wait %seconds% seconds";
 		MAINCMD_P_CENSORED = "&cThe message contains censored words!";
@@ -354,6 +362,11 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_RANK_CHANGINGYOURSELF = "&cYou cannot change yourself rank!";
 		MAINCMD_RANK_PLAYERNOTINPARTY = "&c%player% is not in your party";
 		MAINCMD_RANK_PLAYERNOTINPARTY_OTHER = "&c%player% doesn't have a party";
+		MAINCMD_RANK_CONFLICT_CONTENT = new ArrayList<>();
+		MAINCMD_RANK_CONFLICT_CONTENT.add("&cWe have found some players with that name:");
+		MAINCMD_RANK_CONFLICT_CONTENT.add("%list_players%");
+		MAINCMD_RANK_CONFLICT_CONTENT.add("&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player");
+		MAINCMD_RANK_CONFLICT_PLAYER = "{\"text\":\"\",\"extra\":[{\"text\":\"[%number%] \",\"color\":\"gray\"},{\"text\":\"%username%\",\"color\":\"gold\"},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"%party%\",\"color\":\"aqua\"},{\"text\":\"]: last login %lastloginapi_last_logout_date%\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party rank %username% %rank% %number%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Change rank of this player\",\"color\":\"gold\"}}}";
 		MAINCMD_RANK_WRONGCMD = "&cWrong variables: Type &7/party rank <player> <rank>";
 		
 		MAINCMD_RENAME_RENAMED = "&aThe party %old% has been renamed into %party%";
@@ -365,8 +378,8 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_SPY_DISABLED = "&7You are no longer a spy";
 		MAINCMD_SPY_WRONGCMD = "&cWrong variables: Type &7/party spy [on/off]";
 		
-		MAINCMD_VERSION_UPDATED = "&b&lParties &b%version% &7- Developed by &6AlessioDP";
-		MAINCMD_VERSION_OUTDATED = "&b&lParties &b%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%";
+		MAINCMD_VERSION_UPDATED = "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP";
+		MAINCMD_VERSION_OUTDATED = "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%";
 
 		
 		// Additional commands messages
@@ -436,8 +449,15 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_FOOTER = "";
 		HELP_CONSOLEHELP = new ArrayList<>();
 		HELP_CONSOLEHELP.add("You can only make these commands:");
-		HELP_CONSOLEHELP.add("/party migrate - Copy database into a new one");
-		HELP_CONSOLEHELP.add("/party reload - Reload the configuration");
+		HELP_CONSOLEHELP.add(" > party create <name> fixed - Create a new party");
+		HELP_CONSOLEHELP.add(" > party delete <party> - Delete a party");
+		HELP_CONSOLEHELP.add(" > party info <party> - Show party information");
+		HELP_CONSOLEHELP.add(" > party list - List of online parties");
+		HELP_CONSOLEHELP.add(" > party kick <player> - Kick a player from the party");
+		HELP_CONSOLEHELP.add(" > party rank <player> <rank> - Change rank of the player");
+		HELP_CONSOLEHELP.add(" > party reload - Reload Parties configuration files");
+		HELP_CONSOLEHELP.add(" > party rename <party> <name> - Rename the party");
+		HELP_CONSOLEHELP.add(" > party version - Show Parties information");
 		
 		HELP_MAINCMD_HELP = "{\"text\":\"\",\"extra\":[{\"text\":\"/party help [page]\",\"color\":\"aqua\"},{\"text\":\" - Show help pages\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party help \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_ACCEPT = "{\"text\":\"\",\"extra\":[{\"text\":\"/party accept\",\"color\":\"aqua\"},{\"text\":\" - Accept a party invitation\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
@@ -450,7 +470,6 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_MAINCMD_INVITE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party invite <player>\",\"color\":\"aqua\"},{\"text\":\" - Invite a player to your party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_KICK = "{\"text\":\"\",\"extra\":[{\"text\":\"/party kick <player>\",\"color\":\"aqua\"},{\"text\":\" - Kick a player from your party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party kick \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_LEAVE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party leave\",\"color\":\"aqua\"},{\"text\":\" - Leave your party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party leave \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
-		HELP_MAINCMD_MIGRATE = "{\"text\":\"\",\"extra\":[{\"text\":\"/party migrate <from> <to>\",\"color\":\"aqua\"},{\"text\":\" - Copy database into a new one\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party migrate \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_P = "{\"text\":\"\",\"extra\":[{\"text\":\"/p <message>\",\"color\":\"aqua\"},{\"text\":\" - Send a message to the party\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/p \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_RANK = "{\"text\":\"\",\"extra\":[{\"text\":\"/party rank <player> <rank>\",\"color\":\"aqua\"},{\"text\":\" - Change rank of the player\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party rank \"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
 		HELP_MAINCMD_RELOAD = "{\"text\":\"\",\"extra\":[{\"text\":\"/party reload\",\"color\":\"aqua\"},{\"text\":\" - Reload Parties configuration files\",\"color\":\"gray\"}],\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party reload\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Perform the command\",\"color\":\"gold\"}}}";
@@ -473,6 +492,7 @@ public abstract class Messages extends ConfigurationFile {
 	public void loadConfiguration(ConfigurationAdapter confAdapter) {
 		// Parties messages
 		PARTIES_UPDATEAVAILABLE = confAdapter.getString("parties.update-available", PARTIES_UPDATEAVAILABLE);
+		PARTIES_CONFIGURATION_OUTDATED = confAdapter.getString("parties.configuration-outdated", PARTIES_CONFIGURATION_OUTDATED);
 		
 		PARTIES_COMMON_INVALIDCMD = confAdapter.getString("parties.common-messages.invalid-command", PARTIES_COMMON_INVALIDCMD);
 		PARTIES_COMMON_CONFIGRELOAD = confAdapter.getString("parties.common-messages.configuration-reloaded", PARTIES_COMMON_CONFIGRELOAD);
@@ -484,12 +504,23 @@ public abstract class Messages extends ConfigurationFile {
 		PARTIES_PERM_NOPERM = confAdapter.getString("parties.permissions.no-permission", PARTIES_PERM_NOPERM);
 		PARTIES_PERM_NORANK = confAdapter.getString("parties.permissions.no-permission-in-party", PARTIES_PERM_NORANK);
 		
+		PARTIES_OUT_PARTY = confAdapter.getString("parties.out-party", PARTIES_OUT_PARTY);
+		
+		PARTIES_LIST_ONLINEFORMAT = confAdapter.getString("parties.list.player-online-format", PARTIES_LIST_ONLINEFORMAT);
+		PARTIES_LIST_OFFLINEFORMAT = confAdapter.getString("parties.list.player-offline-format", PARTIES_LIST_OFFLINEFORMAT);
+		PARTIES_LIST_SEPARATOR = confAdapter.getString("parties.list.player-separator", PARTIES_LIST_SEPARATOR);
+		PARTIES_LIST_EMPTY = confAdapter.getString("parties.list.player-empty", PARTIES_LIST_EMPTY);
+		PARTIES_LIST_UNKNOWN = confAdapter.getString("parties.list.player-unknown", PARTIES_LIST_UNKNOWN);
+		PARTIES_LIST_MISSING = confAdapter.getString("parties.list.missing-value", PARTIES_LIST_MISSING);
+		
 		
 		// Main commands messages
 		MAINCMD_ACCEPT_BROADCAST = confAdapter.getString("main-commands.accept.broadcast", MAINCMD_ACCEPT_BROADCAST);
 		MAINCMD_ACCEPT_ACCEPTED = confAdapter.getString("main-commands.accept.accepted", MAINCMD_ACCEPT_ACCEPTED);
 		MAINCMD_ACCEPT_ACCEPTRECEIPT = confAdapter.getString("main-commands.accept.accept-receipt", MAINCMD_ACCEPT_ACCEPTRECEIPT);
 		MAINCMD_ACCEPT_NOINVITE = confAdapter.getString("main-commands.accept.no-invite", MAINCMD_ACCEPT_NOINVITE);
+		MAINCMD_ACCEPT_MULTIPLEINVITES= confAdapter.getString("main-commands.accept.multiple-invites", MAINCMD_ACCEPT_MULTIPLEINVITES);
+		MAINCMD_ACCEPT_MULTIPLEINVITES_PARTY = confAdapter.getString("main-commands.accept.multiple-invites-party", MAINCMD_ACCEPT_MULTIPLEINVITES_PARTY);
 		MAINCMD_ACCEPT_NOEXISTS = confAdapter.getString("main-commands.accept.no-exists", MAINCMD_ACCEPT_NOEXISTS);
 		
 		MAINCMD_CHAT_ENABLED = confAdapter.getString("main-commands.chat.enabled", MAINCMD_CHAT_ENABLED);
@@ -514,6 +545,9 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_DENY_DENYRECEIPT = confAdapter.getString("main-commands.deny.deny-receipt", MAINCMD_DENY_DENYRECEIPT);
 		MAINCMD_DENY_NOINVITE = confAdapter.getString("main-commands.deny.no-invite", MAINCMD_DENY_NOINVITE);
 		MAINCMD_DENY_NOEXISTS = confAdapter.getString("main-commands.deny.no-exists", MAINCMD_DENY_NOEXISTS);
+		MAINCMD_DENY_MULTIPLEINVITES = confAdapter.getString("main-commands.deny.multiple-invites", MAINCMD_DENY_MULTIPLEINVITES);
+		MAINCMD_DENY_MULTIPLEINVITES_PARTY = confAdapter.getString("main-commands.deny.multiple-invites-party", MAINCMD_DENY_MULTIPLEINVITES_PARTY);
+		MAINCMD_DENY_WRONGCMD = confAdapter.getString("main-commands.deny.wrong-command", MAINCMD_DENY_WRONGCMD);
 		
 		MAINCMD_IGNORE_START = confAdapter.getString("main-commands.ignore.start-ignore", MAINCMD_IGNORE_START);
 		MAINCMD_IGNORE_STOP = confAdapter.getString("main-commands.ignore.stop-ignore", MAINCMD_IGNORE_STOP);
@@ -524,12 +558,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_IGNORE_WRONGCMD = confAdapter.getString("main-commands.ignore.wrong-command", MAINCMD_IGNORE_WRONGCMD);
 		
 		MAINCMD_INFO_CONTENT = confAdapter.getStringList("main-commands.info.content", MAINCMD_INFO_CONTENT);
-		MAINCMD_INFO_LIST_ONLINEFORMAT = confAdapter.getString("main-commands.info.list.player-online-format", MAINCMD_INFO_LIST_ONLINEFORMAT);
-		MAINCMD_INFO_LIST_OFFLINEFORMAT = confAdapter.getString("main-commands.info.list.player-offline-format", MAINCMD_INFO_LIST_OFFLINEFORMAT);
-		MAINCMD_INFO_LIST_SEPARATOR = confAdapter.getString("main-commands.info.list.player-separator", MAINCMD_INFO_LIST_SEPARATOR);
-		MAINCMD_INFO_LIST_EMPTY = confAdapter.getString("main-commands.info.list.player-empty", MAINCMD_INFO_LIST_EMPTY);
-		MAINCMD_INFO_LIST_UNKNOWN = confAdapter.getString("main-commands.info.list.player-unknown", MAINCMD_INFO_LIST_UNKNOWN);
-		MAINCMD_INFO_LIST_MISSING = confAdapter.getString("main-commands.info.list.missing-value", MAINCMD_INFO_LIST_MISSING);
 		
 		MAINCMD_INVITE_SENT = confAdapter.getString("main-commands.invite.sent", MAINCMD_INVITE_SENT);
 		MAINCMD_INVITE_PLAYERINVITED = confAdapter.getString("main-commands.invite.player-invited", MAINCMD_INVITE_PLAYERINVITED);
@@ -559,13 +587,6 @@ public abstract class Messages extends ConfigurationFile {
 		MAINCMD_LEAVE_LEFT = confAdapter.getString("main-commands.leave.left", MAINCMD_LEAVE_LEFT);
 		MAINCMD_LEAVE_BROADCAST = confAdapter.getString("main-commands.leave.broadcast", MAINCMD_LEAVE_BROADCAST);
 		MAINCMD_LEAVE_DISBANDED = confAdapter.getString("main-commands.leave.party-disbanded", MAINCMD_LEAVE_DISBANDED);
-		
-		MAINCMD_MIGRATE_INFO = confAdapter.getString("main-commands.migrate.info", MAINCMD_MIGRATE_INFO);
-		MAINCMD_MIGRATE_COMPLETED = confAdapter.getString("main-commands.migrate.completed", MAINCMD_MIGRATE_COMPLETED);
-		MAINCMD_MIGRATE_FAILED_DBOFFLINE = confAdapter.getString("main-commands.migrate.failed.database-offline", MAINCMD_MIGRATE_FAILED_DBOFFLINE);
-		MAINCMD_MIGRATE_FAILED_FAILED = confAdapter.getString("main-commands.migrate.failed.failed", MAINCMD_MIGRATE_FAILED_FAILED);
-		MAINCMD_MIGRATE_FAILED_SAMEDB = confAdapter.getString("main-commands.migrate.failed.same-database", MAINCMD_MIGRATE_FAILED_SAMEDB);
-		MAINCMD_MIGRATE_WRONGDB = confAdapter.getString("main-commands.migrate.wrong-database", MAINCMD_MIGRATE_WRONGDB);
 		
 		MAINCMD_P_COOLDOWN = confAdapter.getString("main-commands.p.cooldown", MAINCMD_P_COOLDOWN);
 		MAINCMD_P_CENSORED = confAdapter.getString("main-commands.p.censored", MAINCMD_P_CENSORED);
@@ -673,7 +694,6 @@ public abstract class Messages extends ConfigurationFile {
 		HELP_MAINCMD_INVITE = confAdapter.getString("help.main-commands.invite", HELP_MAINCMD_INVITE);
 		HELP_MAINCMD_KICK = confAdapter.getString("help.main-commands.kick", HELP_MAINCMD_KICK);
 		HELP_MAINCMD_LEAVE = confAdapter.getString("help.main-commands.leave", HELP_MAINCMD_LEAVE);
-		HELP_MAINCMD_MIGRATE = confAdapter.getString("help.main-commands.migrate", HELP_MAINCMD_MIGRATE);
 		HELP_MAINCMD_P = confAdapter.getString("help.main-commands.p", HELP_MAINCMD_P);
 		HELP_MAINCMD_RANK = confAdapter.getString("help.main-commands.rank", HELP_MAINCMD_RANK);
 		HELP_MAINCMD_RELOAD = confAdapter.getString("help.main-commands.reload", HELP_MAINCMD_RELOAD);

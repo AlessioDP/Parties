@@ -5,19 +5,18 @@ import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
 import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+@RequiredArgsConstructor
 public class BukkitExpListener implements Listener {
-	private BukkitPartiesPlugin plugin;
-	
-	public BukkitExpListener(BukkitPartiesPlugin instance) {
-		plugin = instance;
-	}
+	private final BukkitPartiesPlugin plugin;
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onEntityDie(EntityDeathEvent event) {
@@ -48,6 +47,10 @@ public class BukkitExpListener implements Listener {
 							// Remove exp drop from SkillAPI
 							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)
 								SkillAPIHandler.fakeEntity(killedEntity);
+							
+							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_REMOVINGEXP
+									.replace("{value1}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL))
+									.replace("{value2}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)), true);
 						}
 					}
 				}
@@ -68,17 +71,17 @@ public class BukkitExpListener implements Listener {
 				// Mythic Mob
 				
 				// Remove experience of mobs if handled by MythicMobHandler
-				if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP && BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL) {
-					if (event.getDroppedExp() > 0) {
-						// We already know that the killer is a Player
-						// Remove entity experience if the event has been handled by MythicMobHandler
-						// This is a workaround to fix MythicMobs exp drop bug
-						if (MythicMobsHandler.getMobsExperienceToSuppress().remove(event.getEntity().getUniqueId())) {
-							event.setDroppedExp(0);
-						}
-					}
+				if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP
+						&& BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL
+						&& event.getDroppedExp() > 0
+						&& MythicMobsHandler.getMobsExperienceToSuppress().remove(event.getEntity().getUniqueId())) {
+					// We already know that the killer is a Player
+					// Remove entity experience if the event has been handled by MythicMobHandler
+					// This is a workaround to fix MythicMobs exp drop bug
+					event.setDroppedExp(0);
 				}
 				
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_MMBYPASS, true);
 				// MythicMobHandler will handle this event
 				ret = true;
 			} else {

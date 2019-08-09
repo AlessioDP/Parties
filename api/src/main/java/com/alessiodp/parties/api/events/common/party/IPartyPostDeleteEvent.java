@@ -3,8 +3,8 @@ package com.alessiodp.parties.api.events.common.party;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 
 public interface IPartyPostDeleteEvent extends PartiesEvent {
@@ -13,7 +13,7 @@ public interface IPartyPostDeleteEvent extends PartiesEvent {
 	 *
 	 * @return Returns the name of the deleted party
 	 */
-	@NotNull
+	@NonNull
 	String getPartyName();
 	
 	/**
@@ -21,7 +21,7 @@ public interface IPartyPostDeleteEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link DeleteCause} of the delete
 	 */
-	@NotNull
+	@NonNull
 	DeleteCause getCause();
 	
 	/**

@@ -4,5 +4,8 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 
 public abstract class BukkitPartiesPlayerPostJoinEvent extends BukkitPartiesEvent implements IPlayerPostJoinEvent {
-	// Dummy class
+	
+	public BukkitPartiesPlayerPostJoinEvent() {
+		super(true);
+	}
 }

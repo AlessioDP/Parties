@@ -3,14 +3,14 @@ package com.alessiodp.parties.bukkit.events.common.party;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostDeleteEvent;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class PartyPostDeleteEventHook extends BukkitPartiesPartyPostDeleteEvent {
-	private String party;
-	private DeleteCause cause;
-	private PartyPlayer kickedPlayer;
-	private PartyPlayer commandSender;
+	private final String party;
+	private final DeleteCause cause;
+	private final PartyPlayer kickedPlayer;
+	private final PartyPlayer commandSender;
 	
 	public PartyPostDeleteEventHook(String party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
 		this.party = party;
@@ -19,13 +19,13 @@ public class PartyPostDeleteEventHook extends BukkitPartiesPartyPostDeleteEvent 
 		this.commandSender = commandSender;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public String getPartyName() {
 		return party;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public DeleteCause getCause() {
 		return cause;

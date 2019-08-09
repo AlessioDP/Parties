@@ -1,66 +1,90 @@
 package com.alessiodp.parties.common.messaging;
 
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.core.common.messaging.ADPPacket;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
-public class PartiesPacket {
-	@Getter String version;
-	@Getter @Setter Type type;
+public class PartiesPacket extends ADPPacket {
+	// Common
+	@Getter private PacketType type;
 	
-	@Getter @Setter String partyName;
-	@Getter @Setter UUID playerUuid;
-	@Getter @Setter String payload;
+	@Getter private String partyName = "";
+	@Getter private UUID playerUuid = UUID.randomUUID();
+	@Getter private String payload = "";
 	
-	public PartiesPacket(String pluginVersion) {
-		version = pluginVersion;
-		partyName = "";
-		playerUuid = UUID.randomUUID();
-		payload = "";
+	public PartiesPacket(String version) {
+		super(version);
 	}
 	
-	public byte[] makePacket() {
+	@Override
+	public byte[] build() {
 		ByteArrayDataOutput output = ByteStreams.newDataOutput();
 		
-		output.writeUTF(version);
-		output.writeUTF(type.toString());
-		output.writeUTF(partyName);
-		output.writeUTF(playerUuid.toString());
-		output.writeUTF(payload);
+		try {
+			output.writeUTF(getVersion());
+			output.writeUTF(type.name());
+			output.writeUTF(partyName);
+			output.writeUTF(playerUuid.toString());
+			output.writeUTF(payload);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		
 		return output.toByteArray();
 	}
 	
-	public static PartiesPacket readPacket(String pluginVersion, byte[] bytes) {
+	public static PartiesPacket read(ADPPlugin plugin, byte[] bytes) {
 		PartiesPacket ret = null;
 		try {
 			ByteArrayDataInput input = ByteStreams.newDataInput(bytes);
-			String version = input.readUTF();
+			String foundVersion = input.readUTF();
 			
-			if (version.equals(pluginVersion)) {
-				ret = new PartiesPacket(version);
-				ret.type = Type.valueOf(input.readUTF());
-				ret.partyName = input.readUTF();
-				ret.playerUuid = UUID.fromString(input.readUTF());
-				ret.payload = input.readUTF();
+			if (foundVersion.equals(plugin.getVersion())) {
+				PartiesPacket packet = new PartiesPacket(foundVersion);
+				packet.type = PacketType.valueOf(input.readUTF());
+				packet.partyName = input.readUTF();
+				packet.playerUuid = UUID.fromString(input.readUTF());
+				packet.payload = input.readUTF();
+				ret = packet;
 			} else {
-				LoggerManager.printError(Constants.DEBUG_MESSAGING_PACKET_VERSIONMISMATCH);
+				plugin.getLoggerManager().printError(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION
+						.replace("{current}", plugin.getVersion())
+						.replace("{version}", foundVersion));
 			}
 		} catch (Exception ex) {
-			LoggerManager.printError(Constants.DEBUG_MESSAGING_PACKET_READERROR);
-			ex.printStackTrace();
-			ret = null;
+			plugin.getLoggerManager().printError(Constants.DEBUG_LOG_MESSAGING_FAILED_READ
+					.replace("{message}", ex.getMessage()));
 		}
 		return ret;
 	}
 	
-	public enum Type {
+	public PartiesPacket setType(PacketType type) {
+		this.type = type;
+		return this;
+	}
+	
+	public PartiesPacket setPartyName(String partyName) {
+		this.partyName = partyName;
+		return this;
+	}
+	
+	public PartiesPacket setPlayerUuid(UUID playerUuid) {
+		this.playerUuid = playerUuid;
+		return this;
+	}
+	
+	public PartiesPacket setPayload(String payload) {
+		this.payload = payload;
+		return this;
+	}
+	
+	public enum PacketType {
 		PLAYER_UPDATED, PARTY_UPDATED, PARTY_RENAMED, PARTY_REMOVED, CHAT_MESSAGE, BROADCAST_MESSAGE
 	}
 }

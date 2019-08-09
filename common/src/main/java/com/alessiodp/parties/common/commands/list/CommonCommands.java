@@ -1,11 +1,12 @@
 package com.alessiodp.parties.common.commands.list;
 
+import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import lombok.Getter;
 
-public enum CommonCommands implements PartiesCommand {
+public enum CommonCommands implements ADPCommand {
 	P,
 	PARTY,
 	
@@ -20,7 +21,6 @@ public enum CommonCommands implements PartiesCommand {
 	INVITE,
 	KICK,
 	LEAVE,
-	MIGRATE,
 	RANK,
 	RELOAD,
 	RENAME,
@@ -87,9 +87,6 @@ public enum CommonCommands implements PartiesCommand {
 		CommonCommands.LEAVE.command = ConfigMain.COMMANDS_CMD_LEAVE;
 		CommonCommands.LEAVE.help = Messages.HELP_MAINCMD_LEAVE;
 		CommonCommands.LEAVE.permission = PartiesPermission.LEAVE.toString();
-		CommonCommands.MIGRATE.command = ConfigMain.COMMANDS_CMD_MIGRATE;
-		CommonCommands.MIGRATE.help = Messages.HELP_MAINCMD_MIGRATE;
-		CommonCommands.MIGRATE.permission = PartiesPermission.ADMIN_MIGRATE.toString();
 		CommonCommands.RANK.command = ConfigMain.COMMANDS_CMD_RANK;
 		CommonCommands.RANK.help = Messages.HELP_MAINCMD_RANK;
 		CommonCommands.RANK.permission = PartiesPermission.RANK.toString();
@@ -135,7 +132,8 @@ public enum CommonCommands implements PartiesCommand {
 		CommonCommands.TELEPORT.permission = PartiesPermission.TELEPORT.toString();
 	}
 	
-	public String getType() {
+	@Override
+	public String getOriginalName() {
 		return this.name();
 	}
 }

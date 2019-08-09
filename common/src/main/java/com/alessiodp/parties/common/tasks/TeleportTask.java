@@ -1,26 +1,22 @@
 package com.alessiodp.parties.common.tasks;
 
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class TeleportTask implements Runnable {
-	private PartiesPlugin plugin;
-	private UUID player;
-	
-	public TeleportTask(PartiesPlugin instance, UUID uuid) {
-		plugin = instance;
-		player = uuid;
-	}
+	@NonNull private PartiesPlugin plugin;
+	@NonNull private UUID player;
 	
 	@Override
 	public void run() {
 		plugin.getCooldownManager().getTeleportCooldown().remove(player);
 		
-		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_TELEPORT_EXPIRED
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_EXPIRED
 				.replace("{player}", player.toString()), true);
 	}
 }

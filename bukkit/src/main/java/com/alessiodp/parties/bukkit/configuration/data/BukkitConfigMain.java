@@ -1,14 +1,20 @@
 package com.alessiodp.parties.bukkit.configuration.data;
 
+import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BukkitConfigMain extends ConfigMain {
+	@Getter private final String fileName = "config.yml";
+	@Getter private final String resourceName = "bukkit/config.yml";
+	@Getter private final int latestVersion = PartiesConstants.VERSION_BUKKIT_CONFIG_MAIN;
+	
 	// Parties settings
 	public static boolean		PARTIES_BUNGEECORDSYNC_ENABLE;
 	public static boolean		PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS;
@@ -87,8 +93,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		COMMANDS_CMD_SETHOME;
 	
 	
-	public BukkitConfigMain(PartiesPlugin instance) {
-		super(instance);
+	public BukkitConfigMain(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
 	@Override
@@ -208,7 +214,6 @@ public class BukkitConfigMain extends ConfigMain {
 		ConfigMain.COMMANDS_ORDER.add("delete");
 		ConfigMain.COMMANDS_ORDER.add("reload");
 		ConfigMain.COMMANDS_ORDER.add("version");
-		ConfigMain.COMMANDS_ORDER.add("migrate");
 	}
 	
 	@Override
@@ -295,15 +300,5 @@ public class BukkitConfigMain extends ConfigMain {
 		COMMANDS_CMD_HOME = confAdapter.getString("commands.main-commands.home", COMMANDS_CMD_HOME);
 		COMMANDS_CMD_PROTECTION = confAdapter.getString("commands.main-commands.protection", COMMANDS_CMD_PROTECTION);
 		COMMANDS_CMD_SETHOME = confAdapter.getString("commands.main-commands.sethome", COMMANDS_CMD_SETHOME);
-	}
-	
-	@Override
-	public String getFileName() {
-		return "config.yml";
-	}
-	
-	@Override
-	public String getResourceName() {
-		return "bukkit/config.yml";
 	}
 }

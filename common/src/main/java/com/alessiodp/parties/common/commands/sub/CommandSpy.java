@@ -1,77 +1,75 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.Getter;
 
 import java.util.List;
 
-public class CommandSpy extends AbstractCommand {
+public class CommandSpy extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandSpy(PartiesPlugin instance) {
-		super(instance);
+	public CommandSpy(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.ADMIN_SPY.toString())) {
-			pp.sendNoPermission(PartiesPermission.ADMIN_SPY);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.ADMIN_SPY);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command handling
-		 */
-		Boolean spy = PartiesUtils.handleOnOffCommand(pp.isSpy(), commandData.getArgs());
+		// Command handling
+		Boolean spy = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(partyPlayer.isSpy(), commandData.getArgs());
 		if (spy == null) {
-			pp.sendMessage(Messages.MAINCMD_SPY_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_SPY_WRONGCMD);
 			return;
 		}
 		
-		/*
-		 * Command starts
-		 */
-		pp.setSpy(spy);
-		pp.updatePlayer();
+		// Command starts
+		partyPlayer.setSpy(spy);
+		partyPlayer.updatePlayer();
 		
 		if (spy) {
-			plugin.getSpyManager().addSpy(pp.getPlayerUUID());
-			pp.sendMessage(Messages.MAINCMD_SPY_ENABLED);
-			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_SPY_ENABLE
-					.replace("{player}", pp.getName()), true);
+			((PartiesPlugin) plugin).getSpyManager().addSpy(partyPlayer.getPlayerUUID());
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_SPY_ENABLED);
+			
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_SPY_ENABLE
+					.replace("{player}", sender.getName()), true);
 		} else {
-			plugin.getSpyManager().removeSpy(pp.getPlayerUUID());
-			pp.sendMessage(Messages.MAINCMD_SPY_DISABLED);
-			LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_SPY_DISABLE
-					.replace("{player}", pp.getName()), true);
+			((PartiesPlugin) plugin).getSpyManager().removeSpy(partyPlayer.getPlayerUUID());
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_SPY_DISABLED);
+			
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_SPY_DISABLE
+					.replace("{player}", sender.getName()), true);
 		}
 	}
 	
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
-		return PartiesUtils.tabCompleteOnOff(args);
+		return plugin.getCommandManager().getCommandUtils().tabCompleteOnOff(args);
 	}
 }

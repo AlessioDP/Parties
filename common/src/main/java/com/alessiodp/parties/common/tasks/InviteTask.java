@@ -1,26 +1,23 @@
 package com.alessiodp.parties.common.tasks;
 
-
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class InviteTask implements Runnable {
-	private PartyImpl party;
-	private UUID invitedPlayer;
-	
-	public InviteTask(PartyImpl party, UUID invitedPlayer) {
-		this.party = party;
-		this.invitedPlayer = invitedPlayer;
-	}
+	@NonNull private final PartiesPlugin plugin;
+	@NonNull private final PartyImpl party;
+	@NonNull private final UUID invitedPlayer;
 
 	@Override
 	public void run() {
 		party.cancelInvite(invitedPlayer);
-		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_INVITE_EXPIRED
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_INVITE_EXPIRED
 				.replace("{party}", party.getName())
 				.replace("{uuid}", invitedPlayer.toString()), true);
 	}

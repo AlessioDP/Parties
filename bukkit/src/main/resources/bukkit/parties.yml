@@ -45,25 +45,19 @@ general:
     chat-cooldown: 0
     # Censor party message with a regex
     censor-regex: ''
+    # Log every chat message
+    log: false
+    log-to-console: false
     direct:
       # Directly write in party chat by adding a prefix before (Example: @this is a party message)
       enable: false
       prefix: "@"
     formats:
       party-chat: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
-      spy-alerts: "&7[SPY] [Party:%party%] %player%: %message%"
       broadcast: "&b[Party] %message%"
-
-  lastseen:
-    # Options for lastseen placeholder
-    # If you use this placeholder, you will bypass vanish check
-    # Format as SimpleDateFormat of Java (example: "yyyy-MM-dd HH:mm:ss.S")
-    time-date-format: "yyyy-MM-dd"
-    # Special tags: %days%, %hours%, %minutes% and %seconds%
-    time-elapsed-format: "%days% days, %hours% hours, %minutes% minutes"
-    # Special tags: %time_date% and %time_elapsed%
-    format-offline: "[%time_elapsed%]"
-    format-online: "%bOnline"
+      spy:
+        party-chat: "&7[SPY] [%party%] %player%: %message%"
+        broadcast: "&7[SPY] [%party%]: %message%"
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -227,8 +221,8 @@ additional:
     enable: true
     minimum-length: 3
     maximum-length: 100
-    # Delay before motd printing in ticks (20 ticks = 1 second)
-    delay: 20
+    # Delay before motd printing in milliseconds
+    delay: 1000
     # Regex of chars (Use \\ instead of \ if you use "text" format)
     # For ALL utf characters use '[\p{L}\s]+'
     allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
@@ -246,4 +240,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 4
+  version: 5

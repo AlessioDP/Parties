@@ -1,64 +1,71 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
-import java.util.UUID;
-
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.utils.ConsoleColor;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
+@RequiredArgsConstructor
 public class GriefPreventionHandler {
+	@NonNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "GriefPrevention";
-	
-	public GriefPreventionHandler() {}
+	private static boolean active;
 	
 	public void init() {
+		active = false;
 		if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE) {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_HOOKED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.CYAN);
+				active = true;
+				
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
+						.replace("{addon}", ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE = false;
-				LoggerManager.log(LogLevel.BASE, Constants.DEBUG_LIB_GENERAL_FAILED
-						.replace("{addon}", ADDON_NAME), true, ConsoleColor.RED);
+				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
+						.replace("{addon}", ADDON_NAME), true);
 			}
 		}
 	}
 	
 	
 	public static Result isManager(Player claimer) {
-		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(claimer.getLocation(), false, null);
-		if (claim == null) {
-			return Result.NOEXIST;
-		}
-		if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())) {
-			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_NEEDOWNER || !claim.managers.contains(claimer.getUniqueId().toString())) {
-				return Result.NOMANAGER;
+		if (active) {
+			Claim claim = GriefPrevention.instance.dataStore.getClaimAt(claimer.getLocation(), false, null);
+			if (claim == null) {
+				return Result.NOEXIST;
 			}
+			if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())) {
+				if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_NEEDOWNER || !claim.managers.contains(claimer.getUniqueId().toString())) {
+					return Result.NOMANAGER;
+				}
+			}
+			return Result.SUCCESS;
 		}
-		return Result.SUCCESS;
+		return Result.NOEXIST;
 	}
 	
 	public static void addPartyPermission(Player claimer, PartyImpl party, PermissionType perm) {
-		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(claimer.getLocation(), false, null);
-		
-		for (UUID uuid : party.getMembers()) {
-			if (claimer.getUniqueId().equals(uuid))
-				continue;
-			if (perm.isRemove())
-				claim.dropPermission(uuid.toString());
-			else
-				claim.setPermission(uuid.toString(), perm.convertPermission());
+		if (active) {
+			Claim claim = GriefPrevention.instance.dataStore.getClaimAt(claimer.getLocation(), false, null);
+			for (UUID uuid : party.getMembers()) {
+				if (claimer.getUniqueId().equals(uuid))
+					continue;
+				if (perm.isRemove())
+					claim.dropPermission(uuid.toString());
+				else
+					claim.setPermission(uuid.toString(), perm.convertPermission());
+			}
+			GriefPrevention.instance.dataStore.saveClaim(claim);
 		}
-		GriefPrevention.instance.dataStore.saveClaim(claim);
 	}
 	
 	public enum PermissionType {

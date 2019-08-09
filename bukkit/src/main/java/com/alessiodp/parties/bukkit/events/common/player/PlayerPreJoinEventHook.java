@@ -3,17 +3,17 @@ package com.alessiodp.parties.bukkit.events.common.player;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
 public class PlayerPreJoinEventHook extends BukkitPartiesPlayerPreJoinEvent {
 	private boolean cancelled;
-	private PartyPlayer player;
-	private Party party;
-	private boolean isInvited;
-	private UUID invitedBy;
+	private final PartyPlayer player;
+	private final Party party;
+	private final boolean isInvited;
+	private final UUID invitedBy;
 	
 	public PlayerPreJoinEventHook(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
 		this.player = player;
@@ -22,13 +22,13 @@ public class PlayerPreJoinEventHook extends BukkitPartiesPlayerPreJoinEvent {
 		this.invitedBy = invitedBy;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public Party getParty() {
 		return party;

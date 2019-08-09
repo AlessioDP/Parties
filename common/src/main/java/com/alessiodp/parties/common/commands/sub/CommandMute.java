@@ -1,76 +1,72 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
-import com.alessiodp.parties.common.utils.PartiesUtils;
+import lombok.Getter;
 
 import java.util.List;
 
-public class CommandMute extends AbstractCommand {
+public class CommandMute extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandMute(PartiesPlugin instance) {
-		super(instance);
+	public CommandMute(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.MUTE.toString())) {
-			pp.sendNoPermission(PartiesPermission.MUTE);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.MUTE);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command handling
-		 */
-		Boolean mute = PartiesUtils.handleOnOffCommand(pp.isMuted(), commandData.getArgs());
+		// Command handling
+		Boolean mute = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(partyPlayer.isMuted(), commandData.getArgs());
 		if (mute == null) {
-			pp.sendMessage(Messages.ADDCMD_MUTE_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_MUTE_WRONGCMD);
 			return;
 		}
 		
-		/*
-		 * Command starts
-		 */
-		pp.setMuted(mute);
-		pp.updatePlayer();
+		// Command starts
+		partyPlayer.setMuted(mute);
+		partyPlayer.updatePlayer();
 		
 		if (mute) {
-			pp.sendMessage(Messages.ADDCMD_MUTE_ON);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_MUTE_ON);
 		} else {
-			pp.sendMessage(Messages.ADDCMD_MUTE_OFF);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_MUTE_OFF);
 		}
 		
-		LoggerManager.log(LogLevel.MEDIUM,
-				(mute ? Constants.DEBUG_CMD_MUTE_ON : Constants.DEBUG_CMD_MUTE_OFF)
-						.replace("{player}", pp.getName()),
+		plugin.getLoggerManager().logDebug(
+				(mute ? PartiesConstants.DEBUG_CMD_MUTE_ON : PartiesConstants.DEBUG_CMD_MUTE_OFF)
+						.replace("{player}", sender.getName()),
 				true);
 	}
 	
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
-		return PartiesUtils.tabCompleteOnOff(args);
+		return plugin.getCommandManager().getCommandUtils().tabCompleteOnOff(args);
 	}
 }

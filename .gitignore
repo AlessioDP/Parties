@@ -1,34 +1,21 @@
-/*
-!.gitignore
-!.travis.yml
-!pom.xml
-!*.md
-!logo.png
+# Created by .ignore support plugin (hsz.mobi)
+.gradle
+**/build/
 
-!/api/
-/api/*
-!/api/src
-!/api/pom.xml
+# Ignore Gradle GUI config
+gradle-app.setting
 
-!/bukkit/
-/bukkit/*
-!/bukkit/libs
-!/bukkit/src
-!/bukkit/pom.xml
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
 
-!/bungee/
-/bungee/*
-!/bungee/src
-!/bungee/pom.xml
+# Cache of project
+.gradletasknamecache
 
-!/common/
-/common/*
-!/common/src
-!/common/pom.xml
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
 
-!/output/
-/output/*
-!/output/pom.xml
-
-!/images/
-!/locales/
+# IntelliJ project files
+.idea
+*.iml
+out
+gen

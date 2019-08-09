@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.bungee.unique;
 import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract class BungeePartiesPartyFollowEvent extends BungeePartiesEvent implements Cancellable {
 	/**
@@ -11,7 +11,7 @@ public abstract class BungeePartiesPartyFollowEvent extends BungeePartiesEvent i
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NotNull
+	@NonNull
 	public abstract Party getParty();
 	
 	/**
@@ -19,6 +19,6 @@ public abstract class BungeePartiesPartyFollowEvent extends BungeePartiesEvent i
 	 *
 	 * @return Returns the name of the server
 	 */
-	@NotNull
+	@NonNull
 	public abstract String getJoinedServer();
 }

@@ -3,12 +3,12 @@ package com.alessiodp.parties.bukkit.events.common.player;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesChatEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class ChatEventHook extends BukkitPartiesChatEvent {
 	private boolean cancelled;
-	private PartyPlayer player;
-	private Party party;
+	private final PartyPlayer player;
+	private final Party party;
 	private String message;
 	
 	public ChatEventHook(PartyPlayer player, Party party, String message) {
@@ -17,19 +17,19 @@ public class ChatEventHook extends BukkitPartiesChatEvent {
 		this.message = message;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NotNull
+	@NonNull
 	@Override
 	public String getMessage() {
 		return message;

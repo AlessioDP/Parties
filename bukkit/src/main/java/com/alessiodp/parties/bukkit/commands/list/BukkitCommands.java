@@ -1,12 +1,12 @@
 package com.alessiodp.parties.bukkit.commands.list;
 
+import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
-import com.alessiodp.parties.common.commands.list.PartiesCommand;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import lombok.Getter;
 
-public enum BukkitCommands implements PartiesCommand {
+public enum BukkitCommands implements ADPCommand {
 	CLAIM,
 	CONFIRM,
 	HOME,
@@ -39,7 +39,8 @@ public enum BukkitCommands implements PartiesCommand {
 		BukkitCommands.SETHOME.permission = PartiesPermission.SETHOME.toString();
 	}
 	
-	public String getType() {
+	@Override
+	public String getOriginalName() {
 		return this.name();
 	}
 }

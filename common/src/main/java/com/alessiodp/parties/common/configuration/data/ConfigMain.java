@@ -1,56 +1,47 @@
 package com.alessiodp.parties.common.configuration.data;
 
+import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
+import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.ConfigurationFile;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.configuration.adapter.ConfigurationAdapter;
-import com.alessiodp.parties.common.configuration.adapter.ConfigurationSectionAdapter;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 
 import java.util.HashMap;
 import java.util.List;
 
 
-public abstract class ConfigMain extends ConfigurationFile {
+public abstract class ConfigMain extends PartiesConfigurationFile {
 	// Parties settings
 	public static boolean		PARTIES_UPDATES_CHECK;
 	public static boolean		PARTIES_UPDATES_WARN;
-	public static boolean		PARTIES_JLMESSAGES;
+	public static boolean		PARTIES_LOGGING_DEBUG;
+	public static boolean		PARTIES_LOGGING_SAVE_ENABLE;
+	public static String		PARTIES_LOGGING_SAVE_FORMAT;
+	public static String		PARTIES_LOGGING_SAVE_FILE;
+	public static boolean		PARTIES_JOINLEAVEMESSAGES;
 	
 	
 	// Storage settings
-	public static String		STORAGE_TYPE_LOG;
 	public static String		STORAGE_TYPE_DATABASE;
-	public static String		STORAGE_LOG_FORMAT;
-	public static boolean		STORAGE_LOG_CHAT;
-	public static boolean		STORAGE_LOG_PRINTCONSOLE;
-	public static int			STORAGE_LOG_LEVEL;
-	public static boolean		STORAGE_MIGRATE_INIT_YAML;
-	public static boolean		STORAGE_MIGRATE_INIT_MYSQL;
-	public static boolean		STORAGE_MIGRATE_INIT_SQLITE;
-	public static boolean		STORAGE_MIGRATE_ONLYCONSOLE;
-	public static String		STORAGE_MIGRATE_SUFFIX;
-	
-	public static String		STORAGE_SETTINGS_FILE_TXT_LOGNAME;
-	public static String		STORAGE_SETTINGS_FILE_YAML_DBNAME;
-	public static int			STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE;
-	public static boolean		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD;
-	public static String		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX;
-	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES;
-	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS;
-	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG;
-	public static String		STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS;
-	public static String		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS;
-	public static String		STORAGE_SETTINGS_SQL_MYSQL_PORT;
-	public static String		STORAGE_SETTINGS_SQL_MYSQL_DATABASE;
-	public static String		STORAGE_SETTINGS_SQL_MYSQL_USERNAME;
-	public static String		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD;
-	public static int			STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE;
-	public static int			STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME;
-	public static boolean		STORAGE_SETTINGS_SQL_MYSQL_USESSL;
-	public static String		STORAGE_SETTINGS_SQL_MYSQL_CHARSET;
-	public static String		STORAGE_SETTINGS_SQL_SQLITE_DBNAME;
 	public static boolean		STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT;
 	public static int			STORAGE_SETTINGS_NONE_DELAYDELETEPARTY;
+	public static String		STORAGE_SETTINGS_YAML_DBFILE;
+	public static int			STORAGE_SETTINGS_SQLGENERAL_VARCHARSIZE;
+	public static boolean		STORAGE_SETTINGS_SQLGENERAL_UPGRADE_SAVEOLD;
+	public static String		STORAGE_SETTINGS_SQLGENERAL_UPGRADE_OLDSUFFIX;
+	public static String		STORAGE_SETTINGS_SQLGENERAL_TABLES_PARTIES;
+	public static String		STORAGE_SETTINGS_SQLGENERAL_TABLES_PLAYERS;
+	public static String		STORAGE_SETTINGS_SQLGENERAL_TABLES_VERSIONS;
+	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
+	public static String		STORAGE_SETTINGS_MYSQL_ADDRESS;
+	public static String		STORAGE_SETTINGS_MYSQL_PORT;
+	public static String		STORAGE_SETTINGS_MYSQL_DATABASE;
+	public static String		STORAGE_SETTINGS_MYSQL_USERNAME;
+	public static String		STORAGE_SETTINGS_MYSQL_PASSWORD;
+	public static int			STORAGE_SETTINGS_MYSQL_POOLSIZE;
+	public static int			STORAGE_SETTINGS_MYSQL_CONNLIFETIME;
+	public static boolean		STORAGE_SETTINGS_MYSQL_USESSL;
+	public static String		STORAGE_SETTINGS_MYSQL_CHARSET;
 	
 	
 	// Additional settings
@@ -73,6 +64,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY;
 	public static String		ADDITIONAL_PLACEHOLDER_KILLS;
 	public static String		ADDITIONAL_PLACEHOLDER_MOTD;
+	public static String		ADDITIONAL_PLACEHOLDER_OUTPARTY;
 	public static String		ADDITIONAL_PLACEHOLDER_PARTY;
 	public static String		ADDITIONAL_PLACEHOLDER_RANK_NAME;
 	public static String		ADDITIONAL_PLACEHOLDER_RANK_CHAT;
@@ -101,7 +93,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_KICK;
 	public static String		COMMANDS_CMD_LEAVE;
 	public static String		COMMANDS_CMD_LIST;
-	public static String		COMMANDS_CMD_MIGRATE;
 	public static String		COMMANDS_CMD_MOTD;
 	public static String		COMMANDS_CMD_MUTE;
 	public static String		COMMANDS_CMD_PASSWORD;
@@ -121,51 +112,43 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static List<String>	COMMANDS_ORDER;
 	
 	
-	protected ConfigMain(PartiesPlugin instance) {
-		super(instance);
+	protected ConfigMain(PartiesPlugin plugin) {
+		super(plugin);
 	}
 	
+	@Override
 	public void loadDefaults() {
 		// Parties settings
 		PARTIES_UPDATES_CHECK = true;
 		PARTIES_UPDATES_WARN = true;
-		PARTIES_JLMESSAGES = false;
+		PARTIES_LOGGING_DEBUG = false;
+		PARTIES_LOGGING_SAVE_ENABLE = false;
+		PARTIES_LOGGING_SAVE_FORMAT = "%date% [%time%] %message%\n";
+		PARTIES_LOGGING_SAVE_FILE = "log.txt";
+		PARTIES_JOINLEAVEMESSAGES = false;
 		
 		
 		// Storage settings
-		STORAGE_TYPE_LOG = "none";
 		STORAGE_TYPE_DATABASE = "yaml";
-		STORAGE_LOG_FORMAT = "%date% [%time%] (%level%) {%position%} %message%\n";
-		STORAGE_LOG_CHAT = true;
-		STORAGE_LOG_PRINTCONSOLE = true;
-		STORAGE_LOG_LEVEL = 1;
-		STORAGE_MIGRATE_INIT_YAML = false;
-		STORAGE_MIGRATE_INIT_MYSQL = false;
-		STORAGE_MIGRATE_INIT_SQLITE = false;
-		STORAGE_MIGRATE_ONLYCONSOLE = true;
-		STORAGE_MIGRATE_SUFFIX = "_backup";
-		
-		STORAGE_SETTINGS_FILE_TXT_LOGNAME = "log.txt";
-		STORAGE_SETTINGS_FILE_YAML_DBNAME = "data.yml";
-		STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE = 255;
-		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD = true;
-		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX = "_backup";
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES = "parties_parties";
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS = "parties_players";
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = "parties_log";
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS = "parties_versions";
-		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS = "localhost";
-		STORAGE_SETTINGS_SQL_MYSQL_PORT = "3306";
-		STORAGE_SETTINGS_SQL_MYSQL_DATABASE = "database";
-		STORAGE_SETTINGS_SQL_MYSQL_USERNAME = "username";
-		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD = "password";
-		STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE = 10;
-		STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME = 1800000;
-		STORAGE_SETTINGS_SQL_MYSQL_USESSL = false;
-		STORAGE_SETTINGS_SQL_MYSQL_CHARSET = "utf8";
-		STORAGE_SETTINGS_SQL_SQLITE_DBNAME = "database.db";
 		STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT = true;
 		STORAGE_SETTINGS_NONE_DELAYDELETEPARTY = 600;
+		STORAGE_SETTINGS_YAML_DBFILE = "database.yml";
+		STORAGE_SETTINGS_SQLGENERAL_VARCHARSIZE = 255;
+		STORAGE_SETTINGS_SQLGENERAL_UPGRADE_SAVEOLD = true;
+		STORAGE_SETTINGS_SQLGENERAL_UPGRADE_OLDSUFFIX = "_backup";
+		STORAGE_SETTINGS_SQLGENERAL_TABLES_PARTIES = "parties_parties";
+		STORAGE_SETTINGS_SQLGENERAL_TABLES_PLAYERS = "parties_players";
+		STORAGE_SETTINGS_SQLGENERAL_TABLES_VERSIONS = "parties_versions";
+		STORAGE_SETTINGS_SQLITE_DBFILE = "database.db";
+		STORAGE_SETTINGS_MYSQL_ADDRESS = "localhost";
+		STORAGE_SETTINGS_MYSQL_PORT = "3306";
+		STORAGE_SETTINGS_MYSQL_DATABASE = "database";
+		STORAGE_SETTINGS_MYSQL_USERNAME = "username";
+		STORAGE_SETTINGS_MYSQL_PASSWORD = "password";
+		STORAGE_SETTINGS_MYSQL_POOLSIZE = 10;
+		STORAGE_SETTINGS_MYSQL_CONNLIFETIME = 1800000;
+		STORAGE_SETTINGS_MYSQL_USESSL = false;
+		STORAGE_SETTINGS_MYSQL_CHARSET = "utf8";
 		
 		
 		// Additional features
@@ -188,6 +171,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
 		ADDITIONAL_PLACEHOLDER_KILLS = "%kills%";
 		ADDITIONAL_PLACEHOLDER_MOTD = "%motd%";
+		ADDITIONAL_PLACEHOLDER_OUTPARTY = "%out_party%";
 		ADDITIONAL_PLACEHOLDER_PARTY = "%party%";
 		ADDITIONAL_PLACEHOLDER_RANK_NAME = "%rank_name%";
 		ADDITIONAL_PLACEHOLDER_RANK_CHAT = "%rank_chat%";
@@ -218,7 +202,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_KICK = "kick";
 		COMMANDS_CMD_LEAVE = "leave";
 		COMMANDS_CMD_LIST = "list";
-		COMMANDS_CMD_MIGRATE = "migrate";
 		COMMANDS_CMD_MOTD = "motd";
 		COMMANDS_CMD_MUTE = "mute";
 		COMMANDS_CMD_PASSWORD = "password";
@@ -241,43 +224,34 @@ public abstract class ConfigMain extends ConfigurationFile {
 		// Parties settings
 		PARTIES_UPDATES_CHECK = confAdapter.getBoolean("parties.updates.check", PARTIES_UPDATES_CHECK);
 		PARTIES_UPDATES_WARN = confAdapter.getBoolean("parties.updates.warn", PARTIES_UPDATES_WARN);
-		PARTIES_JLMESSAGES = confAdapter.getBoolean("parties.join-leave-messages", PARTIES_JLMESSAGES);
+		PARTIES_LOGGING_DEBUG = confAdapter.getBoolean("parties.logging.debug", PARTIES_LOGGING_DEBUG);
+		PARTIES_LOGGING_SAVE_ENABLE = confAdapter.getBoolean("parties.logging.save-file.enable", PARTIES_LOGGING_SAVE_ENABLE);
+		PARTIES_LOGGING_SAVE_FORMAT = confAdapter.getString("parties.logging.save-file.format", PARTIES_LOGGING_SAVE_FORMAT);
+		PARTIES_LOGGING_SAVE_FILE = confAdapter.getString("parties.logging.save-file.file", PARTIES_LOGGING_SAVE_FILE);
+		PARTIES_JOINLEAVEMESSAGES = confAdapter.getBoolean("parties.join-leave-messages", PARTIES_JOINLEAVEMESSAGES);
 		
 		
 		// Storage settings
-		STORAGE_TYPE_LOG = confAdapter.getString("storage.log-storage-type", STORAGE_TYPE_LOG);
 		STORAGE_TYPE_DATABASE = confAdapter.getString("storage.database-storage-type", STORAGE_TYPE_DATABASE);
-		STORAGE_LOG_FORMAT = confAdapter.getString("storage.log-settings.format", STORAGE_LOG_FORMAT);
-		STORAGE_LOG_CHAT = confAdapter.getBoolean("storage.log-settings.chat", STORAGE_LOG_CHAT);
-		STORAGE_LOG_PRINTCONSOLE = confAdapter.getBoolean("storage.log-settings.print-console", STORAGE_LOG_PRINTCONSOLE);
-		STORAGE_LOG_LEVEL = confAdapter.getInt("storage.log-settings.log-level", STORAGE_LOG_LEVEL);
-		STORAGE_MIGRATE_INIT_YAML = confAdapter.getBoolean("storage.migrate-settings.initialize-storage.yaml", STORAGE_MIGRATE_INIT_YAML);
-		STORAGE_MIGRATE_INIT_MYSQL = confAdapter.getBoolean("storage.migrate-settings.initialize-storage.mysql", STORAGE_MIGRATE_INIT_MYSQL);
-		STORAGE_MIGRATE_INIT_SQLITE = confAdapter.getBoolean("storage.migrate-settings.initialize-storage.sqlite", STORAGE_MIGRATE_INIT_SQLITE);
-		STORAGE_MIGRATE_ONLYCONSOLE = confAdapter.getBoolean("storage.migrate-settings.migrate-only-console", STORAGE_MIGRATE_ONLYCONSOLE);
-		STORAGE_MIGRATE_SUFFIX = confAdapter.getString("storage.migrate-settings.migration-suffix", STORAGE_MIGRATE_SUFFIX);
-		
-		STORAGE_SETTINGS_FILE_TXT_LOGNAME = confAdapter.getString("storage.storage-settings.file-based.txt.log-name", STORAGE_SETTINGS_FILE_TXT_LOGNAME);
-		STORAGE_SETTINGS_FILE_YAML_DBNAME = confAdapter.getString("storage.storage-settings.file-based.yaml.database-name", STORAGE_SETTINGS_FILE_YAML_DBNAME);
-		STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE = confAdapter.getInt("storage.storage-settings.sql-based.sql-based.general-settings.varchar-size", STORAGE_SETTINGS_SQL_GENERAL_VARCHARSIZE);
-		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD = confAdapter.getBoolean("storage.storage-settings.sql-based.sql-based.general-settings.upgrade.save-old-table", STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_SAVEOLD);
-		STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX = confAdapter.getString("storage.storage-settings.sql-based.sql-based.general-settings.upgrade.old-table-suffix", STORAGE_SETTINGS_SQL_GENERAL_UPGRADE_OLDSUFFIX);
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.parties", STORAGE_SETTINGS_SQL_GENERAL_TABLES_PARTIES);
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.players", STORAGE_SETTINGS_SQL_GENERAL_TABLES_PLAYERS);
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.log", STORAGE_SETTINGS_SQL_GENERAL_TABLES_LOG);
-		STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS = confAdapter.getString("storage.storage-settings.sql-based.general-settings.tables.versions", STORAGE_SETTINGS_SQL_GENERAL_TABLES_VERSIONS);
-		STORAGE_SETTINGS_SQL_MYSQL_ADDRESS = confAdapter.getString("storage.storage-settings.sql-based.mysql.address", STORAGE_SETTINGS_SQL_MYSQL_ADDRESS);
-		STORAGE_SETTINGS_SQL_MYSQL_PORT = confAdapter.getString("storage.storage-settings.sql-based.mysql.port", STORAGE_SETTINGS_SQL_MYSQL_PORT);
-		STORAGE_SETTINGS_SQL_MYSQL_DATABASE = confAdapter.getString("storage.storage-settings.sql-based.mysql.database", STORAGE_SETTINGS_SQL_MYSQL_DATABASE);
-		STORAGE_SETTINGS_SQL_MYSQL_USERNAME = confAdapter.getString("storage.storage-settings.sql-based.mysql.username", STORAGE_SETTINGS_SQL_MYSQL_USERNAME);
-		STORAGE_SETTINGS_SQL_MYSQL_PASSWORD = confAdapter.getString("storage.storage-settings.sql-based.mysql.password", STORAGE_SETTINGS_SQL_MYSQL_PASSWORD);
-		STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE = confAdapter.getInt("storage.storage-settings.sql-based.mysql.pool-size", STORAGE_SETTINGS_SQL_MYSQL_POOLSIZE);
-		STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME = confAdapter.getInt("storage.storage-settings.sql-based.mysql.connection-lifetime", STORAGE_SETTINGS_SQL_MYSQL_CONNLIFETIME);
-		STORAGE_SETTINGS_SQL_MYSQL_USESSL = confAdapter.getBoolean("storage.storage-settings.sql-based.mysql.use-ssl", STORAGE_SETTINGS_SQL_MYSQL_USESSL);
-		STORAGE_SETTINGS_SQL_MYSQL_CHARSET = confAdapter.getString("storage.storage-settings.sql-based.mysql.charset", STORAGE_SETTINGS_SQL_MYSQL_CHARSET);
-		STORAGE_SETTINGS_SQL_SQLITE_DBNAME = confAdapter.getString("storage.storage-settings.sql-based.sqlite.database-name", STORAGE_SETTINGS_SQL_SQLITE_DBNAME);
 		STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT = confAdapter.getBoolean("storage.storage-settings.none.disband-on-leader-left", STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT);
 		STORAGE_SETTINGS_NONE_DELAYDELETEPARTY = confAdapter.getInt("storage.storage-settings.none.delay-delete-party", STORAGE_SETTINGS_NONE_DELAYDELETEPARTY);
+		STORAGE_SETTINGS_YAML_DBFILE = confAdapter.getString("storage.storage-settings.yaml.database-file", STORAGE_SETTINGS_YAML_DBFILE);
+		STORAGE_SETTINGS_SQLGENERAL_VARCHARSIZE = confAdapter.getInt("storage.storage-settings.general-sql-settings.varchar-size", STORAGE_SETTINGS_SQLGENERAL_VARCHARSIZE);
+		STORAGE_SETTINGS_SQLGENERAL_UPGRADE_SAVEOLD = confAdapter.getBoolean("storage.storage-settings.general-sql-settings.upgrade.save-old-table", STORAGE_SETTINGS_SQLGENERAL_UPGRADE_SAVEOLD);
+		STORAGE_SETTINGS_SQLGENERAL_UPGRADE_OLDSUFFIX = confAdapter.getString("storage.storage-settings.general-sql-settings.upgrade.old-table-suffix", STORAGE_SETTINGS_SQLGENERAL_UPGRADE_OLDSUFFIX);
+		STORAGE_SETTINGS_SQLGENERAL_TABLES_PARTIES = confAdapter.getString("storage.storage-settings.general-sql-settings.tables.parties", STORAGE_SETTINGS_SQLGENERAL_TABLES_PARTIES);
+		STORAGE_SETTINGS_SQLGENERAL_TABLES_PLAYERS = confAdapter.getString("storage.storage-settings.general-sql-settings.tables.players", STORAGE_SETTINGS_SQLGENERAL_TABLES_PLAYERS);
+		STORAGE_SETTINGS_SQLGENERAL_TABLES_VERSIONS = confAdapter.getString("storage.storage-settings.general-sql-settings.tables.versions", STORAGE_SETTINGS_SQLGENERAL_TABLES_VERSIONS);
+		STORAGE_SETTINGS_SQLITE_DBFILE = confAdapter.getString("storage.storage-settings.sqlite.database-file", STORAGE_SETTINGS_SQLITE_DBFILE);
+		STORAGE_SETTINGS_MYSQL_ADDRESS = confAdapter.getString("storage.storage-settings.mysql.address", STORAGE_SETTINGS_MYSQL_ADDRESS);
+		STORAGE_SETTINGS_MYSQL_PORT = confAdapter.getString("storage.storage-settings.mysql.port", STORAGE_SETTINGS_MYSQL_PORT);
+		STORAGE_SETTINGS_MYSQL_DATABASE = confAdapter.getString("storage.storage-settings.mysql.database", STORAGE_SETTINGS_MYSQL_DATABASE);
+		STORAGE_SETTINGS_MYSQL_USERNAME = confAdapter.getString("storage.storage-settings.mysql.username", STORAGE_SETTINGS_MYSQL_USERNAME);
+		STORAGE_SETTINGS_MYSQL_PASSWORD = confAdapter.getString("storage.storage-settings.mysql.password", STORAGE_SETTINGS_MYSQL_PASSWORD);
+		STORAGE_SETTINGS_MYSQL_POOLSIZE = confAdapter.getInt("storage.storage-settings.mysql.pool-size", STORAGE_SETTINGS_MYSQL_POOLSIZE);
+		STORAGE_SETTINGS_MYSQL_CONNLIFETIME = confAdapter.getInt("storage.storage-settings.mysql.connection-lifetime", STORAGE_SETTINGS_MYSQL_CONNLIFETIME);
+		STORAGE_SETTINGS_MYSQL_USESSL = confAdapter.getBoolean("storage.storage-settings.mysql.use-ssl", STORAGE_SETTINGS_MYSQL_USESSL);
+		STORAGE_SETTINGS_MYSQL_CHARSET = confAdapter.getString("storage.storage-settings.mysql.charset", STORAGE_SETTINGS_MYSQL_CHARSET);
 		
 		
 		// Additional settings
@@ -300,6 +274,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY = confAdapter.getString("additional.placeholders.experience-levelup-necessary", ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY);
 		ADDITIONAL_PLACEHOLDER_KILLS = confAdapter.getString("additional.placeholders.kills", ADDITIONAL_PLACEHOLDER_KILLS);
 		ADDITIONAL_PLACEHOLDER_MOTD = confAdapter.getString("additional.placeholders.motd", ADDITIONAL_PLACEHOLDER_MOTD);
+		ADDITIONAL_PLACEHOLDER_OUTPARTY = confAdapter.getString("additional.placeholders.out-party", ADDITIONAL_PLACEHOLDER_OUTPARTY);
 		ADDITIONAL_PLACEHOLDER_PARTY = confAdapter.getString("additional.placeholders.party", ADDITIONAL_PLACEHOLDER_PARTY);
 		ADDITIONAL_PLACEHOLDER_RANK_NAME = confAdapter.getString("additional.placeholders.rank-name", ADDITIONAL_PLACEHOLDER_RANK_NAME);
 		ADDITIONAL_PLACEHOLDER_RANK_CHAT = confAdapter.getString("additional.placeholders. rank-chat", ADDITIONAL_PLACEHOLDER_RANK_CHAT);
@@ -328,7 +303,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_CMD_KICK = confAdapter.getString("commands.main-commands.kick", COMMANDS_CMD_KICK);
 		COMMANDS_CMD_LEAVE = confAdapter.getString("commands.main-commands.leave", COMMANDS_CMD_LEAVE);
 		COMMANDS_CMD_LIST = confAdapter.getString("commands.main-commands.list", COMMANDS_CMD_LIST);
-		COMMANDS_CMD_MIGRATE = confAdapter.getString("commands.main-commands.migrate", COMMANDS_CMD_MIGRATE);
 		COMMANDS_CMD_MOTD = confAdapter.getString("commands.main-commands.motd", COMMANDS_CMD_MOTD);
 		COMMANDS_CMD_MUTE = confAdapter.getString("commands.main-commands.mute", COMMANDS_CMD_MUTE);
 		COMMANDS_CMD_PASSWORD = confAdapter.getString("commands.main-commands.password", COMMANDS_CMD_PASSWORD);
@@ -356,11 +330,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 			for (String key : csPlaceholders.getKeys()) {
 				customs.put(key, csPlaceholders.getString(key, ""));
 			}
-			
 			ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS = customs;
 		} else {
 			// Give error: no ranks node found
-			plugin.log(Constants.CONFIGURATION_FAILED_PLACEHOLDERS_NOTFOUND);
+			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_PLACEHOLDERS_NOTFOUND);
 		}
 	}
 }

@@ -1,55 +1,60 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.commands.list.PartiesCommand;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandHelp extends AbstractCommand {
+public class CommandHelp extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = false;
 	
-	public CommandHelp(PartiesPlugin instance) {
-		super(instance);
+	public CommandHelp(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
-
+	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
-		/*
-		 * Checks for command prerequisites
-		 */
+		// Checks for command prerequisites
 		if (!sender.hasPermission(PartiesPermission.HELP.toString())) {
-			pp.sendNoPermission(PartiesPermission.HELP);
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.HELP);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command starts
-		 */
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_HELP
+				.replace("{player}", sender.getName())
+				.replace("{page}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
+		
+		// Command starts
 		// Get all allowed commands
 		List<String> list = new ArrayList<>();
-		List<PartiesCommand> allowedCommands = pp.getAllowedCommands();
-		for(PartiesCommand pc : plugin.getCommandManager().getOrderedCommands()) {
-			if (allowedCommands.contains(pc)) {
-				list.add(pc.getHelp());
-			}
+		for (ADPCommand cmd : partyPlayer.getAllowedCommands()) {
+			if (mainCommand.getEnabledSubCommands().contains(cmd))
+				list.add(cmd.getHelp());
 		}
 		
 		// Split commands per page
@@ -73,18 +78,18 @@ public class CommandHelp extends AbstractCommand {
 		
 		// Start printing
 		int commandNumber = 0;
-		pp.sendMessage(Messages.HELP_HEADER
+		sendMessage(sender, partyPlayer, Messages.HELP_HEADER
 				.replace("%page%", Integer.toString(page))
 				.replace("%maxpages%", Integer.toString(maxpages)));
 		for (String string : list) {
 			int currentChoosenPage = (page-1) * ConfigMain.COMMANDS_HELP_PERPAGE;
 			if (commandNumber >= currentChoosenPage
 					&& commandNumber < currentChoosenPage + ConfigMain.COMMANDS_HELP_PERPAGE) {
-				pp.sendMessage(string);
+				sendMessage(sender, partyPlayer, string);
 			}
 			commandNumber++;
 		}
-		pp.sendMessage(Messages.HELP_FOOTER
+		sendMessage(sender, partyPlayer, Messages.HELP_FOOTER
 				.replace("%page%", Integer.toString(page))
 				.replace("%maxpages%", Integer.toString(maxpages)));
 	}

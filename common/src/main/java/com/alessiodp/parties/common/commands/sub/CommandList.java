@@ -1,77 +1,74 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandList extends AbstractCommand {
+public class CommandList extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = true;
 	
-	public CommandList(PartiesPlugin instance) {
-		super(instance);
+	public CommandList(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = sender.isPlayer() ? ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID()) : null;
 		
-		/*
-		 * Checks for command prerequisites
-		 */
-		if (!sender.hasPermission(PartiesPermission.LIST.toString())) {
-			pp.sendNoPermission(PartiesPermission.LIST);
+		// Checks for command prerequisites
+		if (partyPlayer != null && !sender.hasPermission(PartiesPermission.LIST.toString())) {
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.LIST);
 			return false;
 		}
 		
 		if (commandData.getArgs().length > 2) {
-			pp.sendMessage(Messages.ADDCMD_LIST_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_WRONGCMD);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
-		commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command handling
-		 */
+		// Command handling
 		int selectedPage = 1;
 		if (commandData.getArgs().length == 2) {
 			try {
 				selectedPage = Integer.parseInt(commandData.getArgs()[1]);
 			} catch(NumberFormatException ex) {
-				pp.sendMessage(Messages.ADDCMD_LIST_WRONGCMD);
+				sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_WRONGCMD);
 				return;
 			}
 		}
 		
-		/*
-		 * Command starts
-		 */
+		// Command starts
 		// Get all parties
 		List<PartyImpl> parties = new ArrayList<>();
-		for (PartyImpl party : plugin.getDatabaseManager().getAllParties().join()) {
+		for (PartyImpl party : ((PartiesPlugin) plugin).getDatabaseManager().getAllParties()) {
 			if (party != null) {
 				if (!ConfigParties.LIST_HIDDENPARTIES.contains(party.getName())) {
-					party.reloadOnlinePlayers();
-					if (party.getNumberOnlinePlayers() >= ConfigParties.LIST_FILTERMIN)
+					party.refreshOnlineMembers();
+					if (party.getOnlineMembers(false).size() >= ConfigParties.LIST_FILTERMIN)
 						parties.add(party);
 				}
 			}
@@ -97,7 +94,7 @@ public class CommandList extends AbstractCommand {
 		
 		// Start printing
 		int currentPage = 0;
-		pp.sendMessage(Messages.ADDCMD_LIST_HEADER
+		sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_HEADER
 				.replace("%number%",		Integer.toString(parties.size()))
 				.replace("%page%",		Integer.toString(selectedPage))
 				.replace("%maxpages%",	Integer.toString(maxPages)));
@@ -106,21 +103,21 @@ public class CommandList extends AbstractCommand {
 			for (PartyImpl party : parties) {
 				int currentChoosenPage = (selectedPage - 1) * ConfigParties.LIST_PERPAGE;
 				if (currentPage >= currentChoosenPage && currentPage < (currentChoosenPage + ConfigParties.LIST_PERPAGE)) {
-					pp.sendMessage(plugin.getMessageUtils().convertPartyPlaceholders(Messages.ADDCMD_LIST_FORMATPARTY, party));
+					sendMessage(sender, partyPlayer, ((PartiesPlugin) plugin).getMessageUtils().convertPartyPlaceholders(Messages.ADDCMD_LIST_FORMATPARTY, party));
 				}
 				currentPage++;
 			}
 		} else {
-			pp.sendMessage(Messages.ADDCMD_LIST_NOONE);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_NOONE);
 		}
 		
-		pp.sendMessage(Messages.ADDCMD_LIST_FOOTER
+		sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_FOOTER
 				.replace("%number%",		Integer.toString(parties.size()))
 				.replace("%page%",		Integer.toString(selectedPage))
 				.replace("%maxpages%",	Integer.toString(maxPages)));
 		
-		LoggerManager.log(LogLevel.MEDIUM, Constants.DEBUG_CMD_LIST
-				.replace("{player}", pp.getName()), true);
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_LIST
+				.replace("{player}", sender.getName()), true);
 	}
 	
 	private void order(List<PartyImpl> list, OrderType order) {
@@ -144,7 +141,7 @@ public class CommandList extends AbstractCommand {
 		switch (order) {
 			case PLAYERS:
 				// Online players order
-				ret = first.getNumberOnlinePlayers() > second.getNumberOnlinePlayers();
+				ret = first.getOnlineMembers(false).size() > second.getOnlineMembers(false).size();
 				break;
 			case ALLPLAYERS:
 				// Total players order

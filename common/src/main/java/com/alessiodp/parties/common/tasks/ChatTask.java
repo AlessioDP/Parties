@@ -1,26 +1,22 @@
 package com.alessiodp.parties.common.tasks;
 
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.Constants;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class ChatTask implements Runnable {
-	private PartiesPlugin plugin;
-	private UUID uuid;
-	
-	public ChatTask(PartiesPlugin instance, UUID playerUUID) {
-		plugin = instance;
-		uuid = playerUUID;
-	}
+	@NonNull private final PartiesPlugin plugin;
+	@NonNull private final UUID uuid;
 	
 	@Override
 	public void run() {
 		plugin.getCooldownManager().getChatCooldown().remove(uuid);
 		
-		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_TASK_CHAT_EXPIRE
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_CHAT_EXPIRE
 				.replace("{uuid}", uuid.toString()), true);
 	}
 	

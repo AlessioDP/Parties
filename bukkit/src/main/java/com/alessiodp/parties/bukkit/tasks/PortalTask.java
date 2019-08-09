@@ -6,8 +6,8 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import java.util.UUID;
 
 public class PortalTask implements Runnable {
-	private PartiesPlugin plugin;
-	private UUID playerUUID;
+	private final PartiesPlugin plugin;
+	private final UUID playerUUID;
 	
 	public PortalTask(PartiesPlugin instance, UUID uuid) {
 		plugin = instance;
@@ -18,7 +18,7 @@ public class PortalTask implements Runnable {
 	public void run() {
 		BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getListPartyPlayers().get(playerUUID);
 		if (pp != null)
-			pp.setPortalTimeoutTask(-1);
+			pp.setPortalTimeoutTask(null);
 	}
 
 }

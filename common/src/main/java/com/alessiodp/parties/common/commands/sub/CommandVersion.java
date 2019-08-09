@@ -1,51 +1,61 @@
 package com.alessiodp.parties.common.commands.sub;
 
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.addons.internal.ADPUpdater;
-import com.alessiodp.parties.common.commands.utils.AbstractCommand;
-import com.alessiodp.parties.common.commands.utils.CommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
+import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.players.PartiesPermission;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.user.User;
+import lombok.Getter;
 
-public class CommandVersion extends AbstractCommand {
+public class CommandVersion extends PartiesSubCommand {
+	@Getter private final boolean executableByConsole = true;
 	
-	public CommandVersion(PartiesPlugin instance) {
-		super(instance);
+	public CommandVersion(ADPPlugin plugin, ADPMainCommand mainCommand) {
+		super(plugin, mainCommand);
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = sender.isPlayer() ? ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID()) : null;
 		
-		/*
-		 * Checks for command prerequisites
-		 */
-		if (!sender.hasPermission(PartiesPermission.ADMIN_VERSION.toString())) {
-			pp.sendNoPermission(PartiesPermission.ADMIN_VERSION);
+		// Checks for command prerequisites
+		if (partyPlayer != null && !sender.hasPermission(PartiesPermission.ADMIN_VERSION.toString())) {
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.ADMIN_VERSION);
 			return false;
 		}
 		
-		commandData.setPartyPlayer(pp);
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
-		PartyPlayerImpl pp = commandData.getPartyPlayer();
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		/*
-		 * Command starts
-		 */
+		// Command handling
+		if (sender.isPlayer()) {
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_VERSION
+					.replace("{player}", sender.getName()), true);
+		} else {
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_VERSION_CONSOLE, true);
+		}
 		
+		// Command starts
 		String version = plugin.getVersion();
-		String newVersion = ADPUpdater.getFoundVersion().isEmpty() ? version : ADPUpdater.getFoundVersion();
+		String newVersion = plugin.getAdpUpdater().getFoundVersion().isEmpty() ? version : plugin.getAdpUpdater().getFoundVersion();
 		String message = version.equals(newVersion) ? Messages.MAINCMD_VERSION_UPDATED : Messages.MAINCMD_VERSION_OUTDATED;
 		
-		pp.sendMessage(message
+		sendMessage(sender, partyPlayer, message
 				.replace("%version%", version)
-				.replace("%newversion%", newVersion));
+				.replace("%newversion%", newVersion)
+				.replace("%platform%", plugin.getPlatform()));
 	}
 }

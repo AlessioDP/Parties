@@ -1,52 +1,53 @@
 package com.alessiodp.parties.common.players.objects;
 
+import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.addons.external.LLAPIHandler;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
-import com.alessiodp.parties.common.commands.list.PartiesCommand;
-import com.alessiodp.parties.common.configuration.Constants;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
-import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.logging.LogLevel;
-import com.alessiodp.parties.common.logging.LoggerManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.PartiesPermission;
-import com.alessiodp.parties.common.user.User;
+import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.api.interfaces.Rank;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.common.players.spy.SpyMessage;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class PartyPlayerImpl implements PartyPlayer {
-	protected PartiesPlugin plugin;
+	protected final PartiesPlugin plugin;
 	
 	// Interface fields
-	@Getter @Setter private UUID playerUUID;
-	@Getter @Setter private String name;
-	@Getter @Setter private long nameTimestamp;
-	@Getter @Setter private int rank;
-	@Getter @Setter private String partyName;
-	@Getter @Setter private boolean spy;
-	@Getter @Setter private boolean muted;
+	@Getter private UUID playerUUID;
+	@Getter private String name;
+	@Getter private int rank;
+	@Getter private String partyName;
+	@Getter private boolean spy;
+	@Getter private boolean muted;
 	
-	@Getter @Setter private UUID createID;
-	@Getter @Setter private boolean chatParty;
-	@Getter @Setter private String lastInvite;
+	// Plugin fields
+	@Getter private UUID createID;
+	@Getter private boolean chatParty;
+	@Getter private HashMap<PartyImpl, UUID> partyInvites;
 	@Getter private HashSet<String> ignoredParties;
+	protected final ReentrantLock lock = new ReentrantLock();
 	
-	protected PartyPlayerImpl(PartiesPlugin instance, UUID uuid) {
-		plugin = instance;
+	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid) {
+		this.plugin = plugin;
 		
 		playerUUID = uuid;
 		name = plugin.getOfflinePlayer(uuid).getName();
-		if (name == null)
-			name = "";
-		nameTimestamp = System.currentTimeMillis() / 1000L;
+		if (name == null || name.isEmpty())
+			name = LLAPIHandler.getPlayerName(playerUUID); // Use LastLoginAPI to get the name
 		rank = ConfigParties.RANK_SET_DEFAULT;
 		partyName = "";
 		spy = false;
@@ -54,36 +55,189 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		
 		createID = UUID.randomUUID();
 		chatParty = false;
-		lastInvite = "";
+		partyInvites = new HashMap<>();
 		ignoredParties = new HashSet<>();
+	}
+	
+	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid, String name, int rank, String partyName, boolean spy, boolean muted) {
+		this.plugin = plugin;
 		
-		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_INIT
-				.replace("{player}", getName())
-				.replace("{uuid}", getPlayerUUID().toString()), true);
+		playerUUID = uuid;
+		this.name = name;
+		this.rank = rank;
+		this.partyName = partyName;
+		this.spy = spy;
+		this.muted = muted;
+		
+		createID = UUID.randomUUID();
+		chatParty = false;
+		partyInvites = new HashMap<>();
+		ignoredParties = new HashSet<>();
 	}
 	
+	/**
+	 * Get the data from the database
+	 */
+	public void fromDatabase(String partyName, int rank, boolean spy, boolean mute) {
+		lock.lock();
+		this.partyName = partyName;
+		this.rank = rank;
+		this.spy = spy;
+		this.muted = mute;
+		lock.unlock();
+	}
 	
+	/**
+	 * Update the player
+	 */
 	public void updatePlayer() {
-		if (!plugin.getDatabaseManager().getDatabaseType().isNone())
-			plugin.getDatabaseManager().updatePlayer(this);
-		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_UPDATED
-				.replace("{player}", getName()), true);
+		plugin.getDatabaseManager().updatePlayer(this);
 	}
 	
-	public void cleanupPlayer(boolean saveDB) {
-		LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_CLEANUP
+	/**
+	 * Add into party
+	 */
+	public void addIntoParty(String partyName, int rank) {
+		lock.lock();
+		this.partyName = partyName;
+		this.rank = rank;
+		partyInvites.clear();
+		updatePlayer();
+		lock.unlock();
+		
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN
+				.replace("{player}", getName())
+				.replace("{uuid}", getPlayerUUID().toString())
+				.replace("{party}", getPartyName()), true);
+	}
+	
+	/**
+	 * Remove from party
+	 */
+	public void removeFromParty(boolean saveDB) {
+		lock.lock();
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_CLEANUP
 				.replace("{player}", getName()), true);
-		setRank(ConfigParties.RANK_SET_DEFAULT);
-		setPartyName("");
-		setChatParty(false);
+		rank = ConfigParties.RANK_SET_DEFAULT;
+		partyName = "";
+		chatParty = false;
 		
 		if (saveDB) {
 			updatePlayer();
 		}
+		lock.unlock();
+		
+		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE
+				.replace("{player}", getName())
+				.replace("{uuid}", getPlayerUUID().toString())
+				.replace("{party}", getPartyName()), true);
 	}
 	
-	public List<PartiesCommand> getAllowedCommands() {
-		List<PartiesCommand> ret = new ArrayList<>();
+	@Override
+	public void setPartyName(@org.checkerframework.checker.nullness.qual.NonNull String partyName) {
+		lock.lock();
+		this.partyName = partyName;
+		updatePlayer();
+		lock.unlock();
+	}
+	
+	@Override
+	public void setRank(int rank) {
+		lock.lock();
+		this.rank = rank;
+		updatePlayer();
+		lock.unlock();
+	}
+	
+	@Override
+	public void setSpy(boolean spy) {
+		lock.lock();
+		this.spy = spy;
+		updatePlayer();
+		lock.unlock();
+	}
+	
+	@Override
+	public void setMuted(boolean muted) {
+		lock.lock();
+		this.muted = muted;
+		updatePlayer();
+		lock.unlock();
+	}
+	
+	public void setChatParty(boolean chat) {
+		lock.lock();
+		this.chatParty = chat;
+		updatePlayer();
+		lock.unlock();
+	}
+	
+	/**
+	 * Send a message
+	 */
+	public void sendMessage(String message) {
+		sendMessage(message, this, plugin.getPartyManager().getPartyOfPlayer(this));
+	}
+	
+	/**
+	 * Send a message based on victim
+	 */
+	public void sendMessage(String message, PartyPlayerImpl victim) {
+		sendMessage(message, victim, plugin.getPartyManager().getPartyOfPlayer(this));
+	}
+	
+	/**
+	 * Send a message based on party
+	 */
+	public void sendMessage(String message, PartyImpl party) {
+		sendMessage(message, this, party);
+	}
+	
+	/**
+	 * Send a message based on both victim and party
+	 */
+	public void sendMessage(String message, PartyPlayerImpl victim, PartyImpl party) {
+		User user = plugin.getPlayer(getPlayerUUID());
+		plugin.getMessageUtils().sendMessage(user, message, victim, party);
+	}
+	
+	/**
+	 * Perform a party message
+	 */
+	public void performPartyMessage(String message) {
+		if (!message.isEmpty()) {
+			PartyImpl party = plugin.getPartyManager().getPartyOfPlayer(this);
+			if (party != null) {
+				String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_CHAT, party, this);
+				String chatMessage = message;
+				
+				if (ConfigParties.GENERAL_CHAT_ALLOWCOLORS) {
+					User user = plugin.getPlayer(getPlayerUUID());
+					if (user != null
+							&& user.hasPermission(PartiesPermission.CHAT_COLOR.toString())
+							&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_SENDMESSAGE_COLOR)) {
+						chatMessage = plugin.getColorUtils().convertColors(chatMessage);
+					}
+				}
+				
+				formattedMessage = plugin.getColorUtils().convertColors(formattedMessage).replace("%message%", chatMessage);
+				
+				party.dispatchChatMessage(this, formattedMessage, true);
+				
+				plugin.getSpyManager().sendSpyMessage(new SpyMessage(plugin)
+						.setType(SpyMessage.SpyType.MESSAGE)
+						.setMessage(chatMessage)
+						.setParty(party)
+						.setPlayer(this));
+			}
+		}
+	}
+	
+	/**
+	 * Player allowed commands
+	 */
+	public List<ADPCommand> getAllowedCommands() {
+		List<ADPCommand> ret = new ArrayList<>();
 		Rank rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		
@@ -162,74 +316,12 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			ret.add(CommonCommands.RELOAD);
 		if (player.hasPermission(PartiesPermission.ADMIN_VERSION.toString()))
 			ret.add(CommonCommands.VERSION);
-		if (player.hasPermission(PartiesPermission.ADMIN_MIGRATE.toString()) && !ConfigMain.STORAGE_MIGRATE_ONLYCONSOLE)
-			ret.add(CommonCommands.MIGRATE);
 		
 		return ret;
 	}
 	
-	public void compareName(String serverName) {
-		if (getName() != null) {
-			if (!getName().equals(serverName)) {
-				LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_COMPARENAME_CHANGE
-						.replace("{new}", serverName)
-						.replace("{old}", getName())
-						.replace("{uuid}", getPlayerUUID().toString()), true);
-				setName(serverName);
-				updatePlayer();
-			}
-		} else if(!serverName.isEmpty()) {
-			LoggerManager.log(LogLevel.DEBUG, Constants.DEBUG_PLAYER_COMPARENAME_NOTFOUND
-					.replace("{uuid}", getPlayerUUID().toString())
-					.replace("{player}", serverName), true);
-			setName(serverName);
-		}
-	}
-	
-	public void updateNameTimestamp(long timestamp) {
-		setNameTimestamp(timestamp);
-		
-		updatePlayer();
-	}
-	
-	public boolean isVanished() {
-		// Handled by Bukkit
-		return false;
-	}
-	
-	/*
-	 * Send Message
+	/**
+	 * Is the player invisible?
 	 */
-	public void sendNoPermission(PartiesPermission perm) {
-		sendMessage(Messages.PARTIES_PERM_NOPERM
-				.replace("%permission%", perm.toString()));
-	}
-	
-	public void sendMessage(String message) {
-		sendMessage(message, this);
-	}
-	public void sendMessage(String message, PartyPlayerImpl victim) {
-		if (message == null || message.isEmpty())
-			return;
-		PartyImpl party = plugin.getPartyManager().getParty(getPartyName());
-		String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(message, party, victim);
-		formattedMessage = plugin.getMessageUtils().convertColors(formattedMessage);
-		sendDirect(formattedMessage);
-	}
-	public void sendMessage(String message, PartyImpl party) {
-		if (message == null || message.isEmpty())
-			return;
-		
-		String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(message, party, this);
-		formattedMessage = plugin.getMessageUtils().convertColors(formattedMessage);
-		sendDirect(formattedMessage);
-	}
-	
-	
-	public void sendDirect(String message) {
-		User player = plugin.getPlayer(getPlayerUUID());
-		if (player != null) {
-			player.sendMessage(message, false);
-		}
-	}
+	public abstract boolean isVanished();
 }

@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.common.party;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface IPartyPostCreateEvent extends PartiesEvent {
 	/**
@@ -11,7 +11,7 @@ public interface IPartyPostCreateEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NotNull
+	@NonNull
 	PartyPlayer getCreator();
 	
 	/**
@@ -19,6 +19,6 @@ public interface IPartyPostCreateEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NotNull
+	@NonNull
 	Party getParty();
 }
