@@ -103,6 +103,7 @@ public class BukkitEconomyManager extends EconomyManager {
 				break;
 			case TELEPORT:
 				ret = BukkitConfigMain.ADDONS_VAULT_PRICE_TELEPORT;
+				break;
 			default:
 				// Nothing to do
 				break;
