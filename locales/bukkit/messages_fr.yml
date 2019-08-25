@@ -73,7 +73,7 @@ main-commands:
       - "&bChef&7 : %list_leader%"
       - "&bModérateurs&7 : %list_moderator%"
       - "&bMembres&7 : %list_member%"
-      - "&bJoueurs en ligne&7 : %onlinenumber%"
+      - "&bOnline players&7: %online_number%"
   invite:
     sent: "&bVous avez invité %player% dans votre groupe"
     player-invited: "[{\"text\":\"%player% vous a invité dans le groupe %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Voulez-vous \",\"color\":\"aqua\"},{\"text\":\"accepter\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accepter l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\" ou \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"refuser\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\" ?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Vous pouvez utiliser \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" pour choisir.\",\"color\":\"aqua\"}]"
@@ -197,7 +197,7 @@ additional-commands:
     header: "&b============ &lListe des groupes en ligne &r&b============"
     footer: "&b================ &lPage %page% sur %maxpages% &r&b================"
     no-one: "&7Personne"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Afficher les infos","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"En ligne %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cVariables incorrectes : Tapez &7/party list [page]"
   motd:
     changed: "&bMOTD du groupe changé"
@@ -288,7 +288,7 @@ help:
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Recharger les fichiers de configuration du plugin Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     rename: '{"text":"","extra":[{"text":"/party rename [groupe] <nouveau nom>","color":"aqua"},{"text":" - Renommer le groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Espionner les messages des autres groupes","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Afficher les informations du plugin Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Afficher les informations sur le plugin Parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
   additional-commands:
     claim: '{"text":"","extra":[{"text":"/party claim <permission>","color":"aqua"},{"text":" - Accorder des permissions au claim","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party claim "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     color: '{"text":"","extra":[{"text":"/party color <couleur>","color":"aqua"},{"text":" - Changer la couleur du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
@@ -304,4 +304,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Définir/supprimer le home du groupe","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Téléporter votre groupe vers vous","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Exécuter la commande","color":"gold"}}}'
 dont-edit-this:
-  version: 8
+  version: 9
