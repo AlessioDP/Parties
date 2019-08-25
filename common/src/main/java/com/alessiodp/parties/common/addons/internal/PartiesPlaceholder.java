@@ -6,6 +6,8 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public enum PartiesPlaceholder {
 	COLOR_CODE,
@@ -17,17 +19,30 @@ public enum PartiesPlaceholder {
 	EXPERIENCE_LEVELUP_CURRENT,
 	EXPERIENCE_LEVELUP_NECESSARY,
 	KILLS,
+	LEADER_NAME,
+	LEADER_UUID,
+	LIST_RANK,
+	LIST_RANK_NUMBER,
+	LIST_RANK_ONLINE,
 	MOTD,
+	ONLINE,
+	ONLINE_NUMBER,
 	OUT_PARTY,
 	PARTY,
 	RANK_CHAT,
 	RANK_NAME,
 	
+	// Additional
 	CUSTOM;
 	
 	private static PartiesPlugin plugin;
 	private String format;
+	private static final String LIST_RANK_PREFIX = "list_";
+	private static final String LIST_RANK_NUMBER_SUFFIX = "_number";
+	private static final String LIST_RANK_ONLINE_SUFFIX = "_online";
 	private static final String CUSTOM_PREFIX = "custom_";
+	
+	private static final Pattern LIST_RANK_PATTERN = Pattern.compile("list_([a-zA-Z]+)", Pattern.CASE_INSENSITIVE);
 	
 	PartiesPlaceholder() {
 		format = "";
@@ -44,7 +59,14 @@ public enum PartiesPlaceholder {
 		EXPERIENCE_LEVELUP_CURRENT.format = ConfigMain.ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_CURRENT;
 		EXPERIENCE_LEVELUP_NECESSARY.format = ConfigMain.ADDITIONAL_PLACEHOLDER_EXPERIENCE_LEVELUP_NECESSARY;
 		KILLS.format = ConfigMain.ADDITIONAL_PLACEHOLDER_KILLS;
+		LEADER_NAME.format = ConfigMain.ADDITIONAL_PLACEHOLDER_LEADER_NAME;
+		LEADER_UUID.format = ConfigMain.ADDITIONAL_PLACEHOLDER_LEADER_UUID;
+		LIST_RANK.format = ConfigMain.ADDITIONAL_PLACEHOLDER_LIST_RANK;
+		LIST_RANK_NUMBER.format = ConfigMain.ADDITIONAL_PLACEHOLDER_LIST_RANK_NUMBER;
+		LIST_RANK_ONLINE.format = ConfigMain.ADDITIONAL_PLACEHOLDER_LIST_RANK_ONLINE;
 		MOTD.format = ConfigMain.ADDITIONAL_PLACEHOLDER_MOTD;
+		ONLINE.format = ConfigMain.ADDITIONAL_PLACEHOLDER_ONLINE;
+		ONLINE_NUMBER.format = ConfigMain.ADDITIONAL_PLACEHOLDER_ONLINE_NUMBER;
 		OUT_PARTY.format = ConfigMain.ADDITIONAL_PLACEHOLDER_OUTPARTY;
 		PARTY.format = ConfigMain.ADDITIONAL_PLACEHOLDER_PARTY;
 		RANK_CHAT.format = ConfigMain.ADDITIONAL_PLACEHOLDER_RANK_CHAT;
@@ -65,6 +87,14 @@ public enum PartiesPlaceholder {
 			// Custom prefix
 			ret = CUSTOM;
 		}
+		if (identifier.toLowerCase().startsWith(LIST_RANK_PREFIX)) {
+			if (identifier.toLowerCase().endsWith(LIST_RANK_NUMBER_SUFFIX))
+				ret = LIST_RANK_NUMBER;
+			else if (identifier.toLowerCase().endsWith(LIST_RANK_ONLINE_SUFFIX))
+				ret = LIST_RANK_ONLINE;
+			else
+				ret = LIST_RANK;
+		}
 		return ret;
 	}
 	public String formatPlaceholder(PartyPlayerImpl pp, PartyImpl party, String identifier) {
@@ -76,6 +106,16 @@ public enum PartiesPlaceholder {
 					if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + entry.getKey())) {
 						ret = plugin.getMessageUtils().convertAllPlaceholders(entry.getValue(), party, pp);
 					}
+				}
+			} else if (this.equals(LIST_RANK)
+					|| this.equals(LIST_RANK_NUMBER)
+					|| this.equals(LIST_RANK_ONLINE)) {
+				// List rank
+				Matcher matcher = LIST_RANK_PATTERN.matcher(identifier);
+				if (matcher.find()) {
+					String rank = matcher.group(1);
+					ret = plugin.getMessageUtils().convertAllPlaceholders(format
+							.replace("{rank}", rank), party, pp);
 				}
 			} else {
 				// Normal

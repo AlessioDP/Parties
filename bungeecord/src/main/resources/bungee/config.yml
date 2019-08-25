@@ -140,12 +140,22 @@ additional:
     color-command: "%color_command%"
     desc: "%desc%"
     kills: "%kills%"
+    leader-name: "%leader_name%"
+    leader-uuid: "%leader_uuid%"
+    # Special tag
+    # => {rank}    = Given rank
+    list-rank: "%list_{rank}%"
+    list-rank-number: "%list_{rank}_number%"
+    list-rank-online: "%list_{rank}_online%"
     motd: "%motd%"
+    online: "%online%"
+    online-number: "%online_number%"
     # Show this placeholder only if out of a party
     out-party: "%out_party%"
     party: "%party%"
     rank-name: "%rank_name%"
     rank-chat: "%rank_chat%"
+
     customs:
       example1: "[%color_code%%party%] "
       example2: "[%rank_chat% %party%] "
@@ -225,4 +235,4 @@ commands:
 
 # End of configuration file
 dont-edit-this:
-  version: 6
+  version: 7

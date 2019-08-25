@@ -171,13 +171,13 @@ additional:
   home:
     enable: false
     # Party home delay before teleport, in seconds
-    # Bypass delay with the permission parties.home.%time%
+    # Bypass delay with the permission parties.user.home.%time%
     delay: 0
     cancel:
-      # Cancel the teleport if player is moving or he got hit
+      # Cancel the teleport if the player is moving or he got hit
       hit: true
       moving: true
-      # Walk distance to deny the teleport3
+      # Walk distance to deny the teleport
       distance: 3
 
   join-password:

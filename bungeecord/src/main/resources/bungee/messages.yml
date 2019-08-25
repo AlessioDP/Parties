@@ -94,11 +94,12 @@ main-commands:
 
   info:
     # Special tags:
-    # => %list_RANK%       = The list of players of that rank
-    #                        Example: %list_member%, %list_moderator% (%list_leader% it's unique)
-    # => %number_RANK%     = The number of players of that rank
-    # => %online%          = List online players
-    # => %onlinenumber%    = Number of online players
+    # => %list_RANK%           = The list of players of that rank
+    #                            Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    # => %list_RANK_number%    = The number of players of that rank
+    # => %list_RANK_online%    = Online players of that rank
+    # => %online%              = List online players
+    # => %online_number%        = Number of online players
     content:
     - "&b============ &l%party%'s Info &r&b============"
     - "&b&lDescription&r&7: %desc%"
@@ -106,7 +107,7 @@ main-commands:
     - "&bLeader&7: %list_leader%"
     - "&bMods&7: %list_moderator%"
     - "&bMembers&7: %list_member%"
-    - "&bOnline players&7: %onlinenumber%"
+    - "&bOnline players&7: %online_number%"
 
   invite:
     sent: "&bYou invited %player% in your party"
@@ -249,7 +250,7 @@ additional-commands:
     header: "&b============ &lOnline Parties List &r&b============"
     footer: "&b================ &lPage %page% of %maxpages% &r&b================"
     no-one: "&7No one"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cWrong variables: Type &7/party list [page]"
 
   motd:
@@ -345,4 +346,4 @@ help:
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 
 dont-edit-this:
-  version: 6
+  version: 7

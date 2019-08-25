@@ -2,6 +2,7 @@ package com.alessiodp.parties.common.utils;
 
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -11,6 +12,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.RankImpl;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -21,6 +23,8 @@ public abstract class MessageUtils {
 	private final PartiesPlugin plugin;
 	private final Pattern PLACEHOLDER_PATTERN = Pattern.compile("([%][^%]+[%])");
 	private final Pattern PLACEHOLDER_PATTERN_LIST = Pattern.compile(PartiesConstants.PLACEHOLDER_PARTY_LIST, Pattern.CASE_INSENSITIVE);
+	private final Pattern PLACEHOLDER_PATTERN_LIST_ONLINE = Pattern.compile(PartiesConstants.PLACEHOLDER_PARTY_LIST_ONLINE, Pattern.CASE_INSENSITIVE);
+	private final Pattern PLACEHOLDER_PATTERN_LIST_NUMBER = Pattern.compile(PartiesConstants.PLACEHOLDER_PARTY_LIST_NUMBER, Pattern.CASE_INSENSITIVE);
 	
 	public String convertPartyPlaceholders(String message, PartyImpl party) {
 		return convertPartyPlaceholders(message, party, "");
@@ -69,7 +73,24 @@ public abstract class MessageUtils {
 					replacement = party != null ? Integer.toString(party.getKills()) : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
 					break;
-				case PartiesConstants.PLACEHOLDER_PARTY_LIST_ONLINE:
+				case PartiesConstants.PLACEHOLDER_PARTY_LEADER_NAME:
+					PartyPlayerImpl leader = party != null ? plugin.getPlayerManager().getPlayer(party.getLeader()) : null;
+					replacement = leader != null ? leader.getName() : emptyPlaceholder;
+					ret = ret.replace(identifier, replacement);
+					break;
+				case PartiesConstants.PLACEHOLDER_PARTY_LEADER_UUID:
+					replacement = party != null ? party.getLeader().toString() : emptyPlaceholder;
+					ret = ret.replace(identifier, replacement);
+					break;
+				case PartiesConstants.PLACEHOLDER_PARTY_MOTD:
+					replacement = party != null && !party.getMotd().isEmpty() ? party.getMotd() : emptyPlaceholder;
+					ret = ret.replace(identifier, replacement);
+					break;
+				case PartiesConstants.PLACEHOLDER_PARTY_OUT:
+					replacement = party == null ? Messages.PARTIES_OUT_PARTY : emptyPlaceholder;
+					ret = ret.replace(identifier, replacement);
+					break;
+				case PartiesConstants.PLACEHOLDER_PARTY_ONLINE:
 					StringBuilder sb = new StringBuilder();
 					replacement = emptyPlaceholder;
 					if (party != null) {
@@ -92,15 +113,7 @@ public abstract class MessageUtils {
 					ret = ret.replace(identifier, replacement);
 					
 					break;
-				case PartiesConstants.PLACEHOLDER_PARTY_MOTD:
-					replacement = party != null && !party.getMotd().isEmpty() ? party.getMotd() : emptyPlaceholder;
-					ret = ret.replace(identifier, replacement);
-					break;
-				case PartiesConstants.PLACEHOLDER_PARTY_OUT:
-					replacement = party == null ? Messages.PARTIES_OUT_PARTY : emptyPlaceholder;
-					ret = ret.replace(identifier, replacement);
-					break;
-				case PartiesConstants.PLACEHOLDER_PARTY_ONLINENUMBER:
+				case PartiesConstants.PLACEHOLDER_PARTY_ONLINE_NUMBER:
 					replacement = party != null ? Integer.toString(party.getOnlineMembers(false).size()) : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
 					break;
@@ -114,54 +127,80 @@ public abstract class MessageUtils {
 				
 			}
 			
-			// List party placeholder
-			Matcher matcherMaterial = PLACEHOLDER_PATTERN_LIST.matcher(identifier);
-			if (matcherMaterial.find()) {
-				String identifierRank = matcherMaterial.group();
+			// List rank
+			Matcher matcherList = PLACEHOLDER_PATTERN_LIST.matcher(identifier);
+			if (matcherList.find()) {
+				String identifierList = matcherList.group(); // Get placeholder
 				if (party == null) {
-					ret = ret.replace(identifierRank, emptyPlaceholder);
+					ret = ret.replace(identifierList, emptyPlaceholder);
 				} else {
-					RankImpl rank = plugin.getRankManager().searchRankByHardName(matcherMaterial.group(1));
-					if (rank != null) {
-						StringBuilder list = new StringBuilder();
-						int number = 0;
-						
-						for (UUID playerUUID : party.getMembers()) {
-							PartyPlayerImpl pl = plugin.getPlayerManager().getPlayer(playerUUID);
-							
-							// Check rank level
-							if (pl.getRank() == rank.getLevel()) {
-								if (list.length() > 0) {
-									list.append(Messages.PARTIES_LIST_SEPARATOR);
-								}
-								
-								OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
-								if (offlinePlayer != null) {
-									if (offlinePlayer.isOnline() && !pl.isVanished()) {
-										list.append(
-												plugin.getMessageUtils().convertAllPlaceholders(
-														Messages.PARTIES_LIST_ONLINEFORMAT,
-														party,
-														pl)
-										);
-									} else {
-										list.append(
-												plugin.getMessageUtils().convertAllPlaceholders(
-														Messages.PARTIES_LIST_OFFLINEFORMAT,
-														party,
-														pl)
-										);
-									}
-								} else
-									list.append(Messages.PARTIES_LIST_UNKNOWN);
-								number++;
-							}
+					ArrayList<PartyPlayerImpl> members = getAllMembers(party, matcherList.group(1));
+					StringBuilder list = new StringBuilder();
+					for (PartyPlayerImpl pl : members) {
+						if (list.length() > 0) {
+							list.append(Messages.PARTIES_LIST_SEPARATOR);
 						}
-						
-						ret = ret
-								.replace(identifierRank, list.toString().isEmpty() ? Messages.PARTIES_LIST_EMPTY : list.toString())
-								.replace("%number_" + identifierRank.substring(6, identifierRank.length() - 1) + "%", Integer.toString(number));
+						OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
+						if (offlinePlayer != null) {
+							if (offlinePlayer.isOnline() && !pl.isVanished()) {
+								list.append(
+										plugin.getMessageUtils().convertAllPlaceholders(
+												Messages.PARTIES_LIST_ONLINEFORMAT,
+												party,
+												pl)
+								);
+							} else {
+								list.append(
+										plugin.getMessageUtils().convertAllPlaceholders(
+												Messages.PARTIES_LIST_OFFLINEFORMAT,
+												party,
+												pl)
+								);
+							}
+						} else
+							list.append(Messages.PARTIES_LIST_UNKNOWN);
 					}
+					ret = ret.replace(identifierList, list.toString().isEmpty() ? Messages.PARTIES_LIST_EMPTY : list.toString());
+				}
+			}
+			// List rank online
+			Matcher matcherListOnline = PLACEHOLDER_PATTERN_LIST_ONLINE.matcher(identifier);
+			if (matcherListOnline.find()) {
+				String identifierList = matcherListOnline.group(); // Get placeholder
+				if (party == null) {
+					ret = ret.replace(identifierList, emptyPlaceholder);
+				} else {
+					ArrayList<PartyPlayerImpl> members = getAllMembers(party, matcherListOnline.group(1));
+					StringBuilder list = new StringBuilder();
+					for (PartyPlayerImpl pl : members) {
+						if (list.length() > 0) {
+							list.append(Messages.PARTIES_LIST_SEPARATOR);
+						}
+						OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
+						if (offlinePlayer != null) {
+							if (offlinePlayer.isOnline() && !pl.isVanished()) {
+								list.append(
+										plugin.getMessageUtils().convertAllPlaceholders(
+												Messages.PARTIES_LIST_ONLINEFORMAT,
+												party,
+												pl)
+								);
+							}
+						} else
+							list.append(Messages.PARTIES_LIST_UNKNOWN);
+					}
+					ret = ret.replace(identifierList, list.toString().isEmpty() ? Messages.PARTIES_LIST_EMPTY : list.toString());
+				}
+			}
+			// List rank number
+			Matcher matcherListNumber = PLACEHOLDER_PATTERN_LIST_NUMBER.matcher(identifier);
+			if (matcherListNumber.find()) {
+				String identifierList = matcherListNumber.group(); // Get placeholder
+				if (party == null) {
+					ret = ret.replace(identifierList, emptyPlaceholder);
+				} else {
+					ArrayList<PartyPlayerImpl> members = getAllMembers(party, matcherListNumber.group(1));
+					ret = ret.replace(identifierList, Integer.toString(members.size()));
 				}
 			}
 		}
@@ -186,7 +225,6 @@ public abstract class MessageUtils {
 					break;
 				case PartiesConstants.PLACEHOLDER_PLAYER_RANK_NAME:
 					replacement = player != null && !player.getPartyName().isEmpty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getName() : emptyPlaceholder;
-					ret = ret.replace(identifier, replacement);
 					break;
 				case PartiesConstants.PLACEHOLDER_PLAYER_RANK_CHAT:
 					replacement = player != null && !player.getPartyName().isEmpty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getChat() : emptyPlaceholder;
@@ -215,5 +253,17 @@ public abstract class MessageUtils {
 			
 			receiver.sendMessage(formattedMessage, false);
 		}
+	}
+	
+	private ArrayList<PartyPlayerImpl> getAllMembers(PartyImpl party, String rankName) {
+		ArrayList<PartyPlayerImpl> ret = new ArrayList<>();
+		RankImpl rank = rankName != null ? plugin.getRankManager().searchRankByHardName(rankName) : null;
+		for (UUID playerUUID : party.getMembers()) {
+			PartyPlayerImpl pl = plugin.getPlayerManager().getPlayer(playerUUID);
+			
+			if (rank == null || rank.getLevel() == pl.getRank())
+				ret.add(pl);
+		}
+		return ret;
 	}
 }

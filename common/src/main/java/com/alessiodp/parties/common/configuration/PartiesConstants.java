@@ -12,12 +12,12 @@ public class PartiesConstants {
 	
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 7;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 8;
 	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 5;
-	public static final int VERSION_BUKKIT_MESSAGES = 8;
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 6;
+	public static final int VERSION_BUKKIT_MESSAGES = 9;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 7;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 4;
-	public static final int VERSION_BUNGEE_MESSAGES = 6;
+	public static final int VERSION_BUNGEE_MESSAGES = 7;
 	public static final int VERSION_DATABASE_YAML = 1;
 	public static final int VERSION_DATABASE_MYSQL = 7;
 	public static final int VERSION_DATABASE_SQLITE = 5;
@@ -42,10 +42,14 @@ public class PartiesConstants {
 	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_CURRENT = "%experience_levelup_current%";
 	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
 	public static final String PLACEHOLDER_PARTY_KILLS = "%kills%";
-	public static final String PLACEHOLDER_PARTY_LIST = "%list_([^%]+)%";
-	public static final String PLACEHOLDER_PARTY_LIST_ONLINE = "%online%";
+	public static final String PLACEHOLDER_PARTY_LEADER_UUID = "%leader_uuid%";
+	public static final String PLACEHOLDER_PARTY_LEADER_NAME = "%leader_name%";
+	public static final String PLACEHOLDER_PARTY_LIST = "%list_([^%_]+)%";
+	public static final String PLACEHOLDER_PARTY_LIST_ONLINE = "%list_([^_]+)_online%";
+	public static final String PLACEHOLDER_PARTY_LIST_NUMBER = "%list_([^_]+)_number%";
 	public static final String PLACEHOLDER_PARTY_MOTD = "%motd%";
-	public static final String PLACEHOLDER_PARTY_ONLINENUMBER = "%onlinenumber%";
+	public static final String PLACEHOLDER_PARTY_ONLINE = "%online%";
+	public static final String PLACEHOLDER_PARTY_ONLINE_NUMBER = "%online_number%";
 	public static final String PLACEHOLDER_PARTY_OUT = "%out_party%";
 	
 	public static final String PLACEHOLDER_PARTY_PARTY = "%party%";
@@ -148,7 +152,7 @@ public class PartiesConstants {
 	
 	
 	public static final String DEBUG_DB_UPDATEPLAYER = "Update player request for {player} [{uuid}]";
-	public static final String DEBUG_DB_GETPLAYER = "Get player request request for '{uuid}'";
+	public static final String DEBUG_DB_GETPLAYER = "Get player request for '{uuid}'";
 	public static final String DEBUG_DB_UPDATEPARTY = "Update party request for '{party}'";
 	public static final String DEBUG_DB_GETPARTY = "Get party request for '{party}'";
 	public static final String DEBUG_DB_RENAMEPARTY = "Rename party request for '{party}' into '{name}'";

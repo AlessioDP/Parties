@@ -314,7 +314,7 @@ public abstract class Messages extends PartiesConfigurationFile {
 		MAINCMD_INFO_CONTENT.add("&bLeader&7: %list_leader%");
 		MAINCMD_INFO_CONTENT.add("&bMods&7: %list_moderator%");
 		MAINCMD_INFO_CONTENT.add("&bMembers&7: %list_member%");
-		MAINCMD_INFO_CONTENT.add("&bOnline players&7: %onlinenumber%");
+		MAINCMD_INFO_CONTENT.add("&bOnline players&7: %online_number%");
 		
 		MAINCMD_INVITE_SENT = "&bYou invited %player% in your party";
 		MAINCMD_INVITE_PLAYERINVITED = "[{\"text\":\"%player% has invited you to the party %party%.\\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]";
@@ -410,7 +410,7 @@ public abstract class Messages extends PartiesConfigurationFile {
 		ADDCMD_LIST_HEADER = "&b============ &lOnline Parties List &r&b============";
 		ADDCMD_LIST_FOOTER = "&b================ &lPage %page% of %maxpages% &r&b================";
 		ADDCMD_LIST_NOONE = "&7No one";
-		ADDCMD_LIST_FORMATPARTY = "[{\"text\":\"%party%\",\"color\":\"aqua\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party info %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Show info\",\"color\":\"gold\"}]}}},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"Online %onlinenumber%\",\"color\":\"gold\"},{\"text\":\"] %desc%\",\"color\":\"gray\"}]";
+		ADDCMD_LIST_FORMATPARTY = "[{\"text\":\"%party%\",\"color\":\"aqua\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party info %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Show info\",\"color\":\"gold\"}]}}},{\"text\":\" [\",\"color\":\"gray\"},{\"text\":\"Online %online_number%\",\"color\":\"gold\"},{\"text\":\"] %desc%\",\"color\":\"gray\"}]";
 		ADDCMD_LIST_WRONGCMD = "&cWrong variables: Type &7/party list [page]";
 		
 		ADDCMD_MOTD_CHANGED = "&bParty MOTD changed";

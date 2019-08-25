@@ -22,7 +22,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.concurrent.TimeUnit;
 
@@ -98,14 +97,11 @@ public class BukkitCommandHome extends PartiesSubCommand {
 		// Command starts
 		Player bukkitPlayer = Bukkit.getPlayer(commandData.getSender().getUUID());
 		int delay = BukkitConfigParties.HOME_DELAY;
-		for (PermissionAttachmentInfo pa : bukkitPlayer.getEffectivePermissions()) {
-			String perm = pa.getPermission();
-			if (perm.startsWith("parties.home.")) {
-				String[] splitted = perm.split("\\.");
-				try {
-					delay = Integer.parseInt(splitted[2]);
-				} catch(Exception ignored) {}
-			}
+		String homeDelayPermission = sender.getDynamicPermission(PartiesPermission.HOME.toString() + ".");
+		if (homeDelayPermission != null) {
+			try {
+				delay = Integer.parseInt(homeDelayPermission);
+			} catch (Exception ignored) {}
 		}
 		
 		Location loc = new Location(
@@ -124,7 +120,7 @@ public class BukkitCommandHome extends PartiesSubCommand {
 					delay,
 					loc
 			);
-			CancellableTask task = plugin.getScheduler().scheduleAsyncLater(homeTask, delay, TimeUnit.SECONDS);
+			CancellableTask task = plugin.getScheduler().scheduleAsyncRepeating(homeTask, 0, 300, TimeUnit.MILLISECONDS);
 			partyPlayer.setHomeDelayTask(task);
 			
 			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_HOME_TELEPORTIN
