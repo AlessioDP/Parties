@@ -73,7 +73,7 @@ main-commands:
       - "&bLider&7: %list_leader%"
       - "&bModlar&7: %list_moderator%"
       - "&bÜyeler&7: %list_member%"
-      - "&bAçık üyeler&7: %onlinenumber%"
+      - "&bAçık üyeler&7: %online_number%"
   invite:
     sent: "&bSen %player% Adlı Oyuncuyu Partine Davet Ettin"
     player-invited: "[{\"text\":\"%player% seni %party% adlı partisine davet etti.\n\",\"color\":\"aqua\"},{\"text\":\"Katılmak için \",\"color\":\"aqua\"},{\"text\":\"kabul et\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti kabul ettin\",\"color\":\"gold\"}]}}},{\"text\":\" ya da\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"reddet\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Daveti reddetin\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party <accept/deny> \",\"color\":\"aqua\"},{\"text\":\"komutlarınıda \",\"color\":\"gray\"},{\"text\":\" yazmayı seçebilirsin.\",\"color\":\"aqua\"}]"
@@ -197,7 +197,7 @@ additional-commands:
     header: "&b============ &lÇevrimiçi Parti Listesi &r&b============"
     footer: "&b================ &lSayfa %page% /%maxpages% &r&b================"
     no-one: "&7Hiç Kimse Yok"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Bilgileri Göster","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Çevrimiçi %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Bilgileri Göster","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Çevrimiçi %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cYanlış komut: Doğrusu &7/party list [page]"
   motd:
     changed: "&bParti MOTD Değişti"
@@ -304,4 +304,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set/remove party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Partini Sana Işınlar","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Tıklarsan Komutu Uygular","color":"gold"}}}'
 dont-edit-this:
-  version: 8
+  version: 9

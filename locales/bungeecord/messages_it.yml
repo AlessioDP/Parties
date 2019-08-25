@@ -73,7 +73,7 @@ main-commands:
       - "&bLeader&7: %list_leader%"
       - "&bMod&7: %list_moderator%"
       - "&bMembri&7: %list_member%"
-      - "&bPlayer online&7: %onlinenumber%"
+      - "&bPlayer online&7: %online_number%"
   invite:
     sent: "&bHai invitato %player% nel party"
     player-invited: "[{\"text\":\"%player% ti ha invitato nel party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Vuoi \",\"color\":\"aqua\"},{\"text\":\"accettare\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accetta l'invito\",\"color\":\"gold\"}]}}},{\"text\":\" o \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"rifiutare\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Rifiuta l'invito\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Puoi usare \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" per scegliere.\",\"color\":\"aqua\"}]"
@@ -173,7 +173,7 @@ additional-commands:
     header: "&b============ &lLista Party Online &r&b============"
     footer: "&b================ &lPagina %page% di %maxpages% &r&b================"
     no-one: "&7Nessuno"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Mostra informazioni","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Mostra informazioni","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cComando sbagliato: Esegui &7/party list [pagina]"
   motd:
     changed: "&bMOTD del party cambiato"
@@ -249,4 +249,4 @@ help:
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Attiva/disattiva notifiche","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Cambia la password del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
 dont-edit-this:
-  version: 6
+  version: 7

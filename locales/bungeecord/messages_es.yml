@@ -73,7 +73,7 @@ main-commands:
       - "&bLíder&7: %list_leader%"
       - "&bModeradores&7: %list_moderator%"
       - "&bMiembros&7: %list_member%"
-      - "&bJugadores conectados&7: %onlinenumber%"
+      - "&bOnline players&7: %online_number%"
   invite:
     sent: "&bHas invitado al jugador %player% a tu equipo"
     player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
@@ -104,7 +104,7 @@ main-commands:
         - "&cHemos encontrado algunos jugadores con ese nombre:"
         - "%list_players%"
         - "&cUsa '&7/party kick <jugador> <numero>&c' para expulsar al jugador correcto"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: último acceso %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Expulsar al jugador","color":"gold"}}}'
     wrong-command: "&cVariables incorrectas: Escribe &7/party kick <nombre>"
   leave:
     left: "&b&lHas salido del equipo %party%"
@@ -142,8 +142,8 @@ main-commands:
     disabled: "&7Ya no eres un espía"
     wrong-command: "&cVariables incorrectas: Escribe &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Desarrollado por &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Desarrollado por &6AlessioDP\n&aNueva versión encontrada: &2%newversion%"
 additional-commands:
   color:
     info: "&bEl color de tu equipo es: %color_code%%color_command%"
@@ -173,7 +173,7 @@ additional-commands:
     header: "&b============ &lLista de equipos en linea &r&b============"
     footer: "&b================ &lPagina %page% de %maxpages% &r&b================"
     no-one: "&7Ninguno"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Muestra información","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"En linea %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cVariables incorrectas: Escribe &7/party list [pagina]"
   motd:
     changed: "&bMOTD del equipo cambiado"
@@ -249,4 +249,4 @@ help:
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Alternar notificaciones","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <contraseña/remove>","color":"aqua"},{"text":" - Cambiar la contraseña del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 6
+  version: 7
