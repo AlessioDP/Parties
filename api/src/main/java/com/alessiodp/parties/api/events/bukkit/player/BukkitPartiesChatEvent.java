@@ -4,7 +4,6 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IChatEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.bukkit.plugin.RegisteredListener;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class BukkitPartiesChatEvent extends BukkitPartiesEvent implements IChatEvent {
