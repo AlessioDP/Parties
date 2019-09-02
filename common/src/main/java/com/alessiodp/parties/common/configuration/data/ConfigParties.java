@@ -1,9 +1,9 @@
 package com.alessiodp.parties.common.configuration.data;
 
+import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.ColorImpl;
 import com.alessiodp.parties.common.players.objects.RankImpl;
@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ConfigParties extends PartiesConfigurationFile {
+public abstract class ConfigParties extends ConfigurationFile {
 	// General settings
 	public static int GENERAL_MEMBERSLIMIT;
 	public static String GENERAL_NAME_ALLOWEDCHARS;

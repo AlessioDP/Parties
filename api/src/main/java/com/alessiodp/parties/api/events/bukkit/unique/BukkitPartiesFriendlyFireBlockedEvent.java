@@ -7,10 +7,17 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public abstract class BukkitPartiesFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
+public class BukkitPartiesFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
+	private boolean cancelled;
+	private final PartyPlayer victim;
+	private final PartyPlayer attacker;
+	private final EntityDamageByEntityEvent originalEvent;
 	
-	public BukkitPartiesFriendlyFireBlockedEvent() {
+	public BukkitPartiesFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, EntityDamageByEntityEvent originalEvent) {
 		super(false);
+		this.victim = victim;
+		this.attacker = attacker;
+		this.originalEvent = originalEvent;
 	}
 	
 	/**
@@ -19,7 +26,9 @@ public abstract class BukkitPartiesFriendlyFireBlockedEvent extends BukkitPartie
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NonNull
-	public abstract PartyPlayer getPlayerVictim();
+	public PartyPlayer getPlayerVictim() {
+		return victim;
+	}
 	
 	/**
 	 * Get the attacker
@@ -27,7 +36,9 @@ public abstract class BukkitPartiesFriendlyFireBlockedEvent extends BukkitPartie
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NonNull
-	public abstract PartyPlayer getPlayerAttacker();
+	public PartyPlayer getPlayerAttacker() {
+		return attacker;
+	}
 	
 	/**
 	 * Get the original Bukkit event handled by Parties
@@ -35,5 +46,17 @@ public abstract class BukkitPartiesFriendlyFireBlockedEvent extends BukkitPartie
 	 * @return Returns the original {@link EntityDamageByEntityEvent}, or {@code null} if there is no bukkit event
 	 */
 	@Nullable
-	public abstract EntityDamageByEntityEvent getOriginalEvent();
+	public EntityDamageByEntityEvent getOriginalEvent() {
+		return originalEvent;
+	}
+	
+	@Override
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	
+	@Override
+	public void setCancelled(boolean cancel) {
+		cancelled = cancel;
+	}
 }

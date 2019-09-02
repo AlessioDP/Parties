@@ -2,9 +2,7 @@ package com.alessiodp.parties.common.players;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
@@ -31,10 +29,6 @@ public abstract class PlayerManager {
 		listPartyPlayers.clear();
 		listPartyPlayersToDelete.clear();
 		
-		plugin.getLoginAlerts().add(Messages.PARTIES_UPDATEAVAILABLE
-						.replace("%version%", plugin.getAdpUpdater().getFoundVersion())
-						.replace("%thisversion%", plugin.getVersion()));
-		
 		plugin.getSpyManager().reload();
 		
 		for (User player : plugin.getOnlinePlayers()) {
@@ -43,9 +37,9 @@ public abstract class PlayerManager {
 			PartyImpl party = plugin.getPartyManager().loadParty(pp.getPartyName());
 			if (party != null)
 				party.addOnlineMember(pp);
+			
+			plugin.getLoginAlertsManager().sendAlerts(player);
 		}
-		
-		sendLoginAlerts();
 	}
 	
 	public abstract PartyPlayerImpl initializePlayer(UUID playerUUID);
@@ -98,20 +92,5 @@ public abstract class PlayerManager {
 			}
 		}
 		return ret;
-	}
-	
-	public void sendLoginAlerts() {
-		for (PartyPlayerImpl partyPlayer : getListPartyPlayers().values()) {
-			sendLoginAlert(partyPlayer);
-		}
-	}
-	
-	public void sendLoginAlert(PartyPlayerImpl partyPlayer) {
-		User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
-		if (user != null && user.hasPermission(PartiesPermission.ADMIN_ALERTS.toString())) {
-			for (String alert : plugin.getLoginAlerts()) {
-				partyPlayer.sendMessage(alert);
-			}
-		}
 	}
 }

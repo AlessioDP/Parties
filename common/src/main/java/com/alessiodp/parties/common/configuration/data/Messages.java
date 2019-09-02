@@ -1,13 +1,13 @@
 package com.alessiodp.parties.common.configuration.data;
 
+import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Messages extends PartiesConfigurationFile {
+public abstract class Messages extends ConfigurationFile {
 	// Parties messages
 	public static String PARTIES_UPDATEAVAILABLE;
 	public static String PARTIES_CONFIGURATION_OUTDATED;
@@ -241,7 +241,7 @@ public abstract class Messages extends PartiesConfigurationFile {
 	public void loadDefaults() {
 		// Parties messages
 		PARTIES_UPDATEAVAILABLE = "&9New version of Parties found: %version% (Current: %thisversion%)";
-		PARTIES_CONFIGURATION_OUTDATED = "&cThe configuration file '%config%' is outdated!";
+		PARTIES_CONFIGURATION_OUTDATED = "&cThe configuration file '%config%' of Parties is outdated!";
 		
 		PARTIES_COMMON_INVALIDCMD = "&cInvalid command";
 		PARTIES_COMMON_CONFIGRELOAD = "&aConfiguration reloaded";

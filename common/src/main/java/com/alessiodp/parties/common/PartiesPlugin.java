@@ -24,8 +24,6 @@ import com.alessiodp.parties.common.utils.MessageUtils;
 import com.alessiodp.parties.common.utils.PartiesPlayerUtils;
 import lombok.Getter;
 
-import java.util.ArrayList;
-
 public abstract class PartiesPlugin extends ADPPlugin {
 	// Plugin fields
 	@Getter private final String pluginName = PartiesConstants.PLUGIN_NAME;
@@ -46,8 +44,6 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Getter protected EconomyManager economyManager;
 	@Getter protected MessageUtils messageUtils;
 	
-	@Getter private ArrayList<String> loginAlerts;
-	
 	public PartiesPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
 	}
@@ -61,7 +57,6 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	@Override
 	protected void initializeCore() {
-		loginAlerts = new ArrayList<>();
 		databaseManager = new PartiesDatabaseManager(this);
 	}
 	
@@ -98,7 +93,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Override
 	public void reloadConfiguration() {
 		getLoggerManager().logDebug(PartiesConstants.DEBUG_PLUGIN_RELOADING, true);
-		loginAlerts.clear();
+		getLoginAlertsManager().reload();
 		getConfigurationManager().reload();
 		reloadLoggerManager();
 		getDatabaseManager().reload();
