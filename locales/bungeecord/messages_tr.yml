@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Parti pluginin Yeni sürümü bulundu: %version% (Şuanki sürüm: %thisversion%)"
-  configuration-outdated: "&cDosya '%config%' yapılandırılması eski. Yeni Party eklentisinde yok!"
+  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
     invalid-command: "&cBilinmeyen Komut"
     configuration-reloaded: "&aConfig Yenilendi"

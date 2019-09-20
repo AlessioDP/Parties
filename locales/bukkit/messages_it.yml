@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Nuova versione di Parties trovata: %version% (Attuale: %thisversion%)"
-  configuration-outdated: "&cIl file di configurazione '%config%' è obsoleto!"
+  configuration-outdated: "&cIl file di configurazione '%config%' di Parties è obsoleto!"
   common-messages:
     invalid-command: "&cComando non valido"
     configuration-reloaded: "&aConfigurazione ricaricata"

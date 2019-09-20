@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Новая версия партии: %version% (Текущая: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
+  configuration-outdated: "&cФайл конфигурации '%config%' плагина Parties устарел!"
   common-messages:
     invalid-command: "&cНедопустимая команда"
     configuration-reloaded: "&aПерезагрузка конфигурации"
@@ -12,24 +12,24 @@ parties:
   permissions:
     no-permission: "&cУ вас нет доступа к этой команде"
     no-permission-in-party: "&cВам нужно быть %rank_name% чтобы выполнить эту команду"
-  out-party: "Out party"
+  out-party: "Выйти из группы"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
     player-empty: "&7Никто"
-    player-unknown: "&6Нет игроков"
-    missing-value: "&7"
+    player-unknown: "&6Кто-то"
+    missing-value: "&7Пропуск"
 main-commands:
   accept:
-    broadcast: "&b&l%player% вступил в партию"
-    accepted: "&aВы приняли приглашение"
+    broadcast: "&b&l%player% вступил в группу"
+    accepted: "&aВы приняли приглашение в группу"
     accept-receipt: "&a%player% принял ваше приглашение"
-    no-invite: "&cУ вас нет ожидающих приглашения"
-    no-exists: "&cПриглашения больше не существует"
-    multiple-invites: "&cChoose the party that you want accept:"
-    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party accept [party]"
+    no-invite: "&cУ вас нет ожидающих приглашений"
+    no-exists: "&cПриглашение больше не действительно"
+    multiple-invites: "&cВыберите группу, в которую вы хотите вступить:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Нажмите, чтобы принять приглашение","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Принять приглашение в группу","color":"gold"}]}}}]'
+    wrong-command: "&cНеверные значения: Введите &7/party accept [группа]"
   chat:
     enabled: "&aЧат теперь партии"
     disabled: "&aЧат теперь публичный"
@@ -51,11 +51,11 @@ main-commands:
   deny:
     denied: "&7Вы отклонили приглашение на партию"
     deny-receipt: "&7%player% отказался от приглашения"
-    no-invite: "&cУ вас нет ожидающих приглашения"
-    no-exists: "&cПриглашения больше не существует"
-    multiple-invites: "&cChoose the party that you want deny:"
-    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party deny [party]"
+    no-invite: "&cУ вас нет ожидающих приглашений"
+    no-exists: "&cПриглашение больше не действительно"
+    multiple-invites: "&cВыберите группу, приглашение в которую вы хотите отклонить:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Нажмите, чтобы отклонить приглашение","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Отклонить приглашение в группу","color":"gold"}]}}}]'
+    wrong-command: "&cНеверные значения: Введите &7/party deny [группа]"
   ignore:
     start-ignore: "&7Вы добавили партию %party% в игнор"
     stop-ignore: "&7Вы перестали игнорировать%party%"
@@ -73,13 +73,13 @@ main-commands:
       - "&bРуководитель&7: %list_leader%"
       - "&bМодераторы&7: %list_moderator%"
       - "&bИгроки&7: %list_member%"
-      - "&bOnline players&7: %online_number%"
+      - "&bСейчас онлайн&7: %online_number%"
   invite:
     sent: "&bВы пригласили %player% в свою партию"
-    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% пригласил вас в группу %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Вы хотите \",\"color\":\"aqua\"},{\"text\":\"принять приглашение\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Принять приглашение в группу\",\"color\":\"gold\"}]}}},{\"text\":\" или \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"отклонить его\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Отклонить приглашение в группу\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Вы можете использовать \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\", чтобы выбрать.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% не принять приглашение"
-      timeout: "&7You didn't accept the party invite to %party%"
+      timeout: "&7Вы не приняли приглашение в группу %party%"
     revoke:
       sent-revoked: "&7Отозванное приглашение %player%"
       player-invite-revoked: "&7Приглашение, полученное от %party%, было отозвано"
@@ -112,7 +112,7 @@ main-commands:
     party-disbanded: "&6&lПартия была распущена, потому что руководство вышла из партии"
   p:
     cooldown: "&cВам все равно придется подождать %seconds% сек"
-    censored: "&cThe message contains censored words!"
+    censored: "&cВаше сообщение содержит нецензурные выражения!"
     wrong-command: "&cНеверные переменные: тип &7/p <message>"
   rank:
     changed: "&a%player% ранг изменен на %rank_name%"
@@ -129,8 +129,8 @@ main-commands:
       content:
         - "&cМы нашли некоторых игроков с таким именем:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cИспользуйте '&7/party rank <ник игрока> <ранг> <число>&c', чтобы изменить ранг игрока в группе"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: последний заход в %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Изменить ранг игрока в группе","color":"gold"}}}'
     wrong-command: "&cНеверные переменные: тип &7/party rank <player> <rank>"
   rename:
     renamed: "&aПартия %old% переименована в %party%"
@@ -142,8 +142,8 @@ main-commands:
     disabled: "&7Вы больше не шпион"
     wrong-command: "&cНеверные переменные: тип &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lГруппы &b%version% &7(%platform%) - разработано &6AlessioDP"
+    outdated: "&b&lГруппы &b%version% &7(%platform%) - разработано &6AlessioDP\n&aНайдена новая версия: &2%newversion%"
 additional-commands:
   color:
     info: "&bВаш цвет партии: %color_code%%color_command%"
@@ -161,8 +161,8 @@ additional-commands:
     censored: "&cОписание содержит слова с цензурой!"
     wrong-command: "&cНеверные переменные: тип &7/party desc <description/remove>"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&aТеперь все члены группы будут следовать за лидером"
+    toggle-off: "&aЧлены группы больше не будут следовать за лидером"
     wrong-command: "&cНеверные переменные: тип &7/party follow [on/off]"
   join:
     joined: "&aВы вступили в партию %party%"
@@ -173,7 +173,7 @@ additional-commands:
     header: "&b============ &l Список Онлайн-Партий &r&b============"
     footer: "&b=========== &lСтраница партий %page% of %maxpages% &r&b============"
     no-one: "&7Никто"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Показать информацию о группе","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Онлайн: %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cНеверные переменные: тип &7/party list [page]"
   motd:
     changed: "&bВ партии изменилось приветствия"
@@ -212,15 +212,15 @@ help:
   footer: ""
   console-help:
     - "Вы можете сделать только эти команды:"
-    - " > party create <name> fixed - Create a new party"
-    - " > party delete <party> - Delete a party"
-    - " > party info <party> - Show party information"
-    - " > party list - List of online parties"
-    - " > party kick <player> - Kick a player from the party"
-    - " > party rank <player> <rank> - Change rank of the player"
-    - " > party reload - Reload Parties configuration files"
-    - " > party rename <party> <name> - Rename the party"
-    - " > party version - Show Parties information"
+    - " > party create <название> - Создать новую группу"
+    - " > party delete <название> - Удалить группу"
+    - " > party info <название> - Показать информацию о группе"
+    - " > party list - Список онлайн-групп"
+    - " > party kick <ник игрока> - Исключить игрока из группы"
+    - " > party rank <ник игрока> <ранг> - Изменить ранг игрока в группе"
+    - " > party reload - Обновить конфигурационные файлы"
+    - " > party rename <название> <новое название> - Переименовать группу"
+    - " > party version - Показать информацию о плагине"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Показать страницы справки","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Выполните команду","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Принять приглашение участника","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Выполните команду","color":"gold"}}}'
@@ -238,11 +238,11 @@ help:
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Обновить конфигурацию","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - Переименование партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Читать сообщения других партий","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Show Parties information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Показать информацию о плагине,"color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Исполнить команду","color":"gold"}}}'
   additional-commands:
     color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Сменить цвет партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - Add/remove описание","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
-    follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Toggle follow leader","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Включить/выключить следование за лидером","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Исполнить команду","color":"gold"}}}'
     join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Войти в партию","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"выполнить команду","color":"gold"}}}'
     list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - Посмотреть список партий","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Add/remove приветствия","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
