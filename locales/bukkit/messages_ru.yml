@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Новая версия партии: %version% (Текущая: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  configuration-outdated: "&cФайл конфигурации '%config%' плагина Parties устарел!"
   common-messages:
     invalid-command: "&cНедопустимая команда"
     configuration-reloaded: "&aПерезагрузка конфигурации"
