@@ -1,7 +1,7 @@
 ---
 parties:
   update-available: "&9Dostepna jest nowa wersja pluginu Parties: %version% (Aktualna: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' is outdated!"
+  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
     invalid-command: "&cNiepoprawna komenda"
     configuration-reloaded: "&aKonfiguracja przeladowana"
