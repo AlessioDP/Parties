@@ -6,10 +6,17 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
+public class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
+	private boolean cancelled;
+	private final PartyPlayer victim;
+	private final PartyPlayer attacker;
+	private final PotionSplashEvent originalEvent;
 	
-	public BukkitPartiesPotionsFriendlyFireBlockedEvent() {
+	public BukkitPartiesPotionsFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, PotionSplashEvent originalEvent) {
 		super(false);
+		this.victim = victim;
+		this.attacker = attacker;
+		this.originalEvent = originalEvent;
 	}
 	
 	/**
@@ -18,7 +25,9 @@ public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends Bukki
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NonNull
-	public abstract PartyPlayer getPlayerVictim();
+	public PartyPlayer getPlayerVictim() {
+		return victim;
+	}
 	
 	/**
 	 * Get the attacker
@@ -26,7 +35,9 @@ public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends Bukki
 	 * @return Returns the {@link PartyPlayer}
 	 */
 	@NonNull
-	public abstract PartyPlayer getPlayerAttacker();
+	public PartyPlayer getPlayerAttacker() {
+		return attacker;
+	}
 	
 	/**
 	 * Gets the original Bukkit event handled by Parties
@@ -34,5 +45,17 @@ public abstract class BukkitPartiesPotionsFriendlyFireBlockedEvent extends Bukki
 	 * @return Returns the original {@link PotionSplashEvent}
 	 */
 	@NonNull
-	public abstract PotionSplashEvent getOriginalEvent();
+	public PotionSplashEvent getOriginalEvent() {
+		return originalEvent;
+	}
+	
+	@Override
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	
+	@Override
+	public void setCancelled(boolean cancel) {
+		cancelled = cancel;
+	}
 }

@@ -1,16 +1,16 @@
 package com.alessiodp.parties.common.configuration.data;
 
+import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.PartiesConfigurationFile;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 
 import java.util.HashMap;
 import java.util.List;
 
 
-public abstract class ConfigMain extends PartiesConfigurationFile {
+public abstract class ConfigMain extends ConfigurationFile {
 	// Parties settings
 	public static boolean		PARTIES_UPDATES_CHECK;
 	public static boolean		PARTIES_UPDATES_WARN;

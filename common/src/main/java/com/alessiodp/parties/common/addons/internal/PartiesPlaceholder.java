@@ -99,28 +99,26 @@ public enum PartiesPlaceholder {
 	}
 	public String formatPlaceholder(PartyPlayerImpl pp, PartyImpl party, String identifier) {
 		String ret = "";
-		if (party != null) {
-			if (this.equals(CUSTOM)) {
-				// Custom
-				for (Map.Entry<String, String> entry : ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.entrySet()) {
-					if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + entry.getKey())) {
-						ret = plugin.getMessageUtils().convertAllPlaceholders(entry.getValue(), party, pp);
-					}
+		if (this.equals(CUSTOM)) {
+			// Custom
+			for (Map.Entry<String, String> entry : ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.entrySet()) {
+				if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + entry.getKey())) {
+					ret = plugin.getMessageUtils().convertAllPlaceholders(entry.getValue(), party, pp);
 				}
-			} else if (this.equals(LIST_RANK)
-					|| this.equals(LIST_RANK_NUMBER)
-					|| this.equals(LIST_RANK_ONLINE)) {
-				// List rank
-				Matcher matcher = LIST_RANK_PATTERN.matcher(identifier);
-				if (matcher.find()) {
-					String rank = matcher.group(1);
-					ret = plugin.getMessageUtils().convertAllPlaceholders(format
-							.replace("{rank}", rank), party, pp);
-				}
-			} else {
-				// Normal
-				ret = plugin.getMessageUtils().convertAllPlaceholders(format, party, pp);
 			}
+		} else if (this.equals(LIST_RANK)
+				|| this.equals(LIST_RANK_NUMBER)
+				|| this.equals(LIST_RANK_ONLINE)) {
+			// List rank
+			Matcher matcher = LIST_RANK_PATTERN.matcher(identifier);
+			if (matcher.find()) {
+				String rank = matcher.group(1);
+				ret = plugin.getMessageUtils().convertAllPlaceholders(format
+						.replace("{rank}", rank), party, pp);
+			}
+		} else {
+			// Normal
+			ret = plugin.getMessageUtils().convertAllPlaceholders(format, party, pp);
 		}
 		return ret;
 	}

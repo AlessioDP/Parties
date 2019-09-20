@@ -14,7 +14,6 @@ public class BukkitPartiesEvent extends Event implements PartiesEvent {
 		super(async);
 	}
 	
-	
 	@Override
 	@NonNull
 	public PartiesAPI getApi() {

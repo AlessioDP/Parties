@@ -2,7 +2,6 @@ package com.alessiodp.parties.common.utils;
 
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;

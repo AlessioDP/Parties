@@ -86,9 +86,9 @@ public abstract class JoinLeaveListener {
 				if (ConfigMain.PARTIES_JOINLEAVEMESSAGES && party != null) {
 					party.broadcastMessage(Messages.OTHER_JOINLEAVE_SERVERJOIN, partyPlayer);
 				}
-				
-				plugin.getPlayerManager().sendLoginAlert(partyPlayer);
 			}
+			
+			plugin.getLoginAlertsManager().sendAlerts(player);
 		});
 	}
 	
