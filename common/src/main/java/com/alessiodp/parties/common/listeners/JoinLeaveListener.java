@@ -15,6 +15,7 @@ import com.alessiodp.parties.common.tasks.MotdTask;
 import com.alessiodp.parties.common.tasks.PartyDeleteTask;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -44,9 +45,9 @@ public abstract class JoinLeaveListener {
 					// Party found
 					party.addOnlineMember(partyPlayer);
 					
-					if (plugin.getPartyManager().getListPartiesToDelete().containsKey(party.getName().toLowerCase())) {
-						plugin.getPartyManager().getListPartiesToDelete().get(party.getName().toLowerCase()).cancel();
-						plugin.getPartyManager().getListPartiesToDelete().remove(party.getName().toLowerCase());
+					if (plugin.getPartyManager().getListPartiesToDelete().containsKey(party.getName().toLowerCase(Locale.ENGLISH))) {
+						plugin.getPartyManager().getListPartiesToDelete().get(party.getName().toLowerCase(Locale.ENGLISH)).cancel();
+						plugin.getPartyManager().getListPartiesToDelete().remove(party.getName().toLowerCase(Locale.ENGLISH));
 						
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_DELETE_STOP
 								.replace("{party}", party.getName()), true);
@@ -133,7 +134,7 @@ public abstract class JoinLeaveListener {
 										TimeUnit.SECONDS
 								);
 								
-								plugin.getPartyManager().getListPartiesToDelete().put(party.getName().toLowerCase(), ct);
+								plugin.getPartyManager().getListPartiesToDelete().put(party.getName().toLowerCase(Locale.ENGLISH), ct);
 								removePlFromList = false;
 								
 								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_DELETE_START

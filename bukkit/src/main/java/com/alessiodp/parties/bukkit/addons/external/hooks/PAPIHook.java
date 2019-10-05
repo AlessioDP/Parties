@@ -43,6 +43,6 @@ public class PAPIHook extends PlaceholderHook {
 		
 		PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
 		
-		return ph != null ? ph.formatPlaceholder(partyPlayer, party, identifier) : "";
+		return ph != null ? ph.formatPlaceholder(partyPlayer, party, identifier) : null;
 	}
 }

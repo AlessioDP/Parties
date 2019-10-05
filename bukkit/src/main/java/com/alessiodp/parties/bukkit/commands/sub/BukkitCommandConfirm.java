@@ -8,8 +8,10 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
+import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,6 +25,9 @@ public class BukkitCommandConfirm extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
+		User sender = commandData.getSender();
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	

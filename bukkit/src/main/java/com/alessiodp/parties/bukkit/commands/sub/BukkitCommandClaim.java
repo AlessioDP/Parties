@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BukkitCommandClaim extends PartiesSubCommand {
 	@Getter private final boolean executableByConsole = false;
@@ -114,7 +115,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_CLAIM
 					.replace("{player}", sender.getName())
-					.replace("{value}", commandData.getArgs()[1].toLowerCase()), true);
+					.replace("{value}", commandData.getArgs()[1].toLowerCase(Locale.ENGLISH)), true);
 			break;
 		}
 	}

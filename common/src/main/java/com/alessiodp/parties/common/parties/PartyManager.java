@@ -14,6 +14,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -52,11 +53,11 @@ public abstract class PartyManager {
 		// Get the party and save it into the party list
 		PartyImpl ret = getParty(name);
 		if (ret != null)
-			getListParties().put(name.toLowerCase(), ret);
+			getListParties().put(name.toLowerCase(Locale.ENGLISH), ret);
 		return ret;
 	}
 	public void unloadParty(String name) {
-		getListParties().remove(name.toLowerCase());
+		getListParties().remove(name.toLowerCase(Locale.ENGLISH));
 	}
 	
 	public boolean reloadParty(String name) {
@@ -74,7 +75,7 @@ public abstract class PartyManager {
 		// Just get the party without save it into the party list
 		PartyImpl ret = null;
 		if (name != null && !name.isEmpty()) {
-			ret = getListParties().get(name.toLowerCase());
+			ret = getListParties().get(name.toLowerCase(Locale.ENGLISH));
 			if (ret == null) {
 				ret = plugin.getDatabaseManager().getParty(name);
 				if (ret != null) {
@@ -94,7 +95,7 @@ public abstract class PartyManager {
 	
 	public boolean existParty(String name) {
 		boolean ret = false;
-		PartyImpl party = getListParties().get(name.toLowerCase());
+		PartyImpl party = getListParties().get(name.toLowerCase(Locale.ENGLISH));
 		if (party != null || plugin.getDatabaseManager().existsParty(name))
 			ret = true;
 		return ret;
@@ -131,7 +132,7 @@ public abstract class PartyManager {
 						.replace("{party}", party.getName())
 						.replace("{cause}", cause), true);
 				
-				getListPartiesToDelete().remove(name.toLowerCase());
+				getListPartiesToDelete().remove(name.toLowerCase(Locale.ENGLISH));
 			} else {
 				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC
 						.replace("{party}", party.getName()), true);

@@ -10,6 +10,8 @@ import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import lombok.NonNull;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Locale;
+
 public class BukkitMetricsHandler extends MetricsHandler {
 	public BukkitMetricsHandler(@NonNull ADPPlugin plugin) {
 		super(plugin);
@@ -37,7 +39,7 @@ public class BukkitMetricsHandler extends MetricsHandler {
 		
 		metrics.addCustomChart(new Metrics.SimplePie("exp_levels", () -> {
 			if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
-				switch (BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE.toLowerCase()) {
+				switch (BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE.toLowerCase(Locale.ENGLISH)) {
 					case "normal":
 						return "Normal";
 					case "skillapi":

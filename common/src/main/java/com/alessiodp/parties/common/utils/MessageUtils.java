@@ -12,6 +12,7 @@ import com.alessiodp.parties.common.players.objects.RankImpl;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -35,7 +36,7 @@ public abstract class MessageUtils {
 		Matcher matcher = PLACEHOLDER_PATTERN.matcher(ret);
 		while(matcher.find()) {
 			String identifier = matcher.group(0);
-			switch (identifier.toLowerCase()) {
+			switch (identifier.toLowerCase(Locale.ENGLISH)) {
 				case PartiesConstants.PLACEHOLDER_PARTY_COLOR_CODE:
 					replacement = party != null && party.getCurrentColor() != null ? party.getCurrentColor().getCode() : emptyPlaceholder;
 					ret = ret.replace(identifier, replacement);
@@ -216,7 +217,7 @@ public abstract class MessageUtils {
 		Matcher matcher = PLACEHOLDER_PATTERN.matcher(ret);
 		while(matcher.find()) {
 			String identifier = matcher.group(1);
-			switch (identifier.toLowerCase()) {
+			switch (identifier.toLowerCase(Locale.ENGLISH)) {
 				case PartiesConstants.PLACEHOLDER_PLAYER_NAME:
 				case PartiesConstants.PLACEHOLDER_PLAYER_USER:
 					replacement = player != null ? player.getName() : emptyPlaceholder;
@@ -224,6 +225,7 @@ public abstract class MessageUtils {
 					break;
 				case PartiesConstants.PLACEHOLDER_PLAYER_RANK_NAME:
 					replacement = player != null && !player.getPartyName().isEmpty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getName() : emptyPlaceholder;
+					ret = ret.replace(identifier, replacement);
 					break;
 				case PartiesConstants.PLACEHOLDER_PLAYER_RANK_CHAT:
 					replacement = player != null && !player.getPartyName().isEmpty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getChat() : emptyPlaceholder;

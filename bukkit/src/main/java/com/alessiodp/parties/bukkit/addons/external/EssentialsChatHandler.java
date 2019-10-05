@@ -1,5 +1,6 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,11 +32,10 @@ public class EssentialsChatHandler implements Listener {
 		}
 	}
 	
-	
 	@EventHandler
 	public void onChatPlayer(AsyncPlayerChatEvent event) {
 		String old = event.getFormat();
-		if (old.toLowerCase().contains("{parties_")) {
+		if (old.toLowerCase(Locale.ENGLISH).contains("{parties_")) {
 			// Bypass useless checks if this isn't an Parties placeholder
 			boolean somethingChanged = false;
 			PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
@@ -46,10 +46,14 @@ public class EssentialsChatHandler implements Listener {
 				String base = mat.group(0);
 				String identifier = mat.group(1);
 				if (identifier != null) {
+					identifier = identifier.toLowerCase(Locale.ENGLISH);
 					PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder(identifier);
 					if (placeholder != null) {
-						old = old.replace(base, plugin.getColorUtils().convertColors(placeholder.formatPlaceholder(partyPlayer, party, identifier)));
-						somethingChanged = true;
+						String parsed = placeholder.formatPlaceholder(partyPlayer, party, identifier);
+						if (parsed != null) {
+							old = old.replace(base, plugin.getColorUtils().convertColors(parsed));
+							somethingChanged = true;
+						}
 					}
 				}
 			}
