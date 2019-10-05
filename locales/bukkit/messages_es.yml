@@ -9,7 +9,9 @@ parties:
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
   update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cEl archivo de configuracion '%config%' de Parties esta desactualizado!"
   common-messages:
     invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"

@@ -1,6 +1,16 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|        PARTIES  MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 parties:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&9Parti pluginin Yeni sürümü bulundu: %version% (Şuanki sürüm: %thisversion%)"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
   configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
     invalid-command: "&cBilinmeyen Komut"
@@ -10,6 +20,8 @@ parties:
     party-not-found: "&cBu Pari %party% Bulunamıyor"
     party-full: "&cBu Parti Dolu!"
   permissions:
+    #Special tag:
+    #=> %permission%   = Missing permission
     no-permission: "&cBu Komutu Yazmak İçin Yetkin Yok"
     no-permission-in-party: "&cBu Komutu Yazabilmek İçin %rank_name% Rankında Olmalısın"
   out-party: "Eklenti dışı"
@@ -20,6 +32,9 @@ parties:
     player-empty: "&7Kimse"
     player-unknown: "&6Birileri"
     missing-value: "&7Miss"
+#/ = = = = = = = = = = = = = = = = \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ = = = = = = = = = = = = = = = = /
 main-commands:
   accept:
     broadcast: "&b&l%player% partiye katıldı"
@@ -66,6 +81,13 @@ main-commands:
       empty: "&7Boş"
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party ignore [party]"
   info:
+    #Special tags:
+    #=> %list_RANK%           = The list of players of that rank
+    #Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    #=> %list_RANK_number%    = The number of players of that rank
+    #=> %list_RANK_online%    = Online players of that rank
+    #=> %online%              = List online players
+    #=> %online_number%        = Number of online players
     content:
       - "&b============ &l%party%'s Bilgileri &r&b============"
       - "&b&lAçıklama&r&7: %desc%"
@@ -100,6 +122,12 @@ main-commands:
     player-not-in-party: "&c%player% Senin partin değil"
     player-not-in-other-party: "&c%player% Bir partide mevcut değil"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cBu isimde birkaç oyuncu bulduk:"
         - "%list_players%"
@@ -111,10 +139,14 @@ main-commands:
     broadcast: "&b&l%player% Partiden Çıktı"
     party-disbanded: "&6&lParti Kapatıldı Çünkü Lider Partiden Çıktı"
   p:
+    #Special tag:
+    #=> %seconds%   = Remaining time in seconds
     cooldown: "&c%seconds% Saniye Beklemelisin"
     censored: "&cBu Mesaj Kötü Şeyler İçeriyor!"
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/p <message>"
   rank:
+    #Special tag:
+    #=> %rank_name%   = Rank wrote by the player
     changed: "&a%player% Adlı Oyuncun Yeni Rütbesi: %rank_name%"
     broadcast: ""
     wrong-rank: "&cRütbe '%rank_name%' Bulunamıyor!"
@@ -126,6 +158,12 @@ main-commands:
     player-not-in-party: "&c%player% Senin partin değil"
     player-not-in-other-party: "&c%player% Bir Partide Değil"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cBu isimde birkaç oyuncu bulduk:"
         - "%list_players%"
@@ -133,6 +171,8 @@ main-commands:
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: en son giriş %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Bu oyuncunun rütbesini değiştir","color":"gold"}}}'
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party rank <player> <rank>"
   rename:
+    #Special tag:
+    #=> %old%   = Old party name
     renamed: "&aPartinin %old% adı artık %party% olarak değiştirildi"
     broadcast: "&6Partinin yeni ismi %party%!"
     wrong-command: "&cYanlış komut: Şunu dene &7/party rename <yenisim>"
@@ -142,8 +182,15 @@ main-commands:
     disabled: "&7Görünmezlikten Çıktın"
     wrong-command: "&cYanlış Komut: Doğrusu &7/party spy [on/off]"
   version:
+    #Special tags:
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
     updated: "&b&lParties &b%version% &7(%platform%) - Geliştiren &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Geliştiren &6AlessioDP\n&aYeni version bulundu: &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ = = = = = = = = = = = = = = = = /
 additional-commands:
   claim:
     claimed: "&aPartiye Yetki Verildi"
@@ -167,6 +214,9 @@ additional-commands:
     censored: "&cBu Açıklama Yasaklı Kelimleler İçeriyor!"
     wrong-command: "&cYanlış komut: Şunu dene &7/party desc <descriptio/remove>"
   exp:
+    #Special tags:
+    #=> %exp%        = Experience gained
+    #=> %total_exp%  = Total experience dropped by the mob
     party:
       gained: "&bYaratık kesmekten %exp% tecrübe puanı kazanıldı"
     normal:
@@ -181,6 +231,7 @@ additional-commands:
     wrong-command: "&cBilinmeyen Komut: Doğrusu &7/party follow [on/off]"
   home:
     teleported: "&7Partş Evine Işınlanıldı"
+    #Special tag: %time% = Time of cooldown
     teleport-in: "&7%time% Saniye Sonra Işınlanacaksın..."
     teleport-denied: "&7Işınlanma Reddedildi"
     teleport-waiting: "&cIşınlanmak İçin Beklemelisin!"
@@ -194,6 +245,10 @@ additional-commands:
     wrong-password: "&cYanlış şifre!"
     wrong-command: "&cYanlış komut: Doğru komut » &7/party join <parti adı> [Şifre]"
   list:
+    #Special tags:
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
     header: "&b============ &lÇevrimiçi Parti Listesi &r&b============"
     footer: "&b================ &lSayfa %page% /%maxpages% &r&b================"
     no-one: "&7Hiç Kimse Yok"
@@ -233,8 +288,10 @@ additional-commands:
   teleport:
     teleporting: "&7Partini Buraya Işınla!"
     player-teleported: "&b%player% Adlı Kişiye Işınlanıldı"
+    #Special tag: %seconds% = Remaining time in seconds
     cooldown: "&c%seconds% Saniye Beklemelisin!"
   vault:
+    #Special tag: %price% = Price of the command
     no-money:
       claim: "&cBurayı Almak İçin Yeterli Paran Yok[%price%$]"
       color: "&c Renk Değiştirmek İçin Yeterli Paran Yok[%price%$]"
@@ -249,14 +306,22 @@ additional-commands:
       warn-onbuy: "[{\"text\":\"Command %cmd% costs %price%$.\n\",\"color\":\"green\"},{\"text\":\"Doğrulamak İçin Tıkla\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Parayı Ödemek İçin\",\"color\":\"gold\"}]}}},{\"text\":\" or type \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" Yazın.\",\"color\":\"green\"}]"
       confirmed: "&aKomutu Gerçekleştirmek İçin."
       no-cmd: "&cDoğrulanacak Komut"
+#/ = = = = = = = = = = = = = = = = \
+#|         OTHER  MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 other:
   follow:
+    #Special tags: %world% = New world
     following-world: "&7Takip Edilen %player% Bu Dünyada %world%"
   fixed-parties:
+    #Joined into a default party
     default-join: "&b%party% Adlı Partiye Katıldın"
   join-leave:
     server-join: "&b%player% Çevrimiçi!"
     server-leave: "&7%player% Aktif değil!"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
   header: "&b================= &lParti Yardım %page%/%maxpages% &r&b================="
   footer: ""
