@@ -1,6 +1,16 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|        PARTIES  MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 parties:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&9Nuova versione di Parties trovata: %version% (Attuale: %thisversion%)"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
   configuration-outdated: "&cIl file di configurazione '%config%' di Parties è obsoleto!"
   common-messages:
     invalid-command: "&cComando non valido"
@@ -10,6 +20,8 @@ parties:
     party-not-found: "&cIl party %party% non esiste"
     party-full: "&cIl party è pieno!"
   permissions:
+    #Special tag:
+    #=> %permission%   = Missing permission
     no-permission: "&cNon hai accesso a questo comando"
     no-permission-in-party: "&cDevi essere almeno rank %rank_name% per eseguire questo comando"
   out-party: "Senza party"
@@ -20,6 +32,9 @@ parties:
     player-empty: "&7Nessuno"
     player-unknown: "&6Qualcuno"
     missing-value: "&7Mancante"
+#/ = = = = = = = = = = = = = = = = \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ = = = = = = = = = = = = = = = = /
 main-commands:
   accept:
     broadcast: "&b&l%player% è entrato nel party"
@@ -66,6 +81,13 @@ main-commands:
       empty: "&7Nessuno"
     wrong-command: "&cComando sbagliato: Esegui &7/party ignore [party]"
   info:
+    #Special tags:
+    #=> %list_RANK%           = The list of players of that rank
+    #Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    #=> %list_RANK_number%    = The number of players of that rank
+    #=> %list_RANK_online%    = Online players of that rank
+    #=> %online%              = List online players
+    #=> %online_number%        = Number of online players
     content:
       - "&b============ &l%party%'s Info &r&b============"
       - "&b&lDescrizione&r&7: %desc%"
@@ -100,6 +122,12 @@ main-commands:
     player-not-in-party: "&c%player% non è nel tuo party"
     player-not-in-other-party: "&c%player% non è in un party"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cAbbiamo trovato qualche player con quel nome:"
         - "%list_players%"
@@ -111,10 +139,14 @@ main-commands:
     broadcast: "&b&l%player% ha lasciato il party"
     party-disbanded: "&6&lIl party è stato sciolto poichè il leader è uscito"
   p:
+    #Special tag:
+    #=> %seconds%   = Remaining time in seconds
     cooldown: "&cDevi ancora aspettare %seconds% secondi"
     censored: "&cIl messaggio contiene delle parole censurate!"
     wrong-command: "&cComando sbagliato: Esegui &7/p <messaggio>"
   rank:
+    #Special tag:
+    #=> %rank_name%   = Rank wrote by the player
     changed: "&aIl rank di %player% è cambiato in %rank_name%"
     broadcast: ""
     wrong-rank: "&cIl rank '%rank_name%' non esiste!"
@@ -126,6 +158,12 @@ main-commands:
     player-not-in-party: "&c%player% non è nel tuo party"
     player-not-in-other-party: "&c%player% non ha un party"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cAbbiamo trovato qualche player con quel nome:"
         - "%list_players%"
@@ -133,6 +171,8 @@ main-commands:
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: ultimo login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Cambia rank di questo player","color":"gold"}}}'
     wrong-command: "&cComando sbagliato: Esegui &7/party rank <player> <rank>"
   rename:
+    #Special tag:
+    #=> %old%   = Old party name
     renamed: "&aIl party %old% è stato rinominato in %party%"
     broadcast: "&6Il tuo party è stato rinominato in %party%!"
     wrong-command: "&cComando sbagliato: Esegui &7/party rename <nuovo nome>"
@@ -142,8 +182,15 @@ main-commands:
     disabled: "&7Non sei più una spia"
     wrong-command: "&cComando sbagliato: Esegui &7/party spy [on/off]"
   version:
+    #Special tags:
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
     updated: "&b&lParties &b%version% &7(%platform%) - Sviluppata da &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Sviluppata da &6AlessioDP\n&aNuova versione trovata: &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ = = = = = = = = = = = = = = = = /
 additional-commands:
   claim:
     claimed: "&aConcessi i permessi al party"
@@ -167,6 +214,9 @@ additional-commands:
     censored: "&cLa descrizione contiene delle parole censurate!"
     wrong-command: "&cComando sbagliato: Esegui &7/party desc <descrizione/remove>"
   exp:
+    #Special tags:
+    #=> %exp%        = Experience gained
+    #=> %total_exp%  = Total experience dropped by the mob
     party:
       gained: "&bHai ottenuto %exp% esperienza party per aver ucciso il mob"
     normal:
@@ -181,6 +231,7 @@ additional-commands:
     wrong-command: "&cComando sbagliato: Esegui &7/party follow [on/off]"
   home:
     teleported: "&7Teletrasportato alla home del party"
+    #Special tag: %time% = Time of cooldown
     teleport-in: "&7Sarai teletrasportato in %time% secondi..."
     teleport-denied: "&7Teletrasporto annullato"
     teleport-waiting: "&cStai già aspettando per il teletrasporto!"
@@ -194,6 +245,10 @@ additional-commands:
     wrong-password: "&cPassword sbagliata!"
     wrong-command: "&cComando sbagliato: Esegui &7/party join <party> [password]"
   list:
+    #Special tags:
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
     header: "&b============ &lLista Party Online &r&b============"
     footer: "&b================ &lPagina %page% di %maxpages% &r&b================"
     no-one: "&7Nessuno"
@@ -233,8 +288,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teletrasportando il tuo party qui!"
     player-teleported: "&bTeletrasportato da %player%"
+    #Special tag: %seconds% = Remaining time in seconds
     cooldown: "&cDevi aspettare %seconds% secondi!"
   vault:
+    #Special tag: %price% = Price of the command
     no-money:
       claim: "&cNon hai abbastanza soldi per eseguire il comando claim [%price%$]"
       color: "&cNon hai abbastanza soldi per eseguire il comando color [%price%$]"
@@ -249,14 +306,22 @@ additional-commands:
       warn-onbuy: "[{\"text\":\"Il comando %cmd% costa %price%$.\n\",\"color\":\"green\"},{\"text\":\"Clicca qui per confermare\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Paga il comando\",\"color\":\"gold\"}]}}},{\"text\":\" oppure esegui \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" per confermarlo.\",\"color\":\"green\"}]"
       confirmed: "&aEseguendo il comando."
       no-cmd: "&cNon ci sta nessun comando da confermare"
+#/ = = = = = = = = = = = = = = = = \
+#|         OTHER  MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 other:
   follow:
+    #Special tags: %world% = New world
     following-world: "&7Stai seguendo %player% in %world%"
   fixed-parties:
+    #Joined into a default party
     default-join: "&bSei entrato in %party%"
   join-leave:
     server-join: "&b%player% è online!"
     server-leave: "&7%player% è offline!"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
   header: "&b================= &lAiuto Party %page%/%maxpages% &r&b================="
   footer: ""
