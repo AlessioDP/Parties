@@ -27,6 +27,7 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -152,7 +153,7 @@ public abstract class PartyImpl implements Party {
 		}
 		updateParty();
 		
-		plugin.getPartyManager().getListParties().put(getName().toLowerCase(), this);
+		plugin.getPartyManager().getListParties().put(getName().toLowerCase(Locale.ENGLISH), this);
 		callChange();
 		lock.unlock();
 		
@@ -162,7 +163,7 @@ public abstract class PartyImpl implements Party {
 	@Override
 	public void delete() {
 		lock.lock();
-		plugin.getPartyManager().getListParties().remove(getName().toLowerCase()); // Remove from online list
+		plugin.getPartyManager().getListParties().remove(getName().toLowerCase(Locale.ENGLISH)); // Remove from online list
 		plugin.getDatabaseManager().removeParty(this); // Remove from database
 		
 		for (UUID uuid : getMembers()) {
@@ -178,7 +179,7 @@ public abstract class PartyImpl implements Party {
 	public void rename(@NonNull String newName) {
 		lock.lock();
 		String oldName = getName();
-		plugin.getPartyManager().getListParties().remove(oldName.toLowerCase()); // Remove from online list
+		plugin.getPartyManager().getListParties().remove(oldName.toLowerCase(Locale.ENGLISH)); // Remove from online list
 		
 		plugin.getDatabaseManager().renameParty(oldName, newName); // Rename via database
 		
@@ -189,7 +190,7 @@ public abstract class PartyImpl implements Party {
 		
 		this.name = newName; // Change name
 		
-		plugin.getPartyManager().getListParties().put(newName.toLowerCase(), this); // Insert into online list
+		plugin.getPartyManager().getListParties().put(newName.toLowerCase(Locale.ENGLISH), this); // Insert into online list
 		callChange();
 		lock.unlock();
 		

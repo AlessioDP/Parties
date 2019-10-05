@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatabaseDispatcher {
@@ -42,7 +43,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 			case MYSQL:
 				SQLTable.setupTables(
 						PartiesConstants.VERSION_DATABASE_MYSQL,
-						plugin.getResource("schemas/" + type.name().toLowerCase() + ".sql")
+						plugin.getResource("schemas/" + type.name().toLowerCase(Locale.ENGLISH) + ".sql")
 				);
 				MySQLHikariConfiguration hikari = new MySQLHikariConfiguration(
 						plugin.getPluginFallbackName(),
@@ -62,7 +63,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 			case SQLITE:
 				SQLTable.setupTables(
 						PartiesConstants.VERSION_DATABASE_SQLITE,
-						plugin.getResource("schemas/" + type.name().toLowerCase() + ".sql")
+						plugin.getResource("schemas/" + type.name().toLowerCase(Locale.ENGLISH) + ".sql")
 				);
 				database = new SQLiteDao(plugin, ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE);
 				database.initSQL();

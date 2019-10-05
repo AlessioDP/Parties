@@ -9,6 +9,7 @@ import lombok.Getter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,7 @@ public enum SQLTable implements ISQLTable {
 	public static SQLTable getExactEnum(String name) {
 		SQLTable ret = null;
 		if (name != null && !name.isEmpty()) {
-			switch (name.toLowerCase()) {
+			switch (name.toLowerCase(Locale.ENGLISH)) {
 			case "parties":
 				ret = PARTIES;
 				break;

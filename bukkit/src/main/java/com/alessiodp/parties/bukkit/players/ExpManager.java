@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import javax.script.ScriptEngineManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ExpManager {
 	private final PartiesPlugin plugin;
@@ -268,7 +269,7 @@ public class ExpManager {
 		
 		public static ExpMode parse(String name) {
 			ExpMode ret;
-			switch (name.toLowerCase()) {
+			switch (name.toLowerCase(Locale.ENGLISH)) {
 				case "fixed":
 					ret = FIXED;
 					break;
@@ -288,7 +289,7 @@ public class ExpManager {
 		
 		public static ExpConvert parse(String name) {
 			ExpConvert ret;
-			switch (name.toLowerCase()) {
+			switch (name.toLowerCase(Locale.ENGLISH)) {
 				case "normal":
 					ret = NORMAL;
 					break;

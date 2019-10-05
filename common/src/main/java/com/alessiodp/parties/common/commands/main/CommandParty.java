@@ -34,6 +34,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public abstract class CommandParty extends ADPMainCommand {
 	
@@ -100,9 +101,9 @@ public abstract class CommandParty extends ADPMainCommand {
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /party to /party help
-				subCommand = ConfigMain.COMMANDS_CMD_HELP.toLowerCase();
+				subCommand = ConfigMain.COMMANDS_CMD_HELP.toLowerCase(Locale.ENGLISH);
 			} else {
-				subCommand = args[0].toLowerCase();
+				subCommand = args[0].toLowerCase(Locale.ENGLISH);
 			}
 			
 			if (exists(subCommand)) {
@@ -113,7 +114,7 @@ public abstract class CommandParty extends ADPMainCommand {
 		} else {
 			// Console
 			if (args.length > 0) {
-				subCommand = args[0].toLowerCase();
+				subCommand = args[0].toLowerCase(Locale.ENGLISH);
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {

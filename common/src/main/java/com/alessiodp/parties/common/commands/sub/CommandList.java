@@ -17,6 +17,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CommandList extends PartiesSubCommand {
 	@Getter private final boolean executableByConsole = true;
@@ -180,7 +181,7 @@ public class CommandList extends PartiesSubCommand {
 		
 		static OrderType parse(String name) {
 			OrderType ret = NAME;
-			switch (name.toLowerCase()) {
+			switch (name.toLowerCase(Locale.ENGLISH)) {
 				case "players":
 					ret = PLAYERS;
 					break;

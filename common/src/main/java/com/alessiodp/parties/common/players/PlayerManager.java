@@ -68,11 +68,9 @@ public abstract class PlayerManager {
 	}
 	
 	public PartyPlayerImpl getPlayer(UUID uuid) {
-		PartyPlayerImpl ret;
-		if (getListPartyPlayers().containsKey(uuid)) {
+		PartyPlayerImpl ret = getListPartyPlayers().get(uuid);
+		if (ret != null) {
 			// Get player from online list
-			ret = getListPartyPlayers().get(uuid);
-			
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_LIST
 					.replace("{player}", ret.getName())
 					.replace("{party}", ret.getPartyName()), true);

@@ -32,6 +32,8 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.Locale;
+
 @RequiredArgsConstructor
 public class BukkitFightListener implements Listener {
 	private final PartiesPlugin plugin;
@@ -128,7 +130,7 @@ public class BukkitFightListener implements Listener {
 			if (party != null && party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 				boolean cancel = false;
 				for (PotionEffect pe : event.getEntity().getEffects()) {
-					switch (pe.getType().getName().toLowerCase()) {
+					switch (pe.getType().getName().toLowerCase(Locale.ENGLISH)) {
 					case "harm":
 					case "blindness":
 					case "confusion":

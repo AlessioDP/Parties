@@ -15,6 +15,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CommandAccept extends PartiesSubCommand {
@@ -57,11 +58,11 @@ public class CommandAccept extends PartiesSubCommand {
 		// Command handling
 		HashMap<String, PartyImpl> parties = new HashMap<>();
 		for (PartyImpl party : partyPlayer.getPartyInvites().keySet()) {
-			parties.put(party.getName().toLowerCase(), party);
+			parties.put(party.getName().toLowerCase(Locale.ENGLISH), party);
 		}
 		
 		if (commandData.getArgs().length > 1
-			&& !parties.containsKey(commandData.getArgs()[1].toLowerCase())) {
+			&& !parties.containsKey(commandData.getArgs()[1].toLowerCase(Locale.ENGLISH))) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_NOEXISTS);
 			return;
 		}
@@ -71,7 +72,7 @@ public class CommandAccept extends PartiesSubCommand {
 			if (parties.size() == 1) {
 				party = parties.values().iterator().next();
 			} else if (commandData.getArgs().length > 1) {
-				party = parties.get(commandData.getArgs()[1].toLowerCase());
+				party = parties.get(commandData.getArgs()[1].toLowerCase(Locale.ENGLISH));
 			} else {
 				// Missing party
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_ACCEPT_MULTIPLEINVITES);

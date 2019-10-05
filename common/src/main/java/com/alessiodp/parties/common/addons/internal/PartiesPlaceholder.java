@@ -5,7 +5,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
-import java.util.Map;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,14 +83,14 @@ public enum PartiesPlaceholder {
 			}
 		}
 		
-		if (identifier.toLowerCase().startsWith(CUSTOM_PREFIX)) {
+		if (identifier.toLowerCase(Locale.ENGLISH).startsWith(CUSTOM_PREFIX)) {
 			// Custom prefix
 			ret = CUSTOM;
 		}
-		if (identifier.toLowerCase().startsWith(LIST_RANK_PREFIX)) {
-			if (identifier.toLowerCase().endsWith(LIST_RANK_NUMBER_SUFFIX))
+		if (identifier.toLowerCase(Locale.ENGLISH).startsWith(LIST_RANK_PREFIX)) {
+			if (identifier.toLowerCase(Locale.ENGLISH).endsWith(LIST_RANK_NUMBER_SUFFIX))
 				ret = LIST_RANK_NUMBER;
-			else if (identifier.toLowerCase().endsWith(LIST_RANK_ONLINE_SUFFIX))
+			else if (identifier.toLowerCase(Locale.ENGLISH).endsWith(LIST_RANK_ONLINE_SUFFIX))
 				ret = LIST_RANK_ONLINE;
 			else
 				ret = LIST_RANK;
@@ -101,11 +101,13 @@ public enum PartiesPlaceholder {
 		String ret = "";
 		if (this.equals(CUSTOM)) {
 			// Custom
-			for (Map.Entry<String, String> entry : ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.entrySet()) {
-				if (identifier.equalsIgnoreCase(CUSTOM_PREFIX + entry.getKey())) {
-					ret = plugin.getMessageUtils().convertAllPlaceholders(entry.getValue(), party, pp);
+			String custom = ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.get(identifier.substring(CUSTOM_PREFIX.length()));
+			if (custom != null) {
+				if (party != null) {
+					ret = plugin.getMessageUtils().convertAllPlaceholders(custom, party, pp);
 				}
-			}
+			} else
+				ret = null;
 		} else if (this.equals(LIST_RANK)
 				|| this.equals(LIST_RANK_NUMBER)
 				|| this.equals(LIST_RANK_ONLINE)) {
