@@ -1,5 +1,13 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|        PARTIES  MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 parties:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&9Neue Version von Parties gefunden: %version% (Aktuell: %thisversion%)"
   configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
@@ -10,6 +18,8 @@ parties:
     party-not-found: "&cDie Gruppe %party% existiert nicht"
     party-full: "&cDiese Gruppe ist voll!"
   permissions:
+    #Special tag:
+    #=> %permission%   = Missing permission
     no-permission: "&cDu besitzt keine Rechte auf diesen Befehl"
     no-permission-in-party: "&cDu musst %rank_name% sein, um diesen Befehl verwenden zu dürfen"
   out-party: "Out party"
@@ -20,6 +30,9 @@ parties:
     player-empty: "& 7keine"
     player-unknown: "&6 unbekannt"
     missing-value: "&7 fehlt"
+#/ = = = = = = = = = = = = = = = = \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ = = = = = = = = = = = = = = = = /
 main-commands:
   accept:
     broadcast: "&b&l%player% ist der Gruppe beigetreten"
@@ -66,6 +79,13 @@ main-commands:
       empty: "&7 keine"
     wrong-command: "&cFalscher Ausdruck: Verwende: &7/party ignore [Gruppe]"
   info:
+    #Special tags:
+    #=> %list_RANK%           = The list of players of that rank
+    #Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    #=> %list_RANK_number%    = The number of players of that rank
+    #=> %list_RANK_online%    = Online players of that rank
+    #=> %online%              = List online players
+    #=> %online_number%        = Number of online players
     content:
       - "&b============ &lInfos zu %party% &r&b============"
       - "&b&lBeschreibung&r&7: %desc%"
@@ -100,6 +120,12 @@ main-commands:
     player-not-in-party: "&c%player% ist nicht Mitglied deiner Gruppe"
     player-not-in-other-party: "&c%player% ist kein Mitglied einer Gruppe"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
         - "%list_players%"
@@ -111,10 +137,14 @@ main-commands:
     broadcast: "&b&l%player% hat die Gruppe verlassen"
     party-disbanded: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
   p:
+    #Special tag:
+    #=> %seconds%   = Remaining time in seconds
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
     censored: "&cThe message contains censored words!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/p <Nachricht>"
   rank:
+    #Special tag:
+    #=> %rank_name%   = Rank wrote by the player
     changed: "&a%player% ist nun %rank_name%"
     broadcast: ""
     wrong-rank: "&cDer Rang '%rank_name%' existiert nicht!"
@@ -126,6 +156,12 @@ main-commands:
     player-not-in-party: "&c%player% ist nicht Mitglied deiner Gruppe"
     player-not-in-other-party: "&c%player% ist kein Mitglied einer Gruppe"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
         - "%list_players%"
@@ -133,6 +169,8 @@ main-commands:
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party rank <Spieler> <Rang>"
   rename:
+    #Special tag:
+    #=> %old%   = Old party name
     renamed: "&aDie Gruppe %old% wurde umbenannt zu %party%"
     broadcast: "&6Deine Gruppe wurde umbenannt zu %party%!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party rename <Neuer Name>"
@@ -142,8 +180,15 @@ main-commands:
     disabled: "&7Du bist nicht länger ein Spion!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party spy [on/off]"
   version:
+    #Special tags:
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
     updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ = = = = = = = = = = = = = = = = /
 additional-commands:
   color:
     info: "&bDeine Gruppenfarbe ist: %color_code%%color_command%"
@@ -170,6 +215,10 @@ additional-commands:
     wrong-password: "&cFalsches Passwort!"
     wrong-command: "&cFalscher Ausdruck: Verwende &7/party join <Gruppe> [Passwort]"
   list:
+    #Special tags:
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
     header: "&b=========== &lListe der Gruppen Online &r&b==========="
     footer: "&b================= &lSeite %page% von %maxpages% &r&b================="
     no-one: "&7keine"
@@ -198,15 +247,24 @@ additional-commands:
   teleport:
     teleporting: "&7Gruppenmitglieder werden teleportiert!"
     player-teleported: "&7Teleportiere zu %player%"
+    #Special tag: %seconds% = Remaining time in seconds
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
+#/ = = = = = = = = = = = = = = = = \
+#|         OTHER  MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 other:
   follow:
+    #Special tags: %server% = New server
     following-server: "&7Folge %player% in %server%"
   fixed-parties:
+    #Joined into a default party
     default-join: "&bDu bist der Gruppe %party% beigetreten"
   join-leave:
     server-join: "&b%player% ist nun online!"
     server-leave: "&7%player% ist nun offline!"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
   header: "&b============== &lParty Befehlsliste %page%/%maxpages% &r&b=============="
   footer: ""
