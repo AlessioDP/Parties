@@ -1,7 +1,17 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|        PARTIES  MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 parties:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cEl archivo de configuracion '%config%' de Parties esta desactualizado!"
   common-messages:
     invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"
@@ -10,9 +20,11 @@ parties:
     party-not-found: "&cEl equipo %party% no existe"
     party-full: "&cEl equipo esta lleno!"
   permissions:
+    #Special tag:
+    #=> %permission%   = Missing permission
     no-permission: "&cNo tienes acceso a ese comando"
     no-permission-in-party: "&cNecesitas ser %rank_name% para ejecutar ese comando"
-  out-party: "Out party"
+  out-party: "Afuera dal equipo"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
@@ -20,6 +32,9 @@ parties:
     player-empty: "&7Nadie"
     player-unknown: "&6Alguien"
     missing-value: "&7No hay"
+#/ = = = = = = = = = = = = = = = = \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ = = = = = = = = = = = = = = = = /
 main-commands:
   accept:
     broadcast: "&b&l%player% ha entrado al equipo"
@@ -27,9 +42,9 @@ main-commands:
     accept-receipt: "&a%player% ha aceptado tu invitación"
     no-invite: "&cNo tienes ninguna invitación pendiente"
     no-exists: "&cLa invitación ya no existe"
-    multiple-invites: "&cChoose the party that you want accept:"
-    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party accept [party]"
+    multiple-invites: "&cElige el equipo que quieres aceptar:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Haga clic aquí para aceptar","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Acepta la invitación","color":"gold"}]}}}]'
+    wrong-command: "&cVariables incorrectas: Escribe &7/party accept [equipo]"
   chat:
     enabled: "&aChat establecido para el equipo"
     disabled: "&aChat establecido en publico"
@@ -53,9 +68,9 @@ main-commands:
     deny-receipt: "&7%player% ha denegado tu invitación"
     no-invite: "&cNo tienes invitaciones pendientes"
     no-exists: "&cLa invitación ya no existe"
-    multiple-invites: "&cChoose the party that you want deny:"
-    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party deny [party]"
+    multiple-invites: "&cElige el equipo que quieres negar:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Haga clic aquí para negar","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Negar la invitación","color":"gold"}]}}}]'
+    wrong-command: "&cVariables incorrectas: Escribe &7/party deny [equipo]"
   ignore:
     start-ignore: "&7Ignorando las invitaciones del equipo %party%"
     stop-ignore: "&7Has parado de ignorar al equipo %party%"
@@ -66,6 +81,13 @@ main-commands:
       empty: "&7Ninguno"
     wrong-command: "&cVariables incorrectas: Escribe &7/party ignore [party]"
   info:
+    #Special tags:
+    #=> %list_RANK%           = The list of players of that rank
+    #Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    #=> %list_RANK_number%    = The number of players of that rank
+    #=> %list_RANK_online%    = Online players of that rank
+    #=> %online%              = List online players
+    #=> %online_number%        = Number of online players
     content:
       - "&b============ &lInformacion del equipo %party% &r&b============"
       - "&b&lDescripción&r&7: %desc%"
@@ -73,13 +95,13 @@ main-commands:
       - "&bLíder&7: %list_leader%"
       - "&bModeradores&7: %list_moderator%"
       - "&bMiembros&7: %list_member%"
-      - "&bOnline players&7: %online_number%"
+      - "&bJugadores conectados&7: %online_number%"
   invite:
     sent: "&bHas invitado al jugador %player% a tu equipo"
-    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% te ha invitado en el equipo %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Quieres \",\"color\":\"aqua\"},{\"text\":\"aceptar\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Acepta la invitación\",\"color\":\"gold\"}]}}},{\"text\":\" o \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"negar\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Negar la invitación\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"Puedes usar \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" para elegir.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% no aceptó la invitación al equipo"
-      timeout: "&7You didn't accept the party invite to %party%"
+      timeout: "&7No aceptaste la invitación al equipo %party%"
     revoke:
       sent-revoked: "&7Revocaste la invitación que enviaste a %player%"
       player-invite-revoked: "&7invitación recibida de %party% ha sido revocada"
@@ -100,6 +122,12 @@ main-commands:
     player-not-in-party: "&c%player% no esta en tu equipo"
     player-not-in-other-party: "&c%player% no esta en ningún equipo"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cHemos encontrado algunos jugadores con ese nombre:"
         - "%list_players%"
@@ -111,10 +139,14 @@ main-commands:
     broadcast: "&b&l%player% salio de tu equipo"
     party-disbanded: "&6&lEl equipo ha sido disuelto porque el líder se fue"
   p:
+    #Special tag:
+    #=> %seconds%   = Remaining time in seconds
     cooldown: "&cTodavía tienes que esperar %seconds% seconds"
     censored: "&cEl mensaje contiene palabras censuradas!"
     wrong-command: "&cVariables incorrectas: Escribe &7/party <mensaje>"
   rank:
+    #Special tag:
+    #=> %rank_name%   = Rank wrote by the player
     changed: "&a%player% rango cambiado a %rank_name%"
     broadcast: ""
     wrong-rank: "&cRango '%rank_name%' no existe!"
@@ -126,13 +158,21 @@ main-commands:
     player-not-in-party: "&c%player% no está en tu equipo"
     player-not-in-other-party: "&c%player% no está en ningún equipo"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cHemos encontrado algunos jugadores con ese nombre:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cUsa '&7/party rank <jugador> <numero>&c' para cambiar el rango del jugador correcto"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: último acceso %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Cambiar el rango de este jugador","color":"gold"}}}'
     wrong-command: "&cVariables incorrectas: Escribe &7/party rank <jugador> <rango>"
   rename:
+    #Special tag:
+    #=> %old%   = Old party name
     renamed: "&aEl equipo %old% ha sido renombrado a %party%"
     broadcast: "&6Tu equipo a sido renombrado a %party%!"
     wrong-command: "&cVariables incorrectas: Escribe &7/party rename <nuevonombre>"
@@ -142,8 +182,15 @@ main-commands:
     disabled: "&7Ya no eres un espía"
     wrong-command: "&cVariables incorrectas: Escribe &7/party spy [on/off]"
   version:
+    #Special tags:
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
     updated: "&b&lParties &b%version% &7(%platform%) - Desarrollado por &6AlessioDP"
     outdated: "&b&lParties &b%version% &7(%platform%) - Desarrollado por &6AlessioDP\n&aNueva versión encontrada: &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ = = = = = = = = = = = = = = = = /
 additional-commands:
   claim:
     claimed: "&aConcedido permiso para el equipo"
@@ -167,6 +214,9 @@ additional-commands:
     censored: "&cLa description contiene caracteres invalidos!"
     wrong-command: "&cVariables incorrectas: Escribe &7/party desc <descripcion/remover>"
   exp:
+    #Special tags:
+    #=> %exp%        = Experience gained
+    #=> %total_exp%  = Total experience dropped by the mob
     party:
       gained: "&bGanas %exp% experiencia de equipo por matar a un mob/monstruo"
     normal:
@@ -181,6 +231,7 @@ additional-commands:
     wrong-command: "&cVariables incorrectas: Escribe &7/party follow [on/off]"
   home:
     teleported: "&7Teletransportado a casa del equipo"
+    #Special tag: %time% = Time of cooldown
     teleport-in: "&7Seras teletransportado en %time% segundos..."
     teleport-denied: "&7Teletransporte denegado"
     teleport-waiting: "&cYa estas esperando para teletransportarte!"
@@ -194,10 +245,14 @@ additional-commands:
     wrong-password: "&cContraseña incorrecta!"
     wrong-command: "&cVariables incorrectas: Escribe &7/party entrar <equipo> [contraseña]"
   list:
+    #Special tags:
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
     header: "&b============ &lLista de equipos en linea &r&b============"
     footer: "&b================ &lPagina %page% de %maxpages% &r&b================"
     no-one: "&7Ninguno"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Muestra información","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"En linea %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cVariables incorrectas: Escribe &7/party list [pagina]"
   motd:
     changed: "&bMOTD del equipo cambiado"
@@ -233,8 +288,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teletransportando a la casa de tu equipo!"
     player-teleported: "&bTeletransportado a %player%"
+    #Special tag: %seconds% = Remaining time in seconds
     cooldown: "&cTienes que esperar %seconds% segundos!"
   vault:
+    #Special tag: %price% = Price of the command
     no-money:
       claim: "&cNo tienes suficiente dinero para realizar un reclamo [%price%$]"
       color: "&cNo tienes suficiente dinero para ejecutar el comando de color [%price%$]"
@@ -249,28 +306,36 @@ additional-commands:
       warn-onbuy: "[{\"text\":\"El comando %cmd% cuesta %price%$.\n\",\"color\":\"green\"},{\"text\":\"Click aqui para confirmar\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Pagar el comando\",\"color\":\"gold\"}]}}},{\"text\":\" o escribe \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" para usarlo.\",\"color\":\"green\"}]"
       confirmed: "&aEjecutando el comando."
       no-cmd: "&cEste no es un comando valido"
+#/ = = = = = = = = = = = = = = = = \
+#|         OTHER  MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 other:
   follow:
+    #Special tags: %world% = New world
     following-world: "&7Siguiendo %player% en %world%"
   fixed-parties:
+    #Joined into a default party
     default-join: "&bEntraste al equipo %party%"
   join-leave:
     server-join: "&b%player% esta conectado!"
     server-leave: "&7%player% esta desconectado!"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
   header: "&b===== &lAyuda de equipos %page%/%maxpages% &r&b====="
   footer: ""
   console-help:
     - "Puedes ejecutar solo estos comandos:"
-    - " > party create <name> fixed - Create a new party"
-    - " > party delete <party> - Delete a party"
-    - " > party info <party> - Show party information"
-    - " > party list - List of online parties"
-    - " > party kick <player> - Kick a player from the party"
-    - " > party rank <player> <rank> - Change rank of the player"
-    - " > party reload - Reload Parties configuration files"
-    - " > party rename <party> <name> - Rename the party"
-    - " > party version - Show Parties information"
+    - " > party create <nombre> fixed - Crear un nuevo equipo"
+    - " > party delete <party> - Eliminar el equipo"
+    - " > party info <party> - Mostrar informacion de equipo"
+    - " > party list - Lista de equipos en linea"
+    - " > party kick <jugador> - Expulsar a un jugador de su equipo"
+    - " > party rank <jugador> <rango> - Cambia el rango de un jugador"
+    - " > party reload - Recargar la configuración de Parties"
+    - " > party rename <equipo> <nuevonombre> - Renombrar el equipo"
+    - " > party version - Mostrar información de Parties"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [pagina]","color":"aqua"},{"text":" - Mostrar paginas de ayuda","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Aceptar una invitacion","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
