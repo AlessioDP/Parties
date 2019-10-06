@@ -23,7 +23,8 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cNo tienes acceso a ese comando"
-    no-permission-in-party: "&cNecesitas ser %rank_name% para ejecutar ese comando"
+    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-rank: "&cNecesitas ser %rank_name% para ejecutar ese comando"
   out-party: "Afuera dal equipo"
   list:
     player-online-format: "&b%player%"
@@ -309,4 +310,4 @@ help:
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Alternar notificaciones","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <contraseña/remove>","color":"aqua"},{"text":" - Cambiar la contraseña del equipo","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 7
+  version: 8

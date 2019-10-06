@@ -23,7 +23,8 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cNon hai accesso a questo comando"
-    no-permission-in-party: "&cDevi essere almeno rank %rank_name% per eseguire questo comando"
+    no-permission-in-party-general: "&cIl tuo grado del gruppo non ha accesso a questo comando"
+    no-permission-in-party-rank: "&cDevi essere almeno rank %rank_name% per eseguire questo comando"
   out-party: "Senza party"
   list:
     player-online-format: "&b%player%"
@@ -369,4 +370,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Imposta/rimuovi la home del party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teletrasporta i tuoi compagni da te","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
 dont-edit-this:
-  version: 9
+  version: 10
