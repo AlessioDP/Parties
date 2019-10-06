@@ -23,7 +23,8 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cNie masz uprawnien do tej komendy"
-    no-permission-in-party: "&cMusisz byc %rank_name% by wykonac ta komende"
+    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-rank: "&cMusisz byc %rank_name% by wykonac ta komende"
   out-party: "Out party"
   list:
     player-online-format: "&b%player%"
@@ -369,4 +370,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Ustaw dom grupy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teleportuj grupe do siebie","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj komende","color":"gold"}}}'
 dont-edit-this:
-  version: 9
+  version: 10
