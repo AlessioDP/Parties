@@ -23,7 +23,8 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cУ вас нет доступа к этой команде"
-    no-permission-in-party: "&cВам нужно быть %rank_name% чтобы выполнить эту команду"
+    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-rank: "&cВам нужно быть %rank_name% чтобы выполнить эту команду"
   out-party: "Выйти из группы"
   list:
     player-online-format: "&b%player%"
@@ -369,4 +370,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Установить дом партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Телепортируйте вашу партию к вам","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
 dont-edit-this:
-  version: 9
+  version: 10
