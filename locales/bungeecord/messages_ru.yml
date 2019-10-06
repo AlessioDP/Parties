@@ -23,7 +23,8 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cУ вас нет доступа к этой команде"
-    no-permission-in-party: "&cВам нужно быть %rank_name% чтобы выполнить эту команду"
+    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-rank: "&cВам нужно быть %rank_name% чтобы выполнить эту команду"
   out-party: "Выйти из группы"
   list:
     player-online-format: "&b%player%"
@@ -309,4 +310,4 @@ help:
     mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Переключить уведомления","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Изменить пароль партии","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 dont-edit-this:
-  version: 7
+  version: 8
