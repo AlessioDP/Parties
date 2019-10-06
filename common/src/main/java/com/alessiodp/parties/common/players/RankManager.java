@@ -110,11 +110,11 @@ public class RankManager {
 				&& !r.havePermission(perm.toString())) {
 			RankImpl rr = plugin.getRankManager().searchUpRank(partyPlayer.getRank(), perm.toString());
 			if (rr != null) {
-				partyPlayer.sendMessage(Messages.PARTIES_PERM_NORANK
+				partyPlayer.sendMessage(Messages.PARTIES_PERM_NORANK_GENERAL
 						.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_NAME, rr.getName())
 						.replace(PartiesConstants.PLACEHOLDER_PLAYER_RANK_CHAT, rr.getChat()));
 			} else {
-				partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
+				partyPlayer.sendMessage(Messages.PARTIES_PERM_NORANK_UPRANK
 						.replace("%permission%", perm.toString()));
 			}
 			ret = false;
