@@ -20,7 +20,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_COMMON_PARTYFULL;
 	
 	public static String PARTIES_PERM_NOPERM;
-	public static String PARTIES_PERM_NORANK;
+	public static String PARTIES_PERM_NORANK_GENERAL;
+	public static String PARTIES_PERM_NORANK_UPRANK;
 	
 	public static String PARTIES_OUT_PARTY;
 	
@@ -251,7 +252,8 @@ public abstract class Messages extends ConfigurationFile {
 		PARTIES_COMMON_PARTYFULL = "&cThe party is full!";
 		
 		PARTIES_PERM_NOPERM = "&cYou do not have access to that command";
-		PARTIES_PERM_NORANK = "&cYou need to be %rank_name% to perform that command";
+		PARTIES_PERM_NORANK_GENERAL = "&cYour party rank do not have access to that command";
+		PARTIES_PERM_NORANK_UPRANK = "&cYou need to be %rank_name% to perform that command";
 		
 		PARTIES_OUT_PARTY = "Out party";
 		
@@ -502,7 +504,8 @@ public abstract class Messages extends ConfigurationFile {
 		PARTIES_COMMON_PARTYFULL = confAdapter.getString("parties.common-messages.party-full", PARTIES_COMMON_PARTYFULL);
 		
 		PARTIES_PERM_NOPERM = confAdapter.getString("parties.permissions.no-permission", PARTIES_PERM_NOPERM);
-		PARTIES_PERM_NORANK = confAdapter.getString("parties.permissions.no-permission-in-party", PARTIES_PERM_NORANK);
+		PARTIES_PERM_NORANK_GENERAL = confAdapter.getString("parties.permissions.no-permission-in-party-general", PARTIES_PERM_NORANK_GENERAL);
+		PARTIES_PERM_NORANK_UPRANK = confAdapter.getString("parties.permissions.no-permission-in-party-rank", PARTIES_PERM_NORANK_UPRANK);
 		
 		PARTIES_OUT_PARTY = confAdapter.getString("parties.out-party", PARTIES_OUT_PARTY);
 		

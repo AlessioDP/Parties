@@ -190,8 +190,8 @@ public class CommandKick extends PartiesSubCommand {
 				
 				party.removeMember(kickedPp);
 				
-				sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
-				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, partyPlayer);
+				sendMessage(sender, kickedPp, Messages.MAINCMD_KICK_SENT, kickedPp);
+				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, kickedPp);
 				
 				plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_KICK
 						.replace("{player}", kickedPp.getName())

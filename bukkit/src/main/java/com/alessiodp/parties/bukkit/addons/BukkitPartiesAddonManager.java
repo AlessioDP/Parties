@@ -39,6 +39,8 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	
 	@Override
 	public void loadAddons() {
+		super.loadAddons();
+		
 		banManager.init();
 		crackShot.init();
 		dynmap.init();
