@@ -23,7 +23,7 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cNo tienes acceso a ese comando"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-general: "&cTu rango de equipo no tiene acceso a ese comando"
     no-permission-in-party-rank: "&cNecesitas ser %rank_name% para ejecutar ese comando"
   out-party: "Afuera dal equipo"
   list:
