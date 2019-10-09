@@ -11,7 +11,7 @@ parties:
   update-available: "&9Parti pluginin Yeni sürümü bulundu: %version% (Şuanki sürüm: %thisversion%)"
   #Special tag:
   #=> %config%      = The config file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  configuration-outdated: "&cParties'ın yapılandırma dosyası \"%config%\" güncel değil!"
   common-messages:
     invalid-command: "&cBilinmeyen Komut"
     configuration-reloaded: "&aConfig Yenilendi"
