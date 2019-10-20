@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bukkit.tasks;
 
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
@@ -54,6 +55,7 @@ public class HomeTask implements Runnable {
 				if (timestamp - startTime > delayTime) {
 					// Teleport player via sync Bukkit API
 					plugin.getScheduler().getSyncExecutor().execute(() -> {
+						EssentialsHandler.updateLastTeleportLocation(player);
 						player.teleport(homeLocation);
 						user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTED, partyPlayer), true);
 						

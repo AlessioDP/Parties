@@ -4,6 +4,7 @@ import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.addons.external.CrackShotHandler;
 import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsChatHandler;
+import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.addons.external.GriefPreventionHandler;
 import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
 import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
@@ -16,6 +17,7 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final BanManagerHandler banManager;
 	private final CrackShotHandler crackShot;
 	private final DynmapHandler dynmap;
+	private final EssentialsHandler essentials;
 	private final EssentialsChatHandler essentialsChat;
 	private final GriefPreventionHandler griefPrevention;
 	private final MythicMobsHandler mythicMobs;
@@ -29,6 +31,7 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		banManager = new BanManagerHandler(plugin);
 		crackShot = new CrackShotHandler(plugin);
 		dynmap = new DynmapHandler(plugin);
+		essentials = new EssentialsHandler(plugin);
 		essentialsChat = new EssentialsChatHandler(plugin);
 		griefPrevention = new GriefPreventionHandler(plugin);
 		mythicMobs = new MythicMobsHandler(plugin);
@@ -44,6 +47,7 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		banManager.init();
 		crackShot.init();
 		dynmap.init();
+		essentials.init();
 		essentialsChat.init();
 		griefPrevention.init();
 		mythicMobs.init();

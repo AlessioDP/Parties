@@ -53,7 +53,7 @@ public abstract class JoinLeaveListener {
 								.replace("{party}", party.getName()), true);
 					}
 					
-					if (!party.getMotd().isEmpty()) {
+					if (ConfigParties.MOTD_ENABLE && !party.getMotd().isEmpty()) {
 						plugin.getScheduler().scheduleAsyncLater(new MotdTask(plugin, player.getUUID(), partyPlayer.getCreateID()), ConfigParties.MOTD_DELAY, TimeUnit.MILLISECONDS);
 					}
 					
@@ -69,7 +69,7 @@ public abstract class JoinLeaveListener {
 						if (party != null) {
 							party.addMember(partyPlayer);
 							
-							if (!party.getMotd().isEmpty()) {
+							if (ConfigParties.MOTD_ENABLE && !party.getMotd().isEmpty()) {
 								plugin.getScheduler().scheduleAsyncLater(new MotdTask(plugin, player.getUUID(), partyPlayer.getCreateID()), ConfigParties.MOTD_DELAY, TimeUnit.MILLISECONDS);
 							}
 							

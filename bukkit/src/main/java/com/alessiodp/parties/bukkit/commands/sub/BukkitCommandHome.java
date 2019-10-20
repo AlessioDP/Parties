@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
@@ -127,6 +128,7 @@ public class BukkitCommandHome extends PartiesSubCommand {
 					.replace("%time%", Integer.toString(delay)));
 		} else {
 			plugin.getScheduler().getSyncExecutor().execute(() -> {
+				EssentialsHandler.updateLastTeleportLocation(bukkitPlayer);
 				bukkitPlayer.teleport(loc);
 				sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_HOME_TELEPORTED);
 			});

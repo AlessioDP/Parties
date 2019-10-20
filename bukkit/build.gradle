@@ -5,8 +5,9 @@ repositories {
 
     maven { url = 'https://ci.frostcast.net/plugin/repository/everything/' } // BanManager repo
     maven { url = 'http://repo.mikeprimm.com/' } // Dynmap repo
+    maven { url = 'https://ci.ender.zone/plugin/repository/everything/' } // EssentialsX repo
     maven { url = 'http://mvn.lumine.io/repository/maven-public/' } // MythicMobs repo
-    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' } // PlaceholderAPI
+    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' } // PlaceholderAPI repo
     maven { url = 'http://repo.dmulloy2.net/nexus/repository/public/' } // ProtocolLib repo
     maven { url = 'http://nexus.hc.to/content/repositories/pub_releases/' } // Vault repo
 }
@@ -17,6 +18,7 @@ dependencies {
 
     compileOnly group: 'me.confuser', name: 'BanManager', version: project.ext.banManager
     compileOnly group: 'us.dynmap', name: 'dynmap-api', version: project.ext.dynmap
+    compileOnly group: 'net.ess3', name: 'EssentialsX', version: project.ext.essentialsx
     compileOnly group: 'com.github.TechFortress', name: 'GriefPrevention', version: project.ext.griefPrevention
     compileOnly group: 'io.lumine.xikage', name: 'MythicMobs', version: project.ext.mythicMobs
     compileOnly group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: project.ext.protocolLib

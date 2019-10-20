@@ -4,6 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandTeleport;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
@@ -68,6 +69,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 					if (!onlinePlayer.getPlayerUUID().equals(partyPlayer.getPlayerUUID())) {
 						Player bukkitOnlinePlayer = Bukkit.getPlayer(onlinePlayer.getPlayerUUID());
 						if (bukkitOnlinePlayer != null) {
+							EssentialsHandler.updateLastTeleportLocation(bukkitOnlinePlayer);
 							bukkitOnlinePlayer.teleport(bukkitPlayer.getLocation());
 							
 							User onlinePlayerUser = plugin.getPlayer(onlinePlayer.getPlayerUUID());

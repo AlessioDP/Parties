@@ -23,9 +23,10 @@ public class MotdTask implements Runnable {
 		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
 		User sender = plugin.getPlayer(playerUUID);
 		if (sender != null
-			&& createID.equals(partyPlayer.getCreateID())
-			&& !partyPlayer.getPartyName().isEmpty()) {
-				PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
+				&& ConfigParties.MOTD_ENABLE
+				&& createID.equals(partyPlayer.getCreateID())
+				&& !partyPlayer.getPartyName().isEmpty()) {
+			PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
 				
 			if (party != null && !party.getMotd().isEmpty()) {
 				// Formatting motd
