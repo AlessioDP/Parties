@@ -6,6 +6,7 @@ repositories {
     maven { url = 'https://ci.frostcast.net/plugin/repository/everything/' } // BanManager repo
     maven { url = 'http://repo.mikeprimm.com/' } // Dynmap repo
     maven { url = 'https://ci.ender.zone/plugin/repository/everything/' } // EssentialsX repo
+    maven { url = 'https://papermc.io/repo/repository/maven-public/' } // EssentialsX - Paper repo
     maven { url = 'http://mvn.lumine.io/repository/maven-public/' } // MythicMobs repo
     maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' } // PlaceholderAPI repo
     maven { url = 'http://repo.dmulloy2.net/nexus/repository/public/' } // ProtocolLib repo
