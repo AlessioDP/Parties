@@ -36,10 +36,13 @@ public class SpyManager {
 	
 	public void sendSpyMessage(SpyMessage message) {
 		if (message.getMessage() != null && !message.getMessage().isEmpty()) {
+			UUID skip = message.getPlayer() != null ? message.getPlayer().getPlayerUUID() : null;
 			for (UUID uuid : spyList) {
-				User player = plugin.getPlayer(uuid);
-				if (player != null && player.hasPermission(PartiesPermission.ADMIN_SPY.toString())) {
-					player.sendMessage(message.toMessage(), false);
+				if (!uuid.equals(skip)) {
+					User player = plugin.getPlayer(uuid);
+					if (player != null && player.hasPermission(PartiesPermission.ADMIN_SPY.toString())) {
+						player.sendMessage(message.toMessage(), false);
+					}
 				}
 			}
 		}

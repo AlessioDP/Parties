@@ -39,7 +39,7 @@ public abstract class ChatListener {
 				partyChat = true;
 			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && parsedMessage.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
 				partyChat = true;
-				parsedMessage = parsedMessage.substring(1);
+				parsedMessage = parsedMessage.substring(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX.length());
 			}
 		}
 		
