@@ -23,6 +23,7 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
+import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
@@ -52,6 +53,8 @@ public class BukkitFightListener implements Listener {
 				type = DamageType.ENDERPEARL;
 			else if (event.getDamager() instanceof Snowball)
 				type = DamageType.SNOWBALL;
+			else if (event.getDamager() instanceof Trident)
+				type = DamageType.TRIDENT;
 			
 			if (!type.equals(DamageType.UNSUPPORTED)) {
 				ProjectileSource shooterSource;
@@ -74,6 +77,10 @@ public class BukkitFightListener implements Listener {
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
+				case TRIDENT:
+					shooterSource = ((Trident)event.getDamager()).getShooter();
+					if (shooterSource instanceof Player)
+						attacker = (Player) shooterSource;
 				default:
 					// Nothing to do
 					break;
@@ -290,6 +297,6 @@ public class BukkitFightListener implements Listener {
 	}
 	
 	private enum DamageType {
-		UNSUPPORTED, PLAYER, ARROW, ENDERPEARL, SNOWBALL
+		UNSUPPORTED, PLAYER, ARROW, ENDERPEARL, SNOWBALL, TRIDENT
 	}
 }
