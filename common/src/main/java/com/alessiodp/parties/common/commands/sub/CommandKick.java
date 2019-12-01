@@ -61,7 +61,7 @@ public class CommandKick extends PartiesSubCommand {
 			commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
 		}
 		
-		if (commandData.getArgs().length < 2) {
+		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_WRONGCMD);
 			return false;
 		}
@@ -79,6 +79,7 @@ public class CommandKick extends PartiesSubCommand {
 		
 		Set<UUID> matchingPlayers = LLAPIHandler.getPlayerByName(playerName);
 		List<UUID> listPlayers = new LinkedList<>(matchingPlayers);
+		listPlayers.removeIf((uuid) -> ((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid).getPartyName().isEmpty());
 		Collections.sort(listPlayers);
 		
 		if (listPlayers.size() > 1) {
@@ -101,7 +102,7 @@ public class CommandKick extends PartiesSubCommand {
 							
 							sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_CONFLICT_PLAYER
 									.replace("%number%", Integer.toString(i))
-									.replace("%username%", playerName), pp);
+									.replace("%username%", playerName), pp, ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(pp));
 							i++;
 						}
 					} else {
@@ -190,7 +191,7 @@ public class CommandKick extends PartiesSubCommand {
 				
 				party.removeMember(kickedPp);
 				
-				sendMessage(sender, kickedPp, Messages.MAINCMD_KICK_SENT, kickedPp);
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
 				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, kickedPp);
 				
 				plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_KICK

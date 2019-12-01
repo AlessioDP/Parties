@@ -41,4 +41,11 @@ public abstract class PartiesSubCommand extends ADPSubCommand {
 		else
 			((PartiesPlugin) plugin).getMessageUtils().sendMessage(receiver, message, playerReceiver, party);
 	}
+	
+	protected void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyPlayerImpl victim, PartyImpl party) {
+		if (receiver.isPlayer())
+			playerReceiver.sendMessage(message, victim, party);
+		else
+			((PartiesPlugin) plugin).getMessageUtils().sendMessage(receiver, message, victim, party);
+	}
 }

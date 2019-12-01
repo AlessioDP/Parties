@@ -59,7 +59,7 @@ public class CommandRank extends PartiesSubCommand {
 			commandData.addPermission(PartiesPermission.ADMIN_RANK_OTHERS);
 		}
 		
-		if (commandData.getArgs().length != 3) {
+		if (commandData.getArgs().length < 3 || commandData.getArgs().length > 4) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_WRONGCMD);
 			return false;
 		}
@@ -77,6 +77,7 @@ public class CommandRank extends PartiesSubCommand {
 		
 		Set<UUID> matchingPlayers = LLAPIHandler.getPlayerByName(playerName);
 		List<UUID> listPlayers = new LinkedList<>(matchingPlayers);
+		listPlayers.removeIf((uuid) -> ((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid).getPartyName().isEmpty());
 		Collections.sort(listPlayers);
 		
 		if (listPlayers.size() > 1) {
@@ -97,12 +98,12 @@ public class CommandRank extends PartiesSubCommand {
 						int i = 1;
 						for (UUID uuid : listPlayers) {
 							PartyPlayerImpl pp = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid);
-							
-							sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_CONFLICT_PLAYER
-									.replace("%number%", Integer.toString(i))
-									.replace("%username%", playerName)
-									.replace("%rank%", commandData.getArgs()[2]), pp);
-							i++;
+							if (!pp.getPartyName().isEmpty()) {
+								sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_CONFLICT_PLAYER
+										.replace("%number%", Integer.toString(i))
+										.replace("%username%", playerName), pp, ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(pp));
+								i++;
+							}
 						}
 					} else {
 						sendMessage(sender, partyPlayer, str);
@@ -136,13 +137,13 @@ public class CommandRank extends PartiesSubCommand {
 			return;
 		}
 		
-		PartyImpl party = promotedPp != null ? ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName()) : null;
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName());
 		
 		boolean otherParty = (party == null || !party.getMembers().contains(promotedPlayer.getUUID()));
 		
 		if (otherParty) {
 			// Other party
-			party = ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName());
+			party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(promotedPp);
 			
 			if (sender.isPlayer() && !commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_PLAYERNOTINPARTY, promotedPp);
@@ -195,7 +196,7 @@ public class CommandRank extends PartiesSubCommand {
 		party.broadcastMessage(Messages.MAINCMD_RANK_BROADCAST, promotedPp);
 		
 		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_RANK
-				.replace("{player}", promotedPlayer.getName())
+				.replace("{player}", promotedPp.getName())
 				.replace("{value1}", Integer.toString(oldRank))
 				.replace("{value2}", Integer.toString(rank.getLevel()))
 				.replace("{user}", sender.getName())

@@ -81,6 +81,7 @@ public class BukkitFightListener implements Listener {
 					shooterSource = ((Trident)event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
+					break;
 				default:
 					// Nothing to do
 					break;
@@ -203,7 +204,7 @@ public class BukkitFightListener implements Listener {
 			Player attacker = (Player)((Projectile) event.getCombuster()).getShooter();
 			
 			// Found right attacker
-			if (!victim.getUniqueId().equals(attacker.getUniqueId())) {
+			if (attacker != null && !victim.getUniqueId().equals(attacker.getUniqueId())) {
 				// Friendly fire not allowed here
 				PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
 				PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
