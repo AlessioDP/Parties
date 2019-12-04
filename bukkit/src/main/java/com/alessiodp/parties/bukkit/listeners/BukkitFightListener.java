@@ -53,8 +53,10 @@ public class BukkitFightListener implements Listener {
 				type = DamageType.ENDERPEARL;
 			else if (event.getDamager() instanceof Snowball)
 				type = DamageType.SNOWBALL;
-			else if (event.getDamager() instanceof Trident)
-				type = DamageType.TRIDENT;
+			try {
+				if (event.getDamager() instanceof Trident)
+					type = DamageType.TRIDENT;
+			} catch (NoClassDefFoundError ignored) {}
 			
 			if (!type.equals(DamageType.UNSUPPORTED)) {
 				ProjectileSource shooterSource;
