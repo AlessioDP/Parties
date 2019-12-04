@@ -58,13 +58,14 @@ public class CommandKick extends PartiesSubCommand {
 			}
 			
 			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-			commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
 		}
 		
 		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_WRONGCMD);
 			return false;
 		}
+		
+		commandData.addPermission(PartiesPermission.ADMIN_KICK_OTHERS);
 		return true;
 	}
 	

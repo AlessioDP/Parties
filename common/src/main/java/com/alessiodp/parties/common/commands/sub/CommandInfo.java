@@ -15,7 +15,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
 public class CommandInfo extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
+	@Getter private final boolean executableByConsole = true;
 	
 	public CommandInfo(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(plugin, mainCommand);
@@ -24,25 +24,33 @@ public class CommandInfo extends PartiesSubCommand {
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.INFO.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.INFO);
-			return false;
-		}
-		
-		PartyImpl party = null;
-		if (commandData.getArgs().length == 1) {
-			party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
-			if (party == null) {
-				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+		if (sender.isPlayer()) {
+			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			
+			// Checks for command prerequisites
+			if (!sender.hasPermission(PartiesPermission.INFO.toString())) {
+				sendNoPermissionMessage(partyPlayer, PartiesPermission.INFO);
+				return false;
+			}
+			
+			PartyImpl party = null;
+			if (commandData.getArgs().length == 1) {
+				party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
+				if (party == null) {
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+					return false;
+				}
+			}
+			
+			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+			((PartiesCommandData) commandData).setParty(party);
+		} else {
+			if (commandData.getArgs().length == 1) {
+				sendMessage(sender, null, Messages.PARTIES_COMMON_PARTYNOTFOUND);
 				return false;
 			}
 		}
 		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		((PartiesCommandData) commandData).setParty(party);
 		commandData.addPermission(PartiesPermission.INFO_OTHERS);
 		return true;
 	}
