@@ -38,7 +38,7 @@ public class SpyManager {
 		if (message.getMessage() != null && !message.getMessage().isEmpty()) {
 			UUID skip = message.getPlayer() != null ? message.getPlayer().getPlayerUUID() : null;
 			for (UUID uuid : spyList) {
-				if (!uuid.equals(skip)) {
+				if (!uuid.equals(skip) && !message.getParty().getMembers().contains(uuid)) {
 					User player = plugin.getPlayer(uuid);
 					if (player != null && player.hasPermission(PartiesPermission.ADMIN_SPY.toString())) {
 						player.sendMessage(message.toMessage(), false);
