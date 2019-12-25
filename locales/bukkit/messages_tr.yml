@@ -14,7 +14,7 @@ parties:
   configuration-outdated: "&cParties'ın yapılandırma dosyası \"%config%\" güncel değil!"
   common-messages:
     invalid-command: "&cBilinmeyen Komut"
-    configuration-reloaded: "&aConfig Yenilendi"
+    configuration-reloaded: "&aYapılandırma yeniden yüklendi"
     not-in-party: "&cBir partide değilsin"
     already-in-party: "&cŞuan Zaten Bir Partidesin!"
     party-not-found: "&cBu Pari %party% Bulunamıyor"
@@ -23,7 +23,7 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cBu Komutu Yazmak İçin Yetkin Yok"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-general: "&cTakım rütbenin bu komutu yazmasına yetki yok"
     no-permission-in-party-rank: "&cBu Komutu Yazabilmek İçin %rank_name% Rankında Olmalısın"
   out-party: "Eklenti dışı"
   list:
