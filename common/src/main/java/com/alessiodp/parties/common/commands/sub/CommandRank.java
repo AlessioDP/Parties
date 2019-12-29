@@ -137,7 +137,7 @@ public class CommandRank extends PartiesSubCommand {
 			return;
 		}
 		
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(promotedPp.getPartyName());
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
 		
 		boolean otherParty = (party == null || !party.getMembers().contains(promotedPlayer.getUUID()));
 		

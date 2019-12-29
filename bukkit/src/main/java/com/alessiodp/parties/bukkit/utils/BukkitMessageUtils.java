@@ -4,7 +4,6 @@ import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.MessageUtils;
-import lombok.NonNull;
 
 public class BukkitMessageUtils extends MessageUtils {
 	
