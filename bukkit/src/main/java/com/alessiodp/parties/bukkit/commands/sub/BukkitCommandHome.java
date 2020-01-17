@@ -39,8 +39,8 @@ public class BukkitCommandHome extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.DESC.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.DESC);
+		if (!sender.hasPermission(PartiesPermission.HOME.toString())) {
+			sendNoPermissionMessage(partyPlayer, PartiesPermission.HOME);
 			return false;
 		}
 		

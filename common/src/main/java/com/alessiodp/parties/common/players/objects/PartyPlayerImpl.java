@@ -298,7 +298,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			if (player.hasPermission(PartiesPermission.IGNORE.toString()))
 				ret.add(CommonCommands.IGNORE);
 			if (player.hasPermission(PartiesPermission.INFO_OTHERS.toString()))
-				ret.add(CommonCommands.IGNORE);
+				ret.add(CommonCommands.INFO);
 			if (player.hasPermission(PartiesPermission.MUTE.toString()))
 				ret.add(CommonCommands.MUTE);
 			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS.toString()))
