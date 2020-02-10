@@ -11,7 +11,7 @@ parties:
   update-available: "&9Neue Version von Parties gefunden: %version% (Aktuell: %thisversion%)"
   #Special tag:
   #=> %config%      = The config file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  configuration-outdated: "&cDie Konfigurationsdatei '%config%' von Parties ist veraltet!"
   common-messages:
     invalid-command: "&cUngültiger Befehl"
     configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
@@ -23,7 +23,7 @@ parties:
     #Special tag:
     #=> %permission%   = Missing permission
     no-permission: "&cDu hast keinen Zugriff auf diesen Befehl"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-general: "&cDein Party Rang hat keinen Zugriff auf diesen Befehl"
     no-permission-in-party-rank: "&cDu musst %rank_name% sein, um diesen Befehl verwenden zu dürfen"
   out-party: "Out party"
   list:
@@ -43,7 +43,7 @@ main-commands:
     accept-receipt: "&a%player% hat die Einladung angenommen"
     no-invite: "&cDu besitzt keine gültige Einladung"
     no-exists: "&cDie Einladung ist abgelaufen"
-    multiple-invites: "&cChoose the party that you want accept:"
+    multiple-invites: "&cWähle die Party, die du akzeptieren möchtest:"
     multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
     wrong-command: "&cWrong variables: Type &7/party accept [party]"
   chat:
