@@ -1,6 +1,17 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/parties/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|        PARTIES  MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 parties:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
     invalid-command: "&cInvalid command"
     configuration-reloaded: "&aConfiguration reloaded"
@@ -9,8 +20,22 @@ parties:
     party-not-found: "&cThe party %party% doesn't exist"
     party-full: "&cThe party is full!"
   permissions:
+    #Special tag:
+    #=> %permission%   = Missing permission
     no-permission: "&cYou do not have access to that command"
-    no-permission-in-party: "&cYou need to be %rank_name% to perform that command"
+    no-permission-in-party-general: "&cYour party rank do not have access to that command"
+    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
+  out-party: "Out party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Nobody"
+    player-unknown: "&6Someone"
+    missing-value: "&7Miss"
+#/ = = = = = = = = = = = = = = = = \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ = = = = = = = = = = = = = = = = /
 main-commands:
   accept:
     broadcast: "&b&l%player% joined the party"
@@ -18,6 +43,9 @@ main-commands:
     accept-receipt: "&a%player% accepted your invite"
     no-invite: "&cYou have not pending invitation"
     no-exists: "&cThe invite doesn't exist anymore"
+    multiple-invites: "&cChoose the party that you want accept:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party accept [party]"
   chat:
     enabled: "&aChat set to party"
     disabled: "&aChat set to public"
@@ -41,6 +69,9 @@ main-commands:
     deny-receipt: "&7%player% denied your invite"
     no-invite: "&cYou have not pending invitation"
     no-exists: "&cThe invite doesn't exist anymore"
+    multiple-invites: "&cChoose the party that you want deny:"
+    multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
+    wrong-command: "&cWrong variables: Type &7/party deny [party]"
   ignore:
     start-ignore: "&7Ignoring %party% invites"
     stop-ignore: "&7You stopped ignoring %party%"
@@ -51,6 +82,13 @@ main-commands:
       empty: "&7None"
     wrong-command: "&cWrong variables: Type &7/party ignore [party]"
   info:
+    #Special tags:
+    #=> %list_RANK%           = The list of players of that rank
+    #Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    #=> %list_RANK_number%    = The number of players of that rank
+    #=> %list_RANK_online%    = Online players of that rank
+    #=> %online%              = List online players
+    #=> %online_number%        = Number of online players
     content:
       - "&b============ &l%party%'s Info &r&b============"
       - "&b&lDescription&r&7: %desc%"
@@ -58,20 +96,13 @@ main-commands:
       - "&bLeader&7: %list_leader%"
       - "&bMods&7: %list_moderator%"
       - "&bMembers&7: %list_member%"
-      - "&bOnline players&7: %onlinenumber%"
-    list:
-      player-online-format: "&b%player%"
-      player-offline-format: "&7%player%"
-      player-separator: "&7, "
-      player-empty: "&7Nobody"
-      player-unknown: "&6Someone"
-      missing-value: "&7Miss"
+      - "&bOnline players&7: %online_number%"
   invite:
     sent: "&bYou invited %player% in your party"
-    player-invited: "[{\"text\":\"%player% has invited you in his party.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
+    player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
     timeout:
       noresponse: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite"
+      timeout: "&7You didn't accept the party invite to %party%"
     revoke:
       sent-revoked: "&7Revoked invite sent to %player%"
       player-invite-revoked: "&7Invite received from %party% has been revoked"
@@ -92,29 +123,31 @@ main-commands:
     player-not-in-party: "&c%player% is not in your party"
     player-not-in-other-party: "&c%player% is not in a party"
     players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
         - "&cWe have found some players with that name:"
         - "%list_players%"
         - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastseen%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %old_username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
     wrong-command: "&cWrong variables: Type &7/party kick <name>"
   leave:
     left: "&b&lYou left the party %party%"
     broadcast: "&b&l%player% left the party"
     party-disbanded: "&6&lThe party has been disbanded because the leader left"
-  migrate:
-    info: "&aYou are currently using: %database%\n&aYou can migrate with: &7/party migrate <from> <to>"
-    completed: "&aCopied data from %database_from% to %database_to%"
-    failed:
-      database-offline: "&cThe %database% database must be online!"
-      failed: "&cDatabase migration from %database_from% to %database_to% failed!"
-      same-database: "&cYou need to choose 2 different databases!"
-    wrong-database: "&cDatabase not found. You can select: YAML, MySQL, SQLite!"
   p:
+    #Special tag:
+    #=> %seconds%   = Remaining time in seconds
     cooldown: "&cYou still have to wait %seconds% seconds"
     censored: "&cThe message contains censored words!"
     wrong-command: "&cWrong variables: Type &7/p <message>"
   rank:
+    #Special tag:
+    #=> %rank_name%   = Rank wrote by the player
     changed: "&a%player% rank changed into %rank_name%"
     broadcast: ""
     wrong-rank: "&cRank '%rank_name%' doesn't exist!"
@@ -125,8 +158,22 @@ main-commands:
     changing-yourself: "&cYou cannot change yourself rank!"
     player-not-in-party: "&c%player% is not in your party"
     player-not-in-other-party: "&c%player% doesn't have a party"
+    players-conflict:
+      #Special tags:
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cWe have found some players with that name:"
+        - "%list_players%"
+        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
     wrong-command: "&cWrong variables: Type &7/party rank <player> <rank>"
   rename:
+    #Special tag:
+    #=> %old%   = Old party name
     renamed: "&aThe party %old% has been renamed into %party%"
     broadcast: "&6Your party has been renamed into %party%!"
     wrong-command: "&cWrong variables: Type &7/party rename <newname>"
@@ -136,8 +183,15 @@ main-commands:
     disabled: "&7You are no longer a spy"
     wrong-command: "&cWrong variables: Type &7/party spy [on/off]"
   version:
-    updated: "&b&lParties &b%version% &7- Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    #Special tags:
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ = = = = = = = = = = = = = = = = /
 additional-commands:
   claim:
     claimed: "&aGranted permission to the party"
@@ -161,6 +215,9 @@ additional-commands:
     censored: "&cThe description contains censored words!"
     wrong-command: "&cWrong variables: Type &7/party desc <description/remove>"
   exp:
+    #Special tags:
+    #=> %exp%        = Experience gained
+    #=> %total_exp%  = Total experience dropped by the mob
     party:
       gained: "&bGained %exp% party experience for killing the mob"
     normal:
@@ -175,6 +232,7 @@ additional-commands:
     wrong-command: "&cWrong variables: Type &7/party follow [on/off]"
   home:
     teleported: "&7Teleported to the party home"
+    #Special tag: %time% = Time of cooldown
     teleport-in: "&7You will be teleported in %time% seconds..."
     teleport-denied: "&7Teleport denied"
     teleport-waiting: "&cYou are already waiting for the teleport!"
@@ -188,10 +246,14 @@ additional-commands:
     wrong-password: "&cWrong password!"
     wrong-command: "&cWrong variables: Type &7/party join <party> [password]"
   list:
+    #Special tags:
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
     header: "&b============ &lOnline Parties List &r&b============"
     footer: "&b================ &lPage %page% of %maxpages% &r&b================"
     no-one: "&7No one"
-    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %onlinenumber%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
+    format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
     wrong-command: "&cWrong variables: Type &7/party list [page]"
   motd:
     changed: "&bParty MOTD changed"
@@ -227,8 +289,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teleporting your party here!"
     player-teleported: "&bTeleported to %player%"
+    #Special tag: %seconds% = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
   vault:
+    #Special tag: %price% = Price of the command
     no-money:
       claim: "&cYou don't have enough money to perform a claim [%price%$]"
       color: "&cYou don't have enough money to perform the color command [%price%$]"
@@ -243,21 +307,36 @@ additional-commands:
       warn-onbuy: "[{\"text\":\"Command %cmd% costs %price%$.\n\",\"color\":\"green\"},{\"text\":\"Click here to confirm\",\"color\":\"dark_green\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Pay the command\",\"color\":\"gold\"}]}}},{\"text\":\" or type \",\"color\":\"green\",\"bold\":false},{\"text\":\"/party confirm\",\"color\":\"gray\"},{\"text\":\" to use it.\",\"color\":\"green\"}]"
       confirmed: "&aPerforming the command."
       no-cmd: "&cThere is no command to confirm"
+#/ = = = = = = = = = = = = = = = = \
+#|         OTHER  MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 other:
   follow:
+    #Special tags: %world% = New world
     following-world: "&7Following %player% in %world%"
   fixed-parties:
+    #Joined into a default party
     default-join: "&bYou entered into %party%"
   join-leave:
     server-join: "&b%player% is online!"
     server-leave: "&7%player% is offline!"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
   header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
   footer: ""
   console-help:
     - "You can only make these commands:"
-    - "/party migrate - Copy database into a new one"
-    - "/party reload - Reload the configuration"
+    - " > party create <name> fixed - Create a new party"
+    - " > party delete <party> - Delete a party"
+    - " > party info <party> - Show party information"
+    - " > party list - List of online parties"
+    - " > party kick <player> - Kick a player from the party"
+    - " > party rank <player> <rank> - Change rank of the player"
+    - " > party reload - Reload Parties configuration files"
+    - " > party rename <party> <name> - Rename the party"
+    - " > party version - Show Parties information"
   main-commands:
     help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accept a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
@@ -270,7 +349,6 @@ help:
     invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invite a player to your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Kick a player from your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Leave your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    migrate: '{"text":"","extra":[{"text":"/party migrate <from> <to>","color":"aqua"},{"text":" - Copy database into a new one","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party migrate "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - Send a message to the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Change rank of the player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Reload Parties configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
@@ -292,4 +370,4 @@ help:
     sethome: '{"text":"","extra":[{"text":"/party sethome [remove]","color":"aqua"},{"text":" - Set/remove party home","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party sethome "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     teleport: '{"text":"","extra":[{"text":"/party teleport","color":"aqua"},{"text":" - Teleport your party to you","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party teleport"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 dont-edit-this:
-  version: 6
+  version: 10
