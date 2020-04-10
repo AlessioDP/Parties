@@ -8,7 +8,7 @@ parties:
   #Special tags:
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9새로운 버전이 있습니다: %version% (현재: %thisversion%)"
   #Special tag:
   #=> %config%      = The config file name that is outdated
   configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
