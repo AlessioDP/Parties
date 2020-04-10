@@ -13,74 +13,74 @@ parties:
   #=> %config%      = The config file name that is outdated
   configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
-    already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
+    invalid-command: "&c알 수 없는 명령어입니다."
+    configuration-reloaded: "&a설정이 리로드 되었습니다."
+    not-in-party: "&c당신은 파티에 속해 있지 않습니다."
+    already-in-party: "&c당신은 이미 파티에 속해 있습니다!"
+    party-not-found: "&c이 파티는 존재하지 않는 %party%파티 입니다."
+    party-full: "&c파티의 인원이 다 찼습니다!"
   permissions:
     #Special tag:
     #=> %permission%   = Missing permission
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
-    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
-  out-party: "Out party"
+    no-permission: "&c당신은 이 명령어를 사용할 권한이 없습니다."
+    no-permission-in-party-general: "&c당신의 파티는 해당 명령어를 사용할수 없습니다."
+    no-permission-in-party-rank: "&c이 명령어를 사용할 %rank_name%이 필요합니다."
+  out-party: "파티를 나갔습니다"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
-    player-empty: "&7Nobody"
-    player-unknown: "&6Someone"
-    missing-value: "&7Miss"
+    player-empty: "&7아무도"
+    player-unknown: "&6어떤 사람"
+    missing-value: "&7놓치다"
 #/ = = = = = = = = = = = = = = = = \
 #|     MAIN COMMANDS  MESSAGES     |
 #\ = = = = = = = = = = = = = = = = /
 main-commands:
   accept:
-    broadcast: "&b&l%player% joined the party"
-    accepted: "&aYou accepted the party invite"
-    accept-receipt: "&a%player% accepted your invite"
-    no-invite: "&cYou have not pending invitation"
-    no-exists: "&cThe invite doesn't exist anymore"
-    multiple-invites: "&cChoose the party that you want accept:"
+    broadcast: "&b&l%player%파티에 참가했습니다"
+    accepted: "&a파티 초대를 수락했습니다"
+    accept-receipt: "&a%player% 의 여러분의 초대에 응했습니다."
+    no-invite: "&c보류중인 초대가 없습니다."
+    no-exists: "&c초대가 만료 되었습니다"
+    multiple-invites: "&c당신이 수락할 파티를 선택하세요"
     multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party accept [party]"
+    wrong-command: "&c잘못된 변수: 유형 &7/party accept [party]"
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
-    wrong-command: "&cWrong variables: Type &7/party chat [on/off]"
+    enabled: "&a파티채팅으로 전환되었습니다"
+    disabled: "&a전체채팅으로 전환되었습니다"
+    wrong-command: "&c잘못된 변수: 유형 &7/party chat [켜기/끄기]"
   create:
     created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
-    created-fixed: "&b&lYou have created the fixed party %party%"
-    name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    name-too-long: "&cThe party name is too long!"
-    name-too-short: "&cThe party name is too short!"
-    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
-    censored: "&cThe party name contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/party create <name>"
+    created-fixed: "&b&l당신은 고정된 파티를 만들었습니다 %party%"
+    name-already-exists: "&c파티 이름은 %party% 이미 존재합니다, 다른 이름을 고르세요."
+    name-too-long: "&c파티 이름이 너무 깁니다!"
+    name-too-short: "&c파티 이름이 너무 짧습니다!"
+    invalid-name: "&c인식 불가능한 문자입니다. a-Z 혹은 0-9를 사용하세요"
+    censored: "&c파티의 이름이 자극적인 단어를 포함하고 있습니다!"
+    wrong-command: "&c잘못된 변수: 유형 &7/party create <name>"
   delete:
-    deleted: "&aParty %party% deleted"
-    deleted-silently: "&aParty %party% deleted silently"
-    broadcast: "&6&lYour party has been deleted"
-    wrong-command: "&cWrong variables: Type &7/party delete <party> [silent]"
+    deleted: "&a파티 %party% 삭제됨"
+    deleted-silently: "&a파티 %party% 조용히 삭제됨"
+    broadcast: "&6&l당신의 파티는 삭제되었습니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party delete <party> [silent]"
   deny:
-    denied: "&7You denied the party invite"
-    deny-receipt: "&7%player% denied your invite"
-    no-invite: "&cYou have not pending invitation"
-    no-exists: "&cThe invite doesn't exist anymore"
-    multiple-invites: "&cChoose the party that you want deny:"
+    denied: "&7당신은 파티 초대를 거부했습니다"
+    deny-receipt: "&7%player% 가 당신의 초대를 거부했습니다"
+    no-invite: "&c보류중인 초대가 없습니다."
+    no-exists: "&c초대가 만료 되었습니다"
+    multiple-invites: "&c당신이 거부하고 싶은 파티를 고르세요"
     multiple-invites-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}}]'
-    wrong-command: "&cWrong variables: Type &7/party deny [party]"
+    wrong-command: "&c잘못된 변수: 유형 &7/party deny [party]"
   ignore:
-    start-ignore: "&7Ignoring %party% invites"
-    stop-ignore: "&7You stopped ignoring %party%"
+    start-ignore: "&7무시 %party% 초대"
+    stop-ignore: "&7당신은 무시하지 않았습니다 %party%"
     ignore-list:
-      header: "&b&lList ignored parties:"
+      header: "&b&l무시된 파티 목록"
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7None"
-    wrong-command: "&cWrong variables: Type &7/party ignore [party]"
+      empty: "&7아무도"
+    wrong-command: "&c잘못된 변수: 유형 &7/party ignore [party]"
   info:
     #Special tags:
     #=> %list_RANK%           = The list of players of that rank
@@ -90,38 +90,38 @@ main-commands:
     #=> %online%              = List online players
     #=> %online_number%        = Number of online players
     content:
-      - "&b============ &l%party%'s Info &r&b============"
-      - "&b&lDescription&r&7: %desc%"
-      - "&b&lMotd&r&7: %motd%"
-      - "&bLeader&7: %list_leader%"
+      - "&b============&l%party%'의 정보 &r&b============"
+      - "&b&l서술&r&7: %desc%"
+      - "&b&l오늘의 메시지&r&7: %motd%"
+      - "&b대표&7: %list_leader%"
       - "&bMods&7: %list_moderator%"
-      - "&bMembers&7: %list_member%"
-      - "&bOnline players&7: %online_number%"
+      - "&b인원&7: %list_member%"
+      - "&b접속중인 유저&7: %online_number%"
   invite:
-    sent: "&bYou invited %player% in your party"
+    sent: "&b당신은 %player%를 당신의 파티에 초대했습니다."
     player-invited: "[{\"text\":\"%player% has invited you to the party %party%.\n\",\"color\":\"aqua\"},{\"text\":\"Do you want \",\"color\":\"aqua\"},{\"text\":\"accept\",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Accept the invitation\",\"color\":\"gold\"}]}}},{\"text\":\" or \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"deny\",\"color\":\"red\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"?\n\",\"color\":\"aqua\",\"bold\":false},{\"text\":\"You can use \",\"color\":\"aqua\"},{\"text\":\"/party <accept/deny>\",\"color\":\"gray\"},{\"text\":\" to choose.\",\"color\":\"aqua\"}]"
     timeout:
-      noresponse: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite to %party%"
+      noresponse: "&7%player%가 파티초대에 응답하지 않았습니다."
+      timeout: "&7당신은 %party%의 초대에 응답하지 않았습니다."
     revoke:
-      sent-revoked: "&7Revoked invite sent to %player%"
-      player-invite-revoked: "&7Invite received from %party% has been revoked"
+      sent-revoked: "&7 %player%에게 보낸 초대가 폐지되었습니다."
+      player-invite-revoked: "&7 %party%로부터 받은 초대가 폐지되었습니다."
     cooldown:
-      global: "&cYou need to wait %seconds% before invite another player"
-      individual: "&cYou need to wait %seconds% before invite again the same player"
-    player-offline: "&cYou can invite only online players"
-    player-no-permission: "&c%player% doesn't have the permission to join"
-    player-in-party: "&c%player% is already in a party"
-    already-invited: "&c%player% was already invited"
-    wrong-command: "&cWrong variables: Type &7/party invite <name>"
+      global: "&c다른 유저를 초대하기 전에 %seconds%를 기다려야 합니다."
+      individual: "&c같은 유저를 다시 초대하기 전에 %seconds%를 기다려야 합니다."
+    player-offline: "&c접속중인 유저만 초대할 수 있습니다."
+    player-no-permission: "&c%player% 는 참여할 권한이 없습니다"
+    player-in-party: "&c%player%은 이미 파티가 있습니다."
+    already-invited: "&c%player% 는 이미 초대 되었습니다"
+    wrong-command: "&c잘못된 변수: 유형 &7/party invite <name>"
   kick:
-    sent: "&aYou kicked %player% from your party!"
-    player-kicked: "&bYou have been kicked from %party%"
-    broadcast: "&b&l%player% has been kicked from the party"
-    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
-    player-higher-rank: "&cYou cannot kick your superior!"
-    player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% is not in a party"
+    sent: "&a%player%을 파티로부터 내보냈습니다."
+    player-kicked: "&b%party%에서 쫓겨났습니다."
+    broadcast: "&b&l%player%가 파티에서 추방되었습니다."
+    broadcast-disband: "&b&l파티리더가 추방되어서 파티가 해체되었습니다."
+    player-higher-rank: "&c당신보다 상관의 사람을 추방할 수 없습니다."
+    player-not-in-party: "&c%player%은 당신의 파티에 있지 않습니다."
+    player-not-in-other-party: "&c%player%은 당신의 파티에 있지 않습니다."
     players-conflict:
       #Special tags:
       #=> %username%                       = The name of the player
@@ -130,34 +130,34 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&c그 이름을 가진 몇몇의 유저를 발견했습니다."
         - "%list_players%"
         - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
-    wrong-command: "&cWrong variables: Type &7/party kick <name>"
+    wrong-command: "&c잘못된 변수: 유형 &7/party kick <name>"
   leave:
-    left: "&b&lYou left the party %party%"
-    broadcast: "&b&l%player% left the party"
-    party-disbanded: "&6&lThe party has been disbanded because the leader left"
+    left: "&b&l%party%를 떠나셨습니다."
+    broadcast: "&b&l%player%이 파티를 떠났습니다."
+    party-disbanded: "&6&l파티리더가 나가서 파티가 해체되었습니다."
   p:
     #Special tag:
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou still have to wait %seconds% seconds"
-    censored: "&cThe message contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/p <message>"
+    cooldown: "&c당신은 %seconds%초를 기다리셔야 합니다"
+    censored: "&c이 메시지는 자극적인 단어를 포함하고 있습니다!"
+    wrong-command: "&c잘못된 변수: 유형 &7/p <message>"
   rank:
     #Special tag:
     #=> %rank_name%   = Rank wrote by the player
-    changed: "&a%player% rank changed into %rank_name%"
+    changed: "&a%player%가 등급 이름을 %rank_name% 으로 변경했습니다"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
-    same-rank: "&c%player% is already %rank_name%!"
-    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
-    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
-    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
-    changing-yourself: "&cYou cannot change yourself rank!"
-    player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% doesn't have a party"
+    wrong-rank: "&c '%rank_name%'의 등급이 존재하지 않습니다!"
+    same-rank: "&c%player% 는 %rank_name% 을 갖고 있습니다!"
+    low-rank: "&c등급이 같거나 더 높은 유저는 편집할 수 없습니다."
+    to-higher-rank: "&c당신은 당신보다 높은 등급으로 승급할 수 없습니다."
+    fixed-leader: "&c당신은 누군가를 고정된 파티의 리더로 만들 수 없습니다."
+    changing-yourself: "&c당신은 자신의 순위를 바꿀 수 없습니다."
+    player-not-in-party: "&c%player%은 당신의 파티에 있지 않습니다."
+    player-not-in-other-party: "&c%player% 는 파티를 가지고 있지 않습니다"
     players-conflict:
       #Special tags:
       #=> %username%                       = The name of the player
@@ -166,148 +166,148 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&c그 이름을 가진 몇몇의 유저를 발견했습니다."
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
+        - "&c특정 유저가 등급을 변경하는데 사용하세요 '&7/party rank <username> <rank> <number>&c'"
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
-    wrong-command: "&cWrong variables: Type &7/party rank <player> <rank>"
+    wrong-command: "&c잘못된 변수: 유형 &7/party rank <player> <rank>"
   rename:
     #Special tag:
     #=> %old%   = Old party name
-    renamed: "&aThe party %old% has been renamed into %party%"
-    broadcast: "&6Your party has been renamed into %party%!"
-    wrong-command: "&cWrong variables: Type &7/party rename <newname>"
-    wrong-command-admin: "&cWrong variables: Type &7/party rename <party> <newname>"
+    renamed: "&a파티의 이름이 %old%에서 %party%로 바뀌었습니다."
+    broadcast: "&6당신의 파티가 %party%로 이름이 바뀌었습니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party rename <newname>"
+    wrong-command-admin: "&c잘못된 변수: 유형 &7/party rename <party> <newname>"
   spy:
-    enabled: "&7Now you are a spy!"
-    disabled: "&7You are no longer a spy"
-    wrong-command: "&cWrong variables: Type &7/party spy [on/off]"
+    enabled: "&7이제 당신은 스파이입니다"
+    disabled: "&7당신은 더 이상 스파이가 아닙니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party spy [켜기/끄기]"
   version:
     #Special tags:
     #=> %version%    = Parties version
     #=> %newversion% = Latest Parties version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - &6AlessioDP 에 의해서 개발됨"
+    outdated: "&b&lParties &b%version% &7(%platform%) - &6AlessioDP 에 의해서 개발됨\n&a새로운 버젼을 찾아냄: &2%newversion%"
 #/ = = = = = = = = = = = = = = = = \
 #|  ADDITIONAL COMMANDS  MESSAGES  |
 #\ = = = = = = = = = = = = = = = = /
 additional-commands:
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&b당신의 파티의 색은: %color_code%%color_command%"
+    empty: "&b당신의 파티는 색상을 갖고 있지 않습니다"
+    changed: "&b파티의 색상이 %color_command% 으로 변경 되었습니다"
+    removed: "&b파티 색상이 제거 되었습니다"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
-    wrong-command: "&cWrong variables: Type &7/party color <color>"
+    wrong-color: "&c색상을 찾을 수 없습니다. 선택 가능한 것: 빨강, 초록, 그 외!"
+    wrong-command: "&c잘못된 변수: 유형 &7/party color <color>"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&b파티 설명이 변경 되었습니다"
+    removed: "&b파티 설명이 제거되었습니다."
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/party desc <description/remove>"
+    invalid-chars: "&c인식불가능한 문자. a-Z 혹은 0-9, 최소 3글자 최대 16글자를 사용하세요."
+    censored: "&c이 설명에는 검열된 단어가 포함되있습니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party desc <description/remove>"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
-    wrong-command: "&cWrong variables: Type &7/party follow [on/off]"
+    toggle-on: "&a이제 파티멤버들은 리더를 따를 것입니다."
+    toggle-off: "&a파티멤버들은 이제 리더를 따르지 않을 것입니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party follow [켜기/끄기]"
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
-    wrong-password: "&cWrong password!"
-    wrong-command: "&cWrong variables: Type &7/party join <party> [password]"
+    joined: "&a%party%에 참가했습니다."
+    player-joined: "&b&l%player%가 파티에 참가했습니다."
+    wrong-password: "&c잘못된 비밀번호"
+    wrong-command: "&c잘못된 변수: 유형 &7/party join <party>[password]"
   list:
     #Special tags:
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
+    header: "&b============ &l접속중인 파티 목록 &r&b============"
+    footer: "&b=============== &l페이지%page%의%maxpages%&r&b================"
+    no-one: "&7아무도"
     format-party: '[{"text":"%party%","color":"aqua","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Show info","color":"gold"}]}}},{"text":" [","color":"gray"},{"text":"Online %online_number%","color":"gold"},{"text":"] %desc%","color":"gray"}]'
-    wrong-command: "&cWrong variables: Type &7/party list [page]"
+    wrong-command: "&c잘못된 변수: 유형 &7/party list [page]"
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&b오늘의 메시지가 변경되었습니다."
+    removed: "&b오늘의 메시지가 제거되었습니다."
     broadcast: ""
     content:
-      - "&bParty MOTD:"
+      - "&b오늘의 메시지:"
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
-    wrong-command: "&cWrong variables: Type &7/party motd <motd/remove>"
+    invalid-chars: "&c인식불가능한 문자. '. , /'도 사용가능합니다. 최소 3글자에서 최대 100글자."
+    censored: "&c오늘의 메시지가 검열된 단어를 포함하고 있습니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party motd <motd/remove>"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
-    wrong-command: "&cWrong variables: Type &7/party mute [on/off]"
+    toggle-on: "&7알림을 사용하지 않습니다."
+    toggle-off: "&7알림을 사용합니다."
+    wrong-command: "&c잘못된 변수: 유형 &7/party mute [켜기/끄기]"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&a파티 비밀번호가 변경되었습니다."
+    removed: "&a파티 비밀번호가 제거되었습니다."
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
-    wrong-command: "&cWrong variables: Type &7/party password <password/remove>"
+    invalid-chars: "&c인식불가능한 문자. a-Z 혹은 0-9를 사용하세요. 최소 1글자 최대 16글자"
+    wrong-command: "&c잘못된 변수: 유형 &7/party password <password/remove>"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
+    teleporting: "&7파티가 이곳으로 순간이동했습니다."
+    player-teleported: "&b%player%에게로 순간이동했습니다."
     #Special tag: %seconds% = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&c당신은 %seconds%초를 기다리셔야 합니다."
 #/ = = = = = = = = = = = = = = = = \
 #|         OTHER  MESSAGES         |
 #\ = = = = = = = = = = = = = = = = /
 other:
   follow:
     #Special tags: %server% = New server
-    following-server: "&7Following %player% in %server%"
+    following-server: "&7 %server%의 %player%을 따라가기"
   fixed-parties:
     #Joined into a default party
-    default-join: "&bYou entered into %party%"
+    default-join: "&b %party%로 들어갔습니다"
   join-leave:
-    server-join: "&b%player% is online!"
-    server-leave: "&7%player% is offline!"
+    server-join: "&b%player%이 접속중입니다."
+    server-leave: "&7%player%이 오프라인입니다."
 #/ = = = = = = = = = = = = = = = = \
 #|          HELP MESSAGES          |
 #\ = = = = = = = = = = = = = = = = /
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b================= &l파티 도움말 %page%/%maxpages% &r&b================="
   footer: ""
   console-help:
-    - "You can only make these commands:"
-    - " > party create <name> fixed - Create a new party"
-    - " > party delete <party> - Delete a party"
-    - " > party info <party> - Show party information"
-    - " > party list - List of online parties"
-    - " > party kick <player> - Kick a player from the party"
-    - " > party rank <player> <rank> - Change rank of the player"
+    - "당신이 사용할 수 있는 명령어:"
+    - " > party create <name> fixed - 새로운 파티 생성"
+    - " > party delete <party> - 파티 삭제"
+    - " > party info <party> - 파티 정보"
+    - " > party list - 활동중인 파티 리스트"
+    - " > party kick <player> - 파티로부터 유저 추방"
+    - " > party rank <player> <rank> - 특정 유저의 등급 변경"
     - " > party reload - Reload Parties configuration files"
-    - " > party rename <party> <name> - Rename the party"
+    - " > party rename <party> <name> - 파티 이름 재설정"
     - " > party version - Show Parties information"
   main-commands:
-    help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - Accept a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    chat: '{"text":"","extra":[{"text":"/party chat [on/off]","color":"aqua"},{"text":" - Toggle party chat","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    create: '{"text":"","extra":[{"text":"/party create <name>","color":"aqua"},{"text":" - Create a new party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - Delete the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - Deny a party invitation","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    ignore: '{"text":"","extra":[{"text":"/party ignore [party]","color":"aqua"},{"text":" - Add/remove/show ignored parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - Show party information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - Invite a player to your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - Kick a player from your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - Leave your party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - Send a message to the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - Change rank of the player","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    help: '{"text":"","extra":[{"text":"/party help [page]","color":"aqua"},{"text":" - 도움 페이지 보여주기","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party help "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    accept: '{"text":"","extra":[{"text":"/party accept","color":"aqua"},{"text":" - 파티 초대 수락","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party accept"},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    chat: '{"text":"","extra":[{"text":"/party chat [켜기/끄기]","color":"aqua"},{"text":" -파티 채팅 알림","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party chat "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    create: '{"text":"","extra":[{"text":"/party create <name>","color":"aqua"},{"text":" - 새로운 파티를 생성하세요","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party create "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    delete: '{"text":"","extra":[{"text":"/party delete <party>","color":"aqua"},{"text":" - 파티를 제거합니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party delete "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    deny: '{"text":"","extra":[{"text":"/party deny","color":"aqua"},{"text":" - 파티 초대를 거절합니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party deny"},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    ignore: '{"text":"","extra":[{"text":"/party ignore [party]","color":"aqua"},{"text":" - 추가/제거/차단한 파티","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party ignore "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    info: '{"text":"","extra":[{"text":"/party info [party]","color":"aqua"},{"text":" - 파티 정보를 보여줍니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party info "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    invite: '{"text":"","extra":[{"text":"/party invite <player>","color":"aqua"},{"text":" - 당신의 파티에 유저를 초대합니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party invite "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    kick: '{"text":"","extra":[{"text":"/party kick <player>","color":"aqua"},{"text":" - 당신의 파티에서 유저를 추방합니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party kick "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    leave: '{"text":"","extra":[{"text":"/party leave","color":"aqua"},{"text":" - 당신의 파티를 떠납니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party leave "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    p: '{"text":"","extra":[{"text":"/p <message>","color":"aqua"},{"text":" - 메시지를 파티에 보냅니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/p "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    rank: '{"text":"","extra":[{"text":"/party rank <player> <rank>","color":"aqua"},{"text":" - 특정 유저의 등급을 변경합니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rank "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/party reload","color":"aqua"},{"text":" - Reload Parties configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - Rename the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    spy: '{"text":"","extra":[{"text":"/party spy [on/off]","color":"aqua"},{"text":" - Spy messages of other parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    rename: '{"text":"","extra":[{"text":"/party rename [party] <newname>","color":"aqua"},{"text":" - 파티 이름 재설정","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party rename "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    spy: '{"text":"","extra":[{"text":"/party spy [켜기/끄기]","color":"aqua"},{"text":" - 다른 파티에게 스파이 메시지를 보냅니다","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party spy "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/party version","color":"aqua"},{"text":" - Show Parties information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
   additional-commands:
-    color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - Change party color","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - Set/remove party description","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    follow: '{"text":"","extra":[{"text":"/party follow [on/off]","color":"aqua"},{"text":" - Toggle follow leader","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - Join into the party","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - List of online parties","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - Set/remove party motd","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    mute: '{"text":"","extra":[{"text":"/party mute [on/off]","color":"aqua"},{"text":" - Toggle notifications","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - Change party password","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    color: '{"text":"","extra":[{"text":"/party color <color>","color":"aqua"},{"text":" - 파티 색상 변경","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party color "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    desc: '{"text":"","extra":[{"text":"/party desc <description/remove>","color":"aqua"},{"text":" - 확인/제거 파티 설명","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party desc "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    follow: '{"text":"","extra":[{"text":"/party follow [켜기/끄기]","color":"aqua"},{"text":" - 리더 팔로우 설정","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party follow "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    join: '{"text":"","extra":[{"text":"/party join <party> [password]","color":"aqua"},{"text":" - 파티 참가","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party join "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    list: '{"text":"","extra":[{"text":"/party list [page]","color":"aqua"},{"text":" - 활동중인 파티 목록","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party list "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    motd: '{"text":"","extra":[{"text":"/party motd <motd/remove>","color":"aqua"},{"text":" - 설정/오늘의 메시지 제거","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party motd "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    mute: '{"text":"","extra":[{"text":"/party mute [켜기/끄기]","color":"aqua"},{"text":" - 알림 켜기","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party mute "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
+    password: '{"text":"","extra":[{"text":"/party password <pw/remove>","color":"aqua"},{"text":" - 파티 비밀번호 변경","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/party password "},"hoverEvent":{"action":"show_text","value":{"text":"명령어 실행","color":"gold"}}}'
 dont-edit-this:
   version: 8
