@@ -17,6 +17,7 @@ import com.alessiodp.parties.common.players.objects.InviteCooldown;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandInvite extends PartiesSubCommand {
@@ -76,6 +77,12 @@ public class CommandInvite extends PartiesSubCommand {
 		}
 		
 		PartyPlayerImpl invitedPartyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(invitedPlayer.getUUID());
+		
+		if (invitedPartyPlayer.isVanished()) {
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_PLAYEROFFLINE);
+			return;
+		}
+		
 		if (!invitedPartyPlayer.getPartyName().isEmpty()) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_PLAYERINPARTY, invitedPartyPlayer);
 			return;
@@ -158,6 +165,12 @@ public class CommandInvite extends PartiesSubCommand {
 	
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
-		return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);
+		List<String> ret = new ArrayList<>();
+		for (User u : plugin.getOnlinePlayers()) {
+			PartyPlayerImpl p = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(u.getUUID());
+			if (p != null && !p.isVanished())
+				ret.add(p.getName());
+		}
+		return plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
 	}
 }

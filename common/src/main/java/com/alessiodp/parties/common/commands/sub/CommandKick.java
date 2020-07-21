@@ -21,6 +21,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -214,6 +215,12 @@ public class CommandKick extends PartiesSubCommand {
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
 		// Filter players is too expensive. You should call the database to get every existing player.
-		return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);
+		List<String> ret = new ArrayList<>();
+		for (User u : plugin.getOnlinePlayers()) {
+			PartyPlayerImpl p = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(u.getUUID());
+			if (p != null && !p.isVanished())
+				ret.add(p.getName());
+		}
+		return plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
 	}
 }

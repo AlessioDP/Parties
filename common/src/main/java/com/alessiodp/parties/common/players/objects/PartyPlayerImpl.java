@@ -172,6 +172,13 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		lock.unlock();
 	}
 	
+	public void sendDirect(String message) {
+		User player = plugin.getPlayer(getPlayerUUID());
+		if (player != null) {
+			player.sendMessage(message, false);
+		}
+	}
+	
 	/**
 	 * Send a message
 	 */

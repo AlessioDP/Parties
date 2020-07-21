@@ -434,7 +434,7 @@ public abstract class PartyImpl implements Party {
 			return;
 		
 		for (PartyPlayer player : getOnlineMembers(true)) {
-			((PartyPlayerImpl) player).sendMessage(message, this);
+			((PartyPlayerImpl) player).sendDirect(message);
 		}
 	}
 	

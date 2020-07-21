@@ -14,7 +14,7 @@ allprojects {
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.parties'
-    version '2.6.14'
+    version '2.6.15'
 
     // Info
     ext.pluginName = "Parties"
