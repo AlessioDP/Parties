@@ -62,7 +62,7 @@ public class BukkitPartyImpl extends PartyImpl {
 				} catch (Exception ex) {
 					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_EXP_LEVELERROR
 							.replace("{party}", getName())
-							.replace("{message}", ex.getMessage()));
+							.replace("{message}", ex.getMessage() != null ? ex.getMessage() : ex.toString()));
 				}
 			}
 		}

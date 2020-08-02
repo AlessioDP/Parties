@@ -14,7 +14,7 @@ allprojects {
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.parties'
-    version '2.6.15'
+    version '2.6.16'
 
     // Info
     ext.pluginName = "Parties"
@@ -34,7 +34,7 @@ allprojects {
     ext.griefPrevention = '16.11.6'
     ext.lastLoginApi = '1.3.2'
     ext.mythicMobs = '4.8.0'
-    ext.placeholderApi = '2.10.4'
+    ext.placeholderApi = '2.10.6'
     ext.protocolLib = '4.4.0'
     ext.vaultApi = '1.7'
 

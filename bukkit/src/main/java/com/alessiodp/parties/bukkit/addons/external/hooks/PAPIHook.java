@@ -7,32 +7,46 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
 
 @RequiredArgsConstructor
-public class PAPIHook extends PlaceholderHook {
+public class PAPIHook extends PlaceholderExpansion {
 	@NonNull private final PartiesPlugin plugin;
 	
-	public boolean register() {
-		boolean ret = false;
-		try {
-			Class.forName("me.clip.placeholderapi.PlaceholderHook").getMethod("onRequest", OfflinePlayer.class, String.class);
-			
-			if (PlaceholderAPI.isRegistered(plugin.getPluginFallbackName())) {
-				PlaceholderAPI.unregisterPlaceholderHook(plugin.getPluginFallbackName());
-			}
-			ret = PlaceholderAPI.registerPlaceholderHook(plugin.getPluginFallbackName(), this);
-		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
-					.replace("{addon}", "PlaceholderAPI"));
-		}
-		return ret;
+	@Override
+	public boolean canRegister() {
+		return true;
 	}
 	
-	public String setPlaceholders(OfflinePlayer player, String msg) {
+	@Override
+	public String getName() {
+		return plugin.getPluginName();
+	}
+	
+	@Override
+	public String getIdentifier() {
+		return "parties";
+	}
+	
+	@Override
+	public String getAuthor() {
+		return "AlessioDP";
+	}
+	
+	@Override
+	public String getVersion() {
+		return plugin.getVersion();
+	}
+	
+	@Override
+	public boolean persist(){
+		return true;
+	}
+	
+	public String parsePlaceholders(OfflinePlayer player, String msg) {
 		return PlaceholderAPI.setPlaceholders(player, msg);
 	}
 	
