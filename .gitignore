@@ -20,7 +20,6 @@ gradle-app.setting
 out
 gen
 
-
 # Maven
 log/
 target/
