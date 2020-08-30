@@ -2,6 +2,7 @@ package com.alessiodp.parties.api.interfaces;
 
 import com.alessiodp.parties.api.enums.Status;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -23,12 +24,30 @@ public interface PartiesAPI {
 	boolean createParty(@NonNull String party, PartyPlayer leader);
 	
 	/**
+	 * Create a party
+	 *
+	 * @param party  The party name
+	 * @param tag The party tag
+	 * @param leader The leader of the party as {@link PartyPlayer}, null if the party should be fixed
+	 * @return Returns true if successfully created
+	 */
+	boolean createParty(@NonNull String party, @Nullable String tag, PartyPlayer leader);
+	
+	/**
 	 * Get the party by its name
 	 *
 	 * @param party The name of the {@link Party}
 	 * @return Returns the {@link Party}
 	 */
 	Party getParty(@NonNull String party);
+	
+	/**
+	 * Get the party by its id
+	 *
+	 * @param party The id of the {@link Party}
+	 * @return Returns the {@link Party}
+	 */
+	Party getParty(@NonNull UUID party);
 	
 	/**
 	 * Get the player by his {@link UUID}
@@ -48,16 +67,16 @@ public interface PartiesAPI {
 	/**
 	 * Get the list of available ranks
 	 *
-	 * @return Returns a set of {@link Rank}
+	 * @return Returns a set of {@link PartyRank}
 	 */
-	Set<Rank> getRanks();
+	Set<PartyRank> getRanks();
 	
 	/**
 	 * Get the list of available colors
 	 *
-	 * @return Returns a set of {@link Color}
+	 * @return Returns a set of {@link PartyColor}
 	 */
-	Set<Color> getColors();
+	Set<PartyColor> getColors();
 	
 	/**
 	 * Reload Parties configuration files
@@ -120,7 +139,7 @@ public interface PartiesAPI {
 	default Status addPlayerIntoParty(PartyPlayer player, Party party) {
 		if (party == null || player == null)
 			return Status.NOEXIST;
-		if (!player.getPartyName().isEmpty())
+		if (player.isInParty())
 			return Status.ALREADYINPARTY;
 		if (party.addMember(player))
 			return Status.SUCCESS;
@@ -139,7 +158,7 @@ public interface PartiesAPI {
 	default Status removePlayerFromParty(PartyPlayer player) {
 		if (player == null)
 			return Status.NOEXIST;
-		Party party = getParty(player.getPartyName());
+		Party party = player.getPartyId() != null ? getParty(player.getPartyId()) : null;
 		if (party == null)
 			return Status.NOPARTY;
 		party.removeMember(player);

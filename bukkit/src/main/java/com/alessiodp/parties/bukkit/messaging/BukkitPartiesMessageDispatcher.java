@@ -28,55 +28,55 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendPingUpdateParty(String party) {
+	public void sendPingUpdateParty(UUID party) {
 		if (isEnabled()) {
 			// Prepare packet update party
 			sendForwardPacket(new PartiesPacket(plugin.getVersion())
 					.setType(PartiesPacket.PacketType.PARTY_UPDATED)
-					.setPartyName(party)
+					.setPartyId(party)
 			);
 		}
 	}
 	
-	public void sendPingRenameParty(String party, String oldName) {
+	public void sendPingRenameParty(UUID party, String newName) {
 		if (isEnabled()) {
 			// Prepare packet rename party
 			sendForwardPacket(new PartiesPacket(plugin.getVersion())
 					.setType(PartiesPacket.PacketType.PARTY_RENAMED)
-					.setPartyName(party)
-					.setPayload(oldName)
+					.setPartyId(party)
+					.setPayload(newName)
 			);
 		}
 	}
 	
-	public void sendPingRemoveParty(String party) {
+	public void sendPingRemoveParty(UUID party) {
 		if (isEnabled()) {
 			// Prepare packet remove party
 			sendForwardPacket(new PartiesPacket(plugin.getVersion())
 					.setType(PartiesPacket.PacketType.PARTY_REMOVED)
-					.setPartyName(party)
+					.setPartyId(party)
 			);
 		}
 	}
 	
-	public void sendPingChatMessage(String party, UUID sender, String message) {
+	public void sendPingChatMessage(UUID party, UUID sender, String message) {
 		if (isEnabled() && BukkitConfigMain.PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT) {
 			// Prepare packet broadcast message
 			sendForwardPacket(new PartiesPacket(plugin.getVersion())
 					.setType(PartiesPacket.PacketType.CHAT_MESSAGE)
-					.setPartyName(party)
+					.setPartyId(party)
 					.setPlayerUuid(sender)
 					.setPayload(message)
 			);
 		}
 	}
 	
-	public void sendPingBroadcastMessage(String party, String message) {
+	public void sendPingBroadcastMessage(UUID party, String message) {
 		if (isEnabled() && BukkitConfigMain.PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS) {
 			// Prepare packet broadcast message
 			sendForwardPacket(new PartiesPacket(plugin.getVersion())
 					.setType(PartiesPacket.PacketType.BROADCAST_MESSAGE)
-					.setPartyName(party)
+					.setPartyId(party)
 					.setPayload(message)
 			);
 		}

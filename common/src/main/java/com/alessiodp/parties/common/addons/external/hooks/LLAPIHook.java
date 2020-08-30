@@ -31,8 +31,7 @@ public class LLAPIHook {
 	}
 	
 	public String getPlayerName(UUID uuid) {
-		LastLoginPlayer player = api.getPlayer(uuid);
-		return player != null ? player.getName() : "";
+		return api.getPlayer(uuid).getName();
 	}
 	
 	public Set<UUID> getPlayerByName(String name) {

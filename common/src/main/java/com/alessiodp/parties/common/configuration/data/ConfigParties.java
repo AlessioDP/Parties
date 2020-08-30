@@ -1,93 +1,201 @@
 package com.alessiodp.parties.common.configuration.data;
 
+import com.alessiodp.core.common.addons.external.simpleyaml.configuration.ConfigurationSection;
+import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.parties.objects.ColorImpl;
-import com.alessiodp.parties.common.players.objects.RankImpl;
+import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
+import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class ConfigParties extends ConfigurationFile {
 	// General settings
-	public static int GENERAL_MEMBERSLIMIT;
-	public static String GENERAL_NAME_ALLOWEDCHARS;
-	public static String GENERAL_NAME_CENSORREGEX;
-	public static int GENERAL_NAME_MINLENGTH;
-	public static int GENERAL_NAME_MAXLENGTH;
+	@ConfigOption(path = "general.members.limit")
+	public static int		GENERAL_MEMBERS_LIMIT;
+	@ConfigOption(path = "general.members.change-leader-on-leave")
+	public static boolean	GENERAL_MEMBERS_CHANGE_LEADER_ON_LEAVE;
 	
-	public static int GENERAL_INVITE_TIMEOUT;
-	public static boolean GENERAL_INVITE_REVOKE;
-	public static boolean GENERAL_INVITE_PREVENTINVITEPERM;
-	public static boolean GENERAL_INVITE_COOLDOWN_ENABLE;
-	public static int GENERAL_INVITE_COOLDOWN_GLOBAL;
-	public static int GENERAL_INVITE_COOLDOWN_INDIVIDUAL;
+	@ConfigOption(path = "general.broadcast.use-titles")
+	public static boolean		GENERAL_BROADCAST_USE_TITLES;
+	@ConfigOption(path = "general.broadcast.fade-in-time")
+	public static int			GENERAL_BROADCAST_FADE_IN_TIME;
+	@ConfigOption(path = "general.broadcast.show-time")
+	public static int			GENERAL_BROADCAST_SHOW_TIME;
+	@ConfigOption(path = "general.broadcast.fade-out-time")
+	public static int			GENERAL_BROADCAST_FADE_OUT_TIME;
 	
-	public static boolean GENERAL_CHAT_ALLOWCOLORS;
-	public static boolean GENERAL_CHAT_TOGGLECHATCMD;
-	public static int GENERAL_CHAT_CHATCD;
-	public static String GENERAL_CHAT_CENSORREGEX;
-	public static boolean GENERAL_CHAT_LOG;
-	public static boolean GENERAL_CHAT_LOGTOCONSOLE;
-	public static boolean GENERAL_CHAT_DIRECT_ENABLED;
-	public static String GENERAL_CHAT_DIRECT_PREFIX;
-	public static String GENERAL_CHAT_FORMAT_CHAT;
-	public static String GENERAL_CHAT_FORMAT_BROADCAST;
-	public static String GENERAL_CHAT_FORMAT_SPY_CHAT;
-	public static String GENERAL_CHAT_FORMAT_SPY_BROADCAST;
+	@ConfigOption(path = "general.name.allowed-characters")
+	public static String		GENERAL_NAME_ALLOWEDCHARS;
+	@ConfigOption(path = "general.name.censor-regex")
+	public static String		GENERAL_NAME_CENSORREGEX;
+	@ConfigOption(path = "general.name.minimum-length")
+	public static int			GENERAL_NAME_MINLENGTH;
+	@ConfigOption(path = "general.name.maximum-length")
+	public static int			GENERAL_NAME_MAXLENGTH;
+	@ConfigOption(path = "general.name.rename-cooldown")
+	public static int			GENERAL_NAME_RENAME_COOLDOWN;
+	
+	@ConfigOption(path = "general.join-leave-messages")
+	public static boolean		GENERAL_JOIN_LEAVE_MESSAGES;
+	
+	@ConfigOption(path = "general.invite.timeout")
+	public static int			GENERAL_INVITE_TIMEOUT;
+	@ConfigOption(path = "general.invite.revoke")
+	public static boolean		GENERAL_INVITE_REVOKE;
+	@ConfigOption(path = "general.invite.prevent-invite-player-no-permission-join")
+	public static boolean		GENERAL_INVITE_PREVENTINVITEPERM;
+	@ConfigOption(path = "general.invite.cooldown.enable")
+	public static boolean		GENERAL_INVITE_COOLDOWN_ENABLE;
+	@ConfigOption(path = "general.invite.cooldown.global")
+	public static int			GENERAL_INVITE_COOLDOWN_GLOBAL;
+	@ConfigOption(path = "general.invite.cooldown.individual")
+	public static int			GENERAL_INVITE_COOLDOWN_INDIVIDUAL;
+	
+	@ConfigOption(path = "general.ask.enable")
+	public static boolean		GENERAL_ASK_ENABLE;
+	@ConfigOption(path = "general.ask.timeout")
+	public static int			GENERAL_ASK_TIMEOUT;
+	@ConfigOption(path = "general.ask.cooldown.enable")
+	public static boolean		GENERAL_ASK_COOLDOWN_ENABLE;
+	@ConfigOption(path = "general.ask.cooldown.global")
+	public static int			GENERAL_ASK_COOLDOWN_GLOBAL;
+	@ConfigOption(path = "general.ask.cooldown.individual")
+	public static int			GENERAL_ASK_COOLDOWN_INDIVIDUAL;
+	
+	@ConfigOption(path = "general.chat.allow-colors")
+	public static boolean		GENERAL_CHAT_ALLOWCOLORS;
+	@ConfigOption(path = "general.chat.toggle-command")
+	public static boolean		GENERAL_CHAT_TOGGLECOMMAND;
+	@ConfigOption(path = "general.chat.cooldown")
+	public static int			GENERAL_CHAT_COOLDOWN;
+	@ConfigOption(path = "general.chat.censor-regex")
+	public static String		GENERAL_CHAT_CENSORREGEX;
+	@ConfigOption(path = "general.chat.prevent-muted-players")
+	public static boolean		GENERAL_CHAT_PREVENT_MUTED_PLAYERS;
+	@ConfigOption(path = "general.chat.direct.enable")
+	public static boolean		GENERAL_CHAT_DIRECT_ENABLED;
+	@ConfigOption(path = "general.chat.direct.prefix")
+	public static String		GENERAL_CHAT_DIRECT_PREFIX;
+	
+	@ConfigOption(path = "general.sounds.on-chat.enable")
+	public static boolean		GENERAL_SOUNDS_ON_CHAT_ENABLE;
+	@ConfigOption(path = "general.sounds.on-chat.name")
+	public static String		GENERAL_SOUNDS_ON_CHAT_NAME;
+	@ConfigOption(path = "general.sounds.on-chat.volume")
+	public static double		GENERAL_SOUNDS_ON_CHAT_VOLUME;
+	@ConfigOption(path = "general.sounds.on-chat.pitch")
+	public static double		GENERAL_SOUNDS_ON_CHAT_PITCH;
+	@ConfigOption(path = "general.sounds.on-broadcast.enable")
+	public static boolean		GENERAL_SOUNDS_ON_BROADCAST_ENABLE;
+	@ConfigOption(path = "general.sounds.on-broadcast.name")
+	public static String		GENERAL_SOUNDS_ON_BROADCAST_NAME;
+	@ConfigOption(path = "general.sounds.on-broadcast.volume")
+	public static double		GENERAL_SOUNDS_ON_BROADCAST_VOLUME;
+	@ConfigOption(path = "general.sounds.on-broadcast.pitch")
+	public static double		GENERAL_SOUNDS_ON_BROADCAST_PITCH;
 	
 	
 	// Ranks settings
-	public static Set<RankImpl> RANK_LIST;
-	public static int RANK_SET_DEFAULT;
-	public static int RANK_SET_HIGHER;
+	public static Set<PartyRankImpl> RANK_LIST;
+	public static int			RANK_SET_DEFAULT;
+	public static int			RANK_SET_HIGHER;
 	
 	
 	// Additional settings
-	public static boolean COLOR_ENABLE;
-	public static boolean COLOR_COLORCMD;
-	public static boolean COLOR_DYNAMIC;
-	public static Set<ColorImpl> COLOR_LIST;
+	@ConfigOption(path = "additional.color.enable")
+	public static boolean		ADDITIONAL_COLOR_ENABLE;
+	@ConfigOption(path = "additional.color.color-command")
+	public static boolean		ADDITIONAL_COLOR_COLORCMD;
+	@ConfigOption(path = "additional.color.dynamic-color")
+	public static boolean		ADDITIONAL_COLOR_DYNAMIC;
+	public static Set<PartyColorImpl> ADDITIONAL_COLOR_LIST;
 	
-	public static boolean DESC_ENABLE;
-	public static int DESC_MINLENGTH;
-	public static int DESC_MAXLENGTH;
-	public static String DESC_ALLOWEDCHARS;
-	public static String DESC_CENSORREGEX;
+	@ConfigOption(path = "additional.description.enable")
+	public static boolean		ADDITIONAL_DESC_ENABLE;
+	@ConfigOption(path = "additional.description.minimum-length")
+	public static int			ADDITIONAL_DESC_MINLENGTH;
+	@ConfigOption(path = "additional.description.maximum-length")
+	public static int			ADDITIONAL_DESC_MAXLENGTH;
+	@ConfigOption(path = "additional.description.allowed-characters")
+	public static String		ADDITIONAL_DESC_ALLOWEDCHARS;
+	@ConfigOption(path = "additional.description.censor-regex")
+	public static String		ADDITIONAL_DESC_CENSORREGEX;
 	
-	public static boolean FIXED_ENABLE;
-	public static boolean FIXED_DEFAULT_ENABLE;
-	public static String FIXED_DEFAULT_PARTY;
+	@ConfigOption(path = "additional.fixed.enable")
+	public static boolean		ADDITIONAL_FIXED_ENABLE;
+	@ConfigOption(path = "additional.fixed.default-party.enable")
+	public static boolean		ADDITIONAL_FIXED_DEFAULT_ENABLE;
+	@ConfigOption(path = "additional.fixed.default-party.party")
+	public static String		ADDITIONAL_FIXED_DEFAULT_PARTY;
 	
-	public static boolean PASSWORD_ENABLE;
-	public static String PASSWORD_ALLOWEDCHARS;
-	public static String PASSWORD_HASH;
-	public static String PASSWORD_ENCODE;
-	public static int PASSWORD_MINLENGTH;
-	public static int PASSWORD_MAXLENGTH;
+	@ConfigOption(path = "additional.join.enable")
+	public static boolean		ADDITIONAL_JOIN_ENABLE;
+	@ConfigOption(path = "additional.join.password.enable")
+	public static boolean		ADDITIONAL_JOIN_PASSWORD_ENABLE;
+	@ConfigOption(path = "additional.join.password.allowed-characters")
+	public static String		ADDITIONAL_JOIN_PASSWORD_ALLOWEDCHARS;
+	@ConfigOption(path = "additional.join.password.hash")
+	public static String		ADDITIONAL_JOIN_PASSWORD_HASH;
+	@ConfigOption(path = "additional.join.password.encode")
+	public static String		ADDITIONAL_JOIN_PASSWORD_ENCODE;
+	@ConfigOption(path = "additional.join.password.minimum-length")
+	public static int			ADDITIONAL_JOIN_PASSWORD_MINLENGTH;
+	@ConfigOption(path = "additional.join.password.maximum-length")
+	public static int			ADDITIONAL_JOIN_PASSWORD_MAXLENGTH;
 	
-	public static boolean LIST_ENABLE;
-	public static String LIST_ORDEREDBY;
-	public static int LIST_FILTERMIN;
-	public static int LIST_PERPAGE;
-	public static int LIST_LIMITPARTIES;
-	public static List<String> LIST_HIDDENPARTIES;
+	@ConfigOption(path = "additional.list.enable")
+	public static boolean		ADDITIONAL_LIST_ENABLE;
+	@ConfigOption(path = "additional.list.order-by")
+	public static String		ADDITIONAL_LIST_ORDERBY;
+	@ConfigOption(path = "additional.list.change-order")
+	public static boolean		ADDITIONAL_LIST_CHANGE_ORDER;
+	@ConfigOption(path = "additional.list.parties-per-page")
+	public static int			ADDITIONAL_LIST_PERPAGE;
+	@ConfigOption(path = "additional.list.limit-parties")
+	public static int			ADDITIONAL_LIST_LIMITPARTIES;
+	@ConfigOption(path = "additional.list.hidden-parties")
+	public static List<String>	ADDITIONAL_LIST_HIDDENPARTIES;
 	
-	public static boolean MOTD_ENABLE;
-	public static int MOTD_MINLENGTH;
-	public static int MOTD_MAXLENGTH;
-	public static int MOTD_DELAY;
-	public static String MOTD_ALLOWEDCHARS;
-	public static String MOTD_NEWLINECODE;
-	public static String MOTD_CENSORREGEX;
+	@ConfigOption(path = "additional.motd.enable")
+	public static boolean		ADDITIONAL_MOTD_ENABLE;
+	@ConfigOption(path = "additional.motd.minimum-length")
+	public static int			ADDITIONAL_MOTD_MINLENGTH;
+	@ConfigOption(path = "additional.motd.maximum-length")
+	public static int			ADDITIONAL_MOTD_MAXLENGTH;
+	@ConfigOption(path = "additional.motd.delay")
+	public static long			ADDITIONAL_MOTD_DELAY;
+	@ConfigOption(path = "additional.motd.allowed-characters")
+	public static String		ADDITIONAL_MOTD_ALLOWEDCHARS;
+	@ConfigOption(path = "additional.motd.censor-regex")
+	public static String		ADDITIONAL_MOTD_CENSORREGEX;
+	@ConfigOption(path = "additional.motd.new-line-code")
+	public static String		ADDITIONAL_MOTD_NEWLINECODE;
 	
-	public static boolean TELEPORT_ENABLE;
-	public static int TELEPORT_COOLDOWN;
+	@ConfigOption(path = "additional.tag.enable")
+	public static boolean		ADDITIONAL_TAG_ENABLE;
+	@ConfigOption(path = "additional.tag.must-be-unique")
+	public static boolean		ADDITIONAL_TAG_MUST_BE_UNIQUE;
+	@ConfigOption(path = "additional.tag.minimum-length")
+	public static int			ADDITIONAL_TAG_MINLENGTH;
+	@ConfigOption(path = "additional.tag.maximum-length")
+	public static int			ADDITIONAL_TAG_MAXLENGTH;
+	@ConfigOption(path = "additional.tag.allowed-characters")
+	public static String		ADDITIONAL_TAG_ALLOWEDCHARS;
+	@ConfigOption(path = "additional.tag.censor-regex")
+	public static String		ADDITIONAL_TAG_CENSORREGEX;
+	
+	@ConfigOption(path = "additional.teleport.enable")
+	public static boolean		ADDITIONAL_TELEPORT_ENABLE;
+	@ConfigOption(path = "additional.teleport.cooldown")
+	public static int			ADDITIONAL_TELEPORT_COOLDOWN;
 	
 	
 	protected ConfigParties(PartiesPlugin plugin) {
@@ -96,203 +204,74 @@ public abstract class ConfigParties extends ConfigurationFile {
 	
 	@Override
 	public void loadDefaults() {
-		// General settings
-		GENERAL_MEMBERSLIMIT = -1;
-		GENERAL_NAME_ALLOWEDCHARS = "[a-zA-Z0-9]+";
-		GENERAL_NAME_CENSORREGEX = "";
-		GENERAL_NAME_MINLENGTH = 3;
-		GENERAL_NAME_MAXLENGTH = 10;
+		loadDefaultConfigOptions();
 		
-		GENERAL_INVITE_TIMEOUT = 20;
-		GENERAL_INVITE_REVOKE = true;
-		GENERAL_INVITE_PREVENTINVITEPERM = true;
-		GENERAL_INVITE_COOLDOWN_ENABLE = false;
-		GENERAL_INVITE_COOLDOWN_GLOBAL = 60;
-		GENERAL_INVITE_COOLDOWN_INDIVIDUAL = 0;
+		ArrayList<String> rankPermissions = new ArrayList<>(Arrays.asList(
+				"party.sendmessage",
+				"party.home",
+				"party.desc",
+				"party.motd",
+				"party.claim"
+		));
 		
-		GENERAL_CHAT_ALLOWCOLORS = false;
-		GENERAL_CHAT_TOGGLECHATCMD = true;
-		GENERAL_CHAT_CHATCD = 0;
-		GENERAL_CHAT_CENSORREGEX = "";
-		GENERAL_CHAT_LOG = false;
-		GENERAL_CHAT_LOGTOCONSOLE = false;
-		GENERAL_CHAT_DIRECT_ENABLED = false;
-		GENERAL_CHAT_DIRECT_PREFIX = "@";
-		GENERAL_CHAT_FORMAT_CHAT = "&b[Party] %rank_chat% %player%&r&7: &b%message%";
-		GENERAL_CHAT_FORMAT_BROADCAST = "&b[Party] %message%";
-		GENERAL_CHAT_FORMAT_SPY_CHAT = "&7[SPY] [%party%] %player%: %message%";
-		GENERAL_CHAT_FORMAT_SPY_BROADCAST = "&7[SPY] [%party%]: %message%";
-		
-		
-		// Ranks settings
 		RANK_LIST = new HashSet<>();
-		List<String> perms = new ArrayList<>();
-		perms.add("party.sendmessage");
-		perms.add("party.home");
-		perms.add("party.desc");
-		perms.add("party.motd");
-		perms.add("party.claim");
-		RankImpl rank = new RankImpl("member", "Member", "&bMember", 5, perms, true);
-		RANK_LIST.add(rank);
+		RANK_LIST.add(new PartyRankImpl(
+				"member", "Member", "&bMember", 5,
+				rankPermissions, true)
+		);
+		rankPermissions = new ArrayList<>(rankPermissions);
+		rankPermissions.addAll(Arrays.asList(
+						"party.ask.accept",
+						"party.ask.deny",
+						"party.invite",
+						"party.kick"
+		));
+		RANK_LIST.add(new PartyRankImpl(
+				"moderator", "Moderator", "&cModerator", 10,
+				rankPermissions, false)
+		);
+		RANK_LIST.add(new PartyRankImpl(
+				"leader", "Leader", "&4&lLeader", 20,
+				new ArrayList<>(Collections.singleton("*")), false)
+		);
 		RANK_SET_DEFAULT = 5;
-		
-		perms = new ArrayList<>();
-		perms.add("-party.edit.home");
-		perms.add("-party.edit.desc");
-		perms.add("-party.edit.motd");
-		perms.add("-party.edit.color");
-		perms.add("-party.edit.password");
-		perms.add("-party.admin.rename");
-		perms.add("-party.admin.rank");
-		perms.add("-party.admin.teleport");
-		perms.add("-party.autocommand");
-		perms.add("*");
-		rank = new RankImpl("moderator", "Moderator", "&cModerator", 10, perms, false);
-		RANK_LIST.add(rank);
-		
-		perms = new ArrayList<>();
-		perms.add("*");
-		rank = new RankImpl("leader", "Leader", "&4&lLeader", 20, perms, false);
-		RANK_LIST.add(rank);
 		RANK_SET_HIGHER = 20;
 		
-		
-		// Additional settings
-		COLOR_ENABLE = false;
-		COLOR_COLORCMD = true;
-		COLOR_DYNAMIC = false;
-		COLOR_LIST = new HashSet<>();
-		COLOR_LIST.add(new ColorImpl("red", "red", "&c", -1, -1, -1));
-		COLOR_LIST.add(new ColorImpl("green", "green", "&a", -1, -1, -1));
-		COLOR_LIST.add(new ColorImpl("yourcustomcolor", "special", "&9&n", -1, -1, -1));
-		
-		DESC_ENABLE = true;
-		DESC_MINLENGTH = 3;
-		DESC_MAXLENGTH = 16;
-		DESC_ALLOWEDCHARS = "[a-zA-Z0-9\\ \\.\\,\\-\\_]+";
-		DESC_CENSORREGEX = "";
-		
-		FIXED_ENABLE = false;
-		FIXED_DEFAULT_ENABLE = false;
-		FIXED_DEFAULT_PARTY = "default";
-		
-		PASSWORD_ENABLE = false;
-		PASSWORD_ALLOWEDCHARS = "[a-zA-Z0-9]+";
-		PASSWORD_HASH = "MD5";
-		PASSWORD_ENCODE = "UTF-8";
-		PASSWORD_MINLENGTH = 1;
-		PASSWORD_MAXLENGTH = 16;
-		
-		LIST_ENABLE = true;
-		LIST_ORDEREDBY = "players";
-		LIST_FILTERMIN = 1;
-		LIST_PERPAGE = 8;
-		LIST_LIMITPARTIES = -1;
-		LIST_HIDDENPARTIES = new ArrayList<>();
-		
-		MOTD_ENABLE = true;
-		MOTD_MINLENGTH = 3;
-		MOTD_MAXLENGTH = 100;
-		MOTD_DELAY = 1000;
-		MOTD_ALLOWEDCHARS = "[a-zA-Z0-9\\ \\.\\,\\-\\_]+";
-		MOTD_NEWLINECODE = "\\\\n";
-		MOTD_CENSORREGEX = "";
-		
-		TELEPORT_ENABLE = false;
-		TELEPORT_COOLDOWN = 60;
+		ADDITIONAL_COLOR_LIST = new HashSet<>(Arrays.asList(
+				new PartyColorImpl("red", "red", "&c", -1, -1, -1),
+				new PartyColorImpl("green", "green", "&a", -1, -1, -1),
+				new PartyColorImpl("yourcustomcolor", "special", "&9&n", -1, -1, -1)
+		));
 	}
 	
 	@Override
-	public void loadConfiguration(ConfigurationAdapter confAdapter) {
-		// General settings
-		GENERAL_MEMBERSLIMIT = confAdapter.getInt("general.members-limit", GENERAL_MEMBERSLIMIT);
-		GENERAL_NAME_ALLOWEDCHARS = confAdapter.getString("general.name.allowed-characters", GENERAL_NAME_ALLOWEDCHARS);
-		GENERAL_NAME_CENSORREGEX = confAdapter.getString("general.name.censor-regex", GENERAL_NAME_CENSORREGEX);
-		GENERAL_NAME_MINLENGTH = confAdapter.getInt("general.name.minimum-length", GENERAL_NAME_MINLENGTH);
-		GENERAL_NAME_MAXLENGTH = confAdapter.getInt("general.name.maximum-length", GENERAL_NAME_MAXLENGTH);
-		
-		GENERAL_INVITE_TIMEOUT = confAdapter.getInt("general.invite.timeout", GENERAL_INVITE_TIMEOUT);
-		GENERAL_INVITE_REVOKE = confAdapter.getBoolean("general.invite.revoke", GENERAL_INVITE_REVOKE);
-		GENERAL_INVITE_PREVENTINVITEPERM = confAdapter.getBoolean("general.invite.prevent-invite-player-no-permission-join", GENERAL_INVITE_PREVENTINVITEPERM);
-		GENERAL_INVITE_COOLDOWN_ENABLE = confAdapter.getBoolean("general.invite.cooldown.enable", GENERAL_INVITE_COOLDOWN_ENABLE);
-		GENERAL_INVITE_COOLDOWN_GLOBAL = confAdapter.getInt("general.invite.cooldown.global", GENERAL_INVITE_COOLDOWN_GLOBAL);
-		GENERAL_INVITE_COOLDOWN_INDIVIDUAL = confAdapter.getInt("general.invite.cooldown.individual", GENERAL_INVITE_COOLDOWN_INDIVIDUAL);
-		
-		GENERAL_CHAT_ALLOWCOLORS = confAdapter.getBoolean("general.chat.allow-colors", GENERAL_CHAT_ALLOWCOLORS);
-		GENERAL_CHAT_TOGGLECHATCMD = confAdapter.getBoolean("general.chat.enable-toggle-command", GENERAL_CHAT_TOGGLECHATCMD);
-		GENERAL_CHAT_CHATCD = confAdapter.getInt("general.chat.chat-cooldown", GENERAL_CHAT_CHATCD);
-		GENERAL_CHAT_CENSORREGEX = confAdapter.getString("general.chat.censor-regex", GENERAL_CHAT_CENSORREGEX);
-		GENERAL_CHAT_LOG = confAdapter.getBoolean("general.chat.log", GENERAL_CHAT_LOG);
-		GENERAL_CHAT_LOGTOCONSOLE = confAdapter.getBoolean("general.chat.log-to-console", GENERAL_CHAT_LOGTOCONSOLE);
-		GENERAL_CHAT_DIRECT_ENABLED = confAdapter.getBoolean("general.chat.direct.enable", GENERAL_CHAT_DIRECT_ENABLED);
-		GENERAL_CHAT_DIRECT_PREFIX = confAdapter.getString("general.chat.direct.prefix", GENERAL_CHAT_DIRECT_PREFIX);
-		GENERAL_CHAT_FORMAT_CHAT = confAdapter.getString("general.chat.formats.party-chat", GENERAL_CHAT_FORMAT_CHAT);
-		GENERAL_CHAT_FORMAT_BROADCAST = confAdapter.getString("general.chat.formats.broadcast", GENERAL_CHAT_FORMAT_BROADCAST);
-		GENERAL_CHAT_FORMAT_SPY_CHAT = confAdapter.getString("general.chat.formats.spy.party-chat", GENERAL_CHAT_FORMAT_SPY_CHAT);
-		GENERAL_CHAT_FORMAT_SPY_BROADCAST = confAdapter.getString("general.chat.formats.spy.broadcast", GENERAL_CHAT_FORMAT_SPY_BROADCAST);
-		
+	public void loadConfiguration() {
+		loadConfigOptions();
 		
 		// Ranks settings
-		handleRanks(confAdapter);
-		
-		
-		// Additional settings
-		COLOR_ENABLE = confAdapter.getBoolean("additional.color.enable", COLOR_ENABLE);
-		COLOR_COLORCMD = confAdapter.getBoolean("additional.color.color-command", COLOR_COLORCMD);
-		COLOR_DYNAMIC = confAdapter.getBoolean("additional.color.dynamic-color", COLOR_DYNAMIC);
-		handleColors(confAdapter);
-		
-		DESC_ENABLE = confAdapter.getBoolean("additional.description.enable", DESC_ENABLE);
-		DESC_MINLENGTH = confAdapter.getInt("additional.description.minimum-length", DESC_MINLENGTH);
-		DESC_MAXLENGTH = confAdapter.getInt("additional.description.maximum-length", DESC_MAXLENGTH);
-		DESC_ALLOWEDCHARS = confAdapter.getString("additional.description.allowed-characters", DESC_ALLOWEDCHARS);
-		DESC_CENSORREGEX = confAdapter.getString("additional.description.censor-regex", DESC_CENSORREGEX);
-		
-		FIXED_ENABLE = confAdapter.getBoolean("additional.fixed-system.enable", FIXED_ENABLE);
-		FIXED_DEFAULT_ENABLE = confAdapter.getBoolean("additional.fixed-system.default-party.enable", FIXED_DEFAULT_ENABLE);
-		FIXED_DEFAULT_PARTY = confAdapter.getString("additional.fixed-system.default-party.party", FIXED_DEFAULT_PARTY);
-		
-		PASSWORD_ENABLE = confAdapter.getBoolean("additional.join-password.enable", PASSWORD_ENABLE);
-		PASSWORD_ALLOWEDCHARS = confAdapter.getString("additional.join-password.allowed-characters", PASSWORD_ALLOWEDCHARS);
-		PASSWORD_HASH = confAdapter.getString("additional.join-password.hash", PASSWORD_HASH);
-		PASSWORD_ENCODE = confAdapter.getString("additional.join-password.encode", PASSWORD_ENCODE);
-		PASSWORD_MINLENGTH = confAdapter.getInt("additional.join-password.minimum-length", PASSWORD_MINLENGTH);
-		PASSWORD_MAXLENGTH = confAdapter.getInt("additional.join-password.maximum-length", PASSWORD_MAXLENGTH);
-		
-		LIST_ENABLE = confAdapter.getBoolean("additional.list.enable", LIST_ENABLE);
-		LIST_ORDEREDBY = confAdapter.getString("additional.list.ordered-by", LIST_ORDEREDBY);
-		LIST_FILTERMIN = confAdapter.getInt("additional.list.filter-min", LIST_FILTERMIN);
-		LIST_PERPAGE = confAdapter.getInt("additional.list.parties-per-page", LIST_PERPAGE);
-		LIST_LIMITPARTIES = confAdapter.getInt("additional.list.limit-parties", LIST_LIMITPARTIES);
-		LIST_HIDDENPARTIES = confAdapter.getStringList("additional.list.hidden-parties", LIST_HIDDENPARTIES);
-		
-		MOTD_ENABLE = confAdapter.getBoolean("additional.motd.enable", MOTD_ENABLE);
-		MOTD_MINLENGTH = confAdapter.getInt("additional.motd.minimum-length", MOTD_MINLENGTH);
-		MOTD_MAXLENGTH = confAdapter.getInt("additional.motd.maximum-length", MOTD_MAXLENGTH);
-		MOTD_DELAY = confAdapter.getInt("additional.motd.delay", MOTD_DELAY);
-		MOTD_ALLOWEDCHARS = confAdapter.getString("additional.motd.allowed-characters", MOTD_ALLOWEDCHARS);
-		MOTD_NEWLINECODE = confAdapter.getString("additional.motd.new-line-code", MOTD_NEWLINECODE);
-		MOTD_CENSORREGEX = confAdapter.getString("additional.motd.censor-regex", MOTD_CENSORREGEX);
-		
-		TELEPORT_ENABLE = confAdapter.getBoolean("additional.teleport.enable", TELEPORT_ENABLE);
-		TELEPORT_COOLDOWN = confAdapter.getInt("additional.teleport.cooldown", TELEPORT_COOLDOWN);
+		handleRanks();
+		handleColors();
 	}
 	
-	private void handleRanks(ConfigurationAdapter confAdapter) {
-		Set<RankImpl> ranks = new HashSet<>();
-		RankImpl rank;
-		
-		ConfigurationSectionAdapter csBlocks = confAdapter.getConfigurationSection("ranks");
+	private void handleRanks() {
+		Set<PartyRankImpl> ranks = new HashSet<>();
+		PartyRankImpl rank;
+		ConfigurationSection csBlocks = configuration.getConfigurationSection("ranks");
 		if (csBlocks != null) {
-			RankImpl def = null;
-			RankImpl lower = null;
-			RankImpl higher = null;
-			for (String key : csBlocks.getKeys()) {
-				rank = new RankImpl(key);
+			PartyRankImpl def = null;
+			PartyRankImpl lower = null;
+			PartyRankImpl higher = null;
+			for (String key : csBlocks.getKeys(false)) {
+				rank = new PartyRankImpl(key);
 				rank.setName(csBlocks.getString(key + ".name", key));
 				rank.setChat(csBlocks.getString(key + ".chat", rank.getName()));
-				rank.setLevel(csBlocks.getInt(key + ".rank", 1));
-				rank.setPermissions(csBlocks.getStringList(key + ".permissions", new ArrayList<>()));
+				rank.setLevel(csBlocks.getInt(key + ".level", 1));
+				if (csBlocks.get("inheritence") != null) {
+					Optional<PartyRankImpl> opt = ranks.stream().filter(r -> r.getConfigName().equals(csBlocks.getString("inheritence"))).findAny();
+					if (opt.isPresent())
+						rank.setPermissions(new ArrayList<>(opt.get().getPermissions()));
+				}
+				rank.getPermissions().addAll(csBlocks.getStringList(key + ".permissions"));
 				rank.setDefault(csBlocks.getBoolean(key + ".default", false));
 				ranks.add(rank);
 				
@@ -330,14 +309,14 @@ public abstract class ConfigParties extends ConfigurationFile {
 		}
 	}
 	
-	private void handleColors(ConfigurationAdapter confAdapter) {
-		Set<ColorImpl> colors = new HashSet<>();
-		ColorImpl color;
+	private void handleColors() {
+		Set<PartyColorImpl> colors = new HashSet<>();
+		PartyColorImpl color;
 		
-		ConfigurationSectionAdapter csBlocks = confAdapter.getConfigurationSection("additional.color.list-colors");
+		ConfigurationSection csBlocks = configuration.getConfigurationSection("additional.color.list-colors");
 		if (csBlocks != null) {
-			for (String key : csBlocks.getKeys()) {
-				color = new ColorImpl(key);
+			for (String key : csBlocks.getKeys(false)) {
+				color = new PartyColorImpl(key);
 				color.setCommand(csBlocks.getString(key + ".command", ""));
 				color.setCode(csBlocks.getString(key + ".code", ""));
 				color.setDynamicPriority(csBlocks.getInt(key + ".dynamic.priority", -1));
@@ -345,7 +324,7 @@ public abstract class ConfigParties extends ConfigurationFile {
 				color.setDynamicKills(csBlocks.getInt(key + ".dynamic.kills", -1));
 				colors.add(color);
 			}
-			ConfigParties.COLOR_LIST = colors;
+			ConfigParties.ADDITIONAL_COLOR_LIST = colors;
 		} else {
 			// Give error: no ranks node found
 			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_COLOR_NOTFOUND);

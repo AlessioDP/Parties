@@ -4,6 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
@@ -12,15 +13,22 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class BukkitCommandConfirm extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public BukkitCommandConfirm(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				BukkitCommands.CONFIRM,
+				null,
+				BukkitConfigMain.COMMANDS_CMD_CONFIRM,
+				false
+		);
+		
+		syntax = baseSyntax();
 	}
 	
 	@Override

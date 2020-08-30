@@ -1,7 +1,9 @@
 package com.alessiodp.parties.api.interfaces;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Set;
 import java.util.UUID;
 
 public interface PartyPlayer {
@@ -21,18 +23,43 @@ public interface PartyPlayer {
 	@NonNull String getName();
 	
 	/**
+	 * Is the player inside a party?
+	 *
+	 * @return Returns true if the player is inside a party
+	 */
+	default boolean isInParty() {
+		return getPartyId() != null;
+	}
+	
+	/**
+	 * Get the party id
+	 *
+	 * @return Returns the {@code UUID} of the party, null if the player is not in a party
+	 */
+	@Nullable UUID getPartyId();
+	
+	/**
 	 * Get the party name
 	 *
-	 * @return Returns the party name, empty if the player is not in a party
+	 * @return Returns the party name, null if the player is not in a party
 	 */
-	@NonNull String getPartyName();
+	@Nullable String getPartyName();
+	
+	/**
+	 * Set the party id
+	 *
+	 * @param partyId The party id to set
+	 */
+	void setPartyId(@Nullable UUID partyId);
 	
 	/**
 	 * Set the party name
 	 *
 	 * @param partyName The party name to set
+	 * @deprecated use setPartyId instead
 	 */
-	void setPartyName(@NonNull String partyName);
+	@Deprecated
+	default void setPartyName(String partyName) {}
 	
 	/**
 	 * Get the rank level
@@ -47,6 +74,20 @@ public interface PartyPlayer {
 	 * @param rank The rank level to set
 	 */
 	void setRank(int rank);
+	
+	/**
+	 * Get a list of pending invite requests
+	 *
+	 * @return A set of {@link PartyInvite}
+	 */
+	Set<PartyInvite> getPendingInvites();
+	
+	/**
+	 * Get a list of pending ask requests
+	 *
+	 * @return A set of {@link PartyAskRequest}
+	 */
+	Set<PartyAskRequest> getPendingAskRequests();
 	
 	/**
 	 * Is the player a spy?
@@ -108,4 +149,23 @@ public interface PartyPlayer {
 	default void setNameTimestamp(long nameTimestamp) {
 		// Nothing to do
 	}
+	
+	/**
+	 * Ask to the party if the player can join
+	 *
+	 * @param party The {@link Party} to ask
+	 * @return Returns the {@link PartyAskRequest} instance
+	 */
+	default PartyAskRequest askToJoin(@NonNull Party party) {
+		return askToJoin(party, true);
+	}
+	
+	/**
+	 * Ask to the party if the player can join
+	 *
+	 * @param party The {@link PartyPlayer} to ask
+	 * @param sendMessages True if the event should send messages to players
+	 * @return Returns the {@link PartyAskRequest} instance
+	 */
+	PartyAskRequest askToJoin(@NonNull Party party, boolean sendMessages);
 }

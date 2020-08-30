@@ -39,7 +39,7 @@ public class VaultHandler {
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 		if (rsp != null) {
 			economy = rsp.getProvider();
-			ret = economy != null;
+			ret = true;
 		}
 		return ret;
 	}

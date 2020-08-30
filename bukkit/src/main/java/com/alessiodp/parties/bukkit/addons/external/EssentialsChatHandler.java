@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
@@ -39,7 +40,7 @@ public class EssentialsChatHandler implements Listener {
 			// Bypass useless checks if this isn't an Parties placeholder
 			boolean somethingChanged = false;
 			PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
-			PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
+			PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
 			
 			Matcher mat = PATTERN.matcher(old);
 			while (mat.find()) {
@@ -51,7 +52,7 @@ public class EssentialsChatHandler implements Listener {
 					if (placeholder != null) {
 						String parsed = placeholder.formatPlaceholder(partyPlayer, party, identifier);
 						if (parsed != null) {
-							old = old.replace(base, plugin.getColorUtils().convertColors(parsed));
+							old = old.replace(base, Color.translateAlternateColorCodes(parsed));
 							somethingChanged = true;
 						}
 					}

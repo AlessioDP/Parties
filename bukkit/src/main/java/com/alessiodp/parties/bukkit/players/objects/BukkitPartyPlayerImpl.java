@@ -7,15 +7,16 @@ import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
+import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.players.objects.PartyRankImpl;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.api.interfaces.Rank;
 import org.bukkit.Bukkit;
 
 
@@ -25,8 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
-	@Getter @Setter private CancellableTask homeDelayTask;
-	@Getter @Setter private CancellableTask portalTimeoutTask;
+	@Getter @Setter private CancellableTask homeTeleporting;
+	@Getter @Setter private boolean portalPause = false;
 	
 	@Getter @Setter private LastConfirmedCommand lastConfirmedCommand;
 	
@@ -43,9 +44,9 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	@Override
 	public void removeFromParty(boolean saveDB) {
 		lock.lock();
-		if (getHomeDelayTask() != null) {
-			getHomeDelayTask().cancel();
-			setHomeDelayTask(null);
+		if (homeTeleporting != null) {
+			homeTeleporting.cancel();
+			homeTeleporting = null;
 		}
 		lock.unlock();
 		super.removeFromParty(saveDB);
@@ -55,26 +56,26 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	@Override
 	public List<ADPCommand> getAllowedCommands() {
 		List<ADPCommand> ret = super.getAllowedCommands();
-		Rank rank = plugin.getRankManager().searchRankByLevel(getRank());
+		PartyRankImpl rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		
-		if (!getPartyName().isEmpty()) {
+		if (isInParty()) {
 			// Other commands
-			if (BukkitConfigParties.HOME_ENABLE) {
-				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS.toString())
-						|| (player.hasPermission(PartiesPermission.HOME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_HOME.toString())))
+			if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {
+				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
+						|| (player.hasPermission(PartiesPermission.USER_HOME) && rank.havePermission(PartiesPermission.PRIVATE_HOME)))
 					ret.add(BukkitCommands.HOME);
-				if (player.hasPermission(PartiesPermission.SETHOME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_HOME.toString()))
+				if (player.hasPermission(PartiesPermission.USER_SETHOME) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_HOME))
 					ret.add(BukkitCommands.SETHOME);
 			}
-			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE && player.hasPermission(PartiesPermission.CLAIM.toString()) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM.toString()))
+			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM))
 				ret.add(BukkitCommands.CLAIM);
 			
 			// Admin commands
-			if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
-					&& BukkitConfigParties.FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
-					&& player.hasPermission(PartiesPermission.PROTECTION.toString())
-					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_PROTECTION.toString()))
+			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
+					&& BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
+					&& player.hasPermission(PartiesPermission.USER_PROTECTION)
+					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_PROTECTION))
 				ret.add(BukkitCommands.PROTECTION);
 			
 		}
@@ -101,5 +102,10 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean isChatMuted() {
+		return EssentialsHandler.isPlayerMuted(getPlayerUUID());
 	}
 }

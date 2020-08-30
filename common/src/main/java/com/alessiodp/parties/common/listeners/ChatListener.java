@@ -9,12 +9,11 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.CensorUtils;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.tasks.ChatTask;
 import lombok.RequiredArgsConstructor;
 
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,13 +32,15 @@ public abstract class ChatListener {
 		String parsedMessage = message;
 		
 		boolean partyChat = false;
-		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : plugin.getPartyManager().getParty(partyPlayer.getPartyName());
+		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party != null) {
 			if (partyPlayer.isChatParty()) {
 				partyChat = true;
 			} else if (ConfigParties.GENERAL_CHAT_DIRECT_ENABLED && parsedMessage.startsWith(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX)) {
 				partyChat = true;
-				parsedMessage = parsedMessage.substring(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX.length());
+				parsedMessage = parsedMessage
+						.substring(ConfigParties.GENERAL_CHAT_DIRECT_PREFIX.length()) // Remove direct prefix
+						.replaceAll("^\\s+|\\s+$", ""); // Trim the string
 			}
 		}
 		
@@ -51,28 +52,25 @@ public abstract class ChatListener {
 					// Chat allowed
 					boolean mustWait = false;
 					
-					if (plugin.getCensorUtils().checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, finalMessage, PartiesConstants.DEBUG_CMD_P_REGEXERROR)) {
+					if (ConfigParties.GENERAL_CHAT_PREVENT_MUTED_PLAYERS && partyPlayer.isChatMuted()) {
+						partyPlayer.sendMessage(Messages.MAINCMD_P_MUTED);
+						return;
+					}
+					
+					if (CensorUtils.checkCensor(ConfigParties.GENERAL_CHAT_CENSORREGEX, finalMessage, PartiesConstants.DEBUG_CMD_P_REGEXERROR)) {
 						partyPlayer.sendMessage(Messages.MAINCMD_P_CENSORED);
 						return;
 					}
 					
-					if (ConfigParties.GENERAL_CHAT_CHATCD > 0
-							&& !plugin.getRankManager().checkPlayerRank(partyPlayer, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
-						Long unixTimestamp = plugin.getCooldownManager().getChatCooldown().get(partyPlayer.getPlayerUUID());
-						long unixNow = System.currentTimeMillis() / 1000L;
-						// Check cooldown
-						if (unixTimestamp != null && (unixNow - unixTimestamp) < ConfigParties.GENERAL_CHAT_CHATCD) {
+					boolean mustStartCooldown = false;
+					if (ConfigParties.GENERAL_CHAT_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
+						mustStartCooldown = true;
+						long remainingCooldown = plugin.getCooldownManager().canChat(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+						
+						if (remainingCooldown > 0) {
 							partyPlayer.sendMessage(Messages.MAINCMD_P_COOLDOWN
-									.replace("%seconds%", String.valueOf(ConfigParties.GENERAL_CHAT_CHATCD - (unixNow - unixTimestamp))));
+									.replace("%seconds%", String.valueOf(remainingCooldown)));
 							mustWait = true;
-						} else {
-							plugin.getCooldownManager().getChatCooldown().put(partyPlayer.getPlayerUUID(), unixNow);
-							
-							plugin.getScheduler().scheduleAsyncLater(new ChatTask(plugin, partyPlayer.getPlayerUUID()), ConfigParties.GENERAL_CHAT_CHATCD, TimeUnit.SECONDS);
-							
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_P_TASK
-									.replace("{value}", Integer.toString(ConfigParties.GENERAL_CHAT_CHATCD * 20))
-									.replace("{player}", partyPlayer.getName()), true);
 						}
 					}
 					
@@ -85,11 +83,13 @@ public abstract class ChatListener {
 						if (!partiesChatEvent.isCancelled()) {
 							partyPlayer.performPartyMessage(newMessage);
 							
-							if (ConfigParties.GENERAL_CHAT_LOG)
-								plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_P
-										.replace("{party}", party.getName())
-										.replace("{player}", partyPlayer.getName())
-										.replace("{message}", newMessage), true);
+							if (mustStartCooldown)
+								plugin.getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+							
+							if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT) {
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
+										partyPlayer.getName(), party.getName(), newMessage), true);
+							}
 						} else
 							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_CHATEVENT_DENY
 									.replace("{player}", partyPlayer.getName())
@@ -134,9 +134,8 @@ public abstract class ChatListener {
 					
 					if (!cancel) {
 						PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
-						if (!pp.getPartyName().isEmpty()
-								&& plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
-							PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
+						PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyId());
+						if (party != null && plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
 							
 							for (PartyPlayer pl : party.getOnlineMembers(true)) {
 								if (!pl.getPlayerUUID().equals(sender.getUUID())) {

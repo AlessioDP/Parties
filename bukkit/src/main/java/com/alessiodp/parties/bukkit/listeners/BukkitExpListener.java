@@ -25,19 +25,19 @@ public class BukkitExpListener implements Listener {
 			
 			if (event.getEntity().getKiller() != null) {
 				PartyPlayerImpl killer = plugin.getPlayerManager().getPlayer(event.getEntity().getKiller().getUniqueId());
-				if (!killer.getPartyName().isEmpty()) {
+				if (killer.isInParty()) {
 					if (checkForMythicMobsHandler(event)) {
 						return;
 					}
-					double vanillaExp = 0;
-					double skillapiExp = 0;
+					int vanillaExp = 0;
+					int skillapiExp = 0;
 					
 					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
 						vanillaExp = event.getDroppedExp();
 					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)
-						skillapiExp = SkillAPIHandler.getExp(killedEntity);
+						skillapiExp = (int) SkillAPIHandler.getExp(killedEntity);
 					
-					ExpDrop drop = new ExpDrop((int) vanillaExp, (int) skillapiExp, killer, killedEntity);
+					ExpDrop drop = new ExpDrop(killer, killedEntity, vanillaExp, skillapiExp);
 					boolean result = plugin.getExpManager().distributeExp(drop);
 					if (result && BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
 						// Remove exp from vanilla event if hooked

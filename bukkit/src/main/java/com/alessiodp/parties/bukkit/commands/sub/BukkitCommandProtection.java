@@ -4,6 +4,8 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
+import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
@@ -11,17 +13,32 @@ import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.EconomyManager;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
 import java.util.List;
 
 public class BukkitCommandProtection extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public BukkitCommandProtection(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				BukkitCommands.PROTECTION,
+				PartiesPermission.USER_PROTECTION,
+				BukkitConfigMain.COMMANDS_CMD_PROTECTION,
+				false
+		);
+		
+		syntax = String.format("%s [%s/%s]",
+				baseSyntax(),
+				BukkitConfigMain.COMMANDS_SUB_ON,
+				BukkitConfigMain.COMMANDS_SUB_OFF
+		);
+		
+		description = BukkitMessages.HELP_ADDITIONAL_DESCRIPTIONS_PROTECTION;
+		help = BukkitMessages.HELP_ADDITIONAL_COMMANDS_PROTECTION;
 	}
 	
 	@Override
@@ -30,12 +47,12 @@ public class BukkitCommandProtection extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.PROTECTION.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.PROTECTION);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
-		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName());
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 			return false;
@@ -58,23 +75,22 @@ public class BukkitCommandProtection extends PartiesSubCommand {
 		// Command handling
 		Boolean protection = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(partyPlayer.isChatParty(), commandData.getArgs());
 		if (protection == null) {
-			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_PROTECTION_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return;
 		}
+		
+		if (protection && ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.PROTECTION, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+			return;
 		
 		// Command starts
 		party.setProtection(protection);
 		party.updateParty();
 		
-		if (protection)
-			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_PROTECTION_ON);
-		else
-			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_PROTECTION_OFF);
+		sendMessage(sender, partyPlayer, protection ? BukkitMessages.ADDCMD_PROTECTION_ON : BukkitMessages.ADDCMD_PROTECTION_OFF);
 		
-		plugin.getLoggerManager().logDebug((protection ? PartiesConstants.DEBUG_CMD_PROTECTION_ON : PartiesConstants.DEBUG_CMD_PROTECTION_OFF)
-						.replace("{player}", sender.getName())
-						.replace("{party}", party.getName()),
-				true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PROTECTION,
+				partyPlayer.getName(), party.getName(), protection), true);
 	}
 	
 	@Override

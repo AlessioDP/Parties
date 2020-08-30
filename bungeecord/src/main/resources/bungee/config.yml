@@ -198,8 +198,8 @@ commands:
     teleport: "teleport"
     version: "version"
   sub-commands:
-    on: "on"
-    off: "off"
+    word-on: "on"
+    word-off: "off"
     silent: "silent"
     # Sub-command of "/party create <partyname> fixed" (if enabled)
     fixed: "fixed"

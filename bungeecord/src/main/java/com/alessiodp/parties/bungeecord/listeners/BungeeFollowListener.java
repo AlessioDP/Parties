@@ -35,10 +35,10 @@ public class BungeeFollowListener implements Listener {
 		plugin.getScheduler().runAsync(() -> {
 			if (allowedServer(event.getPlayer().getServer().getInfo().getName())) {
 				PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
-				PartyImpl party = plugin.getPartyManager().getParty(player.getPartyName());
+				PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
 				if (party != null
 						&& party.isFollowEnabled()
-						&& party.getLeader().equals(player.getPlayerUUID())) {
+						&& (party.getLeader() != null && party.getLeader().equals(player.getPlayerUUID()))) {
 					String playerServer = event.getPlayer().getServer().getInfo().getName();
 					ServerInfo serverInfo = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getServerInfo(playerServer);
 					

@@ -1,9 +1,11 @@
 package com.alessiodp.parties.bukkit.tasks;
 
+import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
+import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -26,7 +28,7 @@ public class HomeTask implements Runnable {
 		this.plugin = plugin;
 		this.partyPlayer = partyPlayer;
 		this.player = player;
-		distanceLimitSquared = BukkitConfigParties.HOME_DISTANCE * BukkitConfigParties.HOME_DISTANCE;
+		distanceLimitSquared = BukkitConfigParties.ADDITIONAL_HOME_CANCEL_DISTANCE * BukkitConfigParties.ADDITIONAL_HOME_CANCEL_DISTANCE;
 		
 		startTime = System.currentTimeMillis();
 		startLocation = player.getLocation();
@@ -37,15 +39,15 @@ public class HomeTask implements Runnable {
 
 	@Override
 	public void run() {
-		if (partyPlayer.getHomeDelayTask() != null) {
+		if (partyPlayer.getHomeTeleporting() != null) {
 			if (player.isOnline()) {
 				User user = plugin.getPlayer(player.getUniqueId());
 				
-				if (BukkitConfigParties.HOME_MOVING && player.getLocation().distanceSquared(startLocation) > distanceLimitSquared) {
+				if (BukkitConfigParties.ADDITIONAL_HOME_CANCEL_MOVING && player.getLocation().distanceSquared(startLocation) > distanceLimitSquared) {
 					// Cancel teleport
 					cancel();
 					
-					user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer), true);
+					user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null), true);
 					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_HOME_DENIED_MOVING
 							.replace("{player}", partyPlayer.getName()), true);
 					return;
@@ -53,17 +55,18 @@ public class HomeTask implements Runnable {
 				// Check if delay is timed out
 				long timestamp = System.currentTimeMillis();
 				if (timestamp - startTime > delayTime) {
-					// Teleport player via sync Bukkit API
-					plugin.getScheduler().getSyncExecutor().execute(() -> {
-						EssentialsHandler.updateLastTeleportLocation(player);
-						player.teleport(homeLocation);
-						user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTED, partyPlayer), true);
-						
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_DONE
-								.replace("{player}", player.getName()), true);
-						
-						cancel();
+					((BukkitUser) user).teleportAsync(homeLocation).thenAccept(result -> {
+						if (result) {
+							EssentialsHandler.updateLastTeleportLocation(user.getUUID());
+							user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTED, partyPlayer, null), true);
+							
+							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_DONE
+									.replace("{player}", player.getName()), true);
+						} else {
+							plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
+						}
 					});
+					cancel();
 				}
 			} else {
 				cancel(); // Player offline
@@ -72,9 +75,11 @@ public class HomeTask implements Runnable {
 	}
 	
 	private void cancel() {
-		if (partyPlayer.getHomeDelayTask() != null) {
-			partyPlayer.getHomeDelayTask().cancel();
-			partyPlayer.setHomeDelayTask(null);
+		if (partyPlayer.getHomeTeleporting() != null) {
+			partyPlayer.getHomeTeleporting().cancel();
+			partyPlayer.setHomeTeleporting(null);
+			if (BukkitConfigParties.ADDITIONAL_HOME_CANCEL_RESET_COOLDOWN)
+				((BukkitCooldownManager) plugin.getCooldownManager()).resetHomeCooldown(player.getUniqueId());
 		}
 	}
 }

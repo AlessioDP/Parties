@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.events;
 
 import com.alessiodp.core.common.events.EventDispatcher;
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
@@ -19,8 +20,6 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 public abstract class EventManager {
 	@NonNull protected final PartiesPlugin plugin;
@@ -31,7 +30,7 @@ public abstract class EventManager {
 		eventDispatcher.callEvent(event);
 	}
 	
-	public abstract IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String party, boolean fixed);
+	public abstract IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed);
 	public abstract IPartyPostCreateEvent preparePartyPostCreateEvent(PartyPlayer player, Party party);
 	
 	public abstract IPartyPreDeleteEvent preparePartyPreDeleteEvent(Party party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender);
@@ -41,8 +40,8 @@ public abstract class EventManager {
 	
 	public abstract IChatEvent prepareChatEvent(PartyPlayer player, Party party, String message);
 	
-	public abstract IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy);
-	public abstract IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy);
+	public abstract IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause);
+	public abstract IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause);
 	
 	public abstract IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);
 	public abstract IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);

@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.GriefPreventionHandler;
+import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -13,21 +14,33 @@ import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class BukkitCommandClaim extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public BukkitCommandClaim(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				BukkitCommands.CLAIM,
+				PartiesPermission.USER_CLAIM,
+				BukkitConfigMain.COMMANDS_CMD_CLAIM,
+				false
+		);
+		
+		syntax = String.format("%s <%s>",
+				baseSyntax(),
+				BukkitMessages.PARTIES_SYNTAX_PERMISSION
+		);
+		
+		description = BukkitMessages.HELP_ADDITIONAL_DESCRIPTIONS_CLAIM;
+		help = BukkitMessages.HELP_ADDITIONAL_COMMANDS_CLAIM;
 	}
 	
 	@Override
@@ -36,12 +49,12 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.CLAIM.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.CLAIM);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
-		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName());
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 			return false;
@@ -51,7 +64,8 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			return false;
 		
 		if (commandData.getArgs().length != 2) {
-			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_CLAIM_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return false;
 		}
 		
@@ -107,15 +121,15 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			break;
 		case FAILED_GENERAL:
 			// Return: Wrong command
-			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_CLAIM_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			break;
 		default:
 			GriefPreventionHandler.addPartyPermission(Bukkit.getPlayer(commandData.getSender().getUUID()), party, selection.getGPPermission());
 			sendMessage(sender, partyPlayer, selection.getGPPermission().isRemove() ? BukkitMessages.ADDCMD_CLAIM_REMOVED : BukkitMessages.ADDCMD_CLAIM_CLAIMED);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_CLAIM
-					.replace("{player}", sender.getName())
-					.replace("{value}", commandData.getArgs()[1].toLowerCase(Locale.ENGLISH)), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CLAIM,
+					partyPlayer.getName(), selection.name()), true);
 			break;
 		}
 	}

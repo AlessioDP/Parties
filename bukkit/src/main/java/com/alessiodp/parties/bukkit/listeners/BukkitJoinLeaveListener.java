@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bukkit.listeners;
 
 import com.alessiodp.core.bukkit.user.BukkitUser;
+import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.listeners.JoinLeaveListener;
@@ -27,10 +28,11 @@ public class BukkitJoinLeaveListener extends JoinLeaveListener implements Listen
 		super.onPlayerQuit(user);
 		
 		// Remove home count if active on the player
-		BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(user.getUUID());
-		if (pp.getHomeDelayTask() != null){
-			pp.getHomeDelayTask().cancel();
-			pp.setHomeDelayTask(null);
+		if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {
+			BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(user.getUUID());
+			if (pp.getHomeTeleporting() != null) {
+				pp.getHomeTeleporting().cancel();
+			}
 		}
 	}
 }

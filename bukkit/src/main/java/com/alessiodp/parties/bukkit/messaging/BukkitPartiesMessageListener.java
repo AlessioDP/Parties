@@ -35,52 +35,51 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					}
 					break;
 				case PARTY_UPDATED:
-					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyName())) {
+					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PARTY_UPDATED
-								.replace("{party}", packet.getPartyName()), true);
+								.replace("{party}", packet.getPartyId().toString()), true);
 					}
 					break;
 				case PARTY_RENAMED:
-					// Payload is the old party name
-					party = ((PartiesPlugin) plugin).getPartyManager().getListParties().get(packet.getPayload());
+					party = ((PartiesPlugin) plugin).getPartyManager().getCacheParties().get(packet.getPartyId());
 					if (party != null) {
-						// Packet getPartyName is the new name
-						party.rename(packet.getPartyName());
+						// Packet payload is the new name
+						party.rename(packet.getPayload());
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PARTY_RENAMED
-								.replace("{party}", packet.getPartyName()), true);
+								.replace("{party}", packet.getPartyId().toString()), true);
 					}
 					break;
 				case PARTY_REMOVED:
-					party = ((PartiesPlugin) plugin).getPartyManager().getListParties().get(packet.getPartyName());
+					party = ((PartiesPlugin) plugin).getPartyManager().getCacheParties().get(packet.getPartyId());
 					if (party != null) {
-						((PartiesPlugin) plugin).getPartyManager().getListParties().remove(packet.getPartyName());
+						((PartiesPlugin) plugin).getPartyManager().removePartyFromCache(packet.getPartyId());
 						for (UUID uuid : party.getMembers()) {
-							PartyPlayerImpl pl = ((PartiesPlugin) plugin).getPlayerManager().getListPartyPlayers().get(uuid);
+							PartyPlayerImpl pl = ((PartiesPlugin) plugin).getPlayerManager().getCachePlayers().get(uuid);
 							if (pl != null) {
 								pl.removeFromParty(false);
 							}
 						}
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PARTY_REMOVED
-								.replace("{party}", packet.getPartyName()), true);
+								.replace("{party}", packet.getPartyId().toString()), true);
 					}
 					break;
 				case CHAT_MESSAGE:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyName());
+					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					sender = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
 					if (party != null
 							&& party.getOnlineMembers(true).size() > 0
 							&& sender != null) {
 						party.dispatchChatMessage(sender, packet.getPayload(), false);
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE
-								.replace("{party}", packet.getPartyName()), true);
+								.replace("{party}", packet.getPartyId().toString()), true);
 					}
 					break;
 				case BROADCAST_MESSAGE:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyName());
+					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					if (party != null && party.getOnlineMembers(true).size() > 0) {
 						party.broadcastDirectMessage(packet.getPayload(), false);
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_BROADCAST_MESSAGE
-								.replace("{party}", packet.getPartyName()), true);
+								.replace("{party}", packet.getPartyId().toString()), true);
 					}
 					break;
 				default:

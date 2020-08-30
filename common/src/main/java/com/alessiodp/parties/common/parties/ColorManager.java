@@ -1,29 +1,29 @@
 package com.alessiodp.parties.common.parties;
 
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
-import com.alessiodp.parties.common.parties.objects.ColorImpl;
+import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.api.interfaces.Color;
+import com.alessiodp.parties.api.interfaces.PartyColor;
 import lombok.Getter;
 
 import java.util.Set;
 
 public class ColorManager {
 	
-	@Getter private Set<ColorImpl> colorList;
+	@Getter private Set<PartyColorImpl> colorList;
 	
 	public ColorManager() {
 		reload();
 	}
 
 	public void reload() {
-		colorList = ConfigParties.COLOR_LIST;
+		colorList = ConfigParties.ADDITIONAL_COLOR_LIST;
 	}
 	
-	public Color searchColorByName(String name) {
-		Color ret = null;
+	public PartyColor searchColorByName(String name) {
+		PartyColor ret = null;
 		if (name != null && !name.isEmpty()) {
-			for (Color pc : colorList) {
+			for (PartyColor pc : colorList) {
 				if (pc.getName().equalsIgnoreCase(name)) {
 					ret = pc;
 					break;
@@ -33,9 +33,9 @@ public class ColorManager {
 		return ret;
 	}
 	
-	public Color searchColorByCommand(String cmd) {
-		Color ret = null;
-		for (Color pc : colorList) {
+	public PartyColor searchColorByCommand(String cmd) {
+		PartyColor ret = null;
+		for (PartyColor pc : colorList) {
 			if (pc.getCommand().equalsIgnoreCase(cmd)) {
 				ret = pc;
 				break;
@@ -45,9 +45,9 @@ public class ColorManager {
 	}
 	
 	public void loadDynamicColor(PartyImpl party) {
-		if (ConfigParties.COLOR_ENABLE && ConfigParties.COLOR_DYNAMIC && party.getColor() == null) {
-			Color selected = null;
-			for (Color pc : colorList) {
+		if (ConfigParties.ADDITIONAL_COLOR_ENABLE && ConfigParties.ADDITIONAL_COLOR_DYNAMIC && party.getColor() == null) {
+			PartyColor selected = null;
+			for (PartyColor pc : colorList) {
 				boolean found = false;
 				if (pc.getDynamicMembers() > -1) {
 					if (party.getMembers().size() >= pc.getDynamicMembers())

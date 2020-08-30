@@ -8,19 +8,16 @@ import com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandTeleport;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.tasks.TeleportTask;
-import com.alessiodp.parties.common.utils.EconomyManager;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class BungeeCommandTeleport extends CommandTeleport {
 	
@@ -36,30 +33,19 @@ public class BungeeCommandTeleport extends CommandTeleport {
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
 		// Command handling
-		long unixNow = -1;
-		if (ConfigParties.TELEPORT_COOLDOWN > 0 && !((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
-			Long unixTimestamp = ((PartiesPlugin) plugin).getCooldownManager().getTeleportCooldown().get(partyPlayer.getPlayerUUID());
-			unixNow = System.currentTimeMillis() / 1000L;
-			if (unixTimestamp != null) {
+		if (ConfigParties.GENERAL_NAME_RENAME_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS)) {
+			long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canTeleport(partyPlayer.getPlayerUUID(), ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN);
+			
+			if (remainingCooldown > 0) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_TELEPORT_COOLDOWN
-						.replace("%seconds%", String.valueOf(ConfigParties.TELEPORT_COOLDOWN - (unixNow - unixTimestamp))));
+						.replace("%seconds%", String.valueOf(remainingCooldown)));
 				return;
 			}
+			
+			((PartiesPlugin) plugin).getCooldownManager().startTeleportCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
 		}
-		
-		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.TELEPORT, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
-			return;
 		
 		// Command starts
-		if (unixNow != -1) {
-			((PartiesPlugin) plugin).getCooldownManager().getTeleportCooldown().put(partyPlayer.getPlayerUUID(), unixNow);
-			plugin.getScheduler().scheduleAsyncLater(new TeleportTask(((PartiesPlugin) plugin), partyPlayer.getPlayerUUID()), ConfigParties.TELEPORT_COOLDOWN, TimeUnit.SECONDS);
-			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_START
-					.replace("{value}", Integer.toString(ConfigParties.TELEPORT_COOLDOWN * 20))
-					.replace("{player}", sender.getName()), true);
-		}
-		
 		ProxiedPlayer bungeePlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(partyPlayer.getPlayerUUID());
 		ServerInfo server = bungeePlayer.getServer().getInfo();
 		
@@ -74,7 +60,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 			}
 		}
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_TELEPORT
-				.replace("{player}", sender.getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_TELEPORT,
+				partyPlayer.getName(), party.getName()), true);
 	}
 }

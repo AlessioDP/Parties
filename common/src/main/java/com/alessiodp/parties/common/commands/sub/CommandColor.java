@@ -5,28 +5,42 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.parties.objects.ColorImpl;
+import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import com.alessiodp.parties.api.interfaces.Color;
-import lombok.Getter;
+import com.alessiodp.parties.api.interfaces.PartyColor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandColor extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandColor(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.COLOR,
+				PartiesPermission.USER_COLOR,
+				ConfigMain.COMMANDS_CMD_COLOR,
+				false
+		);
+		
+		syntax = String.format("%s <%s>",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_COLOR
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_COLOR;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_COLOR;
 	}
 	
 	@Override
@@ -35,8 +49,8 @@ public class CommandColor extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.COLOR.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.COLOR);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -50,7 +64,8 @@ public class CommandColor extends PartiesSubCommand {
 			return false;
 		
 		if (commandData.getArgs().length > 2) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_COLOR_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return false;
 		}
 		
@@ -75,7 +90,7 @@ public class CommandColor extends PartiesSubCommand {
 		}
 		
 		boolean isRemove = false;
-		Color color = null;
+		PartyColor color = null;
 		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
 			// Remove command
 			isRemove = true;
@@ -98,29 +113,28 @@ public class CommandColor extends PartiesSubCommand {
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_COLOR_REMOVED);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_COLOR_REM
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_COLOR_REM,
+					partyPlayer.getName(), party.getName()), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_COLOR_CHANGED, party);
 			party.broadcastMessage(Messages.ADDCMD_COLOR_BROADCAST, partyPlayer);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_COLOR
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName())
-					.replace("{value}", color.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_COLOR,
+					partyPlayer.getName(), party.getName(), color.getName()), true);
 		}
 	}
 	
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
-		if (args.length == 2) {
-			for (ColorImpl color : ConfigParties.COLOR_LIST) {
-				ret.add(color.getCommand());
-			}
-			if (!args[1].isEmpty()) {
-				ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
+		if (sender.hasPermission(permission)) {
+			if (args.length == 2) {
+				for (PartyColorImpl color : ConfigParties.ADDITIONAL_COLOR_LIST) {
+					ret.add(color.getCommand());
+				}
+				if (!args[1].isEmpty()) {
+					ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
+				}
 			}
 		}
 		return ret;

@@ -1,15 +1,17 @@
-name: ${pluginName}
-description: ${pluginDescription}
-author: ${pluginAuthor}
-website: ${pluginWebsite}
-version: ${pluginVersion}
+name: ${plugin.name}
+description: ${plugin.description}
+author: ${plugin.author}
+website: ${plugin.website}
+version: ${plugin.version}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
 depend: [LastLoginAPI]
-softdepend: [CrackShot, Dynmap, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
+softdepend: [BanManager, Dynmap, GriefPrevention, MMOCore, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Skript, Vault]
 permissions:
   parties.user.accept:
     description: Allow access to /party accept
+  parties.user.ask:
+    description: Allow access to /party ask
   parties.user.chat:
     description: Allow access to /party chat
   parties.user.chat.color:
@@ -56,6 +58,8 @@ permissions:
     description: Allow access to /party rename
   parties.user.sendmessage:
     description: Allow access to /p
+  parties.user.tag:
+    description: Allow access to /party tag
   parties.user.claim:
     description: Allow access to /party claim with GriefPrevention
   parties.user.home:
@@ -68,6 +72,20 @@ permissions:
     description: Allow access to /party teleport
   parties.admin.alerts:
     description: Send an alert if there is an error
+  parties.admin.cooldown.ask.bypass:
+    description: Bypass cooldown of ask command
+  parties.admin.cooldown.chat.bypass:
+    description: Bypass cooldown of chat message
+  parties.admin.cooldown.home.bypass:
+    description: Bypass cooldown of home command
+  parties.admin.cooldown.invite.bypass:
+    description: Bypass cooldown of invite command
+  parties.admin.cooldown.rename.bypass:
+    description: Bypass cooldown of rename command
+  parties.admin.cooldown.sethome.bypass:
+    description: Bypass cooldown of sethome command
+  parties.admin.cooldown.teleport.bypass:
+    description: Bypass cooldown of teleport command
   parties.admin.create.fixed:
     description: Allow access to /party create party fixed
   parties.admin.delete:
@@ -90,6 +108,8 @@ permissions:
     description: Allow access to /party rename on other parties
   parties.admin.spy:
     description: Allow access to /party spy
+  parties.admin.tag.others:
+    description: Allow access to /party tag on other parties
   parties.admin.version:
     description: Allow access to /party version
   parties.admin.home.others:
@@ -104,6 +124,7 @@ permissions:
     description: Can use normal party commands
     children:
       parties.user.accept: true
+      parties.user.ask: true
       parties.user.chat: true
       parties.user.color: true
       parties.user.create: true
@@ -126,6 +147,7 @@ permissions:
       parties.user.rank: true
       parties.user.rename: true
       parties.user.sendmessage: true
+      parties.user.tag: true
       parties.user.claim: true
       parties.user.home: true
       parties.user.protection: true
@@ -137,6 +159,13 @@ permissions:
     children:
       parties.user.*: true
       parties.admin.alerts: true
+      parties.admin.cooldown.ask.bypass: true
+      parties.admin.cooldown.chat.bypass: true
+      parties.admin.cooldown.home.bypass: true
+      parties.admin.cooldown.invite.bypass: true
+      parties.admin.cooldown.rename.bypass: true
+      parties.admin.cooldown.sethome.bypass: true
+      parties.admin.cooldown.teleport.bypass: true
       parties.admin.create.fixed: true
       parties.admin.delete: true
       parties.admin.delete.silent: true
@@ -149,6 +178,7 @@ permissions:
       parties.admin.reload: true
       parties.admin.rename.others: true
       parties.admin.spy: true
+      parties.admin.tag.others: true
       parties.admin.version: true
       parties.admin.home.others: true
       parties.admin.protection.bypass: true

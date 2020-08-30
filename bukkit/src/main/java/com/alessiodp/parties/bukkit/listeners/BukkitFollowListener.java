@@ -1,12 +1,10 @@
 package com.alessiodp.parties.bukkit.listeners;
 
-import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
-import com.alessiodp.parties.bukkit.tasks.PortalTask;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,7 @@ public class BukkitFollowListener implements Listener {
 		if (!event.isCancelled()) {
 			BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 			
-			if (pp.getPortalTimeoutTask() != null) {
+			if (pp.isPortalPause()) {
 				event.setCancelled(true);
 			}
 		}
@@ -44,43 +42,44 @@ public class BukkitFollowListener implements Listener {
 				if (BukkitConfigMain.ADDITIONAL_FOLLOW_LISTWORLDS.contains("*")
 						|| BukkitConfigMain.ADDITIONAL_FOLLOW_LISTWORLDS.contains(bukkitPlayer.getWorld().getName())) {
 					BukkitPartyPlayerImpl pp = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(bukkitPlayer.getUniqueId());
-					if (!pp.getPartyName().isEmpty()) {
-						PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyName());
-						if (party != null
-								&& party.isFollowEnabled()
-								&& pp.getRank() >= BukkitConfigMain.ADDITIONAL_FOLLOW_RANKNEEDED) {
-							// Init teleport
-							for (PartyPlayer pl : party.getOnlineMembers(true)) {
-								Player bukkitPl = Bukkit.getPlayer(pl.getPlayerUUID());
-								if (bukkitPl != null
-										&& !pl.getPlayerUUID().equals(bukkitPlayer.getUniqueId())
-										&& bukkitPl.getWorld().equals(event.getFrom())) {
-									BukkitPartyPlayerImpl ppVictim = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(pl.getPlayerUUID());
-									
-									if (ppVictim.getRank() >= BukkitConfigMain.ADDITIONAL_FOLLOW_RANKMINIMUM) {
-										// Make it sync
-										plugin.getScheduler().getSyncExecutor().execute(() -> {
-											CancellableTask task;
-											task = plugin.getScheduler().scheduleAsyncLater(new PortalTask(plugin, pl.getPlayerUUID()), BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT * 50, TimeUnit.MILLISECONDS);
-											ppVictim.setPortalTimeoutTask(task);
-											user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.OTHER_FOLLOW_WORLD
-													.replace("%player%", bukkitPlayer.getName())
-													.replace("%world%", bukkitPlayer.getWorld().getName()), ppVictim), true);
-											
-											
-											switch (BukkitConfigMain.ADDITIONAL_FOLLOW_TYPE) {
-												case 1:
-													bukkitPl.teleport(bukkitPlayer.getWorld().getSpawnLocation());
-													break;
-												case 2:
-													bukkitPl.teleport(bukkitPlayer);
-													break;
-												default:
-													// Nothing to do
-													break;
-											}
-										});
-									}
+					PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyId());
+					if (party != null
+							&& party.isFollowEnabled()
+							&& pp.getRank() >= BukkitConfigMain.ADDITIONAL_FOLLOW_RANKNEEDED) {
+						// Init teleport
+						for (PartyPlayer pl : party.getOnlineMembers(true)) {
+							Player bukkitPl = Bukkit.getPlayer(pl.getPlayerUUID());
+							if (bukkitPl != null
+									&& !pl.getPlayerUUID().equals(bukkitPlayer.getUniqueId())
+									&& bukkitPl.getWorld().equals(event.getFrom())) {
+								BukkitPartyPlayerImpl ppVictim = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(pl.getPlayerUUID());
+								
+								if (ppVictim.getRank() >= BukkitConfigMain.ADDITIONAL_FOLLOW_RANKMINIMUM) {
+									// Make it sync
+									plugin.getScheduler().getSyncExecutor().execute(() -> {
+										ppVictim.setPortalPause(true);
+										
+										plugin.getScheduler().scheduleAsyncLater(() -> {
+											ppVictim.setPortalPause(false);
+										}, BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT * 50, TimeUnit.MILLISECONDS);
+										
+										user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.OTHER_FOLLOW_WORLD
+												.replace("%player%", bukkitPlayer.getName())
+												.replace("%world%", bukkitPlayer.getWorld().getName()), ppVictim, party), true);
+										
+										
+										switch (BukkitConfigMain.ADDITIONAL_FOLLOW_TYPE) {
+											case 1:
+												bukkitPl.teleport(bukkitPlayer.getWorld().getSpawnLocation());
+												break;
+											case 2:
+												bukkitPl.teleport(bukkitPlayer);
+												break;
+											default:
+												// Nothing to do
+												break;
+										}
+									});
 								}
 							}
 						}

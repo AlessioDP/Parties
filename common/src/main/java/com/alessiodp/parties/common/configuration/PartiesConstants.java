@@ -8,7 +8,10 @@ public class PartiesConstants {
 	public static final String PLUGIN_NAME = "Parties";
 	public static final String PLUGIN_FALLBACK = "parties";
 	public static final ConsoleColor PLUGIN_CONSOLECOLOR = ConsoleColor.CYAN;
+	public static final String PLUGIN_PACKAGENAME = "com.alessiodp.parties";
 	public static final String PLUGIN_SPIGOTCODE = "3709";
+	public static final int PLUGIN_BSTATS_BUKKIT_ID = 501;
+	public static final int PLUGIN_BSTATS_BUNGEE_ID = 502;
 	
 	
 	// Versions
@@ -19,58 +22,6 @@ public class PartiesConstants {
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 4;
 	public static final int VERSION_BUNGEE_MESSAGES = 8;
 	public static final int VERSION_DATABASE_YAML = 1;
-	public static final int VERSION_DATABASE_MYSQL = 7;
-	public static final int VERSION_DATABASE_SQLITE = 5;
-	
-	// Fixed parties
-	public static final String FIXED_VALUE_TEXT = "fixed";
-	public static final String FIXED_VALUE_UUID = "00000000-0000-0000-0000-000000000000";
-	
-	// Placeholders
-	public static final String PLACEHOLDER_PLAYER_NAME = "%player%";
-	public static final String PLACEHOLDER_PLAYER_RANK_NAME = "%rank_name%";
-	public static final String PLACEHOLDER_PLAYER_RANK_CHAT = "%rank_chat%";
-	public static final String PLACEHOLDER_PLAYER_USER = "%user%";
-	public static final String PLACEHOLDER_PLAYER_VICTIM = "%victim%";
-	
-	public static final String PLACEHOLDER_PARTY_COLOR_CODE = "%color_code%";
-	public static final String PLACEHOLDER_PARTY_COLOR_COMMAND = "%color_command%";
-	public static final String PLACEHOLDER_PARTY_COLOR_NAME = "%color_name%";
-	public static final String PLACEHOLDER_PARTY_DESC = "%desc%";
-	public static final String PLACEHOLDER_PARTY_EXPERIENCE_TOTAL = "%experience_total%";
-	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVEL = "%experience_level%";
-	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_CURRENT = "%experience_levelup_current%";
-	public static final String PLACEHOLDER_PARTY_EXPERIENCE_LEVELUP_NECESSARY = "%experience_levelup_necessary%";
-	public static final String PLACEHOLDER_PARTY_KILLS = "%kills%";
-	public static final String PLACEHOLDER_PARTY_LEADER_UUID = "%leader_uuid%";
-	public static final String PLACEHOLDER_PARTY_LEADER_NAME = "%leader_name%";
-	public static final String PLACEHOLDER_PARTY_LIST = "%list_([^%_]+)%";
-	public static final String PLACEHOLDER_PARTY_LIST_ONLINE = "%list_([^_]+)_online%";
-	public static final String PLACEHOLDER_PARTY_LIST_NUMBER = "%list_([^_]+)_number%";
-	public static final String PLACEHOLDER_PARTY_MOTD = "%motd%";
-	public static final String PLACEHOLDER_PARTY_ONLINE = "%online%";
-	public static final String PLACEHOLDER_PARTY_ONLINE_NUMBER = "%online_number%";
-	public static final String PLACEHOLDER_PARTY_OUT = "%out_party%";
-	
-	public static final String PLACEHOLDER_PARTY_PARTY = "%party%";
-	
-	// SQL queries
-	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (`uuid`, `party`, `rank`, `spy`, `mute`) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`);";
-	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `party`, `rank`, `spy`, `mute`) VALUES (?,?,?,?,?);";
-	public static final String QUERY_PLAYER_DELETE = "DELETE FROM {table_players} WHERE `uuid`=?;";
-	public static final String QUERY_PLAYER_GET = "SELECT * FROM {table_players} WHERE `uuid`=?;";
-	public static final String QUERY_PLAYER_GETALL = "SELECT * FROM {table_players};";
-	public static final String QUERY_PLAYER_GETBYPARTY = "SELECT * FROM {table_players} WHERE `party`=?;";
-	
-	public static final String QUERY_PARTY_INSERT_MYSQL = "INSERT INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`, `follow`) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `leader`=VALUES(`leader`), `description`=VALUES(`description`), `motd`=VALUES(`motd`), `color`=VALUES(`color`), `kills`=VALUES(`kills`), `password`=VALUES(`password`), `home`=VALUES(`home`), `protection`=VALUES(`protection`), `experience`=VALUES(`experience`), `follow`=VALUES(`follow`);";
-	public static final String QUERY_PARTY_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_parties} (`name`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`, `follow`) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
-	public static final String QUERY_PARTY_GET_MYSQL = "SELECT * FROM {table_parties} WHERE `name`=?;";
-	public static final String QUERY_PARTY_GET_SQLITE = "SELECT * FROM {table_parties} WHERE `name`=? COLLATE NOCASE;";
-	public static final String QUERY_PARTY_GETALL = "SELECT * FROM {table_parties};";
-	public static final String QUERY_PARTY_GETALLFIXED = "SELECT * FROM {table_parties} WHERE `leader`='fixed';";
-	public static final String QUERY_PARTY_RENAME_PARTIES = "UPDATE {table_parties} SET `name`=? WHERE `name`=?;";
-	public static final String QUERY_PARTY_RENAME_PLAYERS = "UPDATE {table_players} SET `party`=? WHERE `party`=?;";
-	public static final String QUERY_PARTY_REMOVE_PARTIES = "DELETE FROM {table_parties} WHERE `name`=?;";
 	
 	
 	// Debug messages
@@ -87,61 +38,56 @@ public class PartiesConstants {
 	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to {player} with '{command}'";
 	public static final String DEBUG_AUTOCMD_REGEXERROR = "Wrong regex pattern for auto command system";
 	
-	public static final String DEBUG_CMD_ACCEPT = "{player} accepted invite for {party}";
-	public static final String DEBUG_CMD_CHAT = "{player} changed party chat to {value}";
-	public static final String DEBUG_CMD_CLAIM = "{player} claimed with {value}";
-	public static final String DEBUG_CMD_COLOR = "{player} set color of the party {party} to {value}";
-	public static final String DEBUG_CMD_COLOR_REM = "{player} removed color of the party {party}";
-	public static final String DEBUG_CMD_CREATE = "{player} created the party {party}";
-	public static final String DEBUG_CMD_CREATE_FIXED = "{player} created the fixed party {party}";
-	public static final String DEBUG_CMD_CREATE_REGEXERROR_AC = "Failed to parse allowed characters regex of create command";
-	public static final String DEBUG_CMD_CREATE_REGEXERROR_CEN = "Failed to parse censor regex of create command";
-	public static final String DEBUG_CMD_DELETE = "{player} deleted the party {party}";
-	public static final String DEBUG_CMD_DENY = "{player} deleted the party {party}";
-	public static final String DEBUG_CMD_DESC = "{player} changed the description of {party}";
-	public static final String DEBUG_CMD_DESC_REM = "{player} removed the description of {party}";
-	public static final String DEBUG_CMD_DESC_REGEXERROR_AC = "Failed to parse allowed characters regex of desc command";
-	public static final String DEBUG_CMD_DESC_REGEXERROR_CEN = "Failed to parse censor regex of desc command";
-	public static final String DEBUG_CMD_FOLLOW_ON = "{player} has enabled follow for {party}";
-	public static final String DEBUG_CMD_FOLLOW_OFF = "{player} has disabled follow for {party}";
-	public static final String DEBUG_CMD_HELP = "{player} performed help command with page '{page}'";
-	public static final String DEBUG_CMD_HOME = "{player} used command home, for {party}";
-	public static final String DEBUG_CMD_IGNORE_START = "{player} started to ignore the party {party}";
-	public static final String DEBUG_CMD_IGNORE_STOP = "{player} stopped to ignore the party {party}";
-	public static final String DEBUG_CMD_INFO = "{player} used the command info, for {party}";
-	public static final String DEBUG_CMD_INVITE = "{player} invited {victim} into {party} [revoke={revoke}]";
-	public static final String DEBUG_CMD_JOIN = "{player} joined into {party}";
-	public static final String DEBUG_CMD_KICK = "{player} got kicked out from {party} by {user} [other={other}]";
-	public static final String DEBUG_CMD_KICK_DISBAND = "{player} got kicked out (disband) from {party} by {user} [other={other}]";
-	public static final String DEBUG_CMD_LEAVE = "{player} leaved the party {party}";
-	public static final String DEBUG_CMD_LEAVE_DISBAND = "{player} leaved (disbanding) the party {party}";
-	public static final String DEBUG_CMD_LIST = "{player} used the command list";
-	public static final String DEBUG_CMD_MOTD = "{player} changed the motd of {party}";
-	public static final String DEBUG_CMD_MOTD_REM = "{player} removed the motd of {party}";
-	public static final String DEBUG_CMD_MOTD_REGEXERROR_AC = "Failed to parse allowed characters regex of motd command";
-	public static final String DEBUG_CMD_MOTD_REGEXERROR_CEN = "Failed to parse censor regex of motd command";
-	public static final String DEBUG_CMD_MUTE_ON = "{player} is now muted";
-	public static final String DEBUG_CMD_MUTE_OFF = "{player} is not muted anymore";
-	public static final String DEBUG_CMD_P = "Chat of {party} by {player}: {message}";
-	public static final String DEBUG_CMD_P_TASK = "Started ChatTask for {value} by {player}";
+	public static final String DEBUG_CMD_ACCEPT_ASK = "%s accepted ask request of %s for %s";
+	public static final String DEBUG_CMD_ACCEPT_INVITE = "%s accepted invite request for %s";
+	public static final String DEBUG_CMD_ASK = "%s asked to join the party %s";
+	public static final String DEBUG_CMD_CHAT = "%s changed party chat to %s";
+	public static final String DEBUG_CMD_CLAIM = "%s claimed with permission %s";
+	public static final String DEBUG_CMD_COLOR = "%s changed the color of %s into %s";
+	public static final String DEBUG_CMD_COLOR_REM = "%s removed color of %s";
+	public static final String DEBUG_CMD_CREATE = "%s created the party %s";
+	public static final String DEBUG_CMD_CREATE_FIXED = "%s created the fixed party %s";
+	public static final String DEBUG_CMD_CREATE_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of create command";
+	public static final String DEBUG_CMD_CREATE_REGEXERROR_CENSORED = "Failed to parse censor regex of create command";
+	public static final String DEBUG_CMD_DELETE = "%s deleted the party %s";
+	public static final String DEBUG_CMD_DENY_ASK = "%s denied ask request of %s for %s";
+	public static final String DEBUG_CMD_DENY_INVITE = "%s denied invite request for %s";
+	public static final String DEBUG_CMD_DESC = "%s changed the description of %s";
+	public static final String DEBUG_CMD_DESC_REM = "%s removed the description of %s";
+	public static final String DEBUG_CMD_DESC_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of desc command";
+	public static final String DEBUG_CMD_DESC_REGEXERROR_CENSORED = "Failed to parse censor regex of desc command";
+	public static final String DEBUG_CMD_FOLLOW = "%s set follow to %b for %s";
+	public static final String DEBUG_CMD_HOME = "%s used command home on %s to %s";
+	public static final String DEBUG_CMD_IGNORE_START = "%s started to ignore the party %s";
+	public static final String DEBUG_CMD_IGNORE_STOP = "%s stopped to ignore the party %s";
+	public static final String DEBUG_CMD_INFO = "%s used command info on %s";
+	public static final String DEBUG_CMD_INVITE = "%s invited %s into %s (revoke %b)";
+	public static final String DEBUG_CMD_JOIN = "%s joined into %s";
+	public static final String DEBUG_CMD_KICK = "%s kicked out %s from %s (other %b) (disband %b)";
+	public static final String DEBUG_CMD_KICK_LEADER_CHANGE = "%s kicked out %s from %s, new leader is %s";
+	public static final String DEBUG_CMD_LEAVE = "%s left the party %s (disband %b)";
+	public static final String DEBUG_CMD_LEAVE_LEADER_CHANGE = "%s left the party %s, new leader is %s";
+	public static final String DEBUG_CMD_MOTD = "%s changed the motd of %s";
+	public static final String DEBUG_CMD_MOTD_REM = "%s removed the motd of %s";
+	public static final String DEBUG_CMD_MOTD_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of motd command";
+	public static final String DEBUG_CMD_MOTD_REGEXERROR_CENSORED = "Failed to parse censor regex of motd command";
+	public static final String DEBUG_CMD_MUTE = "%s set mute on %b";
+	public static final String DEBUG_CMD_P = "%s sent a party message to %s: %s";
 	public static final String DEBUG_CMD_P_REGEXERROR = "Failed to parse censor regex of p command";
-	public static final String DEBUG_CMD_PASSWORD = "{player} changed the password of {party}";
-	public static final String DEBUG_CMD_PASSWORD_REM = "{player} removed the password of {party}";
-	public static final String DEBUG_CMD_PROTECTION_ON = "{player} has enabled protection for {party}";
-	public static final String DEBUG_CMD_PROTECTION_OFF = "{player} has disabled protection for {party}";
-	public static final String DEBUG_CMD_TELEPORT = "{player} used command teleport";
-	public static final String DEBUG_CMD_RANK = "{player} rank changed from {value1} to {value2} by {user} [other={other}]";
-	public static final String DEBUG_CMD_RELOAD = "{player} performed reload command";
-	public static final String DEBUG_CMD_RELOAD_CONSOLE = "Console performed reload command";
-	public static final String DEBUG_CMD_RELOADED = "Configuration reloaded by {player}";
-	public static final String DEBUG_CMD_RELOADED_CONSOLE = "Configuration reloaded";
-	public static final String DEBUG_CMD_RENAME = "{player} renamed the party {value} to {party}";
-	public static final String DEBUG_CMD_SETHOME = "{player} changed the home of {party}";
-	public static final String DEBUG_CMD_SETHOME_REM = "{player} removed the home of {party}";
-	public static final String DEBUG_CMD_SPY_ENABLE = "{player} now is a spy";
-	public static final String DEBUG_CMD_SPY_DISABLE = "{player} isn't a spy anymore";
-	public static final String DEBUG_CMD_VERSION = "{player} performed version command";
-	public static final String DEBUG_CMD_VERSION_CONSOLE = "Performed version command";
+	public static final String DEBUG_CMD_PASSWORD = "%s changed the password of %s";
+	public static final String DEBUG_CMD_PASSWORD_REM = "%s removed the password of %s";
+	public static final String DEBUG_CMD_PROTECTION = "%s set party %s protection to %b";
+	public static final String DEBUG_CMD_RANK = "%s changed the %s rank of party %s from %d to %d (other %b)";
+	public static final String DEBUG_CMD_RELOADED = "%s reloaded the configuration";
+	public static final String DEBUG_CMD_RENAME = "%s renamed the party %s to %s";
+	public static final String DEBUG_CMD_SETHOME = "%s set the home of %s with name %s";
+	public static final String DEBUG_CMD_SETHOME_REM = "%s removed the home of %s with name %s";
+	public static final String DEBUG_CMD_SPY = "%s set spy on %b";
+	public static final String DEBUG_CMD_TAG = "%s changed the tag of %s";
+	public static final String DEBUG_CMD_TAG_REM = "%s removed the tag of %s";
+	public static final String DEBUG_CMD_TAG_REGEXERROR_AC = "Failed to parse allowed characters regex of tag command";
+	public static final String DEBUG_CMD_TAG_REGEXERROR_CEN = "Failed to parse censor regex of tag command";
+	public static final String DEBUG_CMD_TELEPORT = "%s used teleport command on party %s";
 	
 	public static final String DEBUG_CONFIG_FAILED_PLACEHOLDERS_NOTFOUND = "Cannot find custom placeholders list, restoring default one.";
 	public static final String DEBUG_CONFIG_FAILED_RANK_NODEFAULT = "Cannot find default rank, set lower one.";
@@ -155,12 +101,12 @@ public class PartiesConstants {
 	public static final String DEBUG_DB_GETPLAYER = "Get player request for '{uuid}'";
 	public static final String DEBUG_DB_UPDATEPARTY = "Update party request for '{party}'";
 	public static final String DEBUG_DB_GETPARTY = "Get party request for '{party}'";
-	public static final String DEBUG_DB_RENAMEPARTY = "Rename party request for '{party}' into '{name}'";
 	public static final String DEBUG_DB_REMOVEPARTY = "Remove party request for '{party}'";
 	public static final String DEBUG_DB_EXISTSPARTY = "Exists party request for '{party}'";
+	public static final String DEBUG_DB_EXISTSTAG = "Exists tag request for '{tag}'";
 	public static final String DEBUG_DB_GETALLFIXEDPARTIES = "Get all fixed parties request";
 	public static final String DEBUG_DB_GETALLPARTIES = "Get all parties request";
-	public static final String DEBUG_DB_GETALLPLAYERS = "Get all players parties request";
+	public static final String DEBUG_DB_GETALLPARTIES_NUMBER = "Get the number of all parties";
 	
 	public static final String DEBUG_EXP_RECEIVED = "Received a distribute exp request. Normal experience: {normal}, SkillAPI Experience: {skillapi}";
 	public static final String DEBUG_EXP_SENT = "Sent {exp} {type} to {player}";
@@ -191,7 +137,6 @@ public class PartiesConstants {
 	public static final String DEBUG_PARTY_DELETE = "Deleted party {party}";
 	public static final String DEBUG_PARTY_RENAME = "Renamed party {party} into {name}";
 	public static final String DEBUG_PARTY_RELOADED = "Reloaded party {party}";
-	public static final String DEBUG_PARTY_FIXED_LOAD = "Loading fixed party {party}";
 	public static final String DEBUG_PARTY_GET_DATABASE = "Got party {party} from database";
 	public static final String DEBUG_PARTY_GET_LIST = "Got party {party} from list";
 	public static final String DEBUG_PARTY_DELETE_CAUSE = "Deleted party {party} due {cause}";
@@ -209,13 +154,18 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_PLUGIN_RELOADING = "Reloading plugin...";
 	
-	public static final String DEBUG_TASK_CHAT_EXPIRE = "Chat cooldown expired for {uuid}";
+	public static final String DEBUG_TASK_ASK_COOLDOWN_EXPIRED = "Expired ask cooldown of {uuid}";
+	public static final String DEBUG_TASK_CHAT_EXPIRED = "Chat cooldown expired for {uuid}";
 	public static final String DEBUG_TASK_DELETE_START = "Started PartyDeleteTask of {party} for {value} seconds";
 	public static final String DEBUG_TASK_DELETE_STOP = "Stopped PartyDeleteTask of {party}";
 	public static final String DEBUG_TASK_HOME_DENIED_FIGHT = "Denied home by {player} due to fight";
 	public static final String DEBUG_TASK_HOME_DENIED_MOVING = "Denied home by {player} due to moving";
-	public static final String DEBUG_TASK_INVITE_EXPIRED = "Expired party '{party}' invite for {uuid}";
-	public static final String DEBUG_TASK_TELEPORT_START = "Started TeleportTask for {value} by {player}";
+	public static final String DEBUG_TASK_HOME_EXPIRED = "Home cooldown expired for {uuid}";
+	public static final String DEBUG_TASK_SETHOME_EXPIRED = "Set home cooldown expired for {uuid}";
+	public static final String DEBUG_TASK_INVITE_COOLDOWN_EXPIRED = "Expired invite cooldown of {uuid}";
+	public static final String DEBUG_TASK_RENAME_EXPIRED = "Rename cooldown expired for the party {uuid}";
 	public static final String DEBUG_TASK_TELEPORT_DONE = "{player} teleported to the party home";
 	public static final String DEBUG_TASK_TELEPORT_EXPIRED = "Teleport for {player} expired";
+	
+	public static final String DEBUG_TELEPORT_ASYNC = "Failed to async teleport";
 }

@@ -38,6 +38,10 @@ public class LLAPIHandler {
 		}
 	}
 	
+	public static boolean isEnabled() {
+		return active;
+	}
+	
 	public static String getPlayerName(UUID uuid) {
 		String ret;
 		if (active) {

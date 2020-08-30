@@ -1,5 +1,6 @@
 package com.alessiodp.parties.api.events.bukkit.player;
 
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -7,21 +8,19 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.UUID;
-
 public class BukkitPartiesPlayerPreJoinEvent extends BukkitPartiesEvent implements IPlayerPreJoinEvent {
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private final Party party;
-	private final boolean isInvited;
-	private final UUID invitedBy;
+	private final PartyPlayer inviter;
+	private final JoinCause cause;
 	
-	public BukkitPartiesPlayerPreJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
+	public BukkitPartiesPlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
 		super(false);
 		this.player = player;
 		this.party = party;
-		this.isInvited = isInvited;
-		this.invitedBy = invitedBy;
+		this.inviter = inviter;
+		this.cause = cause;
 	}
 	
 	@NonNull
@@ -36,15 +35,16 @@ public class BukkitPartiesPlayerPreJoinEvent extends BukkitPartiesEvent implemen
 		return party;
 	}
 	
-	@Override
-	public boolean isInvited() {
-		return isInvited;
-	}
-	
 	@Nullable
 	@Override
-	public UUID getInviter() {
-		return invitedBy;
+	public PartyPlayer getInviter() {
+		return inviter;
+	}
+	
+	@NonNull
+	@Override
+	public JoinCause getCause() {
+		return cause;
 	}
 	
 	@Override

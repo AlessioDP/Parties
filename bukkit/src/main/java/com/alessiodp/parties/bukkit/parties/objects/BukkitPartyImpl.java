@@ -11,16 +11,18 @@ import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.UUID;
 
 public class BukkitPartyImpl extends PartyImpl {
 	
 	private double experienceStampCalculateLevel;
 	
-	public BukkitPartyImpl(PartiesPlugin plugin, String name) {
-		super(plugin, name);
+	public BukkitPartyImpl(PartiesPlugin plugin, UUID id) {
+		super(plugin, id);
 		experienceStampCalculateLevel = -1;
 	}
 	
@@ -28,24 +30,23 @@ public class BukkitPartyImpl extends PartyImpl {
 	public void updateParty() {
 		DynmapHandler.updatePartyMarker(this);
 		super.updateParty();
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingUpdateParty(getName());
+		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingUpdateParty(getId());
 	}
 	
 	@Override
 	public void delete() {
-		DynmapHandler.removeMarker(getName());
+		DynmapHandler.cleanupMarkers(this);
 		super.delete();
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingRemoveParty(getName());
+		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingRemoveParty(getId());
 	}
 	
 	@Override
 	public void rename(@NonNull String newName) {
-		String oldName = getName();
-		DynmapHandler.removeMarker(oldName);
+		DynmapHandler.cleanupMarkers(this);
 		
 		super.rename(newName);
 		
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingRenameParty(getName(), oldName);
+		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingRenameParty(getId(), newName);
 	}
 	
 	@Override
@@ -73,7 +74,7 @@ public class BukkitPartyImpl extends PartyImpl {
 		super.broadcastDirectMessage(message, dispatchBetweenServers);
 		
 		if (dispatchBetweenServers && message != null && !message.isEmpty()) {
-			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingBroadcastMessage(getName(), message);
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingBroadcastMessage(getId(), message);
 		}
 	}
 	
@@ -82,15 +83,15 @@ public class BukkitPartyImpl extends PartyImpl {
 		super.dispatchChatMessage(sender, message, dispatchBetweenServers);
 		
 		if (dispatchBetweenServers && message != null && !message.isEmpty()) {
-			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingChatMessage(getName(), sender.getPlayerUUID(), message);
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingChatMessage(getId(), sender.getPlayerUUID(), message);
 		}
 	}
 	
 	@Override
 	public boolean isFriendlyFireProtected() {
 		boolean ret = false;
-		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE ) {
-			if (BukkitConfigParties.FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")) {
+		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE ) {
+			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")) {
 				// Command
 				ret = super.getProtection();
 			} else {
@@ -102,16 +103,16 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	public void warnFriendlyFire(PartyPlayerImpl victim, PartyPlayerImpl attacker) {
-		if (BukkitConfigParties.FRIENDLYFIRE_WARNONFIGHT) {
+		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT) {
 			String message = BukkitMessages.ADDCMD_PROTECTION_WARNHIT
-					.replace(PartiesConstants.PLACEHOLDER_PLAYER_NAME, attacker.getName())
-					.replace(PartiesConstants.PLACEHOLDER_PLAYER_VICTIM, victim.getName());
+					.replace("%player%", attacker.getName())
+					.replace("%victim%", victim.getName());
 			
 			for (PartyPlayer onlineP : getOnlineMembers(true)) {
 				if (!onlineP.getPlayerUUID().equals(attacker.getPlayerUUID())
 						&& !plugin.getRankManager().checkPlayerRank((PartyPlayerImpl) onlineP, PartiesPermission.PRIVATE_WARNONDAMAGE)) {
 					User user = plugin.getPlayer(onlineP.getPlayerUUID());
-					user.sendMessage(plugin.getMessageUtils().convertAllPlaceholders(message, this, (PartyPlayerImpl) onlineP), true);
+					user.sendMessage(plugin.getMessageUtils().convertPlaceholders(message, (PartyPlayerImpl) onlineP, this), true);
 				}
 			}
 		}

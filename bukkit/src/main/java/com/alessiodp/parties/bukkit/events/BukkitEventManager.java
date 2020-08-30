@@ -1,10 +1,13 @@
 package com.alessiodp.parties.bukkit.events;
 
 import com.alessiodp.core.bukkit.events.BukkitEventDispatcher;
+import com.alessiodp.parties.api.enums.JoinCause;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyRenameEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesChatEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostJoinEvent;
@@ -29,11 +32,10 @@ import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireB
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-
-import java.util.UUID;
 
 public class BukkitEventManager extends EventManager {
 	public BukkitEventManager(PartiesPlugin plugin) {
@@ -51,8 +53,8 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String party, boolean fixed) {
-		return new BukkitPartiesPartyPreCreateEvent(player, party, fixed);
+	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed) {
+		return new BukkitPartiesPartyPreCreateEvent(player, name, tag, fixed);
 	}
 	
 	@Override
@@ -71,13 +73,13 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
-		return new BukkitPartiesPlayerPreJoinEvent(player, party, isInvited, invitedBy);
+	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+		return new BukkitPartiesPlayerPreJoinEvent(player, party, inviter, cause);
 	}
 	
 	@Override
-	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
-		return new BukkitPartiesPlayerPostJoinEvent(player, party, isInvited, invitedBy);
+	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+		return new BukkitPartiesPlayerPostJoinEvent(player, party, inviter, cause);
 	}
 	
 	@Override
@@ -100,5 +102,13 @@ public class BukkitEventManager extends EventManager {
 	
 	public BukkitPartiesPotionsFriendlyFireBlockedEvent preparePartiesPotionsFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, PotionSplashEvent originalEvent) {
 		return new BukkitPartiesPotionsFriendlyFireBlockedEvent(victim, attacker, originalEvent);
+	}
+	
+	public BukkitPartiesPartyPreExperienceDropEvent preparePartyPreExperienceDropEvent(Party party, PartyPlayer player, Entity killedEntity, int normalExperience, int skillapiExperience) {
+		return new BukkitPartiesPartyPreExperienceDropEvent(party, player, killedEntity, normalExperience, skillapiExperience);
+	}
+	
+	public BukkitPartiesPartyGetExperienceEvent preparePartyGetExperienceEvent(Party party, int experience, PartyPlayer killer) {
+		return new BukkitPartiesPartyGetExperienceEvent(party, experience, killer);
 	}
 }

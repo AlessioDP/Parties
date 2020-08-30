@@ -13,7 +13,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -21,8 +20,9 @@ import java.util.UUID;
 public abstract class PartyManager {
 	protected final PartiesPlugin plugin;
 	
-	@Getter private HashMap<String, PartyImpl> listParties;
-	@Getter private HashMap<String, CancellableTask> listPartiesToDelete;
+	@Getter private final HashMap<UUID, PartyImpl> cacheParties;
+	private final HashMap<String, UUID> cachePartiesNames;
+	@Getter private final HashMap<UUID, CancellableTask> cachePartiesToDelete;
 	
 	// Checks for database saving
 	@Getter protected boolean bukkit_killSystem;
@@ -30,40 +30,81 @@ public abstract class PartyManager {
 	
 	protected PartyManager(PartiesPlugin instance) {
 		plugin = instance;
+		cacheParties = new HashMap<>();
+		cachePartiesNames = new HashMap<>();
+		cachePartiesToDelete = new HashMap<>();
 	}
 	
-	public abstract PartyImpl initializeParty(String partyName);
+	public PartyImpl initializeParty() {
+		return initializeParty(UUID.randomUUID());
+	}
+	
+	public abstract PartyImpl initializeParty(UUID id);
 	
 	public void reload() {
-		listParties = new HashMap<>();
-		listPartiesToDelete = new HashMap<>();
+		cacheParties.clear();
+		cachePartiesNames.clear();
+		cachePartiesToDelete.clear();
 		
-		if (ConfigParties.FIXED_ENABLE) {
-			List<PartyImpl> lst = plugin.getDatabaseManager().getAllFixed();
-			for (PartyImpl party : lst) {
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_FIXED_LOAD
-						.replace("{party}", party.getName()), true);
-				loadParty(party.getName());
-			}
+		if (ConfigParties.ADDITIONAL_FIXED_ENABLE) {
+			plugin.getDatabaseManager().getListFixed().forEach(this::addPartyToCache);
 		}
 	}
 	
+	protected PartyImpl getPartyFromCache(UUID id) {
+		return id != null ? cacheParties.get(id): null;
+	}
+	
+	protected PartyImpl getPartyFromCache(String name) {
+		return name != null ? getPartyFromCache(cachePartiesNames.get(name.toLowerCase(Locale.ENGLISH))) : null;
+	}
+	
+	public void addPartyToCache(PartyImpl party) {
+		if (party != null) {
+			cacheParties.put(party.getId(), party);
+			if (party.getName() != null)
+				cachePartiesNames.put(party.getName().toLowerCase(Locale.ENGLISH), party.getId());
+		}
+	}
+	
+	public void removePartyFromCache(PartyImpl party) {
+		if (party != null) {
+			removePartyFromCache(party.getId());
+		}
+	}
+	
+	public void removePartyFromCache(UUID id) {
+		if (id != null) {
+			PartyImpl party = cacheParties.remove(id);
+			if (party != null && party.getName() != null)
+				cachePartiesNames.remove(party.getName().toLowerCase(Locale.ENGLISH));
+		}
+	}
 	
 	public PartyImpl loadParty(String name) {
 		// Get the party and save it into the party list
 		PartyImpl ret = getParty(name);
-		if (ret != null)
-			getListParties().put(name.toLowerCase(Locale.ENGLISH), ret);
+		addPartyToCache(ret);
 		return ret;
 	}
-	public void unloadParty(String name) {
-		getListParties().remove(name.toLowerCase(Locale.ENGLISH));
+	
+	public PartyImpl loadParty(UUID id) {
+		// Get the party and save it into the party list
+		PartyImpl ret = getParty(id);
+		addPartyToCache(ret);
+		return ret;
 	}
 	
-	public boolean reloadParty(String name) {
-		if (getListParties().containsKey(name)) {
-			PartyImpl party = plugin.getDatabaseManager().getParty(name);
-			getListParties().put(name, party);
+	public void unloadParty(PartyImpl party) {
+		removePartyFromCache(party);
+	}
+	
+	public boolean reloadParty(UUID id) {
+		PartyImpl party = getPartyFromCache(id);
+		if (party != null) {
+			removePartyFromCache(party);
+			party =  plugin.getDatabaseManager().getParty(id);
+			addPartyToCache(party);
 			
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_RELOADED, true);
 			return true;
@@ -71,13 +112,14 @@ public abstract class PartyManager {
 		return false;
 	}
 	
-	public PartyImpl getParty(String name) {
-		// Just get the party without save it into the party list
+	public PartyImpl getParty(UUID id) {
 		PartyImpl ret = null;
-		if (name != null && !name.isEmpty()) {
-			ret = getListParties().get(name.toLowerCase(Locale.ENGLISH));
+		if (id != null) {
+			// Load from cache
+			ret = getPartyFromCache(id);
 			if (ret == null) {
-				ret = plugin.getDatabaseManager().getParty(name);
+				// Load from db
+				ret = plugin.getDatabaseManager().getParty(id);
 				if (ret != null) {
 					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_DATABASE
 							.replace("{party}", ret.getName()), true);
@@ -93,30 +135,52 @@ public abstract class PartyManager {
 		return ret;
 	}
 	
-	public boolean existParty(String name) {
-		boolean ret = false;
-		PartyImpl party = getListParties().get(name.toLowerCase(Locale.ENGLISH));
-		if (party != null || plugin.getDatabaseManager().existsParty(name))
-			ret = true;
+	public PartyImpl getParty(String name) {
+		PartyImpl ret = null;
+		if (name != null && !name.isEmpty()) {
+			// Load from cache
+			ret = getPartyFromCache(name);
+			if (ret == null) {
+				// Load from db
+				ret = plugin.getDatabaseManager().getPartyByName(name);
+				if (ret != null) {
+					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_DATABASE
+							.replace("{party}", ret.getName()), true);
+				}
+			} else
+				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_LIST
+						.replace("{party}", ret.getName()), true);
+		}
+		
+		if (ret != null) {
+			ret.refreshOnlineMembers();
+		}
 		return ret;
 	}
 	
-	public PartyImpl getPartyOfPlayer(PartyPlayerImpl player) {
-		return player.getPartyName().isEmpty() ? null : getParty(player.getPartyName());
+	public boolean existsParty(String name) {
+		PartyImpl party = getPartyFromCache(name);
+		return party != null || plugin.getDatabaseManager().existsParty(name);
 	}
 	
-	public void deleteTimedParty(String name, boolean leaderLeft) {
-		PartyImpl party = getParty(name);
+	public boolean existsTag(String tag) {
+		return getCacheParties().values().stream().anyMatch(p -> tag.equalsIgnoreCase(p.getTag()))
+				|| plugin.getDatabaseManager().existsTag(tag);
+	}
+	
+	public PartyImpl getPartyOfPlayer(PartyPlayerImpl player) {
+		return getParty(player.getPartyId());
+	}
+	
+	public void deleteTimedParty(UUID id, boolean leaderLeft) {
+		PartyImpl party = getParty(id);
 		if (party != null) {
 			// Calling Pre API event
 			IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.TIMEOUT, null, null);
 			plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 			
 			if (!partiesPreDeleteEvent.isCancelled()) {
-				for (UUID u : plugin.getPlayerManager().getListPartyPlayersToDelete()) {
-					if (party.getMembers().contains(u))
-						plugin.getPlayerManager().getListPartyPlayers().remove(u);
-				}
+				plugin.getPlayerManager().getCachePlayersToDelete().removeIf(u -> party.getMembers().contains(u));
 				String cause = "empty";
 				if (leaderLeft) {
 					party.broadcastMessage(Messages.MAINCMD_LEAVE_DISBANDED, plugin.getPlayerManager().getPlayer(party.getLeader()));
@@ -132,7 +196,7 @@ public abstract class PartyManager {
 						.replace("{party}", party.getName())
 						.replace("{cause}", cause), true);
 				
-				getListPartiesToDelete().remove(name.toLowerCase(Locale.ENGLISH));
+				cachePartiesToDelete.remove(id);
 			} else {
 				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC
 						.replace("{party}", party.getName()), true);
@@ -141,7 +205,7 @@ public abstract class PartyManager {
 	}
 	
 	public void resetPendingPartyTask() {
-		for (Entry<String, CancellableTask> e : getListPartiesToDelete().entrySet()) {
+		for (Entry<UUID, CancellableTask> e : cachePartiesToDelete.entrySet()) {
 			e.getValue().cancel();
 			deleteTimedParty(e.getKey(), true);
 		}

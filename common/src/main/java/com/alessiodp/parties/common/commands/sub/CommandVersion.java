@@ -5,19 +5,30 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
-import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
 public class CommandVersion extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandVersion(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.VERSION,
+				PartiesPermission.ADMIN_VERSION,
+				ConfigMain.COMMANDS_CMD_VERSION,
+				true
+		);
+		
+		syntax = baseSyntax();
+		
+		description = Messages.HELP_MAIN_DESCRIPTIONS_VERSION;
+		help = Messages.HELP_MAIN_COMMANDS_VERSION;
 	}
 	
 	@Override
@@ -26,8 +37,8 @@ public class CommandVersion extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = sender.isPlayer() ? ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID()) : null;
 		
 		// Checks for command prerequisites
-		if (partyPlayer != null && !sender.hasPermission(PartiesPermission.ADMIN_VERSION.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.ADMIN_VERSION);
+		if (partyPlayer != null && !sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -39,14 +50,6 @@ public class CommandVersion extends PartiesSubCommand {
 	public void onCommand(CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
-		
-		// Command handling
-		if (sender.isPlayer()) {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_VERSION
-					.replace("{player}", sender.getName()), true);
-		} else {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_VERSION_CONSOLE, true);
-		}
 		
 		// Command starts
 		String version = plugin.getVersion();

@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bungeecord.events;
 
 import com.alessiodp.core.bungeecord.events.BungeeEventDispatcher;
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreCreateEvent;
@@ -28,8 +29,6 @@ import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 
-import java.util.UUID;
-
 public class BungeeEventManager extends EventManager {
 	
 	public BungeeEventManager(PartiesPlugin plugin) {
@@ -47,8 +46,8 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String party, boolean fixed) {
-		return new BungeePartiesPartyPreCreateEvent(player, party, fixed);
+	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed) {
+		return new BungeePartiesPartyPreCreateEvent(player, name, tag, fixed);
 	}
 	
 	@Override
@@ -67,13 +66,13 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
-		return new BungeePartiesPlayerPreJoinEvent(player, party, isInvited, invitedBy);
+	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+		return new BungeePartiesPlayerPreJoinEvent(player, party, inviter, cause);
 	}
 	
 	@Override
-	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
-		return new BungeePartiesPlayerPostJoinEvent(player, party, isInvited, invitedBy);
+	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+		return new BungeePartiesPlayerPostJoinEvent(player, party, inviter, cause);
 	}
 	
 	@Override

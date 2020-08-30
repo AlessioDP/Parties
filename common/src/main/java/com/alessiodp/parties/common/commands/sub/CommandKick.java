@@ -11,15 +11,17 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.external.LLAPIHandler;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,10 +31,24 @@ import java.util.Set;
 import java.util.UUID;
 
 public class CommandKick extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandKick(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.KICK,
+				PartiesPermission.USER_KICK,
+				ConfigMain.COMMANDS_CMD_KICK,
+				true
+		);
+		
+		syntax = String.format("%s <%s>",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_PLAYER
+		);
+		
+		description = Messages.HELP_MAIN_DESCRIPTIONS_KICK;
+		help = Messages.HELP_MAIN_COMMANDS_KICK;
 	}
 	
 	@Override
@@ -43,13 +59,13 @@ public class CommandKick extends PartiesSubCommand {
 			partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(PartiesPermission.KICK.toString())) {
-				sendNoPermissionMessage(partyPlayer, PartiesPermission.KICK);
+			if (!sender.hasPermission(permission)) {
+				sendNoPermissionMessage(partyPlayer, permission);
 				return false;
 			}
 			
-			if (!sender.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS.toString())) {
-				if (partyPlayer.getPartyName().isEmpty()) {
+			if (!sender.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS)) {
+				if (!partyPlayer.isInParty()) {
 					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 					return false;
 				}
@@ -62,7 +78,8 @@ public class CommandKick extends PartiesSubCommand {
 		}
 		
 		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return false;
 		}
 		
@@ -81,7 +98,7 @@ public class CommandKick extends PartiesSubCommand {
 		
 		Set<UUID> matchingPlayers = LLAPIHandler.getPlayerByName(playerName);
 		List<UUID> listPlayers = new LinkedList<>(matchingPlayers);
-		listPlayers.removeIf((uuid) -> ((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid).getPartyName().isEmpty());
+		listPlayers.removeIf((uuid) -> !((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid).isInParty());
 		Collections.sort(listPlayers);
 		
 		if (listPlayers.size() > 1) {
@@ -126,14 +143,14 @@ public class CommandKick extends PartiesSubCommand {
 		OfflineUser kickedPlayer = plugin.getOfflinePlayer(playerUUID);
 		PartyPlayerImpl kickedPp = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUUID);
 		
-		PartyImpl party = partyPlayer != null ? ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName()) : null;
+		PartyImpl party = partyPlayer != null ? ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId()) : null;
 		
 		boolean otherParty = false;
 		if (party == null || !party.getMembers().contains(kickedPlayer.getUUID())) {
 			// Other party
 			otherParty = true;
 			if (commandData.havePermission(PartiesPermission.ADMIN_KICK_OTHERS)) {
-				party = ((PartiesPlugin) plugin).getPartyManager().getParty(kickedPp.getPartyName());
+				party = ((PartiesPlugin) plugin).getPartyManager().getParty(kickedPp.getPartyId());
 				
 				if (party == null) {
 					sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_PLAYERNOTINPARTY_OTHER, kickedPp);
@@ -160,30 +177,50 @@ public class CommandKick extends PartiesSubCommand {
 		if (!partiesPreLeaveEvent.isCancelled()) {
 			if (party.getLeader() != null && party.getLeader().equals(kickedPlayer.getUUID())) {
 				// Leader
-				// Calling Pre API event
-				IPartyPreDeleteEvent partiesPreDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.KICK, kickedPp, partyPlayer);
-				((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreDeleteEvent);
+				boolean mustDelete = true;
+				// Check if leader can be changed
+				if (ConfigParties.GENERAL_MEMBERS_CHANGE_LEADER_ON_LEAVE
+						&& party.getMembers().size() > 1) {
+					PartyPlayerImpl newLeader = party.findNewLeader();
+					
+					if (newLeader != null) {
+						// Found a new leader
+						mustDelete = false;
+						
+						party.changeLeader(newLeader);
+						party.removeMember(kickedPp);
+						
+						sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
+						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK_LEADER_CHANGE,
+								sender.getName(), kickedPp.getName(), party.getName(), newLeader.getName()), true);
+					}
+				}
 				
-				if (!partiesPreDeleteEvent.isCancelled()) {
-					// Disbanding party
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
-					party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_DISBAND, kickedPp);
+				if (mustDelete) {
+					// Calling Pre API event
+					IPartyPreDeleteEvent partiesPreDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.KICK, kickedPp, partyPlayer);
+					((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreDeleteEvent);
 					
-					party.delete();
-					
-					// Calling Post API event
-					IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.KICK, kickedPp, partyPlayer);
-					((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
-					
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_KICK_DISBAND
-							.replace("{player}", kickedPp.getName())
-							.replace("{party}", party.getName())
-							.replace("{user}", sender.getName())
-							.replace("{other}", Boolean.toString(otherParty)), true);
-				} else
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY
-							.replace("{party}", party.getName())
-							.replace("{player}", sender.getName()), true);
+					if (!partiesPreDeleteEvent.isCancelled()) {
+						// Disbanding party
+						sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
+						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_DISBAND, kickedPp);
+						
+						party.delete();
+						
+						// Calling Post API event
+						IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.KICK, kickedPp, partyPlayer);
+						((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
+								sender.getName(), kickedPp.getName(), party.getName(), otherParty, true), true);
+					} else
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY
+								.replace("{party}", party.getName())
+								.replace("{player}", sender.getName()), true);
+				}
 			} else {
 				// Normal
 				if (kickedPlayer.isOnline()) {
@@ -196,11 +233,8 @@ public class CommandKick extends PartiesSubCommand {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
 				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, kickedPp);
 				
-				plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_KICK
-						.replace("{player}", kickedPp.getName())
-						.replace("{party}", party.getName())
-						.replace("{user}", sender.getName())
-						.replace("{other}", Boolean.toString(otherParty)), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
+						sender.getName(), kickedPp.getName(), party.getName(), otherParty, false), true);
 			}
 			
 			// Calling API event

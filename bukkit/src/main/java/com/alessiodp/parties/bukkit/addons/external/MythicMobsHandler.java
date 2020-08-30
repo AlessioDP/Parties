@@ -82,13 +82,13 @@ public class MythicMobsHandler implements Listener {
 			
 			if (event.getKiller() != null) {
 				PartyPlayerImpl killer = plugin.getPlayerManager().getPlayer(event.getKiller().getUniqueId());
-				if (!killer.getPartyName().isEmpty()) {
+				if (killer.isInParty()) {
 					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_MMHANDLING
 							.replace("{name}", event.getMobType().getInternalName())
 							.replace("{player}", killer.getName()), true);
 					
-					double vanillaExp = 0;
-					double skillapiExp = 0;
+					int vanillaExp = 0;
+					int skillapiExp = 0;
 					
 					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
 						vanillaExp = event.getExp();
@@ -100,7 +100,7 @@ public class MythicMobsHandler implements Listener {
 						}
 					}
 					
-					ExpDrop drop = new ExpDrop((int) vanillaExp, (int) skillapiExp, killer, killedEntity);
+					ExpDrop drop = new ExpDrop(killer, killedEntity, vanillaExp, skillapiExp);
 					boolean result = ((BukkitPartiesPlugin) plugin).getExpManager().distributeExp(drop);
 					if (result) {
 						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {

@@ -5,21 +5,37 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
 import java.util.List;
 
 public class CommandMute extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandMute(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.MUTE,
+				PartiesPermission.USER_MUTE,
+				ConfigMain.COMMANDS_CMD_MUTE,
+				false
+		);
+		
+		syntax = String.format("%s [%s/%s]",
+				baseSyntax(),
+				ConfigMain.COMMANDS_SUB_ON,
+				ConfigMain.COMMANDS_SUB_OFF
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_MUTE;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_MUTE;
 	}
 	
 	@Override
@@ -28,8 +44,8 @@ public class CommandMute extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.MUTE.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.MUTE);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -45,7 +61,8 @@ public class CommandMute extends PartiesSubCommand {
 		// Command handling
 		Boolean mute = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(partyPlayer.isMuted(), commandData.getArgs());
 		if (mute == null) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_MUTE_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return;
 		}
 		
@@ -59,10 +76,8 @@ public class CommandMute extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MUTE_OFF);
 		}
 		
-		plugin.getLoggerManager().logDebug(
-				(mute ? PartiesConstants.DEBUG_CMD_MUTE_ON : PartiesConstants.DEBUG_CMD_MUTE_OFF)
-						.replace("{player}", sender.getName()),
-				true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_MUTE,
+				partyPlayer.getName(), mute), true);
 	}
 	
 	@Override

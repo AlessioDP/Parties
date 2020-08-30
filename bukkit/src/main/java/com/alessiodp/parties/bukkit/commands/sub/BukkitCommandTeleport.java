@@ -1,5 +1,6 @@
 package com.alessiodp.parties.bukkit.commands.sub;
 
+import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
@@ -12,15 +13,12 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.tasks.TeleportTask;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.concurrent.TimeUnit;
 
 public class BukkitCommandTeleport extends CommandTeleport {
 	
@@ -35,13 +33,14 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
 		// Command handling
-		long unixNow = -1;
-		if (ConfigParties.TELEPORT_COOLDOWN > 0 && !((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_BYPASSCOOLDOWN)) {
-			Long unixTimestamp = ((PartiesPlugin) plugin).getCooldownManager().getTeleportCooldown().get(partyPlayer.getPlayerUUID());
-			unixNow = System.currentTimeMillis() / 1000L;
-			if (unixTimestamp != null) {
+		boolean mustStartCooldown = false;
+		if (ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS)) {
+			mustStartCooldown = true;
+			long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canTeleport(partyPlayer.getPlayerUUID(), ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN);
+			
+			if (remainingCooldown > 0) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_TELEPORT_COOLDOWN
-						.replace("%seconds%", String.valueOf(ConfigParties.TELEPORT_COOLDOWN - (unixNow - unixTimestamp))));
+						.replace("%seconds%", String.valueOf(remainingCooldown)));
 				return;
 			}
 		}
@@ -49,38 +48,33 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.TELEPORT, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
-		// Command starts
-		if (unixNow != -1) {
-			((PartiesPlugin) plugin).getCooldownManager().getTeleportCooldown().put(partyPlayer.getPlayerUUID(), unixNow);
-			plugin.getScheduler().scheduleAsyncLater(new TeleportTask(((PartiesPlugin) plugin), partyPlayer.getPlayerUUID()), ConfigParties.TELEPORT_COOLDOWN, TimeUnit.SECONDS);
-			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_START
-					.replace("{value}", Integer.toString(ConfigParties.TELEPORT_COOLDOWN * 20))
-					.replace("{player}", sender.getName()), true);
+		if (mustStartCooldown) {
+			((PartiesPlugin) plugin).getCooldownManager().startTeleportCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
 		}
 		
+		// Command starts
 		Player bukkitPlayer = Bukkit.getPlayer(partyPlayer.getPlayerUUID());
 		if (bukkitPlayer != null) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_TELEPORT_TELEPORTING);
 			
-			// Make it sync
-			plugin.getScheduler().getSyncExecutor().execute(() -> {
-				for (PartyPlayer onlinePlayer : party.getOnlineMembers(true)) {
-					if (!onlinePlayer.getPlayerUUID().equals(partyPlayer.getPlayerUUID())) {
-						Player bukkitOnlinePlayer = Bukkit.getPlayer(onlinePlayer.getPlayerUUID());
-						if (bukkitOnlinePlayer != null) {
-							EssentialsHandler.updateLastTeleportLocation(bukkitOnlinePlayer);
-							bukkitOnlinePlayer.teleport(bukkitPlayer.getLocation());
-							
-							User onlinePlayerUser = plugin.getPlayer(onlinePlayer.getPlayerUUID());
-							sendMessage(onlinePlayerUser, partyPlayer, Messages.ADDCMD_TELEPORT_TELEPORTED, partyPlayer);
-						}
+			for (PartyPlayer onlinePlayer : party.getOnlineMembers(true)) {
+				if (!onlinePlayer.getPlayerUUID().equals(partyPlayer.getPlayerUUID())) {
+					User user = plugin.getPlayer(onlinePlayer.getPlayerUUID());
+					if (user != null) {
+						((BukkitUser) user).teleportAsync(bukkitPlayer.getLocation()).thenAccept(result -> {
+							if (result) {
+								EssentialsHandler.updateLastTeleportLocation(user.getUUID());
+								sendMessage(user, partyPlayer, Messages.ADDCMD_TELEPORT_TELEPORTED, partyPlayer);
+							} else {
+								plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
+							}
+						});
 					}
 				}
-			});
+			}
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_TELEPORT
-					.replace("{player}", sender.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_TELEPORT,
+					partyPlayer.getName(), party.getName()), true);
 		}
 	}
 }

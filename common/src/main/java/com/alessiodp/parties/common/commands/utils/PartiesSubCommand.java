@@ -1,7 +1,9 @@
 package com.alessiodp.parties.common.commands.utils;
 
 import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.commands.utils.ADPPermission;
 import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -11,11 +13,12 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.NonNull;
 
 public abstract class PartiesSubCommand extends ADPSubCommand {
-	public PartiesSubCommand(@NonNull ADPPlugin plugin, @NonNull ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+	
+	public PartiesSubCommand(@NonNull ADPPlugin plugin, @NonNull ADPMainCommand mainCommand, @NonNull ADPCommand command, @NonNull ADPPermission permission, @NonNull String commandName, boolean executableByConsole) {
+		super(plugin, mainCommand, command, permission, commandName, executableByConsole);
 	}
 	
-	protected void sendNoPermissionMessage(PartyPlayerImpl partyPlayer, PartiesPermission permission) {
+	protected void sendNoPermissionMessage(PartyPlayerImpl partyPlayer, ADPPermission permission) {
 		if (partyPlayer != null)
 			partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
 					.replace("%permission%", permission.toString()));

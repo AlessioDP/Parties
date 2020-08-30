@@ -1,9 +1,8 @@
 package com.alessiodp.parties.bungee;
 
-import com.alessiodp.core.bungeecord.configuration.adapter.BungeeConfigurationAdapter;
-import com.alessiodp.core.bungeecord.configuration.adapter.BungeeConfigurationSectionAdapter;
+import com.alessiodp.core.common.addons.external.simpleyaml.configuration.file.YamlFile;
+import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeMessages;
@@ -16,28 +15,22 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.regex.Pattern;
+import java.util.Collections;
+import java.util.List;
 
-import static org.junit.Assert.fail;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
 		PartiesPlugin.class,
-		BungeeConfigurationAdapter.class,
-		BungeeConfigurationSectionAdapter.class,
 		BungeeConfigMain.class,
 		BungeeConfigParties.class,
 		BungeeMessages.class
 })
 public class BungeeConfigurationTest {
 	private PartiesPlugin mockPlugin;
-	private final Pattern pattern = Pattern.compile("[A-Z_]+");
 	
 	@Before
 	public void setUp() {
@@ -45,74 +38,56 @@ public class BungeeConfigurationTest {
 	}
 	
 	@Test
-	public void testConfigMain() throws URISyntaxException {
+	public void testConfigMain() throws IllegalAccessException {
 		BungeeConfigMain configMain = new BungeeConfigMain(mockPlugin);
 		
-		testConfiguration(configMain);
+		List<String> skipPaths = Collections.singletonList(
+				"additional.placeholders"
+		);
+		
+		testConfiguration(configMain, skipPaths);
 	}
 	
 	@Test
-	public void testConfigParties() throws URISyntaxException {
+	public void testConfigParties() throws IllegalAccessException {
 		BungeeConfigParties configParties = new BungeeConfigParties(mockPlugin);
 		
-		testConfiguration(configParties);
+		List<String> skipPaths = Collections.emptyList();
+		
+		testConfiguration(configParties, skipPaths);
 	}
 	
 	@Test
-	public void testMessages() throws URISyntaxException {
+	public void testMessages() throws IllegalAccessException {
 		BungeeMessages messages = new BungeeMessages(mockPlugin);
 		
-		testConfiguration(messages);
+		List<String> skipPaths = Collections.emptyList();
+		
+		testConfiguration(messages, skipPaths);
 	}
 	
-	private void testConfiguration(ConfigurationFile configurationFile) throws URISyntaxException {
+	private void testConfiguration(ConfigurationFile configurationFile, List<String> skipPaths) throws IllegalAccessException {
 		Field[] fields = PowerMockito.fields(configurationFile.getClass());
 		
-		// Load defaults
-		configurationFile.loadDefaults();
+		// Initialize YAML
+		YamlFile yf = YamlFile.loadConfiguration(new InputStreamReader(getClass().getResourceAsStream("/" + configurationFile.getResourceName())));
 		
-		// Save default values
-		HashMap<String, Object> savedMap = populateMap(fields, configurationFile);
-		
-		// Get config file
-		Path path = Paths.get(getClass().getResource("/" + configurationFile.getResourceName()).toURI());
-		Assert.assertNotNull(path);
-		
-		// Initialize configuration
-		ConfigurationAdapter configurationAdapter = new BungeeConfigurationAdapter(path);
-		
-		// Load configuration
-		configurationFile.loadConfiguration(configurationAdapter);
-		
-		// Match configuration
-		match(fields, savedMap, configurationFile);
-	}
-	
-	private HashMap<String, Object> populateMap(Field[] fields, ConfigurationFile configurationFile) {
-		HashMap<String, Object> ret = new HashMap<>();
+		// Check fields
 		for (Field f : fields) {
-			if (pattern.matcher(f.getName()).matches()) {
-				try {
-					ret.put(f.getName(), f.get(configurationFile));
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					fail(ex.getMessage());
-				}
+			ConfigOption co = f.getAnnotation(ConfigOption.class);
+			if (co != null && !skippablePath(co.path(), skipPaths)) {
+				Object value = yf.get(co.path());
+				Assert.assertNotNull("The " + configurationFile.getClass().getSimpleName() + " path '" + co.path() + "' is null.", value);
+				f.set(null, value);
 			}
 		}
-		return ret;
 	}
 	
-	private void match(Field[] fields, HashMap<String, Object> savedMap, ConfigurationFile configurationFile) {
-		for (Field f : fields) {
-			try {
-				if (savedMap.containsKey(f.getName()) && !savedMap.get(f.getName()).equals(f.get(configurationFile))) {
-					fail("Fields are mismatched: " + f.getName() + "\n" + savedMap.get(f.getName()) + " != " + f.get(configurationFile));
-				}
-			} catch (Exception ex) {
-				fail("Error at field " + f.getName());
-				ex.printStackTrace();
-			}
+	private boolean skippablePath(String path, List<String> skipPaths) {
+		for (String sp : skipPaths) {
+			if (path.startsWith(sp))
+				return true;
 		}
+		return false;
 	}
 }

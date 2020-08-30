@@ -1,9 +1,13 @@
 package com.alessiodp.parties.common.commands.main;
 
+import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandAccept;
+import com.alessiodp.parties.common.commands.sub.CommandAsk;
 import com.alessiodp.parties.common.commands.sub.CommandChat;
 import com.alessiodp.parties.common.commands.sub.CommandColor;
 import com.alessiodp.parties.common.commands.sub.CommandCreate;
@@ -26,73 +30,85 @@ import com.alessiodp.parties.common.commands.sub.CommandRank;
 import com.alessiodp.parties.common.commands.sub.CommandReload;
 import com.alessiodp.parties.common.commands.sub.CommandRename;
 import com.alessiodp.parties.common.commands.sub.CommandSpy;
+import com.alessiodp.parties.common.commands.sub.CommandTag;
 import com.alessiodp.parties.common.commands.sub.CommandVersion;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public abstract class CommandParty extends ADPMainCommand {
 	
 	public CommandParty(PartiesPlugin plugin) {
-		super(plugin);
+		super(plugin, CommonCommands.PARTY, ConfigMain.COMMANDS_CMD_PARTY, true);
 		
-		commandName = ConfigMain.COMMANDS_CMD_PARTY;
 		subCommands = new HashMap<>();
-		enabledSubCommands = new ArrayList<>();
+		subCommandsByEnum = new HashMap<>();
 		tabSupport = ConfigMain.COMMANDS_TABSUPPORT;
 		
-		register(CommonCommands.HELP, new CommandHelp(plugin, this));
-		register(CommonCommands.ACCEPT, new CommandAccept(plugin, this));
-		register(CommonCommands.CHAT, new CommandChat(plugin, this));
-		register(CommonCommands.CREATE, new CommandCreate(plugin, this));
-		register(CommonCommands.DELETE, new CommandDelete(plugin, this));
-		register(CommonCommands.DENY, new CommandDeny(plugin, this));
-		register(CommonCommands.IGNORE, new CommandIgnore(plugin, this));
-		register(CommonCommands.INFO, new CommandInfo(plugin, this));
-		register(CommonCommands.INVITE, new CommandInvite(plugin, this));
-		register(CommonCommands.KICK, new CommandKick(plugin, this));
-		register(CommonCommands.LEAVE, new CommandLeave(plugin, this));
-		register(CommonCommands.RANK, new CommandRank(plugin, this));
-		register(CommonCommands.RELOAD, new CommandReload(plugin, this));
-		register(CommonCommands.RENAME, new CommandRename(plugin, this));
-		register(CommonCommands.SPY, new CommandSpy(plugin, this));
-		register(CommonCommands.VERSION, new CommandVersion(plugin, this));
+		register(new CommandHelp(plugin, this));
+		register(new CommandAccept(plugin, this));
+		register(new CommandCreate(plugin, this));
+		register(new CommandDelete(plugin, this));
+		register(new CommandDeny(plugin, this));
+		register(new CommandIgnore(plugin, this));
+		register(new CommandInfo(plugin, this));
+		register(new CommandInvite(plugin, this));
+		register(new CommandKick(plugin, this));
+		register(new CommandLeave(plugin, this));
+		register(new CommandRank(plugin, this));
+		register(new CommandReload(plugin, this));
+		register(new CommandRename(plugin, this));
+		register(new CommandSpy(plugin, this));
+		register(new CommandVersion(plugin, this));
+		
+		// Ask
+		if (ConfigParties.GENERAL_ASK_ENABLE)
+			register(new CommandAsk(plugin, this));
+		
+		// Chat
+		if (ConfigParties.GENERAL_CHAT_TOGGLECOMMAND)
+			register(new CommandChat(plugin, this));
 		
 		// Color
-		if (ConfigParties.COLOR_ENABLE)
-			register(CommonCommands.COLOR, new CommandColor(plugin, this));
+		if (ConfigParties.ADDITIONAL_COLOR_ENABLE)
+			register(new CommandColor(plugin, this));
 		
 		// Desc
-		if (ConfigParties.DESC_ENABLE)
-			register(CommonCommands.DESC, new CommandDesc(plugin, this));
+		if (ConfigParties.ADDITIONAL_DESC_ENABLE)
+			register(new CommandDesc(plugin, this));
 		
 		// Follow
 		if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE && ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD)
-			register(CommonCommands.FOLLOW, new CommandFollow(plugin, this));
+			register(new CommandFollow(plugin, this));
 		
-		
-		// Join & Password
-		if (ConfigParties.PASSWORD_ENABLE) {
-			register(CommonCommands.JOIN, new CommandJoin(plugin, this));
-			register(CommonCommands.PASSWORD, new CommandPassword(plugin, this));
-		}
+		// Join
+		if (ConfigParties.ADDITIONAL_JOIN_ENABLE)
+			register(new CommandJoin(plugin, this));
 		
 		// List
-		if (ConfigParties.LIST_ENABLE)
-			register(CommonCommands.LIST, new CommandList(plugin, this));
+		if (ConfigParties.ADDITIONAL_LIST_ENABLE)
+			register(new CommandList(plugin, this));
 		
 		// Motd
-		if (ConfigParties.MOTD_ENABLE)
-			register(CommonCommands.MOTD, new CommandMotd(plugin, this));
+		if (ConfigParties.ADDITIONAL_MOTD_ENABLE)
+			register(new CommandMotd(plugin, this));
 		
 		// Mute
 		if (ConfigMain.ADDITIONAL_MUTE_ENABLE)
-			register(CommonCommands.MUTE, new CommandMute(plugin, this));
+			register(new CommandMute(plugin, this));
+		
+		// Password
+		if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
+			register(new CommandPassword(plugin, this));
+		
+		// Tag
+		if (ConfigParties.ADDITIONAL_TAG_ENABLE)
+			register(new CommandTag(plugin, this));
 	}
 	
 	@Override
@@ -118,12 +134,17 @@ public abstract class CommandParty extends ADPMainCommand {
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {
-					plugin.logConsole(plugin.getColorUtils().removeColors(Messages.PARTIES_COMMON_INVALIDCMD), false);
+					plugin.logConsole(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD), false);
 				}
 			} else {
 				// Print help
-				for (String str : Messages.HELP_CONSOLEHELP) {
-					plugin.logConsole(str, false);
+				plugin.logConsole(Messages.HELP_CONSOLEHELP_HEADER, false);
+				for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
+					if (e.getValue().isExecutableByConsole()  && e.getValue().isListedInHelp()) {
+						plugin.logConsole(Messages.HELP_CONSOLEHELP_COMMAND
+								.replace("%command%", e.getValue().getConsoleSyntax())
+								.replace("%description%", e.getValue().getDescription()), false);
+					}
 				}
 			}
 		}

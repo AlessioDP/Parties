@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -12,19 +13,34 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.CensorUtils;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandMotd extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandMotd(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.MOTD,
+				PartiesPermission.USER_MOTD,
+				ConfigMain.COMMANDS_CMD_MOTD,
+				false
+		);
+		
+		syntax = String.format("%s <%s/%s>",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_MOTD,
+				ConfigMain.COMMANDS_SUB_REMOVE
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_MOTD;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_MOTD;
 	}
 	
 	@Override
@@ -33,8 +49,8 @@ public class CommandMotd extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.MOTD.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.MOTD);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -48,7 +64,8 @@ public class CommandMotd extends PartiesSubCommand {
 			return false;
 		
 		if (commandData.getArgs().length < 2) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return false;
 		}
 		
@@ -72,13 +89,13 @@ public class CommandMotd extends PartiesSubCommand {
 		} else {
 			motd = plugin.getCommandManager().getCommandUtils().handleCommandString(commandData.getArgs(), 1);
 			
-			if (!((PartiesPlugin) plugin).getCensorUtils().checkAllowedCharacters(ConfigParties.MOTD_ALLOWEDCHARS, motd, PartiesConstants.DEBUG_CMD_MOTD_REGEXERROR_AC)
-					|| (motd.length() > ConfigParties.MOTD_MAXLENGTH)
-					|| (motd.length() < ConfigParties.MOTD_MINLENGTH)) {
+			if (!CensorUtils.checkAllowedCharacters(ConfigParties.ADDITIONAL_MOTD_ALLOWEDCHARS, motd, PartiesConstants.DEBUG_CMD_MOTD_REGEXERROR_ALLOWEDCHARS)
+					|| (motd.length() > ConfigParties.ADDITIONAL_MOTD_MAXLENGTH)
+					|| (motd.length() < ConfigParties.ADDITIONAL_MOTD_MINLENGTH)) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_INVALID);
 				return;
 			}
-			if (((PartiesPlugin) plugin).getCensorUtils().checkCensor(ConfigParties.MOTD_CENSORREGEX, motd, PartiesConstants.DEBUG_CMD_MOTD_REGEXERROR_CEN)) {
+			if (CensorUtils.checkCensor(ConfigParties.ADDITIONAL_MOTD_CENSORREGEX, motd, PartiesConstants.DEBUG_CMD_MOTD_REGEXERROR_CENSORED)) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_CENSORED);
 				return;
 			}
@@ -94,16 +111,14 @@ public class CommandMotd extends PartiesSubCommand {
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_REMOVED);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_MOTD
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_MOTD,
+					partyPlayer.getName(), party.getName()), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_MOTD_BROADCAST, partyPlayer);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_MOTD_REM
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_MOTD_REM,
+					partyPlayer.getName(), party.getName()), true);
 		}
 	}
 	

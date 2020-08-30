@@ -2,6 +2,7 @@ package com.alessiodp.parties.bukkit.utils;
 
 import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.MessageUtils;
 
@@ -12,8 +13,8 @@ public class BukkitMessageUtils extends MessageUtils {
 	}
 	
 	@Override
-	public String convertPlayerPlaceholders(String message, PartyPlayerImpl player, String emptyPlaceholder) {
-		String ret = super.convertPlayerPlaceholders(message, player, emptyPlaceholder);
+	public String convertPlaceholders(String message, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
+		String ret = super.convertPlaceholders(message, player, party, emptyPlaceholder);
 		if (player != null) {
 			ret = PlaceholderAPIHandler.getPlaceholders(player.getPlayerUUID(), ret);
 		}

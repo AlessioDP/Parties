@@ -14,7 +14,7 @@ public class PartiesPacket extends ADPPacket {
 	// Common
 	@Getter private PacketType type;
 	
-	@Getter private String partyName = "";
+	@Getter private UUID partyId = UUID.randomUUID();
 	@Getter private UUID playerUuid = UUID.randomUUID();
 	@Getter private String payload = "";
 	
@@ -29,7 +29,7 @@ public class PartiesPacket extends ADPPacket {
 		try {
 			output.writeUTF(getVersion());
 			output.writeUTF(type.name());
-			output.writeUTF(partyName);
+			output.writeUTF(partyId.toString());
 			output.writeUTF(playerUuid.toString());
 			output.writeUTF(payload);
 		} catch (Exception ex) {
@@ -48,7 +48,7 @@ public class PartiesPacket extends ADPPacket {
 			if (foundVersion.equals(plugin.getVersion())) {
 				PartiesPacket packet = new PartiesPacket(foundVersion);
 				packet.type = PacketType.valueOf(input.readUTF());
-				packet.partyName = input.readUTF();
+				packet.partyId = UUID.fromString(input.readUTF());
 				packet.playerUuid = UUID.fromString(input.readUTF());
 				packet.payload = input.readUTF();
 				ret = packet;
@@ -69,8 +69,8 @@ public class PartiesPacket extends ADPPacket {
 		return this;
 	}
 	
-	public PartiesPacket setPartyName(String partyName) {
-		this.partyName = partyName;
+	public PartiesPacket setPartyId(UUID partyId) {
+		this.partyId = partyId;
 		return this;
 	}
 	

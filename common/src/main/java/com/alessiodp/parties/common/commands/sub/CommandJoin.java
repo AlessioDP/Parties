@@ -4,26 +4,56 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import com.alessiodp.parties.common.utils.HashUtils;
-import lombok.Getter;
+import com.alessiodp.parties.common.utils.PasswordUtils;
 
 public class CommandJoin extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
+	private final String syntaxPassword;
 	
 	public CommandJoin(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.JOIN,
+				PartiesPermission.USER_JOIN,
+				ConfigMain.COMMANDS_CMD_JOIN,
+				false
+		);
+		
+		syntax = String.format("%s <%s>",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_PARTY
+		);
+		
+		syntaxPassword = String.format("%s <%s> [%s]",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_PARTY,
+				Messages.PARTIES_SYNTAX_PASSWORD
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_JOIN;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_JOIN;
+	}
+	
+	@Override
+	public String getSyntaxForUser(User user) {
+		if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
+			return syntaxPassword;
+		return syntax;
 	}
 	
 	@Override
@@ -32,18 +62,19 @@ public class CommandJoin extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.JOIN.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.JOIN);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
-		if (!partyPlayer.getPartyName().isEmpty()) {
+		if (partyPlayer.isInParty()) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
 			return false;
 		}
 		
 		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGCMD);
+			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", getSyntaxForUser(sender)));
 			return false;
 		}
 		
@@ -68,19 +99,18 @@ public class CommandJoin extends PartiesSubCommand {
 		
 		if (commandData.getArgs().length == 2) {
 			if (!commandData.havePermission(PartiesPermission.ADMIN_JOIN_BYPASS)
-					&& !party.getPassword().isEmpty()) {
+					&& party.getPassword() != null) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGPASSWORD);
 				return;
 			}
 		} else {
-			if (!HashUtils.hashText(commandData.getArgs()[2]).equals(party.getPassword())) {
+			if (!PasswordUtils.hashText(commandData.getArgs()[2]).equals(party.getPassword())) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGPASSWORD);
 				return;
 			}
 		}
 		
-		if ((ConfigParties.GENERAL_MEMBERSLIMIT != -1)
-				&& (party.getMembers().size() >= ConfigParties.GENERAL_MEMBERSLIMIT)) {
+		if (party.isFull()) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYFULL);
 			return;
 		}
@@ -91,32 +121,21 @@ public class CommandJoin extends PartiesSubCommand {
 		// Command starts
 		
 		// Calling API Event
-		IPlayerPreJoinEvent partiesPreJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreJoinEvent(partyPlayer, party, false, null);
+		IPlayerPreJoinEvent partiesPreJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreJoinEvent(partyPlayer, party, null, JoinCause.JOIN);
 		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreJoinEvent);
 		
 		if (!partiesPreJoinEvent.isCancelled()) {
-			
-			party.getMembers().add(partyPlayer.getPlayerUUID());
 			party.addMember(partyPlayer);
-			
-			partyPlayer.setPartyName(party.getName());
-			partyPlayer.setRank(ConfigParties.RANK_SET_DEFAULT);
-					
-			party.updateParty();
-			partyPlayer.updatePlayer();
-					
-			party.callChange();
 			
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_JOINED);
 			
 			party.broadcastMessage(Messages.ADDCMD_JOIN_PLAYERJOINED, partyPlayer);
 			
-			IPlayerPostJoinEvent partiesPostJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostJoinEvent(partyPlayer, party, false, null);
+			IPlayerPostJoinEvent partiesPostJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostJoinEvent(partyPlayer, party, null, JoinCause.JOIN);
 			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostJoinEvent);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_JOIN
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_JOIN,
+					partyPlayer.getName(), party.getName()), true);
 		} else
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_JOINEVENT_DENY
 					.replace("{player}", sender.getName())

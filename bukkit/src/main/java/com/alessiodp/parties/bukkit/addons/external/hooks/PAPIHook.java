@@ -1,6 +1,5 @@
 package com.alessiodp.parties.bukkit.addons.external.hooks;
 
-import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
@@ -53,7 +52,7 @@ public class PAPIHook extends PlaceholderExpansion {
 	@Override
 	public String onRequest(OfflinePlayer offlinePlayer, String identifier) {
 		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
-		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyName());
+		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
 		
 		PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
 		

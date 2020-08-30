@@ -1,30 +1,37 @@
 package com.alessiodp.parties.bukkit.players;
 
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.core.common.utils.FormulaUtils;
+import com.alessiodp.core.common.utils.Pair;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.bukkit.addons.external.MMOCoreHandler;
 import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
+import com.alessiodp.parties.bukkit.events.BukkitEventManager;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.ExpResult;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import javax.script.ScriptEngineManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class ExpManager {
 	private final PartiesPlugin plugin;
-	private ExpMode mode;
+	@Getter private ExpMode mode;
 	private double rangeSquared;
 	
 	private ExpConvert convertNormal;
@@ -55,7 +62,7 @@ public class ExpManager {
 		int totalNormal = 0;
 		int totalSkillapi = 0;
 		
-		PartyImpl party = plugin.getPartyManager().getParty(drop.getKiller().getPartyName());
+		PartyImpl party = plugin.getPartyManager().getParty(drop.getKiller().getPartyId());
 		
 		if (party != null) {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_RECEIVED
@@ -66,54 +73,67 @@ public class ExpManager {
 			User user = plugin.getPlayer(drop.getKiller().getPlayerUUID());
 			
 			if (player != null && user != null) {
-				if (drop.getNormal() > 0) {
-					switch (convertNormal) {
-						case PARTY:
-							totalParty += drop.getNormal();
-							break;
-						case NORMAL:
-							totalNormal += drop.getNormal();
-							break;
-						case SKILLAPI:
-							totalSkillapi += drop.getNormal();
-							break;
-						default:
-							// Convert option not set
-							return false;
-					}
-					ret = true;
-				}
-				if (drop.getSkillApi() > 0) {
-					switch (convertSkillapi) {
-						case PARTY:
-							totalParty += drop.getSkillApi();
-							break;
-						case NORMAL:
-							totalNormal += drop.getSkillApi();
-							break;
-						case SKILLAPI:
-							totalSkillapi += drop.getSkillApi();
-							break;
-						default:
-							// Convert option not set
-							return false;
-					}
-					ret = true;
-				}
 				
-				// Send experience
-				if (totalParty > 0) {
-					// If sent to the party, don't share experience
-					party.giveExperience(totalParty);
+				// Calling API event
+				BukkitPartiesPartyPreExperienceDropEvent partiesPreExperienceDropEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartyPreExperienceDropEvent(party, drop.getKiller(), drop.getEntityKilled(), drop.getNormal(), drop.getSkillApi());
+				plugin.getEventManager().callEvent(partiesPreExperienceDropEvent);
+				if (!partiesPreExperienceDropEvent.isCancelled()) {
+					drop.setNormal(partiesPreExperienceDropEvent.getNormalExperience());
+					drop.setSkillApi(partiesPreExperienceDropEvent.getSkillApiExperience());
 					
-					user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
-							.replace("%exp%", Integer.toString(totalParty)), drop.getKiller()), true);
-				}
-				if (totalNormal > 0 && !shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL)) {
-					player.giveExp(totalNormal);
-				}
-				if (totalSkillapi > 0 && !shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI)) {
-					SkillAPIHandler.giveExp(player.getUniqueId(), totalSkillapi);
+					if (drop.getNormal() > 0) {
+						switch (convertNormal) {
+							case PARTY:
+								totalParty += drop.getNormal();
+								break;
+							case NORMAL:
+								totalNormal += drop.getNormal();
+								break;
+							case SKILLAPI:
+								totalSkillapi += drop.getNormal();
+								break;
+							default:
+								// Convert option not set
+								return false;
+						}
+						ret = true;
+					}
+					if (drop.getSkillApi() > 0) {
+						switch (convertSkillapi) {
+							case PARTY:
+								totalParty += drop.getSkillApi();
+								break;
+							case NORMAL:
+								totalNormal += drop.getSkillApi();
+								break;
+							case SKILLAPI:
+								totalSkillapi += drop.getSkillApi();
+								break;
+							default:
+								// Convert option not set
+								return false;
+						}
+						ret = true;
+					}
+					
+					// Send experience
+					if (totalParty > 0) {
+						// If sent to the party, don't share experience
+						party.giveExperience(totalParty);
+						
+						user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
+								.replace("%exp%", Integer.toString(totalParty)), drop.getKiller(), party), true);
+						
+						// Calling API event
+						BukkitPartiesPartyGetExperienceEvent partiesPartyGetExperienceEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartyGetExperienceEvent(party, totalParty, drop.getKiller());
+						plugin.getEventManager().callEvent(partiesPartyGetExperienceEvent);
+					}
+					if (totalNormal > 0 && !shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL)) {
+						player.giveExp(totalNormal);
+					}
+					if (totalSkillapi > 0 && !shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI)) {
+						SkillAPIHandler.giveExp(player.getUniqueId(), totalSkillapi);
+					}
 				}
 			}
 		}
@@ -128,62 +148,77 @@ public class ExpManager {
 	private boolean shareExperience(int experience, PartyPlayerImpl killer, PartyImpl party, Entity killedMob, ExpConvert type) {
 		boolean ret = false;
 		if (BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_ENABLE) {
-			List<PartyPlayerImpl> playersToShare = new ArrayList<>();
+			List<Pair<PartyPlayerImpl, Integer>> playersToShare = new ArrayList<>();
 			Location mobKilledLocation = killedMob.getLocation();
 			
 			// Get nearest player
 			for (PartyPlayer player : party.getOnlineMembers(true)) {
 				try {
-					if (player.getPlayerUUID().equals(killer.getPlayerUUID())
-							|| (Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation) <= rangeSquared)) {
-						playersToShare.add((PartyPlayerImpl) player);
+					if (player.getPlayerUUID().equals(killer.getPlayerUUID())) {
+						double distance = Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation);
+						if (distance <= rangeSquared) {
+							playersToShare.add(new Pair<>((PartyPlayerImpl) player, (int) distance));
+						}
 					}
-				} catch (IllegalArgumentException ignored) {
-				} // Ignoring different world
+				} catch (IllegalArgumentException ignored) {} // Ignoring different world
 			}
 			
 			if (playersToShare.size() > BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN) {
 				// Calculate experience for each player
-				String formula = BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA
+				String formulaKiller = BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA_KILLER
+						.replace("%exp%", Integer.toString(experience))
+						.replace("%number_players%", Integer.toString(playersToShare.size()))
+						.replace("%level%", Integer.toString(party.getLevel()));
+				String formulaOthers = BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA_OTHERS
 						.replace("%exp%", Integer.toString(experience))
 						.replace("%number_players%", Integer.toString(playersToShare.size()))
 						.replace("%level%", Integer.toString(party.getLevel()));
 				try {
-					int singlePlayerExperience = (int) calculateExpression(formula);
-					
-					for (PartyPlayerImpl player : playersToShare) {
-						Player bukkitPlayer = Bukkit.getPlayer(player.getPlayerUUID());
-						User user = plugin.getPlayer(player.getPlayerUUID());
+					for (Pair<PartyPlayerImpl, Integer> pShare : playersToShare) {
+						Player bukkitPlayer = Bukkit.getPlayer(pShare.getKey().getPlayerUUID());
+						User user = plugin.getPlayer(pShare.getKey().getPlayerUUID());
 						if (bukkitPlayer != null && user != null) {
+							int effectiveExperience;
+							if (pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID())) {
+								effectiveExperience = (int) Double.parseDouble(FormulaUtils.calculate(formulaKiller
+										.replace("%distance%", Integer.toString(pShare.getValue()))));
+							} else {
+								effectiveExperience = (int) Double.parseDouble(FormulaUtils.calculate(formulaOthers
+										.replace("%distance%", Integer.toString(pShare.getValue()))));
+							}
+							
 							String message = "";
 							switch (type) {
 								case NORMAL:
-									bukkitPlayer.giveExp(singlePlayerExperience);
-									message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_OTHERS;
+									bukkitPlayer.giveExp(effectiveExperience);
+									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_OTHERS;
 									break;
 								case SKILLAPI:
-									SkillAPIHandler.giveExp(player.getPlayerUUID(), singlePlayerExperience);
-									message = player.getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+									SkillAPIHandler.giveExp(pShare.getKey().getPlayerUUID(), effectiveExperience);
+									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+									break;
+								case MMOCORE:
+									MMOCoreHandler.giveExp(pShare.getKey().getPlayerUUID(), bukkitPlayer.getLocation(), effectiveExperience);
 									break;
 								default:
 									// Nothing to do
 									break;
 							}
 							
-							user.sendMessage(plugin.getMessageUtils().convertPlayerPlaceholders(message
-											.replace("%exp%", Integer.toString(singlePlayerExperience))
+							user.sendMessage(plugin.getMessageUtils().convertPlaceholders(message
+											.replace("%exp%", Integer.toString(effectiveExperience))
 											.replace("%total_exp%", Integer.toString(experience))
-									, killer), true);
+									, killer, party), true);
 							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_SENT
-									.replace("{exp}", Integer.toString(singlePlayerExperience))
+									.replace("{exp}", Integer.toString(effectiveExperience))
 									.replace("{type}", type.name())
-									.replace("{player}", player.getName()), true);
+									.replace("{player}", pShare.getKey().getName()), true);
 						}
 					}
 					ret = true;
 				} catch (Exception ex) {
 					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_EXP_EXPRESSIONERROR
-							.replace("{value}", formula)
+							.replace("{value}", String.format("\"%s\" and \"%s\"", formulaKiller, formulaOthers))
 							.replace("{message}", ex.getMessage()));
 				}
 			}
@@ -202,9 +237,6 @@ public class ExpManager {
 				case FIXED:
 					ret = calculateLevelFixed(experience);
 					break;
-				case CUSTOM:
-					ret = calculateLevelCustom(experience);
-					break;
 				default:
 					// Nothing to do
 					break;
@@ -216,19 +248,24 @@ public class ExpManager {
 	private ExpResult calculateLevelProgressive(double experience) throws Exception {
 		ExpResult ret = new ExpResult();
 		int levelCount = 1;
-		double progessiveLevelExp = BukkitConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
-		double total = progessiveLevelExp;
+		double progressiveLevelExp = BukkitConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
+		double total = progressiveLevelExp;
 		while (experience >= total) {
 			// Calculate new level exp
-			progessiveLevelExp = calculateExpression(Double.toString(progessiveLevelExp).concat(BukkitConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_MULTIPLIER));
+			progressiveLevelExp = Double.parseDouble(FormulaUtils.calculate(
+					BukkitConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP
+							.replace("%previous%", Double.toString(progressiveLevelExp))
+			));
 			// Add new level exp to the total
-			total = total + progessiveLevelExp;
+			total = total + progressiveLevelExp;
 			levelCount++;
 		}
 		
 		ret.setLevel(levelCount);
-		ret.setCurrentExperience((int) (experience - (total - progessiveLevelExp)));
-		ret.setNecessaryExperience((int) (progessiveLevelExp));
+		
+		ret.setLevelExperience((int) (progressiveLevelExp));
+		ret.setCurrentExperience((int) (experience - (total - progressiveLevelExp)));
+		ret.setNecessaryExperience((int) (progressiveLevelExp - ret.getCurrentExperience()));
 		return ret;
 	}
 	
@@ -242,50 +279,27 @@ public class ExpManager {
 			
 			if (experience < total) {
 				ret.setLevel(levelCount);
+				ret.setLevelExperience(level.intValue());
 				ret.setCurrentExperience((int) (experience - (total - level)));
-				ret.setNecessaryExperience(level.intValue());
+				ret.setNecessaryExperience((int) (level - ret.getCurrentExperience()));
 				break;
 			}
 		}
 		return ret;
 	}
 	
-	private ExpResult calculateLevelCustom(double experience) throws Exception {
-		ExpResult ret = new ExpResult();
-		if (experience > 0) {
-			ret.setLevel((int) calculateExpression(BukkitConfigMain.ADDITIONAL_EXP_LEVELS_CUSTOM_FORMULA
-					.replace("%total_exp%", Double.toString(experience))));
-		}
-		return ret;
-	}
-	
-	
-	private double calculateExpression(String expression) throws Exception {
-		return Double.valueOf(new ScriptEngineManager().getEngineByName("nashorn").eval(expression).toString());
-	}
-	
 	public enum ExpMode {
-		PROGRESSIVE, FIXED, CUSTOM;
+		PROGRESSIVE, FIXED;
 		
 		public static ExpMode parse(String name) {
-			ExpMode ret;
-			switch (name.toLowerCase(Locale.ENGLISH)) {
-				case "fixed":
-					ret = FIXED;
-					break;
-				case "custom":
-					ret = CUSTOM;
-					break;
-				default:
-					ret = PROGRESSIVE;
-					break;
-			}
-			return ret;
+			if (CommonUtils.toLowerCase(name).equals("fixed"))
+				return FIXED;
+			return PROGRESSIVE;
 		}
 	}
 	
 	public enum ExpConvert {
-		NORMAL, SKILLAPI, PARTY;
+		PARTY, NORMAL, SKILLAPI, MMOCORE;
 		
 		public static ExpConvert parse(String name) {
 			ExpConvert ret;
@@ -295,6 +309,9 @@ public class ExpManager {
 					break;
 				case "skillapi":
 					ret = SKILLAPI;
+					break;
+				case "mmocore":
+					ret = MMOCORE;
 					break;
 				default:
 					ret = PARTY;

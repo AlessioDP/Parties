@@ -5,19 +5,31 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
 public abstract class CommandTeleport extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandTeleport(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.TELEPORT,
+				PartiesPermission.USER_TELEPORT,
+				ConfigMain.COMMANDS_CMD_TELEPORT,
+				false
+		);
+		
+		syntax = baseSyntax();
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_TELEPORT;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_TELEPORT;
 	}
 	
 	@Override
@@ -26,12 +38,12 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.TELEPORT.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.TELEPORT);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
-		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName());
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 			return false;

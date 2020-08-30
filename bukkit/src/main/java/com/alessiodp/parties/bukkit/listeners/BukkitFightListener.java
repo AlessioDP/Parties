@@ -9,7 +9,7 @@ import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesCombustFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireBlockedEvent;
@@ -41,7 +41,7 @@ public class BukkitFightListener implements Listener {
 	
 	@EventHandler (ignoreCancelled = true)
 	public void onPlayerHit(EntityDamageByEntityEvent event) {
-		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE && event.getEntity() instanceof Player) {
+		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE && event.getEntity() instanceof Player) {
 			Player victim = (Player) event.getEntity();
 			Player attacker = null;
 			DamageType type = DamageType.UNSUPPORTED;
@@ -94,10 +94,10 @@ public class BukkitFightListener implements Listener {
 						// Friendly fire not allowed here
 						PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
 						PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
-						BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
+						BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 						
 						if (party != null
-								&& ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())
+								&& ppVictim.getPartyId().equals(ppAttacker.getPartyId())
 								&& party.isFriendlyFireProtected()
 								&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 							// Calling API event
@@ -108,7 +108,7 @@ public class BukkitFightListener implements Listener {
 								// Friendly fire confirmed
 								User userAttacker = plugin.getPlayer(attacker.getUniqueId());
 								userAttacker.sendMessage(
-										plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
+										plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
 										, true);
 								party.warnFriendlyFire(ppVictim, ppAttacker);
 								
@@ -130,12 +130,12 @@ public class BukkitFightListener implements Listener {
 	}
 	@EventHandler (ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
-		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
+		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
 				&& event.getEntity() instanceof Player
 				&& event.getPotion().getShooter() instanceof Player) {
 			Player attacker = (Player) event.getPotion().getShooter();
 			PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
-			BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
+			BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 			
 			if (party != null && party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 				boolean cancel = false;
@@ -165,7 +165,7 @@ public class BukkitFightListener implements Listener {
 							Player victim = (Player) e;
 							if (!attacker.equals(victim)) {
 								PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
-								if (ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())) {
+								if (ppVictim.getPartyId() != null && ppVictim.getPartyId().equals(ppAttacker.getPartyId())) {
 									// Calling API event
 									BukkitPartiesPotionsFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesPotionsFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 									plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
@@ -174,7 +174,7 @@ public class BukkitFightListener implements Listener {
 										// Friendly fire confirmed
 										User userAttacker = plugin.getPlayer(attacker.getUniqueId());
 										userAttacker.sendMessage(
-												plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
+												plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
 												, true);
 										party.warnFriendlyFire(ppVictim, ppAttacker);
 										
@@ -198,7 +198,7 @@ public class BukkitFightListener implements Listener {
 	}
 	@EventHandler (ignoreCancelled = true)
 	public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
-		if (BukkitConfigParties.FRIENDLYFIRE_ENABLE
+		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
 				&& event.getEntity() instanceof Player
 				&& event.getCombuster() instanceof Projectile
 				&& ((Projectile) event.getCombuster()).getShooter() instanceof Player) {
@@ -210,10 +210,10 @@ public class BukkitFightListener implements Listener {
 				// Friendly fire not allowed here
 				PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
 				PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());
-				BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyName());
+				BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 				
 				if (party != null
-						&& ppVictim.getPartyName().equalsIgnoreCase(ppAttacker.getPartyName())
+						&& ppVictim.getPartyId().equals(ppAttacker.getPartyId())
 						&& party.isFriendlyFireProtected()
 						&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 					// Calling API event
@@ -224,7 +224,7 @@ public class BukkitFightListener implements Listener {
 						// Friendly fire confirmed
 						User userAttacker = plugin.getPlayer(attacker.getUniqueId());
 						userAttacker.sendMessage(
-								plugin.getMessageUtils().convertAllPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, party, ppAttacker)
+								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
 								, true);
 						party.warnFriendlyFire(ppVictim, ppAttacker);
 						
@@ -246,22 +246,22 @@ public class BukkitFightListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onEntityDieKill(EntityDeathEvent event) {
-		if (BukkitConfigParties.KILLS_ENABLE
+		if (BukkitConfigParties.ADDITIONAL_KILLS_ENABLE
 				&& event.getEntity().getKiller() != null) {
 			Player killer = event.getEntity().getKiller();
 			PartyPlayerImpl ppKiller = plugin.getPlayerManager().getPlayer(killer.getUniqueId());
 			
-			if (!ppKiller.getPartyName().isEmpty()) {
-				PartyImpl party = plugin.getPartyManager().getParty(ppKiller.getPartyName());
+			PartyImpl party = plugin.getPartyManager().getParty(ppKiller.getPartyId());
+			if (party != null) {
 				boolean gotKill = false;
 				
-				if (BukkitConfigParties.KILLS_MOB_HOSTILE
+				if (BukkitConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE
 						&& event.getEntity() instanceof Monster)
 					gotKill = true;
-				else if (BukkitConfigParties.KILLS_MOB_NEUTRAL
+				else if (BukkitConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL
 						&& event.getEntity() instanceof Animals)
 					gotKill = true;
-				else if (BukkitConfigParties.KILLS_MOB_PLAYERS
+				else if (BukkitConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS
 						&& event.getEntity() instanceof Player)
 					gotKill = true;
 				
@@ -278,19 +278,18 @@ public class BukkitFightListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerGotHit(EntityDamageByEntityEvent event) {
-		if (event.getEntity() instanceof Player && BukkitConfigParties.HOME_HIT) {
+		if (event.getEntity() instanceof Player && BukkitConfigParties.ADDITIONAL_HOME_CANCEL_HIT) {
 			// Make it async
 			plugin.getScheduler().runAsync(() -> {
 				BukkitPartyPlayerImpl partyPlayer = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(event.getEntity().getUniqueId());
 				// Check if the player is on home cooldown
-				if (partyPlayer.getHomeDelayTask() != null) {
+				if (partyPlayer.getHomeTeleporting() != null) {
 					// Cancelling home task
-					partyPlayer.getHomeDelayTask().cancel();
-					partyPlayer.setHomeDelayTask(null);
+					partyPlayer.getHomeTeleporting().cancel();
 					
 					User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
 					user.sendMessage(
-							plugin.getMessageUtils().convertPlayerPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer)
+							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null)
 							, true);
 					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT
 							.replace("{player}", partyPlayer.getName()), true);

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>parties</artifactId>
+		<groupId>com.alessiodp.parties</groupId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>output</artifactId>
+	
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+	
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<directory>${basedir}/target</directory>
+		<finalName>${project.parent.name}-${project.version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${maven.shade.version}</version>
+				<configuration>
+					<artifactSet>
+						<includes>
+							<include>com.alessiodp.parties:*</include>
+							<include>com.alessiodp.core:*</include>
+						</includes>
+					</artifactSet>
+					<relocations>
+						<relocation>
+							<pattern>com.alessiodp.core</pattern>
+							<shadedPattern>com.alessiodp.parties.core</shadedPattern>
+						</relocation>
+						<!-- ADP Core relocations -->
+						<relocation>
+							<pattern>net.byteflux.libby</pattern>
+							<shadedPattern>com.alessiodp.parties.core.common.addons.external.libby</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>ninja.leaping.configurate</pattern>
+							<shadedPattern>com.alessiodp.parties.libs.configurate</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>com.zaxxer.hikari</pattern>
+							<shadedPattern>com.alessiodp.parties.libs.hikari</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>org.jdbi</pattern>
+							<shadedPattern>com.alessiodp.parties.libs.jdbi</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>org.reflections</pattern>
+							<shadedPattern>com.alessiodp.parties.libs.reflections</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.alessiodp.parties</groupId>
+			<artifactId>parties-common</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alessiodp.parties</groupId>
+			<artifactId>parties-bukkit</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alessiodp.parties</groupId>
+			<artifactId>parties-bungeecord</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>
