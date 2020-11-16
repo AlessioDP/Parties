@@ -7,6 +7,7 @@ import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.sql.migrator.Migrator;
 import com.alessiodp.core.common.user.OfflineUser;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -370,6 +371,25 @@ public class FileDispatcherTest {
 	private PartyPlayerImpl initializePlayer(UUID uuid) {
 		return new PartyPlayerImpl(mockPlugin, uuid) {
 			@Override
+			public void playSound(String sound, double volume, double pitch) {
+				// Nothing to do
+			}
+			
+			@Override
+			public void playChatSound() {
+				// Nothing to do
+			}
+			
+			@Override
+			public void playBroadcastSound() {
+				// Nothing to do
+			}
+			
+			@Override
+			public void callChange() {
+				// Nothing to do
+			}
+			@Override
 			public boolean isVanished() {
 				return false;
 			}
@@ -380,6 +400,16 @@ public class FileDispatcherTest {
 		return new PartyImpl(mockPlugin, id) {
 			@Override
 			public void callChange() {
+				// Nothing to do
+			}
+			
+			@Override
+			public void sendExperiencePacket(double newExperience, PartyPlayer killer) {
+				// Nothing to do
+			}
+			
+			@Override
+			public void sendLevelUpPacket(int newLevel) {
 				// Nothing to do
 			}
 		};

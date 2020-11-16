@@ -53,8 +53,10 @@ public class BungeeFollowListener implements Listener {
 									&& !member.getUUID().equals(player.getPlayerUUID())
 									&& !member.getServerName().equals(serverInfo.getName())) {
 								
-								member.sendMessage(BungeeMessages.OTHER_FOLLOW_SERVER
-										.replace("%server%", serverInfo.getName()), true);
+								member.sendMessage(plugin.getMessageUtils().convertPlaceholders(BungeeMessages.OTHER_FOLLOW_SERVER
+												.replace("%server%", serverInfo.getName()),
+										player, party
+								), true);
 								member.connectTo(serverInfo);
 								
 								if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {

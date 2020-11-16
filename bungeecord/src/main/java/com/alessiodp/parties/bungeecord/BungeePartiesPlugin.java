@@ -13,6 +13,7 @@ import com.alessiodp.parties.bungeecord.events.BungeeEventManager;
 import com.alessiodp.parties.bungeecord.listeners.BungeeChatListener;
 import com.alessiodp.parties.bungeecord.listeners.BungeeFollowListener;
 import com.alessiodp.parties.bungeecord.listeners.BungeeJoinLeaveListener;
+import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessenger;
 import com.alessiodp.parties.bungeecord.parties.BungeePartyManager;
 import com.alessiodp.parties.bungeecord.players.BungeePlayerManager;
@@ -21,6 +22,7 @@ import com.alessiodp.parties.bungeecord.utils.BungeeMessageUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.CooldownManager;
+import com.alessiodp.parties.common.parties.ExpManager;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -56,11 +58,13 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 		addonManager = new BungeePartiesAddonManager(this);
 		cooldownManager = new CooldownManager(this);
 		economyManager = new BungeeEconomyManager(this);
+		expManager = new ExpManager(this);
 		eventManager = new BungeeEventManager(this);
 		
 		super.postHandle();
 		
 		new BungeeMetricsHandler(this);
+		((BungeePartiesConfigurationManager) getConfigurationManager()).makeConfigsSync();
 	}
 	
 	@Override
@@ -81,6 +85,13 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 		pm.registerListener(plugin, new BungeeChatListener(this));
 		pm.registerListener(plugin, new BungeeFollowListener(this));
 		pm.registerListener(plugin, new BungeeJoinLeaveListener(this));
+	}
+	
+	@Override
+	public void reloadConfiguration() {
+		super.reloadConfiguration();
+		
+		((BungeePartiesConfigurationManager) getConfigurationManager()).makeConfigsSync();
 	}
 	
 	@Override

@@ -59,6 +59,6 @@ public class CommandVersion extends PartiesSubCommand {
 		sendMessage(sender, partyPlayer, message
 				.replace("%version%", version)
 				.replace("%newversion%", newVersion)
-				.replace("%platform%", plugin.getPlatform()));
+				.replace("%platform%", plugin.getPlatform().getName()));
 	}
 }

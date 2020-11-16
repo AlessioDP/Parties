@@ -80,8 +80,7 @@ public class CooldownManager {
 					}
 				}
 				
-				plugin.getLoggerManager().logDebug(debugMessage
-						.replace("{uuid}", player.toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(debugMessage, player.toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}
@@ -110,8 +109,7 @@ public class CooldownManager {
 			plugin.getScheduler().scheduleAsyncLater(() -> {
 				chatCooldown.remove(player);
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_CHAT_EXPIRED
-						.replace("{uuid}", player.toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_CHAT_EXPIRED, player.toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}
@@ -140,8 +138,7 @@ public class CooldownManager {
 			plugin.getScheduler().scheduleAsyncLater(() -> {
 				renameCooldown.remove(party.getId());
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_RENAME_EXPIRED
-						.replace("{uuid}", party.getId().toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_RENAME_EXPIRED, party.getId().toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}
@@ -162,8 +159,7 @@ public class CooldownManager {
 			plugin.getScheduler().scheduleAsyncLater(() -> {
 				teleportCooldown.remove(player);
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_EXPIRED
-						.replace("{uuid}", player.toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_EXPIRED, player.toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}

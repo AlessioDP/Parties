@@ -207,12 +207,9 @@ public class CommandRename extends PartiesSubCommand {
 			party.broadcastMessage(Messages.MAINCMD_RENAME_BROADCAST
 					.replace("%old%", oldPartyName), partyPlayer);
 			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RENAME,
-					sender.getName(), oldPartyName, party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RENAME, sender.getName(), oldPartyName, party.getName()), true);
 		} else {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_RENAMEEVENT_DENY
-					.replace("{party}", partyName)
-					.replace("{player}", sender.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_RENAMEEVENT_DENY, party.getName(), oldPartyName, sender.getUUID().toString()), true);
 		}
 	}
 }

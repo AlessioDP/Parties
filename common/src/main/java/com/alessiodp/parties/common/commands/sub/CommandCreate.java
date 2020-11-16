@@ -238,9 +238,7 @@ public class CommandCreate extends PartiesSubCommand {
 			IPartyPostCreateEvent partiesPostEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostCreateEvent(partyPlayer, party);
 			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostEvent);
 		} else {
-			plugin.getLoggerManager().log(PartiesConstants.DEBUG_API_CREATEEVENT_DENY
-					.replace("{party}", partyName)
-					.replace("{player}", sender.getName()), true);
+			plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_CREATEEVENT_DENY, partyName, sender.getName(), sender.getUUID().toString()), true);
 		}
 	}
 }

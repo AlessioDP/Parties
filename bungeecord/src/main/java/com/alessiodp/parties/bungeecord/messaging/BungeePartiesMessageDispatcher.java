@@ -1,0 +1,95 @@
+package com.alessiodp.parties.bungeecord.messaging;
+
+import com.alessiodp.core.bungeecord.messaging.BungeeMessageDispatcher;
+import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
+import com.alessiodp.parties.common.messaging.PartiesPacket;
+import com.alessiodp.parties.common.parties.objects.PartyImpl;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import lombok.NonNull;
+
+
+public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
+	public BungeePartiesMessageDispatcher(@NonNull ADPPlugin plugin) {
+		super(plugin, false);
+	}
+	
+	public void sendUpdateParty(PartyImpl party) {
+		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
+			.setPartyId(party.getId())
+		);
+	}
+	
+	public void sendUpdatePlayer(PartyPlayerImpl partyPlayer) {
+		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PLAYER)
+				.setPlayerUuid(partyPlayer.getPartyId())
+		);
+	}
+	
+	public void sendLoadParty(PartyImpl party) {
+		sendPacket(makePacket(PartiesPacket.PacketType.LOAD_PARTY)
+				.setPartyId(party.getId())
+		);
+	}
+	
+	public void sendLoadPlayer(PartyPlayerImpl partyPlayer) {
+		sendPacket(makePacket(PartiesPacket.PacketType.LOAD_PLAYER)
+				.setPlayerUuid(partyPlayer.getPartyId())
+		);
+	}
+	
+	public void sendUnloadParty(PartyImpl party) {
+		sendPacket(makePacket(PartiesPacket.PacketType.UNLOAD_PARTY)
+				.setPartyId(party.getId())
+		);
+	}
+	
+	public void sendUnloadPlayer(PartyPlayerImpl partyPlayer) {
+		sendPacket(makePacket(PartiesPacket.PacketType.UNLOAD_PLAYER)
+				.setPlayerUuid(partyPlayer.getPartyId())
+		);
+	}
+	
+	public void sendRenameParty(PartyImpl party) {
+		sendPacket(makePacket(PartiesPacket.PacketType.RENAME_PARTY)
+				.setPartyId(party.getId())
+		);
+	}
+	
+	public void sendPlaySound(User user, byte[] raw) {
+		sendPacketToUser(makePacket(PartiesPacket.PacketType.PLAY_SOUND)
+				.setPlayerUuid(user.getUUID())
+				.setPayloadRaw(raw)
+				, user
+		);
+	}
+	
+	public void sendPartyExperience(PartyImpl party, PartyPlayerImpl killer, double experience) {
+		// Not duplication: this is used to make an event in bukkit servers
+		sendPacket(makePacket(PartiesPacket.PacketType.EXPERIENCE)
+				.setPartyId(party.getId())
+				.setPlayerUuid(killer.getPlayerUUID())
+				.setPayloadNumber(experience)
+		);
+	}
+	
+	public void sendLevelUp(PartyImpl party, int newLevel) {
+		sendPacket(makePacket(PartiesPacket.PacketType.LEVEL_UP)
+				.setPartyId(party.getId())
+				.setPayloadNumber(newLevel)
+		);
+	}
+	
+	public void sendConfigs() {
+		sendPacket(makePacket(PartiesPacket.PacketType.CONFIGS)
+				.setPayloadRaw(((PartiesConfigurationManager) plugin.getConfigurationManager()).makeConfigsPacket()));
+	}
+	
+	private PartiesPacket makePacket(PartiesPacket.PacketType type) {
+		return new PartiesPacket(plugin.getVersion()).setType(type);
+	}
+}

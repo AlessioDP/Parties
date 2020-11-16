@@ -36,19 +36,18 @@ parties:
   hook-into-skript: true
 
   # [Enable BungeeCord support]
+  # If you are using Parties on BungeeCord you should enable this option.
+  # With this option enabled, THIS Parties won't directly handle player actions
   # wip bungeecord settings
   bungeecord:
-    # Sync Parties plugins that are installed into your bungeecord server
-    # You don't need to install it into Bungeecord too
-    # This will let you synchronize database between different servers
-    # Edit server-name to use it in permissions and server-id to use it as placeholder
     enable: false
     server-name: ServerName
     server-id: server
-    # Choose which things dispatch between servers
-    dispatch:
-      broadcasts: true
-      chat: true
+    # Experts only!
+    # The plugin will sync some options with BungeeCord Parties
+    # You can disable it to increase performances a bit
+    # Do not do that if you are using: exp system
+    config-sync: true
 
 
 # / =============================== \
@@ -117,7 +116,7 @@ additional:
   # The default example will allows any command except /party, /pay and /money
   auto-command:
     enable: false
-    regex-whitelist: '^(?!(\/party|\/pay|\/money)).*'
+    regex-whitelist: '^(\/join|\/anothercommand).*'
 
   # [Exp system]
   # Full documentation here: https://alessiodp.com/docs/parties/explevels/
@@ -140,14 +139,20 @@ additional:
 
       # [Fixed mode]
       # Make a complete list of finite party levels
-      # Example: Level 1 is 100, Level 2 is 600, Level 3 is 1600
+      # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
+      #
+      # repeat-last-one =>  Should the last one end the number of levels?
+      #                     If on true, the number of levels will be infinite
+      #                     Otherwise the party will reach that level as maximum
       fixed:
-        - 50
-        - 100
-        - 200
-        - 350
-        - 650
-        - 900
+        repeat-last-one: true
+        list:
+          - 50
+          - 100
+          - 200
+          - 350
+          - 650
+          - 900
 
 
     # [Exp dropping]
@@ -162,6 +167,8 @@ additional:
         enable: false
         if-more-than: 1
         range: 30
+        # Convert numbers from 10.1234 to 10
+        round-exp-drop: true
         # Use JavaScript here
         # Special tags:
         # => %exp%:             Dropped mob experience
@@ -407,4 +414,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 8
+  version: 9

@@ -67,7 +67,7 @@ public abstract class PlayerManager {
 			unloadPlayer(uuid);
 			loadPlayer(uuid);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_RELOADED, true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_RELOADED, uuid.toString()), true);
 			return true;
 		}
 		return false;
@@ -77,9 +77,8 @@ public abstract class PlayerManager {
 		PartyPlayerImpl ret = getCachePlayers().get(uuid);
 		if (ret != null) {
 			// Get player from online list
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_LIST
-					.replace("{player}", ret.getName())
-					.replace("{party}", ret.getPartyId() != null ? ret.getPartyId().toString() : "none"), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_LIST, ret.getName(),
+					ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
 		} else {
 			// Get player from database
 			ret = plugin.getDatabaseManager().getPlayer(uuid);
@@ -87,12 +86,10 @@ public abstract class PlayerManager {
 			// Load new player
 			if (ret == null) {
 				ret = initializePlayer(uuid);
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_NEW
-						.replace("{player}", ret.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_NEW, ret.getName()), true);
 			} else {
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_GET_DATABASE
-						.replace("{player}", ret.getName())
-						.replace("{party}", ret.getPartyId() != null ? ret.getPartyId().toString() : "none"), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_DATABASE, ret.getName(),
+						ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
 			}
 		}
 		return ret;

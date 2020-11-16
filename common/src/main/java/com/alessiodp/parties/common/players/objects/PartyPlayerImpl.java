@@ -88,6 +88,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			
 			if (saveToDatabase)
 				updatePlayer();
+			callChange();
 			lock.unlock();
 		}
 	}
@@ -108,26 +109,19 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			pendingInvites.clear();
 		});
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN
-				.replace("{player}", getName())
-				.replace("{uuid}", getPlayerUUID().toString())
-				.replace("{party}", getPartyId().toString()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN, getName(), getPartyId().toString(), getPlayerUUID().toString()), true);
 	}
 	
 	public void removeFromParty(boolean saveToDatabase) {
 		String oldPartyId = partyId.toString();
 		updateValue(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_CLEANUP
-					.replace("{player}", getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_CLEANUP, getName()), true);
 			rank = ConfigParties.RANK_SET_DEFAULT;
 			partyId = null;
 			chatParty = false;
 		}, saveToDatabase);
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE
-				.replace("{player}", getName())
-				.replace("{uuid}", getPlayerUUID().toString())
-				.replace("{party}", oldPartyId), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId, getPlayerUUID().toString()), true);
 	}
 	
 	@Override
@@ -229,6 +223,12 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			player.sendTitle(message, ConfigParties.GENERAL_BROADCAST_FADE_IN_TIME, ConfigParties.GENERAL_BROADCAST_SHOW_TIME, ConfigParties.GENERAL_BROADCAST_FADE_OUT_TIME);
 		}
 	}
+	
+	public abstract void playSound(String sound, double volume, double pitch);
+	
+	public abstract void playChatSound();
+	
+	public abstract void playBroadcastSound();
 	
 	/**
 	 * Perform a party message
@@ -355,6 +355,11 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		
 		return ret;
 	}
+	
+	/**
+	 * This method is called when something related to the player is changed
+	 */
+	public abstract void callChange();
 	
 	/**
 	 * Is the player invisible?

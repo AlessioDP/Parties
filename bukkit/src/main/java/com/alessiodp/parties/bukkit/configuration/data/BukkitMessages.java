@@ -27,8 +27,6 @@ public class BukkitMessages extends Messages {
 	@ConfigOption(path = "additional-commands.claim.claim-no-exists")
 	public static String ADDCMD_CLAIM_CLAIMNOEXISTS;
 	
-	@ConfigOption(path = "additional-commands.exp.party.gained")
-	public static String ADDCMD_EXP_PARTY_GAINED;
 	@ConfigOption(path = "additional-commands.exp.normal.gained-killer")
 	public static String ADDCMD_EXP_NORMAL_GAINED_KILLER;
 	@ConfigOption(path = "additional-commands.exp.normal.gained-others")

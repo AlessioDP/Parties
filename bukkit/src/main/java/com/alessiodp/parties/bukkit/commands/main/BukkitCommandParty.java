@@ -20,31 +20,33 @@ public class BukkitCommandParty extends CommandParty {
 		
 		description = BukkitConfigMain.COMMANDS_DESC_PARTY;
 		
-		// Claim
-		if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE)
-			super.register(new BukkitCommandClaim(plugin, this));
-		
-		// Confirm
-		if (BukkitConfigMain.ADDONS_VAULT_ENABLE && BukkitConfigMain.ADDONS_VAULT_CONFIRM_ENABLE)
-			super.register(new BukkitCommandConfirm(plugin, this));
-		
-		
-		// Debug
-		if (ConfigMain.PARTIES_DEBUG_COMMAND)
-			super.register(new BukkitCommandDebug(plugin, this));
-		
-		// Home
-		if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {
-			super.register(new BukkitCommandHome(plugin, this));
-			super.register(new BukkitCommandSetHome(plugin, this));
+		if (!((PartiesPlugin) plugin).isBungeeCordEnabled()) {
+			// Claim
+			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE)
+				super.register(new BukkitCommandClaim(plugin, this));
+			
+			// Confirm
+			if (BukkitConfigMain.ADDONS_VAULT_ENABLE && BukkitConfigMain.ADDONS_VAULT_CONFIRM_ENABLE)
+				super.register(new BukkitCommandConfirm(plugin, this));
+			
+			
+			// Debug
+			if (ConfigMain.PARTIES_DEBUG_COMMAND)
+				super.register(new BukkitCommandDebug(plugin, this));
+			
+			// Home
+			if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {
+				super.register(new BukkitCommandHome(plugin, this));
+				super.register(new BukkitCommandSetHome(plugin, this));
+			}
+			
+			// Protection
+			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command"))
+				super.register(new BukkitCommandProtection(plugin, this));
+			
+			// Teleport
+			if (BukkitConfigParties.ADDITIONAL_TELEPORT_ENABLE)
+				super.register(new BukkitCommandTeleport(plugin, this));
 		}
-		
-		// Protection
-		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command"))
-			super.register(new BukkitCommandProtection(plugin, this));
-		
-		// Teleport
-		if (BukkitConfigParties.ADDITIONAL_TELEPORT_ENABLE)
-			super.register(new BukkitCommandTeleport(plugin, this));
 	}
 }

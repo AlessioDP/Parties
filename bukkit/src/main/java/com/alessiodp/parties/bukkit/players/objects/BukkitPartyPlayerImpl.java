@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
@@ -14,9 +15,13 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 
 
@@ -52,6 +57,44 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 		super.removeFromParty(saveDB);
 	}
 	
+	@Override
+	public void playSound(String sound, double volume, double pitch) {
+		User user = plugin.getPlayer(getPlayerUUID());
+		if (user != null)
+			user.playSound(sound, volume, pitch);
+	}
+	
+	@Override
+	public void playChatSound() {
+		if (ConfigParties.GENERAL_SOUNDS_ON_CHAT_ENABLE) {
+			User user = plugin.getPlayer(getPlayerUUID());
+			if (user != null) {
+				user.playSound(ConfigParties.GENERAL_SOUNDS_ON_CHAT_NAME, ConfigParties.GENERAL_SOUNDS_ON_CHAT_VOLUME, ConfigParties.GENERAL_SOUNDS_ON_CHAT_PITCH);
+			}
+		}
+	}
+	
+	@Override
+	public void playBroadcastSound() {
+		if (ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_ENABLE) {
+			User user = plugin.getPlayer(getPlayerUUID());
+			if (user != null)
+				user.playSound(ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_NAME, ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_VOLUME, ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_PITCH);
+		}
+	}
+	
+	public void playPacketSound(byte[] raw) {
+		try {
+			ByteArrayDataInput input = ByteStreams.newDataInput(raw);
+			String sound = input.readUTF();
+			double volume = input.readDouble();
+			double pitch = input.readDouble();
+			
+			playSound(sound, volume, pitch);
+		} catch (Exception ex) {
+			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_PLAY_SOUND_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+		}
+	}
 	
 	@Override
 	public List<ADPCommand> getAllowedCommands() {
@@ -80,6 +123,11 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 			
 		}
 		return ret;
+	}
+	
+	@Override
+	public void callChange() {
+		// wip maybe do something
 	}
 	
 	@Override

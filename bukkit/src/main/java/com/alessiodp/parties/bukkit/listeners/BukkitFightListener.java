@@ -113,15 +113,9 @@ public class BukkitFightListener implements Listener {
 								party.warnFriendlyFire(ppVictim, ppAttacker);
 								
 								event.setCancelled(true);
-								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
-										.replace("{type}", type.name())
-										.replace("{player}", attacker.getName())
-										.replace("{victim}", victim.getName()), true);
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, type.name(), attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
 							} else
-								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
-										.replace("{type}", type.name())
-										.replace("{player}", attacker.getName())
-										.replace("{victim}", victim.getName()), true);
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, type.name(), attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
 						}
 					}
 				}
@@ -179,15 +173,9 @@ public class BukkitFightListener implements Listener {
 										party.warnFriendlyFire(ppVictim, ppAttacker);
 										
 										event.setIntensity(e, 0);
-										plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
-												.replace("{type}", "potion splash")
-												.replace("{player}", attacker.getName())
-												.replace("{victim}", victim.getName()), true);
+										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "potion splash", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
 									} else
-										plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
-												.replace("{type}", "potion splash")
-												.replace("{player}", attacker.getName())
-												.replace("{victim}", victim.getName()), true);
+										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "potion splash", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
 								}
 							}
 						}
@@ -229,15 +217,9 @@ public class BukkitFightListener implements Listener {
 						party.warnFriendlyFire(ppVictim, ppAttacker);
 						
 						event.setCancelled(true);
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED
-								.replace("{type}", "entity combust")
-								.replace("{player}", attacker.getName())
-								.replace("{victim}", victim.getName()), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "entity combust", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
 					} else
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY
-								.replace("{type}", "entity combust")
-								.replace("{player}", attacker.getName())
-								.replace("{victim}", victim.getName()), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "entity combust", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
 				}
 			}
 			
@@ -268,9 +250,7 @@ public class BukkitFightListener implements Listener {
 				if (gotKill) {
 					party.setKills(party.getKills() + 1);
 					party.updateParty();
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_KILL_ADD
-							.replace("{party}", party.getName())
-							.replace("{player}", killer.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_KILL_ADD, party.getId().toString(), killer.getUniqueId().toString()), true);
 				}
 			}
 		}
@@ -291,8 +271,8 @@ public class BukkitFightListener implements Listener {
 					user.sendMessage(
 							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null)
 							, true);
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT
-							.replace("{player}", partyPlayer.getName()), true);
+					
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT, partyPlayer.getPlayerUUID().toString()), true);
 				}
 			});
 		}

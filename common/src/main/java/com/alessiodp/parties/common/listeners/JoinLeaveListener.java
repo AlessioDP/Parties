@@ -43,17 +43,15 @@ public abstract class JoinLeaveListener {
 					plugin.getPartyManager().getCachePartiesToDelete().get(party.getId()).cancel();
 					plugin.getPartyManager().getCachePartiesToDelete().remove(party.getId());
 					
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_DELETE_STOP
-							.replace("{party}", party.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_DELETE_STOP, party.getName()), true);
 				}
 				
-				if (ConfigParties.ADDITIONAL_MOTD_ENABLE && party.getMotd() != null) {
+				if (ConfigParties.ADDITIONAL_MOTD_ENABLE && party.getMotd() != null && !plugin.isBungeeCordEnabled()) {
 					plugin.getScheduler().scheduleAsyncLater(new MotdTask(plugin, player.getUUID(), partyPlayer.getCreateID()), ConfigParties.ADDITIONAL_MOTD_DELAY, TimeUnit.MILLISECONDS);
 				}
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_JOIN
-						.replace("{player}", player.getName())
-						.replace("{party}", party.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN, player.getName(),
+						party.getId() != null ? (party.getName() + "|" + party.getId().toString()) : "none"), true);
 			} else if (ConfigParties.ADDITIONAL_FIXED_DEFAULT_ENABLE
 					&& player.hasPermission(PartiesPermission.USER_JOINDEFAULT)
 					&& !player.hasPermission(PartiesPermission.ADMIN_JOINDEFAULT_BYPASS)) {
@@ -67,12 +65,10 @@ public abstract class JoinLeaveListener {
 					}
 					
 					partyPlayer.sendMessage(Messages.OTHER_FIXED_DEFAULTJOIN, party);
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_JOIN_DEFAULTJOIN
-							.replace("{player}", player.getName())
-							.replace("{party}", party.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN_DEFAULTJOIN, player.getName(),
+							party.getName() + "|" + party.getId().toString()), true);
 				} else {
-					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_PLAYER_JOIN_DEFAULTFAIL
-							.replace("{party}", ConfigParties.ADDITIONAL_FIXED_DEFAULT_PARTY));
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN_DEFAULTFAIL, ConfigParties.ADDITIONAL_FIXED_DEFAULT_PARTY), true);
 				}
 			}
 			
@@ -81,6 +77,8 @@ public abstract class JoinLeaveListener {
 			}
 			
 			plugin.getLoginAlertsManager().sendAlerts(player);
+			
+			onJoinComplete(partyPlayer);
 		});
 	}
 	
@@ -123,9 +121,7 @@ public abstract class JoinLeaveListener {
 							plugin.getPartyManager().getCachePartiesToDelete().put(party.getId(), ct);
 							removePlFromList = false;
 							
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_DELETE_START
-									.replace("{party}", party.getName())
-									.replace("{value}", Integer.toString(ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY)), true);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_DELETE_START, party.getName(), Integer.toString(ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY)), true);
 						} else
 							plugin.getPartyManager().deleteTimedParty(party.getId(), false);
 					}
@@ -137,6 +133,13 @@ public abstract class JoinLeaveListener {
 			}
 			if (removePlFromList)
 				plugin.getPlayerManager().unloadPlayer(partyPlayer.getPlayerUUID());
+			
+			onLeaveComplete(partyPlayer);
 		});
 	}
+	
+	
+	protected abstract void onJoinComplete(PartyPlayerImpl partyPlayer);
+	
+	protected abstract void onLeaveComplete(PartyPlayerImpl partyPlayer);
 }

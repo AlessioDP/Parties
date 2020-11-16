@@ -3,8 +3,8 @@
 # \ ========================================== /
 #
 # For any problem be sure to:
-# - Read the entire documentation on: https://alessiodp.com/docs/parties/
-# - Join our Discord for further help: https://discord.alessiodp.com/
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
 #
 
 # / =============================== \
@@ -359,6 +359,8 @@ additional-commands:
     skillapi:
       gained-killer: "&bGained %exp% experience for killing the mob"
       gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    level:
+      level-up: "&bParty leveled up to %experience_level%"
 
   follow:
     toggle-on: "&aNow your party members will follow your leader"
@@ -579,4 +581,4 @@ help:
       teleport: 'Teleport your party to you'
 
 dont-edit-this:
-  version: 10
+  version: 11

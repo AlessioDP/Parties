@@ -55,7 +55,7 @@ public class SkillAPIHandler {
 		}
 	}
 	
-	public static void giveExp(UUID player, int experience) {
+	public static void giveExp(UUID player, double experience) {
 		if (active) {
 			SkillAPI.getPlayerData(Bukkit.getOfflinePlayer(player)).giveExp(experience, ExpSource.valueOf(BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE));
 		}

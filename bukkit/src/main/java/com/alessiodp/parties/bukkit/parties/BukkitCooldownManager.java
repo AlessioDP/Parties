@@ -41,8 +41,7 @@ public class BukkitCooldownManager extends CooldownManager {
 			plugin.getScheduler().scheduleAsyncLater(() -> {
 				homeCooldown.remove(player);
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_HOME_EXPIRED
-						.replace("{uuid}", player.toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_EXPIRED, player.toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}
@@ -67,8 +66,7 @@ public class BukkitCooldownManager extends CooldownManager {
 			plugin.getScheduler().scheduleAsyncLater(() -> {
 				setHomeCooldown.remove(player);
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_SETHOME_EXPIRED
-						.replace("{uuid}", player.toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_SETHOME_EXPIRED, player.toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}

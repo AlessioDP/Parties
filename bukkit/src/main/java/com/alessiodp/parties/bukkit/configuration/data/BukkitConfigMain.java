@@ -18,30 +18,14 @@ public class BukkitConfigMain extends ConfigMain {
 	public static boolean		PARTIES_HOOK_INTO_SKRIPT;
 	
 	@ConfigOption(path = "parties.bungeecord.enable")
-	public static boolean		PARTIES_BUNGEECORDSYNC_ENABLE;
+	public static boolean		PARTIES_BUNGEECORD_ENABLE;
 	@ConfigOption(path = "parties.bungeecord.server-name")
 	public static String		PARTIES_BUNGEECORD_SERVER_NAME;
 	@ConfigOption(path = "parties.bungeecord.server-id")
 	public static String		PARTIES_BUNGEECORD_SERVER_ID;
-	@ConfigOption(path = "parties.bungeecord.dispatch.broadcasts")
-	public static boolean		PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS;
-	@ConfigOption(path = "parties.bungeecord.dispatch.chat")
-	public static boolean		PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT;
 	
 	
 	// Additional settings
-	@ConfigOption(path = "additional.exp-system.enable")
-	public static boolean		ADDITIONAL_EXP_ENABLE;
-	@ConfigOption(path = "additional.exp-system.levels.enable")
-	public static boolean		ADDITIONAL_EXP_LEVELS_ENABLE;
-	@ConfigOption(path = "additional.exp-system.levels.mode")
-	public static String		ADDITIONAL_EXP_LEVELS_MODE;
-	@ConfigOption(path = "additional.exp-system.levels.progressive.start-level-experience")
-	public static double		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
-	@ConfigOption(path = "additional.exp-system.levels.progressive.level-experience")
-	public static String		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP;
-	@ConfigOption(path = "additional.exp-system.levels.fixed")
-	public static List<Double>	ADDITIONAL_EXP_LEVELS_FIXED;
 	@ConfigOption(path = "additional.exp-system.exp-drop.enable")
 	public static boolean		ADDITIONAL_EXP_DROP_ENABLE;
 	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.enable")
@@ -50,6 +34,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static int			ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN;
 	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.range")
 	public static int			ADDITIONAL_EXP_DROP_SHARING_RANGE;
+	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.round-exp-drop")
+	public static boolean		ADDITIONAL_EXP_DROP_SHARING_ROUND_EXP_DROP;
 	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.divide-formula-killer")
 	public static String		ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA_KILLER;
 	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.divide-formula-others")

@@ -3,6 +3,7 @@ package com.alessiodp.parties.bukkit.addons.external;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
+import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -83,12 +84,10 @@ public class MythicMobsHandler implements Listener {
 			if (event.getKiller() != null) {
 				PartyPlayerImpl killer = plugin.getPlayerManager().getPlayer(event.getKiller().getUniqueId());
 				if (killer.isInParty()) {
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_MMHANDLING
-							.replace("{name}", event.getMobType().getInternalName())
-							.replace("{player}", killer.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_MMHANDLING, event.getMobType().getInternalName(), killer.getName(), killer.getPlayerUUID().toString()), true);
 					
-					int vanillaExp = 0;
-					int skillapiExp = 0;
+					double vanillaExp = 0;
+					double skillapiExp = 0;
 					
 					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
 						vanillaExp = event.getExp();
@@ -101,7 +100,7 @@ public class MythicMobsHandler implements Listener {
 					}
 					
 					ExpDrop drop = new ExpDrop(killer, killedEntity, vanillaExp, skillapiExp);
-					boolean result = ((BukkitPartiesPlugin) plugin).getExpManager().distributeExp(drop);
+					boolean result = ((BukkitExpManager) plugin.getExpManager()).distributeExp(drop);
 					if (result) {
 						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
 							// Remove exp from the event if hooked

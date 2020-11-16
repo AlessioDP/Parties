@@ -15,6 +15,13 @@ public interface PartiesAPI {
 	void reloadPlugin();
 	
 	/**
+	 * Check if the plugin have BungeeCord option enabled
+	 *
+	 * @return True if BungeeCord support is enabled
+	 */
+	boolean isBungeeCordEnabled();
+	
+	/**
 	 * Create a party
 	 *
 	 * @param party  The party name

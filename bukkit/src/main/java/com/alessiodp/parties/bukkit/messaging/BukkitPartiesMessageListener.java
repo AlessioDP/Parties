@@ -2,8 +2,15 @@ package com.alessiodp.parties.bukkit.messaging;
 
 import com.alessiodp.core.bukkit.messaging.BukkitMessageListener;
 import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
+import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
@@ -14,7 +21,7 @@ import java.util.UUID;
 public class BukkitPartiesMessageListener extends BukkitMessageListener {
 	
 	public BukkitPartiesMessageListener(@NonNull ADPPlugin plugin) {
-		super(plugin);
+		super(plugin, false);
 	}
 	
 	
@@ -23,63 +30,89 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 		PartiesPacket packet = PartiesPacket.read(plugin, bytes);
 		if (packet != null) {
 			PartyImpl party;
-			PartyPlayerImpl sender;
+			PartyPlayerImpl partyPlayer;
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_RECEIVED
-					.replace("{type}", packet.getType().name()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name()), true);
 			switch (packet.getType()) {
-				case PLAYER_UPDATED:
-					if (((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid())) {
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PLAYER_UPDATED
-								.replace("{uuid}", packet.getPlayerUuid().toString()), true);
-					}
-					break;
-				case PARTY_UPDATED:
+				case UPDATE_PARTY:
 					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PARTY_UPDATED
-								.replace("{party}", packet.getPartyId().toString()), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UPDATE_PARTY,
+								packet.getPartyId().toString()), true);
 					}
 					break;
-				case PARTY_RENAMED:
-					party = ((PartiesPlugin) plugin).getPartyManager().getCacheParties().get(packet.getPartyId());
-					if (party != null) {
-						// Packet payload is the new name
-						party.rename(packet.getPayload());
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PARTY_RENAMED
-								.replace("{party}", packet.getPartyId().toString()), true);
+				case UPDATE_PLAYER:
+					if (((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid())) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER,
+								packet.getPlayerUuid().toString()), true);
 					}
 					break;
-				case PARTY_REMOVED:
+				case LOAD_PARTY:
+					if (((PartiesPlugin) plugin).getPartyManager().loadParty(packet.getPartyId()) != null) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_LOAD_PARTY,
+								packet.getPartyId().toString()), true);
+					}
+					break;
+				case LOAD_PLAYER:
+					if (((PartiesPlugin) plugin).getPlayerManager().loadPlayer(packet.getPlayerUuid()) != null) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_LOAD_PLAYER,
+								packet.getPlayerUuid().toString()), true);
+					}
+					break;
+				case UNLOAD_PARTY:
 					party = ((PartiesPlugin) plugin).getPartyManager().getCacheParties().get(packet.getPartyId());
 					if (party != null) {
-						((PartiesPlugin) plugin).getPartyManager().removePartyFromCache(packet.getPartyId());
-						for (UUID uuid : party.getMembers()) {
-							PartyPlayerImpl pl = ((PartiesPlugin) plugin).getPlayerManager().getCachePlayers().get(uuid);
-							if (pl != null) {
-								pl.removeFromParty(false);
-							}
+						((PartiesPlugin) plugin).getPartyManager().unloadParty(party);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY,
+								packet.getPartyId().toString()), true);
+					}
+					break;
+				case UNLOAD_PLAYER:
+					((PartiesPlugin) plugin).getPlayerManager().unloadPlayer(packet.getPlayerUuid());
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER,
+							packet.getPlayerUuid().toString()), true);
+					break;
+				case RENAME_PARTY:
+					// wip rename event + reload party
+					break;
+				case PLAY_SOUND:
+					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+					if (partyPlayer != null) {
+						((BukkitPartyPlayerImpl) partyPlayer).playPacketSound(packet.getPayloadRaw());
+					}
+					
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_PLAY_SOUND,
+							packet.getPlayerUuid().toString()), true);
+					break;
+				case EXPERIENCE:
+					if (ConfigMain.ADDITIONAL_EXP_ENABLE) {
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+						if (party != null) {
+							IPartyGetExperienceEvent partiesGetExperienceEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyGetExperienceEvent(party, packet.getPayloadNumber(), partyPlayer);
+							((PartiesPlugin) plugin).getEventManager().callEvent(partiesGetExperienceEvent);
+							
 						}
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_PARTY_REMOVED
-								.replace("{party}", packet.getPartyId().toString()), true);
 					}
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_EXPERIENCE,
+							CommonUtils.formatDouble(packet.getPayloadNumber()), packet.getPartyId().toString(), packet.getPlayerUuid() != null ? packet.getPlayerUuid().toString() : "none"), true);
 					break;
-				case CHAT_MESSAGE:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					sender = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
-					if (party != null
-							&& party.getOnlineMembers(true).size() > 0
-							&& sender != null) {
-						party.dispatchChatMessage(sender, packet.getPayload(), false);
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE
-								.replace("{party}", packet.getPartyId().toString()), true);
+				case LEVEL_UP:
+					if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						if (party != null) {
+							IPartyLevelUpEvent partiesLevelUpEvent = ((PartiesPlugin) plugin).getEventManager().prepareLevelUpEvent(party, (int) packet.getPayloadNumber());
+							((PartiesPlugin) plugin).getEventManager().callEvent(partiesLevelUpEvent);
+							
+						}
 					}
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_LEVEL_UP,
+							packet.getPartyId().toString(), (int) packet.getPayloadNumber()), true);
 					break;
-				case BROADCAST_MESSAGE:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null && party.getOnlineMembers(true).size() > 0) {
-						party.broadcastDirectMessage(packet.getPayload(), false);
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_BROADCAST_MESSAGE
-								.replace("{party}", packet.getPartyId().toString()), true);
+				case CONFIGS:
+					if (ConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+						((PartiesConfigurationManager) plugin.getConfigurationManager()).parseConfigsPacket(packet.getPayloadRaw());
+						
+						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_CONFIGS, true);
 					}
 					break;
 				default:

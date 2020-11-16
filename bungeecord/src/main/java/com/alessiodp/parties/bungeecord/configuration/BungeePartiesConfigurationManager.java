@@ -3,6 +3,7 @@ package com.alessiodp.parties.bungeecord.configuration;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeMessages;
+import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 
@@ -14,5 +15,10 @@ public class BungeePartiesConfigurationManager extends PartiesConfigurationManag
 		getConfigs().add(new BungeeMessages(plugin));
 		getConfigs().add(new BungeeConfigMain(plugin));
 		getConfigs().add(new BungeeConfigParties(plugin));
+	}
+	
+	public void makeConfigsSync() {
+		if (BungeeConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC)
+			((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigs();
 	}
 }

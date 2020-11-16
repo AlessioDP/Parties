@@ -10,20 +10,20 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.UUID;
 
 public class BukkitPartyImpl extends PartyImpl {
 	
-	private double experienceStampCalculateLevel;
-	
 	public BukkitPartyImpl(PartiesPlugin plugin, UUID id) {
 		super(plugin, id);
-		experienceStampCalculateLevel = -1;
 	}
 	
 	@Override
@@ -51,22 +51,18 @@ public class BukkitPartyImpl extends PartyImpl {
 	
 	@Override
 	public void callChange() {
-		// Update experience
-		if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
-			// A sort of cached level to avoid useless re-calculation of the level
-			if (experienceStampCalculateLevel == -1 || experienceStampCalculateLevel != getExperience()) {
-				try {
-					// Set the new level of the party
-					expResult = ((BukkitPartiesPlugin) plugin).getExpManager().calculateLevel(getExperience());
-					// Update experience stamp
-					experienceStampCalculateLevel = getExperience();
-				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_EXP_LEVELERROR
-							.replace("{party}", getName())
-							.replace("{message}", ex.getMessage() != null ? ex.getMessage() : ex.toString()));
-				}
-			}
-		}
+		// Nothing to do
+	}
+	
+	@Override
+	public void sendExperiencePacket(double newExperience, PartyPlayer killer) {
+		// Send event to BungeeCord only
+		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPartyExperience(this, newExperience, (PartyPlayerImpl) killer);
+	}
+	
+	@Override
+	public void sendLevelUpPacket(int newLevel) {
+		throw new IllegalStateException("this method should be executed on BungeeCord only");
 	}
 	
 	@Override
@@ -90,7 +86,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	@Override
 	public boolean isFriendlyFireProtected() {
 		boolean ret = false;
-		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE ) {
+		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE) {
 			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")) {
 				// Command
 				ret = super.getProtection();

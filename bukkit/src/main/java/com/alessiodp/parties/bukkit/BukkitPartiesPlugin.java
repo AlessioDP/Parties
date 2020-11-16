@@ -14,11 +14,12 @@ import com.alessiodp.parties.bukkit.configuration.BukkitPartiesConfigurationMana
 import com.alessiodp.parties.bukkit.events.BukkitEventManager;
 import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
+import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessenger;
 import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
+import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
-import com.alessiodp.parties.bukkit.players.ExpManager;
 import com.alessiodp.parties.bukkit.utils.BukkitEconomyManager;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
@@ -33,7 +34,6 @@ import org.bukkit.plugin.PluginManager;
 
 public class BukkitPartiesPlugin extends PartiesPlugin {
 	@Getter private final int bstatsId = PartiesConstants.PLUGIN_BSTATS_BUKKIT_ID;
-	@Getter private ExpManager expManager;
 	
 	public BukkitPartiesPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
@@ -63,13 +63,13 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		addonManager = new BukkitPartiesAddonManager(this);
 		cooldownManager = new BukkitCooldownManager(this);
 		economyManager = new BukkitEconomyManager(this);
-		expManager = new ExpManager(this);
+		expManager = new BukkitExpManager(this);
 		eventManager = new BukkitEventManager(this);
 		
 		super.postHandle();
-		getExpManager().reload();
 		
 		new BukkitMetricsHandler(this);
+		((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
 	}
 	
 	@Override
@@ -99,12 +99,13 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	@Override
 	public void reloadConfiguration() {
 		super.reloadConfiguration();
-		getExpManager().reload();
+		
+		((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
 	}
 	
 	@Override
 	public boolean isBungeeCordEnabled() {
-		return BukkitConfigMain.PARTIES_BUNGEECORDSYNC_ENABLE;
+		return BukkitConfigMain.PARTIES_BUNGEECORD_ENABLE;
 	}
 	
 	@Override

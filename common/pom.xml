@@ -74,6 +74,16 @@
 			<artifactId>parties-api</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.spigotmc</groupId>
+					<artifactId>spigot-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.md-5</groupId>
+					<artifactId>bungeecord-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.alessiodp.lastloginapi</groupId>

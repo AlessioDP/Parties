@@ -2,6 +2,8 @@ package com.alessiodp.parties.common.events;
 
 import com.alessiodp.core.common.events.EventDispatcher;
 import com.alessiodp.parties.api.enums.JoinCause;
+import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
@@ -38,6 +40,8 @@ public abstract class EventManager {
 	
 	public abstract IPartyRenameEvent preparePartyRenameEvent(Party party, String newName, PartyPlayer player, boolean isAdmin);
 	
+	public abstract IPartyGetExperienceEvent preparePartyGetExperienceEvent(Party party, double experience, PartyPlayer killer);
+	
 	public abstract IChatEvent prepareChatEvent(PartyPlayer player, Party party, String message);
 	
 	public abstract IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause);
@@ -45,4 +49,6 @@ public abstract class EventManager {
 	
 	public abstract IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);
 	public abstract IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy);
+	
+	public abstract IPartyLevelUpEvent prepareLevelUpEvent(Party party, int newLevel);
 }

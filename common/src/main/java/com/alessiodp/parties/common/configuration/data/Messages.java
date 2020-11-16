@@ -371,6 +371,11 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "additional-commands.desc.censored")
 	public static String ADDCMD_DESC_CENSORED;
 	
+	@ConfigOption(path = "additional-commands.exp.party.gained")
+	public static String ADDCMD_EXP_PARTY_GAINED;
+	@ConfigOption(path = "additional-commands.exp.level.level-up")
+	public static String ADDCMD_EXP_PARTY_LEVEL_LEVEL_UP;
+	
 	@ConfigOption(path = "additional-commands.follow.toggle-on")
 	public static String ADDCMD_FOLLOW_ON;
 	@ConfigOption(path = "additional-commands.follow.toggle-off")

@@ -3,8 +3,8 @@
 # \ ========================================== /
 #
 # For any problem be sure to:
-# - Read the entire documentation on: https://alessiodp.com/docs/parties/
-# - Join our Discord for further help: https://discord.alessiodp.com/
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
 #
 
 # / =============================== \
@@ -139,13 +139,13 @@ main-commands:
     # => %online%              = List online players
     # => %online_number%       = Number of online players
     content:
-      - "&b============ &l%party%'s Info &r&b============"
-      - "&b&lTag&7: %tag%"
-      - "&b&lDescription&7: %desc%"
-      - "&bLeader&7: %list_leader%"
-      - "&bMods&7: %list_moderator%"
-      - "&bMembers&7: %list_member%"
-      - "&bOnline players&7: %online_number%"
+    - "&b============ &l%party%'s Info &r&b============"
+    - "&b&lTag&7: %tag%"
+    - "&b&lDescription&7: %desc%"
+    - "&bLeader&7: %list_leader%"
+    - "&bMods&7: %list_moderator%"
+    - "&bMembers&7: %list_member%"
+    - "&bOnline players&7: %online_number%"
 
   invite:
     sent: "&bYou invited %player% in your guild"
@@ -189,10 +189,10 @@ main-commands:
       # => %number%                         = The number of the player
       # => %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
-        - "%list_players%"
-        - "&cUse '&7/guild kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+      - "&cWe have found some players with that name:"
+      - "%list_players%"
+      - "&cUse '&7/guild kick <username> <number>&c' to kick the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/guild kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
 
   leave:
     left: "&b&lYou left the guild %party%"
@@ -359,6 +359,8 @@ additional-commands:
     skillapi:
       gained-killer: "&bGained %exp% experience for killing the mob"
       gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    level:
+      level-up: "&bGuild leveled up to %experience_level%"
 
   follow:
     toggle-on: "&aNow your guild members will follow your leader"
@@ -403,8 +405,8 @@ additional-commands:
     removed: "&bGuild MOTD removed"
     broadcast: ""
     content:
-      - "&bGuild MOTD:"
-      - "&b%motd%"
+    - "&bGuild MOTD:"
+    - "&b%motd%"
     invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
     censored: "&cThe MOTD contains censored words!"
 
@@ -421,7 +423,7 @@ additional-commands:
   protection:
     toggle-on: "&aNow your guild is protected by friendly fire"
     toggle-off: "&aYour guild is not protected anymore by friendly fire"
-    protected: "&cYou can't hit your guild-mates"
+    protected: "&cYou can't hit your guildmates"
     warn-on-attack: "&c%player% tried to hit %victim%!"
 
   sethome:
@@ -468,9 +470,9 @@ additional-commands:
       tag: "&cYou don't have enough money to perform set the tag [%price%$]"
       teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
     confirm:
-      warn-onbuy: '[{"text":"&aCommand %cmd% costs %price%$.\n"},{"text":"&2&lClick here to confirm","clickEvent":{"action":"run_command","value":"/party confirm"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Pay the command"}]}}},{"text":" &aor type &7/party confirm &ato use it"}]'
-      confirmed: "&aPerforming the command."
-      no-cmd: "&cThere is no command to confirm"
+        warn-onbuy: '[{"text":"&aCommand %cmd% costs %price%$.\n"},{"text":"&2&lClick here to confirm","clickEvent":{"action":"run_command","value":"/guild confirm"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Pay the command"}]}}},{"text":" &aor type &7/guild confirm &ato use it"}]'
+        confirmed: "&aPerforming the command."
+        no-cmd: "&cThere is no command to confirm"
 
 
 # / =============================== \
@@ -579,4 +581,4 @@ help:
       teleport: 'Teleport your guild to you'
 
 dont-edit-this:
-  version: 10
+  version: 11

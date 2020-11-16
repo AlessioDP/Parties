@@ -21,11 +21,6 @@ import java.util.regex.Pattern;
 public abstract class ChatListener {
 	protected final PartiesPlugin plugin;
 	
-	/**
-	 * Used by Bukkit, Bungeecord
-	 *
-	 * @return Returns if the event is cancelled
-	 */
 	protected boolean onPlayerChat(User sender, String message) {
 		boolean eventCancelled = false;
 		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(sender.getUUID());
@@ -91,9 +86,7 @@ public abstract class ChatListener {
 										partyPlayer.getName(), party.getName(), newMessage), true);
 							}
 						} else
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_CHATEVENT_DENY
-									.replace("{player}", partyPlayer.getName())
-									.replace("{message}", finalMessage), true);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, partyPlayer.getName(), finalMessage), true);
 					}
 				} else
 					partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
@@ -104,55 +97,40 @@ public abstract class ChatListener {
 		return eventCancelled;
 	}
 	
-	/**
-	 * Used by Bukkit
-	 *
-	 * @return Returns the new message to set, null if is not changed
-	 */
-	protected String onPlayerCommandPreprocess(User sender, String message) {
-		String ret = null;
+	protected void onPlayerCommandPreprocess(User sender, String message) {
 		if (ConfigMain.ADDITIONAL_AUTOCMD_ENABLE) {
-			if (message.endsWith("\t")) {
-				// This is an auto command
-				ret = message.replace("\t", "");
-			} else {
-				// This is a normal command to replicate
-				// Make it async
-				plugin.getScheduler().runAsync(() -> {
-					boolean cancel = true;
+			plugin.getScheduler().runAsync(() -> {
+				boolean cancel = true;
+				
+				try {
+					Pattern pattern = Pattern.compile(ConfigMain.ADDITIONAL_AUTOCMD_REGEXWHITELIST, Pattern.CASE_INSENSITIVE);
+					Matcher matcher = pattern.matcher(message);
 					
-					try {
-						Pattern pattern = Pattern.compile(ConfigMain.ADDITIONAL_AUTOCMD_REGEXWHITELIST, Pattern.CASE_INSENSITIVE);
-						Matcher matcher = pattern.matcher(message);
-						
-						if (matcher.find()) {
-							cancel = false;
-						}
-					} catch (Exception ex) {
-						plugin.getLoggerManager().printErrorStacktrace(PartiesConstants.DEBUG_AUTOCMD_REGEXERROR, ex);
+					if (matcher.find()) {
+						cancel = false;
 					}
-					
-					if (!cancel) {
-						PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
-						PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyId());
-						if (party != null && plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
-							
-							for (PartyPlayer pl : party.getOnlineMembers(true)) {
-								if (!pl.getPlayerUUID().equals(sender.getUUID())) {
-									// Make it sync
-									plugin.getScheduler().getSyncExecutor().execute(() -> {
-										plugin.getPlayer(pl.getPlayerUUID()).chat(message + "\t");
-										plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_AUTOCMD_PERFORM
-												.replace("{player}", pl.getName())
-												.replace("{command}", message), true);
-									});
-								}
+				} catch (Exception ex) {
+					plugin.getLoggerManager().printErrorStacktrace(PartiesConstants.DEBUG_AUTOCMD_REGEXERROR, ex);
+				}
+				
+				if (!cancel) {
+					PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
+					PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyId());
+					if (party != null && plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
+						for (PartyPlayer pl : party.getOnlineMembers(true)) {
+							if (!pl.getPlayerUUID().equals(sender.getUUID())) {
+								// Make it sync
+								plugin.getScheduler().getSyncExecutor().execute(() -> {
+									User user = plugin.getPlayer(pl.getPlayerUUID());
+									plugin.getBootstrap().executeCommandByUser(message.substring(1), user);
+									
+									plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_AUTOCMD_PERFORM, pl.getPlayerUUID().toString(), message), true);
+								});
 							}
 						}
 					}
-				});
-			}
+				}
+			});
 		}
-		return ret;
 	}
 }

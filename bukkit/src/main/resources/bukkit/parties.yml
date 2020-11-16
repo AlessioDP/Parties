@@ -19,9 +19,10 @@ general:
 
   broadcast:
     # Use title messages instead of chat for broadcasts
+    # Times are in milliseconds
     use-titles: false
     fade-in-time: 200
-    show-time: 1000
+    show-time: 2000
     fade-out-time: 200
 
   name:
@@ -303,4 +304,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 5
+  version: 6

@@ -106,7 +106,7 @@ public abstract class PartyManager {
 			party =  plugin.getDatabaseManager().getParty(id);
 			addPartyToCache(party);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_RELOADED, true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RELOADED, party.getName()), true);
 			return true;
 		}
 		return false;
@@ -121,12 +121,10 @@ public abstract class PartyManager {
 				// Load from db
 				ret = plugin.getDatabaseManager().getParty(id);
 				if (ret != null) {
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_DATABASE
-							.replace("{party}", ret.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_DATABASE, ret.getName()), true);
 				}
 			} else
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_LIST
-						.replace("{party}", ret.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_LIST, ret.getName()), true);
 		}
 		
 		if (ret != null) {
@@ -144,12 +142,10 @@ public abstract class PartyManager {
 				// Load from db
 				ret = plugin.getDatabaseManager().getPartyByName(name);
 				if (ret != null) {
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_DATABASE
-							.replace("{party}", ret.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_DATABASE, ret.getName()), true);
 				}
 			} else
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_GET_LIST
-						.replace("{party}", ret.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_LIST, ret.getName()), true);
 		}
 		
 		if (ret != null) {
@@ -192,14 +188,11 @@ public abstract class PartyManager {
 				IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.TIMEOUT, null, null);
 				plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 				
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_DELETE_CAUSE
-						.replace("{party}", party.getName())
-						.replace("{cause}", cause), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE_CAUSE, party.getName(), cause), true);
 				
 				cachePartiesToDelete.remove(id);
 			} else {
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC
-						.replace("{party}", party.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getName()), true);
 			}
 		}
 	}

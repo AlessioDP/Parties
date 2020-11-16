@@ -28,6 +28,11 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
+	public boolean isBungeeCordEnabled() {
+		return plugin.isBungeeCordEnabled();
+	}
+	
+	@Override
 	public boolean createParty(@NonNull String name, PartyPlayer leader) {
 		return createParty(name, null, leader);
 	}

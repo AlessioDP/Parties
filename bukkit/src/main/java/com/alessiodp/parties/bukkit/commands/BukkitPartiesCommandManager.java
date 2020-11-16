@@ -26,6 +26,8 @@ public class BukkitPartiesCommandManager extends PartiesCommandManager {
 	public void registerCommands() {
 		mainCommands = new ArrayList<>();
 		mainCommands.add(new BukkitCommandParty((PartiesPlugin) plugin));
-		mainCommands.add(new BukkitCommandP((PartiesPlugin) plugin));
+		if (!((PartiesPlugin) plugin).isBungeeCordEnabled()) {
+			mainCommands.add(new BukkitCommandP((PartiesPlugin) plugin));
+		}
 	}
 }

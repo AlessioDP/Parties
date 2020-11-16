@@ -116,9 +116,7 @@ public class CommandLeave extends PartiesSubCommand {
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE,
 								partyPlayer.getName(), party.getName(), true), true);
 					} else
-						plugin.getLoggerManager().log(PartiesConstants.DEBUG_API_DELETEEVENT_DENY
-								.replace("{party}", party.getName())
-								.replace("{player}", sender.getName()), true);
+						plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
 				}
 			} else {
 				party.removeMember(partyPlayer);
@@ -126,16 +124,13 @@ public class CommandLeave extends PartiesSubCommand {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_LEAVE_LEFT, party);
 				party.broadcastMessage(Messages.MAINCMD_LEAVE_BROADCAST, partyPlayer);
 				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE,
-						partyPlayer.getName(), party.getName(), false), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE, partyPlayer.getName(), party.getId().toString(), false), true);
 			}
 			
 			// Calling API event
 			IPlayerPostLeaveEvent partiesPostLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostLeaveEvent(partyPlayer, party, false, null);
 			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostLeaveEvent);
 		} else
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY
-					.replace("{party}", party.getName())
-					.replace("{player}", sender.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId().toString()), true);
 	}
 }

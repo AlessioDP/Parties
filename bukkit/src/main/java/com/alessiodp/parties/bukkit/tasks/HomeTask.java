@@ -48,8 +48,8 @@ public class HomeTask implements Runnable {
 					cancel();
 					
 					user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null), true);
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_HOME_DENIED_MOVING
-							.replace("{player}", partyPlayer.getName()), true);
+					
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_DENIED_MOVING, player.getUniqueId().toString()), true);
 					return;
 				}
 				// Check if delay is timed out
@@ -60,10 +60,9 @@ public class HomeTask implements Runnable {
 							EssentialsHandler.updateLastTeleportLocation(user.getUUID());
 							user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTED, partyPlayer, null), true);
 							
-							plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_TASK_TELEPORT_DONE
-									.replace("{player}", player.getName()), true);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DONE, player.getUniqueId().toString()), true);
 						} else {
-							plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
+							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_TELEPORT_ASYNC, player.getUniqueId().toString()));
 						}
 					});
 					cancel();

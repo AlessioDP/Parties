@@ -18,6 +18,7 @@ public class BungeePartiesCommandManager extends PartiesCommandManager {
 	@Override
 	public void prepareCommands() {
 		commandUtils = new BungeeCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
+		
 		super.prepareCommands();
 	}
 	

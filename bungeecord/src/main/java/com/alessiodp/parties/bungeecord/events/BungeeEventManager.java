@@ -2,6 +2,9 @@ package com.alessiodp.parties.bungeecord.events;
 
 import com.alessiodp.core.bungeecord.events.BungeeEventDispatcher;
 import com.alessiodp.parties.api.enums.JoinCause;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreCreateEvent;
@@ -13,6 +16,8 @@ import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostLea
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
@@ -61,6 +66,11 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
+	public IPartyGetExperienceEvent preparePartyGetExperienceEvent(Party party, double experience, PartyPlayer killer) {
+		return new BungeePartiesPartyGetExperienceEvent(party, experience, killer);
+	}
+	
+	@Override
 	public IChatEvent prepareChatEvent(PartyPlayer player, Party party, String message) {
 		return new BungeePartiesChatEvent(player, party, message);
 	}
@@ -83,6 +93,11 @@ public class BungeeEventManager extends EventManager {
 	@Override
 	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
 		return new BungeePartiesPlayerPostLeaveEvent(player, party, isKicked, kickedBy);
+	}
+	
+	@Override
+	public IPartyLevelUpEvent prepareLevelUpEvent(Party party, int newLevel) {
+		return new BungeePartiesPartyLevelUpEvent(party, newLevel);
 	}
 	
 	public BungeePartiesPartyFollowEvent preparePartyFollowEvent(Party party, String server) {

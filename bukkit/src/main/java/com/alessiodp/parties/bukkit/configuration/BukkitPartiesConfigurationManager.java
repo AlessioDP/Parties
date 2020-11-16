@@ -3,6 +3,7 @@ package com.alessiodp.parties.bukkit.configuration;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
+import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 
@@ -14,5 +15,10 @@ public class BukkitPartiesConfigurationManager extends PartiesConfigurationManag
 		getConfigs().add(new BukkitMessages(plugin));
 		getConfigs().add(new BukkitConfigMain(plugin));
 		getConfigs().add(new BukkitConfigParties(plugin));
+	}
+	
+	public void makeConfigsRequest() {
+		if (BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC)
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigsRequest();
 	}
 }

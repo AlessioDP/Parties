@@ -36,9 +36,9 @@ public class MMOCoreHandler {
 		}
 	}
 	
-	public static void giveExp(UUID player, Location location, int experience) {
+	public static void giveExp(UUID player, Location location, double experience) {
 		if (active) {
-			PlayerData.get(player).giveExperience(experience, location, EXPSource.OTHER);
+			PlayerData.get(player).giveExperience((int) experience, location, EXPSource.OTHER);
 		}
 	}
 }

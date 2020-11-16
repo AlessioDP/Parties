@@ -52,9 +52,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public void updatePlayer(PartyPlayerImpl player) {
 		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_UPDATEPLAYER
-					.replace("{player}", player.getName())
-					.replace("{uuid}", player.getPlayerUUID().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPLAYER, player.getName(), player.getPlayerUUID().toString()), true);
 			
 			((IPartiesDatabase) database).updatePlayer(player);
 		});
@@ -63,8 +61,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public PartyPlayerImpl getPlayer(UUID uuid) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETPLAYER
-					.replace("{uuid}", uuid.toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPLAYER, uuid.toString()), true);
 			
 			return ((IPartiesDatabase) database).getPlayer(uuid);
 		}).join();
@@ -73,8 +70,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public void updateParty(PartyImpl party) {
 		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_UPDATEPARTY
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPARTY, CommonUtils.getNoEmptyOr(party.getName(), "_"), party.getId()), true);
 			
 			((IPartiesDatabase) database).updateParty(party);
 		});
@@ -83,8 +79,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public PartyImpl getParty(UUID id) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETPARTY
-					.replace("{party}", id.toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPARTY, id.toString()), true);
 			
 			return ((IPartiesDatabase) database).getParty(id);
 		}).join();
@@ -93,8 +88,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public PartyImpl getPartyByName(String name) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETPARTY
-					.replace("{party}", name), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPARTY, name), true);
 			
 			return ((IPartiesDatabase) database).getPartyByName(name);
 		}).join();
@@ -103,8 +97,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public void removeParty(PartyImpl party) {
 		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_REMOVEPARTY
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_REMOVEPARTY, CommonUtils.getNoEmptyOr(party.getName(), "_"), party.getId()), true);
 			
 			((IPartiesDatabase) database).removeParty(party);
 		});
@@ -113,8 +106,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public boolean existsParty(String name) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_EXISTSPARTY
-					.replace("{party}", name), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_EXISTSPARTY, name), true);
 			
 			return ((IPartiesDatabase) database).existsParty(name);
 		}).join();
@@ -123,8 +115,7 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 	@Override
 	public boolean existsTag(String tag) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_EXISTSTAG
-					.replace("{tag}", tag), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_EXISTSTAG, tag), true);
 			
 			return ((IPartiesDatabase) database).existsTag(tag);
 		}).join();

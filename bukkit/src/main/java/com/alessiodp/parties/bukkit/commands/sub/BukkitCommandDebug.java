@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
-import com.alessiodp.parties.bukkit.players.ExpManager;
 import com.alessiodp.parties.common.commands.sub.CommandDebug;
 import com.alessiodp.parties.common.configuration.data.Messages;
 
@@ -16,6 +15,7 @@ public class BukkitCommandDebug extends CommandDebug {
 	
 	@Override
 	protected String parseDebugExp(String line) {
+		/* wip exp of debug command
 		if (line.contains("%levels_options%")) {
 			if (((BukkitPartiesPlugin) plugin).getExpManager().getMode() == ExpManager.ExpMode.PROGRESSIVE) {
 				line = line.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_PROGRESSIVE
@@ -44,5 +44,7 @@ public class BukkitCommandDebug extends CommandDebug {
 				.replace("%addons_skillapi%", ((BukkitPartiesPlugin) plugin).getMessageUtils().formatYesNo(BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE))
 				.replace("%addons_mmocore%", ((BukkitPartiesPlugin) plugin).getMessageUtils().formatYesNo(BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MMOCORE_ENABLE))
 				.replace("%addons_mythicmobs%", ((BukkitPartiesPlugin) plugin).getMessageUtils().formatYesNo(BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE));
+				*/
+		return line;
 	}
 }

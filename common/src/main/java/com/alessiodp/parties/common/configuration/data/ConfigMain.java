@@ -31,6 +31,9 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@ConfigOption(path = "parties.debug-command")
 	public static boolean		PARTIES_DEBUG_COMMAND;
 	
+	@ConfigOption(path = "parties.bungeecord.config-sync")
+	public static boolean		PARTIES_BUNGEECORD_CONFIG_SYNC;
+	
 	
 	// Storage settings
 	@ConfigOption(path = "storage.database-storage-type")
@@ -72,6 +75,21 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		ADDITIONAL_AUTOCMD_ENABLE;
 	@ConfigOption(path = "additional.auto-command.regex-whitelist")
 	public static String		ADDITIONAL_AUTOCMD_REGEXWHITELIST;
+	
+	@ConfigOption(path = "additional.exp-system.enable")
+	public static boolean		ADDITIONAL_EXP_ENABLE;
+	@ConfigOption(path = "additional.exp-system.levels.enable")
+	public static boolean		ADDITIONAL_EXP_LEVELS_ENABLE;
+	@ConfigOption(path = "additional.exp-system.levels.mode")
+	public static String		ADDITIONAL_EXP_LEVELS_MODE;
+	@ConfigOption(path = "additional.exp-system.levels.progressive.start-level-experience")
+	public static double		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
+	@ConfigOption(path = "additional.exp-system.levels.progressive.level-experience")
+	public static String		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP;
+	@ConfigOption(path = "additional.exp-system.levels.fixed.repeat-last-one")
+	public static boolean		ADDITIONAL_EXP_LEVELS_FIXED_REPEAT;
+	@ConfigOption(path = "additional.exp-system.levels.fixed.list")
+	public static List<Double>	ADDITIONAL_EXP_LEVELS_FIXED_LIST;
 	
 	@ConfigOption(path = "additional.follow.enable")
 	public static boolean		ADDITIONAL_FOLLOW_ENABLE;
@@ -192,7 +210,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@Override
 	public void loadConfiguration() {
 		loadConfigOptions();
-		
 		ConfigurationSection csPlaceholders = configuration.getConfigurationSection("additional.placeholders.customs");
 		if (csPlaceholders != null) {
 			ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS = new HashMap<>();

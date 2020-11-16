@@ -321,11 +321,39 @@ public interface Party {
 	void setExperience(double experience);
 	
 	/**
+	 * Give party experience
+	 *
+	 * @param experience The experience number to give
+	 */
+	void giveExperience(double experience);
+	
+	/**
 	 * Get the current party level
 	 *
 	 * @return Returns the calculated level of the party
 	 */
 	int getLevel();
+	
+	/**
+	 * Get the total experience of the current level
+	 *
+	 * @return Returns the total experience of the current level
+	 */
+	double getLevelExperience();
+	
+	/**
+	 * Get the current party level experience. How many experience of the current level
+	 *
+	 * @return Returns the current level experience of the party
+	 */
+	double getLevelUpCurrent();
+	
+	/**
+	 * Get the experience required to level up the party
+	 *
+	 * @return Returns the experience required to level up the party
+	 */
+	double getLevelUpNecessary();
 	
 	/**
 	 * Set the party follow option

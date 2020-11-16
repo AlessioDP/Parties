@@ -106,13 +106,10 @@ public class BanManagerHandler implements Listener {
 								IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.BAN, partyPlayer, kickerPp);
 								plugin.getEventManager().callEvent(partiesPostDeleteEvent);
 								
-								plugin.getLoggerManager().log(PartiesConstants.DEBUG_LIB_BANMANAGER_BAN
-										.replace("{party}", party.getName())
-										.replace("{player}", pl.getName()), true);
+								plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_LIB_BANMANAGER_BAN, party.getId().toString(), pl.getName()), true);
 							} else {
 								// Event is cancelled, block ban chain
-								plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC
-										.replace("{party}", party.getName()), true);
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getId().toString()), true);
 								return;
 							}
 						}
@@ -126,9 +123,7 @@ public class BanManagerHandler implements Listener {
 					IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(partyPlayer, party, true, kickerPp);
 					plugin.getEventManager().callEvent(partiesPostLeaveEvent);
 				} else
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY
-							.replace("{player}", pl.getName())
-							.replace("{party}", party.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, pl.getUUID().toString(), party.getId().toString()), true);
 			}
 		}
 	}

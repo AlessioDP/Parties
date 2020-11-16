@@ -11,6 +11,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.events.EventManager;
 import com.alessiodp.parties.common.parties.ColorManager;
 import com.alessiodp.parties.common.parties.CooldownManager;
+import com.alessiodp.parties.common.parties.ExpManager;
 import com.alessiodp.parties.common.parties.PartyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.PlayerManager;
@@ -38,6 +39,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	@Getter protected CooldownManager cooldownManager;
 	@Getter protected EventManager eventManager;
+	@Getter protected ExpManager expManager;
 	@Getter protected EconomyManager economyManager;
 	@Getter protected MessageUtils messageUtils;
 	
@@ -60,6 +62,9 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Override
 	protected void loadCore() {
 		getConfigurationManager().reload();
+		// wip - remove on production
+		ConfigMain.PARTIES_LOGGING_DEBUG = true;
+		// wip - remove on production
 		reloadLoggerManager();
 		getDatabaseManager().reload();
 	}
@@ -75,6 +80,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 		getPlayerManager().reload();
 		getCommandManager().setup();
 		getMessenger().reload();
+		getExpManager().reload();
 		registerListeners();
 		
 		reloadAdpUpdater();
@@ -99,6 +105,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 		getAddonManager().loadAddons();
 		getCommandManager().setup();
 		getMessenger().reload();
+		getExpManager().reload();
 		
 		reloadAdpUpdater();
 	}

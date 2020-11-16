@@ -51,69 +51,79 @@ public abstract class CommandParty extends ADPMainCommand {
 		tabSupport = ConfigMain.COMMANDS_TABSUPPORT;
 		
 		register(new CommandHelp(plugin, this));
-		register(new CommandAccept(plugin, this));
-		register(new CommandCreate(plugin, this));
-		register(new CommandDelete(plugin, this));
-		register(new CommandDeny(plugin, this));
-		register(new CommandIgnore(plugin, this));
-		register(new CommandInfo(plugin, this));
-		register(new CommandInvite(plugin, this));
-		register(new CommandKick(plugin, this));
-		register(new CommandLeave(plugin, this));
-		register(new CommandRank(plugin, this));
+		
+		if (!plugin.isBungeeCordEnabled()) { // In BungeeCord this bool is false
+			register(new CommandAccept(plugin, this));
+			register(new CommandCreate(plugin, this));
+			register(new CommandDelete(plugin, this));
+			register(new CommandDeny(plugin, this));
+			register(new CommandIgnore(plugin, this));
+			register(new CommandInfo(plugin, this));
+			register(new CommandInvite(plugin, this));
+			register(new CommandKick(plugin, this));
+			register(new CommandLeave(plugin, this));
+			register(new CommandRank(plugin, this));
+			register(new CommandRename(plugin, this));
+			register(new CommandSpy(plugin, this));
+		}
+		
 		register(new CommandReload(plugin, this));
-		register(new CommandRename(plugin, this));
-		register(new CommandSpy(plugin, this));
 		register(new CommandVersion(plugin, this));
 		
-		// Ask
-		if (ConfigParties.GENERAL_ASK_ENABLE)
-			register(new CommandAsk(plugin, this));
-		
-		// Chat
-		if (ConfigParties.GENERAL_CHAT_TOGGLECOMMAND)
-			register(new CommandChat(plugin, this));
-		
-		// Color
-		if (ConfigParties.ADDITIONAL_COLOR_ENABLE)
-			register(new CommandColor(plugin, this));
-		
-		// Desc
-		if (ConfigParties.ADDITIONAL_DESC_ENABLE)
-			register(new CommandDesc(plugin, this));
-		
-		// Follow
-		if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE && ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD)
-			register(new CommandFollow(plugin, this));
-		
-		// Join
-		if (ConfigParties.ADDITIONAL_JOIN_ENABLE)
-			register(new CommandJoin(plugin, this));
-		
-		// List
-		if (ConfigParties.ADDITIONAL_LIST_ENABLE)
-			register(new CommandList(plugin, this));
-		
-		// Motd
-		if (ConfigParties.ADDITIONAL_MOTD_ENABLE)
-			register(new CommandMotd(plugin, this));
-		
-		// Mute
-		if (ConfigMain.ADDITIONAL_MUTE_ENABLE)
-			register(new CommandMute(plugin, this));
-		
-		// Password
-		if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
-			register(new CommandPassword(plugin, this));
-		
-		// Tag
-		if (ConfigParties.ADDITIONAL_TAG_ENABLE)
-			register(new CommandTag(plugin, this));
+		if (!plugin.isBungeeCordEnabled()) {
+			// Ask
+			if (ConfigParties.GENERAL_ASK_ENABLE)
+				register(new CommandAsk(plugin, this));
+			
+			// Chat
+			if (ConfigParties.GENERAL_CHAT_TOGGLECOMMAND)
+				register(new CommandChat(plugin, this));
+			
+			// Color
+			if (ConfigParties.ADDITIONAL_COLOR_ENABLE)
+				register(new CommandColor(plugin, this));
+			
+			// Desc
+			if (ConfigParties.ADDITIONAL_DESC_ENABLE)
+				register(new CommandDesc(plugin, this));
+			
+			// Follow
+			if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE && ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD)
+				register(new CommandFollow(plugin, this));
+			
+			// Join
+			if (ConfigParties.ADDITIONAL_JOIN_ENABLE)
+				register(new CommandJoin(plugin, this));
+			
+			// List
+			if (ConfigParties.ADDITIONAL_LIST_ENABLE)
+				register(new CommandList(plugin, this));
+			
+			// Motd
+			if (ConfigParties.ADDITIONAL_MOTD_ENABLE)
+				register(new CommandMotd(plugin, this));
+			
+			// Mute
+			if (ConfigMain.ADDITIONAL_MUTE_ENABLE)
+				register(new CommandMute(plugin, this));
+			
+			// Password
+			if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
+				register(new CommandPassword(plugin, this));
+			
+			// Tag
+			if (ConfigParties.ADDITIONAL_TAG_ENABLE)
+				register(new CommandTag(plugin, this));
+		}
 	}
 	
 	@Override
 	public boolean onCommand(User sender, String command, String[] args) {
 		String subCommand;
+		if (sender.isPlayer() && ((PartiesPlugin) plugin).isBungeeCordEnabled()) {
+			return false; // If BungeeCord enabled, commands are only allowed via console
+		}
+		
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /party to /party help

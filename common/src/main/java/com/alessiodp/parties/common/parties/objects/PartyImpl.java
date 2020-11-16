@@ -1,7 +1,10 @@
 package com.alessiodp.parties.common.parties.objects;
 
+import com.alessiodp.core.common.bootstrap.PluginPlatform;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.interfaces.PartyAskRequest;
 import com.alessiodp.parties.api.interfaces.PartyColor;
 import com.alessiodp.parties.api.interfaces.PartyHome;
@@ -57,7 +60,8 @@ public abstract class PartyImpl implements Party {
 	
 	// Plugin fields
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter @Setter private PartyColor dynamicColor;
-	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter protected ExpResult expResult;
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected ExpResult expResult;
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected double cacheExperience;
 	@EqualsAndHashCode.Exclude @ToString.Exclude private final HashSet<PartyPlayer> onlineMembers;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyAskRequest> askRequests;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyInvite> inviteRequests;
@@ -84,6 +88,7 @@ public abstract class PartyImpl implements Party {
 		followEnabled = false;
 		
 		expResult = new ExpResult();
+		cacheExperience = -1;
 		onlineMembers = new HashSet<>();
 		askRequests = new HashSet<>();
 		inviteRequests = new HashSet<>();
@@ -164,7 +169,7 @@ public abstract class PartyImpl implements Party {
 		callChange();
 		lock.unlock();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_CREATE.replace("{party}", getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_CREATE, getName()), true);
 	}
 	
 	@Override
@@ -179,7 +184,7 @@ public abstract class PartyImpl implements Party {
 		}
 		lock.unlock();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_DELETE.replace("{party}", getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE, getName()), true);
 	}
 	
 	@Override
@@ -194,9 +199,7 @@ public abstract class PartyImpl implements Party {
 		callChange();
 		lock.unlock();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_RENAME
-				.replace("{party}", oldName)
-				.replace("{name}", getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RENAME, oldName, getName()), true);
 	}
 	
 	@Override
@@ -234,7 +237,7 @@ public abstract class PartyImpl implements Party {
 	 */
 	public void setMembers(@NonNull Set<UUID> members) {
 		updateValue(() -> {
-			this.members = members;
+			this.members = new HashSet<>(members); // Avoid immutable sets from db
 		});
 	}
 	
@@ -372,6 +375,8 @@ public abstract class PartyImpl implements Party {
 	public void setExperience(double experience) {
 		updateValue(() -> {
 			this.experience = experience;
+			
+			calculateLevels();
 		});
 	}
 	
@@ -397,7 +402,30 @@ public abstract class PartyImpl implements Party {
 	
 	@Override
 	public int getLevel() {
-		return expResult.getLevel();
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevel() : 1;
+	}
+	
+	@Override
+	public double getLevelExperience() {
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevelExperience() : 0;
+	}
+	
+	@Override
+	public double getLevelUpCurrent() {
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevelUpCurrent() : 0;
+	}
+	
+	@Override
+	public double getLevelUpNecessary() {
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevelUpNecessary() : 0;
 	}
 	
 	@Override
@@ -446,10 +474,9 @@ public abstract class PartyImpl implements Party {
 	private String parseBroadcastMessage(@Nullable String message, @Nullable PartyPlayer partyPlayer) {
 		String ret = null;
 		if (message != null && !message.isEmpty()) {
-			ret = message;
-			if (partyPlayer != null)
-				ret = plugin.getMessageUtils().convertPlaceholders(ret, (PartyPlayerImpl) partyPlayer, this);
-			ret = Color.translateAlternateColorCodes(ret);
+			ret = Color.translateAlternateColorCodes(
+					plugin.getMessageUtils().convertPlaceholders(message, (PartyPlayerImpl) partyPlayer, this)
+			);
 		}
 		return ret;
 	}
@@ -468,7 +495,7 @@ public abstract class PartyImpl implements Party {
 				((PartyPlayerImpl) player).sendTitleMessage(message);
 			else
 				((PartyPlayerImpl) player).sendDirect(message);
-			playBroadcastSound(player);
+			((PartyPlayerImpl) player).playBroadcastSound();
 		}
 		
 		plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
@@ -484,12 +511,12 @@ public abstract class PartyImpl implements Party {
 		
 		for (PartyPlayer player : getOnlineMembers(true)) {
 			((PartyPlayerImpl) player).sendDirect(message);
-			playChatSound(player);
+			((PartyPlayerImpl) player).playChatSound();
 		}
 	}
 	
 	/**
-	 * This method is called when something related to Parties placeholders is changed
+	 * This method is called when something related to the party is changed
 	 */
 	public abstract void callChange();
 	
@@ -525,6 +552,21 @@ public abstract class PartyImpl implements Party {
 		return ConfigParties.GENERAL_MEMBERS_LIMIT >= 0 && getMembers().size() >= ConfigParties.GENERAL_MEMBERS_LIMIT;
 	}
 	
+	public void calculateLevels() {
+		if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+			if (expResult == null || cacheExperience != experience) {
+				try {
+					// Set the new level of the party
+					expResult = plugin.getExpManager().calculateLevel(experience);
+					// Update experience stamp
+					cacheExperience = experience;
+				} catch (Exception ex) {
+					plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_LEVELERROR, getId().toString(), ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Get current color
 	 *
@@ -536,17 +578,62 @@ public abstract class PartyImpl implements Party {
 		return getDynamicColor();
 	}
 	
-	/**
-	 * Give some experience to the party
-	 *
-	 * @param exp The amount of exp to give
-	 */
-	public void giveExperience(int exp) {
-		updateValue(() -> {
-			experience = experience + exp;
-			// Update party level directly after got experience
-		});
+	@Override
+	public void giveExperience(double exp) {
+		this.giveExperience(exp, null);
 	}
+	
+	/**
+	 * Give party experience
+	 *
+	 * @param exp The experience number to give
+	 * @param killer The killer of the entity
+	 */
+	public void giveExperience(double exp, @Nullable PartyPlayer killer) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Bukkit with BC enabled: just send the event to BC
+			sendExperiencePacket(exp, killer);
+		} else {
+			updateValue(() -> {
+				if (expResult == null)
+					calculateLevels();
+				int currentLevel = expResult.getLevel();
+				
+				experience = experience + exp;
+				// Update party level directly after got experience
+				calculateLevels();
+				
+				plugin.getScheduler().runAsync(() -> {
+					// Experience event
+					if (plugin.getPlatform() == PluginPlatform.BUNGEECORD) {
+						// Send the experience event to bukkit too
+						sendExperiencePacket(exp, killer);
+					}
+					IPartyGetExperienceEvent partiesGetExperienceEvent = plugin.getEventManager().preparePartyGetExperienceEvent(this, exp, killer);
+					plugin.getEventManager().callEvent(partiesGetExperienceEvent);
+					
+					// Level up event
+					if (expResult.getLevel() > currentLevel) {
+							// Send level up message
+							broadcastMessage(Messages.ADDCMD_EXP_PARTY_LEVEL_LEVEL_UP, null);
+							
+							if (plugin.getPlatform() == PluginPlatform.BUNGEECORD) {
+								// Send the event to bukkit too
+								sendLevelUpPacket(expResult.getLevel());
+							}
+						
+							IPartyLevelUpEvent partiesLevelUpEvent = plugin.getEventManager().prepareLevelUpEvent(this, expResult.getLevel());
+							plugin.getEventManager().callEvent(partiesLevelUpEvent);
+					}
+				});
+			});
+		}
+	}
+	
+	public abstract void sendExperiencePacket(double newExperience, PartyPlayer killer);
+	
+	public abstract void sendLevelUpPacket(int newLevel);
+	
 	
 	@Override
 	public PartyInvite invitePlayer(@NonNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
@@ -558,8 +645,8 @@ public abstract class PartyImpl implements Party {
 			
 			if (sendMessages) {
 				if (inviter != null)
-					((PartyPlayerImpl) inviter).sendMessage(Messages.MAINCMD_INVITE_SENT, this);
-				((PartyPlayerImpl) invitedPlayer).sendMessage(Messages.MAINCMD_INVITE_PLAYERINVITED, ((PartyPlayerImpl) inviter), this);
+					((PartyPlayerImpl) inviter).sendMessage(Messages.MAINCMD_INVITE_SENT, (PartyPlayerImpl) invitedPlayer, this);
+				((PartyPlayerImpl) invitedPlayer).sendMessage(Messages.MAINCMD_INVITE_PLAYERINVITED, (PartyPlayerImpl) inviter, this);
 			}
 			
 			plugin.getScheduler().scheduleAsyncLater(
@@ -591,21 +678,5 @@ public abstract class PartyImpl implements Party {
 			);
 		}
 		return ret;
-	}
-	
-	protected void playChatSound(PartyPlayer player) {
-		if (ConfigParties.GENERAL_SOUNDS_ON_CHAT_ENABLE) {
-			User user = plugin.getPlayer(player.getPlayerUUID());
-			if (user != null)
-				user.playSound(ConfigParties.GENERAL_SOUNDS_ON_CHAT_NAME, ConfigParties.GENERAL_SOUNDS_ON_CHAT_VOLUME, ConfigParties.GENERAL_SOUNDS_ON_CHAT_PITCH);
-		}
-	}
-	
-	protected void playBroadcastSound(PartyPlayer player) {
-		if (ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_ENABLE) {
-			User user = plugin.getPlayer(player.getPlayerUUID());
-			if (user != null)
-				user.playSound(ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_NAME, ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_VOLUME, ConfigParties.GENERAL_SOUNDS_ON_BROADCAST_PITCH);
-		}
 	}
 }

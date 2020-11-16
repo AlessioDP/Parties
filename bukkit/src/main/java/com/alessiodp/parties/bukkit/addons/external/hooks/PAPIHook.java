@@ -11,6 +11,9 @@ import org.bukkit.OfflinePlayer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequiredArgsConstructor
 public class PAPIHook extends PlaceholderExpansion {
 	@NonNull private final PartiesPlugin plugin;
@@ -45,17 +48,29 @@ public class PAPIHook extends PlaceholderExpansion {
 		return true;
 	}
 	
+	@Override
+	public List<String> getPlaceholders() {
+		List<String> ret = new ArrayList<>();
+		for (PartiesPlaceholder placeholder : PartiesPlaceholder.values()) {
+			ret.add("%" + getIdentifier() + "_" + placeholder.getSyntax() + "%");
+		}
+		return ret;
+	}
+	
 	public String parsePlaceholders(OfflinePlayer player, String msg) {
 		return PlaceholderAPI.setPlaceholders(player, msg);
 	}
 	
 	@Override
 	public String onRequest(OfflinePlayer offlinePlayer, String identifier) {
-		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
-		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
-		
-		PartiesPlaceholder ph = PartiesPlaceholder.getPlaceholder(identifier);
-		
-		return ph != null ? ph.formatPlaceholder(partyPlayer, party, identifier) : null;
+		if (offlinePlayer != null) {
+			PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
+			PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
+			
+			PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder(identifier);
+			
+			return placeholder != null ? placeholder.formatPlaceholder(partyPlayer, party, identifier) : "";
+		}
+		return identifier;
 	}
 }

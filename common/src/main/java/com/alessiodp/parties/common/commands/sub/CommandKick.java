@@ -217,9 +217,7 @@ public class CommandKick extends PartiesSubCommand {
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
 								sender.getName(), kickedPp.getName(), party.getName(), otherParty, true), true);
 					} else
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_DELETEEVENT_DENY
-								.replace("{party}", party.getName())
-								.replace("{player}", sender.getName()), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
 				}
 			} else {
 				// Normal
@@ -241,9 +239,7 @@ public class CommandKick extends PartiesSubCommand {
 			IPlayerPostLeaveEvent partiesPostLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostLeaveEvent(kickedPp, party, otherParty, partyPlayer);
 			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostLeaveEvent);
 		} else
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY
-					.replace("{party}", party.getName())
-					.replace("{player}", sender.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId().toString()), true);
 	}
 	
 	@Override

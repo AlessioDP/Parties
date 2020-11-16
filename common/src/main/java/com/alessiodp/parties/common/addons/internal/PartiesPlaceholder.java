@@ -112,11 +112,12 @@ public enum PartiesPlaceholder {
 			case EXPERIENCE_LEVEL:
 				return party != null ? Integer.toString(party.getLevel()) : emptyPlaceholder;
 			case EXPERIENCE_LEVEL_EXPERIENCE:
-				return party != null ? Integer.toString(party.getExpResult().getLevelExperience()) : emptyPlaceholder;
+				// Casting to int to avoid printing x.0/x.5 in placeholder
+				return party != null ? Integer.toString((int) party.getLevelExperience()) : emptyPlaceholder;
 			case EXPERIENCE_LEVELUP_CURRENT:
-				return party != null ? Integer.toString(party.getExpResult().getCurrentExperience()) : emptyPlaceholder;
+				return party != null ? Integer.toString((int) party.getLevelUpCurrent()) : emptyPlaceholder;
 			case EXPERIENCE_LEVELUP_NECESSARY:
-				return party != null ? Integer.toString(party.getExpResult().getNecessaryExperience()) : emptyPlaceholder;
+				return party != null ? Integer.toString((int) party.getLevelUpNecessary()) : emptyPlaceholder;
 			case KILLS:
 				return party != null ? Integer.toString(party.getKills()) : emptyPlaceholder;
 			case LEADER_NAME:

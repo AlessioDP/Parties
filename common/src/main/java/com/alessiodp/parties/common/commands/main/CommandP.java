@@ -144,9 +144,7 @@ public abstract class CommandP extends ADPMainCommand {
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
 							partyPlayer.getName(), party.getName(), newMessage), true);
 			} else
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_CHATEVENT_DENY
-						.replace("{player}", partyPlayer.getName())
-						.replace("{message}", message), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, partyPlayer.getName(), message), true);
 		}
 	}
 }

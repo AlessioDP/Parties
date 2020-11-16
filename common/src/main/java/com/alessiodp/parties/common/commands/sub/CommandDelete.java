@@ -132,9 +132,7 @@ public class CommandDelete extends PartiesSubCommand {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DELETE,
 					sender.getName(), party.getName()), true);
 		} else {
-			plugin.getLoggerManager().log(PartiesConstants.DEBUG_API_DELETEEVENT_DENY
-					.replace("{party}", party.getName())
-					.replace("{player}", sender.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
 		}
 	}
 	
