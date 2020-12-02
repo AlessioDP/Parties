@@ -2,7 +2,6 @@ package com.alessiodp.parties.bungeecord.messaging;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.messaging.ADPMessenger;
-import com.alessiodp.parties.common.PartiesPlugin;
 
 public class BungeePartiesMessenger extends ADPMessenger {
 	public BungeePartiesMessenger(ADPPlugin plugin) {

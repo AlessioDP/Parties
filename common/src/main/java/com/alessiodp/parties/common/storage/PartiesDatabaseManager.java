@@ -20,8 +20,9 @@ import com.alessiodp.parties.common.storage.interfaces.IPartiesDatabase;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-public class PartiesDatabaseManager extends DatabaseManager implements IPartiesDatabase {
+public class PartiesDatabaseManager extends DatabaseManager {
 	public PartiesDatabaseManager(ADPPlugin plugin) {
 		super(plugin);
 	}
@@ -49,16 +50,14 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		return ret;
 	}
 	
-	@Override
-	public void updatePlayer(PartyPlayerImpl player) {
-		plugin.getScheduler().runAsync(() -> {
+	public CompletableFuture<Void> updatePlayer(PartyPlayerImpl player) {
+		return plugin.getScheduler().runAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPLAYER, player.getName(), player.getPlayerUUID().toString()), true);
 			
 			((IPartiesDatabase) database).updatePlayer(player);
 		});
 	}
 	
-	@Override
 	public PartyPlayerImpl getPlayer(UUID uuid) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPLAYER, uuid.toString()), true);
@@ -67,16 +66,14 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
-	public void updateParty(PartyImpl party) {
-		plugin.getScheduler().runAsync(() -> {
+	public CompletableFuture<Void> updateParty(PartyImpl party) {
+		return plugin.getScheduler().runAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPARTY, CommonUtils.getNoEmptyOr(party.getName(), "_"), party.getId()), true);
 			
 			((IPartiesDatabase) database).updateParty(party);
 		});
 	}
 	
-	@Override
 	public PartyImpl getParty(UUID id) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPARTY, id.toString()), true);
@@ -85,7 +82,6 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
 	public PartyImpl getPartyByName(String name) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPARTY, name), true);
@@ -94,16 +90,14 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
-	public void removeParty(PartyImpl party) {
-		plugin.getScheduler().runAsync(() -> {
+	public CompletableFuture<Void> removeParty(PartyImpl party) {
+		return plugin.getScheduler().runAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_REMOVEPARTY, CommonUtils.getNoEmptyOr(party.getName(), "_"), party.getId()), true);
 			
 			((IPartiesDatabase) database).removeParty(party);
 		});
 	}
 	
-	@Override
 	public boolean existsParty(String name) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_EXISTSPARTY, name), true);
@@ -112,7 +106,6 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
 	public boolean existsTag(String tag) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_EXISTSTAG, tag), true);
@@ -121,7 +114,6 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
 	public LinkedHashSet<PartyImpl> getListParties(ListOrder order, int limit, int offset) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPARTIES, true);
@@ -130,7 +122,6 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
 	public int getListPartiesNumber() {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPARTIES_NUMBER, true);
@@ -139,7 +130,6 @@ public class PartiesDatabaseManager extends DatabaseManager implements IPartiesD
 		}).join();
 	}
 	
-	@Override
 	public Set<PartyImpl> getListFixed() {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLFIXEDPARTIES, true);

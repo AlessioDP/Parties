@@ -3,13 +3,10 @@ package com.alessiodp.parties.bungeecord.messaging;
 import com.alessiodp.core.bungeecord.messaging.BungeeMessageDispatcher;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import lombok.NonNull;
 
 
@@ -38,7 +35,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 	
 	public void sendLoadPlayer(PartyPlayerImpl partyPlayer) {
 		sendPacket(makePacket(PartiesPacket.PacketType.LOAD_PLAYER)
-				.setPlayerUuid(partyPlayer.getPartyId())
+				.setPlayerUuid(partyPlayer.getPlayerUUID())
 		);
 	}
 	
@@ -50,13 +47,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 	
 	public void sendUnloadPlayer(PartyPlayerImpl partyPlayer) {
 		sendPacket(makePacket(PartiesPacket.PacketType.UNLOAD_PLAYER)
-				.setPlayerUuid(partyPlayer.getPartyId())
-		);
-	}
-	
-	public void sendRenameParty(PartyImpl party) {
-		sendPacket(makePacket(PartiesPacket.PacketType.RENAME_PARTY)
-				.setPartyId(party.getId())
+				.setPlayerUuid(partyPlayer.getPlayerUUID())
 		);
 	}
 	
@@ -65,6 +56,56 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 				.setPlayerUuid(user.getUUID())
 				.setPayloadRaw(raw)
 				, user
+		);
+	}
+	
+	public void sendCreateParty(PartyImpl party, PartyPlayerImpl leader) {
+		sendPacket(makePacket(PartiesPacket.PacketType.CREATE_PARTY)
+						.setPartyId(party.getId())
+						.setPlayerUuid(leader.getPlayerUUID())
+		);
+	}
+	
+	public void sendDeleteParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.DELETE_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendRenameParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.RENAME_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendAddMemberParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.ADD_MEMBER_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendRemoveMemberParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.REMOVE_MEMBER_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendChatMessage(PartyImpl party, PartyPlayerImpl player, String message) {
+		sendPacket(makePacket(PartiesPacket.PacketType.CHAT_MESSAGE)
+				.setPartyId(party.getId())
+				.setPlayerUuid(player.getPlayerUUID())
+				.setPayload(message)
+		);
+	}
+	
+	public void sendInvitePlayer(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
 		);
 	}
 	

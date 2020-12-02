@@ -5,9 +5,8 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.external.LLAPIHandler;
@@ -171,7 +170,7 @@ public class CommandKick extends PartiesSubCommand {
 		// Command starts
 		
 		// Calling API event
-		IPlayerPreLeaveEvent partiesPreLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreLeaveEvent(kickedPp, party, otherParty, partyPlayer);
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreLeaveEvent(kickedPp, party, LeaveCause.KICK, partyPlayer);
 		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreLeaveEvent);
 		
 		if (!partiesPreLeaveEvent.isCancelled()) {
@@ -188,7 +187,7 @@ public class CommandKick extends PartiesSubCommand {
 						mustDelete = false;
 						
 						party.changeLeader(newLeader);
-						party.removeMember(kickedPp);
+						party.removeMember(kickedPp, LeaveCause.KICK, partyPlayer);
 						
 						sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
 						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
@@ -208,11 +207,7 @@ public class CommandKick extends PartiesSubCommand {
 						sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
 						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_DISBAND, kickedPp);
 						
-						party.delete();
-						
-						// Calling Post API event
-						IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.KICK, kickedPp, partyPlayer);
-						((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
+						party.delete(DeleteCause.KICK, kickedPp, partyPlayer);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
 								sender.getName(), kickedPp.getName(), party.getName(), otherParty, true), true);
@@ -226,7 +221,7 @@ public class CommandKick extends PartiesSubCommand {
 					kickedPp.sendMessage(Messages.MAINCMD_KICK_PLAYERKICKED, partyPlayer);
 				}
 				
-				party.removeMember(kickedPp);
+				party.removeMember(kickedPp, LeaveCause.KICK, partyPlayer);
 				
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_SENT, kickedPp);
 				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, kickedPp);
@@ -234,10 +229,6 @@ public class CommandKick extends PartiesSubCommand {
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
 						sender.getName(), kickedPp.getName(), party.getName(), otherParty, false), true);
 			}
-			
-			// Calling API event
-			IPlayerPostLeaveEvent partiesPostLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostLeaveEvent(kickedPp, party, otherParty, partyPlayer);
-			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostLeaveEvent);
 		} else
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId().toString()), true);
 	}

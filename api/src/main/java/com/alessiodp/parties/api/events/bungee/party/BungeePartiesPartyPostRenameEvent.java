@@ -1,20 +1,22 @@
 package com.alessiodp.parties.api.events.bungee.party;
 
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
-import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class BungeePartiesPartyRenameEvent extends BungeePartiesEvent implements IPartyRenameEvent {
-	private boolean cancelled;
+public class BungeePartiesPartyPostRenameEvent extends BungeePartiesEvent implements IPartyPostRenameEvent {
 	private final Party party;
+	private String oldName;
 	private String newName;
 	private final PartyPlayer player;
 	private final boolean isAdmin;
 	
-	public BungeePartiesPartyRenameEvent(Party party, String newName, PartyPlayer player, boolean isAdmin) {
+	public BungeePartiesPartyPostRenameEvent(Party party, String oldName, String newName, PartyPlayer player, boolean isAdmin) {
 		this.party = party;
+		this.oldName = oldName;
 		this.newName = newName;
 		this.player = player;
 		this.isAdmin = isAdmin;
@@ -26,15 +28,16 @@ public class BungeePartiesPartyRenameEvent extends BungeePartiesEvent implements
 		return party;
 	}
 	
-	@NonNull
+	@Nullable
+	@Override
+	public String getOldPartyName() {
+		return oldName;
+	}
+	
+	@Nullable
 	@Override
 	public String getNewPartyName() {
 		return newName;
-	}
-	
-	@Override
-	public void setNewPartyName(String name) {
-		newName = name;
 	}
 	
 	@NonNull
@@ -46,15 +49,5 @@ public class BungeePartiesPartyRenameEvent extends BungeePartiesEvent implements
 	@Override
 	public boolean isAdmin() {
 		return isAdmin;
-	}
-	
-	@Override
-	public boolean isCancelled() {
-		return cancelled;
-	}
-	
-	@Override
-	public void setCancelled(boolean cancel) {
-		cancelled = cancel;
 	}
 }

@@ -1,7 +1,6 @@
 package com.alessiodp.parties.common.parties;
 
 import com.alessiodp.core.common.scheduling.CancellableTask;
-import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -89,6 +88,10 @@ public abstract class PartyManager {
 	}
 	
 	public PartyImpl loadParty(UUID id) {
+		return loadParty(id, false);
+	}
+	
+	public PartyImpl loadParty(UUID id, boolean syncServers) {
 		// Get the party and save it into the party list
 		PartyImpl ret = getParty(id);
 		addPartyToCache(ret);
@@ -183,10 +186,7 @@ public abstract class PartyManager {
 					cause = "leader left";
 				}
 				
-				party.delete();
-				// Calling Post API event
-				IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.TIMEOUT, null, null);
-				plugin.getEventManager().callEvent(partiesPostDeleteEvent);
+				party.delete(DeleteCause.TIMEOUT, null, null);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE_CAUSE, party.getName(), cause), true);
 				

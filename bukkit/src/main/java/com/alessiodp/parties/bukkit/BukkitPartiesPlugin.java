@@ -14,7 +14,6 @@ import com.alessiodp.parties.bukkit.configuration.BukkitPartiesConfigurationMana
 import com.alessiodp.parties.bukkit.events.BukkitEventManager;
 import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
-import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessenger;
 import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
@@ -69,7 +68,9 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		super.postHandle();
 		
 		new BukkitMetricsHandler(this);
-		((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		}
 	}
 	
 	@Override
@@ -100,7 +101,9 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	public void reloadConfiguration() {
 		super.reloadConfiguration();
 		
-		((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		}
 	}
 	
 	@Override

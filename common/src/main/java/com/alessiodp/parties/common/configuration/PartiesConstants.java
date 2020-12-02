@@ -29,10 +29,11 @@ public class PartiesConstants {
 	public static final String DEBUG_API_CREATEEVENT_DENY = "PartiesCreateEvent is cancelled, ignoring create of %s by player %s (uuid: %s)";
 	public static final String DEBUG_API_DELETEEVENT_DENY = "PartiesDeleteEvent is cancelled, ignoring delete of party %s by player %s (uuid: %s)";
 	public static final String DEBUG_API_DELETEEVENT_DENY_GENERIC = "PartiesDeleteEvent is cancelled, ignoring delete of party %s";
-	public static final String DEBUG_API_FRIENDLYFIREEVENT_DENY = "PartiesFriendlyFireEvent is cancelled, ignoring fight (type %s) of player %s to player %s";
+	public static final String DEBUG_API_RENAMEEVENT_DENY = "PartiesRenameEvent is cancelled, ignoring rename of party %s into %s by player %s";
 	public static final String DEBUG_API_JOINEVENT_DENY = "PartiesJoinEvent is cancelled, ignoring join of player %s into party %s";
 	public static final String DEBUG_API_LEAVEEVENT_DENY = "PartiesLeaveEvent is cancelled, ignoring leave of player %s from party %s";
-	public static final String DEBUG_API_RENAMEEVENT_DENY = "PartiesRenameEvent is cancelled, ignoring rename of party %s into %s by player %s";
+	public static final String DEBUG_API_INVITEEVENT_DENY = "PartiesInviteEvent is cancelled, ignoring invite of player %s in party %s by %s";
+	public static final String DEBUG_API_FRIENDLYFIREEVENT_DENY = "PartiesFriendlyFireEvent is cancelled, ignoring fight (type %s) of player %s to player %s";
 	
 	
 	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to player %s with '%s'";
@@ -132,9 +133,20 @@ public class PartiesConstants {
 	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PLAYER = "Received a Parties packet, loaded player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY = "Received a Parties packet, unloaded party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER = "Received a Parties packet, unloaded player %s";
-	public static final String DEBUG_MESSAGING_LISTEN_RENAME_PARTY = "Received a Parties packet, renamed party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_PLAY_SOUND = "Received a Parties packet, play sound player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_PLAY_SOUND_ERROR = "Received a Parties packet, play sound parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_CREATE_PARTY = "Received a Parties packet, created party %s by player %s";
+	public static final String DEBUG_MESSAGING_LISTEN_DELETE_PARTY = "Received a Parties packet, deleted party %s (cause: %s, kicked: %s) by player %s";
+	public static final String DEBUG_MESSAGING_LISTEN_DELETE_PARTY_ERROR = "Received a Parties packet, deleted party parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_RENAME_PARTY = "Received a Parties packet, renamed party %s from %s to %s by player %s";
+	public static final String DEBUG_MESSAGING_LISTEN_RENAME_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY = "Received a Parties packet, add member %s to party %s (cause: %s, by: %s)";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY_ERROR = "Received a Parties packet, add member party parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY = "Received a Parties packet, remove member %s to party %s (cause: %s, by: %s)";
+	public static final String DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY_ERROR = "Received a Parties packet, remove member party parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE = "Received a Parties packet, sending a chat message by player %s in party %s: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY = "Received a Parties packet, invited player %s to party %s by player %s";
+	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_EXPERIENCE = "Received a Parties packet, gave %s experience to party %s (killer: %s)";
 	public static final String DEBUG_MESSAGING_LISTEN_LEVEL_UP = "Received a Parties packet, %s leveled up to %d";
 	public static final String DEBUG_MESSAGING_LISTEN_CONFIGS = "Received a Parties packet, configs sync";

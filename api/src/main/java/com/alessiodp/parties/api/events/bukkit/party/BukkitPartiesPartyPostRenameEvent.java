@@ -1,21 +1,23 @@
 package com.alessiodp.parties.api.events.bukkit.party;
 
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
-import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class BukkitPartiesPartyRenameEvent extends BukkitPartiesEvent implements IPartyRenameEvent {
-	private boolean cancelled;
+public class BukkitPartiesPartyPostRenameEvent extends BukkitPartiesEvent implements IPartyPostRenameEvent {
 	private final Party party;
+	private String oldName;
 	private String newName;
 	private final PartyPlayer player;
 	private final boolean isAdmin;
 	
-	public BukkitPartiesPartyRenameEvent(Party party, String newName, PartyPlayer player, boolean isAdmin) {
-		super(false);
+	public BukkitPartiesPartyPostRenameEvent(Party party, String oldName, String newName, PartyPlayer player, boolean isAdmin) {
+		super(true);
 		this.party = party;
+		this.oldName = oldName;
 		this.newName = newName;
 		this.player = player;
 		this.isAdmin = isAdmin;
@@ -27,15 +29,16 @@ public class BukkitPartiesPartyRenameEvent extends BukkitPartiesEvent implements
 		return party;
 	}
 	
-	@NonNull
+	@Nullable
+	@Override
+	public String getOldPartyName() {
+		return oldName;
+	}
+	
+	@Nullable
 	@Override
 	public String getNewPartyName() {
 		return newName;
-	}
-	
-	@Override
-	public void setNewPartyName(String name) {
-		newName = name;
 	}
 	
 	@NonNull
@@ -47,15 +50,5 @@ public class BukkitPartiesPartyRenameEvent extends BukkitPartiesEvent implements
 	@Override
 	public boolean isAdmin() {
 		return isAdmin;
-	}
-	
-	@Override
-	public boolean isCancelled() {
-		return cancelled;
-	}
-	
-	@Override
-	public void setCancelled(boolean cancel) {
-		cancelled = cancel;
 	}
 }

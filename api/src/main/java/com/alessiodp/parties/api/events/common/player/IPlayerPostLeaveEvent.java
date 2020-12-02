@@ -1,5 +1,6 @@
 package com.alessiodp.parties.api.events.common.player;
 
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
@@ -24,11 +25,23 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	Party getParty();
 	
 	/**
+	 * Get the leave cause
+	 *
+	 * @return Returns the {@code LeaveCause} of the event
+	 */
+	@NonNull
+	LeaveCause getCause();
+	
+	/**
 	 * Has the player been kicked?
 	 *
 	 * @return Returns {@code true} if the player has been kicked
+	 * @deprecated Use getCause()
 	 */
-	boolean isKicked();
+	@Deprecated
+	default boolean isKicked() {
+		return getCause() == LeaveCause.KICK || getCause() == LeaveCause.BAN;
+	}
 	
 	/**
 	 * Get the kicker

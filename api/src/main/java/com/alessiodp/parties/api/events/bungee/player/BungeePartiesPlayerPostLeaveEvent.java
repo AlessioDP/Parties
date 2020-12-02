@@ -1,5 +1,6 @@
 package com.alessiodp.parties.api.events.bungee.player;
 
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -10,14 +11,14 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class BungeePartiesPlayerPostLeaveEvent extends BungeePartiesEvent implements IPlayerPostLeaveEvent {
 	private final PartyPlayer player;
 	private final Party party;
-	private final boolean isKicked;
-	private final PartyPlayer kickedBy;
+	private final LeaveCause cause;
+	private final PartyPlayer kicker;
 	
-	public BungeePartiesPlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
+	public BungeePartiesPlayerPostLeaveEvent(PartyPlayer player, Party party, LeaveCause cause, PartyPlayer kicker) {
 		this.player = player;
 		this.party = party;
-		this.isKicked = isKicked;
-		this.kickedBy = kickedBy;
+		this.cause = cause;
+		this.kicker = kicker;
 	}
 	
 	@NonNull
@@ -32,14 +33,15 @@ public class BungeePartiesPlayerPostLeaveEvent extends BungeePartiesEvent implem
 		return party;
 	}
 	
+	@NonNull
 	@Override
-	public boolean isKicked() {
-		return isKicked;
+	public LeaveCause getCause() {
+		return cause;
 	}
 	
 	@Nullable
 	@Override
 	public PartyPlayer getKicker() {
-		return kickedBy;
+		return kicker;
 	}
 }

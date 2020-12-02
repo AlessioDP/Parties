@@ -40,6 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -47,7 +48,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -161,7 +162,7 @@ public class SQLDispatcherTest {
 	private void player(PartiesSQLDispatcher dispatcher, PlayersDao dao) {
 		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
 		PartyPlayerImpl mockPlayer = mock(player.getClass());
-		doNothing().when(mockPlayer).updatePlayer();
+		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PlayerManager mockPlayerManager = mock(PlayerManager.class);
 		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
@@ -203,9 +204,9 @@ public class SQLDispatcherTest {
 		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
 		
 		PartyImpl mockParty = mock(party.getClass());
-		doNothing().when(mockParty).updateParty();
+		doReturn(CompletableFuture.completedFuture(null)).when(mockParty).updateParty();
 		PartyPlayerImpl mockPlayer = mock(player.getClass());
-		doNothing().when(mockPlayer).updatePlayer();
+		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PartyManager mockPartyManager = mock(PartyManager.class);
 		when(mockPlugin.getPartyManager()).thenReturn(mockPartyManager);
@@ -396,9 +397,9 @@ public class SQLDispatcherTest {
 	
 	private void insertOneParty(PartiesSQLDispatcher dispatcher, String partyName, int numberOfPlayers, int kills, double experience) {
 		PartyImpl mockParty = mock(PartyImpl.class);
-		doNothing().when(mockParty).updateParty();
+		doReturn(CompletableFuture.completedFuture(null)).when(mockParty).updateParty();
 		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);
-		doNothing().when(mockPlayer).updatePlayer();
+		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PartyImpl party = initializeParty(UUID.randomUUID());
 		Set<UUID> members = new HashSet<>();
@@ -439,9 +440,10 @@ public class SQLDispatcherTest {
 			}
 			
 			@Override
-			public void callChange() {
+			public void sendPacketUpdate() {
 				// Nothing to do
 			}
+			
 			@Override
 			public boolean isVanished() {
 				return false;
@@ -452,17 +454,17 @@ public class SQLDispatcherTest {
 	private PartyImpl initializeParty(UUID id) {
 		return new PartyImpl(mockPlugin, id) {
 			@Override
-			public void callChange() {
+			public void sendPacketUpdate() {
 				// Nothing to do
 			}
 			
 			@Override
-			public void sendExperiencePacket(double newExperience, PartyPlayer killer) {
+			public void sendPacketExperience(double newExperience, PartyPlayer killer) {
 				// Nothing to do
 			}
 			
 			@Override
-			public void sendLevelUpPacket(int newLevel) {
+			public void sendPacketLevelUp(int newLevel) {
 				// Nothing to do
 			}
 		};

@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
@@ -123,11 +122,7 @@ public class CommandDelete extends PartiesSubCommand {
 				party.broadcastMessage(Messages.MAINCMD_DELETE_BROADCAST, partyPlayer);
 			}
 			
-			party.delete();
-			
-			// Calling Post API event
-			IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.DELETE, null, partyPlayer);
-			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
+			party.delete(DeleteCause.DELETE, null, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DELETE,
 					sender.getName(), party.getName()), true);

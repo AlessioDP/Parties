@@ -1,7 +1,6 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
 import com.alessiodp.core.common.configuration.Constants;
-import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;

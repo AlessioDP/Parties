@@ -3,6 +3,7 @@ package com.alessiodp.parties.common.listeners;
 import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
@@ -34,7 +35,7 @@ public abstract class JoinLeaveListener {
 				plugin.getPlayerManager().getCachePlayersToDelete().remove(partyPlayer.getPlayerUUID());
 			
 			// Party checking
-			PartyImpl party = plugin.getPartyManager().loadParty(partyPlayer.getPartyId());
+			PartyImpl party = plugin.getPartyManager().loadParty(partyPlayer.getPartyId(), true);
 			if (party != null) {
 				// Party found
 				party.addOnlineMember(partyPlayer);
@@ -58,7 +59,7 @@ public abstract class JoinLeaveListener {
 				// Party not found - checking for default one
 				party = plugin.getPartyManager().loadParty(ConfigParties.ADDITIONAL_FIXED_DEFAULT_PARTY);
 				if (party != null) {
-					party.addMember(partyPlayer);
+					party.addMember(partyPlayer, JoinCause.OTHERS, null);
 					
 					if (ConfigParties.ADDITIONAL_MOTD_ENABLE && party.getMotd() != null) {
 						plugin.getScheduler().scheduleAsyncLater(new MotdTask(plugin, player.getUUID(), partyPlayer.getCreateID()), ConfigParties.ADDITIONAL_MOTD_DELAY, TimeUnit.MILLISECONDS);

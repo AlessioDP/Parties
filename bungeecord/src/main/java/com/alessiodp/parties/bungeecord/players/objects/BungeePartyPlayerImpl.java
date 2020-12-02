@@ -1,7 +1,6 @@
 package com.alessiodp.parties.bungeecord.players.objects;
 
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -51,7 +50,7 @@ public class BungeePartyPlayerImpl extends PartyPlayerImpl {
 	}
 	
 	@Override
-	public void callChange() {
+	public void sendPacketUpdate() {
 		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendUpdatePlayer(this);
 	}
 	

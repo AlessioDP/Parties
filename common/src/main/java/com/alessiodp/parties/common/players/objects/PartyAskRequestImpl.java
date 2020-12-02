@@ -1,7 +1,6 @@
 package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.parties.api.enums.JoinCause;
-import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyAskRequest;
@@ -27,11 +26,11 @@ public class PartyAskRequestImpl implements PartyAskRequest {
 		if (party.getAskRequests().remove(this) && asker.getPendingAskRequests().remove(this)) {
 			
 			// Calling API Event
-			IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(asker, party, null, JoinCause.ASK);
+			IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(asker, party, JoinCause.ASK, accepter);
 			plugin.getEventManager().callEvent(partiesPreJoinEvent);
 			
 			if (!partiesPreJoinEvent.isCancelled()) {
-				boolean success = party.addMember(asker);
+				boolean success = ((PartyImpl) party).addMember(asker, JoinCause.ASK, (PartyPlayerImpl) accepter);
 				if (success) {
 					if (sendMessages) {
 						((PartyPlayerImpl) asker).sendMessage(Messages.ADDCMD_ASK_ACCEPT_ACCEPTED, (PartyPlayerImpl) accepter, (PartyImpl) party);
@@ -41,10 +40,6 @@ public class PartyAskRequestImpl implements PartyAskRequest {
 						
 						party.broadcastMessage(Messages.ADDCMD_ASK_ACCEPT_BROADCAST, asker);
 					}
-					
-					// Calling API Event
-					IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(asker, party, null, JoinCause.ASK);
-					plugin.getEventManager().callEvent(partiesPostJoinEvent);
 				} else {
 					if (sendMessages) {
 						((PartyPlayerImpl) asker).sendMessage(Messages.PARTIES_COMMON_PARTYFULL, (PartyImpl) party);

@@ -26,6 +26,14 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	Party getParty();
 	
 	/**
+	 * Get the join cause
+	 *
+	 * @return Returns the {@code JoinCause} of the event
+	 */
+	@NonNull
+	JoinCause getCause();
+	
+	/**
 	 * Has been invited?
 	 *
 	 * @return Returns {@code true} if the player has been invited
@@ -42,13 +50,5 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	 */
 	@Nullable
 	PartyPlayer getInviter();
-	
-	/**
-	 * Get the join cause
-	 *
-	 * @return Returns the {@code JoinCause} of the event
-	 */
-	@NonNull
-	JoinCause getCause();
 	
 }

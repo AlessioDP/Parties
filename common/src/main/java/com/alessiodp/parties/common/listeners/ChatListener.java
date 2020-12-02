@@ -1,7 +1,6 @@
 package com.alessiodp.parties.common.listeners;
 
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.events.common.player.IChatEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -69,24 +68,14 @@ public abstract class ChatListener {
 						}
 					}
 					
-					if (!mustWait) {
-						// Calling API event
-						IChatEvent partiesChatEvent = plugin.getEventManager().prepareChatEvent(partyPlayer, party, finalMessage);
-						plugin.getEventManager().callEvent(partiesChatEvent);
+					if (!mustWait && partyPlayer.performPartyMessage(finalMessage)) {
+						if (mustStartCooldown)
+							plugin.getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
 						
-						String newMessage = partiesChatEvent.getMessage();
-						if (!partiesChatEvent.isCancelled()) {
-							partyPlayer.performPartyMessage(newMessage);
-							
-							if (mustStartCooldown)
-								plugin.getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
-							
-							if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT) {
-								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
-										partyPlayer.getName(), party.getName(), newMessage), true);
-							}
-						} else
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, partyPlayer.getName(), finalMessage), true);
+						if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT) {
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
+									partyPlayer.getName(), party.getName(), finalMessage), true);
+						}
 					}
 				} else
 					partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM

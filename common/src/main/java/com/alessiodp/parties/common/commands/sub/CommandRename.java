@@ -4,7 +4,8 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
+import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
@@ -195,17 +196,17 @@ public class CommandRename extends PartiesSubCommand {
 		String oldPartyName = party.getName();
 		
 		// Calling API event
-		IPartyRenameEvent partiesRenameEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyRenameEvent(party, partyName, partyPlayer, commandData.getArgs().length > 2);
-		((PartiesPlugin) plugin).getEventManager().callEvent(partiesRenameEvent);
+		IPartyPreRenameEvent partiesPreRenameEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreRenameEvent(party, party.getName(), partyName, partyPlayer, commandData.getArgs().length > 2);
+		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreRenameEvent);
 		
-		partyName = partiesRenameEvent.getNewPartyName();
-		if (!partiesRenameEvent.isCancelled()) {
-			party.rename(partyName);
+		partyName = partiesPreRenameEvent.getNewPartyName();
+		if (!partiesPreRenameEvent.isCancelled()) {
+			party.rename(partyName, partyPlayer, commandData.getArgs().length > 2);
 			
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_RENAME_RENAMED
-					.replace("%old%", oldPartyName), party);
+					.replace("%old%", CommonUtils.getOr(oldPartyName, "null")), party);
 			party.broadcastMessage(Messages.MAINCMD_RENAME_BROADCAST
-					.replace("%old%", oldPartyName), partyPlayer);
+					.replace("%old%", CommonUtils.getOr(oldPartyName, "null")), partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RENAME, sender.getName(), oldPartyName, party.getName()), true);
 		} else {

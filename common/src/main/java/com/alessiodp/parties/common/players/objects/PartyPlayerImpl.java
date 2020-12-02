@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.scheduling.ADPScheduler;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantLock;
 
 @EqualsAndHashCode
@@ -87,8 +89,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			runnable.run();
 			
 			if (saveToDatabase)
-				updatePlayer();
-			callChange();
+				updatePlayer().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());;
+			
 			lock.unlock();
 		}
 	}
@@ -97,8 +99,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		return getPartyId() != null || isSpy() || isMuted();
 	}
 	
-	public void updatePlayer() {
-		plugin.getDatabaseManager().updatePlayer(this);
+	public CompletableFuture<Void> updatePlayer() {
+		return plugin.getDatabaseManager().updatePlayer(this);
 	}
 	
 	public void addIntoParty(UUID party, int rank) {
@@ -220,7 +222,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	public void sendTitleMessage(String message) {
 		User player = plugin.getPlayer(getPlayerUUID());
 		if (player != null) {
-			player.sendTitle(message, ConfigParties.GENERAL_BROADCAST_FADE_IN_TIME, ConfigParties.GENERAL_BROADCAST_SHOW_TIME, ConfigParties.GENERAL_BROADCAST_FADE_OUT_TIME);
+			player.sendTitle(message, ConfigParties.GENERAL_BROADCAST_TITLES_FADE_IN_TIME, ConfigParties.GENERAL_BROADCAST_TITLES_SHOW_TIME, ConfigParties.GENERAL_BROADCAST_TITLES_FADE_OUT_TIME);
 		}
 	}
 	
@@ -233,7 +235,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	/**
 	 * Perform a party message
 	 */
-	public void performPartyMessage(String message) {
+	public boolean performPartyMessage(String message) {
 		if (!message.isEmpty()) {
 			PartyImpl party = plugin.getPartyManager().getPartyOfPlayer(this);
 			if (party != null) {
@@ -251,15 +253,18 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				
 				formattedMessage = Color.translateAlternateColorCodes(formattedMessage).replace("%message%", chatMessage);
 				
-				party.dispatchChatMessage(this, formattedMessage, true);
-				
-				plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
-						.setType(SpyMessage.SpyType.MESSAGE)
-						.setMessage(plugin.getJsonHandler().removeJson(chatMessage))
-						.setParty(party)
-						.setPlayer(this));
+				if (party.dispatchChatMessage(this, formattedMessage, true)) {
+					
+					plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
+							.setType(SpyMessage.SpyType.MESSAGE)
+							.setMessage(plugin.getJsonHandler().removeJson(chatMessage))
+							.setParty(party)
+							.setPlayer(this));
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 	
 	/**
@@ -356,10 +361,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		return ret;
 	}
 	
-	/**
-	 * This method is called when something related to the player is changed
-	 */
-	public abstract void callChange();
+	public abstract void sendPacketUpdate();
 	
 	/**
 	 * Is the player invisible?

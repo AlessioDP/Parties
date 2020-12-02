@@ -6,7 +6,7 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface IChatEvent extends PartiesEvent, Cancellable {
+public interface IPlayerPreChatEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player who sent the message
 	 *

@@ -4,9 +4,8 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
@@ -70,7 +69,7 @@ public class CommandLeave extends PartiesSubCommand {
 		// Command handling
 		
 		// Calling API event
-		IPlayerPreLeaveEvent partiesPreLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, false, null);
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, LeaveCause.LEAVE, partyPlayer);
 		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreLeaveEvent);
 		
 		if (!partiesPreLeaveEvent.isCancelled()) {
@@ -87,7 +86,7 @@ public class CommandLeave extends PartiesSubCommand {
 						mustDelete = false;
 						
 						party.changeLeader(newLeader);
-						party.removeMember(partyPlayer);
+						party.removeMember(partyPlayer, LeaveCause.LEAVE, partyPlayer);
 						
 						sendMessage(sender, partyPlayer, Messages.MAINCMD_LEAVE_LEFT, party);
 						party.broadcastMessage(Messages.MAINCMD_LEAVE_LEADER_CHANGED, newLeader);
@@ -107,11 +106,8 @@ public class CommandLeave extends PartiesSubCommand {
 						sendMessage(sender, partyPlayer, Messages.MAINCMD_LEAVE_LEFT, party);
 						party.broadcastMessage(Messages.MAINCMD_LEAVE_DISBANDED, partyPlayer);
 						
-						party.delete();
-						
-						// Calling Post API event
-						IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.LEAVE, null, partyPlayer);
-						((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
+						party.removeMember(partyPlayer, LeaveCause.LEAVE, partyPlayer); // Remove player for execute event
+						party.delete(DeleteCause.LEAVE, partyPlayer, partyPlayer);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE,
 								partyPlayer.getName(), party.getName(), true), true);
@@ -119,17 +115,13 @@ public class CommandLeave extends PartiesSubCommand {
 						plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
 				}
 			} else {
-				party.removeMember(partyPlayer);
+				party.removeMember(partyPlayer, LeaveCause.LEAVE, partyPlayer);
 		
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_LEAVE_LEFT, party);
 				party.broadcastMessage(Messages.MAINCMD_LEAVE_BROADCAST, partyPlayer);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE, partyPlayer.getName(), party.getId().toString(), false), true);
 			}
-			
-			// Calling API event
-			IPlayerPostLeaveEvent partiesPostLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostLeaveEvent(partyPlayer, party, false, null);
-			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostLeaveEvent);
 		} else
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId().toString()), true);
 	}

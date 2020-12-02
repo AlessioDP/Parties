@@ -2,16 +2,21 @@ package com.alessiodp.parties.bukkit.events;
 
 import com.alessiodp.core.bukkit.events.BukkitEventDispatcher;
 import com.alessiodp.parties.api.enums.JoinCause;
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostRenameEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyRenameEvent;
-import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesChatEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreRenameEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPreExperienceDropEvent;
@@ -19,12 +24,16 @@ import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
-import com.alessiodp.parties.api.events.common.player.IChatEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -51,7 +60,7 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyPostDeleteEvent preparePartyPostDeleteEvent(String party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
+	public IPartyPostDeleteEvent preparePartyPostDeleteEvent(Party party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
 		return new BukkitPartiesPartyPostDeleteEvent(party, cause, kickedPlayer, commandSender);
 	}
 	
@@ -66,8 +75,13 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyRenameEvent preparePartyRenameEvent(Party party, String newName, PartyPlayer player, boolean isAdmin) {
-		return new BukkitPartiesPartyRenameEvent(party, newName, player, isAdmin);
+	public IPartyPreRenameEvent preparePartyPreRenameEvent(Party party, String oldName, String newName, PartyPlayer player, boolean isAdmin) {
+		return new BukkitPartiesPartyPreRenameEvent(party, oldName, newName, player, isAdmin);
+	}
+	
+	@Override
+	public IPartyPostRenameEvent preparePartyPostRenameEvent(Party party, String oldName, String newName, PartyPlayer player, boolean isAdmin) {
+		return new BukkitPartiesPartyPostRenameEvent(party, oldName, newName, player, isAdmin);
 	}
 	
 	@Override
@@ -76,28 +90,43 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IChatEvent prepareChatEvent(PartyPlayer player, Party party, String message) {
-		return new BukkitPartiesChatEvent(player, party, message);
+	public IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String message) {
+		return new BukkitPartiesPlayerPreChatEvent(player, party, message);
 	}
 	
 	@Override
-	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
-		return new BukkitPartiesPlayerPreJoinEvent(player, party, inviter, cause);
+	public IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String message) {
+		return new BukkitPartiesPlayerPostChatEvent(player, party, message);
 	}
 	
 	@Override
-	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
-		return new BukkitPartiesPlayerPostJoinEvent(player, party, inviter, cause);
+	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
+		return new BukkitPartiesPlayerPreJoinEvent(player, party, cause, inviter);
 	}
 	
 	@Override
-	public IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
-		return new BukkitPartiesPlayerPreLeaveEvent(player, party, isKicked, kickedBy);
+	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
+		return new BukkitPartiesPlayerPostJoinEvent(player, party, cause, inviter);
 	}
 	
 	@Override
-	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
-		return new BukkitPartiesPlayerPostLeaveEvent(player, party, isKicked, kickedBy);
+	public IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, LeaveCause cause, PartyPlayer kicker) {
+		return new BukkitPartiesPlayerPreLeaveEvent(player, party, cause, kicker);
+	}
+	
+	@Override
+	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, LeaveCause cause, PartyPlayer kicker) {
+		return new BukkitPartiesPlayerPostLeaveEvent(player, party, cause, kicker);
+	}
+	
+	@Override
+	public IPlayerPreInviteEvent preparePlayerPreInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party) {
+		return new BukkitPartiesPlayerPreInviteEvent(invitedPlayer, inviter, party);
+	}
+	
+	@Override
+	public IPlayerPostInviteEvent preparePlayerPostInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party) {
+		return new BukkitPartiesPlayerPostInviteEvent(invitedPlayer, inviter, party);
 	}
 	
 	@Override

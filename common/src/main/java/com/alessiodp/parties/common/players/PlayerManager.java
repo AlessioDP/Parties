@@ -49,9 +49,11 @@ public abstract class PlayerManager {
 	
 	public PartyPlayerImpl loadPlayer(UUID uuid) {
 		PartyPlayerImpl ret = getPlayer(uuid);
-		getCachePlayers().put(uuid, ret);
-		if (ret.isSpy())
-			getCacheSpies().add(uuid);
+		if (ret != null) {
+			getCachePlayers().put(uuid, ret);
+			if (ret.isSpy())
+				getCacheSpies().add(uuid);
+		}
 		return ret;
 	}
 	
@@ -74,22 +76,25 @@ public abstract class PlayerManager {
 	}
 	
 	public PartyPlayerImpl getPlayer(UUID uuid) {
-		PartyPlayerImpl ret = getCachePlayers().get(uuid);
-		if (ret != null) {
-			// Get player from online list
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_LIST, ret.getName(),
-					ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
-		} else {
-			// Get player from database
-			ret = plugin.getDatabaseManager().getPlayer(uuid);
-			
-			// Load new player
-			if (ret == null) {
-				ret = initializePlayer(uuid);
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_NEW, ret.getName()), true);
-			} else {
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_DATABASE, ret.getName(),
+		PartyPlayerImpl ret = null;
+		if (uuid != null) {
+			ret = getCachePlayers().get(uuid);
+			if (ret != null) {
+				// Get player from online list
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_LIST, ret.getName(),
 						ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
+			} else {
+				// Get player from database
+				ret = plugin.getDatabaseManager().getPlayer(uuid);
+				
+				// Load new player
+				if (ret == null) {
+					ret = initializePlayer(uuid);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_NEW, ret.getName()), true);
+				} else {
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_DATABASE, ret.getName(),
+							ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
+				}
 			}
 		}
 		return ret;

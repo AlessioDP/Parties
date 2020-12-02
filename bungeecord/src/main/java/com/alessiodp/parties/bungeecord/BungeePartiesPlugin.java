@@ -13,7 +13,6 @@ import com.alessiodp.parties.bungeecord.events.BungeeEventManager;
 import com.alessiodp.parties.bungeecord.listeners.BungeeChatListener;
 import com.alessiodp.parties.bungeecord.listeners.BungeeFollowListener;
 import com.alessiodp.parties.bungeecord.listeners.BungeeJoinLeaveListener;
-import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessenger;
 import com.alessiodp.parties.bungeecord.parties.BungeePartyManager;
 import com.alessiodp.parties.bungeecord.players.BungeePlayerManager;

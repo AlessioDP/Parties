@@ -2,17 +2,21 @@ package com.alessiodp.parties.bungeecord.events;
 
 import com.alessiodp.core.bungeecord.events.BungeeEventDispatcher;
 import com.alessiodp.parties.api.enums.JoinCause;
-import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostRenameEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyRenameEvent;
-import com.alessiodp.parties.api.events.bungee.player.BungeePartiesChatEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreRenameEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
@@ -20,12 +24,16 @@ import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.party.IPartyRenameEvent;
-import com.alessiodp.parties.api.events.common.player.IChatEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -46,7 +54,7 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyPostDeleteEvent preparePartyPostDeleteEvent(String party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
+	public IPartyPostDeleteEvent preparePartyPostDeleteEvent(Party party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
 		return new BungeePartiesPartyPostDeleteEvent(party, cause, kickedPlayer, commandSender);
 	}
 	
@@ -61,8 +69,13 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyRenameEvent preparePartyRenameEvent(Party party, String newName, PartyPlayer player, boolean isAdmin) {
-		return new BungeePartiesPartyRenameEvent(party, newName, player, isAdmin);
+	public IPartyPreRenameEvent preparePartyPreRenameEvent(Party party, String oldName, String newName, PartyPlayer player, boolean isAdmin) {
+		return new BungeePartiesPartyPreRenameEvent(party, oldName, newName, player, isAdmin);
+	}
+	
+	@Override
+	public IPartyPostRenameEvent preparePartyPostRenameEvent(Party party, String oldName, String newName, PartyPlayer player, boolean isAdmin) {
+		return new BungeePartiesPartyPostRenameEvent(party, oldName, newName, player, isAdmin);
 	}
 	
 	@Override
@@ -71,28 +84,43 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IChatEvent prepareChatEvent(PartyPlayer player, Party party, String message) {
-		return new BungeePartiesChatEvent(player, party, message);
+	public IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String message) {
+		return new BungeePartiesPlayerPreChatEvent(player, party, message);
 	}
 	
 	@Override
-	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
-		return new BungeePartiesPlayerPreJoinEvent(player, party, inviter, cause);
+	public IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String message) {
+		return new BungeePartiesPlayerPostChatEvent(player, party, message);
 	}
 	
 	@Override
-	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
-		return new BungeePartiesPlayerPostJoinEvent(player, party, inviter, cause);
+	public IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
+		return new BungeePartiesPlayerPreJoinEvent(player, party, cause, inviter);
 	}
 	
 	@Override
-	public IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
-		return new BungeePartiesPlayerPreLeaveEvent(player, party, isKicked, kickedBy);
+	public IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
+		return new BungeePartiesPlayerPostJoinEvent(player, party, cause, inviter);
 	}
 	
 	@Override
-	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, boolean isKicked, PartyPlayer kickedBy) {
-		return new BungeePartiesPlayerPostLeaveEvent(player, party, isKicked, kickedBy);
+	public IPlayerPreLeaveEvent preparePlayerPreLeaveEvent(PartyPlayer player, Party party, LeaveCause cause, PartyPlayer kicker) {
+		return new BungeePartiesPlayerPreLeaveEvent(player, party, cause, kicker);
+	}
+	
+	@Override
+	public IPlayerPostLeaveEvent preparePlayerPostLeaveEvent(PartyPlayer player, Party party, LeaveCause cause, PartyPlayer kicker) {
+		return new BungeePartiesPlayerPostLeaveEvent(player, party, cause, kicker);
+	}
+	
+	@Override
+	public IPlayerPreInviteEvent preparePlayerPreInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party) {
+		return new BungeePartiesPlayerPreInviteEvent(invitedPlayer, inviter, party);
+	}
+	
+	@Override
+	public IPlayerPostInviteEvent preparePlayerPostInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party) {
+		return new BungeePartiesPlayerPostInviteEvent(invitedPlayer, inviter, party);
 	}
 	
 	@Override

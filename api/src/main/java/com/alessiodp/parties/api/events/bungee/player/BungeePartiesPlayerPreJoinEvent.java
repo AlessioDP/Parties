@@ -12,14 +12,14 @@ public class BungeePartiesPlayerPreJoinEvent extends BungeePartiesEvent implemen
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private final Party party;
-	private final PartyPlayer inviter;
 	private final JoinCause cause;
+	private final PartyPlayer inviter;
 	
-	public BungeePartiesPlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+	public BungeePartiesPlayerPreJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
 		this.player = player;
 		this.party = party;
-		this.inviter = inviter;
 		this.cause = cause;
+		this.inviter = inviter;
 	}
 	
 	@NonNull
@@ -34,16 +34,16 @@ public class BungeePartiesPlayerPreJoinEvent extends BungeePartiesEvent implemen
 		return party;
 	}
 	
-	@Nullable
-	@Override
-	public PartyPlayer getInviter() {
-		return inviter;
-	}
-	
 	@NonNull
 	@Override
 	public JoinCause getCause() {
 		return cause;
+	}
+	
+	@Nullable
+	@Override
+	public PartyPlayer getInviter() {
+		return inviter;
 	}
 	
 	@Override

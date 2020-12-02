@@ -11,15 +11,15 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class BukkitPartiesPlayerPostJoinEvent extends BukkitPartiesEvent implements IPlayerPostJoinEvent {
 	private final PartyPlayer player;
 	private final Party party;
-	private final PartyPlayer inviter;
 	private final JoinCause cause;
+	private final PartyPlayer inviter;
 	
-	public BukkitPartiesPlayerPostJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+	public BukkitPartiesPlayerPostJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
 		super(true);
 		this.player = player;
 		this.party = party;
-		this.inviter = inviter;
 		this.cause = cause;
+		this.inviter = inviter;
 	}
 	
 	@NonNull
@@ -34,15 +34,15 @@ public class BukkitPartiesPlayerPostJoinEvent extends BukkitPartiesEvent impleme
 		return party;
 	}
 	
-	@Nullable
-	@Override
-	public PartyPlayer getInviter() {
-		return inviter;
-	}
-	
 	@NonNull
 	@Override
 	public JoinCause getCause() {
 		return cause;
+	}
+	
+	@Nullable
+	@Override
+	public PartyPlayer getInviter() {
+		return inviter;
 	}
 }

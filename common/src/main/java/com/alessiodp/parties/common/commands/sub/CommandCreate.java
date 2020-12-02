@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
@@ -233,10 +232,6 @@ public class CommandCreate extends PartiesSubCommand {
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CREATE,
 						sender.getName(), party.getName()), true);
 			}
-			
-			// Calling API event
-			IPartyPostCreateEvent partiesPostEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostCreateEvent(partyPlayer, party);
-			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostEvent);
 		} else {
 			plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_CREATEEVENT_DENY, partyName, sender.getName(), sender.getUUID().toString()), true);
 		}

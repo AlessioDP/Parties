@@ -10,11 +10,18 @@ import java.util.UUID;
 public interface Party {
 	
 	/**
+	 * Get the party id
+	 *
+	 * @return Returns the id of the party
+	 */
+	@NonNull UUID getId();
+	
+	/**
 	 * Get the party name
 	 *
 	 * @return Returns the name of the party
 	 */
-	@NonNull String getName();
+	@Nullable String getName();
 	
 	/**
 	 * Delete the party
@@ -26,7 +33,7 @@ public interface Party {
 	 *
 	 * @param newName The name to set
 	 */
-	void rename(@NonNull String newName);
+	void rename(@Nullable String newName);
 	
 	/**
 	 * Set the party name
@@ -75,8 +82,9 @@ public interface Party {
 	 * Remove the player from the party
 	 *
 	 * @param partyPlayer The {@link PartyPlayer} to remove
+	 * @return Returns true if successfully removed
 	 */
-	void removeMember(@NonNull PartyPlayer partyPlayer);
+	boolean removeMember(@NonNull PartyPlayer partyPlayer);
 	
 	/**
 	 * Get a list of pending invite requests

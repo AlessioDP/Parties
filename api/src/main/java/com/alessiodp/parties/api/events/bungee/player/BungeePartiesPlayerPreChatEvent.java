@@ -1,18 +1,18 @@
 package com.alessiodp.parties.api.events.bungee.player;
 
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
-import com.alessiodp.parties.api.events.common.player.IChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class BungeePartiesChatEvent extends BungeePartiesEvent implements IChatEvent {
+public class BungeePartiesPlayerPreChatEvent extends BungeePartiesEvent implements IPlayerPreChatEvent {
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private final Party party;
 	private String message;
 	
-	public BungeePartiesChatEvent(PartyPlayer player, Party party, String message) {
+	public BungeePartiesPlayerPreChatEvent(PartyPlayer player, Party party, String message) {
 		this.player = player;
 		this.party = party;
 		this.message = message;

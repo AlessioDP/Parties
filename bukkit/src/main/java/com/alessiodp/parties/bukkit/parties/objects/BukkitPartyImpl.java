@@ -1,24 +1,23 @@
 package com.alessiodp.parties.bukkit.parties.objects;
 
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.api.enums.DeleteCause;
+import com.alessiodp.parties.api.enums.JoinCause;
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class BukkitPartyImpl extends PartyImpl {
 	
@@ -27,17 +26,16 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void updateParty() {
+	public CompletableFuture<Void> updateParty() {
 		DynmapHandler.updatePartyMarker(this);
-		super.updateParty();
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingUpdateParty(getId());
+		return super.updateParty();
 	}
 	
 	@Override
 	public void delete() {
 		DynmapHandler.cleanupMarkers(this);
+		
 		super.delete();
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingRemoveParty(getId());
 	}
 	
 	@Override
@@ -45,42 +43,87 @@ public class BukkitPartyImpl extends PartyImpl {
 		DynmapHandler.cleanupMarkers(this);
 		
 		super.rename(newName);
-		
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingRenameParty(getId(), newName);
 	}
 	
 	@Override
-	public void callChange() {
-		// Nothing to do
+	public void sendPacketUpdate() {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendUpdateParty(this);
+		}
 	}
 	
 	@Override
-	public void sendExperiencePacket(double newExperience, PartyPlayer killer) {
-		// Send event to BungeeCord only
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPartyExperience(this, newExperience, (PartyPlayerImpl) killer);
+	public void sendPacketCreate(PartyPlayerImpl leader) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendCreateParty(this, leader);
+		} else {
+			super.sendPacketCreate(leader);
+		}
 	}
 	
 	@Override
-	public void sendLevelUpPacket(int newLevel) {
+	public void sendPacketDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendDeleteParty(this, makeRawDelete(cause, kicked, commandSender));
+		} else {
+			super.sendPacketDelete(cause, kicked, commandSender);
+		}
+	}
+	
+	@Override
+	public void sendPacketRename(String oldName, String newName, PartyPlayerImpl player, boolean isAdmin) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRenameParty(this, makeRawRename(oldName, newName, player, isAdmin));
+		} else {
+			super.sendPacketRename(oldName, newName, player, isAdmin);
+		}
+	}
+	
+	@Override
+	public void sendPacketAddMember(PartyPlayerImpl player, JoinCause cause, PartyPlayerImpl inviter) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddMemberParty(this, makeRawAddMember(player, cause, inviter));
+		} else {
+			super.sendPacketAddMember(player, cause, inviter);
+		}
+	}
+	
+	@Override
+	public void sendPacketRemoveMember(PartyPlayerImpl player, LeaveCause cause, PartyPlayerImpl kicker) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRemoveMemberParty(this, makeRawRemoveMember(player, cause, kicker));
+		} else {
+			super.sendPacketRemoveMember(player, cause, kicker);
+		}
+	}
+	
+	@Override
+	public void sendPacketInvite(PartyPlayer invitedPlayer, PartyPlayer inviter) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to Bukkit servers
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendInvitePlayer(this, makeRawInvite(invitedPlayer, inviter));
+		} else {
+			super.sendPacketInvite(invitedPlayer, inviter);
+		}
+	}
+	
+	@Override
+	public void sendPacketExperience(double newExperience, PartyPlayer killer) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Send event to BungeeCord
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPartyExperience(this, newExperience, (PartyPlayerImpl) killer);
+		}
+	}
+	
+	@Override
+	public void sendPacketLevelUp(int newLevel) {
 		throw new IllegalStateException("this method should be executed on BungeeCord only");
-	}
-	
-	@Override
-	public void broadcastDirectMessage(String message, boolean dispatchBetweenServers) {
-		super.broadcastDirectMessage(message, dispatchBetweenServers);
-		
-		if (dispatchBetweenServers && message != null && !message.isEmpty()) {
-			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingBroadcastMessage(getId(), message);
-		}
-	}
-	
-	@Override
-	public void dispatchChatMessage(PartyPlayerImpl sender, String message, boolean dispatchBetweenServers) {
-		super.dispatchChatMessage(sender, message, dispatchBetweenServers);
-		
-		if (dispatchBetweenServers && message != null && !message.isEmpty()) {
-			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingChatMessage(getId(), sender.getPlayerUUID(), message);
-		}
 	}
 	
 	@Override
@@ -96,6 +139,15 @@ public class BukkitPartyImpl extends PartyImpl {
 			}
 		}
 		return ret;
+	}
+	
+	@Override
+	public void broadcastMessage(@Nullable String message, @Nullable PartyPlayer partyPlayer) {
+		// Sync for BungeeCord
+		if (plugin.isBungeeCordEnabled())
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendBroadcastMessage(this, partyPlayer != null ? (PartyPlayerImpl) partyPlayer : null, message);
+		else
+			super.broadcastMessage(message, partyPlayer);
 	}
 	
 	public void warnFriendlyFire(PartyPlayerImpl victim, PartyPlayerImpl attacker) {

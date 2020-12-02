@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
@@ -38,12 +37,6 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	
 	public BukkitPartyPlayerImpl(PartiesPlugin plugin, UUID uuid) {
 		super(plugin, uuid);
-	}
-	
-	@Override
-	public void updatePlayer() {
-		super.updatePlayer();
-		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPingUpdatePlayer(getPlayerUUID());
 	}
 	
 	@Override
@@ -126,19 +119,21 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	}
 	
 	@Override
-	public void callChange() {
-		// wip maybe do something
-	}
-	
-	@Override
-	public void performPartyMessage(String message) {
+	public boolean performPartyMessage(String message) {
 		if (BukkitConfigMain.ADDONS_BANMANAGER_ENABLE
 				&& BukkitConfigMain.ADDONS_BANMANAGER_PREVENTCHAT
 				&& BanManagerHandler.isMuted(getPlayerUUID())) {
-			return;
+			return false;
 		}
 		
-		super.performPartyMessage(message);
+		return super.performPartyMessage(message);
+	}
+	
+	@Override
+	public void sendPacketUpdate() {
+		if (plugin.isBungeeCordEnabled()) {
+			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendUpdatePlayer(this);
+		}
 	}
 	
 	@Override

@@ -5,7 +5,6 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.enums.JoinCause;
-import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
@@ -121,18 +120,15 @@ public class CommandJoin extends PartiesSubCommand {
 		// Command starts
 		
 		// Calling API Event
-		IPlayerPreJoinEvent partiesPreJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreJoinEvent(partyPlayer, party, null, JoinCause.JOIN);
+		IPlayerPreJoinEvent partiesPreJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreJoinEvent(partyPlayer, party, JoinCause.JOIN, partyPlayer);
 		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreJoinEvent);
 		
 		if (!partiesPreJoinEvent.isCancelled()) {
-			party.addMember(partyPlayer);
+			party.addMember(partyPlayer, JoinCause.JOIN, partyPlayer);
 			
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_JOINED);
 			
 			party.broadcastMessage(Messages.ADDCMD_JOIN_PLAYERJOINED, partyPlayer);
-			
-			IPlayerPostJoinEvent partiesPostJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostJoinEvent(partyPlayer, party, null, JoinCause.JOIN);
-			((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostJoinEvent);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_JOIN,
 					partyPlayer.getName(), party.getName()), true);

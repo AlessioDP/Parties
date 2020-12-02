@@ -3,7 +3,6 @@ package com.alessiodp.parties.common.messaging;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.messaging.ADPPacket;
-import com.alessiodp.core.common.utils.CommonUtils;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -11,7 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 @EqualsAndHashCode
@@ -124,7 +122,15 @@ public class PartiesPacket extends ADPPacket {
 	}
 	
 	public enum PacketType {
-		UPDATE_PARTY, UPDATE_PLAYER, LOAD_PARTY, LOAD_PLAYER, UNLOAD_PARTY, UNLOAD_PLAYER, RENAME_PARTY, PLAY_SOUND, EXPERIENCE, LEVEL_UP,
+		UPDATE_PARTY, UPDATE_PLAYER, LOAD_PARTY, LOAD_PLAYER, UNLOAD_PARTY, UNLOAD_PLAYER, PLAY_SOUND,
+		
+		// Party fields sync
+		CREATE_PARTY, DELETE_PARTY, RENAME_PARTY, ADD_MEMBER_PARTY, REMOVE_MEMBER_PARTY, CHAT_MESSAGE, BROADCAST_MESSAGE, INVITE_PLAYER, /*CHANGE_LEADER, CHANGE_TAG, CHANGE_DESCRIPTION,
+		CHANGE_MOTD, CHANGE_HOMES, CHANGE_COLOR, CHANGE_KILLS, CHANGE_PASSWORD, CHANGE_PROTECTION, CHANGE_EXPERIENCE, CHANGE_FOLLOW,*/
+		
+		// Actions fields
+		EXPERIENCE, LEVEL_UP,
+		
 		// Config packets
 		CONFIGS, REQUEST_CONFIGS
 	}

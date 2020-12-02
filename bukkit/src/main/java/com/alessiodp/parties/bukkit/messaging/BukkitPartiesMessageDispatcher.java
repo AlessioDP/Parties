@@ -2,14 +2,11 @@ package com.alessiodp.parties.bukkit.messaging;
 
 import com.alessiodp.core.bukkit.messaging.BukkitMessageDispatcher;
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.NonNull;
-
-import java.util.UUID;
 
 public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 	public BukkitPartiesMessageDispatcher(@NonNull ADPPlugin plugin) {
@@ -18,6 +15,61 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 	
 	private boolean isEnabled() {
 		return ((PartiesPlugin) plugin).isBungeeCordEnabled();
+	}
+	
+	public void sendUpdateParty(PartyImpl party) {
+		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
+				.setPartyId(party.getId())
+		);
+	}
+	
+	public void sendUpdatePlayer(PartyPlayerImpl partyPlayer) {
+		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PLAYER)
+				.setPlayerUuid(partyPlayer.getPartyId())
+		);
+	}
+	
+	public void sendCreateParty(PartyImpl party, PartyPlayerImpl leader) {
+		sendPacket(makePacket(PartiesPacket.PacketType.CREATE_PARTY)
+				.setPartyId(party.getId())
+				.setPlayerUuid(leader.getPlayerUUID())
+		);
+	}
+	
+	public void sendDeleteParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.DELETE_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendRenameParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.RENAME_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendAddMemberParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.ADD_MEMBER_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendRemoveMemberParty(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.REMOVE_MEMBER_PARTY)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendBroadcastMessage(PartyImpl party, PartyPlayerImpl sender, String message) {
+		sendPacket(makePacket(PartiesPacket.PacketType.BROADCAST_MESSAGE)
+				.setPartyId(party.getId())
+				.setPlayerUuid(sender != null ? sender.getPlayerUUID() : null)
+				.setPayload(message)
+		);
 	}
 	
 	public void sendPartyExperience(PartyImpl party, double experience, PartyPlayerImpl killer) {
@@ -29,88 +81,18 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		);
 	}
 	
+	public void sendInvitePlayer(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
 	public void sendConfigsRequest() {
 		sendPacket(makePacket(PartiesPacket.PacketType.REQUEST_CONFIGS));
 	}
 	
 	private PartiesPacket makePacket(PartiesPacket.PacketType type) {
 		return new PartiesPacket(plugin.getVersion()).setType(type);
-	}
-	
-	// WIP NEW
-	
-	public void sendChatMessage(String message, PartyImpl party) {
-	
-	}
-	
-	// WIP NEW
-	public void sendPingUpdatePlayer(UUID player) {
-		if (isEnabled()) {
-			// Prepare packet update player
-			/*
-			sendForwardPacket(new PartiesPacket(plugin.getVersion())
-					.setType(PartiesPacket.PacketType.PLAYER_UPDATED)
-					.setPlayerUuid(player)
-			);*/
-		}
-	}
-	
-	public void sendPingUpdateParty(UUID party) {
-		if (isEnabled()) {
-			// Prepare packet update party
-			/*
-			sendForwardPacket(new PartiesPacket(plugin.getVersion())
-					.setType(PartiesPacket.PacketType.PARTY_UPDATED)
-					.setPartyId(party)
-			);*/
-		}
-	}
-	
-	public void sendPingRenameParty(UUID party, String newName) {
-		if (isEnabled()) {
-			// Prepare packet rename party
-			/*
-			sendForwardPacket(new PartiesPacket(plugin.getVersion())
-					.setType(PartiesPacket.PacketType.PARTY_RENAMED)
-					.setPartyId(party)
-					.setPayload(newName)
-			);*/
-		}
-	}
-	
-	public void sendPingRemoveParty(UUID party) {
-		if (isEnabled()) {
-			// Prepare packet remove party
-			/*
-			sendForwardPacket(new PartiesPacket(plugin.getVersion())
-					.setType(PartiesPacket.PacketType.PARTY_REMOVED)
-					.setPartyId(party)
-			);*/
-		}
-	}
-	
-	public void sendPingChatMessage(UUID party, UUID sender, String message) {
-		/*if (isEnabled() && BukkitConfigMain.PARTIES_BUNGEECORDSYNC_DISPATCH_CHAT) {
-			// Prepare packet broadcast message
-			
-			sendForwardPacket(new PartiesPacket(plugin.getVersion())
-					.setType(PartiesPacket.PacketType.CHAT_MESSAGE)
-					.setPartyId(party)
-					.setPlayerUuid(sender)
-					.setPayload(message)
-			);
-		}*/
-	}
-	
-	public void sendPingBroadcastMessage(UUID party, String message) {
-		/*if (isEnabled() && BukkitConfigMain.PARTIES_BUNGEECORDSYNC_DISPATCH_BROADCASTS) {
-			// Prepare packet broadcast message
-			
-			sendForwardPacket(new PartiesPacket(plugin.getVersion())
-					.setType(PartiesPacket.PacketType.BROADCAST_MESSAGE)
-					.setPartyId(party)
-					.setPayload(message)
-			);
-		}*/
 	}
 }

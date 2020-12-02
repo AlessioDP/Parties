@@ -3,18 +3,19 @@ package com.alessiodp.parties.api.events.bungee.party;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 
 public class BungeePartiesPartyPostDeleteEvent extends BungeePartiesEvent implements IPartyPostDeleteEvent {
-	private final String party;
+	private final Party party;
 	private final DeleteCause cause;
 	private final PartyPlayer kickedPlayer;
 	private final PartyPlayer commandSender;
 	
-	public BungeePartiesPartyPostDeleteEvent(String party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
+	public BungeePartiesPartyPostDeleteEvent(Party party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender) {
 		this.party = party;
 		this.cause = cause;
 		this.kickedPlayer = kickedPlayer;
@@ -23,7 +24,7 @@ public class BungeePartiesPartyPostDeleteEvent extends BungeePartiesEvent implem
 	
 	@NonNull
 	@Override
-	public String getPartyName() {
+	public Party getParty() {
 		return party;
 	}
 	

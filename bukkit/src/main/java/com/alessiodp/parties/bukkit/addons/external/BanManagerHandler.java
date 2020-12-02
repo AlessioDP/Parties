@@ -4,9 +4,8 @@ import java.util.UUID;
 
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.api.enums.DeleteCause;
-import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
@@ -71,7 +70,7 @@ public class BanManagerHandler implements Listener {
 				PartyPlayerImpl kickerPp = plugin.getPlayerManager().getPlayer(event.getBan().getActor().getUUID());
 				
 				// Calling API event
-				IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, true, kickerPp);
+				IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, LeaveCause.BAN, kickerPp);
 				plugin.getEventManager().callEvent(partiesPreLeaveEvent);
 				
 				if (!partiesPreLeaveEvent.isCancelled()) {
@@ -87,7 +86,7 @@ public class BanManagerHandler implements Listener {
 								mustDelete = false;
 								
 								party.changeLeader(newLeader);
-								party.removeMember(partyPlayer);
+								party.removeMember(partyPlayer, LeaveCause.BAN, kickerPp);
 								
 								party.broadcastMessage(Messages.MAINCMD_LEAVE_LEADER_CHANGED, newLeader);
 							}
@@ -101,27 +100,19 @@ public class BanManagerHandler implements Listener {
 							if (!partiesPreDeleteEvent.isCancelled()) {
 								party.broadcastMessage(Messages.MAINCMD_LEAVE_DISBANDED, partyPlayer);
 								
-								party.delete();
-								// Calling Post API event
-								IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party.getName(), DeleteCause.BAN, partyPlayer, kickerPp);
-								plugin.getEventManager().callEvent(partiesPostDeleteEvent);
+								party.delete(DeleteCause.BAN, partyPlayer, kickerPp);
 								
 								plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_LIB_BANMANAGER_BAN, party.getId().toString(), pl.getName()), true);
 							} else {
 								// Event is cancelled, block ban chain
 								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getId().toString()), true);
-								return;
 							}
 						}
 					} else {
-						party.removeMember(partyPlayer);
+						party.removeMember(partyPlayer, LeaveCause.BAN, kickerPp);
 						
 						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, partyPlayer);
 					}
-					
-					// Calling API event
-					IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(partyPlayer, party, true, kickerPp);
-					plugin.getEventManager().callEvent(partiesPostLeaveEvent);
 				} else
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, pl.getUUID().toString(), party.getId().toString()), true);
 			}

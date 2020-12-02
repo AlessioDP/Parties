@@ -18,12 +18,15 @@ general:
     change-leader-on-leave: false
 
   broadcast:
-    # Use title messages instead of chat for broadcasts
-    # Times are in milliseconds
-    use-titles: false
-    fade-in-time: 200
-    show-time: 2000
-    fade-out-time: 200
+    titles:
+      # Send a title message
+      enable: false
+      # Send the normal message too
+      send-normal-message: true
+      # Times of the title in milliseconds
+      fade-in-time: 200
+      show-time: 2000
+      fade-out-time: 200
 
   name:
     # Regex of chars (Use \\ instead of \ if you use "text" format)

@@ -12,15 +12,15 @@ public class BukkitPartiesPlayerPreJoinEvent extends BukkitPartiesEvent implemen
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private final Party party;
-	private final PartyPlayer inviter;
 	private final JoinCause cause;
+	private final PartyPlayer inviter;
 	
-	public BukkitPartiesPlayerPreJoinEvent(PartyPlayer player, Party party, PartyPlayer inviter, JoinCause cause) {
+	public BukkitPartiesPlayerPreJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
 		super(false);
 		this.player = player;
 		this.party = party;
-		this.inviter = inviter;
 		this.cause = cause;
+		this.inviter = inviter;
 	}
 	
 	@NonNull
@@ -35,16 +35,16 @@ public class BukkitPartiesPlayerPreJoinEvent extends BukkitPartiesEvent implemen
 		return party;
 	}
 	
-	@Nullable
-	@Override
-	public PartyPlayer getInviter() {
-		return inviter;
-	}
-	
 	@NonNull
 	@Override
 	public JoinCause getCause() {
 		return cause;
+	}
+	
+	@Nullable
+	@Override
+	public PartyPlayer getInviter() {
+		return inviter;
 	}
 	
 	@Override

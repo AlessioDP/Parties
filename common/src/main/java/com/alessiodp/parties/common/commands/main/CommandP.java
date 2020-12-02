@@ -5,7 +5,6 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
-import com.alessiodp.parties.api.events.common.player.IChatEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
@@ -129,22 +128,15 @@ public abstract class CommandP extends ADPMainCommand {
 			}
 			
 			// Command starts
-			// Calling API event
-			IChatEvent partiesChatEvent = ((PartiesPlugin) plugin).getEventManager().prepareChatEvent(partyPlayer, party, message);
-			((PartiesPlugin) plugin).getEventManager().callEvent(partiesChatEvent);
 			
-			String newMessage = partiesChatEvent.getMessage();
-			if (!partiesChatEvent.isCancelled()) {
-				partyPlayer.performPartyMessage(newMessage);
-				
-				if (mustStartCooldown)
-					((PartiesPlugin) plugin).getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
-				
-				if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
-							partyPlayer.getName(), party.getName(), newMessage), true);
-			} else
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, partyPlayer.getName(), message), true);
+			partyPlayer.performPartyMessage(message);
+			
+			if (mustStartCooldown)
+				((PartiesPlugin) plugin).getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+			
+			if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
+						partyPlayer.getName(), party.getName(), message), true);
 		}
 	}
 }

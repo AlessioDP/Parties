@@ -25,6 +25,14 @@ public interface IPlayerPostJoinEvent extends PartiesEvent {
 	Party getParty();
 	
 	/**
+	 * Get the join cause
+	 *
+	 * @return Returns the {@code JoinCause} of the event
+	 */
+	@NonNull
+	JoinCause getCause();
+	
+	/**
 	 * Has been invited?
 	 *
 	 * @return Returns {@code true} if the player has been invited
@@ -41,13 +49,4 @@ public interface IPlayerPostJoinEvent extends PartiesEvent {
 	 */
 	@Nullable
 	PartyPlayer getInviter();
-	
-	/**
-	 * Get the join cause
-	 *
-	 * @return Returns the {@code JoinCause} of the event
-	 */
-	@NonNull
-	JoinCause getCause();
-	
 }

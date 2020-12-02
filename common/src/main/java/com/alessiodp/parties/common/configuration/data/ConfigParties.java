@@ -23,14 +23,16 @@ public abstract class ConfigParties extends ConfigurationFile {
 	@ConfigOption(path = "general.members.change-leader-on-leave")
 	public static boolean	GENERAL_MEMBERS_CHANGE_LEADER_ON_LEAVE;
 	
-	@ConfigOption(path = "general.broadcast.use-titles")
-	public static boolean		GENERAL_BROADCAST_USE_TITLES;
-	@ConfigOption(path = "general.broadcast.fade-in-time")
-	public static int			GENERAL_BROADCAST_FADE_IN_TIME;
-	@ConfigOption(path = "general.broadcast.show-time")
-	public static int			GENERAL_BROADCAST_SHOW_TIME;
-	@ConfigOption(path = "general.broadcast.fade-out-time")
-	public static int			GENERAL_BROADCAST_FADE_OUT_TIME;
+	@ConfigOption(path = "general.broadcast.titles.enable")
+	public static boolean		GENERAL_BROADCAST_TITLES_ENABLE;
+	@ConfigOption(path = "general.broadcast.titles.send-normal-message")
+	public static boolean		GENERAL_BROADCAST_TITLES_SEND_NORMAL_MESSAGE;
+	@ConfigOption(path = "general.broadcast.titles.fade-in-time")
+	public static int			GENERAL_BROADCAST_TITLES_FADE_IN_TIME;
+	@ConfigOption(path = "general.broadcast.titles.show-time")
+	public static int			GENERAL_BROADCAST_TITLES_SHOW_TIME;
+	@ConfigOption(path = "general.broadcast.titles.fade-out-time")
+	public static int			GENERAL_BROADCAST_TITLES_FADE_OUT_TIME;
 	
 	@ConfigOption(path = "general.name.allowed-characters")
 	public static String		GENERAL_NAME_ALLOWEDCHARS;

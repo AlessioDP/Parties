@@ -2,10 +2,7 @@ package com.alessiodp.parties.bukkit.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
-import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.commands.sub.CommandDebug;
-import com.alessiodp.parties.common.configuration.data.Messages;
 
 public class BukkitCommandDebug extends CommandDebug {
 	
