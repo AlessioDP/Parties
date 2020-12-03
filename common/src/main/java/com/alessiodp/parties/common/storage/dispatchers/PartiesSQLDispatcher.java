@@ -5,6 +5,7 @@ import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.dispatchers.SQLDispatcher;
 import com.alessiodp.core.common.storage.sql.connection.ConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.H2ConnectionFactory;
+import com.alessiodp.core.common.storage.sql.connection.MariaDBConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.MySQLConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.SQLiteConnectionFactory;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
@@ -39,18 +40,30 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 	public ConnectionFactory initConnectionFactory() {
 		ConnectionFactory ret = null;
 		switch (storageType) {
+			case MARIADB:
+				ret = new MariaDBConnectionFactory();
+				((MariaDBConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
+				((MariaDBConnectionFactory) ret).setCharset(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET);
+				((MariaDBConnectionFactory) ret).setServerName(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS);
+				((MariaDBConnectionFactory) ret).setPort(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT);
+				((MariaDBConnectionFactory) ret).setDatabaseName(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE);
+				((MariaDBConnectionFactory) ret).setUsername(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME);
+				((MariaDBConnectionFactory) ret).setPassword(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD);
+				((MariaDBConnectionFactory) ret).setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE);
+				((MariaDBConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME);
+				break;
 			case MYSQL:
 				ret = new MySQLConnectionFactory();
 				((MySQLConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
-				((MySQLConnectionFactory) ret).setCharset(ConfigMain.STORAGE_SETTINGS_MYSQL_CHARSET);
-				((MySQLConnectionFactory) ret).setServerName(ConfigMain.STORAGE_SETTINGS_MYSQL_ADDRESS);
-				((MySQLConnectionFactory) ret).setPort(ConfigMain.STORAGE_SETTINGS_MYSQL_PORT);
-				((MySQLConnectionFactory) ret).setDatabaseName(ConfigMain.STORAGE_SETTINGS_MYSQL_DATABASE);
-				((MySQLConnectionFactory) ret).setUsername(ConfigMain.STORAGE_SETTINGS_MYSQL_USERNAME);
-				((MySQLConnectionFactory) ret).setPassword(ConfigMain.STORAGE_SETTINGS_MYSQL_PASSWORD);
-				((MySQLConnectionFactory) ret).setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_MYSQL_POOLSIZE);
-				((MySQLConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_MYSQL_CONNLIFETIME);
-				((MySQLConnectionFactory) ret).setUseSSL(ConfigMain.STORAGE_SETTINGS_MYSQL_USESSL);
+				((MySQLConnectionFactory) ret).setCharset(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET);
+				((MySQLConnectionFactory) ret).setServerName(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS);
+				((MySQLConnectionFactory) ret).setPort(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT);
+				((MySQLConnectionFactory) ret).setDatabaseName(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE);
+				((MySQLConnectionFactory) ret).setUsername(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME);
+				((MySQLConnectionFactory) ret).setPassword(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD);
+				((MySQLConnectionFactory) ret).setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE);
+				((MySQLConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME);
+				((MySQLConnectionFactory) ret).setUseSSL(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL);
 				break;
 			case SQLITE:
 				ret = new SQLiteConnectionFactory(plugin, plugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE));
@@ -185,6 +198,14 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 	
 	@Override
 	protected int getBackwardMigration() {
-		return storageType == StorageType.H2 ? -1 : 0;
+		switch (storageType) {
+			case H2:
+			case MARIADB:
+				return -1;
+			case MYSQL:
+			case SQLITE:
+			default:
+				return 0;
+		}
 	}
 }

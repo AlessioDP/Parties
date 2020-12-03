@@ -52,6 +52,14 @@
               <shadedPattern>com.alessiodp.parties.libs.jdbi</shadedPattern>
             </relocation>
             <relocation>
+              <pattern>org.mariadb</pattern>
+              <shadedPattern>com.alessiodp.parties.libs.mariadb</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.mysql</pattern>
+              <shadedPattern>com.alessiodp.parties.libs.mysql</shadedPattern>
+            </relocation>
+            <relocation>
               <pattern>org.reflections</pattern>
               <shadedPattern>com.alessiodp.parties.libs.reflections</shadedPattern>
             </relocation>

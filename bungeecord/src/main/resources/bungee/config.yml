@@ -50,6 +50,7 @@ storage:
   # What type of storage the plugin should use? Database storage types:
   # => none       | [----]   The data will be saved into memory (a reload will reset everything)
   # => yaml       | [File]   Save the data into a YAML file
+  # => mariadb    | [Remote] Save the data into a MariaDB database
   # => mysql      | [Remote] Save the data into a MySQL database
   # => sqlite     | [File]   Save the data into a SQLite database
   # => h2         | [File]   Save the data into a H2 database (default)
@@ -79,8 +80,8 @@ storage:
     h2:
       database-file: database
 
-    # [MySQL settings]
-    mysql:
+    # [Remote SQL settings - MySQL/MariaDB]
+    remote-sql:
       address: localhost
       port: '3306'
       database: database

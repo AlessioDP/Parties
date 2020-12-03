@@ -50,24 +50,24 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
 	@ConfigOption(path = "storage.storage-settings.h2.database-file")
 	public static String		STORAGE_SETTINGS_H2_DBFILE;
-	@ConfigOption(path = "storage.storage-settings.mysql.address")
-	public static String		STORAGE_SETTINGS_MYSQL_ADDRESS;
-	@ConfigOption(path = "storage.storage-settings.mysql.port")
-	public static String		STORAGE_SETTINGS_MYSQL_PORT;
-	@ConfigOption(path = "storage.storage-settings.mysql.database")
-	public static String		STORAGE_SETTINGS_MYSQL_DATABASE;
-	@ConfigOption(path = "storage.storage-settings.mysql.username")
-	public static String		STORAGE_SETTINGS_MYSQL_USERNAME;
-	@ConfigOption(path = "storage.storage-settings.mysql.password")
-	public static String		STORAGE_SETTINGS_MYSQL_PASSWORD;
-	@ConfigOption(path = "storage.storage-settings.mysql.pool-size")
-	public static int			STORAGE_SETTINGS_MYSQL_POOLSIZE;
-	@ConfigOption(path = "storage.storage-settings.mysql.connection-lifetime")
-	public static int			STORAGE_SETTINGS_MYSQL_CONNLIFETIME;
-	@ConfigOption(path = "storage.storage-settings.mysql.use-ssl")
-	public static boolean		STORAGE_SETTINGS_MYSQL_USESSL;
-	@ConfigOption(path = "storage.storage-settings.mysql.charset")
-	public static String		STORAGE_SETTINGS_MYSQL_CHARSET;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.address")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_ADDRESS;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.port")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_PORT;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.database")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_DATABASE;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.username")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_USERNAME;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.password")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_PASSWORD;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.pool-size")
+	public static int			STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.connection-lifetime")
+	public static int			STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.use-ssl")
+	public static boolean		STORAGE_SETTINGS_REMOTE_SQL_USESSL;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.charset")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_CHARSET;
 	
 	
 	// Additional settings

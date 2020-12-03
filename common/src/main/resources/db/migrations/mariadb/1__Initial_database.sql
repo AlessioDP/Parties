@@ -1,4 +1,4 @@
--- MySQL database
+-- MariaDB database
 CREATE TABLE IF NOT EXISTS `<prefix>parties` (
 	`id`			VARCHAR(255) NOT NULL PRIMARY KEY,
 	`name`			VARCHAR(255) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `<prefix>players` (
 	`uuid`			VARCHAR(255) NOT NULL PRIMARY KEY,
 	`party`			VARCHAR(255),
 	`rank`			INTEGER DEFAULT 0,
-	`chat`			INTEGER DEFAULT 0,
+    `chat`			INTEGER DEFAULT 0,
 	`spy`			INTEGER DEFAULT 0,
 	`mute`			INTEGER DEFAULT 0
 );

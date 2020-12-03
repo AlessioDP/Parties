@@ -36,6 +36,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 			case YAML:
 				ret = new PartiesFileDispatcher(plugin, storageType);
 				break;
+			case MARIADB:
 			case MYSQL:
 			case SQLITE:
 			case H2:
