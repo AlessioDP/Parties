@@ -77,8 +77,8 @@
 		<libs.essentialsx>2.18.0</libs.essentialsx>
 		<libs.griefPrevention>16.13.0</libs.griefPrevention>
 		<libs.lastLoginApi>1.4.3</libs.lastLoginApi>
-		<libs.mmoCore>1.4.4</libs.mmoCore>
-		<libs.mythicMobs>4.9.2</libs.mythicMobs>
+		<libs.mmoCore>1.6</libs.mmoCore>
+		<libs.mythicMobs>4.10.0</libs.mythicMobs>
 		<libs.placeholderApi>2.10.6</libs.placeholderApi>
 		<libs.protocolLib>4.4.0</libs.protocolLib>
 		<libs.skript>2.5-beta2</libs.skript>

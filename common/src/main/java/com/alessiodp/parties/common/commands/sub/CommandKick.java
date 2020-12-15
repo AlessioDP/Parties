@@ -95,6 +95,7 @@ public class CommandKick extends PartiesSubCommand {
 		String playerName = commandData.getArgs()[1];
 		UUID playerUUID = null;
 		
+		
 		Set<UUID> matchingPlayers = LLAPIHandler.getPlayerByName(playerName);
 		List<UUID> listPlayers = new LinkedList<>(matchingPlayers);
 		listPlayers.removeIf((uuid) -> !((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid).isInParty());
@@ -134,7 +135,7 @@ public class CommandKick extends PartiesSubCommand {
 			playerUUID = listPlayers.get(0);
 		} else {
 			// Not found
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_PLAYERNOTINPARTY_OTHER
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PLAYER_NOT_FOUND
 					.replace("%player%", playerName));
 			return;
 		}

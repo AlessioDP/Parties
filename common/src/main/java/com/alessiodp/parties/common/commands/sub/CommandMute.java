@@ -68,7 +68,6 @@ public class CommandMute extends PartiesSubCommand {
 		
 		// Command starts
 		partyPlayer.setMuted(mute);
-		partyPlayer.updatePlayer();
 		
 		if (mute) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MUTE_ON);

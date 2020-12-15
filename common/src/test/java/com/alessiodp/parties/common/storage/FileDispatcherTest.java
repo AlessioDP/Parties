@@ -5,7 +5,6 @@ import com.alessiodp.core.common.addons.ADPLibraryManager;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
-import com.alessiodp.core.common.storage.sql.migrator.Migrator;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -17,7 +16,6 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesFileDispatcher;
-import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,15 +46,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-		ADPPlugin.class,
-		ADPBootstrap.class,
-		ConfigMain.class,
-		LoggerManager.class,
-		Migrator.class,
-		PartiesSQLDispatcher.class,
-		OfflineUser.class,
-		PartiesPlugin.class,
-		PlayerManager.class
+		ADPPlugin.class
 })
 public class FileDispatcherTest {
 	@Rule

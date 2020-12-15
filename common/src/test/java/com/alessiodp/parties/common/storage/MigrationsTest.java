@@ -2,11 +2,17 @@ package com.alessiodp.parties.common.storage;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.addons.ADPLibraryManager;
-import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
+import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.parties.ColorManager;
+import com.alessiodp.parties.common.parties.PartyManager;
+import com.alessiodp.parties.common.parties.objects.PartyImpl;
+import com.alessiodp.parties.common.players.PlayerManager;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.storage.dispatchers.PartiesFileDispatcher;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -22,6 +28,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -30,12 +38,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-		ADPPlugin.class,
-		ADPBootstrap.class,
-		ConfigMain.class,
-		LoggerManager.class,
-		PartiesSQLDispatcher.class,
-		PartiesPlugin.class
+		ADPPlugin.class
 })
 public class MigrationsTest {
 	@Rule
@@ -61,29 +64,86 @@ public class MigrationsTest {
 		when(mockLibraryManager.getIsolatedClassLoaderOf(any())).thenReturn(getClass().getClassLoader());
 		when(mockPlugin.getLibraryManager()).thenReturn(mockLibraryManager);
 		
+		// Mock managers for player/party initialization
+		ColorManager mockColorManager = mock(ColorManager.class);
+		when(mockPlugin.getColorManager()).thenReturn(mockColorManager);
+		when(mockColorManager.searchColorByName(anyString())).thenReturn(null);
+		
+		PlayerManager mockPlayerManager = mock(PlayerManager.class);
+		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
+		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> SQLDispatcherTest.initializePlayer(mockPlugin, mock.getArgument(0)));
+		
+		PartyManager mockPartyManager = mock(PartyManager.class);
+		when(mockPlugin.getPartyManager()).thenReturn(mockPartyManager);
+		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> SQLDispatcherTest.initializeParty(mockPlugin, mock.getArgument(0)));
+		
+		// Mock names
+		OfflineUser mockOfflineUser = mock(OfflineUser.class);
+		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
+		when(mockOfflineUser.getName()).thenReturn("Dummy");
+		
+		
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 	}
 	
 	private void prepareDatabase(String database) throws IOException {
 		Files.copy(
 				testingPath.resolve(database),
-				mockPlugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE),
+				mockPlugin.getFolder().resolve(database),
 				StandardCopyOption.REPLACE_EXISTING
 		);
 	}
 	
 	@Test
 	public void testDatabase2_6_X() throws IOException {
+		// YAML
+		ConfigMain.STORAGE_SETTINGS_YAML_DBFILE = "database_2_6_X.yml";
+		PartiesFileDispatcher fileDispatcher = new PartiesFileDispatcher(mockPlugin, StorageType.YAML);
+		prepareDatabase(ConfigMain.STORAGE_SETTINGS_YAML_DBFILE);
+		database2_6_X_YAML(fileDispatcher);
+		
+		// SQLite
 		ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE = "database_2_6_X.db";
 		prepareDatabase(ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE);
-		
 		PartiesSQLDispatcher dispatcher = new PartiesSQLDispatcher(mockPlugin, StorageType.SQLITE);
+		database2_6_X_SQL(dispatcher);
+	}
+	
+	private void database2_6_X_YAML(PartiesFileDispatcher dispatcher) {
+		dispatcher.init();
+		
+		PartyImpl party = dispatcher.getPartyByName("test");
+		assertNotNull(party);
+		assertEquals("test description", party.getDescription());
+		
+		assertNotNull(party.getLeader());
+		PartyPlayerImpl leader = dispatcher.getPlayer(party.getLeader());
+		assertNotNull(leader);
+		assertEquals(party.getId(), leader.getPartyId());
+		
+		assertNotNull(dispatcher.getPartyByName("test2"));
+		
+		dispatcher.stop();
+	}
+	
+	private void database2_6_X_SQL(PartiesSQLDispatcher dispatcher) {
 		dispatcher.init();
 		
 		dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> {
 			handle.execute("SELECT 1 FROM <prefix>parties");
 			handle.execute("SELECT 1 FROM <prefix>players");
 		});
+		
+		PartyImpl party = dispatcher.getPartyByName("test");
+		assertNotNull(party);
+		assertEquals("test description", party.getDescription());
+		
+		assertNotNull(party.getLeader());
+		PartyPlayerImpl leader = dispatcher.getPlayer(party.getLeader());
+		assertNotNull(leader);
+		assertEquals(party.getId(), leader.getPartyId());
+		
+		assertNotNull(dispatcher.getPartyByName("test2"));
 		
 		dispatcher.stop();
 	}
@@ -117,4 +177,19 @@ public class MigrationsTest {
 		
 		dispatcher.stop();
 	}
+	
+	// Manual test only
+	/*
+	@Test
+	public void testDatabaseFreshMySQL() {
+		PartiesSQLDispatcher dispatcher = SQLDispatcherTest.getSQLDispatcherMySQL(mockPlugin);
+		dispatcher.init();
+		
+		dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> {
+			handle.execute("SELECT 1 FROM <prefix>parties");
+			handle.execute("SELECT 1 FROM <prefix>players");
+		});
+		
+		dispatcher.stop();
+	}*/
 }

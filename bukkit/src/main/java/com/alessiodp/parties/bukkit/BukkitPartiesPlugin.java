@@ -15,7 +15,6 @@ import com.alessiodp.parties.bukkit.events.BukkitEventManager;
 import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessenger;
-import com.alessiodp.parties.bukkit.parties.BukkitCooldownManager;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
 import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
@@ -27,6 +26,7 @@ import com.alessiodp.parties.bukkit.listeners.BukkitFollowListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitJoinLeaveListener;
 import com.alessiodp.parties.bukkit.utils.BukkitMessageUtils;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -60,7 +60,6 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	@Override
 	protected void postHandle() {
 		addonManager = new BukkitPartiesAddonManager(this);
-		cooldownManager = new BukkitCooldownManager(this);
 		economyManager = new BukkitEconomyManager(this);
 		expManager = new BukkitExpManager(this);
 		eventManager = new BukkitEventManager(this);
@@ -112,12 +111,12 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	}
 	
 	@Override
-	public String getServerName() {
+	public String getServerName(PartyPlayerImpl player) {
 		return BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_NAME;
 	}
 	
 	@Override
-	public String getServerId() {
+	public String getServerId(PartyPlayerImpl player) {
 		return BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_ID;
 	}
 }

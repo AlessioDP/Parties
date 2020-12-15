@@ -26,6 +26,7 @@ parties:
     already-in-party: "&cYou are already in a party!"
     party-not-found: "&cThe party %party% doesn't exist"
     party-full: "&cThe party is full!"
+    player-not-found: "&cThe player %player% has not been found"
 
   options:
     enabled: '&aEnabled'
@@ -132,19 +133,20 @@ main-commands:
 
   info:
     # [Special tags]
-    # => %list_RANK%           = The list of players of that rank
-    #                              Example: %list_member%, %list_moderator% (%list_leader% it's unique)
-    # => %list_RANK_number%    = The number of players of that rank
-    # => %list_RANK_online%    = Online players of that rank
+    # => %list_rank_RANK%           = The list of players of that rank
+    #                              Example: %list_rank_member%, %list_rank_moderator% (%list_rank_leader% it's unique)
+    # => %list_rank_RANK_number%    = The number of players of that rank
+    # => %list_rank_RANK_online%    = Online players of that rank
+    # => %list_rank_RANK_online_number%    = The number of online players of that rank
     # => %online%              = List online players
     # => %online_number%       = Number of online players
     content:
     - "&b============ &l%party%'s Info &r&b============"
     - "&b&lTag&7: %tag%"
     - "&b&lDescription&7: %desc%"
-    - "&bLeader&7: %list_leader%"
-    - "&bMods&7: %list_moderator%"
-    - "&bMembers&7: %list_member%"
+    - "&bLeader&7: %list_rank_leader%"
+    - "&bMods&7: %list_rank_moderator%"
+    - "&bMembers&7: %list_rank_member%"
     - "&bOnline players&7: %online_number%"
 
   invite:
@@ -423,6 +425,7 @@ additional-commands:
   sethome:
     changed: ""
     removed: "&bParty home removed"
+    removed-none: "&cNo party home found"
     broadcast: "&aThe party has a new home!"
     # [Special tags]
     # => %seconds%          = Remaining time in seconds

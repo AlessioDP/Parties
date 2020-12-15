@@ -38,6 +38,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 				break;
 			case MARIADB:
 			case MYSQL:
+			case POSTGRESQL:
 			case SQLITE:
 			case H2:
 				ret = new PartiesSQLDispatcher(plugin, storageType);
@@ -64,6 +65,14 @@ public class PartiesDatabaseManager extends DatabaseManager {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPLAYER, uuid.toString()), true);
 			
 			return ((IPartiesDatabase) database).getPlayer(uuid);
+		}).join();
+	}
+	
+	public int getListPlayersNumber() {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPLAYERS_NUMBER, true);
+			
+			return ((IPartiesDatabase) database).getListPlayersNumber();
 		}).join();
 	}
 	

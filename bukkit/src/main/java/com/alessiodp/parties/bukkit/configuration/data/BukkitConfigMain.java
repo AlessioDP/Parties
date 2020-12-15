@@ -156,12 +156,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		COMMANDS_CMD_CLAIM;
 	@ConfigOption(path = "commands.main-commands.confirm")
 	public static String		COMMANDS_CMD_CONFIRM;
-	@ConfigOption(path = "commands.main-commands.home")
-	public static String		COMMANDS_CMD_HOME;
 	@ConfigOption(path = "commands.main-commands.protection")
 	public static String		COMMANDS_CMD_PROTECTION;
-	@ConfigOption(path = "commands.main-commands.sethome")
-	public static String		COMMANDS_CMD_SETHOME;
 	
 	
 	public BukkitConfigMain(PartiesPlugin plugin) {

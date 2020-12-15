@@ -9,9 +9,11 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
+import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -28,18 +30,35 @@ public enum PartiesPlaceholder {
 	EXPERIENCE_LEVELUP_CURRENT,
 	EXPERIENCE_LEVELUP_NECESSARY,
 	KILLS,
+	ID,
 	LEADER_NAME,
 	LEADER_UUID,
-	LIST_RANK (true, "list_<rank>"),
-	LIST_RANK_NUMBER (true, "list_<rank>_number"),
-	LIST_RANK_ONLINE (true, "list_<rank>_online"),
+	LIST_PARTIES_TOTAL,
+	LIST_PARTIES_BY_NAME_NUMBER(true, "list_parties_by_name_<number>"),
+	LIST_PARTIES_BY_NAME_NUMBER_PLACEHOLDER(true, "list_parties_by_name_<number>_<placeholder>"),
+	LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER(true, "list_parties_by_online_members_<number>"),
+	LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER_PLACEHOLDER(true, "list_parties_by_online_members_<number>_<placeholder>"),
+	LIST_PARTIES_BY_MEMBERS_NUMBER(true, "list_parties_by_members_<number>"),
+	LIST_PARTIES_BY_MEMBERS_NUMBER_PLACEHOLDER(true, "list_parties_by_members_<number>_<placeholder>"),
+	LIST_PARTIES_BY_KILLS_NUMBER(true, "list_parties_by_kills_<number>"),
+	LIST_PARTIES_BY_KILLS_NUMBER_PLACEHOLDER(true, "list_parties_by_kills_<number>_<placeholder>"),
+	LIST_PARTIES_BY_EXPERIENCE_NUMBER(true, "list_parties_by_experience_<number>"),
+	LIST_PARTIES_BY_EXPERIENCE_NUMBER_PLACEHOLDER(true, "list_parties_by_experience_<number>_<placeholder>"),
+	LIST_PLAYERS_TOTAL,
+	LIST_RANK (true, "list_rank_<rank>"),
+	LIST_RANK_NUMBER (true, "list_rank_<rank>_number"),
+	LIST_RANK_ONLINE (true, "list_rank_<rank>_online"),
+	LIST_RANK_ONLINE_NUMBER (true, "list_rank_<rank>_online_number"),
 	MOTD,
+	NAME,
 	ONLINE,
 	ONLINE_NUMBER,
 	OUT_PARTY,
 	PARTY,
-	RANK_CHAT,
-	RANK_NAME,
+	PLAYER_RANK_CHAT,
+	PLAYER_RANK_NAME,
+	SERVER_ID,
+	SERVER_NAME,
 	TAG,
 	
 	// Additional
@@ -49,12 +68,19 @@ public enum PartiesPlaceholder {
 	private final boolean custom; // Ignore placeholder auto-matching by name
 	@Getter private final String syntax;
 	
-	private static final String PREFIX_LIST_RANK = "list_";
+	private static final String PREFIX_LIST_PARTIES = "list_parties_by";
+	private static final String PREFIX_LIST_RANK = "list_rank_";
 	private static final String SUFFIX_LIST_RANK_NUMBER = "_number";
 	private static final String SUFFIX_LIST_RANK_ONLINE = "_online";
+	private static final String SUFFIX_LIST_RANK_ONLINE_NUMBER = "_online_number";
 	private static final String PREFIX_CUSTOM = "custom_";
 	
-	private static final Pattern PATTERN_LIST_RANK = Pattern.compile("list_([a-zA-Z]+)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATTERN_LIST_PARTIES_BY_NAME = Pattern.compile("list_parties_by_name_([0-9]+)(_([a-z0-9_]+))?", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATTERN_LIST_PARTIES_BY_ONLINE_MEMBERS = Pattern.compile("list_parties_by_online_members_([0-9]+)(_([a-z0-9_]+))?", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATTERN_LIST_PARTIES_BY_MEMBERS = Pattern.compile("list_parties_by_members_([0-9]+)(_([a-z0-9_]+))?", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATTERN_LIST_PARTIES_BY_KILLS = Pattern.compile("list_parties_by_kills_([0-9]+)(_([a-z0-9_]+))?", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATTERN_LIST_PARTIES_BY_EXPERIENCE = Pattern.compile("list_parties_by_experience_([0-9]+)(_([a-z0-9_]+))?", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PATTERN_LIST_RANK = Pattern.compile("list_rank_([a-z]+)", Pattern.CASE_INSENSITIVE);
 	
 	PartiesPlaceholder() {
 		this(false);
@@ -82,12 +108,43 @@ public enum PartiesPlaceholder {
 			return CUSTOM;
 		
 		if (identifierLower.startsWith(PREFIX_LIST_RANK)) {
-			if (identifierLower.endsWith(SUFFIX_LIST_RANK_NUMBER))
-				return LIST_RANK_NUMBER;
+			if (identifier.endsWith(SUFFIX_LIST_RANK_ONLINE_NUMBER))
+				return LIST_RANK_ONLINE_NUMBER;
 			else if (identifierLower.endsWith(SUFFIX_LIST_RANK_ONLINE))
 				return LIST_RANK_ONLINE;
+			if (identifierLower.endsWith(SUFFIX_LIST_RANK_NUMBER))
+				return LIST_RANK_NUMBER;
 			else
 				return LIST_RANK;
+		}
+		
+		if (identifierLower.startsWith(PREFIX_LIST_PARTIES)) {
+			if (identifierLower.startsWith(PREFIX_LIST_PARTIES)) {
+				Matcher matcher = PATTERN_LIST_PARTIES_BY_NAME.matcher(identifier);
+				if (matcher.find()) {
+					return matcher.group(3) != null ? LIST_PARTIES_BY_NAME_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_NAME_NUMBER;
+				}
+				
+				matcher = PATTERN_LIST_PARTIES_BY_ONLINE_MEMBERS.matcher(identifier);
+				if (matcher.find()) {
+					return matcher.group(3) != null ? LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER;
+				}
+				
+				matcher = PATTERN_LIST_PARTIES_BY_MEMBERS.matcher(identifier);
+				if (matcher.find()) {
+					return matcher.group(3) != null ? LIST_PARTIES_BY_MEMBERS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_MEMBERS_NUMBER;
+				}
+				
+				matcher = PATTERN_LIST_PARTIES_BY_KILLS.matcher(identifier);
+				if (matcher.find()) {
+					return matcher.group(3) != null ? LIST_PARTIES_BY_KILLS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_KILLS_NUMBER;
+				}
+				
+				matcher = PATTERN_LIST_PARTIES_BY_EXPERIENCE.matcher(identifier);
+				if (matcher.find()) {
+					return matcher.group(3) != null ? LIST_PARTIES_BY_EXPERIENCE_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_EXPERIENCE_NUMBER;
+				}
+			}
 		}
 		return null;
 	}
@@ -120,11 +177,32 @@ public enum PartiesPlaceholder {
 				return party != null ? Integer.toString((int) party.getLevelUpNecessary()) : emptyPlaceholder;
 			case KILLS:
 				return party != null ? Integer.toString(party.getKills()) : emptyPlaceholder;
+			case ID:
+				return party != null ? party.getId().toString() : emptyPlaceholder;
 			case LEADER_NAME:
 				PartyPlayerImpl leader = party != null ? plugin.getPlayerManager().getPlayer(party.getLeader()) : null;
 				return leader != null ? leader.getName() : emptyPlaceholder;
 			case LEADER_UUID:
-				return (party != null && party.getLeader() != null) ?  party.getLeader().toString() : emptyPlaceholder;
+				return (party != null && party.getLeader() != null) ? party.getLeader().toString() : emptyPlaceholder;
+			case LIST_PARTIES_TOTAL:
+				return Integer.toString(plugin.getDatabaseManager().getListPartiesNumber());
+			case LIST_PARTIES_BY_NAME_NUMBER:
+			case LIST_PARTIES_BY_NAME_NUMBER_PLACEHOLDER:
+				return getListPartiesBy(player, identifier, emptyPlaceholder, PATTERN_LIST_PARTIES_BY_NAME, PartiesDatabaseManager.ListOrder.NAME);
+			case LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER:
+			case LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER_PLACEHOLDER:
+				return getListPartiesBy(player, identifier, emptyPlaceholder, PATTERN_LIST_PARTIES_BY_ONLINE_MEMBERS, PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS);
+			case LIST_PARTIES_BY_MEMBERS_NUMBER:
+			case LIST_PARTIES_BY_MEMBERS_NUMBER_PLACEHOLDER:
+				return getListPartiesBy(player, identifier, emptyPlaceholder, PATTERN_LIST_PARTIES_BY_MEMBERS, PartiesDatabaseManager.ListOrder.MEMBERS);
+			case LIST_PARTIES_BY_KILLS_NUMBER:
+			case LIST_PARTIES_BY_KILLS_NUMBER_PLACEHOLDER:
+				return getListPartiesBy(player, identifier, emptyPlaceholder, PATTERN_LIST_PARTIES_BY_KILLS, PartiesDatabaseManager.ListOrder.KILLS);
+			case LIST_PARTIES_BY_EXPERIENCE_NUMBER:
+			case LIST_PARTIES_BY_EXPERIENCE_NUMBER_PLACEHOLDER:
+				return getListPartiesBy(player, identifier, emptyPlaceholder, PATTERN_LIST_PARTIES_BY_EXPERIENCE, PartiesDatabaseManager.ListOrder.EXPERIENCE);
+			case LIST_PLAYERS_TOTAL:
+				return Integer.toString(plugin.getDatabaseManager().getListPlayersNumber());
 			case LIST_RANK:
 			case LIST_RANK_ONLINE:
 				matcher = PATTERN_LIST_RANK.matcher(identifier);
@@ -164,16 +242,27 @@ public enum PartiesPlaceholder {
 				}
 				return null;
 			case LIST_RANK_NUMBER:
+			case LIST_RANK_ONLINE_NUMBER:
 				matcher = PATTERN_LIST_RANK.matcher(identifier);
 				if (matcher.find()) {
 					if (party != null) {
-						return Integer.toString(getAllMembers(party, matcher.group(1)).size());
+						if (this.equals(LIST_RANK_NUMBER)) {
+							return Integer.toString(getAllMembers(party, matcher.group(1)).size());
+						} else {
+							return Long.toString(getAllMembers(party, matcher.group(1)).stream().filter(pp -> {
+								OfflineUser offlinePlayer = plugin.getOfflinePlayer(pp.getPlayerUUID());
+								return offlinePlayer.isOnline();
+							}).count());
+						}
 					}
 					return emptyPlaceholder;
 				}
 				return null;
 			case MOTD:
 				return party != null && party.getMotd() != null ? party.getMotd() : emptyPlaceholder;
+			case NAME:
+			case PARTY:
+				return party != null && party.getName() != null ? party.getName() : emptyPlaceholder;
 			case ONLINE:
 				StringBuilder sb = new StringBuilder();
 				if (party != null) {
@@ -199,12 +288,14 @@ public enum PartiesPlaceholder {
 				return party != null ? Integer.toString(party.getOnlineMembers(false).size()) : emptyPlaceholder;
 			case OUT_PARTY:
 				return party == null ? Messages.PARTIES_OUT_PARTY : emptyPlaceholder;
-			case PARTY:
-				return party != null ? party.getName() : emptyPlaceholder;
-			case RANK_CHAT:
+			case PLAYER_RANK_CHAT:
 				return player != null && player.isInParty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getChat() : emptyPlaceholder;
-			case RANK_NAME:
+			case PLAYER_RANK_NAME:
 				return player != null && player.isInParty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getName() : emptyPlaceholder;
+			case SERVER_ID:
+				return plugin.getServerId(player);
+			case SERVER_NAME:
+				return plugin.getServerName(player);
 			case TAG:
 				return party != null && party.getTag() != null ? party.getTag() : emptyPlaceholder;
 			case CUSTOM:
@@ -230,5 +321,27 @@ public enum PartiesPlaceholder {
 				ret.add(pl);
 		}
 		return ret;
+	}
+	
+	private String getListPartiesBy(PartyPlayerImpl player, String identifier, String emptyPlaceholder, Pattern pattern, PartiesDatabaseManager.ListOrder order) {
+		Matcher matcher = pattern.matcher(identifier);
+		if (matcher.find()) {
+			try {
+				int number = Integer.parseInt(matcher.group(1));
+				Optional<PartyImpl> partyOptional = plugin.getDatabaseManager().getListParties(order, 1, number - 1).stream().findAny();
+				
+				if (partyOptional.isPresent()) {
+					if (matcher.group(3) != null) {
+						PartiesPlaceholder newPlaceholder = PartiesPlaceholder.getPlaceholder(matcher.group(3));
+						
+						return newPlaceholder != null ? newPlaceholder.formatPlaceholder(player, partyOptional.get(), matcher.group(3), emptyPlaceholder) : null;
+					}
+					
+					return partyOptional.get().getName() != null ? partyOptional.get().getName() : emptyPlaceholder;
+				}
+				return emptyPlaceholder;
+			} catch (Exception ignored) {}
+		}
+		return null;
 	}
 }

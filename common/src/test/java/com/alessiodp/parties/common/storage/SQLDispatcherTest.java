@@ -6,7 +6,6 @@ import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.sql.connection.ConnectionFactory;
-import com.alessiodp.core.common.storage.sql.migrator.Migrator;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -56,15 +55,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-		ADPPlugin.class,
-		ADPBootstrap.class,
-		ConfigMain.class,
-		LoggerManager.class,
-		Migrator.class,
-		PartiesSQLDispatcher.class,
-		OfflineUser.class,
-		PartiesPlugin.class,
-		PlayerManager.class
+		ADPPlugin.class
 })
 public class SQLDispatcherTest {
 	@Rule
@@ -148,6 +139,22 @@ public class SQLDispatcherTest {
 		return ret;
 	}
 	
+	public static PartiesSQLDispatcher getSQLDispatcherMySQL(PartiesPlugin plugin) {
+		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT = "3306";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE = "parties";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME = "root";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD = "";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE = 10;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME = 1800000;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
+		PartiesSQLDispatcher ret = new PartiesSQLDispatcher(plugin, StorageType.MYSQL);
+		ret.init();
+		return ret;
+	}
+	
 	@Test
 	public void testPlayer() {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
@@ -157,16 +164,21 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
 		dispatcher.stop();
+		
+		// Manual test only
+		//dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		//player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class));
+		//dispatcher.stop();
 	}
 	
 	private void player(PartiesSQLDispatcher dispatcher, PlayersDao dao) {
-		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
+		PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
 		PartyPlayerImpl mockPlayer = mock(player.getClass());
 		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PlayerManager mockPlayerManager = mock(PlayerManager.class);
 		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
-		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mock.getArgument(0)));
+		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mockPlugin, mock.getArgument(0)));
 		
 		
 		player.setAccessible(true);
@@ -200,8 +212,8 @@ public class SQLDispatcherTest {
 	}
 	
 	private void party(PartiesSQLDispatcher dispatcher, PartiesDao dao, boolean remove) {
-		PartyImpl party = initializeParty(UUID.randomUUID());
-		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
+		PartyImpl party = initializeParty(mockPlugin, UUID.randomUUID());
+		PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
 		
 		PartyImpl mockParty = mock(party.getClass());
 		doReturn(CompletableFuture.completedFuture(null)).when(mockParty).updateParty();
@@ -210,11 +222,11 @@ public class SQLDispatcherTest {
 		
 		PartyManager mockPartyManager = mock(PartyManager.class);
 		when(mockPlugin.getPartyManager()).thenReturn(mockPartyManager);
-		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> initializeParty(mock.getArgument(0)));
+		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> initializeParty(mockPlugin, mock.getArgument(0)));
 		
 		PlayerManager mockPlayerManager = mock(PlayerManager.class);
 		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
-		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mock.getArgument(0)));
+		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mockPlugin, mock.getArgument(0)));
 		
 		party.setAccessible(true);
 		party.setup("test", player.getPlayerUUID().toString());
@@ -265,11 +277,11 @@ public class SQLDispatcherTest {
 	public void testListParties() {
 		PartyManager mockPartyManager = mock(PartyManager.class);
 		when(mockPlugin.getPartyManager()).thenReturn(mockPartyManager);
-		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> initializeParty(mock.getArgument(0)));
+		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> initializeParty(mockPlugin, mock.getArgument(0)));
 		
 		PlayerManager mockPlayerManager = mock(PlayerManager.class);
 		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
-		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mock.getArgument(0)));
+		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mockPlugin, mock.getArgument(0)));
 		
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		PartiesDao daoParties = dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class);
@@ -358,7 +370,7 @@ public class SQLDispatcherTest {
 	}
 	
 	private void listFixed(PartiesSQLDispatcher dispatcher, PartiesDao dao) {
-		PartyImpl party = initializeParty(UUID.randomUUID());
+		PartyImpl party = initializeParty(mockPlugin, UUID.randomUUID());
 		
 		party.setAccessible(true);
 		party.setup("test3", null);
@@ -401,10 +413,10 @@ public class SQLDispatcherTest {
 		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);
 		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
-		PartyImpl party = initializeParty(UUID.randomUUID());
+		PartyImpl party = initializeParty(mockPlugin, UUID.randomUUID());
 		Set<UUID> members = new HashSet<>();
 		for (int c=0; c < numberOfPlayers; c++) {
-			PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
+			PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
 			members.add(player.getPlayerUUID());
 			player.setAccessible(true);
 			player.setPartyId(party.getId());
@@ -422,7 +434,7 @@ public class SQLDispatcherTest {
 		dispatcher.updateParty(party);
 	}
 	
-	private PartyPlayerImpl initializePlayer(UUID uuid) {
+	public static PartyPlayerImpl initializePlayer(PartiesPlugin mockPlugin, UUID uuid) {
 		return new PartyPlayerImpl(mockPlugin, uuid) {
 			@Override
 			public void playSound(String sound, double volume, double pitch) {
@@ -451,7 +463,7 @@ public class SQLDispatcherTest {
 		};
 	}
 	
-	private PartyImpl initializeParty(UUID id) {
+	public static PartyImpl initializeParty(PartiesPlugin mockPlugin, UUID id) {
 		return new PartyImpl(mockPlugin, id) {
 			@Override
 			public void sendPacketUpdate() {

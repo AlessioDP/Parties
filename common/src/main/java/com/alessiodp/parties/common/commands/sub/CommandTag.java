@@ -109,8 +109,8 @@ public class CommandTag extends PartiesSubCommand {
 				return;
 			}
 			
-			if (!commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
-				tag = commandData.getArgs()[2];
+			if (!commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+				tag = commandData.getArgs()[1];
 			}
 		} else {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE

@@ -72,19 +72,26 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		);
 	}
 	
+	public void sendInvitePlayer(PartyImpl party, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
+				.setPartyId(party.getId())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendAddHome(PartyImpl party, String home) {
+		sendPacket(makePacket(PartiesPacket.PacketType.ADD_HOME)
+				.setPartyId(party.getId())
+				.setPayload(home)
+		);
+	}
+	
 	public void sendPartyExperience(PartyImpl party, double experience, PartyPlayerImpl killer) {
 		// Not duplication: this is used to alert BungeeCord that experience must be given
 		sendPacket(makePacket(PartiesPacket.PacketType.EXPERIENCE)
 				.setPartyId(party.getId())
 				.setPlayerUuid(killer.getPlayerUUID())
 				.setPayloadNumber(experience)
-		);
-	}
-	
-	public void sendInvitePlayer(PartyImpl party, byte[] raw) {
-		sendPacket(makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
-				.setPartyId(party.getId())
-				.setPayloadRaw(raw)
 		);
 	}
 	

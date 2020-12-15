@@ -136,6 +136,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_DESC;
 	@ConfigOption(path = "commands.main-commands.follow")
 	public static String		COMMANDS_CMD_FOLLOW;
+	@ConfigOption(path = "commands.main-commands.home")
+	public static String		COMMANDS_CMD_HOME;
 	@ConfigOption(path = "commands.main-commands.ignore")
 	public static String		COMMANDS_CMD_IGNORE;
 	@ConfigOption(path = "commands.main-commands.info")
@@ -162,6 +164,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_RELOAD;
 	@ConfigOption(path = "commands.main-commands.rename")
 	public static String		COMMANDS_CMD_RENAME;
+	@ConfigOption(path = "commands.main-commands.sethome")
+	public static String		COMMANDS_CMD_SETHOME;
 	@ConfigOption(path = "commands.main-commands.spy")
 	public static String		COMMANDS_CMD_SPY;
 	@ConfigOption(path = "commands.main-commands.tag")

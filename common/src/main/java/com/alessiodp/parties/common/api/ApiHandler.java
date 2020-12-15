@@ -8,12 +8,14 @@ import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.api.interfaces.PartyRank;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -77,5 +79,30 @@ public class ApiHandler implements PartiesAPI {
 	@Override
 	public Set<PartyColor> getColors() {
 		return new HashSet<>(plugin.getColorManager().getColorList());
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByName(int numberOfPlayers, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.NAME, numberOfPlayers, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByOnlineMembers(int numberOfPlayers, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS, numberOfPlayers, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByMembers(int numberOfPlayers, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, numberOfPlayers, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByKills(int numberOfPlayers, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.KILLS, numberOfPlayers, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByExperience(int numberOfPlayers, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, numberOfPlayers, offset));
 	}
 }

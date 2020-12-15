@@ -4,6 +4,7 @@ import com.alessiodp.parties.api.enums.Status;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -212,4 +213,60 @@ public interface PartiesAPI {
 	default void refreshOnlinePlayers(Party party) {
 		// Nothing to do
 	}
+	
+	/**
+	 * Is the player in a party?
+	 *
+	 * @param player The player UUID to check
+	 * @return True if its in a party
+	 */
+	default boolean isPlayerInParty(UUID player) {
+		PartyPlayer partyPlayer = getPartyPlayer(player);
+		return partyPlayer != null && partyPlayer.isInParty();
+	}
+	
+	/**
+	 * Get list of parties ordered by name
+	 *
+	 * @param numberOfPlayers Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByName(int numberOfPlayers, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of online members
+	 *
+	 * @param numberOfPlayers Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByOnlineMembers(int numberOfPlayers, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of members
+	 *
+	 * @param numberOfPlayers Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByMembers(int numberOfPlayers, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of kills
+	 *
+	 * @param numberOfPlayers Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByKills(int numberOfPlayers, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of experience
+	 *
+	 * @param numberOfPlayers Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByExperience(int numberOfPlayers, int offset);
 }

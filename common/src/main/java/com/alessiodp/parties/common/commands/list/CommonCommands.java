@@ -29,11 +29,13 @@ public enum CommonCommands implements ADPCommand {
 	DEBUG,
 	DESC,
 	FOLLOW,
+	HOME,
 	JOIN,
 	LIST,
 	MOTD,
 	MUTE,
 	PASSWORD,
+	SETHOME,
 	TELEPORT;
 	
 	@Override

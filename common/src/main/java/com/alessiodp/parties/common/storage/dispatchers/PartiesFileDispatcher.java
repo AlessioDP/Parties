@@ -72,6 +72,7 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 				node.getNode("rank").setValue(null);
 			}
 			
+			node.getNode("options", "chat").setValue(player.isChatParty() ? true : null);
 			node.getNode("options", "spy").setValue(player.isSpy() ? true : null);
 			node.getNode("options", "mute").setValue(player.isMuted() ? true : null);
 		} else {
@@ -85,6 +86,11 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	public PartyPlayerImpl getPlayer(UUID uuid) {
 		ConfigurationNode node = database.getRootNode().getNode("players", uuid.toString());
 		return getPlayerFromNode(node);
+	}
+	
+	@Override
+	public int getListPlayersNumber() {
+		return database.getRootNode().getNode("players").getChildrenList().size();
 	}
 	
 	@Override
@@ -103,9 +109,9 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 		node.getNode("description").setValue(CommonUtils.getNoEmptyOr(party.getDescription(), null));
 		node.getNode("motd").setValue(CommonUtils.getNoEmptyOr(party.getMotd(), null));
 		node.getNode("color").setValue(party.getColor() != null ? party.getColor().getName() : null);
-		node.getNode("kills").setValue(party.getKills());
+		node.getNode("kills").setValue(party.getKills() > 0 ? party.getKills() : null);
 		node.getNode("password").setValue(CommonUtils.getNoEmptyOr(party.getTag(), null));
-		node.getNode("protection").setValue(party.getProtection());
+		node.getNode("protection").setValue(party.getProtection() ? true : null);
 		node.getNode("experience").setValue(party.getExperience() > 0 ? party.getExperience() : null);
 		node.getNode("follow").setValue(party.isFollowEnabled() ? null : false); // By default is true, so insert it only if false
 		node.getNode("home").setValue(party.getHomes().size() > 0 ? PartyHomeImpl.serializeMultiple(party.getHomes()) : null);

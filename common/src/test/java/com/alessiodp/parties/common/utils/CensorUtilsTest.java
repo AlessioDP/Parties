@@ -21,9 +21,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-		ADPPlugin.class,
-		CensorUtils.class,
-		PartiesPlugin.class
+		ADPPlugin.class
 })
 public class CensorUtilsTest {
 	@Before

@@ -2,6 +2,7 @@ package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.scheduling.ADPScheduler;
+import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -20,6 +21,7 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -50,6 +52,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyInvite> pendingInvites;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<UUID> ignoredParties;
 	
+	
+	@Getter @Setter private CancellableTask homeTeleporting;
 	
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected final ReentrantLock lock = new ReentrantLock();
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
@@ -121,6 +125,10 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			rank = ConfigParties.RANK_SET_DEFAULT;
 			partyId = null;
 			chatParty = false;
+			if (homeTeleporting != null) {
+				homeTeleporting.cancel();
+				homeTeleporting = null;
+			}
 		}, saveToDatabase);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId, getPlayerUUID().toString()), true);
@@ -294,6 +302,13 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			// Other commands
 			if (ConfigParties.GENERAL_CHAT_TOGGLECOMMAND && player.hasPermission(PartiesPermission.USER_CHAT))
 				ret.add(CommonCommands.CHAT);
+			if (ConfigParties.ADDITIONAL_HOME_ENABLE) {
+				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
+						|| (player.hasPermission(PartiesPermission.USER_HOME) && rank.havePermission(PartiesPermission.PRIVATE_HOME)))
+					ret.add(CommonCommands.HOME);
+				if (player.hasPermission(PartiesPermission.USER_SETHOME) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_HOME))
+					ret.add(CommonCommands.SETHOME);
+			}
 			
 			// Admin commands
 			if (ConfigParties.GENERAL_ASK_ENABLE) {
@@ -320,6 +335,9 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS)
 					|| (player.hasPermission(PartiesPermission.USER_RENAME) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RENAME)))
 				ret.add(CommonCommands.RENAME);
+			if ((player.hasPermission(PartiesPermission.USER_TAG) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_TAG))
+					|| player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
+				ret.add(CommonCommands.TAG);
 			if (player.hasPermission(PartiesPermission.USER_KICK) && rank.havePermission(PartiesPermission.PRIVATE_KICK))
 				ret.add(CommonCommands.KICK);
 			if (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && player.hasPermission(PartiesPermission.USER_TELEPORT) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_TELEPORT))
@@ -342,6 +360,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.INFO);
 			if (player.hasPermission(PartiesPermission.USER_MUTE))
 				ret.add(CommonCommands.MUTE);
+			if (player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
+				ret.add(CommonCommands.TAG);
 			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS))
 				ret.add(CommonCommands.KICK);
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS))

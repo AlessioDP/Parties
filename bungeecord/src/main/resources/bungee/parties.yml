@@ -221,18 +221,14 @@ additional:
     cooldown-sethome: 0
     # Set the maximum number of homes
     max-homes: 1
-    cancel:
-      hit: true
-      moving: true
-      # Minimum walk distance before teleport deny
-      distance: 3
-      # Reset the command cooldown if cancelled
-      reset-cooldown: true
+    cross-server: true
+    # Delay between connection and teleport in milliseconds (increase if not working out of the box)
+    cross-server-delay: 300
 
   # [Join system]
   # Enable the command "/party join" (can be disabled with permissions)
   # You can enable password system too, this will enable the commands:
-  # "/party create <name> <password" and "/party password"
+  # "/party create <name> <password>" and "/party password"
   join:
     enable: false
     password:

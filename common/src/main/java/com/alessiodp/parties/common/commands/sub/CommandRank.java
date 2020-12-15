@@ -144,7 +144,7 @@ public class CommandRank extends PartiesSubCommand {
 			playerUUID = listPlayers.get(0);
 		} else {
 			// Not found
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_PLAYERNOTINPARTY_OTHER
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PLAYER_NOT_FOUND
 					.replace("%player%", playerName));
 			return;
 		}

@@ -1,9 +1,9 @@
 -- MySQL database
 CREATE TABLE IF NOT EXISTS `<prefix>parties` (
-	`id`			VARCHAR(255) NOT NULL PRIMARY KEY,
+	`id`			CHAR(36) NOT NULL PRIMARY KEY,
 	`name`			VARCHAR(255) NOT NULL,
 	`tag`			VARCHAR(255),
-	`leader`		VARCHAR(255),
+	`leader`		CHAR(36),
 	`description`	VARCHAR(255),
 	`motd`			VARCHAR(500),
 	`color`			VARCHAR(255),
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS `<prefix>parties` (
 );
 
 CREATE TABLE IF NOT EXISTS `<prefix>players` (
-	`uuid`			VARCHAR(255) NOT NULL PRIMARY KEY,
-	`party`			VARCHAR(255),
+	`uuid`			CHAR(36) NOT NULL PRIMARY KEY,
+	`party`			CHAR(36),
 	`rank`			INTEGER DEFAULT 0,
 	`chat`			INTEGER DEFAULT 0,
 	`spy`			INTEGER DEFAULT 0,

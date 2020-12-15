@@ -10,6 +10,7 @@ import java.util.Set;
 
 @EqualsAndHashCode
 public class PartyHomeImpl implements PartyHome {
+	public static final String HOME_SEPARATOR = ",";
 	@Getter @Setter private String name;
 	@Getter @Setter private String world;
 	@Getter @Setter private double x;
@@ -20,7 +21,7 @@ public class PartyHomeImpl implements PartyHome {
 	@Getter @Setter private String server;
 	
 	public PartyHomeImpl(String serialized) throws NumberFormatException {
-		String[] split = serialized.split(",");
+		String[] split = serialized.split(HOME_SEPARATOR);
 		name = split[0];
 		world = split[1];
 		x = Double.parseDouble(split[2]);
@@ -57,6 +58,10 @@ public class PartyHomeImpl implements PartyHome {
 				this.getYaw() + "," +
 				this.getPitch() +
 				(this.getServer() != null ? ("," + this.getServer()) : "");
+	}
+	
+	public static String serialize(PartyHome home) {
+		return home.toString();
 	}
 	
 	public static String serializeMultiple(Set<? extends PartyHome> homes) {

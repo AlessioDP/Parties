@@ -7,7 +7,9 @@ import com.alessiodp.core.common.storage.sql.connection.ConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.H2ConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.MariaDBConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.MySQLConnectionFactory;
+import com.alessiodp.core.common.storage.sql.connection.PostgreSQLConnectionFactory;
 import com.alessiodp.core.common.storage.sql.connection.SQLiteConnectionFactory;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
@@ -17,12 +19,17 @@ import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.storage.interfaces.IPartiesDatabase;
 import com.alessiodp.parties.common.storage.sql.dao.parties.H2PartiesDao;
 import com.alessiodp.parties.common.storage.sql.dao.parties.PartiesDao;
+import com.alessiodp.parties.common.storage.sql.dao.parties.PostgreSQLPartiesDao;
 import com.alessiodp.parties.common.storage.sql.dao.parties.SQLitePartiesDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.H2PlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.PlayersDao;
+import com.alessiodp.parties.common.storage.sql.dao.players.PostgreSQLPlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.SQLitePlayersDao;
+import org.jdbi.v3.core.Handle;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -65,6 +72,20 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 				((MySQLConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME);
 				((MySQLConnectionFactory) ret).setUseSSL(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL);
 				break;
+			case POSTGRESQL:
+				ret = new PostgreSQLConnectionFactory();
+				((PostgreSQLConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
+				((PostgreSQLConnectionFactory) ret).setCharset(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET);
+				((PostgreSQLConnectionFactory) ret).setServerName(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS);
+				((PostgreSQLConnectionFactory) ret).setPort(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT);
+				((PostgreSQLConnectionFactory) ret).setDatabaseName(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE);
+				((PostgreSQLConnectionFactory) ret).setUsername(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME);
+				((PostgreSQLConnectionFactory) ret).setPassword(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD);
+				((PostgreSQLConnectionFactory) ret).setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE);
+				((PostgreSQLConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME);
+				playersDao = PostgreSQLPlayersDao.class;
+				partiesDao = PostgreSQLPartiesDao.class;
+				break;
 			case SQLITE:
 				ret = new SQLiteConnectionFactory(plugin, plugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE));
 				((SQLiteConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
@@ -102,6 +123,11 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 	@Override
 	public PartyPlayerImpl getPlayer(UUID uuid) {
 		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).get(uuid.toString())).orElse(null);
+	}
+	
+	@Override
+	public int getListPlayersNumber() {
+		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).countAll());
 	}
 	
 	@Override
@@ -206,6 +232,84 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 			case SQLITE:
 			default:
 				return 0;
+		}
+	}
+	
+	@Override
+	public void performMigration(Handle transaction, LinkedList<String> queries, int version) {
+		if ((storageType == StorageType.SQLITE || storageType == StorageType.MYSQL) && version == 0)
+			performMySQLiteBackwardMigration(transaction, queries);
+		else
+			super.performMigration(transaction, queries, version);
+	}
+	
+	// Both MySQL and SQLite
+	private void performMySQLiteBackwardMigration(Handle transaction, LinkedList<String> queries) {
+		// Check for migrations
+		boolean existsPartiesList;
+		if (storageType == StorageType.SQLITE) {
+			existsPartiesList = transaction.createQuery(queries.get(0))
+					.bind("table", ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX + "parties")
+					.mapToMap().list().size() > 0;
+		} else {
+			// MySQL
+			existsPartiesList = transaction.createQuery(queries.get(0))
+					.bind("table", ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX + "parties")
+					.bind("database", ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE)
+					.mapToMap().list().size() > 0;
+		}
+		if (existsPartiesList) {
+			plugin.getLoggerManager().log(
+					storageType == StorageType.SQLITE ? PartiesConstants.DEBUG_MIGRATE_SQLITE : PartiesConstants.DEBUG_MIGRATE_MYSQL,
+					true);
+			
+			// Make the new table with a different name
+			transaction.execute(queries.get(1));
+			
+			HashMap<String, String> idParties = new HashMap<>();
+			
+			transaction.createQuery(queries.get(2)).mapToMap().forEach(party -> {
+				String newUuid = UUID.randomUUID().toString();
+				idParties.put(party.get("name").toString(), newUuid);
+				transaction.execute(queries.get(3),
+						newUuid, // UUID
+						party.get("name"),
+						"", // Tag
+						party.get("leader"),
+						party.get("description"),
+						party.get("motd"),
+						party.get("color"),
+						party.get("kills"),
+						party.get("password"),
+						party.get("home"),
+						party.get("protection"),
+						party.get("experience"),
+						party.get("follow")
+				);
+			});
+			
+			transaction.execute(queries.get(4));
+			
+			transaction.createQuery(queries.get(5)).mapToMap().forEach(player -> {
+				String party = !player.get("party").toString().isEmpty() ? idParties.get(player.get("party").toString()) : null;
+				transaction.execute(queries.get(6),
+						player.get("uuid"),
+						party, // Party name to UUID
+						player.get("rank"),
+						false, // Chat
+						player.get("spy"),
+						player.get("mute")
+				);
+			});
+			
+			// Delete old tables
+			transaction.execute(queries.get(7));
+			transaction.execute(queries.get(8));
+			transaction.execute(queries.get(9));
+			
+			// Rename new tables
+			transaction.execute(queries.get(10));
+			transaction.execute(queries.get(11));
 		}
 	}
 }

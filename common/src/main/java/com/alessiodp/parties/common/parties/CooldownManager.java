@@ -16,8 +16,10 @@ public class CooldownManager {
 	protected final PartiesPlugin plugin;
 	private HashMap<UUID, List<RequestCooldown>> askCooldown;
 	private HashMap<UUID, Long> chatCooldown;
+	private HashMap<UUID, Long> homeCooldown;
 	private HashMap<UUID, List<RequestCooldown>> inviteCooldown;
 	private HashMap<UUID, Long> renameCooldown;
+	private HashMap<UUID, Long> setHomeCooldown;
 	private HashMap<UUID, Long> teleportCooldown;
 	
 	public CooldownManager(@NonNull PartiesPlugin plugin) {
@@ -28,8 +30,10 @@ public class CooldownManager {
 	protected void reload() {
 		askCooldown = new HashMap<>();
 		chatCooldown = new HashMap<>();
+		homeCooldown = new HashMap<>();
 		inviteCooldown = new HashMap<>();
 		renameCooldown = new HashMap<>();
+		setHomeCooldown = new HashMap<>();
 		teleportCooldown = new HashMap<>();
 	}
 	
@@ -170,5 +174,51 @@ public class CooldownManager {
 			return cooldown - (unixNow - unixBefore);
 		}
 		return 0;
+	}
+	
+	public long canHome(UUID player, int cooldown) {
+		if (player != null) {
+			return calculateCooldown(homeCooldown.get(player), cooldown);
+		}
+		return 0;
+	}
+	
+	public void startHomeCooldown(UUID player, int seconds) {
+		if (player != null && seconds > 0) {
+			long unixNow = System.currentTimeMillis() / 1000L;
+			
+			homeCooldown.put(player, unixNow);
+			
+			plugin.getScheduler().scheduleAsyncLater(() -> {
+				homeCooldown.remove(player);
+				
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_EXPIRED, player.toString()), true);
+			}, seconds, TimeUnit.SECONDS);
+		}
+	}
+	
+	public void resetHomeCooldown(UUID player) {
+		homeCooldown.remove(player);
+	}
+	
+	public long canSetHome(UUID player, int cooldown) {
+		if (player != null) {
+			return calculateCooldown(setHomeCooldown.get(player), cooldown);
+		}
+		return 0;
+	}
+	
+	public void startSetHomeCooldown(UUID player, int seconds) {
+		if (player != null && seconds > 0) {
+			long unixNow = System.currentTimeMillis() / 1000L;
+			
+			setHomeCooldown.put(player, unixNow);
+			
+			plugin.getScheduler().scheduleAsyncLater(() -> {
+				setHomeCooldown.remove(player);
+				
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_SETHOME_EXPIRED, player.toString()), true);
+			}, seconds, TimeUnit.SECONDS);
+		}
 	}
 }

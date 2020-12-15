@@ -62,6 +62,10 @@
 							<shadedPattern>com.alessiodp.parties.libs.mysql</shadedPattern>
 						</relocation>
 						<relocation>
+							<pattern>org.postgresql</pattern>
+							<shadedPattern>com.alessiodp.parties.libs.postgresql</shadedPattern>
+						</relocation>
+						<relocation>
 							<pattern>org.reflections</pattern>
 							<shadedPattern>com.alessiodp.parties.libs.reflections</shadedPattern>
 						</relocation>

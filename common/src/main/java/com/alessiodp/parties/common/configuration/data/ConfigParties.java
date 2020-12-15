@@ -138,6 +138,17 @@ public abstract class ConfigParties extends ConfigurationFile {
 	@ConfigOption(path = "additional.fixed.default-party.party")
 	public static String		ADDITIONAL_FIXED_DEFAULT_PARTY;
 	
+	@ConfigOption(path = "additional.home.enable")
+	public static boolean		ADDITIONAL_HOME_ENABLE;
+	@ConfigOption(path = "additional.home.delay")
+	public static int			ADDITIONAL_HOME_DELAY;
+	@ConfigOption(path = "additional.home.cooldown-home")
+	public static int			ADDITIONAL_HOME_COOLDOWN_HOME;
+	@ConfigOption(path = "additional.home.cooldown-sethome")
+	public static int			ADDITIONAL_HOME_COOLDOWN_SETHOME;
+	@ConfigOption(path = "additional.home.max-homes")
+	public static int			ADDITIONAL_HOME_MAX_HOMES;
+	
 	@ConfigOption(path = "additional.join.enable")
 	public static boolean		ADDITIONAL_JOIN_ENABLE;
 	@ConfigOption(path = "additional.join.password.enable")

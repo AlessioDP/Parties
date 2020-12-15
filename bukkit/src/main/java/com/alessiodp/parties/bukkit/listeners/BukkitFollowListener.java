@@ -61,7 +61,7 @@ public class BukkitFollowListener implements Listener {
 										
 										plugin.getScheduler().scheduleAsyncLater(() -> {
 											ppVictim.setPortalPause(false);
-										}, BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT * 50, TimeUnit.MILLISECONDS);
+										}, BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT * 50L, TimeUnit.MILLISECONDS);
 										
 										user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.OTHER_FOLLOW_WORLD
 												.replace("%player%", bukkitPlayer.getName())

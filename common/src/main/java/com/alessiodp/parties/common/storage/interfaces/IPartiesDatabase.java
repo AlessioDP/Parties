@@ -12,6 +12,8 @@ public interface IPartiesDatabase {
 	void updatePlayer(PartyPlayerImpl player);
 	PartyPlayerImpl getPlayer(UUID uuid);
 	
+	int getListPlayersNumber();
+	
 	void updateParty(PartyImpl party);
 	void removeParty(PartyImpl party);
 	

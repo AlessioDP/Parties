@@ -9,25 +9,30 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-public interface PlayersDao {
+public interface PostgreSQLPlayersDao extends PlayersDao {
+	@Override
 	@SqlUpdate(
-			"INSERT INTO `<prefix>players` (`uuid`, `party`, `rank`, `chat`, `spy`, `mute`) " +
-			"VALUES (?, ?, ?, ?, ?, ?) " +
-			"ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `chat`=VALUES(`chat`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`)"
+			"INSERT INTO <prefix>players (\"uuid\", \"party\", \"rank\", \"chat\", \"spy\", \"mute\") " +
+					"VALUES (?, ?, ?, ?, ?, ?) " +
+					"ON CONFLICT (\"uuid\") DO UPDATE SET party=EXCLUDED.party, rank=EXCLUDED.rank, chat=EXCLUDED.chat, spy=EXCLUDED.spy, mute=EXCLUDED.mute"
 	)
 	void update(String uuid, String party, int rank, boolean chat, boolean spy, boolean mute);
 	
-	@SqlUpdate("DELETE FROM `<prefix>players` WHERE `uuid` = ?")
+	@Override
+	@SqlUpdate("DELETE FROM <prefix>players WHERE \"uuid\" = ?")
 	void remove(String uuid);
 	
-	@SqlQuery("SELECT * FROM `<prefix>players` WHERE `uuid` = ?")
+	@Override
+	@SqlQuery("SELECT * FROM <prefix>players WHERE \"uuid\" = ?")
 	@RegisterRowMapper(PartyPlayerRowMapper.class)
 	Optional<PartyPlayerImpl> get(String uuid);
 	
-	@SqlQuery("SELECT * FROM `<prefix>players` WHERE `party` = ?")
+	@Override
+	@SqlQuery("SELECT * FROM <prefix>players WHERE \"party\" = ?")
 	@RegisterRowMapper(UUIDRowMapper.class)
 	Set<UUID> getInParty(String party);
 	
-	@SqlQuery("SELECT count(*) FROM `<prefix>players`")
+	@Override
+	@SqlQuery("SELECT count(*) FROM <prefix>players")
 	int countAll();
 }

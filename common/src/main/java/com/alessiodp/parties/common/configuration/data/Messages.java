@@ -25,6 +25,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_COMMON_PARTYNOTFOUND;
 	@ConfigOption(path = "parties.common-messages.party-full")
 	public static String PARTIES_COMMON_PARTYFULL;
+	@ConfigOption(path = "parties.common-messages.player-not-found")
+	public static String PARTIES_COMMON_PLAYER_NOT_FOUND;
 	
 	@ConfigOption(path = "parties.options.enabled")
 	public static String PARTIES_OPTIONS_ENABLED;
@@ -53,6 +55,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_SYNTAX_EXPERIENCE;
 	@ConfigOption(path = "parties.syntax.kills")
 	public static String PARTIES_SYNTAX_KILLS;
+	@ConfigOption(path = "parties.syntax.home")
+	public static String PARTIES_SYNTAX_HOME;
 	@ConfigOption(path = "parties.syntax.members")
 	public static String PARTIES_SYNTAX_MEMBERS;
 	@ConfigOption(path = "parties.syntax.message")
@@ -381,6 +385,27 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "additional-commands.follow.toggle-off")
 	public static String ADDCMD_FOLLOW_OFF;
 	
+	@ConfigOption(path = "additional-commands.home.teleported")
+	public static String ADDCMD_HOME_TELEPORTED;
+	@ConfigOption(path = "additional-commands.home.teleport-in")
+	public static String ADDCMD_HOME_TELEPORTIN;
+	@ConfigOption(path = "additional-commands.home.teleport-denied")
+	public static String ADDCMD_HOME_TELEPORTDENIED;
+	@ConfigOption(path = "additional-commands.home.teleport-waiting")
+	public static String ADDCMD_HOME_TELEPORTWAITING;
+	@ConfigOption(path = "additional-commands.home.no-home")
+	public static String ADDCMD_HOME_NOHOME;
+	@ConfigOption(path = "additional-commands.home.cooldown")
+	public static String ADDCMD_HOME_COOLDOWN;
+	@ConfigOption(path = "additional-commands.home.must-select-home")
+	public static String ADDCMD_HOME_MUST_SELECT_HOME;
+	@ConfigOption(path = "additional-commands.home.invalid-home")
+	public static String ADDCMD_HOME_INVALID_HOME;
+	@ConfigOption(path = "additional-commands.home.valid-homes")
+	public static String ADDCMD_HOME_VALID_HOMES;
+	@ConfigOption(path = "additional-commands.home.valid-home-line")
+	public static String ADDCMD_HOME_HOME_VALID_HOME_LINE;
+	
 	@ConfigOption(path = "additional-commands.join.joined")
 	public static String ADDCMD_JOIN_JOINED;
 	@ConfigOption(path = "additional-commands.join.player-joined")
@@ -425,6 +450,19 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_PASSWORD_BROADCAST;
 	@ConfigOption(path = "additional-commands.password.invalid-chars")
 	public static String ADDCMD_PASSWORD_INVALID;
+	
+	@ConfigOption(path = "additional-commands.sethome.changed")
+	public static String ADDCMD_SETHOME_CHANGED;
+	@ConfigOption(path = "additional-commands.sethome.removed")
+	public static String ADDCMD_SETHOME_REMOVED;
+	@ConfigOption(path = "additional-commands.sethome.removed-none")
+	public static String ADDCMD_SETHOME_REMOVED_NONE;
+	@ConfigOption(path = "additional-commands.sethome.broadcast")
+	public static String ADDCMD_SETHOME_BROADCAST;
+	@ConfigOption(path = "additional-commands.sethome.cooldown")
+	public static String ADDCMD_SETHOME_COOLDOWN;
+	@ConfigOption(path = "additional-commands.sethome.max-homes")
+	public static String ADDCMD_SETHOME_MAXHOMES;
 	
 	@ConfigOption(path = "additional-commands.tag.changed")
 	public static String ADDCMD_TAG_CHANGED;
@@ -549,6 +587,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_COMMANDS_DESC;
 	@ConfigOption(path = "help.additional.commands.follow")
 	public static String HELP_ADDITIONAL_COMMANDS_FOLLOW;
+	@ConfigOption(path = "help.additional.commands.home")
+	public static String HELP_ADDITIONAL_COMMANDS_HOME;
 	@ConfigOption(path = "help.additional.commands.join")
 	public static String HELP_ADDITIONAL_COMMANDS_JOIN;
 	@ConfigOption(path = "help.additional.commands.list")
@@ -559,6 +599,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_COMMANDS_MUTE;
 	@ConfigOption(path = "help.additional.commands.password")
 	public static String HELP_ADDITIONAL_COMMANDS_PASSWORD;
+	@ConfigOption(path = "help.additional.commands.sethome")
+	public static String HELP_ADDITIONAL_COMMANDS_SETHOME;
 	@ConfigOption(path = "help.additional.commands.teleport")
 	public static String HELP_ADDITIONAL_COMMANDS_TELEPORT;
 	@ConfigOption(path = "help.additional.commands.tag")
@@ -574,6 +616,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_DESC;
 	@ConfigOption(path = "help.additional.descriptions.follow")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_FOLLOW;
+	@ConfigOption(path = "help.additional.descriptions.home")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_HOME;
 	@ConfigOption(path = "help.additional.descriptions.join")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_JOIN;
 	@ConfigOption(path = "help.additional.descriptions.list")
@@ -584,6 +628,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_MUTE;
 	@ConfigOption(path = "help.additional.descriptions.password")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_PASSWORD;
+	@ConfigOption(path = "help.additional.descriptions.sethome")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_SETHOME;
 	@ConfigOption(path = "help.additional.descriptions.tag")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_TAG;
 	@ConfigOption(path = "help.additional.descriptions.teleport")

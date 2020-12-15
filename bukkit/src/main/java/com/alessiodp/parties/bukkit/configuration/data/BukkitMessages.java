@@ -12,8 +12,6 @@ public class BukkitMessages extends Messages {
 	@Getter private final int latestVersion = PartiesConstants.VERSION_BUKKIT_MESSAGES;
 	
 	// Parties messages
-	@ConfigOption(path = "parties.syntax.home")
-	public static String PARTIES_SYNTAX_HOME;
 	@ConfigOption(path = "parties.syntax.permission")
 	public static String PARTIES_SYNTAX_PERMISSION;
 	
@@ -36,27 +34,6 @@ public class BukkitMessages extends Messages {
 	@ConfigOption(path = "additional-commands.exp.skillapi.gained-others")
 	public static String ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
 	
-	@ConfigOption(path = "additional-commands.home.teleported")
-	public static String ADDCMD_HOME_TELEPORTED;
-	@ConfigOption(path = "additional-commands.home.teleport-in")
-	public static String ADDCMD_HOME_TELEPORTIN;
-	@ConfigOption(path = "additional-commands.home.teleport-denied")
-	public static String ADDCMD_HOME_TELEPORTDENIED;
-	@ConfigOption(path = "additional-commands.home.teleport-waiting")
-	public static String ADDCMD_HOME_TELEPORTWAITING;
-	@ConfigOption(path = "additional-commands.home.no-home")
-	public static String ADDCMD_HOME_NOHOME;
-	@ConfigOption(path = "additional-commands.home.cooldown")
-	public static String ADDCMD_HOME_COOLDOWN;
-	@ConfigOption(path = "additional-commands.home.must-select-home")
-	public static String ADDCMD_HOME_MUST_SELECT_HOME;
-	@ConfigOption(path = "additional-commands.home.invalid-home")
-	public static String ADDCMD_HOME_INVALID_HOME;
-	@ConfigOption(path = "additional-commands.home.valid-homes")
-	public static String ADDCMD_HOME_VALID_HOMES;
-	@ConfigOption(path = "additional-commands.home.valid-home-line")
-	public static String ADDCMD_HOME_HOME_VALID_HOME_LINE;
-	
 	@ConfigOption(path = "additional-commands.protection.toggle-on")
 	public static String ADDCMD_PROTECTION_ON;
 	@ConfigOption(path = "additional-commands.protection.toggle-off")
@@ -65,17 +42,6 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_PROTECTION_PROTECTED;
 	@ConfigOption(path = "additional-commands.protection.warn-on-attack")
 	public static String ADDCMD_PROTECTION_WARNHIT;
-	
-	@ConfigOption(path = "additional-commands.sethome.changed")
-	public static String ADDCMD_SETHOME_CHANGED;
-	@ConfigOption(path = "additional-commands.sethome.removed")
-	public static String ADDCMD_SETHOME_REMOVED;
-	@ConfigOption(path = "additional-commands.sethome.broadcast")
-	public static String ADDCMD_SETHOME_BROADCAST;
-	@ConfigOption(path = "additional-commands.sethome.cooldown")
-	public static String ADDCMD_SETHOME_COOLDOWN;
-	@ConfigOption(path = "additional-commands.sethome.max-homes")
-	public static String ADDCMD_SETHOME_MAXHOMES;
 	
 	@ConfigOption(path = "additional-commands.vault.no-money.ask")
 	public static String ADDCMD_VAULT_NOMONEY_ASK;
@@ -123,21 +89,13 @@ public class BukkitMessages extends Messages {
 	// Help messages
 	@ConfigOption(path = "help.additional.commands.claim")
 	public static String HELP_ADDITIONAL_COMMANDS_CLAIM;
-	@ConfigOption(path = "help.additional.commands.home")
-	public static String HELP_ADDITIONAL_COMMANDS_HOME;
 	@ConfigOption(path = "help.additional.commands.protection")
 	public static String HELP_ADDITIONAL_COMMANDS_PROTECTION;
-	@ConfigOption(path = "help.additional.commands.sethome")
-	public static String HELP_ADDITIONAL_COMMANDS_SETHOME;
 	
 	@ConfigOption(path = "help.additional.descriptions.claim")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_CLAIM;
-	@ConfigOption(path = "help.additional.descriptions.home")
-	public static String HELP_ADDITIONAL_DESCRIPTIONS_HOME;
 	@ConfigOption(path = "help.additional.descriptions.protection")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_PROTECTION;
-	@ConfigOption(path = "help.additional.descriptions.sethome")
-	public static String HELP_ADDITIONAL_DESCRIPTIONS_SETHOME;
 	
 	
 	public BukkitMessages(PartiesPlugin instance) {

@@ -13,6 +13,7 @@ import com.alessiodp.parties.common.parties.ColorManager;
 import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.ExpManager;
 import com.alessiodp.parties.common.parties.PartyManager;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.RankManager;
@@ -73,6 +74,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	protected void postHandle() {
 		api = new ApiHandler(this);
 		colorManager = new ColorManager();
+		cooldownManager = new CooldownManager(this);
 		playerUtils = new PartiesPlayerUtils(this);
 		rankManager = new RankManager(this);
 		
@@ -138,6 +140,6 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	public abstract boolean isBungeeCordEnabled();
 	
-	public abstract String getServerName();
-	public abstract String getServerId();
+	public abstract String getServerName(PartyPlayerImpl player);
+	public abstract String getServerId(PartyPlayerImpl player);
 }

@@ -5,9 +5,11 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.bungeecord.configuration.BungeePartiesConfigurationManager;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.sub.CommandSetHome;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
+import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.google.common.io.ByteArrayDataInput;
@@ -47,6 +49,16 @@ public class BungeePartiesMessageListener extends BungeeMessageListener {
 						} catch (Exception ex) {
 							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
 						}
+					}
+					break;
+				case ADD_HOME:
+					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+					if (party != null) {
+						String serializedHome = packet.getPayload();
+						CommandSetHome.savePartyHome(party, PartyHomeImpl.deserialize(serializedHome));
+							
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE,
+								party.getId().toString()), true);
 					}
 					break;
 				case EXPERIENCE:

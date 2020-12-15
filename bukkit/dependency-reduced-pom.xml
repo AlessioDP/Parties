@@ -122,13 +122,13 @@
     <dependency>
       <groupId>net.Indyuce</groupId>
       <artifactId>MMOCore</artifactId>
-      <version>1.4.4</version>
+      <version>1.6</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.lumine.xikage</groupId>
       <artifactId>MythicMobs</artifactId>
-      <version>4.9.2</version>
+      <version>4.10.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

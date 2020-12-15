@@ -4,7 +4,6 @@ import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.util.collections.Sets;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.HashSet;
@@ -13,9 +12,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		PartyHomeImpl.class
-})
 public class PartyHomeTest {
 	@Test
 	public void testDeserialize() {

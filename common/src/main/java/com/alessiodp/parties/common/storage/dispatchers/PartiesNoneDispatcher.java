@@ -38,6 +38,12 @@ public class PartiesNoneDispatcher extends NoneDispatcher implements IPartiesDat
 	}
 	
 	@Override
+	public int getListPlayersNumber() {
+		// Nothing to do
+		return 0;
+	}
+	
+	@Override
 	public void updateParty(PartyImpl party) {
 		// Nothing to do
 	}

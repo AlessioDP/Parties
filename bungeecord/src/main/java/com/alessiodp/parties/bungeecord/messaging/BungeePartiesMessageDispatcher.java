@@ -109,6 +109,22 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		);
 	}
 	
+	public void sendAddHome(PartyImpl party, PartyPlayerImpl player, byte[] raw) {
+		sendPacket(makePacket(PartiesPacket.PacketType.ADD_HOME)
+				.setPartyId(party.getId())
+				.setPlayerUuid(player.getPlayerUUID())
+				.setPayloadRaw(raw)
+		);
+	}
+	
+	public void sendHomeTeleport(User user, byte[] raw) {
+		sendPacketToUser(makePacket(PartiesPacket.PacketType.HOME_TELEPORT)
+						.setPlayerUuid(user.getUUID())
+						.setPayloadRaw(raw)
+				, user
+		);
+	}
+	
 	public void sendPartyExperience(PartyImpl party, PartyPlayerImpl killer, double experience) {
 		// Not duplication: this is used to make an event in bukkit servers
 		sendPacket(makePacket(PartiesPacket.PacketType.EXPERIENCE)

@@ -52,6 +52,7 @@ storage:
   # => yaml       | [File]   Save the data into a YAML file
   # => mariadb    | [Remote] Save the data into a MariaDB database
   # => mysql      | [Remote] Save the data into a MySQL database
+  # => postgresql | [Remote] Save the data into a PostgreSQL database
   # => sqlite     | [File]   Save the data into a SQLite database
   # => h2         | [File]   Save the data into a H2 database (default)
   database-storage-type: h2

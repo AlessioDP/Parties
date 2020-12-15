@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.alessiodp.core.common.commands.list.ADPCommand;
-import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
@@ -30,24 +29,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
-	@Getter @Setter private CancellableTask homeTeleporting;
 	@Getter @Setter private boolean portalPause = false;
 	
 	@Getter @Setter private LastConfirmedCommand lastConfirmedCommand;
 	
 	public BukkitPartyPlayerImpl(PartiesPlugin plugin, UUID uuid) {
 		super(plugin, uuid);
-	}
-	
-	@Override
-	public void removeFromParty(boolean saveDB) {
-		lock.lock();
-		if (homeTeleporting != null) {
-			homeTeleporting.cancel();
-			homeTeleporting = null;
-		}
-		lock.unlock();
-		super.removeFromParty(saveDB);
 	}
 	
 	@Override
@@ -97,13 +84,6 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 		
 		if (isInParty()) {
 			// Other commands
-			if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {
-				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
-						|| (player.hasPermission(PartiesPermission.USER_HOME) && rank.havePermission(PartiesPermission.PRIVATE_HOME)))
-					ret.add(BukkitCommands.HOME);
-				if (player.hasPermission(PartiesPermission.USER_SETHOME) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_HOME))
-					ret.add(BukkitCommands.SETHOME);
-			}
 			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM))
 				ret.add(BukkitCommands.CLAIM);
 			

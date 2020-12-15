@@ -21,7 +21,7 @@ public class PartiesConstants {
 	public static final int VERSION_BUNGEE_CONFIG_MAIN = 8;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 5;
 	public static final int VERSION_BUNGEE_MESSAGES = 9;
-	public static final int VERSION_DATABASE_YAML = 1;
+	public static final int VERSION_DATABASE_YAML = 2;
 	
 	
 	// Debug messages
@@ -100,11 +100,12 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_DB_UPDATEPLAYER = "Update player request for %s (uuid: %s)";
 	public static final String DEBUG_DB_GETPLAYER = "Get player request for %s";
+	public static final String DEBUG_DB_GETALLPLAYERS_NUMBER = "Get the number of all players";
 	public static final String DEBUG_DB_UPDATEPARTY = "Update party request for %s (uuid: %s)";
 	public static final String DEBUG_DB_GETPARTY = "Get party request for %s";
 	public static final String DEBUG_DB_REMOVEPARTY = "Remove party request for %s (uuid: %s)";
 	public static final String DEBUG_DB_EXISTSPARTY = "Exists party request for %s";
-	public static final String DEBUG_DB_EXISTSTAG = "Exists tag request for '{tag}'";
+	public static final String DEBUG_DB_EXISTSTAG = "Exists tag request for '%s'";
 	public static final String DEBUG_DB_GETALLFIXEDPARTIES = "Get all fixed parties request";
 	public static final String DEBUG_DB_GETALLPARTIES = "Get all parties request";
 	public static final String DEBUG_DB_GETALLPARTIES_NUMBER = "Get the number of all parties";
@@ -120,6 +121,8 @@ public class PartiesConstants {
 	public static final String DEBUG_FOLLOW_SERVER_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
 	
 	public static final String DEBUG_FRIENDLYFIRE_DENIED = "Denied friendly fire (type %s) of player %s to player %s";
+	
+	public static final String DEBUG_HOME_NO_SERVER = "Home command executed but it doesn't contains the server destination (party: %s)";
 	
 	public static final String DEBUG_KILL_ADD = "Adding a kill to the party %s by player %s";
 	
@@ -147,10 +150,19 @@ public class PartiesConstants {
 	public static final String DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE = "Received a Parties packet, sending a chat message by player %s in party %s: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY = "Received a Parties packet, invited player %s to party %s by player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME = "Received a Parties packet, add home %s to party %s by player %s in server %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_ERROR = "Received a Parties packet, add home parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE = "Received a Parties packet, add new home to party %s";
+	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT = "Received a Parties packet, home teleporting player %s to %s";
+	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT_ERROR = "Received a Parties packet, home teleporting failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_EXPERIENCE = "Received a Parties packet, gave %s experience to party %s (killer: %s)";
 	public static final String DEBUG_MESSAGING_LISTEN_LEVEL_UP = "Received a Parties packet, %s leveled up to %d";
 	public static final String DEBUG_MESSAGING_LISTEN_CONFIGS = "Received a Parties packet, configs sync";
 	public static final String DEBUG_MESSAGING_LISTEN_REQUEST_CONFIGS = "Received a Parties packet, request for configs sync";
+	
+	public static final String DEBUG_MIGRATE_MYSQL = "Upgrading MySQL database from version 0";
+	public static final String DEBUG_MIGRATE_SQLITE = "Upgrading SQLite database from version 0";
+	public static final String DEBUG_MIGRATE_YAML = "Upgrading YAML database from version %d";
 	
 	public static final String DEBUG_PARTY_CREATE = "Created party %s";
 	public static final String DEBUG_PARTY_DELETE = "Deleted party %s";
