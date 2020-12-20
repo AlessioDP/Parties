@@ -4,13 +4,12 @@ import com.alessiodp.core.bukkit.addons.external.bstats.bukkit.Metrics;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.addons.external.MetricsHandler;
 import com.alessiodp.core.common.storage.StorageType;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import lombok.NonNull;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Locale;
 
 public class BukkitMetricsHandler extends MetricsHandler {
 	public BukkitMetricsHandler(@NonNull ADPPlugin plugin) {
@@ -39,7 +38,7 @@ public class BukkitMetricsHandler extends MetricsHandler {
 		
 		metrics.addCustomChart(new Metrics.SimplePie("exp_levels", () -> {
 			if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
-				switch (BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE.toLowerCase(Locale.ENGLISH)) {
+				switch (CommonUtils.toLowerCase(BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE)) {
 					case "normal":
 						return "Normal";
 					case "skillapi":

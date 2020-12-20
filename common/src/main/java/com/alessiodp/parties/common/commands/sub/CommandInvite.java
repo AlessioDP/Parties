@@ -18,7 +18,6 @@ import com.alessiodp.parties.common.players.objects.RequestCooldown;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -167,12 +166,6 @@ public class CommandInvite extends PartiesSubCommand {
 	
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
-		List<String> ret = new ArrayList<>();
-		for (User u : plugin.getOnlinePlayers()) {
-			PartyPlayerImpl p = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(u.getUUID());
-			if (p != null && !p.isVanished())
-				ret.add(p.getName());
-		}
-		return plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
+		return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);
 	}
 }

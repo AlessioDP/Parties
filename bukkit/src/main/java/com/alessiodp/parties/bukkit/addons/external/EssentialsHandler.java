@@ -24,8 +24,7 @@ public class EssentialsHandler {
 			active = true;
 			essentials = Bukkit.getPluginManager().getPlugin(ADDON_NAME);
 			
-			plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-					.replace("{addon}", ADDON_NAME), true);
+			plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 		}
 	}
 	

@@ -22,13 +22,11 @@ public class VaultHandler {
 		if (BukkitConfigMain.ADDONS_VAULT_ENABLE) {
 			if (Bukkit.getServer().getPluginManager().getPlugin(ADDON_NAME) != null) {
 				if (setupEconomy()) {
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-							.replace("{addon}", ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 				} else {
 					BukkitConfigMain.ADDONS_VAULT_ENABLE = false;
 					
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-							.replace("{addon}", ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 				}
 			}
 		}

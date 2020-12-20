@@ -39,14 +39,12 @@ public class BanManagerHandler implements Listener {
 				
 				((BukkitPartiesBootstrap) plugin.getBootstrap()).getServer().getPluginManager().registerEvents(this, (BukkitPartiesBootstrap) plugin.getBootstrap());
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDONS_BANMANAGER_ENABLE = false;
 				active = false;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}

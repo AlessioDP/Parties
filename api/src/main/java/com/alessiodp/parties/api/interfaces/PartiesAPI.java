@@ -269,4 +269,13 @@ public interface PartiesAPI {
 	 * @return Returns a list of {@link Party}
 	 */
 	LinkedList<Party> getPartiesListByExperience(int numberOfPlayers, int offset);
+	
+	/**
+	 * Check if the given players are in the same party
+	 *
+	 * @param player1 The first player
+	 * @param player2 The second player
+	 * @return True if they are in the same party
+	 */
+	boolean areInTheSameParty(UUID player1, UUID player2);
 }

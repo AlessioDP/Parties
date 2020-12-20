@@ -13,15 +13,19 @@ import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.ExpManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import lombok.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public abstract class CommandDebug extends PartiesSubCommand {
+public class CommandDebug extends PartiesSubCommand {
 	private final String syntaxConfig;
 	private final String syntaxExp;
 	private final String syntaxParty;
@@ -229,7 +233,47 @@ public abstract class CommandDebug extends PartiesSubCommand {
 		}
 	}
 	
-	protected abstract String parseDebugExp(String line);
+	@Override
+	public List<String> onTabComplete(@NonNull User sender, String[] args) {
+		List<String> ret = new ArrayList<>();
+		if (sender.hasPermission(permission)) {
+			if (args.length == 2) {
+				ret.add(ConfigMain.COMMANDS_SUB_CONFIG);
+				ret.add(ConfigMain.COMMANDS_SUB_EXP);
+				ret.add(ConfigMain.COMMANDS_SUB_PARTY);
+				ret.add(ConfigMain.COMMANDS_SUB_PLAYER);
+			} else if(args.length == 3) {
+				if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PARTY)) {
+					((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().stream()
+							.filter(p -> p.getName() != null && !p.getName().isEmpty())
+							.forEach(p -> ret.add(p.getName()));
+				} else if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PLAYER)) {
+					return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 2);
+				}
+			}
+		}
+		return ret;
+	}
+	
+	protected String parseDebugExp(String line) {
+		if (line.contains("%levels_options%")) {
+			if (((PartiesPlugin) plugin).getExpManager().getMode() == ExpManager.ExpMode.PROGRESSIVE) {
+				line = line.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_PROGRESSIVE
+						.replace("%start%", Integer.toString((int) ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START))
+						.replace("%formula%", ((PartiesPlugin) plugin).getMessageUtils().formatText(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP)
+						));
+			} else {
+				line = line.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_FIXED
+						.replace("%repeat%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT))
+						.replace("%levels%", Integer.toString(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.size())
+						));
+			}
+		}
+		return line
+				.replace("%exp%", ((PartiesPlugin) plugin).getMessageUtils().formatOnOff(ConfigMain.ADDITIONAL_EXP_ENABLE))
+				.replace("%levels%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE))
+				.replace("%levels_mode%", ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
+	}
 	
 	private enum CommandType {
 		CONFIG, EXP, PARTY, PLAYER

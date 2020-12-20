@@ -105,4 +105,11 @@ public class ApiHandler implements PartiesAPI {
 	public LinkedList<Party> getPartiesListByExperience(int numberOfPlayers, int offset) {
 		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, numberOfPlayers, offset));
 	}
+	
+	@Override
+	public boolean areInTheSameParty(UUID player1, UUID player2) {
+		PartyPlayer pp1 = getPartyPlayer(player1);
+		PartyPlayer pp2 = getPartyPlayer(player2);
+		return pp1 != null && pp2 != null && pp1.getPartyId() != null && pp1.getPartyId().equals(pp2.getPartyId());
+	}
 }

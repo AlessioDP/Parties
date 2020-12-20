@@ -50,12 +50,14 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI;
 	@ConfigOption(path = "additional.exp-system.exp-drop.convert-exp-into.remove-real-exp")
 	public static boolean		ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP;
+	@ConfigOption(path = "additional.exp-system.exp-drop.addons.levelpoints.enable")
+	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_LEVELPOINTS_ENABLE;
+	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mmocore.enable")
+	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MMOCORE_ENABLE;
 	@ConfigOption(path = "additional.exp-system.exp-drop.addons.skillapi.enable")
 	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE;
 	@ConfigOption(path = "additional.exp-system.exp-drop.addons.skillapi.exp-source")
 	public static String		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mmocore.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MMOCORE_ENABLE;
 	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mythicmobs.enable")
 	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE;
 	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mythicmobs.handle-only-mm-mobs")

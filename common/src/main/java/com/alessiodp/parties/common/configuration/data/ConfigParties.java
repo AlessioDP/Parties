@@ -209,6 +209,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean		ADDITIONAL_TELEPORT_ENABLE;
 	@ConfigOption(path = "additional.teleport.cooldown")
 	public static int			ADDITIONAL_TELEPORT_COOLDOWN;
+	@ConfigOption(path = "additional.teleport.accept-request.enable")
+	public static boolean		ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE;
+	@ConfigOption(path = "additional.teleport.accept-request.time")
+	public static int			ADDITIONAL_TELEPORT_ACCEPT_REQUEST_TIME;
 	
 	
 	protected ConfigParties(PartiesPlugin plugin) {

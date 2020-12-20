@@ -73,10 +73,12 @@
 		
 		<libs.adpcore>1.4.12</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
+		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
 		<libs.griefPrevention>16.13.0</libs.griefPrevention>
 		<libs.lastLoginApi>1.4.3</libs.lastLoginApi>
+		<libs.levelPoints>4a7349923f</libs.levelPoints>
 		<libs.mmoCore>1.6</libs.mmoCore>
 		<libs.mythicMobs>4.10.0</libs.mythicMobs>
 		<libs.placeholderApi>2.10.6</libs.placeholderApi>

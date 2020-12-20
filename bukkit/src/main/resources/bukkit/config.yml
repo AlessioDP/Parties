@@ -188,10 +188,11 @@ additional:
         skillapi: false
       convert-exp-into:
         # Convert experience options:
-        # => party:    Send the exp to the party (total experience)
-        # => normal:   Send it as vanilla Minecraft experience
-        # => skillapi: Send it as SkillAPI experience
-        # => mmocore:  Send it as MMOCore experience
+        # => party:       Send the exp to the party (total experience)
+        # => normal:      Send it as vanilla Minecraft experience
+        # => levelpoints: Send it as LevelPoints experience
+        # => mmocore:     Send it as MMOCore experience
+        # => skillapi:    Send it as SkillAPI experience
         #
         # You can use 'remove-real-exp' to prevent double-exp drop
         # More information here: https://alessiodp.com/docs/parties/explevels
@@ -199,6 +200,14 @@ additional:
         skillapi: party
         remove-real-exp: false
       addons:
+        # [LevelPoints support]
+        # Give LevelPoints experience instead of vanilla
+        levelpoints:
+          enable: false
+        # [MMOCore support]
+        # Give MMOCore experience instead of vanilla
+        mmocore:
+          enable: false
         # [SkillAPI support]
         # Get experience drops directly from SkillAPI configs
         # Give SkillAPI experience instead of vanilla
@@ -206,10 +215,6 @@ additional:
         skillapi:
           enable: false
           exp-source: "MOB"
-        # [MMOCore support]
-        # Give MMOCore experience instead of vanilla
-        mmocore:
-          enable: false
         # [MythicMobs support]
         # Get experience drops directly from MythicMobs drop tables
         # Exp supported are 'exp' and 'skillapi-exp'
@@ -269,6 +274,7 @@ addons:
 
   # [Dynmap]
   # Generate a map mark for each party home
+  # Warning: If you are using BungeeCord, be sure to set the right server id at the start of config.yml
   dynmap:
     enable: false
     hide-by-default: false

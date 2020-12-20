@@ -27,14 +27,8 @@ public class LLAPIHandler {
 			if (hook.register()) {
 				active = true;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			}
-		}
-		
-		if (!active) {
-			plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_FAILED
-					.replace("{addon}", ADDON_NAME));
 		}
 	}
 	

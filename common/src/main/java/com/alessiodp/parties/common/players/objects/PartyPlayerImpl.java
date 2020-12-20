@@ -25,9 +25,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantLock;
@@ -50,6 +49,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final UUID createID;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyAskRequest> pendingAskRequests;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyInvite> pendingInvites;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyTeleportRequest> pendingTeleportRequests;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<UUID> ignoredParties;
 	
 	
@@ -74,6 +74,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		createID = UUID.randomUUID();
 		pendingAskRequests = new HashSet<>();
 		pendingInvites = new HashSet<>();
+		pendingTeleportRequests = new HashSet<>();
 		ignoredParties = new HashSet<>();
 	}
 	
@@ -278,8 +279,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	/**
 	 * Player allowed commands
 	 */
-	public List<ADPCommand> getAllowedCommands() {
-		List<ADPCommand> ret = new ArrayList<>();
+	public Set<ADPCommand> getAllowedCommands() {
+		Set<ADPCommand> ret = new HashSet<>();
 		PartyRankImpl rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		
@@ -311,10 +312,13 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			}
 			
 			// Admin commands
-			if (ConfigParties.GENERAL_ASK_ENABLE) {
-				if (player.hasPermission(PartiesPermission.USER_ACCEPT) && player.hasPermission(PartiesPermission.PRIVATE_ASK_ACCEPT))
+			if (ConfigParties.GENERAL_ASK_ENABLE
+					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)) {
+				if (player.hasPermission(PartiesPermission.USER_ACCEPT)
+						&& (rank.havePermission(PartiesPermission.PRIVATE_ASK_ACCEPT) || rank.havePermission(PartiesPermission.PRIVATE_TELEPORT_ACCEPT)))
 					ret.add(CommonCommands.ACCEPT);
-				if (player.hasPermission(PartiesPermission.USER_DENY) && player.hasPermission(PartiesPermission.PRIVATE_ASK_DENY))
+				if (player.hasPermission(PartiesPermission.USER_DENY)
+						&& (rank.havePermission(PartiesPermission.PRIVATE_ASK_DENY) || rank.havePermission(PartiesPermission.PRIVATE_TELEPORT_DENY)))
 					ret.add(CommonCommands.DENY);
 			}
 			if (ConfigParties.ADDITIONAL_DESC_ENABLE && player.hasPermission(PartiesPermission.USER_DESC) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_DESC))
@@ -377,6 +381,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			ret.add(CommonCommands.RELOAD);
 		if (player.hasPermission(PartiesPermission.ADMIN_VERSION))
 			ret.add(CommonCommands.VERSION);
+		if (ConfigMain.PARTIES_DEBUG_COMMAND && player.hasPermission(PartiesPermission.ADMIN_DEBUG))
+			ret.add(CommonCommands.DEBUG);
 		
 		return ret;
 	}

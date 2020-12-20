@@ -79,7 +79,6 @@ general:
     allowed-characters: '[\p{L}\s]+'
     # Censor party chat message with a regex
     censor-regex: ''
-    # wip bungeechat support
     # Prevent chat message if the user is muted (BungeeChat required)
     prevent-muted-players: false
     # Enable a chat prefix to directly send the message into the party chat
@@ -299,7 +298,15 @@ additional:
   # Enable the command "/party teleport" to tp every party-mate to the command sender
   teleport:
     enable: false
+    # Teleport the player to the exact location
+    # Otherwise you will be only teleported to its server
+    exact-location: true
     cooldown: 60
+    accept-request:
+      # Members will be teleported only after accepting with /party accept/deny
+      # Time in seconds
+      enable: false
+      time: 20
 
 
 # End of configuration file

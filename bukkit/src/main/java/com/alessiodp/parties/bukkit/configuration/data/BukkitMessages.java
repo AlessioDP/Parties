@@ -29,6 +29,14 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_EXP_NORMAL_GAINED_KILLER;
 	@ConfigOption(path = "additional-commands.exp.normal.gained-others")
 	public static String ADDCMD_EXP_NORMAL_GAINED_OTHERS;
+	@ConfigOption(path = "additional-commands.exp.levelpoints.gained-killer")
+	public static String ADDCMD_EXP_LEVELPOINTS_GAINED_KILLER;
+	@ConfigOption(path = "additional-commands.exp.levelpoints.gained-others")
+	public static String ADDCMD_EXP_LEVELPOINTS_GAINED_OTHERS;
+	@ConfigOption(path = "additional-commands.exp.mmocore.gained-killer")
+	public static String ADDCMD_EXP_MMOCORE_GAINED_KILLER;
+	@ConfigOption(path = "additional-commands.exp.mmocore.gained-others")
+	public static String ADDCMD_EXP_MMOCORE_GAINED_OTHERS;
 	@ConfigOption(path = "additional-commands.exp.skillapi.gained-killer")
 	public static String ADDCMD_EXP_SKILLAPI_GAINED_KILLER;
 	@ConfigOption(path = "additional-commands.exp.skillapi.gained-others")

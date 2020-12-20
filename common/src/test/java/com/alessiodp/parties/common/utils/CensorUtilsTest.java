@@ -11,7 +11,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
@@ -38,10 +37,6 @@ public class CensorUtilsTest {
 			System.out.println((String) args.getArgument(0));
 			return null;
 		}).when(mockLoggerManager).logDebug(anyString(), anyBoolean());
-		doAnswer((args) -> {
-			((Exception) args.getArgument(1)).printStackTrace();
-			return null;
-		}).when(mockLoggerManager).printErrorStacktrace(any(), any());
 	}
 	
 	@Test

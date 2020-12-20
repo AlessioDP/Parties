@@ -6,6 +6,7 @@ import com.alessiodp.core.common.utils.FormulaUtils;
 import com.alessiodp.core.common.utils.Pair;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPreExperienceDropEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.bukkit.addons.external.LevelPointsHandler;
 import com.alessiodp.parties.bukkit.addons.external.MMOCoreHandler;
 import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
@@ -25,7 +26,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class BukkitExpManager extends ExpManager {
 	private double rangeSquared;
@@ -56,6 +56,8 @@ public class BukkitExpManager extends ExpManager {
 		// Flags used to messages
 		double totalParty = 0;
 		double totalNormal = 0;
+		double totalLevelPoints = 0;
+		double totalMmoCore = 0;
 		double totalSkillapi = 0;
 		
 		PartyImpl party = plugin.getPartyManager().getParty(drop.getKiller().getPartyId());
@@ -83,6 +85,12 @@ public class BukkitExpManager extends ExpManager {
 							case NORMAL:
 								totalNormal += drop.getNormal();
 								break;
+							case LEVELPOINTS:
+								totalLevelPoints += drop.getNormal();
+								break;
+							case MMOCORE:
+								totalMmoCore += drop.getNormal();
+								break;
 							case SKILLAPI:
 								totalSkillapi += drop.getNormal();
 								break;
@@ -100,6 +108,12 @@ public class BukkitExpManager extends ExpManager {
 							case NORMAL:
 								totalNormal += drop.getSkillApi();
 								break;
+							case LEVELPOINTS:
+								totalLevelPoints += drop.getSkillApi();
+								break;
+							case MMOCORE:
+								totalMmoCore += drop.getSkillApi();
+								break;
 							case SKILLAPI:
 								totalSkillapi += drop.getSkillApi();
 								break;
@@ -112,15 +126,32 @@ public class BukkitExpManager extends ExpManager {
 					
 					// Send experience
 					if (totalParty > 0) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_PARTY, CommonUtils.formatDouble(totalParty), party.getId().toString()), true);
+						
 						party.giveExperience(totalParty, drop.getKiller());
 						
 						user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
 								.replace("%exp%", CommonUtils.formatDouble(totalParty)), drop.getKiller(), party), true);
+						
 					}
 					if (totalNormal > 0 && !shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL)) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_NORMAL, CommonUtils.formatDouble(totalNormal), player.getUniqueId().toString()), true);
+						
 						player.giveExp((int) totalNormal);
 					}
+					if (totalLevelPoints > 0 && !shareExperience(totalLevelPoints, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.LEVELPOINTS)) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_LEVELPOINTS, CommonUtils.formatDouble(totalLevelPoints), player.getUniqueId().toString()), true);
+						
+						LevelPointsHandler.giveExp(player, totalLevelPoints);
+					}
+					if (totalMmoCore > 0 && !shareExperience(totalMmoCore, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.MMOCORE)) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_MMOCORE, CommonUtils.formatDouble(totalMmoCore), player.getUniqueId().toString()), true);
+						
+						MMOCoreHandler.giveExp(player.getUniqueId(), player.getLocation(), totalMmoCore);
+					}
 					if (totalSkillapi > 0 && !shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI)) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_SKILLAPI, CommonUtils.formatDouble(totalSkillapi), player.getUniqueId().toString()), true);
+						
 						SkillAPIHandler.giveExp(player.getUniqueId(), totalSkillapi);
 					}
 				}
@@ -143,11 +174,10 @@ public class BukkitExpManager extends ExpManager {
 			// Get nearest player
 			for (PartyPlayer player : party.getOnlineMembers(true)) {
 				try {
-					if (player.getPlayerUUID().equals(killer.getPlayerUUID())) {
-						double distance = Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation);
-						if (distance <= rangeSquared) {
-							playersToShare.add(new Pair<>((PartyPlayerImpl) player, (int) distance));
-						}
+					// Note, this will add all near players + killer
+					double distance = Bukkit.getPlayer(player.getPlayerUUID()).getLocation().distanceSquared(mobKilledLocation);
+					if (distance <= rangeSquared || player.getPlayerUUID().equals(killer.getPlayerUUID())) {
+						playersToShare.add(new Pair<>((PartyPlayerImpl) player, (int) distance));
 					}
 				} catch (IllegalArgumentException ignored) {} // Ignoring different world
 			}
@@ -184,12 +214,17 @@ public class BukkitExpManager extends ExpManager {
 									bukkitPlayer.giveExp((int) effectiveExperience);
 									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_NORMAL_GAINED_OTHERS;
 									break;
-								case SKILLAPI:
-									SkillAPIHandler.giveExp(pShare.getKey().getPlayerUUID(), effectiveExperience);
-									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+								case LEVELPOINTS:
+									LevelPointsHandler.giveExp(bukkitPlayer, effectiveExperience);
+									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_LEVELPOINTS_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_LEVELPOINTS_GAINED_OTHERS;
 									break;
 								case MMOCORE:
 									MMOCoreHandler.giveExp(pShare.getKey().getPlayerUUID(), bukkitPlayer.getLocation(), effectiveExperience);
+									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_MMOCORE_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_MMOCORE_GAINED_OTHERS;
+									break;
+								case SKILLAPI:
+									SkillAPIHandler.giveExp(pShare.getKey().getPlayerUUID(), effectiveExperience);
+									message = pShare.getKey().getPlayerUUID().equals(killer.getPlayerUUID()) ? BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_KILLER : BukkitMessages.ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
 									break;
 								default:
 									// Nothing to do
@@ -207,27 +242,30 @@ public class BukkitExpManager extends ExpManager {
 					ret = true;
 				} catch (Exception ex) {
 					plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_EXPRESSIONERROR, formulaKiller, formulaOthers, ex.getMessage()));
+					ex.printStackTrace();
 				}
 			}
-			
 		}
 		return ret;
 	}
 	
 	public enum ExpConvert {
-		PARTY, NORMAL, SKILLAPI, MMOCORE;
+		PARTY, NORMAL, LEVELPOINTS, MMOCORE, SKILLAPI;
 		
 		public static ExpConvert parse(String name) {
 			ExpConvert ret;
-			switch (name.toLowerCase(Locale.ENGLISH)) {
+			switch (CommonUtils.toLowerCase(name)) {
 				case "normal":
 					ret = NORMAL;
 					break;
-				case "skillapi":
-					ret = SKILLAPI;
+				case "levelpoints":
+					ret = LEVELPOINTS;
 					break;
 				case "mmocore":
 					ret = MMOCORE;
+					break;
+				case "skillapi":
+					ret = SKILLAPI;
 					break;
 				default:
 					ret = PARTY;

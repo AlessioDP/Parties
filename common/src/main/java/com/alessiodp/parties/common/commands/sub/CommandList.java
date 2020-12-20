@@ -227,16 +227,14 @@ public class CommandList extends PartiesSubCommand {
 	@Override
 	public List<String> onTabComplete(@NonNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
-		if (sender.hasPermission(permission)) {
-			if (args.length == 2) {
-				if (ConfigParties.ADDITIONAL_LIST_CHANGE_ORDER) {
-					ret.add(Messages.PARTIES_SYNTAX_NAME);
-					ret.add(Messages.PARTIES_SYNTAX_ONLINE_MEMBERS);
-					ret.add(Messages.PARTIES_SYNTAX_MEMBERS);
-					ret.add(Messages.PARTIES_SYNTAX_KILLS);
-					ret.add(Messages.PARTIES_SYNTAX_EXPERIENCE);
-				}
-			}
+		if (sender.hasPermission(permission)
+				&& args.length == 2
+				&& ConfigParties.ADDITIONAL_LIST_CHANGE_ORDER) {
+			ret.add(Messages.PARTIES_SYNTAX_NAME);
+			ret.add(Messages.PARTIES_SYNTAX_ONLINE_MEMBERS);
+			ret.add(Messages.PARTIES_SYNTAX_MEMBERS);
+			ret.add(Messages.PARTIES_SYNTAX_KILLS);
+			ret.add(Messages.PARTIES_SYNTAX_EXPERIENCE);
 		}
 		return ret;
 	}

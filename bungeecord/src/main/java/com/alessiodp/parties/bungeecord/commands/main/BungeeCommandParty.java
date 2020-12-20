@@ -6,13 +6,17 @@ import com.alessiodp.parties.bungeecord.commands.sub.BungeeCommandTeleport;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.main.CommandParty;
+import com.alessiodp.parties.common.commands.sub.CommandDebug;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 
 public class BungeeCommandParty extends CommandParty {
 	
 	public BungeeCommandParty(PartiesPlugin instance) {
 		super(instance);
 		
-		// wip add debug command
+		// Debug
+		if (ConfigMain.PARTIES_DEBUG_COMMAND)
+			super.register(new CommandDebug(plugin, this));
 		
 		// Home
 		if (BungeeConfigParties.ADDITIONAL_HOME_ENABLE) {

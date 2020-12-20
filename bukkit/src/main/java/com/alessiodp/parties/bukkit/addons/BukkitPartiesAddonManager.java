@@ -5,6 +5,7 @@ import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsChatHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.addons.external.GriefPreventionHandler;
+import com.alessiodp.parties.bukkit.addons.external.LevelPointsHandler;
 import com.alessiodp.parties.bukkit.addons.external.MMOCoreHandler;
 import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
 import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
@@ -20,7 +21,8 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final EssentialsHandler essentials;
 	private final EssentialsChatHandler essentialsChat;
 	private final GriefPreventionHandler griefPrevention;
-	private final MMOCoreHandler mmoCoreHandler;
+	private final LevelPointsHandler levelPoints;
+	private final MMOCoreHandler mmoCore;
 	private final MythicMobsHandler mythicMobs;
 	private final PlaceholderAPIHandler placeholderAPI;
 	private final SkillAPIHandler skillAPI;
@@ -35,7 +37,8 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		essentials = new EssentialsHandler(plugin);
 		essentialsChat = new EssentialsChatHandler(plugin);
 		griefPrevention = new GriefPreventionHandler(plugin);
-		mmoCoreHandler = new MMOCoreHandler(plugin);
+		levelPoints = new LevelPointsHandler(plugin);
+		mmoCore = new MMOCoreHandler(plugin);
 		mythicMobs = new MythicMobsHandler(plugin);
 		placeholderAPI = new PlaceholderAPIHandler(plugin);
 		skillAPI = new SkillAPIHandler(plugin);
@@ -52,7 +55,8 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		essentials.init();
 		essentialsChat.init();
 		griefPrevention.init();
-		mmoCoreHandler.init();
+		levelPoints.init();
+		mmoCore.init();
 		mythicMobs.init();
 		placeholderAPI.init();
 		skillAPI.init();

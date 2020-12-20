@@ -93,6 +93,8 @@ public enum PartiesPermission implements ADPPermission {
 	PRIVATE_ADMIN_RANK			("party.admin.rank"),
 	PRIVATE_ADMIN_RENAME		("party.admin.rename"),
 	PRIVATE_ADMIN_TELEPORT		("party.admin.teleport"),
+	PRIVATE_TELEPORT_ACCEPT		("party.teleport.accept"),
+	PRIVATE_TELEPORT_DENY		("party.teleport.deny"),
 	
 	PRIVATE_WARNONDAMAGE		("party.warnondamage"),
 	PRIVATE_AUTOCOMMAND			("party.autocommand");

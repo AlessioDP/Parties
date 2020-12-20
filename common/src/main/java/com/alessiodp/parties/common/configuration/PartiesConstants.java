@@ -41,6 +41,7 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_CMD_ACCEPT_ASK = "%s accepted ask request of %s for %s";
 	public static final String DEBUG_CMD_ACCEPT_INVITE = "%s accepted invite request for %s";
+	public static final String DEBUG_CMD_ACCEPT_TELEPORT = "%s accepted teleport request of %s";
 	public static final String DEBUG_CMD_ASK = "%s asked to join the party %s";
 	public static final String DEBUG_CMD_CHAT = "%s changed party chat to %s";
 	public static final String DEBUG_CMD_CLAIM = "%s claimed with permission %s";
@@ -53,12 +54,14 @@ public class PartiesConstants {
 	public static final String DEBUG_CMD_DELETE = "%s deleted the party %s";
 	public static final String DEBUG_CMD_DENY_ASK = "%s denied ask request of %s for %s";
 	public static final String DEBUG_CMD_DENY_INVITE = "%s denied invite request for %s";
+	public static final String DEBUG_CMD_DENY_TELEPORT = "%s denied teleport request of %s";
 	public static final String DEBUG_CMD_DESC = "%s changed the description of %s";
 	public static final String DEBUG_CMD_DESC_REM = "%s removed the description of %s";
 	public static final String DEBUG_CMD_DESC_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of desc command";
 	public static final String DEBUG_CMD_DESC_REGEXERROR_CENSORED = "Failed to parse censor regex of desc command";
 	public static final String DEBUG_CMD_FOLLOW = "%s set follow to %b for %s";
 	public static final String DEBUG_CMD_HOME = "%s used command home on %s to %s";
+	public static final String DEBUG_CMD_HOME_NO_SERVER = "Failed to find the server for the home: %s";
 	public static final String DEBUG_CMD_IGNORE_START = "%s started to ignore the party %s";
 	public static final String DEBUG_CMD_IGNORE_STOP = "%s stopped to ignore the party %s";
 	public static final String DEBUG_CMD_INFO = "%s used command info on %s";
@@ -117,6 +120,11 @@ public class PartiesConstants {
 	public static final String DEBUG_EXP_REMOVINGEXP = "Removing exp from event. Normal=%b and skillapi=%b";
 	public static final String DEBUG_EXP_MMBYPASS = "Bypassing vanilla event due to MythicMob kill";
 	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '%s' killed by player %s (uuid: %s)";
+	public static final String DEBUG_EXP_SEND_PARTY = "Sending %s party experience to the party %s";
+	public static final String DEBUG_EXP_SEND_NORMAL = "Sending %s normal experience to the player %s";
+	public static final String DEBUG_EXP_SEND_LEVELPOINTS = "Sending %s LevelPoints experience to the player %s";
+	public static final String DEBUG_EXP_SEND_MMOCORE = "Sending %s MMOCore experience to the player %s";
+	public static final String DEBUG_EXP_SEND_SKILLAPI = "Sending %s SkillAPI experience to the player %s";
 	
 	public static final String DEBUG_FOLLOW_SERVER_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
 	

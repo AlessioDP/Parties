@@ -45,8 +45,7 @@ public class DynmapHandler {
 						layer.setHideByDefault(BukkitConfigMain.ADDONS_DYNMAP_HIDEDEFAULT);
 					}
 					
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-							.replace("{addon}", ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 				}
 				active = true;
 			}
@@ -54,8 +53,7 @@ public class DynmapHandler {
 			if (!active) {
 				BukkitConfigMain.ADDONS_DYNMAP_ENABLE = false;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -88,30 +86,33 @@ public class DynmapHandler {
 			cleanupMarkers(party);
 			if (party.getMembers().size() >= BukkitConfigMain.ADDONS_DYNMAP_MINPLAYERS) {
 				for (PartyHome home : party.getHomes()) {
-					// wip home: check if its the same server
-					Location loc = new Location(
-							Bukkit.getWorld(home.getWorld()),
-							home.getX(),
-							home.getY(),
-							home.getZ(),
-							home.getYaw(),
-							home.getPitch()
-					);
-					String id = party.getHomes().size() > 1 ?
-							"party_" + party.getId() + "_" + home.getName()
-							: "party_" + party.getId();
-					
-					addMarker(
-							plugin.getMessageUtils().convertPlaceholders(id, null, party),
-							plugin.getMessageUtils().convertPlaceholders(
-									party.getHomes().size() > 1
-											? BukkitConfigMain.ADDONS_DYNMAP_MARKER_LABEL_MULTIPLE
-													.replace("%home%", CommonUtils.getNoEmptyOr(home.getName(), ""))
-											: BukkitConfigMain.ADDONS_DYNMAP_MARKER_LABEL_SINGLE,
-									null,
-									party
-							), loc
-					);
+					if (!plugin.isBungeeCordEnabled()
+							|| home.getServer()== null
+							|| home.getServer().equalsIgnoreCase(BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_ID)) {
+						Location loc = new Location(
+								Bukkit.getWorld(home.getWorld()),
+								home.getX(),
+								home.getY(),
+								home.getZ(),
+								home.getYaw(),
+								home.getPitch()
+						);
+						String id = party.getHomes().size() > 1 ?
+								"party_" + party.getId() + "_" + home.getName()
+								: "party_" + party.getId();
+						
+						addMarker(
+								plugin.getMessageUtils().convertPlaceholders(id, null, party),
+								plugin.getMessageUtils().convertPlaceholders(
+										party.getHomes().size() > 1
+												? BukkitConfigMain.ADDONS_DYNMAP_MARKER_LABEL_MULTIPLE
+												.replace("%home%", CommonUtils.getNoEmptyOr(home.getName(), ""))
+												: BukkitConfigMain.ADDONS_DYNMAP_MARKER_LABEL_SINGLE,
+										null,
+										party
+								), loc
+						);
+					}
 				}
 			}
 		}

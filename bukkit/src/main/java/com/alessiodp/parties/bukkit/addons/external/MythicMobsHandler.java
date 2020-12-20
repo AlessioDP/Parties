@@ -52,18 +52,15 @@ public class MythicMobsHandler implements Listener {
 						registered = true;
 					}
 					
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-							.replace("{addon}", ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
-							.replace("{addon}", ADDON_NAME));
+					plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, ADDON_NAME));
 				}
 			} else {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = false;
 				
 				HandlerList.unregisterAll(this);
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}

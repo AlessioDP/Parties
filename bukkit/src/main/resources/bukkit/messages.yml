@@ -311,13 +311,13 @@ additional-commands:
         - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
         - "%levels_options%"
         - "&bExp drop&7: %drop%"
-        - "&bSharing enable/players/range&7: %sharing%&7/%sharing_number%&7/%sharing_range%"
+        - "&bSharing enable/players/range/round&7: %sharing%&7/%sharing_number%&7/%sharing_range%/%sharing_round%"
         - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
         - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
         - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
       level-options:
         progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed levels&7: %levels%"
+        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
 
     party:
       header: '&b================== &lDebug Party &r&b=================='
@@ -356,6 +356,12 @@ additional-commands:
     party:
       gained: "&bGained %exp% party experience for killing the mob"
     normal:
+      gained-killer: "&bGained %exp% experience for killing the mob"
+      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    levelpoints:
+      gained-killer: "&bGained %exp% experience for killing the mob"
+      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    mmocore:
       gained-killer: "&bGained %exp% experience for killing the mob"
       gained-others: "&b%player% has killed a mob, you gained %exp% experience"
     skillapi:
@@ -452,6 +458,10 @@ additional-commands:
     # [Special tags]
     # => %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
+    accept-request:
+      sent: "&aTeleport request sent to the party"
+      received: '[{"text":"&bDo you want to be teleported to %player%? "},{"text":"&a&lYes","clickEvent":{"action":"run_command","value":"/party accept %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Accept the request"}]}}},{"text":" &bor "},{"text":"&c&lno","clickEvent":{"action":"run_command","value":"/party deny %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}},{"text":"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose."}]'
+      denied: "&7You denied the teleport request of %player%"
 
   vault:
     # [Special tags]

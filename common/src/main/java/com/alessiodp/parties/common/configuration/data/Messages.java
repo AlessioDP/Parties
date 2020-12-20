@@ -483,6 +483,12 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_TELEPORT_TELEPORTED;
 	@ConfigOption(path = "additional-commands.teleport.cooldown")
 	public static String ADDCMD_TELEPORT_COOLDOWN;
+	@ConfigOption(path = "additional-commands.teleport.accept-request.sent")
+	public static String ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT;
+	@ConfigOption(path = "additional-commands.teleport.accept-request.received")
+	public static String ADDCMD_TELEPORT_ACCEPT_REQUEST_RECEIVED;
+	@ConfigOption(path = "additional-commands.teleport.accept-request.denied")
+	public static String ADDCMD_TELEPORT_ACCEPT_REQUEST_DENIED;
 	
 	
 	// Other messages

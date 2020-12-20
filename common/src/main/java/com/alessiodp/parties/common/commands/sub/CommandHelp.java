@@ -16,8 +16,8 @@ import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CommandHelp extends PartiesSubCommand {
 	
@@ -64,7 +64,7 @@ public class CommandHelp extends PartiesSubCommand {
 		// Get all allowed commands
 		LinkedList<String> list = new LinkedList<>();
 		
-		List<ADPCommand> allowedCommands = partyPlayer.getAllowedCommands();
+		Set<ADPCommand> allowedCommands = partyPlayer.getAllowedCommands();
 		for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
 			if (allowedCommands.contains(e.getKey()) && e.getValue().isListedInHelp()) {
 				list.add(e.getValue().getHelp()

@@ -1,6 +1,6 @@
 package com.alessiodp.parties.bukkit.players.objects;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.alessiodp.core.common.commands.list.ADPCommand;
@@ -77,8 +77,8 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	}
 	
 	@Override
-	public List<ADPCommand> getAllowedCommands() {
-		List<ADPCommand> ret = super.getAllowedCommands();
+	public Set<ADPCommand> getAllowedCommands() {
+		Set<ADPCommand> ret = super.getAllowedCommands();
 		PartyRankImpl rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		

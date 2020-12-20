@@ -16,7 +16,8 @@ public class CensorUtils {
 					ret = true;
 				}
 			} catch (Exception ex) {
-				PartiesPlugin.getInstance().getLoggerManager().printErrorStacktrace(regexError, ex);
+				PartiesPlugin.getInstance().getLoggerManager().printError(regexError);
+				ex.printStackTrace();
 			}
 		}
 		return ret;
@@ -29,7 +30,8 @@ public class CensorUtils {
 			
 			ret = matcher.matches();
 		} catch (Exception ex) {
-			PartiesPlugin.getInstance().getLoggerManager().printErrorStacktrace(regexError, ex);
+			PartiesPlugin.getInstance().getLoggerManager().printError(regexError);
+			ex.printStackTrace();
 		}
 		return ret;
 	}

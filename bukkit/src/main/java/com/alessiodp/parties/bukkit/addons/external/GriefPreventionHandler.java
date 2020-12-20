@@ -26,12 +26,10 @@ public class GriefPreventionHandler {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				active = true;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE = false;
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}

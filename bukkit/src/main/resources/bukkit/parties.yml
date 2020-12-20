@@ -303,6 +303,11 @@ additional:
   teleport:
     enable: false
     cooldown: 60
+    accept-request:
+      # Members will be teleported only after accepting with /party accept/deny
+      # Time in seconds
+      enable: false
+      time: 20
 
 
 # End of configuration file

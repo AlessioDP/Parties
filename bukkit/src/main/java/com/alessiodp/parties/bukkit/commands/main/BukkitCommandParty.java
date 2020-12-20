@@ -29,7 +29,6 @@ public class BukkitCommandParty extends CommandParty {
 			if (BukkitConfigMain.ADDONS_VAULT_ENABLE && BukkitConfigMain.ADDONS_VAULT_CONFIRM_ENABLE)
 				super.register(new BukkitCommandConfirm(plugin, this));
 			
-			
 			// Debug
 			if (ConfigMain.PARTIES_DEBUG_COMMAND)
 				super.register(new BukkitCommandDebug(plugin, this));

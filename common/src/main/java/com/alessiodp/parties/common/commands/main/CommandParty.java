@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandAccept;
 import com.alessiodp.parties.common.commands.sub.CommandAsk;
@@ -38,7 +39,6 @@ import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public abstract class CommandParty extends ADPMainCommand {
@@ -127,9 +127,9 @@ public abstract class CommandParty extends ADPMainCommand {
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /party to /party help
-				subCommand = ConfigMain.COMMANDS_CMD_HELP.toLowerCase(Locale.ENGLISH);
+				subCommand = CommonUtils.toLowerCase(ConfigMain.COMMANDS_CMD_HELP);
 			} else {
-				subCommand = args[0].toLowerCase(Locale.ENGLISH);
+				subCommand = CommonUtils.toLowerCase(args[0]);
 			}
 			
 			if (exists(subCommand)) {
@@ -140,7 +140,7 @@ public abstract class CommandParty extends ADPMainCommand {
 		} else {
 			// Console
 			if (args.length > 0) {
-				subCommand = args[0].toLowerCase(Locale.ENGLISH);
+				subCommand = CommonUtils.toLowerCase(args[0]);
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {

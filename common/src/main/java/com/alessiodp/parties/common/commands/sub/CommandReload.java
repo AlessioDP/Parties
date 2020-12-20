@@ -56,9 +56,7 @@ public class CommandReload extends PartiesSubCommand {
 		
 		plugin.reloadConfiguration();
 		
-		if (partyPlayer != null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_CONFIGRELOAD);
-		}
+		sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_CONFIGRELOAD);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RELOADED,
 				sender.getName()), true);

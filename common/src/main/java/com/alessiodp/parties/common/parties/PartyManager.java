@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.parties;
 
 import com.alessiodp.core.common.scheduling.CancellableTask;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -12,7 +13,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -55,14 +55,14 @@ public abstract class PartyManager {
 	}
 	
 	protected PartyImpl getPartyFromCache(String name) {
-		return name != null ? getPartyFromCache(cachePartiesNames.get(name.toLowerCase(Locale.ENGLISH))) : null;
+		return name != null ? getPartyFromCache(cachePartiesNames.get(CommonUtils.toLowerCase(name))) : null;
 	}
 	
 	public void addPartyToCache(PartyImpl party) {
 		if (party != null) {
 			cacheParties.put(party.getId(), party);
 			if (party.getName() != null)
-				cachePartiesNames.put(party.getName().toLowerCase(Locale.ENGLISH), party.getId());
+				cachePartiesNames.put(CommonUtils.toLowerCase(party.getName()), party.getId());
 		}
 	}
 	
@@ -76,7 +76,7 @@ public abstract class PartyManager {
 		if (id != null) {
 			PartyImpl party = cacheParties.remove(id);
 			if (party != null && party.getName() != null)
-				cachePartiesNames.remove(party.getName().toLowerCase(Locale.ENGLISH));
+				cachePartiesNames.remove(CommonUtils.toLowerCase(party.getName()));
 		}
 	}
 	

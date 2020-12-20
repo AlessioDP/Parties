@@ -231,12 +231,7 @@ public class CommandRank extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			for (User u : plugin.getOnlinePlayers()) {
-				PartyPlayerImpl p = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(u.getUUID());
-				if (p != null && !p.isVanished())
-					ret.add(p.getName());
-			}
-			ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
+			ret = plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);
 		} else if (args.length == 3) {
 			for (PartyRankImpl rank : ConfigParties.RANK_LIST) {
 				ret.add(rank.getName());

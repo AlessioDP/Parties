@@ -57,6 +57,14 @@
 		</plugins>
 	</build>
 	
+	<repositories>
+		<repository>
+			<!-- BungeeChat repo -->
+			<id>AuraDevelopmentTeam</id>
+			<url>https://maven.aura-dev.team/repository/auradev-releases/</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.alessiodp.core</groupId>
@@ -69,6 +77,19 @@
 			<artifactId>parties-common</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>dev.aura.bungeechat.api</groupId>
+			<artifactId>BungeeChatApi</artifactId>
+			<version>${libs.bungeeChat}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>

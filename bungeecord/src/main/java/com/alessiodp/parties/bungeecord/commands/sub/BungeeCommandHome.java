@@ -51,7 +51,7 @@ public class BungeeCommandHome extends CommandHome {
 				ServerInfo server = ProxyServer.getInstance().getServerInfo(home.getServer());
 				
 				if (server == null) {
-					// wip error
+					plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_CMD_HOME_NO_SERVER, home.toString()));
 					return;
 				}
 				

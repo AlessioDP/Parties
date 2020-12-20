@@ -221,7 +221,7 @@ main-commands:
     fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
     changing-yourself: "&cYou cannot change yourself rank!"
     player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% doesn't have a party"
+    player-not-in-other-party: "&c%player% is not in a party"
     players-conflict:
       # [Special tags]
       # => %username%                       = The name of the player
@@ -310,14 +310,9 @@ additional-commands:
         - "&bExp system&7: %exp%"
         - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
         - "%levels_options%"
-        - "&bExp drop&7: %drop%"
-        - "&bSharing enable/players/range&7: %sharing%&7/%sharing_number%&7/%sharing_range%"
-        - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
-        - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
-        - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
       level-options:
         progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed levels&7: %levels%"
+        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
 
     party:
       header: '&b================== &lDebug Party &r&b=================='
@@ -374,7 +369,7 @@ additional-commands:
     # => %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
     must-select-home: "&cYou must select a valid home"
-    invalid-home: "&c The home '%home%' doesn't exist"
+    invalid-home: "&cThe selected home doesn't exist"
     valid-homes: "&bList of valid homes:"
     # [Special tags]
     # Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
@@ -446,6 +441,10 @@ additional-commands:
     # [Special tags]
     # => %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
+    accept-request:
+      sent: "&aTeleport request sent to the party"
+      received: '[{"text":"&bDo you want to be teleported to %player%? "},{"text":"&a&lYes","clickEvent":{"action":"run_command","value":"/party accept %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Accept the request"}]}}},{"text":" &bor "},{"text":"&c&lno","clickEvent":{"action":"run_command","value":"/party deny %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}},{"text":"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose."}]'
+      denied: "&7You denied the teleport request of %player%"
 
   vault:
     # [Special tags]

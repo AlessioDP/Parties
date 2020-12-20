@@ -132,6 +132,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.github.Zoon20X</groupId>
+      <artifactId>LevelPoints-Recoded</artifactId>
+      <version>4a7349923f</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
       <version>2.10.6</version>
@@ -148,6 +154,12 @@
           <groupId>*</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.sucy.skill</groupId>
+      <artifactId>SkillAPI</artifactId>
+      <version>3.108</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.github.SkriptLang</groupId>
@@ -214,13 +226,6 @@
           <groupId>org.mockito</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.sucy.skill</groupId>
-      <artifactId>SkillAPI</artifactId>
-      <version>3.108</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/libs/SkillAPI-3.108.jar</systemPath>
     </dependency>
   </dependencies>
 </project>

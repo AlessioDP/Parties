@@ -2,6 +2,7 @@ package com.alessiodp.parties.common.utils;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
 import com.alessiodp.parties.common.configuration.data.Messages;
@@ -9,7 +10,6 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +30,7 @@ public abstract class MessageUtils {
 		while (matcher.find()) {
 			String identifier = matcher.group(1);
 			// Match basic placeholders
-			switch (identifier.toLowerCase(Locale.ENGLISH)) {
+			switch (CommonUtils.toLowerCase(identifier)) {
 				case "%player%":
 				case "%user%":
 					if (player != null) {

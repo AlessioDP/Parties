@@ -45,8 +45,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 				break;
 			default:
 				// Unsupported storage type
-				plugin.getLoggerManager().printError(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED
-						.replace("{type}", ConfigMain.STORAGE_TYPE_DATABASE));
+				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED, ConfigMain.STORAGE_TYPE_DATABASE));
 				break;
 		}
 		return ret;

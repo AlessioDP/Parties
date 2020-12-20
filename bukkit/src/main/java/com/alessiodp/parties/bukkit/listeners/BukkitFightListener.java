@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bukkit.listeners;
 
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.events.BukkitEventManager;
@@ -32,8 +33,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
-
-import java.util.Locale;
 
 @RequiredArgsConstructor
 public class BukkitFightListener implements Listener {
@@ -134,7 +133,7 @@ public class BukkitFightListener implements Listener {
 			if (party != null && party.isFriendlyFireProtected() && !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 				boolean cancel = false;
 				for (PotionEffect pe : event.getEntity().getEffects()) {
-					switch (pe.getType().getName().toLowerCase(Locale.ENGLISH)) {
+					switch (CommonUtils.toLowerCase(pe.getType().getName())) {
 					case "harm":
 					case "blindness":
 					case "confusion":

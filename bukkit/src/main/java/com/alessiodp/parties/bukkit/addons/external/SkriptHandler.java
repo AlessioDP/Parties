@@ -23,8 +23,7 @@ public class SkriptHandler {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-					.replace("{addon}", ADDON_NAME), true);
+			plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 		}
 	}
 }

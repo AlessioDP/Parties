@@ -80,9 +80,7 @@ public class PartiesPacket extends ADPPacket {
 				packet.payloadRaw = raw;
 				ret = packet;
 			} else {
-				plugin.getLoggerManager().printError(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION
-						.replace("{current}", plugin.getVersion())
-						.replace("{version}", foundVersion));
+				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION, plugin.getVersion(), foundVersion));
 			}
 		} catch (Exception ex) {
 			plugin.getLoggerManager().printError(Constants.DEBUG_LOG_MESSAGING_FAILED_READ
