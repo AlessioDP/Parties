@@ -9,8 +9,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class BungeePartiesPartyPostRenameEvent extends BungeePartiesEvent implements IPartyPostRenameEvent {
 	private final Party party;
-	private String oldName;
-	private String newName;
+	private final String oldName;
+	private final String newName;
 	private final PartyPlayer player;
 	private final boolean isAdmin;
 	

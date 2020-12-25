@@ -26,6 +26,7 @@ parties:
     already-in-party: "&cYou are already in a clan!"
     party-not-found: "&cThe clan %party% doesn't exist"
     party-full: "&cThe clan is full!"
+    player-not-found: "&cThe player %player% has not been found"
 
   options:
     enabled: '&aEnabled'
@@ -132,19 +133,20 @@ main-commands:
 
   info:
     # [Special tags]
-    # => %list_RANK%           = The list of players of that rank
-    #                              Example: %list_member%, %list_moderator% (%list_leader% it's unique)
-    # => %list_RANK_number%    = The number of players of that rank
-    # => %list_RANK_online%    = Online players of that rank
+    # => %list_rank_RANK%           = The list of players of that rank
+    #                              Example: %list_rank_member%, %list_rank_moderator% (%list_rank_leader% it's unique)
+    # => %list_rank_RANK_number%    = The number of players of that rank
+    # => %list_rank_RANK_online%    = Online players of that rank
+    # => %list_rank_RANK_online_number%    = The number of online players of that rank
     # => %online%              = List online players
     # => %online_number%       = Number of online players
     content:
     - "&b============ &l%party%'s Info &r&b============"
     - "&b&lTag&7: %tag%"
     - "&b&lDescription&7: %desc%"
-    - "&bLeader&7: %list_leader%"
-    - "&bMods&7: %list_moderator%"
-    - "&bMembers&7: %list_member%"
+    - "&bLeader&7: %list_rank_leader%"
+    - "&bMods&7: %list_rank_moderator%"
+    - "&bMembers&7: %list_rank_member%"
     - "&bOnline players&7: %online_number%"
 
   invite:
@@ -219,7 +221,7 @@ main-commands:
     fixed-leader: "&cYou cannot make someone a leader of a fixed clan!"
     changing-yourself: "&cYou cannot change yourself rank!"
     player-not-in-party: "&c%player% is not in your clan"
-    player-not-in-other-party: "&c%player% doesn't have a clan"
+    player-not-in-other-party: "&c%player% is not in a clan"
     players-conflict:
       # [Special tags]
       # => %username%                       = The name of the player
@@ -309,13 +311,13 @@ additional-commands:
         - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
         - "%levels_options%"
         - "&bExp drop&7: %drop%"
-        - "&bSharing enable/players/range&7: %sharing%&7/%sharing_number%&7/%sharing_range%"
+        - "&bSharing enable/players/range/round&7: %sharing%&7/%sharing_number%&7/%sharing_range%/%sharing_round%"
         - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
         - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
         - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
       level-options:
         progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed levels&7: %levels%"
+        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
 
     party:
       header: '&b================== &lDebug Clan &r&b=================='
@@ -356,6 +358,12 @@ additional-commands:
     normal:
       gained-killer: "&bGained %exp% experience for killing the mob"
       gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    levelpoints:
+      gained-killer: "&bGained %exp% experience for killing the mob"
+      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    mmocore:
+      gained-killer: "&bGained %exp% experience for killing the mob"
+      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
     skillapi:
       gained-killer: "&bGained %exp% experience for killing the mob"
       gained-others: "&b%player% has killed a mob, you gained %exp% experience"
@@ -378,7 +386,7 @@ additional-commands:
     # => %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
     must-select-home: "&cYou must select a valid home"
-    invalid-home: "&c The home '%home%' doesn't exist"
+    invalid-home: "&cThe selected home doesn't exist"
     valid-homes: "&bList of valid homes:"
     # [Special tags]
     # Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
@@ -429,6 +437,7 @@ additional-commands:
   sethome:
     changed: ""
     removed: "&bClan home removed"
+    removed-none: "&cNo clan home found"
     broadcast: "&aThe clan has a new home!"
     # [Special tags]
     # => %seconds%          = Remaining time in seconds
@@ -449,6 +458,10 @@ additional-commands:
     # [Special tags]
     # => %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
+    accept-request:
+      sent: "&aTeleport request sent to the clan"
+      received: '[{"text":"&bDo you want to be teleported to %player%? "},{"text":"&a&lYes","clickEvent":{"action":"run_command","value":"/clan accept %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Accept the request"}]}}},{"text":" &bor "},{"text":"&c&lno","clickEvent":{"action":"run_command","value":"/clan deny %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}},{"text":"&b?\n&bYou can use &7/clan <accept/deny> %player% &bto choose."}]'
+      denied: "&7You denied the teleport request of %player%"
 
   vault:
     # [Special tags]

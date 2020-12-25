@@ -59,7 +59,9 @@ public interface PartyPlayer {
 	 * @deprecated use setPartyId instead
 	 */
 	@Deprecated
-	default void setPartyName(String partyName) {}
+	default void setPartyName(String partyName) {
+		// Nothing to do
+	}
 	
 	/**
 	 * Get the rank level

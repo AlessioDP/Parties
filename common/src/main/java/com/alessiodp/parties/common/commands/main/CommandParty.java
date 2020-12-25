@@ -27,6 +27,7 @@ import com.alessiodp.parties.common.commands.sub.CommandList;
 import com.alessiodp.parties.common.commands.sub.CommandMotd;
 import com.alessiodp.parties.common.commands.sub.CommandMute;
 import com.alessiodp.parties.common.commands.sub.CommandPassword;
+import com.alessiodp.parties.common.commands.sub.CommandProtection;
 import com.alessiodp.parties.common.commands.sub.CommandRank;
 import com.alessiodp.parties.common.commands.sub.CommandReload;
 import com.alessiodp.parties.common.commands.sub.CommandRename;
@@ -110,6 +111,10 @@ public abstract class CommandParty extends ADPMainCommand {
 			// Password
 			if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
 				register(new CommandPassword(plugin, this));
+			
+			// Protection
+			if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command"))
+				super.register(new CommandProtection(plugin, this));
 			
 			// Tag
 			if (ConfigParties.ADDITIONAL_TAG_ENABLE)

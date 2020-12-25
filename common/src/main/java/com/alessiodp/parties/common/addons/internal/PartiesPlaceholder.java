@@ -119,31 +119,29 @@ public enum PartiesPlaceholder {
 		}
 		
 		if (identifierLower.startsWith(PREFIX_LIST_PARTIES)) {
-			if (identifierLower.startsWith(PREFIX_LIST_PARTIES)) {
-				Matcher matcher = PATTERN_LIST_PARTIES_BY_NAME.matcher(identifier);
-				if (matcher.find()) {
-					return matcher.group(3) != null ? LIST_PARTIES_BY_NAME_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_NAME_NUMBER;
-				}
-				
-				matcher = PATTERN_LIST_PARTIES_BY_ONLINE_MEMBERS.matcher(identifier);
-				if (matcher.find()) {
-					return matcher.group(3) != null ? LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER;
-				}
-				
-				matcher = PATTERN_LIST_PARTIES_BY_MEMBERS.matcher(identifier);
-				if (matcher.find()) {
-					return matcher.group(3) != null ? LIST_PARTIES_BY_MEMBERS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_MEMBERS_NUMBER;
-				}
-				
-				matcher = PATTERN_LIST_PARTIES_BY_KILLS.matcher(identifier);
-				if (matcher.find()) {
-					return matcher.group(3) != null ? LIST_PARTIES_BY_KILLS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_KILLS_NUMBER;
-				}
-				
-				matcher = PATTERN_LIST_PARTIES_BY_EXPERIENCE.matcher(identifier);
-				if (matcher.find()) {
-					return matcher.group(3) != null ? LIST_PARTIES_BY_EXPERIENCE_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_EXPERIENCE_NUMBER;
-				}
+			Matcher matcher = PATTERN_LIST_PARTIES_BY_NAME.matcher(identifier);
+			if (matcher.find()) {
+				return matcher.group(3) != null ? LIST_PARTIES_BY_NAME_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_NAME_NUMBER;
+			}
+			
+			matcher = PATTERN_LIST_PARTIES_BY_ONLINE_MEMBERS.matcher(identifier);
+			if (matcher.find()) {
+				return matcher.group(3) != null ? LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER;
+			}
+			
+			matcher = PATTERN_LIST_PARTIES_BY_MEMBERS.matcher(identifier);
+			if (matcher.find()) {
+				return matcher.group(3) != null ? LIST_PARTIES_BY_MEMBERS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_MEMBERS_NUMBER;
+			}
+			
+			matcher = PATTERN_LIST_PARTIES_BY_KILLS.matcher(identifier);
+			if (matcher.find()) {
+				return matcher.group(3) != null ? LIST_PARTIES_BY_KILLS_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_KILLS_NUMBER;
+			}
+			
+			matcher = PATTERN_LIST_PARTIES_BY_EXPERIENCE.matcher(identifier);
+			if (matcher.find()) {
+				return matcher.group(3) != null ? LIST_PARTIES_BY_EXPERIENCE_NUMBER_PLACEHOLDER : LIST_PARTIES_BY_EXPERIENCE_NUMBER;
 			}
 		}
 		return null;

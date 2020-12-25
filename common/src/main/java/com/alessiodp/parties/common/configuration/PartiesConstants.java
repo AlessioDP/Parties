@@ -195,7 +195,7 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_TASK_ASK_COOLDOWN_EXPIRED = "Ask cooldown expired for player %s";
 	public static final String DEBUG_TASK_CHAT_EXPIRED = "Chat cooldown expired for player %s";
-	public static final String DEBUG_TASK_DELETE_START = "Started party delete runnable of party %s for %s seconds";
+	public static final String DEBUG_TASK_DELETE_START = "Started party delete runnable of party %s for %d seconds";
 	public static final String DEBUG_TASK_DELETE_STOP = "Stopped party delete runnable of party %s";
 	public static final String DEBUG_TASK_HOME_DENIED_FIGHT = "Denied home teleport of player %s due to fight";
 	public static final String DEBUG_TASK_HOME_DENIED_MOVING = "Denied home teleport of player %s due to moving";

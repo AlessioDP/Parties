@@ -142,7 +142,7 @@ public abstract class PartyImpl implements Party {
 	 * @param name the name of the party
 	 * @param leader the leader of the party, null if fixed
 	 */
-	public void setup(@lombok.NonNull String name, @Nullable String leader) throws IllegalArgumentException {
+	public void setup(@NonNull String name, @Nullable String leader) throws IllegalArgumentException {
 		lock.lock();
 		try {
 			this.name = name;

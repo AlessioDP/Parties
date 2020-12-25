@@ -158,6 +158,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_MUTE;
 	@ConfigOption(path = "commands.main-commands.password")
 	public static String		COMMANDS_CMD_PASSWORD;
+	@ConfigOption(path = "commands.main-commands.protection")
+	public static String		COMMANDS_CMD_PROTECTION;
 	@ConfigOption(path = "commands.main-commands.rank")
 	public static String		COMMANDS_CMD_RANK;
 	@ConfigOption(path = "commands.main-commands.reload")

@@ -120,6 +120,8 @@ ranks:
       - party.desc
       - party.motd
       - party.claim
+      - party.teleport.accept
+      - party.teleport.deny
   moderator:
     level: 10
     name: "Moderator"

@@ -12,7 +12,7 @@ import lombok.ToString;
 
 import java.util.UUID;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 public class PartiesPacket extends ADPPacket {
 	// Common

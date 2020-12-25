@@ -35,15 +35,17 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
-	public boolean createParty(@NonNull String name, PartyPlayer leader) {
+	public boolean createParty(@Nullable String name, @Nullable PartyPlayer leader) {
 		return createParty(name, null, leader);
 	}
 	
 	@Override
-	public boolean createParty(@NonNull String name, @Nullable String tag, PartyPlayer leader) {
-		if (!name.isEmpty()
-				&& !plugin.getPartyManager().existsParty(name)
-				&& (leader == null || !leader.isInParty())) {
+	public boolean createParty(@Nullable String name, @Nullable String tag, @Nullable PartyPlayer leader) {
+		if (
+				name == null || !plugin.getDatabaseManager().existsParty(name)
+				|| tag == null || !plugin.getDatabaseManager().existsTag(tag)
+				|| leader == null || !leader.isInParty()
+		) {
 			PartyImpl partyImpl = plugin.getPartyManager().initializeParty(UUID.randomUUID());
 			partyImpl.create(name, tag, leader != null ? (PartyPlayerImpl) leader : null);
 			return true;
@@ -82,28 +84,28 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByName(int numberOfPlayers, int offset) {
-		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.NAME, numberOfPlayers, offset));
+	public LinkedList<Party> getPartiesListByName(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.NAME, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByOnlineMembers(int numberOfPlayers, int offset) {
-		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS, numberOfPlayers, offset));
+	public LinkedList<Party> getPartiesListByOnlineMembers(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByMembers(int numberOfPlayers, int offset) {
-		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, numberOfPlayers, offset));
+	public LinkedList<Party> getPartiesListByMembers(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByKills(int numberOfPlayers, int offset) {
-		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.KILLS, numberOfPlayers, offset));
+	public LinkedList<Party> getPartiesListByKills(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.KILLS, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByExperience(int numberOfPlayers, int offset) {
-		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, numberOfPlayers, offset));
+	public LinkedList<Party> getPartiesListByExperience(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, numberOfParties, offset));
 	}
 	
 	@Override

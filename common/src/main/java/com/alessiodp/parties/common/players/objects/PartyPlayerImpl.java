@@ -94,7 +94,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			runnable.run();
 			
 			if (saveToDatabase)
-				updatePlayer().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());;
+				updatePlayer().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
 			
 			lock.unlock();
 		}
@@ -303,6 +303,11 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			// Other commands
 			if (ConfigParties.GENERAL_CHAT_TOGGLECOMMAND && player.hasPermission(PartiesPermission.USER_CHAT))
 				ret.add(CommonCommands.CHAT);
+			if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
+					&& ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
+					&& player.hasPermission(PartiesPermission.USER_PROTECTION)
+					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_PROTECTION))
+				ret.add(CommonCommands.PROTECTION);
 			if (ConfigParties.ADDITIONAL_HOME_ENABLE) {
 				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
 						|| (player.hasPermission(PartiesPermission.USER_HOME) && rank.havePermission(PartiesPermission.PRIVATE_HOME)))

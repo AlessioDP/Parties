@@ -13,10 +13,6 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		super(plugin, false);
 	}
 	
-	private boolean isEnabled() {
-		return ((PartiesPlugin) plugin).isBungeeCordEnabled();
-	}
-	
 	public void sendUpdateParty(PartyImpl party) {
 		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
 				.setPartyId(party.getId())

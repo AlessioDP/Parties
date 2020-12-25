@@ -29,7 +29,7 @@ public interface PartiesAPI {
 	 * @param leader The leader of the party as {@link PartyPlayer}, null if the party should be fixed
 	 * @return Returns true if successfully created
 	 */
-	boolean createParty(@NonNull String party, PartyPlayer leader);
+	boolean createParty(@Nullable String party, @Nullable PartyPlayer leader);
 	
 	/**
 	 * Create a party
@@ -39,7 +39,7 @@ public interface PartiesAPI {
 	 * @param leader The leader of the party as {@link PartyPlayer}, null if the party should be fixed
 	 * @return Returns true if successfully created
 	 */
-	boolean createParty(@NonNull String party, @Nullable String tag, PartyPlayer leader);
+	boolean createParty(@Nullable String party, @Nullable String tag, @Nullable PartyPlayer leader);
 	
 	/**
 	 * Get the party by its name
@@ -228,47 +228,47 @@ public interface PartiesAPI {
 	/**
 	 * Get list of parties ordered by name
 	 *
-	 * @param numberOfPlayers Number of parties to get
+	 * @param numberOfParties Number of parties to get
 	 * @param offset Offset of parties list
 	 * @return Returns a list of {@link Party}
 	 */
-	LinkedList<Party> getPartiesListByName(int numberOfPlayers, int offset);
+	LinkedList<Party> getPartiesListByName(int numberOfParties, int offset);
 	
 	/**
 	 * Get list of parties ordered by number of online members
 	 *
-	 * @param numberOfPlayers Number of parties to get
+	 * @param numberOfParties Number of parties to get
 	 * @param offset Offset of parties list
 	 * @return Returns a list of {@link Party}
 	 */
-	LinkedList<Party> getPartiesListByOnlineMembers(int numberOfPlayers, int offset);
+	LinkedList<Party> getPartiesListByOnlineMembers(int numberOfParties, int offset);
 	
 	/**
 	 * Get list of parties ordered by number of members
 	 *
-	 * @param numberOfPlayers Number of parties to get
+	 * @param numberOfParties Number of parties to get
 	 * @param offset Offset of parties list
 	 * @return Returns a list of {@link Party}
 	 */
-	LinkedList<Party> getPartiesListByMembers(int numberOfPlayers, int offset);
+	LinkedList<Party> getPartiesListByMembers(int numberOfParties, int offset);
 	
 	/**
 	 * Get list of parties ordered by number of kills
 	 *
-	 * @param numberOfPlayers Number of parties to get
+	 * @param numberOfParties Number of parties to get
 	 * @param offset Offset of parties list
 	 * @return Returns a list of {@link Party}
 	 */
-	LinkedList<Party> getPartiesListByKills(int numberOfPlayers, int offset);
+	LinkedList<Party> getPartiesListByKills(int numberOfParties, int offset);
 	
 	/**
 	 * Get list of parties ordered by number of experience
 	 *
-	 * @param numberOfPlayers Number of parties to get
+	 * @param numberOfParties Number of parties to get
 	 * @param offset Offset of parties list
 	 * @return Returns a list of {@link Party}
 	 */
-	LinkedList<Party> getPartiesListByExperience(int numberOfPlayers, int offset);
+	LinkedList<Party> getPartiesListByExperience(int numberOfParties, int offset);
 	
 	/**
 	 * Check if the given players are in the same party

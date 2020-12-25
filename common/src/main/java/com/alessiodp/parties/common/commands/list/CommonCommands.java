@@ -35,6 +35,7 @@ public enum CommonCommands implements ADPCommand {
 	MOTD,
 	MUTE,
 	PASSWORD,
+	PROTECTION,
 	SETHOME,
 	TELEPORT;
 	

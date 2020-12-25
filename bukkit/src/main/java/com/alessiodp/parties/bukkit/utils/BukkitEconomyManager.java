@@ -28,7 +28,7 @@ public class BukkitEconomyManager extends EconomyManager {
 			User bukkitPlayer = plugin.getPlayer(partyPlayerEntity.getPlayerUUID());
 			
 			//Player pl = player.getPlayer();
-			if (commandPrice > 0 && !bukkitPlayer.hasPermission(PartiesPermission.ADMIN_VAULTBYPASS)) {
+			if (commandPrice > 0 && !bukkitPlayer.hasPermission(PartiesPermission.ADMIN_VAULT_BYPASS)) {
 				// Pay starts here
 				if (BukkitConfigMain.ADDONS_VAULT_CONFIRM_ENABLE) {
 					// Confirm command

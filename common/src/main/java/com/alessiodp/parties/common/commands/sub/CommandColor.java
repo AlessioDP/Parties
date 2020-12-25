@@ -127,14 +127,9 @@ public class CommandColor extends PartiesSubCommand {
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
-		if (sender.hasPermission(permission)) {
-			if (args.length == 2) {
-				for (PartyColorImpl color : ConfigParties.ADDITIONAL_COLOR_LIST) {
-					ret.add(color.getCommand());
-				}
-				if (!args[1].isEmpty()) {
-					ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
-				}
+		if (sender.hasPermission(permission) && args.length == 2) {
+			for (PartyColorImpl color : ConfigParties.ADDITIONAL_COLOR_LIST) {
+				ret.add(color.getCommand());
 			}
 		}
 		return ret;

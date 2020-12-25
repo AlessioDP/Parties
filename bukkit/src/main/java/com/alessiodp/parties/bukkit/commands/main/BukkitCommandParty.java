@@ -4,7 +4,6 @@ import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandClaim;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandConfirm;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandDebug;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandHome;
-import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandProtection;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandSetHome;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandTeleport;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
@@ -38,10 +37,6 @@ public class BukkitCommandParty extends CommandParty {
 				super.register(new BukkitCommandHome(plugin, this));
 				super.register(new BukkitCommandSetHome(plugin, this));
 			}
-			
-			// Protection
-			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command"))
-				super.register(new BukkitCommandProtection(plugin, this));
 			
 			// Teleport
 			if (BukkitConfigParties.ADDITIONAL_TELEPORT_ENABLE)

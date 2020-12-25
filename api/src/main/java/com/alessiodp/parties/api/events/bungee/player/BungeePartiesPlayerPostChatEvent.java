@@ -7,7 +7,6 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class BungeePartiesPlayerPostChatEvent extends BungeePartiesEvent implements IPlayerPostChatEvent {
-	private boolean cancelled;
 	private final PartyPlayer player;
 	private final Party party;
 	private final String message;

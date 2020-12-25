@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class BukkitPartiesPartyPreRenameEvent extends BukkitPartiesEvent implements IPartyPreRenameEvent {
 	private boolean cancelled;
 	private final Party party;
-	private String oldName;
+	private final String oldName;
 	private String newName;
 	private final PartyPlayer player;
 	private final boolean isAdmin;

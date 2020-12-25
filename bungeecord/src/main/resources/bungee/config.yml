@@ -202,7 +202,6 @@ commands:
     chat: 'chat'
     claim: 'claim'
     color: 'color'
-    confirm: 'confirm'
     create: 'create'
     debug: 'debug'
     delete: 'delete'

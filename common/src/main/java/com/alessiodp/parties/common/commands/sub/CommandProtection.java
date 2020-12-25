@@ -1,44 +1,43 @@
-package com.alessiodp.parties.bukkit.commands.sub;
+package com.alessiodp.parties.common.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
-import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
 import java.util.List;
 
-public class BukkitCommandProtection extends PartiesSubCommand {
+public class CommandProtection extends PartiesSubCommand {
 	
-	public BukkitCommandProtection(ADPPlugin plugin, ADPMainCommand mainCommand) {
+	public CommandProtection(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
 				plugin,
 				mainCommand,
-				BukkitCommands.PROTECTION,
+				CommonCommands.PROTECTION,
 				PartiesPermission.USER_PROTECTION,
-				BukkitConfigMain.COMMANDS_CMD_PROTECTION,
+				ConfigMain.COMMANDS_CMD_PROTECTION,
 				false
 		);
 		
 		syntax = String.format("%s [%s/%s]",
 				baseSyntax(),
-				BukkitConfigMain.COMMANDS_SUB_ON,
-				BukkitConfigMain.COMMANDS_SUB_OFF
+				ConfigMain.COMMANDS_SUB_ON,
+				ConfigMain.COMMANDS_SUB_OFF
 		);
 		
-		description = BukkitMessages.HELP_ADDITIONAL_DESCRIPTIONS_PROTECTION;
-		help = BukkitMessages.HELP_ADDITIONAL_COMMANDS_PROTECTION;
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_PROTECTION;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_PROTECTION;
 	}
 	
 	@Override
@@ -87,7 +86,7 @@ public class BukkitCommandProtection extends PartiesSubCommand {
 		party.setProtection(protection);
 		party.updateParty();
 		
-		sendMessage(sender, partyPlayer, protection ? BukkitMessages.ADDCMD_PROTECTION_ON : BukkitMessages.ADDCMD_PROTECTION_OFF);
+		sendMessage(sender, partyPlayer, protection ? Messages.ADDCMD_PROTECTION_ON : Messages.ADDCMD_PROTECTION_OFF);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PROTECTION,
 				partyPlayer.getName(), party.getName(), protection), true);

@@ -1,0 +1,28 @@
+database-version: 1
+players:
+  0bd828fb-0337-3389-af9d-204fe4f4f02e:
+    party: test
+    rank: 20
+  1bd828fb-0337-3389-af9d-204fe4f4f02e:
+    party: test
+    rank: 5
+  2bd828fb-0337-3389-af9d-204fe4f4f02e:
+    party: test2
+    rank: 20
+parties:
+  test:
+    leader: 0bd828fb-0337-3389-af9d-204fe4f4f02e
+    members:
+    - 0bd828fb-0337-3389-af9d-204fe4f4f02e
+    - 1bd828fb-0337-3389-af9d-204fe4f4f02e
+    desc: test description
+    kills: 100
+    protection: false
+    experience: 10.0
+    follow: false
+  test2:
+    leader: 2bd828fb-0337-3389-af9d-204fe4f4f02e
+    members:
+    - 2bd828fb-0337-3389-af9d-204fe4f4f02e
+    kills: 50
+    protection: false

@@ -41,7 +41,6 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 		super(plugin, false);
 	}
 	
-	
 	@Override
 	public void handlePacket(byte[] bytes) {
 		PartiesPacket packet = PartiesPacket.read(plugin, bytes);

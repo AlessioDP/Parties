@@ -55,6 +55,7 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 	public byte[] makeConfigsPacket() {
 		ByteArrayDataOutput output = ByteStreams.newDataOutput();
 		
+		// Experience
 		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE);
 		output.writeUTF(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
 		output.writeDouble(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START);
@@ -69,12 +70,19 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 				val = (double) db;
 			output.writeDouble(val);
 		}
+		
+		// Friendly fire
+		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE);
+		output.writeUTF(ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE);
+		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT);
+		
 		return output.toByteArray();
 	}
 	
 	public void parseConfigsPacket(byte[] raw) {
 		ByteArrayDataInput input = ByteStreams.newDataInput(raw);
 		
+		// Experience
 		ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE = input.readBoolean();
 		ConfigMain.ADDITIONAL_EXP_LEVELS_MODE = input.readUTF();
 		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START = input.readDouble();
@@ -85,6 +93,11 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		for (int c = 0; c < fixedSize; c++) {
 			ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.add(input.readDouble());
 		}
+		
+		// Friendly fire
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = input.readBoolean();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = input.readUTF();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = input.readBoolean();
 		
 		((PartiesPlugin) plugin).getExpManager().reloadAll(); // Reload ExpManager
 	}

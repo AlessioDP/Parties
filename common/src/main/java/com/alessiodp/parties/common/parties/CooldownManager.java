@@ -47,10 +47,10 @@ public class CooldownManager {
 					}
 				} else {
 					// Individual
-					if (target != null && target.equals(ic.getTarget())) {
-						if (ic.isWaiting()) {
-							return ic;
-						}
+					if (target != null
+							&& target.equals(ic.getTarget())
+							&& ic.isWaiting()) {
+						return ic;
 					}
 				}
 			}

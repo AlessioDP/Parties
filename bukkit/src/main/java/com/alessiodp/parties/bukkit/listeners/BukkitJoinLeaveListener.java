@@ -43,11 +43,6 @@ public class BukkitJoinLeaveListener extends JoinLeaveListener implements Listen
 	
 	@Override
 	protected void onLeaveComplete(PartyPlayerImpl partyPlayer) {
-		// Remove home count if active on the player
-		if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {
-			if (((BukkitPartyPlayerImpl) partyPlayer).getHomeTeleporting() != null) {
-				((BukkitPartyPlayerImpl) partyPlayer).getHomeTeleporting().cancel();
-			}
-		}
+		// Nothing to do
 	}
 }

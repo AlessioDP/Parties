@@ -12,13 +12,6 @@ public class BukkitConfigParties extends ConfigParties {
 	@Getter private final int latestVersion = PartiesConstants.VERSION_BUKKIT_CONFIG_PARTIES;
 	
 	// Additional settings
-	@ConfigOption(path = "additional.friendly-fire.enable")
-	public static boolean		ADDITIONAL_FRIENDLYFIRE_ENABLE;
-	@ConfigOption(path = "additional.friendly-fire.type")
-	public static String		ADDITIONAL_FRIENDLYFIRE_TYPE;
-	@ConfigOption(path = "additional.friendly-fire.warn-players-on-fight")
-	public static boolean		ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT;
-	
 	@ConfigOption(path = "additional.home.cancel.hit")
 	public static boolean		ADDITIONAL_HOME_CANCEL_HIT;
 	@ConfigOption(path = "additional.home.cancel.moving")

@@ -87,13 +87,6 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM))
 				ret.add(BukkitCommands.CLAIM);
 			
-			// Admin commands
-			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
-					&& BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
-					&& player.hasPermission(PartiesPermission.USER_PROTECTION)
-					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_PROTECTION))
-				ret.add(BukkitCommands.PROTECTION);
-			
 		}
 		return ret;
 	}

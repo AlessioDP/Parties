@@ -451,6 +451,15 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "additional-commands.password.invalid-chars")
 	public static String ADDCMD_PASSWORD_INVALID;
 	
+	@ConfigOption(path = "additional-commands.protection.toggle-on")
+	public static String ADDCMD_PROTECTION_ON;
+	@ConfigOption(path = "additional-commands.protection.toggle-off")
+	public static String ADDCMD_PROTECTION_OFF;
+	@ConfigOption(path = "additional-commands.protection.protected")
+	public static String ADDCMD_PROTECTION_PROTECTED;
+	@ConfigOption(path = "additional-commands.protection.warn-on-attack")
+	public static String ADDCMD_PROTECTION_WARNHIT;
+	
 	@ConfigOption(path = "additional-commands.sethome.changed")
 	public static String ADDCMD_SETHOME_CHANGED;
 	@ConfigOption(path = "additional-commands.sethome.removed")
@@ -605,6 +614,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_COMMANDS_MUTE;
 	@ConfigOption(path = "help.additional.commands.password")
 	public static String HELP_ADDITIONAL_COMMANDS_PASSWORD;
+	@ConfigOption(path = "help.additional.commands.protection")
+	public static String HELP_ADDITIONAL_COMMANDS_PROTECTION;
 	@ConfigOption(path = "help.additional.commands.sethome")
 	public static String HELP_ADDITIONAL_COMMANDS_SETHOME;
 	@ConfigOption(path = "help.additional.commands.teleport")
@@ -634,6 +645,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_MUTE;
 	@ConfigOption(path = "help.additional.descriptions.password")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_PASSWORD;
+	@ConfigOption(path = "help.additional.descriptions.protection")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_PROTECTION;
 	@ConfigOption(path = "help.additional.descriptions.sethome")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_SETHOME;
 	@ConfigOption(path = "help.additional.descriptions.tag")

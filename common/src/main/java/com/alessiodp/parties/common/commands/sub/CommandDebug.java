@@ -256,20 +256,21 @@ public class CommandDebug extends PartiesSubCommand {
 	}
 	
 	protected String parseDebugExp(String line) {
-		if (line.contains("%levels_options%")) {
+		String newLine = line;
+		if (newLine.contains("%levels_options%")) {
 			if (((PartiesPlugin) plugin).getExpManager().getMode() == ExpManager.ExpMode.PROGRESSIVE) {
-				line = line.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_PROGRESSIVE
+				newLine = newLine.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_PROGRESSIVE
 						.replace("%start%", Integer.toString((int) ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START))
 						.replace("%formula%", ((PartiesPlugin) plugin).getMessageUtils().formatText(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP)
 						));
 			} else {
-				line = line.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_FIXED
+				newLine = newLine.replace("%levels_options%", Messages.ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_FIXED
 						.replace("%repeat%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT))
 						.replace("%levels%", Integer.toString(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.size())
 						));
 			}
 		}
-		return line
+		return newLine
 				.replace("%exp%", ((PartiesPlugin) plugin).getMessageUtils().formatOnOff(ConfigMain.ADDITIONAL_EXP_ENABLE))
 				.replace("%levels%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE))
 				.replace("%levels_mode%", ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);

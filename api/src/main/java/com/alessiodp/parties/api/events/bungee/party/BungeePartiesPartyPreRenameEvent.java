@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class BungeePartiesPartyPreRenameEvent extends BungeePartiesEvent implements IPartyPreRenameEvent {
 	private boolean cancelled;
 	private final Party party;
-	private String oldName;
+	private final String oldName;
 	private String newName;
 	private final PartyPlayer player;
 	private final boolean isAdmin;

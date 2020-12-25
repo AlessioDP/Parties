@@ -63,9 +63,6 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Override
 	protected void loadCore() {
 		getConfigurationManager().reload();
-		// wip - remove on production
-		ConfigMain.PARTIES_LOGGING_DEBUG = true;
-		// wip - remove on production
 		reloadLoggerManager();
 		getDatabaseManager().reload();
 	}

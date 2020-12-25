@@ -138,6 +138,13 @@ public abstract class ConfigParties extends ConfigurationFile {
 	@ConfigOption(path = "additional.fixed.default-party.party")
 	public static String		ADDITIONAL_FIXED_DEFAULT_PARTY;
 	
+	@ConfigOption(path = "additional.friendly-fire.enable")
+	public static boolean		ADDITIONAL_FRIENDLYFIRE_ENABLE;
+	@ConfigOption(path = "additional.friendly-fire.type")
+	public static String		ADDITIONAL_FRIENDLYFIRE_TYPE;
+	@ConfigOption(path = "additional.friendly-fire.warn-players-on-fight")
+	public static boolean		ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT;
+	
 	@ConfigOption(path = "additional.home.enable")
 	public static boolean		ADDITIONAL_HOME_ENABLE;
 	@ConfigOption(path = "additional.home.delay")

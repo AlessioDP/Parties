@@ -54,8 +54,8 @@ public abstract class JoinLeaveListener {
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN, player.getName(),
 						party.getId() != null ? (party.getName() + "|" + party.getId().toString()) : "none"), true);
 			} else if (ConfigParties.ADDITIONAL_FIXED_DEFAULT_ENABLE
-					&& player.hasPermission(PartiesPermission.USER_JOINDEFAULT)
-					&& !player.hasPermission(PartiesPermission.ADMIN_JOINDEFAULT_BYPASS)) {
+					&& player.hasPermission(PartiesPermission.USER_JOIN_DEFAULT)
+					&& !player.hasPermission(PartiesPermission.ADMIN_JOIN_DEFAULT_BYPASS)) {
 				// Party not found - checking for default one
 				party = plugin.getPartyManager().loadParty(ConfigParties.ADDITIONAL_FIXED_DEFAULT_PARTY);
 				if (party != null) {
@@ -122,7 +122,7 @@ public abstract class JoinLeaveListener {
 							plugin.getPartyManager().getCachePartiesToDelete().put(party.getId(), ct);
 							removePlFromList = false;
 							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_DELETE_START, party.getName(), Integer.toString(ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY)), true);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_DELETE_START, party.getName(), ConfigMain.STORAGE_SETTINGS_NONE_DELAYDELETEPARTY), true);
 						} else
 							plugin.getPartyManager().deleteTimedParty(party.getId(), false);
 					}
@@ -135,10 +135,14 @@ public abstract class JoinLeaveListener {
 			if (removePlFromList)
 				plugin.getPlayerManager().unloadPlayer(partyPlayer.getPlayerUUID());
 			
+			// Remove home teleport
+			if (ConfigParties.ADDITIONAL_HOME_ENABLE && partyPlayer.getHomeTeleporting() != null) {
+				partyPlayer.getHomeTeleporting().cancel();
+			}
+			
 			onLeaveComplete(partyPlayer);
 		});
 	}
-	
 	
 	protected abstract void onJoinComplete(PartyPlayerImpl partyPlayer);
 	

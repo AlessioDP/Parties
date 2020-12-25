@@ -4,10 +4,7 @@ import com.alessiodp.core.common.commands.list.ADPCommand;
 
 public enum BukkitCommands implements ADPCommand {
 	CLAIM,
-	CONFIRM,
-	HOME,
-	PROTECTION,
-	SETHOME;
+	CONFIRM;
 	
 	@Override
 	public String getOriginalName() {

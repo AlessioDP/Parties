@@ -42,15 +42,6 @@ public class BukkitMessages extends Messages {
 	@ConfigOption(path = "additional-commands.exp.skillapi.gained-others")
 	public static String ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
 	
-	@ConfigOption(path = "additional-commands.protection.toggle-on")
-	public static String ADDCMD_PROTECTION_ON;
-	@ConfigOption(path = "additional-commands.protection.toggle-off")
-	public static String ADDCMD_PROTECTION_OFF;
-	@ConfigOption(path = "additional-commands.protection.protected")
-	public static String ADDCMD_PROTECTION_PROTECTED;
-	@ConfigOption(path = "additional-commands.protection.warn-on-attack")
-	public static String ADDCMD_PROTECTION_WARNHIT;
-	
 	@ConfigOption(path = "additional-commands.vault.no-money.ask")
 	public static String ADDCMD_VAULT_NOMONEY_ASK;
 	@ConfigOption(path = "additional-commands.vault.no-money.claim")
@@ -97,13 +88,9 @@ public class BukkitMessages extends Messages {
 	// Help messages
 	@ConfigOption(path = "help.additional.commands.claim")
 	public static String HELP_ADDITIONAL_COMMANDS_CLAIM;
-	@ConfigOption(path = "help.additional.commands.protection")
-	public static String HELP_ADDITIONAL_COMMANDS_PROTECTION;
 	
 	@ConfigOption(path = "help.additional.descriptions.claim")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_CLAIM;
-	@ConfigOption(path = "help.additional.descriptions.protection")
-	public static String HELP_ADDITIONAL_DESCRIPTIONS_PROTECTION;
 	
 	
 	public BukkitMessages(PartiesPlugin instance) {
