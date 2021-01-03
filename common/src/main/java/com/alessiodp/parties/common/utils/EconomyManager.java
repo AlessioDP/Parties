@@ -11,6 +11,6 @@ public abstract class EconomyManager {
 	public abstract boolean payCommand(PaidCommand vaultCommand, PartyPlayerImpl partyPlayerImpl, String commandLabel, String[] args);
 	
 	public enum PaidCommand {
-		ASK, CLAIM, COLOR, CREATE, DESC, FOLLOW, HOME, JOIN, MOTD, PASSWORD, PROTECTION, RENAME, SETHOME, TAG, TELEPORT
+		ASK, CLAIM, COLOR, CREATE, DESC, FOLLOW, HOME, JOIN, MOTD, NICKNAME, PASSWORD, PROTECTION, RENAME, SETHOME, TAG, TELEPORT
 	}
 }

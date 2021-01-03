@@ -113,7 +113,6 @@ public class CommandDesc extends PartiesSubCommand {
 		
 		// Command starts
 		party.setDescription(description);
-		party.updateParty();
 		
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_REMOVED);

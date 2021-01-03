@@ -179,7 +179,7 @@ public class BukkitExpManager extends ExpManager {
 					if (distance <= rangeSquared || player.getPlayerUUID().equals(killer.getPlayerUUID())) {
 						playersToShare.add(new Pair<>((PartyPlayerImpl) player, (int) distance));
 					}
-				} catch (IllegalArgumentException ignored) {} // Ignoring different world
+				} catch (Exception ignored) {} // Ignoring different world
 			}
 			
 			if (playersToShare.size() > BukkitConfigMain.ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN) {

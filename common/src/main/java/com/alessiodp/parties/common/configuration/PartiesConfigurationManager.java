@@ -76,6 +76,12 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		output.writeUTF(ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE);
 		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT);
 		
+		// Kills
+		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_ENABLE);
+		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL);
+		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE);
+		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS);
+		
 		return output.toByteArray();
 	}
 	
@@ -98,6 +104,12 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = input.readBoolean();
 		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = input.readUTF();
 		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = input.readBoolean();
+		
+		// Kills
+		ConfigParties.ADDITIONAL_KILLS_ENABLE = input.readBoolean();
+		ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL = input.readBoolean();
+		ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE = input.readBoolean();
+		ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS = input.readBoolean();
 		
 		((PartiesPlugin) plugin).getExpManager().reloadAll(); // Reload ExpManager
 	}

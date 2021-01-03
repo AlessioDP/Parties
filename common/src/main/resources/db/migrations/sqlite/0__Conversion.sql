@@ -29,6 +29,7 @@ CREATE TABLE `<prefix>players_new` (
 	'uuid'			VARCHAR NOT NULL PRIMARY KEY,
 	'party'			VARCHAR,
 	'rank'			INTEGER DEFAULT 0,
+	`nickname`		VARCHAR,
 	'chat'			INTEGER DEFAULT 0,
 	'spy'			INTEGER DEFAULT 0,
 	'mute'			INTEGER DEFAULT 0
@@ -36,8 +37,8 @@ CREATE TABLE `<prefix>players_new` (
 
 SELECT * FROM `<prefix>players`;
 
-INSERT OR REPLACE INTO `<prefix>players_new` (`uuid`, `party`, `rank`, `chat`, `spy`, `mute`)
-	VALUES (?, ?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO `<prefix>players_new` (`uuid`, `party`, `rank`, `nickname`, `chat`, `spy`, `mute`)
+	VALUES (?, ?, ?, ?, ?, ?, ?);
 
 DROP TABLE `<prefix>parties`;
 DROP TABLE `<prefix>players`;

@@ -68,22 +68,22 @@
 		<maven.javadoc-plugin.version>3.2.0</maven.javadoc-plugin.version>
 		<maven.shade.version>3.2.4</maven.shade.version>
 		
-		<dev.powermock>2.0.7</dev.powermock>
-		<dev.lombok>1.18.12</dev.lombok>
+		<dev.powermock>2.0.9</dev.powermock>
+		<dev.lombok>1.18.16</dev.lombok>
 		
 		<libs.adpcore>1.4.12</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
-		<libs.griefPrevention>16.13.0</libs.griefPrevention>
+		<libs.griefPrevention>16.16.0</libs.griefPrevention>
 		<libs.lastLoginApi>1.4.3</libs.lastLoginApi>
-		<libs.levelPoints>4a7349923f</libs.levelPoints>
+		<libs.levelPoints>da42a0e292</libs.levelPoints>
 		<libs.mmoCore>1.6</libs.mmoCore>
 		<libs.mythicMobs>4.10.0</libs.mythicMobs>
-		<libs.placeholderApi>2.10.6</libs.placeholderApi>
+		<libs.placeholderApi>2.10.9</libs.placeholderApi>
 		<libs.protocolLib>4.4.0</libs.protocolLib>
-		<libs.skript>2.5-beta2</libs.skript>
+		<libs.skript>2.5.3</libs.skript>
 		<libs.vaultApi>1.7</libs.vaultApi>
 	</properties>
 	

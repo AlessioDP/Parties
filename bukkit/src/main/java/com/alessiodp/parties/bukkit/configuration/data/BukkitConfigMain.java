@@ -134,6 +134,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static double		ADDONS_VAULT_PRICE_JOIN;
 	@ConfigOption(path = "addons.vault.price-commands.motd")
 	public static double		ADDONS_VAULT_PRICE_MOTD;
+	@ConfigOption(path = "addons.vault.price-commands.nickname")
+	public static double		ADDONS_VAULT_PRICE_NICKNAME;
 	@ConfigOption(path = "addons.vault.price-commands.password")
 	public static double		ADDONS_VAULT_PRICE_PASSWORD;
 	@ConfigOption(path = "addons.vault.price-commands.protection")

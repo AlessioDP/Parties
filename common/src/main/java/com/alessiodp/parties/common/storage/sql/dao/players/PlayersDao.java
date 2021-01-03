@@ -11,11 +11,11 @@ import java.util.UUID;
 
 public interface PlayersDao {
 	@SqlUpdate(
-			"INSERT INTO `<prefix>players` (`uuid`, `party`, `rank`, `chat`, `spy`, `mute`) " +
-			"VALUES (?, ?, ?, ?, ?, ?) " +
-			"ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `chat`=VALUES(`chat`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`)"
+			"INSERT INTO `<prefix>players` (`uuid`, `party`, `rank`, `nickname`, `chat`, `spy`, `mute`) " +
+			"VALUES (?, ?, ?, ?, ?, ?, ?) " +
+			"ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `nickname`=VALUES(`nickname`), `chat`=VALUES(`chat`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`)"
 	)
-	void update(String uuid, String party, int rank, boolean chat, boolean spy, boolean mute);
+	void update(String uuid, String party, int rank, String nickname, boolean chat, boolean spy, boolean mute);
 	
 	@SqlUpdate("DELETE FROM `<prefix>players` WHERE `uuid` = ?")
 	void remove(String uuid);
@@ -30,4 +30,7 @@ public interface PlayersDao {
 	
 	@SqlQuery("SELECT count(*) FROM `<prefix>players`")
 	int countAll();
+	
+	@SqlQuery("SELECT count(*) FROM `<prefix>players` WHERE `party` IS NOT NULL AND `party` != ''")
+	int countAllInParty();
 }

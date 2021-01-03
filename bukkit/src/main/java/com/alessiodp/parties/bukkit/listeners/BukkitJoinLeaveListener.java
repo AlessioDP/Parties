@@ -4,8 +4,6 @@ import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.bukkit.configuration.BukkitPartiesConfigurationManager;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
-import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.listeners.JoinLeaveListener;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;

@@ -21,15 +21,6 @@ public class BukkitConfigParties extends ConfigParties {
 	@ConfigOption(path = "additional.home.cancel.reset-cooldown")
 	public static boolean		ADDITIONAL_HOME_CANCEL_RESET_COOLDOWN;
 	
-	@ConfigOption(path = "additional.kills.enable")
-	public static boolean		ADDITIONAL_KILLS_ENABLE;
-	@ConfigOption(path = "additional.kills.which-save.neutral-mobs")
-	public static boolean		ADDITIONAL_KILLS_MOB_NEUTRAL;
-	@ConfigOption(path = "additional.kills.which-save.hostile-mobs")
-	public static boolean		ADDITIONAL_KILLS_MOB_HOSTILE;
-	@ConfigOption(path = "additional.kills.which-save.players")
-	public static boolean		ADDITIONAL_KILLS_MOB_PLAYERS;
-	
 	
 	public BukkitConfigParties(PartiesPlugin plugin) {
 		super(plugin);

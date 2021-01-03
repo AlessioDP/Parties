@@ -104,6 +104,9 @@ public class BukkitEconomyManager extends EconomyManager {
 			case MOTD:
 				ret = BukkitConfigMain.ADDONS_VAULT_PRICE_MOTD;
 				break;
+			case NICKNAME:
+				ret = BukkitConfigMain.ADDONS_VAULT_PRICE_NICKNAME;
+				break;
 			case PASSWORD:
 				ret = BukkitConfigMain.ADDONS_VAULT_PRICE_PASSWORD;
 				break;
@@ -158,6 +161,9 @@ public class BukkitEconomyManager extends EconomyManager {
 				break;
 			case MOTD:
 				ret = BukkitMessages.ADDCMD_VAULT_NOMONEY_MOTD;
+				break;
+			case NICKNAME:
+				ret = BukkitMessages.ADDCMD_VAULT_NOMONEY_NICKNAME;
 				break;
 			case PASSWORD:
 				ret = BukkitMessages.ADDCMD_VAULT_NOMONEY_PASSWORD;

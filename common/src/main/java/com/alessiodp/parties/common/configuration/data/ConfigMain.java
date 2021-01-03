@@ -38,10 +38,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	// Storage settings
 	@ConfigOption(path = "storage.database-storage-type")
 	public static String		STORAGE_TYPE_DATABASE;
-	@ConfigOption(path = "storage.storage-settings.none.disband-on-leader-left")
-	public static boolean		STORAGE_SETTINGS_NONE_DISBANDONLEADERLEFT;
-	@ConfigOption(path = "storage.storage-settings.none.delay-delete-party")
-	public static int			STORAGE_SETTINGS_NONE_DELAYDELETEPARTY;
 	@ConfigOption(path = "storage.storage-settings.yaml.database-file")
 	public static String		STORAGE_SETTINGS_YAML_DBFILE;
 	@ConfigOption(path = "storage.storage-settings.general-sql-settings.prefix")
@@ -156,6 +152,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_MOTD;
 	@ConfigOption(path = "commands.main-commands.mute")
 	public static String		COMMANDS_CMD_MUTE;
+	@ConfigOption(path = "commands.main-commands.nickname")
+	public static String		COMMANDS_CMD_NICKNAME;
 	@ConfigOption(path = "commands.main-commands.password")
 	public static String		COMMANDS_CMD_PASSWORD;
 	@ConfigOption(path = "commands.main-commands.protection")

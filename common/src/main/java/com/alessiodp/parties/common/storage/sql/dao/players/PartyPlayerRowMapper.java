@@ -18,6 +18,7 @@ public class PartyPlayerRowMapper implements RowMapper<PartyPlayerImpl> {
 		if (rs.getString("party") != null && !rs.getString("party").isEmpty()) {
 			ret.setPartyId(UUID.fromString(rs.getString("party")));
 			ret.setRank(rs.getInt("rank"));
+			ret.setNickname(rs.getString("nickname"));
 		}
 		ret.setSpy(rs.getBoolean("spy"));
 		ret.setMuted(rs.getBoolean("mute"));

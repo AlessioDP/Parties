@@ -9,7 +9,6 @@ import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
-import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -122,6 +121,6 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	
 	@Override
 	public boolean isChatMuted() {
-		return EssentialsHandler.isPlayerMuted(getPlayerUUID());
+		return BanManagerHandler.isMuted(getPlayerUUID()) || EssentialsHandler.isPlayerMuted(getPlayerUUID());
 	}
 }

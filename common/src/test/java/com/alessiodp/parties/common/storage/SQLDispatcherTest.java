@@ -158,11 +158,11 @@ public class SQLDispatcherTest {
 	@Test
 	public void testPlayer() {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
-		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class));
+		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class), true);
 		dispatcher.stop();
 		
 		dispatcher = getSQLDispatcherSQLite();
-		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
+		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class), true);
 		dispatcher.stop();
 		
 		// Manual test only
@@ -171,9 +171,10 @@ public class SQLDispatcherTest {
 		//dispatcher.stop();
 	}
 	
-	private void player(PartiesSQLDispatcher dispatcher, PlayersDao dao) {
+	private void player(PartiesSQLDispatcher dispatcher, PlayersDao dao, boolean remove) {
 		PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
-		PartyPlayerImpl mockPlayer = mock(player.getClass());
+		System.out.println(player);
+		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);
 		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PlayerManager mockPlayerManager = mock(PlayerManager.class);
@@ -193,11 +194,13 @@ public class SQLDispatcherTest {
 		assertEquals(player, newPlayer);
 		
 		// Player remove
-		player.setAccessible(true);
-		player.setMuted(false);
-		player.setAccessible(false);
-		dispatcher.updatePlayer(player);
-		assertEquals(dao.countAll(), 0);
+		if (remove) {
+			player.setAccessible(true);
+			player.setMuted(false);
+			player.setAccessible(false);
+			dispatcher.updatePlayer(player);
+			assertEquals(dao.countAll(), 0);
+		}
 	}
 	
 	@Test
@@ -215,9 +218,9 @@ public class SQLDispatcherTest {
 		PartyImpl party = initializeParty(mockPlugin, UUID.randomUUID());
 		PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
 		
-		PartyImpl mockParty = mock(party.getClass());
+		PartyImpl mockParty = mock(PartyImpl.class);
 		doReturn(CompletableFuture.completedFuture(null)).when(mockParty).updateParty();
-		PartyPlayerImpl mockPlayer = mock(player.getClass());
+		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);
 		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PartyManager mockPartyManager = mock(PartyManager.class);
@@ -353,6 +356,68 @@ public class SQLDispatcherTest {
 		assertEquals("test7", list.get(0).getName());
 		assertEquals("test5", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
+		
+	}
+	
+	@Test
+	public void testCountPlayersInParty() {
+		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
+		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class), false);
+		countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class));
+		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherSQLite();
+		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class), false);
+		countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
+		dispatcher.stop();
+	}
+	
+	private void countPlayersInParty(PartiesSQLDispatcher dispatcher, PlayersDao dao) {
+		PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
+		player.setAccessible(true);
+		player.setPartyId(UUID.randomUUID());
+		player.setAccessible(false);
+		
+		assertEquals(dao.countAll(), 1);
+		assertEquals(dispatcher.getListPlayersInPartyNumber(), 0);
+		
+		dispatcher.updatePlayer(player);
+		
+		assertEquals(dao.countAll(), 2);
+		assertEquals(dispatcher.getListPlayersInPartyNumber(), 1);
+	}
+	
+	@Test
+	public void testCountParties() {
+		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
+		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class), false);
+		countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class));
+		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherSQLite();
+		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
+		countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class));
+		dispatcher.stop();
+	}
+	
+	private void countParties(PartiesSQLDispatcher dispatcher, PartiesDao dao) {
+		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.emptyList();
+		
+		PartyImpl party = initializeParty(mockPlugin, UUID.randomUUID());
+		
+		party.setAccessible(true);
+		party.setup("test3", null);
+		party.setDescription("description");
+		party.setAccessible(false);
+		
+		assertEquals(dao.countAll(), 1);
+		assertEquals(dispatcher.getListPartiesNumber(), 1);
+		
+		dispatcher.updateParty(party);
+		
+		assertEquals(dao.countAll(), 2);
+		assertEquals(dispatcher.getListPartiesNumber(), 2);
+		
 		
 	}
 	

@@ -123,15 +123,15 @@ public abstract class CommandHome extends PartiesSubCommand {
 					return;
 				}
 			} else if (commandData.getArgs().length == 2) {
-				if (party == null && !sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY, party);
-					return;
-				}
-				
-				if (party != null) {
-					Optional<PartyHome> opt = party.getHomes().stream().filter((ph) -> ph.getName() != null && ph.getName().equalsIgnoreCase(commandData.getArgs()[1])).findAny();
-					if (opt.isPresent())
-						partyHome = (PartyHomeImpl) opt.get();
+				if (!sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
+					if (party == null) {
+						sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+						return;
+					} else {
+						Optional<PartyHome> opt = party.getHomes().stream().filter((ph) -> ph.getName() != null && ph.getName().equalsIgnoreCase(commandData.getArgs()[1])).findAny();
+						if (opt.isPresent())
+							partyHome = (PartyHomeImpl) opt.get();
+					}
 				}
 				
 				if (partyHome == null
@@ -149,6 +149,11 @@ public abstract class CommandHome extends PartiesSubCommand {
 						if (opt.isPresent())
 							partyHome = (PartyHomeImpl) opt.get();
 					}
+				}
+				
+				if (party == null) {
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+					return;
 				}
 				
 				if (partyHome == null) {
@@ -169,7 +174,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 						return;
 					}
 				} else {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND, party);
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", commandData.getArgs()[1]));
 					return;
 				}
 			} else {
@@ -199,7 +204,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 						return;
 					}
 				} else {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND, party);
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", commandData.getArgs()[1]));
 					return;
 				}
 			} else {

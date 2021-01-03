@@ -2,7 +2,11 @@ package com.alessiodp.parties.common.parties;
 
 import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.parties.api.enums.LeaveCause;
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -21,17 +25,13 @@ public abstract class PartyManager {
 	
 	@Getter private final HashMap<UUID, PartyImpl> cacheParties;
 	private final HashMap<String, UUID> cachePartiesNames;
-	@Getter private final HashMap<UUID, CancellableTask> cachePartiesToDelete;
-	
-	// Checks for database saving
-	@Getter protected boolean bukkit_killSystem;
-	@Getter protected boolean bukkit_expSystem;
+	@Getter private final HashMap<UUID, CancellableTask> cacheMembersTimedOut;
 	
 	protected PartyManager(PartiesPlugin instance) {
 		plugin = instance;
 		cacheParties = new HashMap<>();
 		cachePartiesNames = new HashMap<>();
-		cachePartiesToDelete = new HashMap<>();
+		cacheMembersTimedOut = new HashMap<>();
 	}
 	
 	public PartyImpl initializeParty() {
@@ -43,7 +43,7 @@ public abstract class PartyManager {
 	public void reload() {
 		cacheParties.clear();
 		cachePartiesNames.clear();
-		cachePartiesToDelete.clear();
+		cacheMembersTimedOut.clear();
 		
 		if (ConfigParties.ADDITIONAL_FIXED_ENABLE) {
 			plugin.getDatabaseManager().getListFixed().forEach(this::addPartyToCache);
@@ -171,36 +171,91 @@ public abstract class PartyManager {
 		return getParty(player.getPartyId());
 	}
 	
-	public void deleteTimedParty(UUID id, boolean leaderLeft) {
-		PartyImpl party = getParty(id);
-		if (party != null) {
-			// Calling Pre API event
-			IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.TIMEOUT, null, null);
-			plugin.getEventManager().callEvent(partiesPreDeleteEvent);
+	
+	public void removePlayerTimedOut(PartyPlayerImpl player, PartyImpl party) {
+		boolean mustDelete = false;
+		
+		// Calling Pre API event
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
+		plugin.getEventManager().callEvent(partiesPreLeaveEvent);
+		
+		if (!partiesPreLeaveEvent.isCancelled()) {
 			
-			if (!partiesPreDeleteEvent.isCancelled()) {
-				plugin.getPlayerManager().getCachePlayersToDelete().removeIf(u -> party.getMembers().contains(u));
-				String cause = "empty";
-				if (leaderLeft) {
-					party.broadcastMessage(Messages.MAINCMD_LEAVE_DISBANDED, plugin.getPlayerManager().getPlayer(party.getLeader()));
-					cause = "leader left";
+			if (party.getOnlineMembers(true).size() == 0) {
+				mustDelete = true;
+			} else if (party.getLeader() != null && party.getLeader().equals(player.getPlayerUUID())) {
+				mustDelete = true;
+				// Leader
+				if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER) {
+					// Change leader
+					PartyPlayerImpl newLeader = party.findNewLeader();
+					
+					if (newLeader != null) {
+						mustDelete = false;
+						party.changeLeader(newLeader);
+						
+						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_CHANGE_LEADER, party.getId().toString(), newLeader.getPlayerUUID().toString()), true);
+					}
 				}
-				
-				party.delete(DeleteCause.TIMEOUT, null, null);
-				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE_CAUSE, party.getName(), cause), true);
-				
-				cachePartiesToDelete.remove(id);
-			} else {
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getName()), true);
 			}
+			
+			if (party.getOnlineMembers(true).size() == 0) {
+				mustDelete = true;
+			}
+			
+			if (party.isFixed()) {
+				mustDelete = false;
+			}
+			
+			if (mustDelete) {
+				// Calling Pre API event
+				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.TIMEOUT, player, null);
+				plugin.getEventManager().callEvent(partiesPreDeleteEvent);
+				
+				if (!partiesPreDeleteEvent.isCancelled()) {
+					// Delete party
+					party.delete(DeleteCause.TIMEOUT, player, player);
+					
+					// Calling Post API Delete event
+					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party, DeleteCause.TIMEOUT, player, null);
+					plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostDeleteEvent));
+					
+					// Calling Post API Leave event
+					IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
+					plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostLeaveEvent));
+					
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_DELETE, party.getId().toString(), player.getPlayerUUID().toString()), true);
+				} else {
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getId().toString()), true);
+				}
+			} else {
+				// Kick member
+				party.removeMember(player, LeaveCause.TIMEOUT, player);
+				
+				// Calling Post API Leave event
+				IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
+				plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostLeaveEvent));
+				
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_KICK, player.getPlayerUUID().toString(), party.getId().toString()), true);
+			}
+		} else {
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, player.getPlayerUUID().toString(), party.getId().toString()), true);
 		}
 	}
 	
-	public void resetPendingPartyTask() {
-		for (Entry<UUID, CancellableTask> e : cachePartiesToDelete.entrySet()) {
-			e.getValue().cancel();
-			deleteTimedParty(e.getKey(), true);
+	public void disbandLoadedParties() {
+		if (ConfigParties.GENERAL_MEMBERS_DISBAND_PARTIES_ON_DISABLE) {
+			// Disband all loaded parties
+			cacheParties.values().forEach(party -> {
+				party.delete(DeleteCause.TIMEOUT, null, null);
+			});
+			
+			// Remove all timed out caches
+			for (Entry<UUID, CancellableTask> e : cacheMembersTimedOut.entrySet()) {
+				e.getValue().cancel();
+			}
 		}
 	}
 }

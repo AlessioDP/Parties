@@ -238,11 +238,11 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public boolean addMember(@NonNull PartyPlayer partyPlayer) {
+	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer) {
 		return addMember(partyPlayer, JoinCause.OTHERS, null);
 	}
 	
-	public boolean addMember(@NonNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
+	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
 		boolean ret = false;
 		CompletableFuture<Void> future = null;
 		lock.lock();
@@ -265,11 +265,11 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public boolean removeMember(@NonNull PartyPlayer partyPlayer) {
+	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer) {
 		return removeMember(partyPlayer, LeaveCause.OTHERS, null);
 	}
 	
-	public boolean removeMember(@NonNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
+	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
 		boolean ret = false;
 		CompletableFuture<Void> future = null;
 		lock.lock();
@@ -302,7 +302,7 @@ public abstract class PartyImpl implements Party {
 		});
 	}
 	
-	@NonNull
+	@org.checkerframework.checker.nullness.qual.NonNull
 	@Override
 	public Set<PartyPlayer> getOnlineMembers(boolean bypassVanish) {
 		HashSet<PartyPlayer> ret = new HashSet<>();
@@ -321,7 +321,7 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public void changeLeader(@NonNull PartyPlayer leaderPartyPlayer) {
+	public void changeLeader(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer leaderPartyPlayer) {
 		updateValue(() -> {
 			UUID oldLeader = this.leader;
 			this.leader = leaderPartyPlayer.getPlayerUUID();
@@ -496,7 +496,17 @@ public abstract class PartyImpl implements Party {
 	
 	@Override
 	public boolean isFriendlyFireProtected() {
-		return getProtection();
+		boolean ret = false;
+		if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE) {
+			if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")) {
+				// Command
+				ret = getProtection();
+			} else {
+				// Global
+				ret = true;
+			}
+		}
+		return ret;
 	}
 	
 	
@@ -703,7 +713,7 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public PartyInvite invitePlayer(@NonNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
+	public PartyInvite invitePlayer(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
 		PartyInvite ret = null;
 		
 		IPlayerPreInviteEvent playerPreInviteEvent = plugin.getEventManager().preparePlayerPreInviteEvent(invitedPlayer, inviter, this);
@@ -754,9 +764,40 @@ public abstract class PartyImpl implements Party {
 			
 			plugin.getScheduler().scheduleAsyncLater(
 					ret::timeout,
-					ConfigParties.GENERAL_ASK_TIMEOUT,
+					ConfigParties.ADDITIONAL_ASK_TIMEOUT,
 					TimeUnit.SECONDS
 			);
+		}
+		return ret;
+	}
+	
+	public void memberJoinTimeout(PartyPlayerImpl joinedPlayer) {
+		if (plugin.getPartyManager().getCacheMembersTimedOut().containsKey(joinedPlayer.getPlayerUUID())) {
+			plugin.getPartyManager().getCacheMembersTimedOut().get(joinedPlayer.getPlayerUUID()).cancel();
+			plugin.getPartyManager().getCacheMembersTimedOut().remove(joinedPlayer.getPlayerUUID());
+			
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_STOP, joinedPlayer.getPlayerUUID().toString()), true);
+		}
+	}
+	
+	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer) {
+		return memberLeftTimeout(kickedPlayer, ConfigParties.GENERAL_MEMBERS_ON_LEAVE_DELAY);
+	}
+	
+	/**
+	 * Handle member left from the server
+	 * @param kickedPlayer The player that left the server
+	 * @param delay Delay of time out
+	 * @return If the timeout started
+	 */
+	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer, int delay) {
+		boolean ret = false;
+		if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER || ConfigParties.GENERAL_MEMBERS_ON_LEAVE_KICK_FROM_PARTY) {
+			if (delay > 0) {
+				plugin.getPartyManager().getCacheMembersTimedOut().put(kickedPlayer.getPlayerUUID(), plugin.getScheduler().scheduleAsyncLater(() -> plugin.getPartyManager().removePlayerTimedOut(kickedPlayer, this), delay, TimeUnit.SECONDS));
+				ret = true;
+			} else
+				plugin.getPartyManager().removePlayerTimedOut(kickedPlayer, this);
 		}
 		return ret;
 	}

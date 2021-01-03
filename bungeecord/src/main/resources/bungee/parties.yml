@@ -3,8 +3,8 @@
 # \ ======================================================= /
 #
 # For any problem be sure to:
-# - Read the entire documentation on: https://alessiodp.com/docs/parties/
-# - Join our Discord for further help: https://discord.alessiodp.com/
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
 #
 
 # / =============================== \
@@ -14,8 +14,19 @@ general:
   members:
     # Limit the number of party members (-1 is unlimited)
     limit: -1
-    # When leader leaves try to set a new one
-    change-leader-on-leave: false
+    # If the leader of a party left, change the leader instead of disbanding
+    on-party-leave-change-leader: false
+    # If you kick players on leave, you should enable this option
+    #   to prevent ghost parties
+    disband-parties-on-disable: false
+    # Settings for on player leave event
+    # => change-leader:      Change the leader if he leaves
+    # => kick-from-party:    Kick the player from the party
+    # => delay:              Delay time in seconds before actions
+    on-player-leave:
+      change-leader: false
+      kick-from-party: false
+      delay: 600
 
   broadcast:
     titles:
@@ -51,19 +62,6 @@ general:
     prevent-invite-player-no-permission-join: true
     # Enable a cooldown to prevent invite spam
     # You can choose to set a cooldown for every invite (global) or individual players, in seconds
-    cooldown:
-      enable: false
-      global: 60
-      individual: 0
-
-  ask:
-    # Enable the command "/party ask <party>"
-    # You can accept/deny the request with "/party accept/deny"
-    enable: false
-    # Ask timeout in seconds
-    timeout: 30
-    # Enable a cooldown to prevent ask request spam
-    # You can choose to set a cooldown for every ask request (global) or individual players, in seconds
     cooldown:
       enable: false
       global: 60
@@ -144,6 +142,20 @@ ranks:
 # |       ADDITIONAL SETTINGS       |
 # \ =============================== /
 additional:
+  # [Ask system]
+  # Enable the command "/party ask <party>"
+  # You can accept/deny the request with "/party accept/deny"
+  ask:
+    enable: false
+    # Ask timeout in seconds
+    timeout: 30
+    # Enable a cooldown to prevent ask request spam
+    # You can choose to set a cooldown for every ask request (global) or individual players, in seconds
+    cooldown:
+      enable: false
+      global: 60
+      individual: 0
+
   # [Color system]
   # Enable the "/party color" command to define party color
   # If you wanna use dynamic color you can disable the color command.
@@ -283,6 +295,19 @@ additional:
     censor-regex: ''
     # Decide which code defines the 'new line' ('\n' must be escaped => '\\n')
     new-line-code: '\\n'
+
+  # [Nickname system]
+  # Set a nickname to your party members
+  # This will enable "/party nickname"
+  # Use the placeholder %player_nickname% to show it
+  nickname:
+    enable: false
+    minimum-length: 3
+    maximum-length: 16
+    allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
+    censor-regex: ''
+    # Only the tag %nickname%
+    format: '~%nickname%'
 
   # [Tag system]
   # Allow tag definition in parties, a simple alternative name for the party

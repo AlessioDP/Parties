@@ -46,12 +46,12 @@ public interface PostgreSQLPartiesDao extends PartiesDao {
 	
 	@Override
 	@SqlQuery("SELECT count(*) FROM <prefix>parties WHERE name NOT IN (<blacklist>)")
-	int getListNumber(@BindList("blacklist") List<String> blacklist);
+	int getListNumber(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist);
 	
 	@Override
 	@SqlQuery("SELECT * FROM <prefix>parties WHERE name NOT IN (<blacklist>) ORDER BY \"name\" ASC LIMIT :limit OFFSET :offset")
 	@RegisterRowMapper(PartyRowMapper.class)
-	LinkedHashSet<PartyImpl> getListByName(@BindList("blacklist") List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
+	LinkedHashSet<PartyImpl> getListByName(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
 	
 	@Override
 	@SqlQuery("SELECT <prefix>parties.*, COUNT(id) AS total" +
@@ -61,26 +61,26 @@ public interface PostgreSQLPartiesDao extends PartiesDao {
 			" GROUP BY id" +
 			" ORDER BY total DESC LIMIT :limit OFFSET :offset")
 	@RegisterRowMapper(PartyRowMapper.class)
-	LinkedHashSet<PartyImpl> getListByMembers(@BindList("blacklist") List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
+	LinkedHashSet<PartyImpl> getListByMembers(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
 	
 	@Override
 	@SqlQuery("SELECT * FROM <prefix>parties WHERE name NOT IN (<blacklist>) ORDER BY \"kills\" DESC LIMIT :limit OFFSET :offset")
 	@RegisterRowMapper(PartyRowMapper.class)
-	LinkedHashSet<PartyImpl> getListByKills(@BindList("blacklist") List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
+	LinkedHashSet<PartyImpl> getListByKills(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
 	
 	@Override
 	@SqlQuery("SELECT * FROM <prefix>parties WHERE name NOT IN (<blacklist>) ORDER BY \"experience\" DESC LIMIT :limit OFFSET :offset")
 	@RegisterRowMapper(PartyRowMapper.class)
-	LinkedHashSet<PartyImpl> getListByExperience(@BindList("blacklist") List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
+	LinkedHashSet<PartyImpl> getListByExperience(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
 	
 	@Override
 	@SqlQuery("SELECT \"party\", count(*) as \"total\" FROM <prefix>players WHERE party NOT IN (<blacklist>) GROUP BY \"party\" DESC LIMIT :limit OFFSET :offset")
 	@RegisterRowMapper(PartyRowMapper.class)
-	Set<String> getListByPlayers(@BindList("blacklist") List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
+	Set<String> getListByPlayers(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist, @Bind("limit") int limit, @Bind("offset") int offset);
 	
 	@Override
 	@SqlQuery("SELECT count(DISTINCT \"party\") FROM <prefix>players WHERE party NOT IN (<blacklist>)")
-	int getListNumberByPlayers(@BindList("blacklist") List<String> blacklist);
+	int getListNumberByPlayers(@BindList(value = "blacklist", onEmpty = BindList.EmptyHandling.VOID) List<String> blacklist);
 	
 	@Override
 	@SqlQuery("SELECT * FROM <prefix>parties WHERE leader IS NULL")

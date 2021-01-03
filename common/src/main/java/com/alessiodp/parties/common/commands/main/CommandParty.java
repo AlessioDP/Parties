@@ -26,6 +26,7 @@ import com.alessiodp.parties.common.commands.sub.CommandLeave;
 import com.alessiodp.parties.common.commands.sub.CommandList;
 import com.alessiodp.parties.common.commands.sub.CommandMotd;
 import com.alessiodp.parties.common.commands.sub.CommandMute;
+import com.alessiodp.parties.common.commands.sub.CommandNickname;
 import com.alessiodp.parties.common.commands.sub.CommandPassword;
 import com.alessiodp.parties.common.commands.sub.CommandProtection;
 import com.alessiodp.parties.common.commands.sub.CommandRank;
@@ -73,7 +74,7 @@ public abstract class CommandParty extends ADPMainCommand {
 		
 		if (!plugin.isBungeeCordEnabled()) {
 			// Ask
-			if (ConfigParties.GENERAL_ASK_ENABLE)
+			if (ConfigParties.ADDITIONAL_ASK_ENABLE)
 				register(new CommandAsk(plugin, this));
 			
 			// Chat
@@ -107,6 +108,10 @@ public abstract class CommandParty extends ADPMainCommand {
 			// Mute
 			if (ConfigMain.ADDITIONAL_MUTE_ENABLE)
 				register(new CommandMute(plugin, this));
+			
+			// Nickname
+			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE)
+				register(new CommandNickname(plugin, this));
 			
 			// Password
 			if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)

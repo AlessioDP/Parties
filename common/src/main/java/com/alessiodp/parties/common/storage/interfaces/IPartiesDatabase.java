@@ -12,7 +12,7 @@ public interface IPartiesDatabase {
 	void updatePlayer(PartyPlayerImpl player);
 	PartyPlayerImpl getPlayer(UUID uuid);
 	
-	int getListPlayersNumber();
+	int getListPlayersInPartyNumber();
 	
 	void updateParty(PartyImpl party);
 	void removeParty(PartyImpl party);

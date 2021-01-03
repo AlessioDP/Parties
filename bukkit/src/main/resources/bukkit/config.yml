@@ -3,8 +3,8 @@
 # \ ===================================================== /
 #
 # For any problem be sure to:
-# - Read the entire documentation on: https://alessiodp.com/docs/parties/
-# - Join our Discord for further help: https://discord.alessiodp.com/
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
 #
 
 # / =============================== \
@@ -57,7 +57,6 @@ parties:
 storage:
   # [Database type]
   # What type of storage the plugin should use? Database storage types:
-  # => none       | [----]   The data will be saved into memory (a reload will reset everything)
   # => yaml       | [File]   Save the data into a YAML file
   # => mariadb    | [Remote] Save the data into a MariaDB database
   # => mysql      | [Remote] Save the data into a MySQL database
@@ -67,12 +66,6 @@ storage:
   database-storage-type: h2
 
   storage-settings:
-    # [None settings]
-    none:
-      disband-on-leader-left: true
-      # Delete empty parties after tot seconds
-      delay-delete-party: 600
-
     # [YAML settings]
     yaml:
       database-file: database.yml
@@ -322,6 +315,7 @@ addons:
       home: 0.0
       join: 0.0
       motd: 0.0
+      nickname: 0.0
       password: 0.0
       protection: 0.0
       rename: 0.0
@@ -367,6 +361,7 @@ commands:
     list: 'list'
     motd: 'motd'
     mute: 'mute'
+    nickname: 'nickname'
     password: 'password'
     protection: 'protection'
     rank: 'rank'
@@ -405,6 +400,7 @@ commands:
   - tag
   - desc
   - motd
+  - nickname
   - protection
   - follow
   - home

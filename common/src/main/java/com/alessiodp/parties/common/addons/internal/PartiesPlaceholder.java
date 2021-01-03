@@ -5,6 +5,7 @@ import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
@@ -55,6 +56,7 @@ public enum PartiesPlaceholder {
 	ONLINE_NUMBER,
 	OUT_PARTY,
 	PARTY,
+	PLAYER_NICKNAME,
 	PLAYER_RANK_CHAT,
 	PLAYER_RANK_NAME,
 	SERVER_ID,
@@ -83,11 +85,7 @@ public enum PartiesPlaceholder {
 	private static final Pattern PATTERN_LIST_RANK = Pattern.compile("list_rank_([a-z]+)", Pattern.CASE_INSENSITIVE);
 	
 	PartiesPlaceholder() {
-		this(false);
-	}
-	
-	PartiesPlaceholder(boolean custom) {
-		this(custom, null);
+		this(false, null);
 	}
 	
 	PartiesPlaceholder(boolean custom, String syntax){
@@ -200,7 +198,7 @@ public enum PartiesPlaceholder {
 			case LIST_PARTIES_BY_EXPERIENCE_NUMBER_PLACEHOLDER:
 				return getListPartiesBy(player, identifier, emptyPlaceholder, PATTERN_LIST_PARTIES_BY_EXPERIENCE, PartiesDatabaseManager.ListOrder.EXPERIENCE);
 			case LIST_PLAYERS_TOTAL:
-				return Integer.toString(plugin.getDatabaseManager().getListPlayersNumber());
+				return Integer.toString(plugin.getDatabaseManager().getListPlayersInPartyNumber());
 			case LIST_RANK:
 			case LIST_RANK_ONLINE:
 				matcher = PATTERN_LIST_RANK.matcher(identifier);
@@ -286,6 +284,13 @@ public enum PartiesPlaceholder {
 				return party != null ? Integer.toString(party.getOnlineMembers(false).size()) : emptyPlaceholder;
 			case OUT_PARTY:
 				return party == null ? Messages.PARTIES_OUT_PARTY : emptyPlaceholder;
+			case PLAYER_NICKNAME:
+				if (player != null) {
+					if (player.getNickname() != null)
+						return ConfigParties.ADDITIONAL_NICKNAME_FORMAT.replace("%nickname%", player.getNickname());
+					return player.getName();
+				}
+				return emptyPlaceholder;
 			case PLAYER_RANK_CHAT:
 				return player != null && player.isInParty() ? plugin.getRankManager().searchRankByLevel(player.getRank()).getChat() : emptyPlaceholder;
 			case PLAYER_RANK_NAME:

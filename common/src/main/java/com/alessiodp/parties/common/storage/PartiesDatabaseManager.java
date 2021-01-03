@@ -6,14 +6,12 @@ import com.alessiodp.core.common.storage.DatabaseManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
 import com.alessiodp.core.common.utils.CommonUtils;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesFileDispatcher;
-import com.alessiodp.parties.common.storage.dispatchers.PartiesNoneDispatcher;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import com.alessiodp.parties.common.storage.interfaces.IPartiesDatabase;
 
@@ -30,9 +28,6 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	public IDatabaseDispatcher initializeDispatcher(StorageType storageType) {
 		IDatabaseDispatcher ret = null;
 		switch (storageType) {
-			case NONE:
-				ret = new PartiesNoneDispatcher((PartiesPlugin) plugin);
-				break;
 			case YAML:
 				ret = new PartiesFileDispatcher(plugin, storageType);
 				break;
@@ -67,11 +62,11 @@ public class PartiesDatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
-	public int getListPlayersNumber() {
+	public int getListPlayersInPartyNumber() {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPLAYERS_NUMBER, true);
 			
-			return ((IPartiesDatabase) database).getListPlayersNumber();
+			return ((IPartiesDatabase) database).getListPlayersInPartyNumber();
 		}).join();
 	}
 	

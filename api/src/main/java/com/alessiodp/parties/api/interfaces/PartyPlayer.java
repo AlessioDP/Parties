@@ -78,6 +78,20 @@ public interface PartyPlayer {
 	void setRank(int rank);
 	
 	/**
+	 * Get the nickname
+	 *
+	 * @return Returns the nickname
+	 */
+	String getNickname();
+	
+	/**
+	 * Set the nickname
+	 *
+	 * @param nickname The nickname to set
+	 */
+	void setNickname(String nickname);
+	
+	/**
 	 * Get a list of pending invite requests
 	 *
 	 * @return A set of {@link PartyInvite}

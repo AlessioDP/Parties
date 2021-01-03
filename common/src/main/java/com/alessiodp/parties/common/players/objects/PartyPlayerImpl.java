@@ -41,6 +41,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@Getter private String name;
 	@Getter private int rank;
 	@Getter private UUID partyId;
+	@Getter private String nickname;
 	@Getter private boolean chatParty;
 	@Getter private boolean spy;
 	@Getter private boolean muted;
@@ -112,6 +113,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		updateValue(() -> {
 			this.partyId = party;
 			this.rank = rank;
+			this.nickname = null;
 			pendingAskRequests.clear();
 			pendingInvites.clear();
 		});
@@ -125,6 +127,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_CLEANUP, getName()), true);
 			rank = ConfigParties.RANK_SET_DEFAULT;
 			partyId = null;
+			nickname = null;
 			chatParty = false;
 			if (homeTeleporting != null) {
 				homeTeleporting.cancel();
@@ -162,6 +165,13 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	public void setRank(int rank) {
 		updateValue(() -> {
 			this.rank = rank;
+		});
+	}
+	
+	@Override
+	public void setNickname(String nickname) {
+		updateValue(() -> {
+			this.nickname = nickname;
 		});
 	}
 	
@@ -317,7 +327,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			}
 			
 			// Admin commands
-			if (ConfigParties.GENERAL_ASK_ENABLE
+			if (ConfigParties.ADDITIONAL_ASK_ENABLE
 					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)) {
 				if (player.hasPermission(PartiesPermission.USER_ACCEPT)
 						&& (rank.havePermission(PartiesPermission.PRIVATE_ASK_ACCEPT) || rank.havePermission(PartiesPermission.PRIVATE_TELEPORT_ACCEPT)))
@@ -330,6 +340,9 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.DESC);
 			if (ConfigParties.ADDITIONAL_MOTD_ENABLE && player.hasPermission(PartiesPermission.USER_MOTD) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_MOTD))
 				ret.add(CommonCommands.MOTD);
+			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE && player.hasPermission(PartiesPermission.USER_NICKNAME)
+					&& (rank.havePermission(PartiesPermission.PRIVATE_EDIT_NICKNAME_OWN) || rank.havePermission(PartiesPermission.PRIVATE_EDIT_NICKNAME_OTHERS)))
+				ret.add(CommonCommands.NICKNAME);
 			if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE
 					&& ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD
 					&& player.hasPermission(PartiesPermission.USER_FOLLOW)
@@ -344,7 +357,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS)
 					|| (player.hasPermission(PartiesPermission.USER_RENAME) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RENAME)))
 				ret.add(CommonCommands.RENAME);
-			if ((player.hasPermission(PartiesPermission.USER_TAG) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_TAG))
+			if (ConfigParties.ADDITIONAL_TAG_ENABLE && (player.hasPermission(PartiesPermission.USER_TAG) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_TAG))
 					|| player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
 				ret.add(CommonCommands.TAG);
 			if (player.hasPermission(PartiesPermission.USER_KICK) && rank.havePermission(PartiesPermission.PRIVATE_KICK))
@@ -359,22 +372,25 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.ACCEPT);
 			if (player.hasPermission(PartiesPermission.USER_DENY))
 				ret.add(CommonCommands.DENY);
-			if (ConfigParties.GENERAL_ASK_ENABLE && player.hasPermission(PartiesPermission.USER_ASK))
+			if (ConfigParties.ADDITIONAL_ASK_ENABLE && player.hasPermission(PartiesPermission.USER_ASK))
 				ret.add(CommonCommands.ASK);
 			if (ConfigParties.ADDITIONAL_JOIN_ENABLE && player.hasPermission(PartiesPermission.USER_JOIN))
 				ret.add(CommonCommands.JOIN);
+			if (ConfigParties.ADDITIONAL_TAG_ENABLE && player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
+				ret.add(CommonCommands.TAG);
+			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE && player.hasPermission(PartiesPermission.ADMIN_NICKNAME_OTHERS))
+				ret.add(CommonCommands.NICKNAME);
 			if (player.hasPermission(PartiesPermission.USER_IGNORE))
 				ret.add(CommonCommands.IGNORE);
 			if (player.hasPermission(PartiesPermission.USER_INFO_OTHERS))
 				ret.add(CommonCommands.INFO);
 			if (player.hasPermission(PartiesPermission.USER_MUTE))
 				ret.add(CommonCommands.MUTE);
-			if (player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
-				ret.add(CommonCommands.TAG);
 			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS))
 				ret.add(CommonCommands.KICK);
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS))
 				ret.add(CommonCommands.RENAME);
+			
 		}
 		if (ConfigParties.ADDITIONAL_LIST_ENABLE && player.hasPermission(PartiesPermission.USER_LIST))
 			ret.add(CommonCommands.LIST);

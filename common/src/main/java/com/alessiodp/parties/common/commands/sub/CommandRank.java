@@ -179,7 +179,7 @@ public class CommandRank extends PartiesSubCommand {
 			}
 			
 			if (party == null) {
-				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_PLAYERNOTINPARTY_OTHER, promotedPp);
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PLAYER_NOT_IN_PARTY, promotedPp);
 				return;
 			}
 		} else if (sender.isPlayer() && !commandData.havePermission(PartiesPermission.ADMIN_RANK_OTHERS)) {

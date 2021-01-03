@@ -27,6 +27,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_COMMON_PARTYFULL;
 	@ConfigOption(path = "parties.common-messages.player-not-found")
 	public static String PARTIES_COMMON_PLAYER_NOT_FOUND;
+	@ConfigOption(path = "parties.common-messages.player-not-in-party")
+	public static String PARTIES_COMMON_PLAYER_NOT_IN_PARTY;
 	
 	@ConfigOption(path = "parties.options.enabled")
 	public static String PARTIES_OPTIONS_ENABLED;
@@ -65,6 +67,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String PARTIES_SYNTAX_MOTD;
 	@ConfigOption(path = "parties.syntax.name")
 	public static String PARTIES_SYNTAX_NAME;
+	@ConfigOption(path = "parties.syntax.nickname")
+	public static String PARTIES_SYNTAX_NICKNAME;
 	@ConfigOption(path = "parties.syntax.online-members")
 	public static String PARTIES_SYNTAX_ONLINE_MEMBERS;
 	@ConfigOption(path = "parties.syntax.order")
@@ -231,8 +235,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_KICK_PLAYERHIGHERRANK;
 	@ConfigOption(path = "main-commands.kick.player-not-in-party")
 	public static String MAINCMD_KICK_PLAYERNOTINPARTY;
-	@ConfigOption(path = "main-commands.kick.player-not-in-other-party")
-	public static String MAINCMD_KICK_PLAYERNOTINPARTY_OTHER;
 	@ConfigOption(path = "main-commands.kick.players-conflict.content")
 	public static List<String> MAINCMD_KICK_CONFLICT_CONTENT;
 	@ConfigOption(path = "main-commands.kick.players-conflict.player")
@@ -272,8 +274,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_RANK_CHANGINGYOURSELF;
 	@ConfigOption(path = "main-commands.rank.player-not-in-party")
 	public static String MAINCMD_RANK_PLAYERNOTINPARTY;
-	@ConfigOption(path = "main-commands.rank.player-not-in-other-party")
-	public static String MAINCMD_RANK_PLAYERNOTINPARTY_OTHER;
 	@ConfigOption(path = "main-commands.rank.players-conflict.content")
 	public static List<String> MAINCMD_RANK_CONFLICT_CONTENT;
 	@ConfigOption(path = "main-commands.rank.players-conflict.player")
@@ -441,6 +441,35 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_MUTE_ON;
 	@ConfigOption(path = "additional-commands.mute.toggle-off")
 	public static String ADDCMD_MUTE_OFF;
+	
+	@ConfigOption(path = "additional-commands.nickname.own.changed")
+	public static String ADDCMD_NICKNAME_OWN_CHANGED;
+	@ConfigOption(path = "additional-commands.nickname.own.removed")
+	public static String ADDCMD_NICKNAME_OWN_REMOVED;
+	@ConfigOption(path = "additional-commands.nickname.own.no-permission")
+	public static String ADDCMD_NICKNAME_OWN_NO_PERMISSION;
+	@ConfigOption(path = "additional-commands.nickname.others.changed")
+	public static String ADDCMD_NICKNAME_OTHERS_CHANGED;
+	@ConfigOption(path = "additional-commands.nickname.others.target-changed")
+	public static String ADDCMD_NICKNAME_OTHERS_TARGET_CHANGED;
+	@ConfigOption(path = "additional-commands.nickname.others.removed")
+	public static String ADDCMD_NICKNAME_OTHERS_REMOVED;
+	@ConfigOption(path = "additional-commands.nickname.others.target-removed")
+	public static String ADDCMD_NICKNAME_OTHERS_TARGET_REMOVED;
+	@ConfigOption(path = "additional-commands.nickname.others.no-permission")
+	public static String ADDCMD_NICKNAME_OTHERS_NO_PERMISSION;
+	@ConfigOption(path = "additional-commands.nickname.show.own")
+	public static String ADDCMD_NICKNAME_SHOW_OWN;
+	@ConfigOption(path = "additional-commands.nickname.show.own-none")
+	public static String ADDCMD_NICKNAME_SHOW_OWN_NONE;
+	@ConfigOption(path = "additional-commands.nickname.show.other")
+	public static String ADDCMD_NICKNAME_SHOW_OTHER;
+	@ConfigOption(path = "additional-commands.nickname.show.other-none")
+	public static String ADDCMD_NICKNAME_SHOW_OTHER_NONE;
+	@ConfigOption(path = "additional-commands.nickname.invalid-chars")
+	public static String ADDCMD_NICKNAME_INVALID;
+	@ConfigOption(path = "additional-commands.nickname.censored")
+	public static String ADDCMD_NICKNAME_CENSORED;
 	
 	@ConfigOption(path = "additional-commands.password.changed")
 	public static String ADDCMD_PASSWORD_CHANGED;
@@ -612,6 +641,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_COMMANDS_MOTD;
 	@ConfigOption(path = "help.additional.commands.mute")
 	public static String HELP_ADDITIONAL_COMMANDS_MUTE;
+	@ConfigOption(path = "help.additional.commands.nickname")
+	public static String HELP_ADDITIONAL_COMMANDS_NICKNAME;
 	@ConfigOption(path = "help.additional.commands.password")
 	public static String HELP_ADDITIONAL_COMMANDS_PASSWORD;
 	@ConfigOption(path = "help.additional.commands.protection")
@@ -643,6 +674,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_MOTD;
 	@ConfigOption(path = "help.additional.descriptions.mute")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_MUTE;
+	@ConfigOption(path = "help.additional.descriptions.nickname")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_NICKNAME;
 	@ConfigOption(path = "help.additional.descriptions.password")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_PASSWORD;
 	@ConfigOption(path = "help.additional.descriptions.protection")

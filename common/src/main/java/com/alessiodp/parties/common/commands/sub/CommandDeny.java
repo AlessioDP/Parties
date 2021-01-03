@@ -55,7 +55,7 @@ public class CommandDeny extends PartiesSubCommand {
 		PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(user.getUUID());
 		if (player != null
 				&& player.isInParty()
-				&& (ConfigParties.GENERAL_ASK_ENABLE
+				&& (ConfigParties.ADDITIONAL_ASK_ENABLE
 				|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE))) {
 			return syntaxAskTeleport;
 		}
@@ -80,7 +80,7 @@ public class CommandDeny extends PartiesSubCommand {
 		}
 		
 		if (partyPlayer.getPartyId() != null) {
-			if ((ConfigParties.GENERAL_ASK_ENABLE
+			if ((ConfigParties.ADDITIONAL_ASK_ENABLE
 					&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_ASK_DENY)
 			)
 					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE
@@ -105,7 +105,7 @@ public class CommandDeny extends PartiesSubCommand {
 		// Command handling
 		if (partyPlayer.isInParty()) {
 			boolean noPendingRequests = false;
-			if (ConfigParties.GENERAL_ASK_ENABLE) {
+			if (ConfigParties.ADDITIONAL_ASK_ENABLE) {
 				// Deny ask request
 				PartyImpl party = ((PartiesCommandData) commandData).getParty();
 				HashMap<String, PartyAskRequest> pendingAskRequests = new HashMap<>();
@@ -198,7 +198,7 @@ public class CommandDeny extends PartiesSubCommand {
 		} else {
 			// Deny invite request
 			HashMap<String, PartyInvite> pendingInvites = new HashMap<>();
-			partyPlayer.getPendingInvites().forEach(pv -> pendingInvites.put(CommonUtils.toLowerCase(pv.getParty().getName()), pv));
+			partyPlayer.getPendingInvites().stream().filter(pv -> pv.getParty().getName() != null).forEach(pv -> pendingInvites.put(CommonUtils.toLowerCase(pv.getParty().getName()), pv));
 			
 			if (commandData.getArgs().length > 1
 					&& !pendingInvites.containsKey(CommonUtils.toLowerCase(commandData.getArgs()[1]))) {

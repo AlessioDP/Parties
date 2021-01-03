@@ -31,6 +31,7 @@ CREATE TABLE `<prefix>players_new` (
 	`uuid`			CHAR(36) NOT NULL PRIMARY KEY,
 	`party`			CHAR(36),
 	`rank`			INTEGER DEFAULT 0,
+	`nickname`		VARCHAR(100),
 	`chat`			INTEGER DEFAULT 0,
 	`spy`			INTEGER DEFAULT 0,
 	`mute`			INTEGER DEFAULT 0
@@ -38,9 +39,9 @@ CREATE TABLE `<prefix>players_new` (
 
 SELECT * FROM `<prefix>players`;
 
-INSERT INTO `<prefix>players_new` (`uuid`, `party`, `rank`, `chat`, `spy`, `mute`)
-VALUES (?, ?, ?, ?, ?, ?)
-	ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `chat`=VALUES(`chat`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`);
+INSERT INTO `<prefix>players_new` (`uuid`, `party`, `rank`, `nickname`, `chat`, `spy`, `mute`)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+	ON DUPLICATE KEY UPDATE `party`=VALUES(`party`), `rank`=VALUES(`rank`), `nickname`=VALUES(`nickname`), `chat`=VALUES(`chat`), `spy`=VALUES(`spy`), `mute`=VALUES(`mute`);
 
 DROP TABLE `<prefix>parties`;
 DROP TABLE `<prefix>players`;

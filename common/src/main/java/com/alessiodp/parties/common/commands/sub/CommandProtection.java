@@ -84,7 +84,6 @@ public class CommandProtection extends PartiesSubCommand {
 		
 		// Command starts
 		party.setProtection(protection);
-		party.updateParty();
 		
 		sendMessage(sender, partyPlayer, protection ? Messages.ADDCMD_PROTECTION_ON : Messages.ADDCMD_PROTECTION_OFF);
 		

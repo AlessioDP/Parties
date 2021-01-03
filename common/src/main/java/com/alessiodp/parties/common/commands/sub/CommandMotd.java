@@ -106,7 +106,6 @@ public class CommandMotd extends PartiesSubCommand {
 		
 		// Command starts
 		party.setMotd(motd);
-		party.updateParty();
 		
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_REMOVED);

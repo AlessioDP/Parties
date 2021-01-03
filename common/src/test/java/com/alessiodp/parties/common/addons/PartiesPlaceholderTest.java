@@ -6,6 +6,7 @@ import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
@@ -338,7 +339,7 @@ public class PartiesPlaceholderTest {
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPlayersTotal() {
-		when(mockDatabaseManager.getListPlayersNumber()).thenReturn(4);
+		when(mockDatabaseManager.getListPlayersInPartyNumber()).thenReturn(4);
 		
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_players_total");
 		
@@ -432,6 +433,22 @@ public class PartiesPlaceholderTest {
 		party1.setTag("tag");
 		party1.setAccessible(false);
 		assertEquals(party1.getTag(), placeholder.formatPlaceholder(player1, party1, ""));
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
+	public void testPlaceholderPlayerNickname() {
+		ConfigParties.ADDITIONAL_NICKNAME_FORMAT = "~%nickname%";
+		
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("player_nickname");
+		
+		assertEquals(PartiesPlaceholder.PLAYER_NICKNAME, placeholder);
+		assertEquals(player1.getName(), placeholder.formatPlaceholder(player1, party1, ""));
+		
+		player1.setAccessible(true);
+		player1.setNickname("newNickname");
+		player1.setAccessible(false);
+		assertEquals("~" + player1.getNickname(), placeholder.formatPlaceholder(player1, party1, ""));
 	}
 	
 	private static class TestPartyPlayerImpl extends PartyPlayerImpl {

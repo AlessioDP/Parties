@@ -2,7 +2,6 @@ package com.alessiodp.parties.bukkit.messaging;
 
 import com.alessiodp.core.bukkit.messaging.BukkitMessageDispatcher;
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;

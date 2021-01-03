@@ -27,6 +27,7 @@ parties:
     party-not-found: "&cThe party %party% doesn't exist"
     party-full: "&cThe party is full!"
     player-not-found: "&cThe player %player% has not been found"
+    player-not-in-party: "&c%player% is not in a party"
 
   options:
     enabled: '&aEnabled'
@@ -49,6 +50,7 @@ parties:
     message: 'message'
     motd: 'motd'
     name: 'name'
+    nickname: 'nickname'
     online-members: 'online_members'
     order: 'order'
     page: 'page'
@@ -182,7 +184,6 @@ main-commands:
     broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
     player-higher-rank: "&cYou cannot kick your superior!"
     player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% is not in a party"
     players-conflict:
       # [Special tags]
       # => %username%                       = The name of the player
@@ -221,7 +222,6 @@ main-commands:
     fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
     changing-yourself: "&cYou cannot change yourself rank!"
     player-not-in-party: "&c%player% is not in your party"
-    player-not-in-other-party: "&c%player% is not in a party"
     players-conflict:
       # [Special tags]
       # => %username%                       = The name of the player
@@ -422,6 +422,28 @@ additional-commands:
     toggle-on: "&7You have disabled notifications!"
     toggle-off: "&7You have enabled notifications!"
 
+  nickname:
+    own:
+      changed: "&bYou changed your nickname into %player_nickname%"
+      removed: "&bYou removed your own nickname"
+      no-permission: "&cYou cannot change your own nickname"
+    others:
+      changed: "&bChanged nickname of %player% into %player_nickname%"
+      # Special tags:
+      # => %nickname%   = The target player nickname
+      # Tags are parsed for sender
+      target-changed: "&b%player% changed your nickname into %nickname%"
+      removed: "&bRemoved nickname of %player%"
+      target-removed: "&b%player% removed your nickname"
+      no-permission: "&cYou cannot change other player nicknames"
+    show:
+      own: "&bYour nickname is %player_nickname%"
+      own-none: "&bYou do not have any nickname"
+      other: "&bThe nickname of %player% is %player_nickname%"
+      other-none: "&b%player% does not have any nickname"
+    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
+    censored: "&cThe nickname contains censored words!"
+
   password:
     changed: "&aParty password changed"
     removed: "&aParty password removed"
@@ -476,6 +498,7 @@ additional-commands:
       home: "&cYou don't have enough money to use the home command [%price%$]"
       join: "&cYou don't have enough money to join a party [%price%$]"
       motd: "&cYou don't have enough money to set the MOTD [%price%$]"
+      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
       password: "&cYou don't have enough money to set the password [%price%$]"
       protection: "&cYou don't have enough money to enable protection [%price%$]"
       rename: "&cYou don't have enough money to rename the party [%price%$]"
@@ -570,6 +593,7 @@ help:
       list: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -587,6 +611,7 @@ help:
       list: 'List of online parties'
       motd: 'Set/remove party motd'
       mute: 'Toggle notifications'
+      nickname: 'Set/remove member nickname'
       password: 'Change party password'
       protection: 'Toggle friendly fire protection'
       sethome: 'Set/remove party home'

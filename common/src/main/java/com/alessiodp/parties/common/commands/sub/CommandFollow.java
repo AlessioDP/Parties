@@ -84,7 +84,6 @@ public class CommandFollow extends PartiesSubCommand {
 		
 		// Command starts
 		party.setFollowEnabled(follow);
-		party.updateParty();
 		
 		if (follow)
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_FOLLOW_ON);

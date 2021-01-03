@@ -20,8 +20,16 @@ public abstract class ConfigParties extends ConfigurationFile {
 	// General settings
 	@ConfigOption(path = "general.members.limit")
 	public static int		GENERAL_MEMBERS_LIMIT;
-	@ConfigOption(path = "general.members.change-leader-on-leave")
-	public static boolean	GENERAL_MEMBERS_CHANGE_LEADER_ON_LEAVE;
+	@ConfigOption(path = "general.members.on-party-leave-change-leader")
+	public static boolean	GENERAL_MEMBERS_ON_PARTY_LEAVE_CHANGE_LEADER;
+	@ConfigOption(path = "general.members.disband-parties-on-disable")
+	public static boolean	GENERAL_MEMBERS_DISBAND_PARTIES_ON_DISABLE;
+	@ConfigOption(path = "general.members.on-player-leave.change-leader")
+	public static boolean	GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER;
+	@ConfigOption(path = "general.members.on-player-leave.kick-from-party")
+	public static boolean	GENERAL_MEMBERS_ON_LEAVE_KICK_FROM_PARTY;
+	@ConfigOption(path = "general.members.on-player-leave.delay")
+	public static int		GENERAL_MEMBERS_ON_LEAVE_DELAY;
 	
 	@ConfigOption(path = "general.broadcast.titles.enable")
 	public static boolean		GENERAL_BROADCAST_TITLES_ENABLE;
@@ -60,17 +68,6 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static int			GENERAL_INVITE_COOLDOWN_GLOBAL;
 	@ConfigOption(path = "general.invite.cooldown.individual")
 	public static int			GENERAL_INVITE_COOLDOWN_INDIVIDUAL;
-	
-	@ConfigOption(path = "general.ask.enable")
-	public static boolean		GENERAL_ASK_ENABLE;
-	@ConfigOption(path = "general.ask.timeout")
-	public static int			GENERAL_ASK_TIMEOUT;
-	@ConfigOption(path = "general.ask.cooldown.enable")
-	public static boolean		GENERAL_ASK_COOLDOWN_ENABLE;
-	@ConfigOption(path = "general.ask.cooldown.global")
-	public static int			GENERAL_ASK_COOLDOWN_GLOBAL;
-	@ConfigOption(path = "general.ask.cooldown.individual")
-	public static int			GENERAL_ASK_COOLDOWN_INDIVIDUAL;
 	
 	@ConfigOption(path = "general.chat.allow-colors")
 	public static boolean		GENERAL_CHAT_ALLOWCOLORS;
@@ -112,6 +109,17 @@ public abstract class ConfigParties extends ConfigurationFile {
 	
 	
 	// Additional settings
+	@ConfigOption(path = "additional.ask.enable")
+	public static boolean		ADDITIONAL_ASK_ENABLE;
+	@ConfigOption(path = "additional.ask.timeout")
+	public static int			ADDITIONAL_ASK_TIMEOUT;
+	@ConfigOption(path = "additional.ask.cooldown.enable")
+	public static boolean		ADDITIONAL_ASK_COOLDOWN_ENABLE;
+	@ConfigOption(path = "additional.ask.cooldown.global")
+	public static int			ADDITIONAL_ASK_COOLDOWN_GLOBAL;
+	@ConfigOption(path = "additional.ask.cooldown.individual")
+	public static int			ADDITIONAL_ASK_COOLDOWN_INDIVIDUAL;
+	
 	@ConfigOption(path = "additional.color.enable")
 	public static boolean		ADDITIONAL_COLOR_ENABLE;
 	@ConfigOption(path = "additional.color.color-command")
@@ -171,6 +179,15 @@ public abstract class ConfigParties extends ConfigurationFile {
 	@ConfigOption(path = "additional.join.password.maximum-length")
 	public static int			ADDITIONAL_JOIN_PASSWORD_MAXLENGTH;
 	
+	@ConfigOption(path = "additional.kills.enable")
+	public static boolean		ADDITIONAL_KILLS_ENABLE;
+	@ConfigOption(path = "additional.kills.which-save.neutral-mobs")
+	public static boolean		ADDITIONAL_KILLS_MOB_NEUTRAL;
+	@ConfigOption(path = "additional.kills.which-save.hostile-mobs")
+	public static boolean		ADDITIONAL_KILLS_MOB_HOSTILE;
+	@ConfigOption(path = "additional.kills.which-save.players")
+	public static boolean		ADDITIONAL_KILLS_MOB_PLAYERS;
+	
 	@ConfigOption(path = "additional.list.enable")
 	public static boolean		ADDITIONAL_LIST_ENABLE;
 	@ConfigOption(path = "additional.list.order-by")
@@ -198,6 +215,19 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static String		ADDITIONAL_MOTD_CENSORREGEX;
 	@ConfigOption(path = "additional.motd.new-line-code")
 	public static String		ADDITIONAL_MOTD_NEWLINECODE;
+	
+	@ConfigOption(path = "additional.nickname.enable")
+	public static boolean		ADDITIONAL_NICKNAME_ENABLE;
+	@ConfigOption(path = "additional.nickname.minimum-length")
+	public static int			ADDITIONAL_NICKNAME_MINLENGTH;
+	@ConfigOption(path = "additional.nickname.maximum-length")
+	public static int			ADDITIONAL_NICKNAME_MAXLENGTH;
+	@ConfigOption(path = "additional.nickname.allowed-characters")
+	public static String		ADDITIONAL_NICKNAME_ALLOWEDCHARS;
+	@ConfigOption(path = "additional.nickname.censor-regex")
+	public static String		ADDITIONAL_NICKNAME_CENSORREGEX;
+	@ConfigOption(path = "additional.nickname.format")
+	public static String		ADDITIONAL_NICKNAME_FORMAT;
 	
 	@ConfigOption(path = "additional.tag.enable")
 	public static boolean		ADDITIONAL_TAG_ENABLE;

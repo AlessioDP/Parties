@@ -76,6 +76,10 @@ public class PartiesConstants {
 	public static final String DEBUG_CMD_MOTD_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of motd command";
 	public static final String DEBUG_CMD_MOTD_REGEXERROR_CENSORED = "Failed to parse censor regex of motd command";
 	public static final String DEBUG_CMD_MUTE = "%s set mute on %b";
+	public static final String DEBUG_CMD_NICKNAME = "%s changed nickname of %s";
+	public static final String DEBUG_CMD_NICKNAME_REM = "%s removed nickname of %s";
+	public static final String DEBUG_CMD_NICKNAME_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of nickname command";
+	public static final String DEBUG_CMD_NICKNAME_REGEXERROR_CENSORED = "Failed to parse censor regex of nickname command";
 	public static final String DEBUG_CMD_P = "%s sent a party message to %s: %s";
 	public static final String DEBUG_CMD_P_REGEXERROR = "Failed to parse censor regex of p command";
 	public static final String DEBUG_CMD_PASSWORD = "%s changed the password of %s";
@@ -174,11 +178,14 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_PARTY_CREATE = "Created party %s";
 	public static final String DEBUG_PARTY_DELETE = "Deleted party %s";
-	public static final String DEBUG_PARTY_DELETE_CAUSE = "Deleted party %s due %s";
 	public static final String DEBUG_PARTY_RENAME = "Renamed party %s into %s";
 	public static final String DEBUG_PARTY_RELOADED = "Reloaded party %s";
 	public static final String DEBUG_PARTY_GET_DATABASE = "Got party %s from database";
 	public static final String DEBUG_PARTY_GET_LIST = "Got party %s from list";
+	public static final String DEBUG_PARTY_TIMEOUT_CHANGE_LEADER = "Party %s leader is changed into %s due to timeout";
+	public static final String DEBUG_PARTY_TIMEOUT_DELETE = "Party %s timeout deleted due to player %s quit";
+	public static final String DEBUG_PARTY_TIMEOUT_KICK = "Player %s timeout kicked from the party %s";
+	public static final String DEBUG_PARTY_TIMEOUT_STOP = "Stopped player %s timeout";
 	
 	public static final String DEBUG_PLAYER_PARTY_JOIN = "Added player %s into party %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_PARTY_LEAVE = "Removed player %s from party %s (p-uuid: %s)";
@@ -195,8 +202,6 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_TASK_ASK_COOLDOWN_EXPIRED = "Ask cooldown expired for player %s";
 	public static final String DEBUG_TASK_CHAT_EXPIRED = "Chat cooldown expired for player %s";
-	public static final String DEBUG_TASK_DELETE_START = "Started party delete runnable of party %s for %d seconds";
-	public static final String DEBUG_TASK_DELETE_STOP = "Stopped party delete runnable of party %s";
 	public static final String DEBUG_TASK_HOME_DENIED_FIGHT = "Denied home teleport of player %s due to fight";
 	public static final String DEBUG_TASK_HOME_DENIED_MOVING = "Denied home teleport of player %s due to moving";
 	public static final String DEBUG_TASK_HOME_EXPIRED = "Home cooldown expired for player %s";

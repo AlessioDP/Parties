@@ -12,11 +12,11 @@ import java.util.UUID;
 public interface PostgreSQLPlayersDao extends PlayersDao {
 	@Override
 	@SqlUpdate(
-			"INSERT INTO <prefix>players (\"uuid\", \"party\", \"rank\", \"chat\", \"spy\", \"mute\") " +
-					"VALUES (?, ?, ?, ?, ?, ?) " +
-					"ON CONFLICT (\"uuid\") DO UPDATE SET party=EXCLUDED.party, rank=EXCLUDED.rank, chat=EXCLUDED.chat, spy=EXCLUDED.spy, mute=EXCLUDED.mute"
+			"INSERT INTO <prefix>players (\"uuid\", \"party\", \"rank\", \"nickname\", \"chat\", \"spy\", \"mute\") " +
+					"VALUES (?, ?, ?, ?, ?, ?, ?) " +
+					"ON CONFLICT (\"uuid\") DO UPDATE SET party=EXCLUDED.party, rank=EXCLUDED.rank, nickname=EXCLUDED.nickname, chat=EXCLUDED.chat, spy=EXCLUDED.spy, mute=EXCLUDED.mute"
 	)
-	void update(String uuid, String party, int rank, boolean chat, boolean spy, boolean mute);
+	void update(String uuid, String party, int rank, String nickname, boolean chat, boolean spy, boolean mute);
 	
 	@Override
 	@SqlUpdate("DELETE FROM <prefix>players WHERE \"uuid\" = ?")
@@ -35,4 +35,8 @@ public interface PostgreSQLPlayersDao extends PlayersDao {
 	@Override
 	@SqlQuery("SELECT count(*) FROM <prefix>players")
 	int countAll();
+	
+	@Override
+	@SqlQuery("SELECT count(*) FROM <prefix>players WHERE \"party\" IS NOT NULL AND \"party\" != ''")
+	int countAllInParty();
 }

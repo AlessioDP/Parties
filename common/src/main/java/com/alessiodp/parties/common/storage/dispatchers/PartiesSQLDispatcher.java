@@ -111,6 +111,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 					player.getPlayerUUID().toString(),
 					player.getPartyId() != null ? player.getPartyId().toString() : null,
 					player.getPartyId() != null ? player.getRank() : 0,
+					player.getPartyId() != null ? player.getNickname() : null,
 					player.isChatParty(),
 					player.isSpy(),
 					player.isMuted()
@@ -126,8 +127,8 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 	}
 	
 	@Override
-	public int getListPlayersNumber() {
-		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).countAll());
+	public int getListPlayersInPartyNumber() {
+		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).countAllInParty());
 	}
 	
 	@Override
@@ -296,6 +297,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 						player.get("uuid"),
 						party, // Party name to UUID
 						player.get("rank"),
+						null, // Nickname
 						false, // Chat
 						player.get("spy"),
 						player.get("mute")

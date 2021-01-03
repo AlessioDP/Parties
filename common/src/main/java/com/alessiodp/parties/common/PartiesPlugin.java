@@ -50,9 +50,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	@Override
 	public void onDisabling() {
-		if (databaseManager != null) {
-			getPartyManager().resetPendingPartyTask();
-		}
+		getPartyManager().disbandLoadedParties();
 	}
 	
 	@Override

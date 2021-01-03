@@ -197,7 +197,7 @@ public class CommandCreate extends PartiesSubCommand {
 		}
 		
 		if (partyPlayer == null && !isFixed) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+			sendMessage(sender, null, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
 						.replace("%syntax%", getSyntaxForUser(sender)));
 			return;
 		}

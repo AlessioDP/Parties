@@ -61,6 +61,8 @@ permissions:
     description: Allow access to /party motd
   parties.user.mute:
     description: Allow access to /party mute
+  parties.user.nickname:
+    description: Allow access to /party nickname
   parties.user.password:
     description: Allow access to /party password
   parties.user.protection:
@@ -111,6 +113,8 @@ permissions:
     description: Bypass the default join
   parties.admin.kick.others:
     description: Allow access to /party kick on other players
+  parties.admin.nickname.others:
+    description: Allow access to /party nickname on other players
   parties.admin.rank.bypass:
     description: Bypass rank restrictions
   parties.admin.rank.others:

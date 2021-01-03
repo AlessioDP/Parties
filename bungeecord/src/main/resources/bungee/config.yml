@@ -3,8 +3,8 @@
 # \ ===================================================== /
 #
 # For any problem be sure to:
-# - Read the entire documentation on: https://alessiodp.com/docs/parties/
-# - Join our Discord for further help: https://discord.alessiodp.com/
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
 #
 
 # / =============================== \
@@ -48,7 +48,6 @@ parties:
 storage:
   # [Database type]
   # What type of storage the plugin should use? Database storage types:
-  # => none       | [----]   The data will be saved into memory (a reload will reset everything)
   # => yaml       | [File]   Save the data into a YAML file
   # => mariadb    | [Remote] Save the data into a MariaDB database
   # => mysql      | [Remote] Save the data into a MySQL database
@@ -58,12 +57,6 @@ storage:
   database-storage-type: h2
 
   storage-settings:
-    # [None settings]
-    none:
-      disband-on-leader-left: true
-      # Delete empty parties after tot seconds
-      delay-delete-party: 600
-
     # [YAML settings]
     yaml:
       database-file: database.yml
@@ -133,6 +126,7 @@ additional:
         start-level-experience: 50
         level-experience: "%previous% * 2"
 
+      # [Fixed mode]
       # Make a complete list of finite party levels
       # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
       #
@@ -218,6 +212,7 @@ commands:
     list: 'list'
     motd: 'motd'
     mute: 'mute'
+    nickname: 'nickname'
     password: 'password'
     protection: 'protection'
     rank: 'rank'
@@ -256,6 +251,7 @@ commands:
   - tag
   - desc
   - motd
+  - nickname
   - protection
   - follow
   - home

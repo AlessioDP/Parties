@@ -67,9 +67,11 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 			if (player.getPartyId() != null) {
 				node.getNode("party").setValue(player.getPartyId().toString());
 				node.getNode("rank").setValue(player.getRank());
+				node.getNode("nickname").setValue(player.getNickname());
 			} else {
 				node.getNode("party").setValue(null);
 				node.getNode("rank").setValue(null);
+				node.getNode("nickname").setValue(null);
 			}
 			
 			node.getNode("options", "chat").setValue(player.isChatParty() ? true : null);
@@ -89,8 +91,8 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	}
 	
 	@Override
-	public int getListPlayersNumber() {
-		return database.getRootNode().getNode("players").getChildrenList().size();
+	public int getListPlayersInPartyNumber() {
+		return (int) database.getRootNode().getNode("players").getChildrenList().stream().filter(p -> !p.getNode("party").isEmpty()).count();
 	}
 	
 	@Override

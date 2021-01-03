@@ -152,7 +152,7 @@ public class CommandKick extends PartiesSubCommand {
 				party = ((PartiesPlugin) plugin).getPartyManager().getParty(kickedPp.getPartyId());
 				
 				if (party == null) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_KICK_PLAYERNOTINPARTY_OTHER, kickedPp);
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PLAYER_NOT_IN_PARTY, kickedPp);
 					return;
 				}
 			} else {
@@ -178,7 +178,7 @@ public class CommandKick extends PartiesSubCommand {
 				// Leader
 				boolean mustDelete = true;
 				// Check if leader can be changed
-				if (ConfigParties.GENERAL_MEMBERS_CHANGE_LEADER_ON_LEAVE
+				if (ConfigParties.GENERAL_MEMBERS_ON_PARTY_LEAVE_CHANGE_LEADER
 						&& party.getMembers().size() > 1) {
 					PartyPlayerImpl newLeader = party.findNewLeader();
 					

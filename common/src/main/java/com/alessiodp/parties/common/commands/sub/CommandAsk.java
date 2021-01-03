@@ -85,7 +85,7 @@ public class CommandAsk extends PartiesSubCommand {
 		}
 		
 		boolean mustStartCooldown = false;
-		if (ConfigParties.GENERAL_ASK_COOLDOWN_ENABLE && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_ASK_BYPASS)) {
+		if (ConfigParties.ADDITIONAL_ASK_COOLDOWN_ENABLE && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_ASK_BYPASS)) {
 			// Check invite cooldown
 			mustStartCooldown = true;
 			RequestCooldown askCooldown = ((PartiesPlugin) plugin).getCooldownManager().canAsk(partyPlayer.getPlayerUUID(), party.getId());
@@ -103,8 +103,8 @@ public class CommandAsk extends PartiesSubCommand {
 		partyPlayer.askToJoin(party);
 		
 		if (mustStartCooldown) {
-			((PartiesPlugin) plugin).getCooldownManager().startAskCooldown(partyPlayer.getPlayerUUID(), null, ConfigParties.GENERAL_ASK_COOLDOWN_GLOBAL);
-			((PartiesPlugin) plugin).getCooldownManager().startAskCooldown(partyPlayer.getPlayerUUID(), party.getId(), ConfigParties.GENERAL_ASK_COOLDOWN_INDIVIDUAL);
+			((PartiesPlugin) plugin).getCooldownManager().startAskCooldown(partyPlayer.getPlayerUUID(), null, ConfigParties.ADDITIONAL_ASK_COOLDOWN_GLOBAL);
+			((PartiesPlugin) plugin).getCooldownManager().startAskCooldown(partyPlayer.getPlayerUUID(), party.getId(), ConfigParties.ADDITIONAL_ASK_COOLDOWN_INDIVIDUAL);
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_ASK,

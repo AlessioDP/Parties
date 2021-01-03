@@ -100,7 +100,6 @@ public class CommandPassword extends PartiesSubCommand {
 		
 		// Command starts
 		party.setPassword(password);
-		party.updateParty();
 		
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_REMOVED);

@@ -60,6 +60,8 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_VAULT_NOMONEY_JOIN;
 	@ConfigOption(path = "additional-commands.vault.no-money.motd")
 	public static String ADDCMD_VAULT_NOMONEY_MOTD;
+	@ConfigOption(path = "additional-commands.vault.no-money.nickname")
+	public static String ADDCMD_VAULT_NOMONEY_NICKNAME;
 	@ConfigOption(path = "additional-commands.vault.no-money.password")
 	public static String ADDCMD_VAULT_NOMONEY_PASSWORD;
 	@ConfigOption(path = "additional-commands.vault.no-money.protection")

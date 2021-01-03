@@ -77,7 +77,7 @@ public class CommandLeave extends PartiesSubCommand {
 				// Is leader
 				boolean mustDelete = true;
 				// Check if leader can be changed
-				if (ConfigParties.GENERAL_MEMBERS_CHANGE_LEADER_ON_LEAVE
+				if (ConfigParties.GENERAL_MEMBERS_ON_PARTY_LEAVE_CHANGE_LEADER
 						&& party.getMembers().size() > 1) {
 					PartyPlayerImpl newLeader = party.findNewLeader();
 					

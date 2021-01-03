@@ -39,7 +39,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void rename(@NonNull String newName) {
+	public void rename(@Nullable String newName) {
 		DynmapHandler.cleanupMarkers(this);
 		
 		super.rename(newName);
@@ -124,21 +124,6 @@ public class BukkitPartyImpl extends PartyImpl {
 	@Override
 	public void sendPacketLevelUp(int newLevel) {
 		throw new IllegalStateException("this method should be executed on BungeeCord only");
-	}
-	
-	@Override
-	public boolean isFriendlyFireProtected() {
-		boolean ret = false;
-		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE) {
-			if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")) {
-				// Command
-				ret = super.getProtection();
-			} else {
-				// Global
-				ret = true;
-			}
-		}
-		return ret;
 	}
 	
 	@Override

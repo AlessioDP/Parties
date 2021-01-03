@@ -248,7 +248,6 @@ public class BukkitFightListener implements Listener {
 				
 				if (gotKill) {
 					party.setKills(party.getKills() + 1);
-					party.updateParty();
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_KILL_ADD, party.getId().toString(), killer.getUniqueId().toString()), true);
 				}
 			}
