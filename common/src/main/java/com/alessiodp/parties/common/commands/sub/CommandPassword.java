@@ -5,27 +5,41 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
-import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.EconomyManager;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.utils.HashUtils;
-import lombok.Getter;
+import com.alessiodp.parties.common.utils.PasswordUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class CommandPassword extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandPassword(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.PASSWORD,
+				PartiesPermission.USER_PASSWORD,
+				ConfigMain.COMMANDS_CMD_PASSWORD,
+				false
+		);
+		
+		syntax = String.format("%s <%s/%s>",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_PASSWORD,
+				ConfigMain.COMMANDS_SUB_REMOVE
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_PASSWORD;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_PASSWORD;
 	}
 	
 	@Override
@@ -34,8 +48,8 @@ public class CommandPassword extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.PASSWORD.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.PASSWORD);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -49,7 +63,8 @@ public class CommandPassword extends PartiesSubCommand {
 			return false;
 		
 		if (commandData.getArgs().length > 2) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return false;
 		}
 		
@@ -72,33 +87,31 @@ public class CommandPassword extends PartiesSubCommand {
 			isRemove = true;
 		} else {
 			// Normal command
-			if (!Pattern.compile(ConfigParties.PASSWORD_ALLOWEDCHARS).matcher(commandData.getArgs()[1]).matches()
-					|| (commandData.getArgs()[1].length() > ConfigParties.PASSWORD_MAXLENGTH)
-					|| (commandData.getArgs()[1].length() < ConfigParties.PASSWORD_MINLENGTH)) {
+			if (!PasswordUtils.isValid(commandData.getArgs()[1])) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_INVALID);
 				return;
 			}
 			
-			password = HashUtils.hashText(commandData.getArgs()[1]);
+			password = PasswordUtils.hashText(commandData.getArgs()[1]);
+			
+			if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.PASSWORD, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+				return;
 		}
 		
 		// Command starts
 		party.setPassword(password);
-		party.updateParty();
 		
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_REMOVED);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_PASSWORD_REM
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PASSWORD_REM,
+					partyPlayer.getName(), party.getName()), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_PASSWORD_BROADCAST, partyPlayer);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_PASSWORD
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PASSWORD,
+					partyPlayer.getName(), party.getName()), true);
 		}
 	}
 	

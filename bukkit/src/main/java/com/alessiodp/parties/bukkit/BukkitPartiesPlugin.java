@@ -2,8 +2,8 @@ package com.alessiodp.parties.bukkit;
 
 import com.alessiodp.core.bukkit.addons.internal.json.BukkitJsonHandler;
 import com.alessiodp.core.bukkit.addons.internal.json.SpigotJsonHandler;
+import com.alessiodp.core.bukkit.addons.internal.title.BukkitTitleHandler;
 import com.alessiodp.core.bukkit.scheduling.ADPBukkitScheduler;
-import com.alessiodp.core.bukkit.utils.BukkitColorUtils;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.addons.BukkitPartiesAddonManager;
@@ -16,8 +16,8 @@ import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessenger;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
+import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
-import com.alessiodp.parties.bukkit.players.ExpManager;
 import com.alessiodp.parties.bukkit.utils.BukkitEconomyManager;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
@@ -25,12 +25,14 @@ import com.alessiodp.parties.bukkit.listeners.BukkitChatListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFollowListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitJoinLeaveListener;
 import com.alessiodp.parties.bukkit.utils.BukkitMessageUtils;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public class BukkitPartiesPlugin extends PartiesPlugin {
-	@Getter private ExpManager expManager;
+	@Getter private final int bstatsId = PartiesConstants.PLUGIN_BSTATS_BUKKIT_ID;
 	
 	public BukkitPartiesPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
@@ -57,16 +59,17 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	
 	@Override
 	protected void postHandle() {
-		colorUtils = new BukkitColorUtils();
 		addonManager = new BukkitPartiesAddonManager(this);
 		economyManager = new BukkitEconomyManager(this);
-		expManager = new ExpManager(this);
+		expManager = new BukkitExpManager(this);
 		eventManager = new BukkitEventManager(this);
 		
 		super.postHandle();
-		getExpManager().reload();
 		
 		new BukkitMetricsHandler(this);
+		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		}
 	}
 	
 	@Override
@@ -75,6 +78,11 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 			jsonHandler = new SpigotJsonHandler();
 		else
 			jsonHandler = new BukkitJsonHandler();
+	}
+	
+	@Override
+	protected  void initializeTitleHandler() {
+		titleHandler = new BukkitTitleHandler();
 	}
 	
 	@Override
@@ -91,11 +99,24 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	@Override
 	public void reloadConfiguration() {
 		super.reloadConfiguration();
-		getExpManager().reload();
+		
+		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		}
 	}
 	
 	@Override
 	public boolean isBungeeCordEnabled() {
-		return BukkitConfigMain.PARTIES_BUNGEECORDSYNC_ENABLE;
+		return BukkitConfigMain.PARTIES_BUNGEECORD_ENABLE;
+	}
+	
+	@Override
+	public String getServerName(PartyPlayerImpl player) {
+		return BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_NAME;
+	}
+	
+	@Override
+	public String getServerId(PartyPlayerImpl player) {
+		return BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_ID;
 	}
 }

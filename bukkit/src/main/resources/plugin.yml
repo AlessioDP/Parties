@@ -1,15 +1,16 @@
-name: ${pluginName}
-description: ${pluginDescription}
-author: ${pluginAuthor}
-website: ${pluginWebsite}
-version: ${pluginVersion}
+name: ${plugin.name}
+description: ${plugin.description}
+author: ${plugin.author}
+website: ${plugin.website}
+version: ${plugin.version}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
-depend: [LastLoginAPI]
-softdepend: [CrackShot, Dynmap, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Vault]
+softdepend: [BanManager, Dynmap, GriefPrevention, LastLoginAPI, LevelPoints, MMOCore, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Skript, Vault]
 permissions:
   parties.user.accept:
     description: Allow access to /party accept
+  parties.user.ask:
+    description: Allow access to /party ask
   parties.user.chat:
     description: Allow access to /party chat
   parties.user.chat.color:
@@ -26,6 +27,8 @@ permissions:
     description: Allow access to /party follow
   parties.user.help:
     description: Allow access to /party or /party help
+  parties.user.home:
+    description: Allow access to /party home
   parties.user.ignore:
     description: Allow access to /party ignore
   parties.user.info:
@@ -36,7 +39,7 @@ permissions:
     description: Allow access to /party invite
   parties.user.join:
     description: Allow access to /party join
-  parties.user.joindefault:
+  parties.user.join.default:
     description: Join into the default party
   parties.user.kick:
     description: Allow access to /party kick
@@ -44,42 +47,74 @@ permissions:
     description: Allow access to /party leave
   parties.user.list:
     description: Allow access to /party list
+  parties.user.list.name:
+    description: Allow access to /party list with name type
+  parties.user.list.online.members:
+    description: Allow access to /party list with online members type
+  parties.user.list.members:
+    description: Allow access to /party list with members type
+  parties.user.list.kills:
+    description: Allow access to /party list with kills type
+  parties.user.list.experience:
+    description: Allow access to /party list with experience type
   parties.user.motd:
     description: Allow access to /party motd
   parties.user.mute:
     description: Allow access to /party mute
+  parties.user.nickname:
+    description: Allow access to /party nickname
   parties.user.password:
     description: Allow access to /party password
+  parties.user.protection:
+    description: Allow access to /party protection
   parties.user.rank:
     description: Allow access to /party rank
   parties.user.rename:
     description: Allow access to /party rename
   parties.user.sendmessage:
     description: Allow access to /p
-  parties.user.claim:
-    description: Allow access to /party claim with GriefPrevention
-  parties.user.home:
-      description: Allow access to /party home
-  parties.user.protection:
-    description: Allow access to /party protection
   parties.user.sethome:
-      description: Allow access to /party sethome
+    description: Allow access to /party sethome
+  parties.user.tag:
+    description: Allow access to /party tag
   parties.user.teleport:
     description: Allow access to /party teleport
+  parties.user.claim:
+    description: Allow access to /party claim with GriefPrevention
   parties.admin.alerts:
     description: Send an alert if there is an error
+  parties.admin.cooldown.ask.bypass:
+    description: Bypass cooldown of ask command
+  parties.admin.cooldown.chat.bypass:
+    description: Bypass cooldown of chat message
+  parties.admin.cooldown.home.bypass:
+    description: Bypass cooldown of home command
+  parties.admin.cooldown.invite.bypass:
+    description: Bypass cooldown of invite command
+  parties.admin.cooldown.rename.bypass:
+    description: Bypass cooldown of rename command
+  parties.admin.cooldown.sethome.bypass:
+    description: Bypass cooldown of sethome command
+  parties.admin.cooldown.teleport.bypass:
+    description: Bypass cooldown of teleport command
   parties.admin.create.fixed:
     description: Allow access to /party create party fixed
+  parties.admin.debug:
+    description: Allow access to /party debug
   parties.admin.delete:
     description: Allow access to /party delete
   parties.admin.delete.silent:
     description: Allow access to /party delete with silent
+  parties.admin.home.others:
+    description: Allow access to /party home on other homes
   parties.admin.join.bypass:
     description: Allow access to /party join in other parties without insert the password
-  parties.admin.joindefault.bypass:
+  parties.admin.join.default.bypass:
     description: Bypass the default join
   parties.admin.kick.others:
     description: Allow access to /party kick on other players
+  parties.admin.nickname.others:
+    description: Allow access to /party nickname on other players
   parties.admin.rank.bypass:
     description: Bypass rank restrictions
   parties.admin.rank.others:
@@ -90,13 +125,13 @@ permissions:
     description: Allow access to /party rename on other parties
   parties.admin.spy:
     description: Allow access to /party spy
-  parties.admin.version:
-    description: Allow access to /party version
-  parties.admin.home.others:
-    description: Allow access to /party home on other homes
+  parties.admin.tag.others:
+    description: Allow access to /party tag on other parties
   parties.admin.protection.bypass:
     description: Bypass friendly fire protection
-  parties.admin.vaultbypass:
+  parties.admin.version:
+    description: Allow access to /party version
+  parties.admin.vault.bypass:
     description: Bypass commands that have a price
 
   parties.user.*:
@@ -104,6 +139,7 @@ permissions:
     description: Can use normal party commands
     children:
       parties.user.accept: true
+      parties.user.ask: true
       parties.user.chat: true
       parties.user.color: true
       parties.user.create: true
@@ -111,45 +147,54 @@ permissions:
       parties.user.desc: true
       parties.user.follow: true
       parties.user.help: true
+      parties.user.home: true
       parties.user.ignore: true
       parties.user.info: true
       parties.user.info.others: true
       parties.user.invite: true
       parties.user.join: true
-      parties.user.joindefault: true
+      parties.user.join.default: true
       parties.user.kick: true
       parties.user.leave: true
       parties.user.list: true
       parties.user.motd: true
       parties.user.mute: true
       parties.user.password: true
+      parties.user.protection: true
       parties.user.rank: true
       parties.user.rename: true
       parties.user.sendmessage: true
-      parties.user.claim: true
-      parties.user.home: true
-      parties.user.protection: true
       parties.user.sethome: true
+      parties.user.tag: true
       parties.user.teleport: true
+      parties.user.claim: true
   parties.admin.*:
     default: op
     description: Can use all party commands
     children:
       parties.user.*: true
       parties.admin.alerts: true
+      parties.admin.cooldown.ask.bypass: true
+      parties.admin.cooldown.chat.bypass: true
+      parties.admin.cooldown.home.bypass: true
+      parties.admin.cooldown.invite.bypass: true
+      parties.admin.cooldown.rename.bypass: true
+      parties.admin.cooldown.sethome.bypass: true
+      parties.admin.cooldown.teleport.bypass: true
       parties.admin.create.fixed: true
+      parties.admin.debug: true
       parties.admin.delete: true
       parties.admin.delete.silent: true
-      parties.admin.fixed: true
+      parties.admin.home.others: true
       parties.admin.join.others: true
-      parties.admin.joindefault.bypass: true
+      parties.admin.join.default.bypass: true
       parties.admin.kick.others: true
+      parties.admin.protection.bypass: true
       parties.admin.rank.bypass: true
       parties.admin.rank.others: true
       parties.admin.reload: true
       parties.admin.rename.others: true
       parties.admin.spy: true
+      parties.admin.tag.others: true
       parties.admin.version: true
-      parties.admin.home.others: true
-      parties.admin.protection.bypass: true
-      parties.admin.vaultbypass: true
+      parties.admin.vault.bypass: true

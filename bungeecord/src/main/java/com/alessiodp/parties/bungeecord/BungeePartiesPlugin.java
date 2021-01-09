@@ -1,8 +1,9 @@
 package com.alessiodp.parties.bungeecord;
 
 import com.alessiodp.core.bungeecord.addons.internal.json.BungeeJsonHandler;
+import com.alessiodp.core.bungeecord.addons.internal.title.BungeeTitleHandler;
 import com.alessiodp.core.bungeecord.scheduling.ADPBungeeScheduler;
-import com.alessiodp.core.bungeecord.utils.BungeeColorUtils;
+import com.alessiodp.core.bungeecord.user.BungeeUser;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bungeecord.addons.BungeePartiesAddonManager;
@@ -19,10 +20,15 @@ import com.alessiodp.parties.bungeecord.players.BungeePlayerManager;
 import com.alessiodp.parties.bungeecord.utils.BungeeEconomyManager;
 import com.alessiodp.parties.bungeecord.utils.BungeeMessageUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.parties.ExpManager;
+import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 public class BungeePartiesPlugin extends PartiesPlugin {
+	@Getter private final int bstatsId = PartiesConstants.PLUGIN_BSTATS_BUNGEE_ID;
 	
 	public BungeePartiesPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
@@ -49,19 +55,25 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 	
 	@Override
 	protected void postHandle() {
-		colorUtils = new BungeeColorUtils();
 		addonManager = new BungeePartiesAddonManager(this);
 		economyManager = new BungeeEconomyManager(this);
+		expManager = new ExpManager(this);
 		eventManager = new BungeeEventManager(this);
 		
 		super.postHandle();
 		
 		new BungeeMetricsHandler(this);
+		((BungeePartiesConfigurationManager) getConfigurationManager()).makeConfigsSync();
 	}
 	
 	@Override
 	protected  void initializeJsonHandler() {
 		jsonHandler = new BungeeJsonHandler();
+	}
+	
+	@Override
+	protected  void initializeTitleHandler() {
+		titleHandler = new BungeeTitleHandler();
 	}
 	
 	@Override
@@ -75,7 +87,29 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 	}
 	
 	@Override
+	public void reloadConfiguration() {
+		super.reloadConfiguration();
+		
+		((BungeePartiesConfigurationManager) getConfigurationManager()).makeConfigsSync();
+	}
+	
+	@Override
 	public boolean isBungeeCordEnabled() {
 		return false;
+	}
+	
+	@Override
+	public String getServerName(PartyPlayerImpl player) {
+		if (player != null) {
+			BungeeUser user = (BungeeUser) getPlayer(player.getPlayerUUID());
+			if (user != null)
+				return user.getServer().getName();
+		}
+		return "";
+	}
+	
+	@Override
+	public String getServerId(PartyPlayerImpl player) {
+		return getServerName(player);
 	}
 }

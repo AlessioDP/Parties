@@ -29,10 +29,7 @@ public class BukkitChatListener extends ChatListener implements Listener {
 	@EventHandler
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if (!event.isCancelled()) {
-			String result = super.onPlayerCommandPreprocess(new BukkitUser(plugin, event.getPlayer()), event.getMessage());
-			if (result != null) {
-				event.setMessage(result);
-			}
+			super.onPlayerCommandPreprocess(new BukkitUser(plugin, event.getPlayer()), event.getMessage());
 		}
 	}
 }

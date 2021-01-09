@@ -4,6 +4,7 @@ import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
 import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
+import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
@@ -25,20 +26,20 @@ public class BukkitExpListener implements Listener {
 			
 			if (event.getEntity().getKiller() != null) {
 				PartyPlayerImpl killer = plugin.getPlayerManager().getPlayer(event.getEntity().getKiller().getUniqueId());
-				if (!killer.getPartyName().isEmpty()) {
+				if (killer.isInParty()) {
 					if (checkForMythicMobsHandler(event)) {
 						return;
 					}
-					double vanillaExp = 0;
-					double skillapiExp = 0;
+					int vanillaExp = 0;
+					int skillapiExp = 0;
 					
 					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
 						vanillaExp = event.getDroppedExp();
 					if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)
-						skillapiExp = SkillAPIHandler.getExp(killedEntity);
+						skillapiExp = (int) SkillAPIHandler.getExp(killedEntity);
 					
-					ExpDrop drop = new ExpDrop((int) vanillaExp, (int) skillapiExp, killer, killedEntity);
-					boolean result = plugin.getExpManager().distributeExp(drop);
+					ExpDrop drop = new ExpDrop(killer, killedEntity, vanillaExp, skillapiExp);
+					boolean result = ((BukkitExpManager) plugin.getExpManager()).distributeExp(drop);
 					if (result && BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
 						// Remove exp from vanilla event if hooked
 						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL)
@@ -47,9 +48,7 @@ public class BukkitExpListener implements Listener {
 						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)
 							SkillAPIHandler.fakeEntity(killedEntity);
 						
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_REMOVINGEXP
-								.replace("{value1}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL))
-								.replace("{value2}", Boolean.toString(BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI)), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_REMOVINGEXP,  BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL, BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI), true);
 					}
 				}
 			}

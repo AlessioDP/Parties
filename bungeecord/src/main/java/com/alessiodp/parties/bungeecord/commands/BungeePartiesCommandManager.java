@@ -16,13 +16,14 @@ public class BungeePartiesCommandManager extends PartiesCommandManager {
 	}
 	
 	@Override
-	protected void prepareCommands() {
+	public void prepareCommands() {
 		commandUtils = new BungeeCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
+		
 		super.prepareCommands();
 	}
 	
 	@Override
-	protected void registerCommands() {
+	public void registerCommands() {
 		mainCommands = new ArrayList<>();
 		mainCommands.add(new BungeeCommandParty((PartiesPlugin) plugin));
 		mainCommands.add(new BungeeCommandP((PartiesPlugin) plugin));

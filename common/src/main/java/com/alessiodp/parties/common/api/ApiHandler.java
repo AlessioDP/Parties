@@ -3,18 +3,20 @@ package com.alessiodp.parties.common.api;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.api.interfaces.Color;
+import com.alessiodp.parties.api.interfaces.PartyColor;
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
-import com.alessiodp.parties.api.interfaces.Rank;
+import com.alessiodp.parties.api.interfaces.PartyRank;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,12 +30,18 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
-	public boolean createParty(@NonNull String party, PartyPlayer leader) {
-		if (!party.isEmpty()
-				&& !plugin.getPartyManager().existParty(party)
-				&& (leader == null || leader.getPartyName().isEmpty())) {
-			PartyImpl partyImpl = plugin.getPartyManager().initializeParty(party);
-			partyImpl.create(leader != null ? (PartyPlayerImpl) leader : null);
+	public boolean isBungeeCordEnabled() {
+		return plugin.isBungeeCordEnabled();
+	}
+	
+	@Override
+	public boolean createParty(@Nullable String name, @Nullable PartyPlayer leader) {
+		if (
+				name == null || !plugin.getDatabaseManager().existsParty(name)
+				|| leader == null || !leader.isInParty()
+		) {
+			PartyImpl partyImpl = plugin.getPartyManager().initializeParty(UUID.randomUUID());
+			partyImpl.create(name, leader != null ? (PartyPlayerImpl) leader : null, null);
 			return true;
 		}
 		return false;
@@ -45,27 +53,59 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
+	public Party getParty(@NonNull UUID party) {
+		return plugin.getPartyManager().getParty(party);
+	}
+	
+	@Override
 	public PartyPlayer getPartyPlayer(UUID uuid) {
 		return plugin.getPlayerManager().getPlayer(uuid);
 	}
 	
 	@Override
 	public List<Party> getOnlineParties() {
-		List<Party> ret = new ArrayList<>();
-		// The key of the entry is case insensitive
-		for (Map.Entry<String, PartyImpl> entry : plugin.getPartyManager().getListParties().entrySet()) {
-			ret.add(entry.getValue());
-		}
-		return ret;
+		return new ArrayList<>(plugin.getPartyManager().getCacheParties().values());
 	}
 	
 	@Override
-	public Set<Rank> getRanks() {
+	public Set<PartyRank> getRanks() {
 		return new HashSet<>(plugin.getRankManager().getRankList());
 	}
 	
 	@Override
-	public Set<Color> getColors() {
+	public Set<PartyColor> getColors() {
 		return new HashSet<>(plugin.getColorManager().getColorList());
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByName(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.NAME, numberOfParties, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByOnlineMembers(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS, numberOfParties, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByMembers(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, numberOfParties, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByKills(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.KILLS, numberOfParties, offset));
+	}
+	
+	@Override
+	public LinkedList<Party> getPartiesListByExperience(int numberOfParties, int offset) {
+		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, numberOfParties, offset));
+	}
+	
+	@Override
+	public boolean areInTheSameParty(UUID player1, UUID player2) {
+		PartyPlayer pp1 = getPartyPlayer(player1);
+		PartyPlayer pp2 = getPartyPlayer(player2);
+		return pp1 != null && pp2 != null && pp1.getPartyId() != null && pp1.getPartyId().equals(pp2.getPartyId());
 	}
 }

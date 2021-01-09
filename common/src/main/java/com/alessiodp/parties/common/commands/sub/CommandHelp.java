@@ -2,27 +2,42 @@ package com.alessiodp.parties.common.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
-import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 public class CommandHelp extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandHelp(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.HELP,
+				PartiesPermission.USER_HELP,
+				ConfigMain.COMMANDS_CMD_HELP,
+				false
+		);
+		
+		syntax = String.format("%s [%s]",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_PAGE
+		);
+		
+		description = Messages.HELP_MAIN_DESCRIPTIONS_HELP;
+		help = Messages.HELP_MAIN_COMMANDS_HELP;
 	}
 	
 	@Override
@@ -31,8 +46,8 @@ public class CommandHelp extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.HELP.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.HELP);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -45,16 +60,19 @@ public class CommandHelp extends PartiesSubCommand {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_HELP
-				.replace("{player}", sender.getName())
-				.replace("{page}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
-		
 		// Command starts
 		// Get all allowed commands
-		List<String> list = new ArrayList<>();
-		for (ADPCommand cmd : partyPlayer.getAllowedCommands()) {
-			if (mainCommand.getEnabledSubCommands().contains(cmd))
-				list.add(cmd.getHelp());
+		LinkedList<String> list = new LinkedList<>();
+		
+		Set<ADPCommand> allowedCommands = partyPlayer.getAllowedCommands();
+		for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
+			if (allowedCommands.contains(e.getKey()) && e.getValue().isListedInHelp()) {
+				list.add(e.getValue().getHelp()
+						.replace("%syntax%", e.getValue().getSyntaxForUser(sender))
+						.replace("%description%", e.getValue().getDescription())
+						.replace("%run_command%", e.getValue().getRunCommand())
+						.replace("%perform_command%", Messages.HELP_PERFORM_COMMAND));
+			}
 		}
 		
 		// Split commands per page
@@ -81,6 +99,7 @@ public class CommandHelp extends PartiesSubCommand {
 		sendMessage(sender, partyPlayer, Messages.HELP_HEADER
 				.replace("%page%", Integer.toString(page))
 				.replace("%maxpages%", Integer.toString(maxpages)));
+		
 		for (String string : list) {
 			int currentChoosenPage = (page-1) * ConfigMain.COMMANDS_HELP_PERPAGE;
 			if (commandNumber >= currentChoosenPage
@@ -89,6 +108,7 @@ public class CommandHelp extends PartiesSubCommand {
 			}
 			commandNumber++;
 		}
+		
 		sendMessage(sender, partyPlayer, Messages.HELP_FOOTER
 				.replace("%page%", Integer.toString(page))
 				.replace("%maxpages%", Integer.toString(maxpages)));

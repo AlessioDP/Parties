@@ -26,13 +26,11 @@ public class SkillAPIHandler {
 			if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
 				active = true;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE = false;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 				
 			}
 		}
@@ -40,10 +38,10 @@ public class SkillAPIHandler {
 	
 	public static double getExp(Entity entity) {
 		double ret = 0;
-		if (active && BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE) {
-			if (!SkillAPI.getSettings().isUseOrbs()) {
-				ret = SkillAPI.getSettings().getYield(ListenerUtil.getName(entity));
-			}
+		if (active
+				&& BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE
+				&& !SkillAPI.getSettings().isUseOrbs()) {
+			ret = SkillAPI.getSettings().getYield(ListenerUtil.getName(entity));
 		}
 		return ret;
 	}
@@ -55,9 +53,9 @@ public class SkillAPIHandler {
 		}
 	}
 	
-	public static void giveExp(UUID player, int experience) {
+	public static void giveExp(UUID player, double experience) {
 		if (active) {
-			SkillAPI.getPlayerData(Bukkit.getOfflinePlayer(player)).giveExp((double) experience, ExpSource.valueOf(BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE));
+			SkillAPI.getPlayerData(Bukkit.getOfflinePlayer(player)).giveExp(experience, ExpSource.valueOf(BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE));
 		}
 	}
 }

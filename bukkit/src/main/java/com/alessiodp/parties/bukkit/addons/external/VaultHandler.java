@@ -19,17 +19,13 @@ public class VaultHandler {
 	private static Economy economy;
 	
 	public void init() {
-		if (BukkitConfigMain.ADDONS_VAULT_ENABLE) {
-			if (Bukkit.getServer().getPluginManager().getPlugin(ADDON_NAME) != null) {
-				if (setupEconomy()) {
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-							.replace("{addon}", ADDON_NAME), true);
-				} else {
-					BukkitConfigMain.ADDONS_VAULT_ENABLE = false;
-					
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-							.replace("{addon}", ADDON_NAME), true);
-				}
+		if (BukkitConfigMain.ADDONS_VAULT_ENABLE && Bukkit.getServer().getPluginManager().getPlugin(ADDON_NAME) != null) {
+			if (setupEconomy()) {
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+			} else {
+				BukkitConfigMain.ADDONS_VAULT_ENABLE = false;
+				
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -39,7 +35,7 @@ public class VaultHandler {
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 		if (rsp != null) {
 			economy = rsp.getProvider();
-			ret = economy != null;
+			ret = true;
 		}
 		return ret;
 	}

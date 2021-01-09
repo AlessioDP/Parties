@@ -1,0 +1,584 @@
+# / ========================================== \
+# |    This is the messages file of Parties    |
+# \ ========================================== /
+#
+# For any problem be sure to:
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
+#
+
+# / =============================== \
+# |        PARTIES  MESSAGES        |
+# \ =============================== /
+parties:
+  # [Special tags]
+  # => %version%     = New version found
+  # => %thisversion% = Version installed
+  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  # [Special tags]
+  # => %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+
+  common-messages:
+    invalid-command: "&cInvalid command"
+    configuration-reloaded: "&aConfiguration reloaded"
+    not-in-party: "&cYou are not in a clan"
+    already-in-party: "&cYou are already in a clan!"
+    party-not-found: "&cThe clan %party% doesn't exist"
+    party-full: "&cThe clan is full!"
+
+  options:
+    enabled: '&aEnabled'
+    disabled: '&cDisabled'
+    toggled-on: '&aOn'
+    toggled-off: '&cOff'
+    word-yes: '&aYes'
+    word-no: '&cNo'
+    empty: '&8Empty'
+    none: '&8None'
+
+  syntax:
+    wrong-message: '&cWrong syntax: Type &7/%syntax%'
+    color: 'color'
+    description: 'desc'
+    experience: 'experience'
+    kills: 'kills'
+    home: 'home'
+    members: 'members'
+    message: 'message'
+    motd: 'motd'
+    name: 'name'
+    online-members: 'online_members'
+    order: 'order'
+    page: 'page'
+    party: 'clan'
+    password: 'password'
+    permission: 'permission'
+    player: 'player'
+    rank: 'rank'
+    tag: 'tag'
+
+  permissions:
+    # [Special tags]
+    # => %permission%  = Missing permission
+    no-permission: "&cYou do not have access to that command"
+    no-permission-in-party-general: "&cYour clan rank do not have access to that command"
+    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
+
+  out-party: "Out clan"
+
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Nobody"
+    player-unknown: "&6Someone"
+    missing-value: "&7Miss"
+
+  # Define the format of Parties chat messages
+  formats:
+    party-chat: "&b[Clan] %rank_chat% %player%&r&7: &b%message%"
+    spy:
+      party-chat: "&7[SPY] [%party%] %player%: %message%"
+      broadcast: "&7[SPY] [%party%]: %message%"
+
+
+
+# / =============================== \
+# |     MAIN COMMANDS  MESSAGES     |
+# \ =============================== /
+main-commands:
+  accept:
+    no-request: "&cYou have not pending request"
+    no-exists: "&cThe request doesn't exist anymore"
+    multiple-requests: "&cChoose the request that you want accept:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
+
+  chat:
+    enabled: "&aChat set to clan"
+    disabled: "&aChat set to public"
+
+  create:
+    created: '[{"text":"You have created the clan %party%.\n","color":"aqua","bold":true},{"text":"Type ","color":"aqua","bold":false},{"text":"/clan invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/clan invite "}},{"text":" to invite your friend.","color":"aqua"}]'
+    created-fixed: "&b&lYou have created the fixed clan %party%"
+    console-must-fixed: "&cYou can only create fixed clans by console!"
+    name-already-exists: "&cThe clan name %party% already exists, choose a different name"
+    name-too-long: "&cThe clan name is too long!"
+    name-too-short: "&cThe clan name is too short!"
+    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
+    censored: "&cThe clan name contains censored words!"
+
+  delete:
+    deleted: "&aClan %party% deleted"
+    deleted-silently: "&aClan %party% deleted silently"
+    broadcast: "&6&lYour clan has been deleted"
+
+  deny:
+    no-request: "&cYou have not pending request"
+    no-exists: "&cThe request doesn't exist anymore"
+    multiple-requests: "&cChoose the request that you want deny:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
+
+  ignore:
+    start-ignore: "&7Ignoring %party% invites"
+    stop-ignore: "&7You stopped ignoring %party%"
+    ignore-list:
+      header: "&b&lList ignored clans:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7None"
+
+  info:
+    # [Special tags]
+    # => %list_RANK%           = The list of players of that rank
+    #                              Example: %list_member%, %list_moderator% (%list_leader% it's unique)
+    # => %list_RANK_number%    = The number of players of that rank
+    # => %list_RANK_online%    = Online players of that rank
+    # => %online%              = List online players
+    # => %online_number%       = Number of online players
+    content:
+    - "&b============ &l%party%'s Info &r&b============"
+    - "&b&lTag&7: %tag%"
+    - "&b&lDescription&7: %desc%"
+    - "&bLeader&7: %list_leader%"
+    - "&bMods&7: %list_moderator%"
+    - "&bMembers&7: %list_member%"
+    - "&bOnline players&7: %online_number%"
+
+  invite:
+    sent: "&bYou invited %player% in your clan"
+    player-invited: '[{"text":"&b%player% has invited you to the clan %party%.\n&bDo you want "},{"text":"&a&laccept","clickEvent":{"action":"run_command","value":"/clan accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Accept the invitation"}]}}},{"text":" &bor "},{"text":"&c&ldeny","clickEvent":{"action":"run_command","value":"/clan deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Deny the invitation"}]}}},{"text":"&b?\n&bYou can use &7/clan <accept/deny> &bto choose."}]'
+    accept:
+      broadcast: "&b&l%player% joined the clan"
+      accepted: "&aYou accepted the clan invite"
+      receipt: "&a%player% accepted your invite"
+    deny:
+      broadcast: ""
+      denied: "&aYou denied the clan invite"
+      receipt: "&a%player% denied your invite"
+    timeout:
+      no-response: "&7%player% didn't accept the clan invite"
+      timeout: "&7You didn't accept the clan invite to %party%"
+    revoke:
+      sent-revoked: "&7Revoked invite sent to %player%"
+      player-invite-revoked: "&7Invite received from %party% has been revoked"
+    cooldown:
+      global: "&cYou need to wait %seconds% before invite another player"
+      individual: "&cYou need to wait %seconds% before invite again the same player"
+    player-offline: "&cYou can invite only online players"
+    player-no-permission: "&c%player% doesn't have the permission to join"
+    player-in-party: "&c%player% is already in a clan"
+    already-invited: "&c%player% was already invited"
+
+  kick:
+    sent: "&aYou kicked %player% from the clan!"
+    player-kicked: "&bYou have been kicked from %party%"
+    broadcast: "&b&l%player% has been kicked from the clan"
+    broadcast-disband: "&b&lThe clan has been disbanded because the leader got kicked"
+    broadcast-leader-changed: "&b&lThe leader has been kicked from the clan, the new leader is %player%"
+    player-higher-rank: "&cYou cannot kick your superior!"
+    player-not-in-party: "&c%player% is not in your clan"
+    player-not-in-other-party: "&c%player% is not in a clan"
+    players-conflict:
+      # [Special tags]
+      # => %username%                       = The name of the player
+      # => %rank%                           = The rank
+      # => %list_players%                   = List of each player
+      # => %number%                         = The number of the player
+      # => %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+      - "&cWe have found some players with that name:"
+      - "%list_players%"
+      - "&cUse '&7/clan kick <username> <number>&c' to kick the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/clan kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+
+  leave:
+    left: "&b&lYou left the clan %party%"
+    broadcast: "&b&l%player% left the clan"
+    party-disbanded: "&6&lThe clan has been disbanded because the leader left"
+    leader-changed: "&b&lThe leader left the clan, the new leader is %player%"
+
+  p:
+    # [Special tags]
+    # => %seconds%   = Remaining time in seconds
+    cooldown: "&cYou still have to wait %seconds% seconds"
+    censored: "&cThe message contains censored words!"
+    muted: "&cYou are muted!"
+
+  rank:
+    # [Special tags]
+    # => %rank_name%   = Rank wrote by the player
+    changed: "&a%player% rank changed into %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
+    same-rank: "&c%player% is already %rank_name%!"
+    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
+    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
+    fixed-leader: "&cYou cannot make someone a leader of a fixed clan!"
+    changing-yourself: "&cYou cannot change yourself rank!"
+    player-not-in-party: "&c%player% is not in your clan"
+    player-not-in-other-party: "&c%player% doesn't have a clan"
+    players-conflict:
+      # [Special tags]
+      # => %username%                       = The name of the player
+      # => %rank%                           = The rank
+      # => %list_players%                   = List of each player
+      # => %number%                         = The number of the player
+      # => %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cWe have found some players with that name:"
+        - "%list_players%"
+        - "&cUse '&7/clan rank <username> <rank> <number>&c' to change rank of the right player"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/clan rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+
+  rename:
+    # [Special tags]
+    # => %old%   = Old party name
+    renamed: "&aThe clan %old% has been renamed into %party%"
+    broadcast: "&6Your clan has been renamed into %party%!"
+    # [Special tags]
+    # => %seconds%   = Remaining time in seconds
+    cooldown: "&cYou have to wait %seconds% seconds!"
+
+  spy:
+    enabled: "&7Now you are a spy!"
+    disabled: "&7You are no longer a spy"
+
+  version:
+    # [Special tags]
+    # => %version%    = Parties version
+    # => %newversion% = Latest Parties version
+    # => %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+
+
+# / =============================== \
+# |  ADDITIONAL COMMANDS  MESSAGES  |
+# \ =============================== /
+additional-commands:
+  ask:
+    sent: "&aJoin request sent to %party%"
+    received: '[{"text":"&b%player% want to join your clan.\n&bDo you want "},{"text":"&a&laccept","clickEvent":{"action":"run_command","value":"/clan accept %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Accept the request"}]}}},{"text":" &bor "},{"text":"&c&ldeny","clickEvent":{"action":"run_command","value":"/clan deny %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the invitation","color":"gold"}]}}},{"text":"&b?\n&bYou can use &7/clan <accept/deny> %player% &bto choose."}]'
+    accept:
+      broadcast: "&b&l%player% joined the clan"
+      accepted: "&aYou accepted the ask request"
+      receipt: "&a%party% accepted your ask request"
+    deny:
+      broadcast: ""
+      denied: "&aYou denied the %player% ask request"
+      receipt: "&a%party% denied your ask request"
+    timeout:
+      no-response: "&7%party% didn't accept the ask request"
+    cooldown:
+      # [Special tags]
+      # => %seconds%          = Remaining time in seconds
+      global: "&cYou need to wait %seconds% before ask to another clan"
+      individual: "&cYou need to wait %seconds% before ask to the same clan"
+
+  claim:
+    claimed: "&aGranted permission to the clan"
+    removed: "&aRemoved permission to the clan"
+    no-manager: "&cYou need to be the manager of the claim"
+    claim-no-exists: "&cClaim not found"
+
+  color:
+    info: "&bYour clan color is: %color_code%%color_command%"
+    empty: "&bYour clan doesn't have a color"
+    changed: "&bClan color changed into %color_command%"
+    removed: "&bClan color removed"
+    broadcast: ""
+    wrong-color: "&cColor not found. You can select: red, green or special!"
+
+  debug:
+    config:
+      header: '&b================== &lDebug Config &r&b=================='
+      text:
+        - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
+        - "&bStorage&7: %storage%"
+        - "&bRanks&7: %ranks%"
+      rank-format: '&f%name%&7[%level%]'
+      rank-separator: '&7, '
+
+    exp:
+      header: '&b=================== &lDebug Exp &r&b==================='
+      text:
+        - "&bExp system&7: %exp%"
+        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
+        - "%levels_options%"
+        - "&bExp drop&7: %drop%"
+        - "&bSharing enable/players/range&7: %sharing%&7/%sharing_number%&7/%sharing_range%"
+        - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
+        - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
+        - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
+      level-options:
+        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
+        fixed: "&bFixed levels&7: %levels%"
+
+    party:
+      header: '&b================== &lDebug Clan &r&b=================='
+      text:
+        - "&bID&7: %id%"
+        - "&bName/tag&7: %name%&7/%tag%"
+        - "&bLeader&7: %leader%"
+        - "&bNumber members/online&7: %members%&7/%members_online%"
+        - "&bDescription&7: %description%"
+        - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
+        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
+        - "&bExperience&7: %experience%"
+
+    player:
+      header: '&b================== &lDebug Player &r&b=================='
+      text:
+        - "&bUUID&7: %uuid%"
+        - "&bName&7: %name%"
+        - "&bRank&7: %rank%"
+        - "&bClan&7: %party%"
+        - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+      player-offline: "&cThe player '%player%' must be online"
+
+  desc:
+    changed: "&bClan description changed"
+    removed: "&bClan description removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
+    censored: "&cThe description contains censored words!"
+
+  exp:
+    # [Special tags]
+    # => %exp%        = Experience gained
+    # => %total_exp%  = Total experience dropped by the mob
+    party:
+      gained: "&bGained %exp% clan experience for killing the mob"
+    normal:
+      gained-killer: "&bGained %exp% experience for killing the mob"
+      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    skillapi:
+      gained-killer: "&bGained %exp% experience for killing the mob"
+      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+    level:
+      level-up: "&bClan leveled up to %experience_level%"
+
+  follow:
+    toggle-on: "&aNow your clan members will follow your leader"
+    toggle-off: "&aYour clan members will not follow your leader anymore"
+
+  home:
+    teleported: "&7Teleported to the clan home"
+    # [Special tags]
+    # => %time%          = Time of cooldown in seconds
+    teleport-in: "&7You will be teleported in %time% seconds..."
+    teleport-denied: "&7Teleport denied"
+    teleport-waiting: "&cYou are already waiting for the teleport!"
+    no-home: "&cThere isn't a home yet"
+    # [Special tags]
+    # => %seconds%          = Remaining time in seconds
+    cooldown: "&cYou have to wait %seconds% seconds!"
+    must-select-home: "&cYou must select a valid home"
+    invalid-home: "&c The home '%home%' doesn't exist"
+    valid-homes: "&bList of valid homes:"
+    # [Special tags]
+    # Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/clan home %home%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+
+  join:
+    joined: "&aYou joined the clan %party%"
+    player-joined: "&b&l%player% joined in the clan"
+    wrong-password: "&cWrong password!"
+
+  list:
+    # [Special tags]
+    # => %number%    = Number of online parties
+    # => %page%      = Current page of the list
+    # => %maxpages%  = Total pages
+    header: "&b============ &lOnline Clans List &r&b============"
+    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
+    no-one: "&7No one"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/clan info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %online_number%&7] %desc%"}]'
+    invalid-order: '&cInvalid order type'
+
+  motd:
+    changed: "&bClan MOTD changed"
+    removed: "&bClan MOTD removed"
+    broadcast: ""
+    content:
+    - "&bClan MOTD:"
+    - "&b%motd%"
+    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
+    censored: "&cThe MOTD contains censored words!"
+
+  mute:
+    toggle-on: "&7You have disabled notifications!"
+    toggle-off: "&7You have enabled notifications!"
+
+  password:
+    changed: "&aClan password changed"
+    removed: "&aClan password removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+
+  protection:
+    toggle-on: "&aNow your clan is protected by friendly fire"
+    toggle-off: "&aYour clan is not protected anymore by friendly fire"
+    protected: "&cYou can't hit your clanmates"
+    warn-on-attack: "&c%player% tried to hit %victim%!"
+
+  sethome:
+    changed: ""
+    removed: "&bClan home removed"
+    broadcast: "&aThe clan has a new home!"
+    # [Special tags]
+    # => %seconds%          = Remaining time in seconds
+    cooldown: "&cYou have to wait %seconds% seconds!"
+    max-homes: "&cYou reached the maximum number of homes"
+
+  tag:
+    changed: "&bClan tag changed"
+    removed: "&bClan tag removed"
+    broadcast: ""
+    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 10 chars."
+    censored: "&cThe tag contains censored words!"
+    already-used: "&c The tag %tag% is already used"
+
+  teleport:
+    teleporting: "&7Teleporting your clan here!"
+    player-teleported: "&bTeleported to %player%"
+    # [Special tags]
+    # => %seconds%          = Remaining time in seconds
+    cooldown: "&cYou have to wait %seconds% seconds!"
+
+  vault:
+    # [Special tags]
+    # => %price%          = Price of the command
+    no-money:
+      ask: "&cYou don't have enough money to send a join request [%price%$]"
+      claim: "&cYou don't have enough money to perform a claim [%price%$]"
+      color: "&cYou don't have enough money to perform the color command [%price%$]"
+      create: "&cYou don't have enough money to create a clan [%price%$]"
+      desc: "&cYou don't have enough money to set the description [%price%$]"
+      follow: "&cYou don't have enough money to enable follow [%price%$]"
+      home: "&cYou don't have enough money to use the home command [%price%$]"
+      join: "&cYou don't have enough money to join a clan [%price%$]"
+      motd: "&cYou don't have enough money to set the MOTD [%price%$]"
+      password: "&cYou don't have enough money to set the password [%price%$]"
+      protection: "&cYou don't have enough money to enable protection [%price%$]"
+      rename: "&cYou don't have enough money to rename the clan [%price%$]"
+      sethome: "&cYou don't have enough money to set the home [%price%$]"
+      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
+      teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
+    confirm:
+        warn-onbuy: '[{"text":"&aCommand %cmd% costs %price%$.\n"},{"text":"&2&lClick here to confirm","clickEvent":{"action":"run_command","value":"/clan confirm"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Pay the command"}]}}},{"text":" &aor type &7/clan confirm &ato use it"}]'
+        confirmed: "&aPerforming the command."
+        no-cmd: "&cThere is no command to confirm"
+
+
+# / =============================== \
+# |         OTHER  MESSAGES         |
+# \ =============================== /
+other:
+  follow:
+    # [Special tags]
+    # => %world%          = New world
+    following-world: "&7Following %player% in %world%"
+
+  fixed-parties:
+    default-join: "&bYou entered into %party%"
+
+  join-leave:
+    server-join: "&b%player% is online!"
+    server-leave: "&7%player% is offline!"
+
+
+# / =============================== \
+# |          HELP MESSAGES          |
+# \ =============================== /
+help:
+  header: "&b================= &lClan Help %page%/%maxpages% &r&b================="
+  footer: ""
+  perform-command: 'Perform the command'
+  console-help:
+    header: 'You can only make these commands:'
+    command: ' > %command% - %description%'
+  # [Special tags]
+  # => %syntax%          = Command syntax
+  # => %description%     = Description
+  # => %run_command%     = Command run syntax
+  # => %perform_command% = Perform command message
+  main:
+    commands:
+      help: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      accept: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      chat: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      create: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      delete: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      deny: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      ignore: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      info: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      invite: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      kick: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      leave: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      p: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rank: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      reload: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rename: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      help: 'Show help pages'
+      accept: 'Accept a clan request'
+      chat: 'Toggle clan chat'
+      create: 'Create a new clan'
+      delete: 'Delete the clan'
+      deny: 'Deny a clan request'
+      ignore: 'Add/remove/show ignored clans'
+      info: 'Show clan information'
+      invite: 'Invite a player to your clan'
+      kick: 'Kick a player from the clan'
+      leave: 'Leave your clan'
+      p: 'Send a message to the clan'
+      rank: 'Change rank of the player'
+      reload: 'Reload Parties configuration files'
+      rename: 'Rename the clan'
+      spy: 'Spy messages of other clans'
+      version: 'Show Parties information'
+  additional:
+    commands:
+      ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      desc: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      follow: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      home: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      join: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      list: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      ask: 'Send a join request'
+      claim: 'Grant permissions to the claim'
+      color: 'Change clan color'
+      debug: 'Debug issues'
+      desc: 'Set/remove clan description'
+      follow: 'Toggle follow leader'
+      home: 'Teleport to the clan home'
+      join: 'Join into the clan'
+      list: 'List of online clans'
+      motd: 'Set/remove clan motd'
+      mute: 'Toggle notifications'
+      password: 'Change clan password'
+      protection: 'Toggle friendly fire protection'
+      sethome: 'Set/remove clan home'
+      tag: 'Set/remove clan tag'
+      teleport: 'Teleport your clan to you'
+
+dont-edit-this:
+  version: 11

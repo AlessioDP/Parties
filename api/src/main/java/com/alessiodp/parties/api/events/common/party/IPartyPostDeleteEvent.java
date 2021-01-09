@@ -2,6 +2,7 @@ package com.alessiodp.parties.api.events.common.party;
 
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
+import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -9,12 +10,24 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface IPartyPostDeleteEvent extends PartiesEvent {
 	/**
+	 * Get the deleted party
+	 *
+	 * @return Returns the deleted {@link Party}
+	 */
+	@NonNull
+	Party getParty();
+	
+	/**
 	 * Get the deleted party name
 	 *
 	 * @return Returns the name of the deleted party
+	 * @deprecated Use getParty()
 	 */
 	@NonNull
-	String getPartyName();
+	@Deprecated
+	default String getPartyName() {
+		return getParty().getName() != null ? getParty().getName() : "";
+	}
 	
 	/**
 	 * Get the delete cause

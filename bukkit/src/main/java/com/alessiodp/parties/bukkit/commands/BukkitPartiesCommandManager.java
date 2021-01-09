@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.alessiodp.core.bukkit.commands.utils.BukkitCommandUtils;
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.commands.main.BukkitCommandP;
 import com.alessiodp.parties.bukkit.commands.main.BukkitCommandParty;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -18,16 +17,17 @@ public class BukkitPartiesCommandManager extends PartiesCommandManager {
 	}
 	
 	@Override
-	protected void prepareCommands() {
-		commandUtils = new BukkitCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
+	public void prepareCommands() {
 		super.prepareCommands();
-		BukkitCommands.setup();
+		commandUtils = new BukkitCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
 	}
 	
 	@Override
-	protected void registerCommands() {
+	public void registerCommands() {
 		mainCommands = new ArrayList<>();
 		mainCommands.add(new BukkitCommandParty((PartiesPlugin) plugin));
-		mainCommands.add(new BukkitCommandP((PartiesPlugin) plugin));
+		if (!((PartiesPlugin) plugin).isBungeeCordEnabled()) {
+			mainCommands.add(new BukkitCommandP((PartiesPlugin) plugin));
+		}
 	}
 }

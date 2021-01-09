@@ -5,22 +5,39 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.EconomyManager;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
 import java.util.List;
 
 public class CommandFollow extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandFollow(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.FOLLOW,
+				PartiesPermission.USER_FOLLOW,
+				ConfigMain.COMMANDS_CMD_FOLLOW,
+				false
+		);
+		
+		syntax = String.format("%s [%s/%s]",
+				baseSyntax(),
+				ConfigMain.COMMANDS_SUB_ON,
+				ConfigMain.COMMANDS_SUB_OFF
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_FOLLOW;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_FOLLOW	;
 	}
 	
 	@Override
@@ -29,8 +46,8 @@ public class CommandFollow extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.FOLLOW.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.FOLLOW);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
@@ -57,23 +74,24 @@ public class CommandFollow extends PartiesSubCommand {
 		// Command handling
 		Boolean follow = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(party.isFollowEnabled(), commandData.getArgs());
 		if (follow == null) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_FOLLOW_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return;
 		}
 		
+		if (follow && ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.FOLLOW, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+			return;
+		
 		// Command starts
 		party.setFollowEnabled(follow);
-		party.updateParty();
 		
 		if (follow)
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_FOLLOW_ON);
 		else
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_FOLLOW_OFF);
 		
-		plugin.getLoggerManager().logDebug((follow ? PartiesConstants.DEBUG_CMD_FOLLOW_ON : PartiesConstants.DEBUG_CMD_FOLLOW_OFF)
-						.replace("{player}", sender.getName())
-						.replace("{party}", party.getName()),
-				true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_FOLLOW,
+				partyPlayer.getName(), follow, party.getName()), true);
 	}
 	
 	@Override

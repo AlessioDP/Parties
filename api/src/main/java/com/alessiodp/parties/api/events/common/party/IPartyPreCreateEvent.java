@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.common.party;
 import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	/**
@@ -11,7 +11,7 @@ public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@Nullable
 	PartyPlayer getPartyPlayer();
 	
 	/**
@@ -19,7 +19,7 @@ public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the party name
 	 */
-	@NonNull
+	@Nullable
 	String getPartyName();
 	
 	/**
@@ -27,7 +27,7 @@ public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @param name The name to set
 	 */
-	void setPartyName(String name);
+	void setPartyName(@Nullable String name);
 	
 	/**
 	 * Is the party fixed?

@@ -1,13 +1,12 @@
 package com.alessiodp.parties.api.events.common.player;
 
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.UUID;
 
 public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	/**
@@ -27,18 +26,29 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	Party getParty();
 	
 	/**
+	 * Get the join cause
+	 *
+	 * @return Returns the {@code JoinCause} of the event
+	 */
+	@NonNull
+	JoinCause getCause();
+	
+	/**
 	 * Has been invited?
 	 *
 	 * @return Returns {@code true} if the player has been invited
 	 */
-	boolean isInvited();
+	@Deprecated
+	default boolean isInvited() {
+		return getCause() == JoinCause.INVITE;
+	}
 	
 	/**
 	 * Get the inviter
 	 *
-	 * @return Returns the {@code UUID} of the inviter, {@code null} if the player joined via join command
+	 * @return Returns the {@link PartyPlayer} of the inviter, {@code null} if the player joined via join/ask command
 	 */
 	@Nullable
-	UUID getInviter();
+	PartyPlayer getInviter();
 	
 }

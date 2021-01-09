@@ -6,7 +6,7 @@ import com.alessiodp.parties.common.PartiesPlugin;
 
 public class BukkitPartiesMessenger extends ADPMessenger {
 	public BukkitPartiesMessenger(ADPPlugin plugin) {
-		super(plugin, true);
+		super(plugin);
 		messageDispatcher = new BukkitPartiesMessageDispatcher(plugin);
 		messageListener = new BukkitPartiesMessageListener(plugin);
 	}

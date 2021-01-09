@@ -23,16 +23,14 @@ public class LLAPIHook {
 			api = LastLogin.getApi();
 			ret = true;
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
-					.replace("{addon}", "LastLoginAPI"));
+			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, "LastLoginAPI"));
 			ex.printStackTrace();
 		}
 		return ret;
 	}
 	
 	public String getPlayerName(UUID uuid) {
-		LastLoginPlayer player = api.getPlayer(uuid);
-		return player != null ? player.getName() : "";
+		return api.getPlayer(uuid).getName();
 	}
 	
 	public Set<UUID> getPlayerByName(String name) {

@@ -1,8 +1,8 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
 import com.alessiodp.core.common.configuration.Constants;
-import com.alessiodp.parties.bukkit.BukkitPartiesPlugin;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
+import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.objects.ExpDrop;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -52,18 +52,15 @@ public class MythicMobsHandler implements Listener {
 						registered = true;
 					}
 					
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-							.replace("{addon}", ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
-							.replace("{addon}", ADDON_NAME));
+					plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, ADDON_NAME));
 				}
 			} else {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE = false;
 				
 				HandlerList.unregisterAll(this);
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -82,10 +79,8 @@ public class MythicMobsHandler implements Listener {
 			
 			if (event.getKiller() != null) {
 				PartyPlayerImpl killer = plugin.getPlayerManager().getPlayer(event.getKiller().getUniqueId());
-				if (!killer.getPartyName().isEmpty()) {
-					plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_EXP_MMHANDLING
-							.replace("{name}", event.getMobType().getInternalName())
-							.replace("{player}", killer.getName()), true);
+				if (killer.isInParty()) {
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_MMHANDLING, event.getMobType().getInternalName(), killer.getName(), killer.getPlayerUUID().toString()), true);
 					
 					double vanillaExp = 0;
 					double skillapiExp = 0;
@@ -100,27 +95,25 @@ public class MythicMobsHandler implements Listener {
 						}
 					}
 					
-					ExpDrop drop = new ExpDrop((int) vanillaExp, (int) skillapiExp, killer, killedEntity);
-					boolean result = ((BukkitPartiesPlugin) plugin).getExpManager().distributeExp(drop);
-					if (result) {
-						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
-							// Remove exp from the event if hooked
-							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL) {
-								// Be sure that we are removing exp from intangible drops
-								for (Drop d : event.getDrops().getLootTableIntangible().values()) {
-									if (d instanceof ExperienceDrop) {
-										d.setAmount(0);
-									}
+					ExpDrop drop = new ExpDrop(killer, killedEntity, vanillaExp, skillapiExp);
+					boolean result = ((BukkitExpManager) plugin.getExpManager()).distributeExp(drop);
+					if (result && BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
+						// Remove exp from the event if hooked
+						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL) {
+							// Be sure that we are removing exp from intangible drops
+							for (Drop d : event.getDrops().getLootTableIntangible().values()) {
+								if (d instanceof ExperienceDrop) {
+									d.setAmount(0);
 								}
-								// Add it to an array list that contains a list of entities
-								// that we need to manually remove drop experience
-								mobsExperienceToSuppress.add(event.getEntity().getUniqueId());
 							}
-							
-							// Remove skillapi exp from the event if hooked
-							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI) {
-								event.getDrops().getLootTableIntangible().remove(SkillAPIDrop.class);
-							}
+							// Add it to an array list that contains a list of entities
+							// that we need to manually remove drop experience
+							mobsExperienceToSuppress.add(event.getEntity().getUniqueId());
+						}
+						
+						// Remove skillapi exp from the event if hooked
+						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI) {
+							event.getDrops().getLootTableIntangible().remove(SkillAPIDrop.class);
 						}
 					}
 				}

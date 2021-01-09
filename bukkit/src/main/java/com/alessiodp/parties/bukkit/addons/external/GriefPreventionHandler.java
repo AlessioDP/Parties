@@ -26,12 +26,10 @@ public class GriefPreventionHandler {
 			if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {
 				active = true;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE = false;
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_FAILED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -43,10 +41,9 @@ public class GriefPreventionHandler {
 			if (claim == null) {
 				return Result.NOEXIST;
 			}
-			if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())) {
-				if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_NEEDOWNER || !claim.managers.contains(claimer.getUniqueId().toString())) {
-					return Result.NOMANAGER;
-				}
+			if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())
+					&& (BukkitConfigMain.ADDONS_GRIEFPREVENTION_NEEDOWNER || !claim.managers.contains(claimer.getUniqueId().toString()))) {
+				return Result.NOMANAGER;
 			}
 			return Result.SUCCESS;
 		}
@@ -88,7 +85,8 @@ public class GriefPreventionHandler {
 				ret = ClaimPermission.Inventory;
 				break;
 			default:
-					ret = null;
+				ret = null;
+				break;
 			}
 			return ret;
 		}

@@ -1,5 +1,6 @@
 package com.alessiodp.parties.api.events.bungee.player;
 
+import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -7,19 +8,17 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.UUID;
-
 public class BungeePartiesPlayerPostJoinEvent extends BungeePartiesEvent implements IPlayerPostJoinEvent {
 	private final PartyPlayer player;
 	private final Party party;
-	private final boolean isInvited;
-	private final UUID invitedBy;
+	private final JoinCause cause;
+	private final PartyPlayer inviter;
 	
-	public BungeePartiesPlayerPostJoinEvent(PartyPlayer player, Party party, boolean isInvited, UUID invitedBy) {
+	public BungeePartiesPlayerPostJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter) {
 		this.player = player;
 		this.party = party;
-		this.isInvited = isInvited;
-		this.invitedBy = invitedBy;
+		this.cause = cause;
+		this.inviter = inviter;
 	}
 	
 	@NonNull
@@ -34,14 +33,15 @@ public class BungeePartiesPlayerPostJoinEvent extends BungeePartiesEvent impleme
 		return party;
 	}
 	
+	@NonNull
 	@Override
-	public boolean isInvited() {
-		return isInvited;
+	public JoinCause getCause() {
+		return cause;
 	}
 	
 	@Nullable
 	@Override
-	public UUID getInviter() {
-		return invitedBy;
+	public PartyPlayer getInviter() {
+		return inviter;
 	}
 }

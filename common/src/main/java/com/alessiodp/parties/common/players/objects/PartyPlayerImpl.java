@@ -1,45 +1,63 @@
 package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.scheduling.ADPScheduler;
+import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.parties.api.interfaces.Party;
+import com.alessiodp.parties.api.interfaces.PartyAskRequest;
+import com.alessiodp.parties.api.interfaces.PartyInvite;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.external.LLAPIHandler;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
+import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
-import com.alessiodp.parties.api.interfaces.Rank;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import com.alessiodp.parties.common.players.spy.SpyMessage;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantLock;
 
+@EqualsAndHashCode
+@ToString
 public abstract class PartyPlayerImpl implements PartyPlayer {
-	protected final PartiesPlugin plugin;
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected final PartiesPlugin plugin;
 	
 	// Interface fields
-	@Getter private UUID playerUUID;
+	@Getter private final UUID playerUUID;
 	@Getter private String name;
 	@Getter private int rank;
-	@Getter private String partyName;
+	@Getter private UUID partyId;
+	@Getter private String nickname;
+	@Getter private boolean chatParty;
 	@Getter private boolean spy;
 	@Getter private boolean muted;
 	
 	// Plugin fields
-	@Getter private UUID createID;
-	@Getter private boolean chatParty;
-	@Getter private HashMap<PartyImpl, UUID> partyInvites;
-	@Getter private HashSet<String> ignoredParties;
-	protected final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final UUID createID;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyAskRequest> pendingAskRequests;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyInvite> pendingInvites;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyTeleportRequest> pendingTeleportRequests;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<UUID> ignoredParties;
+	
+	
+	@Getter @Setter private CancellableTask homeTeleporting;
+	
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
 	
 	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid) {
 		this.plugin = plugin;
@@ -49,127 +67,136 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		if (name == null || name.isEmpty())
 			name = LLAPIHandler.getPlayerName(playerUUID); // Use LastLoginAPI to get the name
 		rank = ConfigParties.RANK_SET_DEFAULT;
-		partyName = "";
+		partyId = null;
+		chatParty = false;
 		spy = false;
 		muted = false;
 		
 		createID = UUID.randomUUID();
-		chatParty = false;
-		partyInvites = new HashMap<>();
+		pendingAskRequests = new HashSet<>();
+		pendingInvites = new HashSet<>();
+		pendingTeleportRequests = new HashSet<>();
 		ignoredParties = new HashSet<>();
 	}
 	
-	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid, String name, int rank, String partyName, boolean spy, boolean muted) {
-		this.plugin = plugin;
-		
-		playerUUID = uuid;
-		this.name = name;
-		this.rank = rank;
-		this.partyName = partyName;
-		this.spy = spy;
-		this.muted = muted;
-		
-		createID = UUID.randomUUID();
-		chatParty = false;
-		partyInvites = new HashMap<>();
-		ignoredParties = new HashSet<>();
+	public void setAccessible(boolean accessible) {
+		this.accessible = accessible;
 	}
 	
-	/**
-	 * Get the data from the database
-	 */
-	public void fromDatabase(String partyName, int rank, boolean spy, boolean mute) {
-		lock.lock();
-		this.partyName = partyName;
-		this.rank = rank;
-		this.spy = spy;
-		this.muted = mute;
-		lock.unlock();
+	protected void updateValue(Runnable runnable) {
+		updateValue(runnable, true);
 	}
 	
-	/**
-	 * Update the player
-	 */
-	public void updatePlayer() {
-		plugin.getDatabaseManager().updatePlayer(this);
-	}
-	
-	/**
-	 * Add into party
-	 */
-	public void addIntoParty(String partyName, int rank) {
-		lock.lock();
-		this.partyName = partyName;
-		this.rank = rank;
-		partyInvites.clear();
-		updatePlayer();
-		lock.unlock();
-		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN
-				.replace("{player}", getName())
-				.replace("{uuid}", getPlayerUUID().toString())
-				.replace("{party}", getPartyName()), true);
-	}
-	
-	/**
-	 * Remove from party
-	 */
-	public void removeFromParty(boolean saveDB) {
-		lock.lock();
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_CLEANUP
-				.replace("{player}", getName()), true);
-		rank = ConfigParties.RANK_SET_DEFAULT;
-		partyName = "";
-		chatParty = false;
-		
-		if (saveDB) {
-			updatePlayer();
+	protected void updateValue(Runnable runnable, boolean saveToDatabase) {
+		if (accessible) {
+			runnable.run();
+		} else {
+			lock.lock();
+			runnable.run();
+			
+			if (saveToDatabase)
+				updatePlayer().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
+			
+			lock.unlock();
 		}
-		lock.unlock();
+	}
+	
+	public boolean isPersistent() {
+		return getPartyId() != null || isSpy() || isMuted();
+	}
+	
+	public CompletableFuture<Void> updatePlayer() {
+		return plugin.getDatabaseManager().updatePlayer(this);
+	}
+	
+	public void addIntoParty(UUID party, int rank) {
+		updateValue(() -> {
+			this.partyId = party;
+			this.rank = rank;
+			this.nickname = null;
+			pendingAskRequests.clear();
+			pendingInvites.clear();
+		});
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE
-				.replace("{player}", getName())
-				.replace("{uuid}", getPlayerUUID().toString())
-				.replace("{party}", getPartyName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN, getName(), getPartyId().toString(), getPlayerUUID().toString()), true);
+	}
+	
+	public void removeFromParty(boolean saveToDatabase) {
+		String oldPartyId = partyId.toString();
+		updateValue(() -> {
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_CLEANUP, getName()), true);
+			rank = ConfigParties.RANK_SET_DEFAULT;
+			partyId = null;
+			nickname = null;
+			chatParty = false;
+			if (homeTeleporting != null) {
+				homeTeleporting.cancel();
+				homeTeleporting = null;
+			}
+		}, saveToDatabase);
+		
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId, getPlayerUUID().toString()), true);
 	}
 	
 	@Override
-	public void setPartyName(@org.checkerframework.checker.nullness.qual.NonNull String partyName) {
-		lock.lock();
-		this.partyName = partyName;
-		updatePlayer();
-		lock.unlock();
+	public @Nullable String getPartyName() {
+		if (isInParty()) {
+			Party party = plugin.getPartyManager().getParty(getPartyId());
+			if (party != null)
+				return party.getName();
+		}
+		// Will be deprecated! This will return null.
+		return "";
+	}
+	
+	@Override
+	public PartyAskRequest askToJoin(@org.checkerframework.checker.nullness.qual.NonNull Party party, boolean sendMessages) {
+		return ((PartyImpl) party).askToJoin(this, sendMessages);
+	}
+	
+	@Override
+	public void setPartyId(@Nullable UUID partyId) {
+		updateValue(() -> {
+			this.partyId = partyId;
+		});
 	}
 	
 	@Override
 	public void setRank(int rank) {
-		lock.lock();
-		this.rank = rank;
-		updatePlayer();
-		lock.unlock();
+		updateValue(() -> {
+			this.rank = rank;
+		});
+	}
+	
+	@Override
+	public void setNickname(String nickname) {
+		updateValue(() -> {
+			this.nickname = nickname;
+		});
 	}
 	
 	@Override
 	public void setSpy(boolean spy) {
-		lock.lock();
-		this.spy = spy;
-		updatePlayer();
-		lock.unlock();
+		updateValue(() -> {
+			this.spy = spy;
+			if (spy)
+				plugin.getPlayerManager().getCacheSpies().add(playerUUID);
+			else
+				plugin.getPlayerManager().getCacheSpies().remove(playerUUID);
+		});
 	}
 	
 	@Override
 	public void setMuted(boolean muted) {
-		lock.lock();
-		this.muted = muted;
-		updatePlayer();
-		lock.unlock();
+		updateValue(() -> {
+			this.muted = muted;
+		});
 	}
 	
-	public void setChatParty(boolean chat) {
-		lock.lock();
-		this.chatParty = chat;
-		updatePlayer();
-		lock.unlock();
+	public void setChatParty(boolean chatParty) {
+		updateValue(() -> {
+			this.chatParty = chatParty;
+		});
 	}
 	
 	public void sendDirect(String message) {
@@ -209,126 +236,195 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	}
 	
 	/**
+	 * Send a title message
+	 */
+	public void sendTitleMessage(String message) {
+		User player = plugin.getPlayer(getPlayerUUID());
+		if (player != null) {
+			player.sendTitle(message, ConfigParties.GENERAL_BROADCAST_TITLES_FADE_IN_TIME, ConfigParties.GENERAL_BROADCAST_TITLES_SHOW_TIME, ConfigParties.GENERAL_BROADCAST_TITLES_FADE_OUT_TIME);
+		}
+	}
+	
+	public abstract void playSound(String sound, double volume, double pitch);
+	
+	public abstract void playChatSound();
+	
+	public abstract void playBroadcastSound();
+	
+	/**
 	 * Perform a party message
 	 */
-	public void performPartyMessage(String message) {
+	public boolean performPartyMessage(String message) {
 		if (!message.isEmpty()) {
 			PartyImpl party = plugin.getPartyManager().getPartyOfPlayer(this);
 			if (party != null) {
-				String formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(ConfigParties.GENERAL_CHAT_FORMAT_CHAT, party, this);
+				String formattedMessage = plugin.getMessageUtils().convertPlaceholders(Messages.PARTIES_FORMATS_PARTY_CHAT, this, party);
 				String chatMessage = message;
 				
 				if (ConfigParties.GENERAL_CHAT_ALLOWCOLORS) {
 					User user = plugin.getPlayer(getPlayerUUID());
 					if (user != null
-							&& user.hasPermission(PartiesPermission.CHAT_COLOR.toString())
+							&& user.hasPermission(PartiesPermission.USER_CHAT_COLOR)
 							&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_SENDMESSAGE_COLOR)) {
-						chatMessage = plugin.getColorUtils().convertColors(chatMessage);
+						chatMessage = Color.translateAlternateColorCodes(chatMessage);
 					}
 				}
 				
-				formattedMessage = plugin.getColorUtils().convertColors(formattedMessage).replace("%message%", chatMessage);
+				formattedMessage = Color.translateAlternateColorCodes(formattedMessage).replace("%message%", chatMessage);
 				
-				party.dispatchChatMessage(this, formattedMessage, true);
-				
-				plugin.getSpyManager().sendSpyMessage(new SpyMessage(plugin)
-						.setType(SpyMessage.SpyType.MESSAGE)
-						.setMessage(chatMessage)
-						.setParty(party)
-						.setPlayer(this));
+				if (party.dispatchChatMessage(this, formattedMessage, true)) {
+					
+					plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
+							.setType(SpyMessage.SpyType.MESSAGE)
+							.setMessage(plugin.getJsonHandler().removeJson(chatMessage))
+							.setParty(party)
+							.setPlayer(this));
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 	
 	/**
 	 * Player allowed commands
 	 */
-	public List<ADPCommand> getAllowedCommands() {
-		List<ADPCommand> ret = new ArrayList<>();
-		Rank rank = plugin.getRankManager().searchRankByLevel(getRank());
+	public Set<ADPCommand> getAllowedCommands() {
+		Set<ADPCommand> ret = new HashSet<>();
+		PartyRankImpl rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		
-		if (player.hasPermission(PartiesPermission.HELP.toString()))
+		if (player.hasPermission(PartiesPermission.USER_HELP))
 			ret.add(CommonCommands.HELP);
 		
-		if (!getPartyName().isEmpty()) {
+		if (partyId != null) {
 			// In party
-			if (player.hasPermission(PartiesPermission.SENDMESSAGE.toString()) && rank.havePermission(PartiesPermission.PRIVATE_SENDMESSAGE.toString()))
+			if (player.hasPermission(PartiesPermission.USER_SENDMESSAGE) && rank.havePermission(PartiesPermission.PRIVATE_SENDMESSAGE.toString()))
 				ret.add(CommonCommands.P);
 			
 			// Common commands
-			if (player.hasPermission(PartiesPermission.LEAVE.toString()))
+			if (player.hasPermission(PartiesPermission.USER_LEAVE))
 				ret.add(CommonCommands.LEAVE);
-			if (player.hasPermission(PartiesPermission.INVITE.toString()) && rank.havePermission(PartiesPermission.PRIVATE_INVITE.toString()))
+			if (player.hasPermission(PartiesPermission.USER_INVITE) && rank.havePermission(PartiesPermission.PRIVATE_INVITE))
 				ret.add(CommonCommands.INVITE);
-			if (player.hasPermission(PartiesPermission.INFO.toString()))
+			if (player.hasPermission(PartiesPermission.USER_INFO))
 				ret.add(CommonCommands.INFO);
 			
 			// Other commands
-			if (ConfigParties.GENERAL_CHAT_TOGGLECHATCMD && player.hasPermission(PartiesPermission.CHAT.toString()))
+			if (ConfigParties.GENERAL_CHAT_TOGGLECOMMAND && player.hasPermission(PartiesPermission.USER_CHAT))
 				ret.add(CommonCommands.CHAT);
+			if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
+					&& ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
+					&& player.hasPermission(PartiesPermission.USER_PROTECTION)
+					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_PROTECTION))
+				ret.add(CommonCommands.PROTECTION);
+			if (ConfigParties.ADDITIONAL_HOME_ENABLE) {
+				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
+						|| (player.hasPermission(PartiesPermission.USER_HOME) && rank.havePermission(PartiesPermission.PRIVATE_HOME)))
+					ret.add(CommonCommands.HOME);
+				if (player.hasPermission(PartiesPermission.USER_SETHOME) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_HOME))
+					ret.add(CommonCommands.SETHOME);
+			}
 			
 			// Admin commands
-			if (ConfigParties.DESC_ENABLE && player.hasPermission(PartiesPermission.DESC.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_DESC.toString()))
+			if (ConfigParties.ADDITIONAL_ASK_ENABLE
+					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)) {
+				if (player.hasPermission(PartiesPermission.USER_ACCEPT)
+						&& (rank.havePermission(PartiesPermission.PRIVATE_ASK_ACCEPT) || rank.havePermission(PartiesPermission.PRIVATE_TELEPORT_ACCEPT)))
+					ret.add(CommonCommands.ACCEPT);
+				if (player.hasPermission(PartiesPermission.USER_DENY)
+						&& (rank.havePermission(PartiesPermission.PRIVATE_ASK_DENY) || rank.havePermission(PartiesPermission.PRIVATE_TELEPORT_DENY)))
+					ret.add(CommonCommands.DENY);
+			}
+			if (ConfigParties.ADDITIONAL_DESC_ENABLE && player.hasPermission(PartiesPermission.USER_DESC) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_DESC))
 				ret.add(CommonCommands.DESC);
-			if (ConfigParties.MOTD_ENABLE && player.hasPermission(PartiesPermission.MOTD.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_MOTD.toString()))
+			if (ConfigParties.ADDITIONAL_MOTD_ENABLE && player.hasPermission(PartiesPermission.USER_MOTD) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_MOTD))
 				ret.add(CommonCommands.MOTD);
+			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE && player.hasPermission(PartiesPermission.USER_NICKNAME)
+					&& (rank.havePermission(PartiesPermission.PRIVATE_EDIT_NICKNAME_OWN) || rank.havePermission(PartiesPermission.PRIVATE_EDIT_NICKNAME_OTHERS)))
+				ret.add(CommonCommands.NICKNAME);
 			if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE
 					&& ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD
-					&& player.hasPermission(PartiesPermission.FOLLOW.toString())
-					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_FOLLOW.toString()))
+					&& player.hasPermission(PartiesPermission.USER_FOLLOW)
+					&& rank.havePermission(PartiesPermission.PRIVATE_EDIT_FOLLOW))
 				ret.add(CommonCommands.FOLLOW);
-			if (ConfigParties.COLOR_ENABLE && ConfigParties.COLOR_COLORCMD && player.hasPermission(PartiesPermission.COLOR.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_COLOR.toString()))
+			if (ConfigParties.ADDITIONAL_COLOR_ENABLE && ConfigParties.ADDITIONAL_COLOR_COLORCMD && player.hasPermission(PartiesPermission.USER_COLOR) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_COLOR))
 				ret.add(CommonCommands.COLOR);
-			if (ConfigParties.PASSWORD_ENABLE && player.hasPermission(PartiesPermission.PASSWORD.toString()) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_PASSWORD.toString()))
+			if (ConfigParties.ADDITIONAL_JOIN_ENABLE && ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE && player.hasPermission(PartiesPermission.USER_PASSWORD) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_PASSWORD))
 				ret.add(CommonCommands.PASSWORD);
-			if (player.hasPermission(PartiesPermission.RANK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RANK.toString()))
+			if (player.hasPermission(PartiesPermission.USER_RANK) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RANK))
 				ret.add(CommonCommands.RANK);
-			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString())
-					|| (player.hasPermission(PartiesPermission.RENAME.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RENAME.toString())))
+			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS)
+					|| (player.hasPermission(PartiesPermission.USER_RENAME) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_RENAME)))
 				ret.add(CommonCommands.RENAME);
-			if (player.hasPermission(PartiesPermission.KICK.toString()) && rank.havePermission(PartiesPermission.PRIVATE_KICK.toString()))
+			if (ConfigParties.ADDITIONAL_TAG_ENABLE && (player.hasPermission(PartiesPermission.USER_TAG) && rank.havePermission(PartiesPermission.PRIVATE_EDIT_TAG))
+					|| player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
+				ret.add(CommonCommands.TAG);
+			if (player.hasPermission(PartiesPermission.USER_KICK) && rank.havePermission(PartiesPermission.PRIVATE_KICK))
 				ret.add(CommonCommands.KICK);
-			if (ConfigParties.TELEPORT_ENABLE && player.hasPermission(PartiesPermission.TELEPORT.toString()) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_TELEPORT.toString()))
+			if (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && player.hasPermission(PartiesPermission.USER_TELEPORT) && rank.havePermission(PartiesPermission.PRIVATE_ADMIN_TELEPORT))
 				ret.add(CommonCommands.TELEPORT);
 		} else {
 			// Out of party
-			if (player.hasPermission(PartiesPermission.CREATE.toString())) {
+			if (player.hasPermission(PartiesPermission.USER_CREATE))
 				ret.add(CommonCommands.CREATE);
-			}
-			if (player.hasPermission(PartiesPermission.ACCEPT.toString()))
+			if (ConfigParties.GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE && player.hasPermission(PartiesPermission.USER_INVITE) && player.hasPermission(PartiesPermission.USER_CREATE))
+				ret.add(CommonCommands.INVITE);
+			if (player.hasPermission(PartiesPermission.USER_ACCEPT))
 				ret.add(CommonCommands.ACCEPT);
-			if (player.hasPermission(PartiesPermission.DENY.toString()))
+			if (player.hasPermission(PartiesPermission.USER_DENY))
 				ret.add(CommonCommands.DENY);
-			if (ConfigParties.PASSWORD_ENABLE && player.hasPermission(PartiesPermission.JOIN.toString()))
+			if (ConfigParties.ADDITIONAL_ASK_ENABLE && player.hasPermission(PartiesPermission.USER_ASK))
+				ret.add(CommonCommands.ASK);
+			if (ConfigParties.ADDITIONAL_JOIN_ENABLE && player.hasPermission(PartiesPermission.USER_JOIN))
 				ret.add(CommonCommands.JOIN);
-			if (player.hasPermission(PartiesPermission.IGNORE.toString()))
+			if (ConfigParties.ADDITIONAL_TAG_ENABLE && player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
+				ret.add(CommonCommands.TAG);
+			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE && player.hasPermission(PartiesPermission.ADMIN_NICKNAME_OTHERS))
+				ret.add(CommonCommands.NICKNAME);
+			if (player.hasPermission(PartiesPermission.USER_IGNORE))
 				ret.add(CommonCommands.IGNORE);
-			if (player.hasPermission(PartiesPermission.INFO_OTHERS.toString()))
+			if (player.hasPermission(PartiesPermission.USER_INFO_OTHERS))
 				ret.add(CommonCommands.INFO);
-			if (player.hasPermission(PartiesPermission.MUTE.toString()))
+			if (player.hasPermission(PartiesPermission.USER_MUTE))
 				ret.add(CommonCommands.MUTE);
-			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS.toString()))
+			if (player.hasPermission(PartiesPermission.ADMIN_KICK_OTHERS))
 				ret.add(CommonCommands.KICK);
-			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS.toString()))
+			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS))
 				ret.add(CommonCommands.RENAME);
+			
 		}
-		if (ConfigParties.LIST_ENABLE && player.hasPermission(PartiesPermission.LIST.toString()))
+		if (ConfigParties.ADDITIONAL_FIXED_ENABLE && player.hasPermission(PartiesPermission.ADMIN_CREATE_FIXED))
+			ret.add(CommonCommands.CREATEFIXED);
+		if (ConfigParties.ADDITIONAL_LIST_ENABLE && player.hasPermission(PartiesPermission.USER_LIST))
 			ret.add(CommonCommands.LIST);
-		if (player.hasPermission(PartiesPermission.ADMIN_SPY.toString()))
+		if (player.hasPermission(PartiesPermission.ADMIN_SPY))
 			ret.add(CommonCommands.SPY);
-		if (player.hasPermission(PartiesPermission.ADMIN_DELETE.toString()))
+		if (player.hasPermission(PartiesPermission.ADMIN_DELETE))
 			ret.add(CommonCommands.DELETE);
-		if (player.hasPermission(PartiesPermission.ADMIN_RELOAD.toString()))
+		if (player.hasPermission(PartiesPermission.ADMIN_RELOAD))
 			ret.add(CommonCommands.RELOAD);
-		if (player.hasPermission(PartiesPermission.ADMIN_VERSION.toString()))
+		if (player.hasPermission(PartiesPermission.ADMIN_VERSION))
 			ret.add(CommonCommands.VERSION);
+		if (ConfigMain.PARTIES_DEBUG_COMMAND && player.hasPermission(PartiesPermission.ADMIN_DEBUG))
+			ret.add(CommonCommands.DEBUG);
 		
 		return ret;
 	}
+	
+	public abstract void sendPacketUpdate();
 	
 	/**
 	 * Is the player invisible?
 	 */
 	public abstract boolean isVanished();
+	
+	/**
+	 * Is the player chat muted?
+	 *
+	 * @return Returns true if the player chat is muted
+	 */
+	public boolean isChatMuted() {
+		return false;
+	}
 }

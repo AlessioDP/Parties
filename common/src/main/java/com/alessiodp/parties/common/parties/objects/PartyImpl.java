@@ -1,142 +1,175 @@
 package com.alessiodp.parties.common.parties.objects;
 
-import com.alessiodp.core.common.scheduling.CancellableTask;
+import com.alessiodp.core.common.bootstrap.PluginPlatform;
+import com.alessiodp.core.common.scheduling.ADPScheduler;
+import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.parties.api.enums.DeleteCause;
+import com.alessiodp.parties.api.enums.JoinCause;
+import com.alessiodp.parties.api.enums.LeaveCause;
+import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
-import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
-import com.alessiodp.parties.api.interfaces.Color;
-import com.alessiodp.parties.api.interfaces.HomeLocation;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
+import com.alessiodp.parties.api.interfaces.PartyAskRequest;
+import com.alessiodp.parties.api.interfaces.PartyColor;
+import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.api.interfaces.Party;
+import com.alessiodp.parties.api.interfaces.PartyInvite;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.players.objects.InviteCooldown;
+import com.alessiodp.parties.common.players.objects.PartyAskRequestImpl;
+import com.alessiodp.parties.common.players.objects.PartyInviteImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.players.spy.SpyMessage;
-import com.alessiodp.parties.common.tasks.InviteTask;
+import com.alessiodp.parties.common.players.objects.SpyMessage;
+import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PasswordUtils;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
+@EqualsAndHashCode
+@ToString
 public abstract class PartyImpl implements Party {
-	protected final PartiesPlugin plugin;
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected final PartiesPlugin plugin;
 	
 	// Interface fields
-	@Getter private String name;
-	@Getter private List<UUID> members;
-	@Getter private UUID leader;
-	@Getter private boolean fixed;
-	@Getter private String description;
-	@Getter private String motd;
-	@Getter private HomeLocation home;
-	@Getter private Color color;
+	@Getter private final UUID id;
+	@Nullable @Getter private String name;
+	@Nullable @Getter private String tag;
+	@Getter private Set<UUID> members;
+	@Nullable @Getter private UUID leader;
+	@Nullable @Getter private String description;
+	@Nullable @Getter private String motd;
+	@Getter private Set<PartyHome> homes;
+	@Nullable @Getter private PartyColor color;
 	@Getter private int kills;
-	@Getter private String password;
+	@Nullable @Getter private String password;
 	private boolean protection;
 	@Getter private double experience;
 	private boolean followEnabled;
 	
 	// Plugin fields
-	@Getter @Setter private Color dynamicColor;
-	@Getter protected ExpResult expResult;
-	private HashSet<PartyPlayerImpl> onlineMembers;
-	private HashMap<UUID, PartyInvite> inviteList;
-	@Getter private final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter @Setter private PartyColor dynamicColor;
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected ExpResult expResult;
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected double cacheExperience;
+	@EqualsAndHashCode.Exclude @ToString.Exclude private final HashSet<PartyPlayer> onlineMembers;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyAskRequest> askRequests;
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyInvite> inviteRequests;
 	
-	protected PartyImpl(@NonNull PartiesPlugin plugin, @NonNull String name) {
+	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
+	
+	protected PartyImpl(@NonNull PartiesPlugin plugin, @NonNull UUID id) {
 		this.plugin = plugin;
 		
-		this.name = name;
-		members = new ArrayList<>();
+		this.id = id;
+		name = null;
+		tag = null;
+		members = new HashSet<>();
 		leader = null;
-		fixed = false;
-		description = "";
-		motd = "";
-		home = null;
+		description = null;
+		motd = null;
+		homes = new HashSet<>();
 		color = null;
 		kills = 0;
-		password = "";
+		password = null;
 		protection = false;
 		experience = 0;
 		followEnabled = false;
 		
 		expResult = new ExpResult();
+		cacheExperience = -1;
 		onlineMembers = new HashSet<>();
-		inviteList = new HashMap<>();
+		askRequests = new HashSet<>();
+		inviteRequests = new HashSet<>();
 	}
 	
-	protected PartyImpl(@NonNull PartiesPlugin plugin, @NonNull String name, List<UUID> members, UUID leader, boolean fixed, String description, String motd, HomeLocationImpl home, ColorImpl color, int kills, String password, boolean protection, double experience, boolean followEnabled) {
-		this.plugin = plugin;
-		
-		this.name = name;
-		this.members = members;
-		this.leader = leader;
-		this.fixed = fixed;
-		this.description = description;
-		this.motd = motd;
-		this.home = home;
-		this.color = color;
-		this.kills = kills;
-		this.password = password;
-		this.protection = protection;
-		this.experience = experience;
-		this.followEnabled = followEnabled;
-		
-		expResult = new ExpResult();
-		onlineMembers = new HashSet<>();
-		inviteList = new HashMap<>();
+	public void setAccessible(boolean accessible) {
+		this.accessible = accessible;
 	}
 	
-	public void fromDatabase(UUID leader, List<UUID> members, boolean fixed, String description, String motd, Color color, int kills, String password, HomeLocationImpl home, boolean protection, double experience, boolean follow) {
-		lock.lock();
-		this.leader = leader;
-		this.members = members;
-		this.fixed = fixed;
-		this.description = description;
-		this.motd = motd;
-		this.color = color;
-		this.kills = kills;
-		this.password = password;
-		this.home = home;
-		this.protection = protection;
-		this.experience = experience;
-		this.followEnabled = follow;
-		lock.unlock();
+	protected void updateValue(Runnable runnable) {
+		updateValue(runnable, null);
+	}
+	
+	protected void updateValue(Runnable runnable, Runnable bungeecordSync) {
+		if (accessible) {
+			runnable.run();
+		} else {
+			lock.lock();
+			runnable.run();
+			
+			updateParty().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
+			lock.unlock();
+		}
 	}
 	
 	/**
 	 * Update the party
 	 */
-	public void updateParty() {
-		plugin.getDatabaseManager().updateParty(this);
+	public CompletableFuture<Void> updateParty() {
+		return plugin.getDatabaseManager().updateParty(this);
+	}
+	
+	/**
+	 * Setup existing party
+	 *
+	 * @param name the name of the party
+	 * @param leader the leader of the party, null if fixed
+	 */
+	public void setup(@NonNull String name, @Nullable String leader) throws IllegalArgumentException {
+		lock.lock();
+		try {
+			this.name = name;
+			if (leader == null || leader.isEmpty() || leader.equals("fixed") || leader.equals("00000000-0000-0000-0000-000000000000")) {
+				this.leader = null;
+			} else {
+				this.leader = UUID.fromString(leader);
+			}
+		} finally {
+			lock.unlock();
+		}
 	}
 	
 	/**
 	 * Create the party
 	 *
+	 * @param name the name of the party
 	 * @param leader the leader of the party, null if fixed
+	 * @param creator who is creating the party
 	 */
-	public void create(@Nullable PartyPlayerImpl leader) {
+	public void create(@Nullable String name, @Nullable PartyPlayerImpl leader, @Nullable PartyPlayerImpl creator) {
 		lock.lock();
+		this.name = name;
+		
 		if (leader == null) {
 			// Fixed
-			this.leader = UUID.fromString(PartiesConstants.FIXED_VALUE_UUID);
-			this.fixed = true;
+			this.leader = null;
 		} else {
 			// Normal
 			this.leader = leader.getPlayerUUID();
@@ -146,24 +179,28 @@ public abstract class PartyImpl implements Party {
 				onlineMembers.add(leader);
 			
 			// Update player
-			leader.setPartyName(name);
-			leader.setRank(ConfigParties.RANK_SET_HIGHER);
-			leader.updatePlayer();
+			leader.addIntoParty(id, ConfigParties.RANK_SET_HIGHER);
 			
 		}
-		updateParty();
+		CompletableFuture<Void> future = updateParty();
 		
-		plugin.getPartyManager().getListParties().put(getName().toLowerCase(Locale.ENGLISH), this);
-		callChange();
+		plugin.getPartyManager().addPartyToCache(this);
 		lock.unlock();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_CREATE.replace("{party}", getName()), true);
+		// Send sync packet + event
+		future.thenRun(() -> sendPacketCreate(creator)).exceptionally(ADPScheduler.exceptionally());
+		
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_CREATE, getName()), true);
 	}
 	
 	@Override
 	public void delete() {
+		delete(DeleteCause.OTHERS, null, null);
+	}
+	
+	public void delete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
 		lock.lock();
-		plugin.getPartyManager().getListParties().remove(getName().toLowerCase(Locale.ENGLISH)); // Remove from online list
+		plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
 		plugin.getDatabaseManager().removeParty(this); // Remove from database
 		
 		for (UUID uuid : getMembers()) {
@@ -172,73 +209,108 @@ public abstract class PartyImpl implements Party {
 		}
 		lock.unlock();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_DELETE.replace("{party}", getName()), true);
+		// Send sync packet + event
+		sendPacketDelete(cause, kicked, commandSender);
+		
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE, getName()), true);
 	}
 	
 	@Override
-	public void rename(@NonNull String newName) {
+	public void rename(@Nullable String newName) {
+		rename(newName, null, true);
+	}
+	
+	public void rename(@Nullable String newName, PartyPlayerImpl player, boolean isAdmin) {
 		lock.lock();
 		String oldName = getName();
-		plugin.getPartyManager().getListParties().remove(oldName.toLowerCase(Locale.ENGLISH)); // Remove from online list
+		plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
 		
-		plugin.getDatabaseManager().renameParty(oldName, newName); // Rename via database
+		this.name = newName;
 		
-		// For each online player rename the party
-		for (PartyPlayer partyPlayer : getOnlineMembers(true)) {
-			partyPlayer.setPartyName(newName);
-		}
+		plugin.getPartyManager().addPartyToCache(this); // Insert into online list
 		
-		this.name = newName; // Change name
-		
-		plugin.getPartyManager().getListParties().put(newName.toLowerCase(Locale.ENGLISH), this); // Insert into online list
-		callChange();
+		CompletableFuture<Void> future = updateParty();
 		lock.unlock();
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_PARTY_RENAME
-				.replace("{party}", oldName)
-				.replace("{name}", getName()), true);
+		// Send sync packet + event
+		future.thenRun(() -> sendPacketRename(oldName, getName(), player, isAdmin)).exceptionally(ADPScheduler.exceptionally());
+		
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RENAME, oldName, getName()), true);
 	}
 	
 	@Override
-	public boolean addMember(@NonNull PartyPlayer partyPlayer) {
+	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer) {
+		return addMember(partyPlayer, JoinCause.OTHERS, null);
+	}
+	
+	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
 		boolean ret = false;
+		CompletableFuture<Void> future = null;
 		lock.lock();
-		if ((ConfigParties.GENERAL_MEMBERSLIMIT < 0)
-				|| (members.size() < ConfigParties.GENERAL_MEMBERSLIMIT)) {
+		if (!isFull() && !members.contains(partyPlayer.getPlayerUUID())) {
 			members.add(partyPlayer.getPlayerUUID());
-			onlineMembers.add((PartyPlayerImpl) partyPlayer);
+			onlineMembers.add(partyPlayer);
 			
-			((PartyPlayerImpl) partyPlayer).addIntoParty(getName(), ConfigParties.RANK_SET_DEFAULT);
+			((PartyPlayerImpl) partyPlayer).addIntoParty(id, ConfigParties.RANK_SET_DEFAULT);
 			
-			updateParty();
-			callChange();
+			future = updateParty();
 			ret = true;
 		}
 		lock.unlock();
+		
+		if (ret) {
+			// Send sync packet + event
+			future.thenRun(() -> sendPacketAddMember((PartyPlayerImpl) partyPlayer, cause, inviter)).exceptionally(ADPScheduler.exceptionally());
+		}
 		return ret;
 	}
 	
 	@Override
-	public void removeMember(@NonNull PartyPlayer partyPlayer) {
-		lock.lock();
-		members.remove(partyPlayer.getPlayerUUID());
-		onlineMembers.remove(partyPlayer);
-		
-		((PartyPlayerImpl) partyPlayer).removeFromParty(true);
-		
-		updateParty();
-		callChange();
-		lock.unlock();
+	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer) {
+		return removeMember(partyPlayer, LeaveCause.OTHERS, null);
 	}
 	
-	@NonNull
+	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
+		boolean ret = false;
+		CompletableFuture<Void> future = null;
+		lock.lock();
+		if (members.contains(partyPlayer.getPlayerUUID())) {
+			members.remove(partyPlayer.getPlayerUUID());
+			onlineMembers.remove(partyPlayer);
+			
+			((PartyPlayerImpl) partyPlayer).removeFromParty(true);
+			
+			future = updateParty();
+			ret = true;
+		}
+		lock.unlock();
+		
+		if (ret) {
+			// Send sync packet + event
+			future.thenRun(() -> sendPacketRemoveMember((PartyPlayerImpl) partyPlayer, cause, (PartyPlayerImpl) kicker)).exceptionally(ADPScheduler.exceptionally());
+		}
+		return ret;
+	}
+	
+	/**
+	 * Set members field
+	 *
+	 * @param members the members to set
+	 */
+	public void setMembers(@NonNull Set<UUID> members) {
+		updateValue(() -> {
+			this.members = new HashSet<>(members); // Avoid immutable sets from db
+		});
+	}
+	
+	@org.checkerframework.checker.nullness.qual.NonNull
 	@Override
 	public Set<PartyPlayer> getOnlineMembers(boolean bypassVanish) {
 		HashSet<PartyPlayer> ret = new HashSet<>();
 		lock.lock();
 		try {
-			for (PartyPlayerImpl player : onlineMembers) {
-				if (bypassVanish || !player.isVanished())
+			for (PartyPlayer player : onlineMembers) {
+				if (bypassVanish || !((PartyPlayerImpl) player).isVanished())
 					ret.add(player);
 			}
 		} catch (ConcurrentModificationException ex) {
@@ -250,111 +322,124 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public void changeLeader(@NonNull PartyPlayer leaderPartyPlayer) {
-		lock.lock();
-		UUID oldLeader = this.leader;
-		this.leader = leaderPartyPlayer.getPlayerUUID();
-		
-		plugin.getPlayerManager().getPlayer(oldLeader).setRank(leaderPartyPlayer.getRank());
-		leaderPartyPlayer.setRank(ConfigParties.RANK_SET_HIGHER);
-		
-		updateParty();
-		callChange();
-		lock.unlock();
+	public void changeLeader(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer leaderPartyPlayer) {
+		updateValue(() -> {
+			UUID oldLeader = this.leader;
+			this.leader = leaderPartyPlayer.getPlayerUUID();
+			
+			plugin.getPlayerManager().getPlayer(oldLeader).setRank(leaderPartyPlayer.getRank());
+			leaderPartyPlayer.setRank(ConfigParties.RANK_SET_HIGHER);
+		});
+	}
+	
+	public PartyPlayerImpl findNewLeader() {
+		PartyPlayerImpl ret = null;
+		for (UUID u : getMembers()) {
+			if (!u.equals(getLeader())) {
+				PartyPlayerImpl p = plugin.getPlayerManager().getPlayer(u);
+				if (p != null && (ret == null || p.getRank() > ret.getRank())) {
+					ret = p;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	@Override
+	public boolean isFixed() {
+		return leader == null;
 	}
 	
 	@Override
 	public void setFixed(boolean fixed, @Nullable PartyPlayer newLeader) {
 		if (fixed != isFixed()) {
-			lock.lock();
-			if (fixed) {
-				UUID oldLeader = this.leader;
-				this.leader = UUID.fromString(PartiesConstants.FIXED_VALUE_UUID);
-				this.fixed = true;
-				
-				plugin.getPlayerManager().getPlayer(oldLeader).setRank(ConfigParties.RANK_SET_DEFAULT);
-			} else if (newLeader != null) {
-				this.leader = newLeader.getPlayerUUID();
-				this.fixed = false;
-				
-				newLeader.setRank(ConfigParties.RANK_SET_HIGHER);
-			}
-			updateParty();
-			callChange();
-			lock.unlock();
+			updateValue(() -> {
+				if (fixed) {
+					UUID oldLeader = this.leader;
+					this.leader = null;
+					
+					plugin.getPlayerManager().getPlayer(oldLeader).setRank(ConfigParties.RANK_SET_DEFAULT);
+				} else if (newLeader != null) {
+					this.leader = newLeader.getPlayerUUID();
+					
+					newLeader.setRank(ConfigParties.RANK_SET_HIGHER);
+				}
+			});
 		}
 	}
 	
 	@Override
-	public void setDescription(@NonNull String description) {
-		lock.lock();
-		this.description = description;
-		updateParty();
-		callChange();
-		lock.unlock();
+	public void setTag(@Nullable String tag) {
+		updateValue(() -> {
+			this.tag = tag;
+		});
 	}
 	
 	@Override
-	public void setMotd(@NonNull String motd) {
-		lock.lock();
-		this.motd = motd;
-		updateParty();
-		callChange();
-		lock.unlock();
+	public void setDescription(@Nullable String description) {
+		updateValue(() -> {
+			this.description = description;
+		});
 	}
 	
 	@Override
-	public void setHome(@Nullable HomeLocation home) {
-		lock.lock();
-		this.home = home;
-		updateParty();
-		callChange();
-		lock.unlock();
+	public void setMotd(@Nullable String motd) {
+		updateValue(() -> {
+			this.motd = motd;
+		});
 	}
 	
 	@Override
-	public void setColor(@Nullable Color color) {
-		lock.lock();
-		this.color = color;
-		updateParty();
-		callChange();
-		lock.unlock();
+	public void setHomes(@Nullable Set<PartyHome> homes) {
+		updateValue(() -> {
+			this.homes = homes;
+		});
+	}
+	
+	@Override
+	public void setColor(@Nullable PartyColor color) {
+		updateValue(() -> {
+			this.color = color;
+		});
 	}
 	
 	@Override
 	public void setKills(int kills) {
-		lock.lock();
-		this.kills = kills;
-		updateParty();
-		callChange();
-		lock.unlock();
+		updateValue(() -> {
+			this.kills = kills;
+		});
 	}
 	
 	@Override
-	public void setPassword(@NonNull String password) {
-		lock.lock();
-		this.password = password;
-		updateParty();
-		callChange();
-		lock.unlock();
+	public void setPassword(@Nullable String password) {
+		updateValue(() -> {
+			this.password = password;
+		});
+	}
+	
+	@Override
+	public boolean setPasswordUnhashed(@Nullable String password) {
+		if (PasswordUtils.isValid(password)) {
+			setPassword(PasswordUtils.hashText(password));
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
 	public void setProtection(boolean protection) {
-		lock.lock();
-		this.protection = protection;
-		updateParty();
-		callChange();
-		lock.unlock();
+		updateValue(() -> {
+			this.protection = protection;
+		});
 	}
 	
 	@Override
 	public void setExperience(double experience) {
-		lock.lock();
-		this.experience = experience;
-		updateParty();
-		callChange();
-		lock.unlock();
+		updateValue(() -> {
+			this.experience = experience;
+			
+			calculateLevels();
+		});
 	}
 	
 	@Override
@@ -372,16 +457,37 @@ public abstract class PartyImpl implements Party {
 	
 	@Override
 	public void setFollowEnabled(boolean follow) {
-		lock.lock();
-		this.followEnabled = follow;
-		updateParty();
-		callChange();
-		lock.unlock();
+		updateValue(() -> {
+			this.followEnabled = follow;
+		});
 	}
 	
 	@Override
 	public int getLevel() {
-		return expResult.getLevel();
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevel() : 1;
+	}
+	
+	@Override
+	public double getLevelExperience() {
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevelExperience() : 0;
+	}
+	
+	@Override
+	public double getLevelUpCurrent() {
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevelUpCurrent() : 0;
+	}
+	
+	@Override
+	public double getLevelUpNecessary() {
+		if (expResult == null)
+			calculateLevels();
+		return expResult != null ? expResult.getLevelUpNecessary() : 0;
 	}
 	
 	@Override
@@ -391,22 +497,60 @@ public abstract class PartyImpl implements Party {
 	
 	@Override
 	public boolean isFriendlyFireProtected() {
-		return getProtection();
+		boolean ret = false;
+		if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE) {
+			if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")) {
+				// Command
+				ret = getProtection();
+			} else {
+				// Global
+				ret = true;
+			}
+		}
+		return ret;
 	}
 	
 	
 	@Override
 	public void broadcastMessage(@Nullable String message, @Nullable PartyPlayer partyPlayer) {
-		if (message == null || message.isEmpty())
-			return;
-		
-		String formattedMessage = ConfigParties.GENERAL_CHAT_FORMAT_BROADCAST
-				.replace("%message%", message);
-		if (partyPlayer != null)
-			formattedMessage = plugin.getMessageUtils().convertAllPlaceholders(formattedMessage, this, (PartyPlayerImpl) partyPlayer);
-		formattedMessage = plugin.getColorUtils().convertColors(formattedMessage);
-		
-		broadcastDirectMessage(formattedMessage, true);
+		String formattedMessage = parseBroadcastMessage(message, partyPlayer);
+		if (formattedMessage != null) {
+			broadcastDirectMessage(formattedMessage, true);
+		}
+	}
+	
+	public void broadcastMessageOnlyTo(@Nullable String message, @Nullable PartyPlayer partyPlayer, @NonNull PartiesPermission... partyRanks) {
+		String formattedMessage = parseBroadcastMessage(message, partyPlayer);
+		if (formattedMessage != null) {
+			for (PartyPlayer player : getOnlineMembers(true)) {
+				boolean haveRankPermission = false;
+				for (PartiesPermission partyRank : partyRanks) {
+					if (plugin.getRankManager().checkPlayerRank((PartyPlayerImpl) player, partyRank)) {
+						haveRankPermission = true;
+						break;
+					}
+				}
+				if (haveRankPermission) {
+					((PartyPlayerImpl) player).sendMessage(message, (PartyPlayerImpl) partyPlayer, this);
+				}
+			}
+			
+			plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
+					.setType(SpyMessage.SpyType.BROADCAST)
+					.setMessage(plugin.getJsonHandler().removeJson(message))
+					.setParty(this)
+					.setPlayer(null));
+		}
+	}
+	
+	private String parseBroadcastMessage(@Nullable String message, @Nullable PartyPlayer partyPlayer) {
+		String ret = null;
+		if (message != null && !message.isEmpty()) {
+			ret = Color.translateAlternateColorCodes(
+					plugin.getMessageUtils().convertPlaceholders(message, (PartyPlayerImpl) partyPlayer, this)
+			);
+		}
+		return ret;
 	}
 	
 	/**
@@ -419,29 +563,46 @@ public abstract class PartyImpl implements Party {
 			return;
 		
 		for (PartyPlayer player : getOnlineMembers(true)) {
-			((PartyPlayerImpl) player).sendMessage(message, this);
+			if (ConfigParties.GENERAL_BROADCAST_TITLES_ENABLE)
+				((PartyPlayerImpl) player).sendTitleMessage(message);
+			
+			if (!ConfigParties.GENERAL_BROADCAST_TITLES_ENABLE || ConfigParties.GENERAL_BROADCAST_TITLES_SEND_NORMAL_MESSAGE)
+				((PartyPlayerImpl) player).sendDirect(message);
+			
+			((PartyPlayerImpl) player).playBroadcastSound();
 		}
 		
-		plugin.getSpyManager().sendSpyMessage(new SpyMessage(plugin)
+		plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
 				.setType(SpyMessage.SpyType.BROADCAST)
-				.setMessage(message)
+				.setMessage(plugin.getJsonHandler().removeJson(message))
 				.setParty(this)
 				.setPlayer(null));
 	}
 	
-	public void dispatchChatMessage(PartyPlayerImpl sender, String message, boolean dispatchBetweenServers) {
-		if (message == null || message.isEmpty())
-			return;
-		
-		for (PartyPlayer player : getOnlineMembers(true)) {
-			((PartyPlayerImpl) player).sendDirect(message);
+	public boolean dispatchChatMessage(PartyPlayerImpl sender, String message, boolean dispatchBetweenServers) {
+		if (message != null && !message.isEmpty()) {
+			IPlayerPreChatEvent partiesPreChatEvent = plugin.getEventManager().preparePlayerPreChatEvent(sender, this, message);
+			plugin.getEventManager().callEvent(partiesPreChatEvent);
+			
+			if (!partiesPreChatEvent.isCancelled()) {
+				String newMessage = partiesPreChatEvent.getMessage();
+				for (PartyPlayer player : getOnlineMembers(true)) {
+					((PartyPlayerImpl) player).sendDirect(newMessage);
+					((PartyPlayerImpl) player).playChatSound();
+				}
+				
+				IPlayerPostChatEvent partiesPostChatEvent = plugin.getEventManager().preparePlayerPostChatEvent(sender, this, message);
+				plugin.getEventManager().callEvent(partiesPostChatEvent);
+				
+				sendPacketChat(sender, message);
+				
+				return true;
+			} else {
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, sender.getName(), message), true);
+			}
 		}
+		return false;
 	}
-	
-	/**
-	 * This method is called when something related to Parties placeholders is changed
-	 */
-	public abstract void callChange();
 	
 	public void addOnlineMember(PartyPlayerImpl partyPlayer) {
 		onlineMembers.add(partyPlayer);
@@ -466,8 +627,26 @@ public abstract class PartyImpl implements Party {
 		
 		plugin.getColorManager().loadDynamicColor(this);
 		
-		callChange();
 		lock.unlock();
+	}
+	
+	@Override
+	public boolean isFull() {
+		return ConfigParties.GENERAL_MEMBERS_LIMIT >= 0 && getMembers().size() >= ConfigParties.GENERAL_MEMBERS_LIMIT;
+	}
+	
+	public void calculateLevels() {
+		if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE
+				&& (expResult == null || cacheExperience != experience)) {
+			try {
+				// Set the new level of the party
+				expResult = plugin.getExpManager().calculateLevel(experience);
+				// Update experience stamp
+				cacheExperience = experience;
+			} catch (Exception ex) {
+				plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_LEVELERROR, getId().toString(), ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+			}
+		}
 	}
 	
 	/**
@@ -475,156 +654,239 @@ public abstract class PartyImpl implements Party {
 	 *
 	 * @return Returns the currently used color
 	 */
-	public Color getCurrentColor() {
+	public PartyColor getCurrentColor() {
 		if (getColor() != null)
 			return getColor();
 		return getDynamicColor();
 	}
 	
+	@Override
+	public void giveExperience(double exp) {
+		this.giveExperience(exp, null);
+	}
+	
 	/**
-	 * Give some experience to the party
+	 * Give party experience
 	 *
-	 * @param exp The amount of exp to give
+	 * @param exp The experience number to give
+	 * @param killer The killer of the entity
 	 */
-	public void giveExperience(int exp) {
-		lock.lock();
-		experience = experience + exp;
-		// Update party level directly after got experience
-		callChange();
-		lock.unlock();
-	}
-	
-	/**
-	 * Invite a player
-	 */
-	public void invitePlayer(PartyPlayerImpl invitedByPartyPlayer, PartyPlayerImpl invitedPartyPlayer) {
-		invitedPartyPlayer.getPartyInvites().put(this, invitedByPartyPlayer.getPlayerUUID());
-		
-		CancellableTask task = plugin.getScheduler().scheduleAsyncLater(
-				new InviteTask(plugin, this, invitedPartyPlayer.getPlayerUUID()),
-				ConfigParties.GENERAL_INVITE_TIMEOUT,
-				TimeUnit.SECONDS);
-		inviteList.put(
-				invitedPartyPlayer.getPlayerUUID(),
-				new PartyInvite(invitedPartyPlayer.getPlayerUUID(), invitedByPartyPlayer.getPlayerUUID(), task)
-		);
-		
-		invitedByPartyPlayer.sendMessage(Messages.MAINCMD_INVITE_SENT, invitedPartyPlayer, this);
-		invitedPartyPlayer.sendMessage(Messages.MAINCMD_INVITE_PLAYERINVITED, invitedByPartyPlayer, this);
-		
-		if (ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE) {
-			if (ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL > 0) {
-				new InviteCooldown(plugin, invitedByPartyPlayer.getPlayerUUID())
-						.createTask(ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL);
-			}
-			if (ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL > 0) {
-				new InviteCooldown(plugin, invitedByPartyPlayer.getPlayerUUID(), invitedPartyPlayer.getPlayerUUID())
-						.createTask(ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL);
-			}
+	public void giveExperience(double exp, @Nullable PartyPlayer killer) {
+		if (plugin.isBungeeCordEnabled()) {
+			// Bukkit with BC enabled: just send the event to BC
+			sendPacketExperience(exp, killer);
+		} else {
+			updateValue(() -> {
+				if (expResult == null)
+					calculateLevels();
+				int currentLevel = expResult.getLevel();
+				
+				experience = experience + exp;
+				// Update party level directly after got experience
+				calculateLevels();
+				
+				plugin.getScheduler().runAsync(() -> {
+					// Experience event
+					if (plugin.getPlatform() == PluginPlatform.BUNGEECORD) {
+						// Send the experience event to bukkit too
+						sendPacketExperience(exp, killer);
+					}
+					IPartyGetExperienceEvent partiesGetExperienceEvent = plugin.getEventManager().preparePartyGetExperienceEvent(this, exp, killer);
+					plugin.getEventManager().callEvent(partiesGetExperienceEvent);
+					
+					// Level up event
+					if (expResult.getLevel() > currentLevel) {
+						// Send level up message
+						broadcastMessage(Messages.ADDCMD_EXP_PARTY_LEVEL_LEVEL_UP, null);
+						
+						if (plugin.getPlatform() == PluginPlatform.BUNGEECORD) {
+							// Send the event to bukkit too
+							sendPacketLevelUp(expResult.getLevel());
+						}
+					
+						IPartyLevelUpEvent partiesLevelUpEvent = plugin.getEventManager().prepareLevelUpEvent(this, expResult.getLevel());
+						plugin.getEventManager().callEvent(partiesLevelUpEvent);
+					}
+				});
+			});
 		}
 	}
 	
-	/**
-	 * Cancel an invite that was sent
-	 */
-	public void cancelInvite(UUID invitedPlayer) {
-		PartyInvite invite = inviteList.get(invitedPlayer);
-		if (invite != null) {
-			PartyPlayerImpl invitedByPartyPlayer = plugin.getPlayerManager().getPlayer(invite.getInvitedBy());
-			PartyPlayerImpl invitedPartyPlayer = plugin.getPlayerManager().getPlayer(invitedPlayer);
-			
-			invitedByPartyPlayer.sendMessage(Messages.MAINCMD_INVITE_TIMEOUT_NORESPONSE, invitedPartyPlayer, this);
-			if (invitedPartyPlayer.getPartyInvites().containsKey(this)) {
-				// If the player accept another party, it will receive a timeout messages for each other one
-				// This will avoid that
-				invitedPartyPlayer.sendMessage(Messages.MAINCMD_INVITE_TIMEOUT_TIMEOUT, invitedByPartyPlayer, this);
+	@Override
+	public PartyInvite invitePlayer(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
+		PartyInvite ret = null;
+		
+		IPlayerPreInviteEvent playerPreInviteEvent = plugin.getEventManager().preparePlayerPreInviteEvent(invitedPlayer, inviter, this);
+		plugin.getEventManager().callEvent(playerPreInviteEvent);
+		
+		if (!playerPreInviteEvent.isCancelled()) {
+			if (!invitedPlayer.isInParty() && !isFull()) {
+				ret = new PartyInviteImpl(plugin, this, invitedPlayer, inviter);
+				inviteRequests.add(ret);
+				invitedPlayer.getPendingInvites().add(ret);
 				
-				invitedPartyPlayer.getPartyInvites().remove(this);
-			}
-			
-			inviteList.remove(invitedPlayer);
-		}
-	}
-	
-	/**
-	 * Revoke an invite that was sent
-	 */
-	public void revokeInvite(UUID invitedPlayer) {
-		PartyInvite invite = inviteList.get(invitedPlayer);
-		if (invite != null) {
-			invite.getTask().cancel();
-			
-			PartyPlayerImpl invitedByPartyPlayer = plugin.getPlayerManager().getPlayer(invite.getInvitedBy());
-			PartyPlayerImpl invitedPartyPlayer = plugin.getPlayerManager().getPlayer(invitedPlayer);
-			
-			invitedByPartyPlayer.sendMessage(Messages.MAINCMD_INVITE_REVOKE_SENT, invitedPartyPlayer, this);
-			invitedPartyPlayer.sendMessage(Messages.MAINCMD_INVITE_REVOKE_REVOKED, invitedByPartyPlayer, this);
-			
-			invitedPartyPlayer.getPartyInvites().remove(this);
-			
-			inviteList.remove(invitedPlayer);
-		}
-	}
-	
-	/**
-	 * Accept the invite
-	 */
-	public void acceptInvite(UUID invitedPlayer) {
-		PartyInvite invite = inviteList.get(invitedPlayer);
-		if (invite != null) {
-			invite.getTask().cancel();
-			
-			PartyPlayerImpl invitedByPartyPlayer = plugin.getPlayerManager().getPlayer(invite.getInvitedBy());
-			PartyPlayerImpl invitedPartyPlayer = plugin.getPlayerManager().getPlayer(invitedPlayer);
-			
-			// Calling API Event
-			IPlayerPreJoinEvent partiesPreJoinEvent = plugin.getEventManager().preparePlayerPreJoinEvent(invitedPartyPlayer, this, true, invite.getInvitedBy());
-			plugin.getEventManager().callEvent(partiesPreJoinEvent);
-			
-			if (!partiesPreJoinEvent.isCancelled()) {
-				//Send accepted
-				invitedByPartyPlayer.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTRECEIPT, invitedPartyPlayer, this);
-				
-				//Send you accepted
-				invitedPartyPlayer.sendMessage(Messages.MAINCMD_ACCEPT_ACCEPTED, invitedByPartyPlayer, this);
-				
-				inviteList.remove(invitedPlayer);
-				
-				invitedPartyPlayer.getPartyInvites().remove(this);
-				
-				broadcastMessage(Messages.MAINCMD_ACCEPT_BROADCAST, invitedPartyPlayer);
-				
-				boolean success = addMember(invitedPartyPlayer);
-				if (success) {
-					IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(invitedPartyPlayer, this, true, invite.getInvitedBy());
-					plugin.getEventManager().callEvent(partiesPostJoinEvent);
-				} else {
-					invitedPartyPlayer.sendMessage(Messages.PARTIES_COMMON_PARTYFULL, this);
+				if (sendMessages) {
+					if (inviter != null)
+						((PartyPlayerImpl) inviter).sendMessage(Messages.MAINCMD_INVITE_SENT, (PartyPlayerImpl) invitedPlayer, this);
+					((PartyPlayerImpl) invitedPlayer).sendMessage(Messages.MAINCMD_INVITE_PLAYERINVITED, (PartyPlayerImpl) inviter, this);
 				}
-			} else
-				plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_API_JOINEVENT_DENY
-						.replace("{player}", invitedPartyPlayer.getName())
-						.replace("{party}", getName()), true);
+				
+				// Call API event and sync with bukkit servers
+				sendPacketInvite(invitedPlayer, inviter);
+				
+				IPlayerPostInviteEvent playerPostInviteEvent = plugin.getEventManager().preparePlayerPostInviteEvent(invitedPlayer, inviter, this);
+				plugin.getEventManager().callEvent(playerPostInviteEvent);
+				
+				plugin.getScheduler().scheduleAsyncLater(
+						ret::timeout,
+						ConfigParties.GENERAL_INVITE_TIMEOUT,
+						TimeUnit.SECONDS
+				);
+			}
+		} else {
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_INVITEEVENT_DENY, invitedPlayer.getPlayerUUID().toString(), getId().toString(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
+		}
+		return ret;
+	}
+	
+	public PartyAskRequest askToJoin(@NonNull PartyPlayer asker, boolean sendMessages) {
+		PartyAskRequest ret = null;
+		if (!asker.isInParty() && !isFull()) {
+			ret = new PartyAskRequestImpl(plugin, this, asker);
+			askRequests.add(ret);
+			asker.getPendingAskRequests().add(ret);
+			
+			if (sendMessages) {
+				((PartyPlayerImpl) asker).sendMessage(Messages.ADDCMD_ASK_SENT, this);
+				
+				broadcastMessageOnlyTo(Messages.ADDCMD_ASK_RECEIVED, asker, PartiesPermission.PRIVATE_ASK_ACCEPT, PartiesPermission.PRIVATE_ASK_DENY);
+			}
+			
+			plugin.getScheduler().scheduleAsyncLater(
+					ret::timeout,
+					ConfigParties.ADDITIONAL_ASK_TIMEOUT,
+					TimeUnit.SECONDS
+			);
+		}
+		return ret;
+	}
+	
+	public void memberJoinTimeout(PartyPlayerImpl joinedPlayer) {
+		if (plugin.getPartyManager().getCacheMembersTimedOut().containsKey(joinedPlayer.getPlayerUUID())) {
+			plugin.getPartyManager().getCacheMembersTimedOut().get(joinedPlayer.getPlayerUUID()).cancel();
+			plugin.getPartyManager().getCacheMembersTimedOut().remove(joinedPlayer.getPlayerUUID());
+			
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_STOP, joinedPlayer.getPlayerUUID().toString()), true);
 		}
 	}
 	
+	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer) {
+		return memberLeftTimeout(kickedPlayer, ConfigParties.GENERAL_MEMBERS_ON_LEAVE_DELAY);
+	}
+	
 	/**
-	 * Deny the invite
+	 * Handle member left from the server
+	 * @param kickedPlayer The player that left the server
+	 * @param delay Delay of time out
+	 * @return If the timeout started
 	 */
-	public void denyInvite(UUID invitedPlayer) {
-		PartyInvite invite = inviteList.get(invitedPlayer);
-		if (invite != null) {
-			invite.getTask().cancel();
-			
-			PartyPlayerImpl invitedByPartyPlayer = plugin.getPlayerManager().getPlayer(invite.getInvitedBy());
-			PartyPlayerImpl invitedPartyPlayer = plugin.getPlayerManager().getPlayer(invitedPlayer);
-			
-			invitedByPartyPlayer.sendMessage(Messages.MAINCMD_DENY_DENYRECEIPT, invitedPartyPlayer, this);
-			invitedPartyPlayer.sendMessage(Messages.MAINCMD_DENY_DENIED, invitedByPartyPlayer, this);
-			
-			invitedPartyPlayer.getPartyInvites().remove(this);
-			
-			inviteList.remove(invitedPlayer);
+	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer, int delay) {
+		boolean ret = false;
+		if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER || ConfigParties.GENERAL_MEMBERS_ON_LEAVE_KICK_FROM_PARTY) {
+			if (delay > 0) {
+				plugin.getPartyManager().getCacheMembersTimedOut().put(kickedPlayer.getPlayerUUID(), plugin.getScheduler().scheduleAsyncLater(() -> plugin.getPartyManager().removePlayerTimedOut(kickedPlayer, this), delay, TimeUnit.SECONDS));
+				ret = true;
+			} else
+				plugin.getPartyManager().removePlayerTimedOut(kickedPlayer, this);
 		}
+		return ret;
+	}
+	
+	public abstract void sendPacketUpdate();
+	
+	public void sendPacketCreate(PartyPlayerImpl creator) {
+		// Calling API event
+		IPartyPostCreateEvent partiesPostEvent = plugin.getEventManager().preparePartyPostCreateEvent(creator, this);
+		plugin.getEventManager().callEvent(partiesPostEvent);
+	}
+	
+	public void sendPacketDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
+		// Calling API event
+		IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(this, cause, kicked, commandSender);
+		plugin.getEventManager().callEvent(partiesPostDeleteEvent);
+	}
+	
+	public void sendPacketRename(String oldName, String newName, PartyPlayerImpl player, boolean isAdmin) {
+		// Calling API event
+		IPartyPostRenameEvent partiesPostRenameEvent = plugin.getEventManager().preparePartyPostRenameEvent(this, oldName, getName(), player, isAdmin);
+		plugin.getEventManager().callEvent(partiesPostRenameEvent);
+	}
+	
+	public void sendPacketAddMember(PartyPlayerImpl player, JoinCause cause, PartyPlayerImpl inviter) {
+		// Calling API Event
+		IPlayerPostJoinEvent partiesPostJoinEvent = plugin.getEventManager().preparePlayerPostJoinEvent(player, this, cause, inviter);
+		plugin.getEventManager().callEvent(partiesPostJoinEvent);
+	}
+	
+	public void sendPacketRemoveMember(PartyPlayerImpl player, LeaveCause cause, PartyPlayerImpl kicker) {
+		// Calling API Event
+		IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, this, cause, kicker);
+		plugin.getEventManager().callEvent(partiesPostLeaveEvent);
+	}
+	
+	public void sendPacketChat(PartyPlayerImpl player, String message) {
+		// Calling API Event
+		IPlayerPostChatEvent partiesPostChatEvent = plugin.getEventManager().preparePlayerPostChatEvent(player, this, message);
+		plugin.getEventManager().callEvent(partiesPostChatEvent);
+	}
+	
+	public void sendPacketInvite(PartyPlayer invitedPlayer, PartyPlayer inviter) {
+		// Calling API Event
+		IPlayerPostInviteEvent playerPostInviteEvent = plugin.getEventManager().preparePlayerPostInviteEvent(invitedPlayer, inviter, this);
+		plugin.getEventManager().callEvent(playerPostInviteEvent);
+	}
+	
+	public abstract void sendPacketExperience(double newExperience, PartyPlayer killer);
+	
+	public abstract void sendPacketLevelUp(int newLevel);
+	
+	protected byte[] makeRawDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
+		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
+		raw.writeUTF(cause.name());
+		raw.writeUTF(kicked.getPlayerUUID().toString());
+		raw.writeUTF(commandSender != null ? commandSender.getPlayerUUID().toString() : "");
+		return raw.toByteArray();
+	}
+	
+	protected byte[] makeRawRename(String oldName, String newName, PartyPlayerImpl player, boolean isAdmin) {
+		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
+		raw.writeUTF(oldName);
+		raw.writeUTF(newName);
+		raw.writeUTF(player != null ? player.getPlayerUUID().toString() : "");
+		raw.writeBoolean(isAdmin);
+		return raw.toByteArray();
+	}
+	
+	protected byte[] makeRawAddMember(PartyPlayerImpl player, JoinCause cause, PartyPlayerImpl inviter) {
+		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
+		raw.writeUTF(player.getPlayerUUID().toString());
+		raw.writeUTF(cause.name());
+		raw.writeUTF(inviter != null ? inviter.getPlayerUUID().toString() : "");
+		return raw.toByteArray();
+	}
+	
+	protected byte[] makeRawRemoveMember(PartyPlayerImpl player, LeaveCause cause, PartyPlayerImpl kicker) {
+		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
+		raw.writeUTF(player.getPlayerUUID().toString());
+		raw.writeUTF(cause.name());
+		raw.writeUTF(kicker != null ? kicker.getPlayerUUID().toString() : "");
+		return raw.toByteArray();
+	}
+	
+	protected byte[] makeRawInvite(PartyPlayer invitedPlayer, PartyPlayer inviter) {
+		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
+		raw.writeUTF(invitedPlayer.getPlayerUUID().toString());
+		raw.writeUTF(inviter != null ? inviter.getPlayerUUID().toString() : "");
+		return raw.toByteArray();
 	}
 }

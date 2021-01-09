@@ -19,3 +19,7 @@ gradle-app.setting
 *.iml
 out
 gen
+
+# Maven
+log/
+target/

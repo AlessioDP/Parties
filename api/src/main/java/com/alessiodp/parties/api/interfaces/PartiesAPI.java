@@ -2,7 +2,9 @@ package com.alessiodp.parties.api.interfaces;
 
 import com.alessiodp.parties.api.enums.Status;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -14,13 +16,20 @@ public interface PartiesAPI {
 	void reloadPlugin();
 	
 	/**
+	 * Check if the plugin have BungeeCord option enabled
+	 *
+	 * @return True if BungeeCord support is enabled
+	 */
+	boolean isBungeeCordEnabled();
+	
+	/**
 	 * Create a party
 	 *
 	 * @param party  The party name
 	 * @param leader The leader of the party as {@link PartyPlayer}, null if the party should be fixed
 	 * @return Returns true if successfully created
 	 */
-	boolean createParty(@NonNull String party, PartyPlayer leader);
+	boolean createParty(@Nullable String party, @Nullable PartyPlayer leader);
 	
 	/**
 	 * Get the party by its name
@@ -29,6 +38,14 @@ public interface PartiesAPI {
 	 * @return Returns the {@link Party}
 	 */
 	Party getParty(@NonNull String party);
+	
+	/**
+	 * Get the party by its id
+	 *
+	 * @param party The id of the {@link Party}
+	 * @return Returns the {@link Party}
+	 */
+	Party getParty(@NonNull UUID party);
 	
 	/**
 	 * Get the player by his {@link UUID}
@@ -48,16 +65,16 @@ public interface PartiesAPI {
 	/**
 	 * Get the list of available ranks
 	 *
-	 * @return Returns a set of {@link Rank}
+	 * @return Returns a set of {@link PartyRank}
 	 */
-	Set<Rank> getRanks();
+	Set<PartyRank> getRanks();
 	
 	/**
 	 * Get the list of available colors
 	 *
-	 * @return Returns a set of {@link Color}
+	 * @return Returns a set of {@link PartyColor}
 	 */
-	Set<Color> getColors();
+	Set<PartyColor> getColors();
 	
 	/**
 	 * Reload Parties configuration files
@@ -120,7 +137,7 @@ public interface PartiesAPI {
 	default Status addPlayerIntoParty(PartyPlayer player, Party party) {
 		if (party == null || player == null)
 			return Status.NOEXIST;
-		if (!player.getPartyName().isEmpty())
+		if (player.isInParty())
 			return Status.ALREADYINPARTY;
 		if (party.addMember(player))
 			return Status.SUCCESS;
@@ -139,7 +156,7 @@ public interface PartiesAPI {
 	default Status removePlayerFromParty(PartyPlayer player) {
 		if (player == null)
 			return Status.NOEXIST;
-		Party party = getParty(player.getPartyName());
+		Party party = player.getPartyId() != null ? getParty(player.getPartyId()) : null;
 		if (party == null)
 			return Status.NOPARTY;
 		party.removeMember(player);
@@ -186,4 +203,69 @@ public interface PartiesAPI {
 	default void refreshOnlinePlayers(Party party) {
 		// Nothing to do
 	}
+	
+	/**
+	 * Is the player in a party?
+	 *
+	 * @param player The player UUID to check
+	 * @return True if its in a party
+	 */
+	default boolean isPlayerInParty(UUID player) {
+		PartyPlayer partyPlayer = getPartyPlayer(player);
+		return partyPlayer != null && partyPlayer.isInParty();
+	}
+	
+	/**
+	 * Get list of parties ordered by name
+	 *
+	 * @param numberOfParties Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByName(int numberOfParties, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of online members
+	 *
+	 * @param numberOfParties Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByOnlineMembers(int numberOfParties, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of members
+	 *
+	 * @param numberOfParties Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByMembers(int numberOfParties, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of kills
+	 *
+	 * @param numberOfParties Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByKills(int numberOfParties, int offset);
+	
+	/**
+	 * Get list of parties ordered by number of experience
+	 *
+	 * @param numberOfParties Number of parties to get
+	 * @param offset Offset of parties list
+	 * @return Returns a list of {@link Party}
+	 */
+	LinkedList<Party> getPartiesListByExperience(int numberOfParties, int offset);
+	
+	/**
+	 * Check if the given players are in the same party
+	 *
+	 * @param player1 The first player
+	 * @param player2 The second player
+	 * @return True if they are in the same party
+	 */
+	boolean areInTheSameParty(UUID player1, UUID player2);
 }

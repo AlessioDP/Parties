@@ -5,200 +5,237 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
-import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
+import java.util.TreeSet;
 
 public class CommandList extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = true;
+	private final String syntaxOrder;
 	
 	public CommandList(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.LIST,
+				PartiesPermission.USER_LIST,
+				ConfigMain.COMMANDS_CMD_LIST,
+				true
+		);
+		
+		syntax = String.format("%s [%s]",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_PAGE
+		);
+		
+		if (ConfigParties.ADDITIONAL_LIST_CHANGE_ORDER) {
+			syntaxOrder = String.format("%s [%s] [%s]",
+					baseSyntax(),
+					Messages.PARTIES_SYNTAX_ORDER,
+					Messages.PARTIES_SYNTAX_PAGE
+			);
+		} else {
+			syntaxOrder = syntax;
+		}
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_LIST;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_LIST;
+	}
+	
+	@Override
+	public String getSyntaxForUser(User user) {
+		if (!user.hasPermission(permission))
+			return syntax;
+		return syntaxOrder;
 	}
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = sender.isPlayer() ? ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID()) : null;
-		
-		// Checks for command prerequisites
-		if (partyPlayer != null && !sender.hasPermission(PartiesPermission.LIST.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.LIST);
-			return false;
+		if (sender.isPlayer()) {
+			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			
+			// Checks for command prerequisites
+			if (!sender.hasPermission(permission)
+					&& !sender.hasPermission(PartiesPermission.USER_LIST_NAME)
+					&& !sender.hasPermission(PartiesPermission.USER_LIST_ONLINE_MEMBERS)
+					&& !sender.hasPermission(PartiesPermission.USER_LIST_MEMBERS)
+					&& !sender.hasPermission(PartiesPermission.USER_LIST_KILLS)
+					&& !sender.hasPermission(PartiesPermission.USER_LIST_EXPERIENCE)) {
+				sendNoPermissionMessage(partyPlayer, permission);
+				return false;
+			}
+			
+			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+			commandData.addPermission(permission);
+			commandData.addPermission(PartiesPermission.USER_LIST_NAME);
+			commandData.addPermission(PartiesPermission.USER_LIST_ONLINE_MEMBERS);
+			commandData.addPermission(PartiesPermission.USER_LIST_MEMBERS);
+			commandData.addPermission(PartiesPermission.USER_LIST_KILLS);
+			commandData.addPermission(PartiesPermission.USER_LIST_EXPERIENCE);
 		}
-		
-		if (commandData.getArgs().length > 2) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_WRONGCMD);
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
+		PartyPlayerImpl player = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
 		int selectedPage = 1;
-		if (commandData.getArgs().length == 2) {
-			try {
-				selectedPage = Integer.parseInt(commandData.getArgs()[1]);
-			} catch(NumberFormatException ex) {
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_WRONGCMD);
+		PartiesDatabaseManager.ListOrder orderBy = null;
+		
+		if (commandData.getArgs().length > 1) {
+			if (commandData.getArgs().length == 2) {
+				try {
+					selectedPage = Integer.parseInt(commandData.getArgs()[1]);
+				} catch (NumberFormatException ignored) {
+					orderBy = PartiesDatabaseManager.ListOrder.parse(commandData.getArgs()[1]);
+					if (orderBy == null) {
+						sendMessage(sender, player, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+								.replace("%syntax%", getSyntaxForUser(sender)));
+						return;
+					}
+				}
+			} else if (commandData.getArgs().length == 3) {
+				orderBy = PartiesDatabaseManager.ListOrder.parse(commandData.getArgs()[1]);
+				if (orderBy == null) {
+					sendMessage(sender, player, Messages.ADDCMD_LIST_INVALID_ORDER);
+					return;
+				}
+				
+				try {
+					selectedPage = Integer.parseInt(commandData.getArgs()[2]);
+				} catch (NumberFormatException ignored) {
+					sendMessage(sender, player, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+							.replace("%syntax%", getSyntaxForUser(sender)));
+					return;
+				}
+				
+			} else {
+				sendMessage(sender, player, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+						.replace("%syntax%", getSyntaxForUser(sender)));
 				return;
 			}
 		}
 		
-		// Command starts
-		// Get all parties
-		List<PartyImpl> parties = new ArrayList<>();
-		for (PartyImpl party : ((PartiesPlugin) plugin).getDatabaseManager().getAllParties()) {
-			if (party != null && !ConfigParties.LIST_HIDDENPARTIES.contains(party.getName())) {
-				party.refreshOnlineMembers();
-				if (party.getOnlineMembers(false).size() >= ConfigParties.LIST_FILTERMIN)
-					parties.add(party);
+		if (orderBy != null) {
+			if (!commandData.havePermission(permission) &&
+					(
+							(orderBy == PartiesDatabaseManager.ListOrder.NAME && !commandData.havePermission(PartiesPermission.USER_LIST_NAME))
+									|| (orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS && !commandData.havePermission(PartiesPermission.USER_LIST_ONLINE_MEMBERS))
+									|| (orderBy == PartiesDatabaseManager.ListOrder.MEMBERS && !commandData.havePermission(PartiesPermission.USER_LIST_MEMBERS))
+									|| (orderBy == PartiesDatabaseManager.ListOrder.KILLS && !commandData.havePermission(PartiesPermission.USER_LIST_KILLS))
+									|| (orderBy == PartiesDatabaseManager.ListOrder.EXPERIENCE && !commandData.havePermission(PartiesPermission.USER_LIST_EXPERIENCE))
+					)) {
+				sendMessage(sender, player, Messages.ADDCMD_LIST_INVALID_ORDER);
+				return;
 			}
+		} else {
+			if (commandData.havePermission(permission))
+				orderBy = PartiesDatabaseManager.ListOrder.getType(ConfigParties.ADDITIONAL_LIST_ORDERBY);
+			else if (commandData.havePermission(PartiesPermission.USER_LIST_NAME))
+				orderBy = PartiesDatabaseManager.ListOrder.NAME;
+			else if (commandData.havePermission(PartiesPermission.USER_LIST_ONLINE_MEMBERS))
+				orderBy = PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS;
+			else if (commandData.havePermission(PartiesPermission.USER_LIST_MEMBERS))
+				orderBy = PartiesDatabaseManager.ListOrder.MEMBERS;
+			else if (commandData.havePermission(PartiesPermission.USER_LIST_KILLS))
+				orderBy = PartiesDatabaseManager.ListOrder.KILLS;
+			else if (commandData.havePermission(PartiesPermission.USER_LIST_EXPERIENCE))
+				orderBy = PartiesDatabaseManager.ListOrder.EXPERIENCE;
+			
+			if (orderBy == null) orderBy = PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS;
 		}
 		
-		// Order parties
-		order(parties, OrderType.parse(ConfigParties.LIST_ORDEREDBY));
+		// Command starts
+		int numberPlayers = Math.min(
+				orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS ? ((PartiesPlugin) plugin).getPartyManager().getCacheParties().size() : ((PartiesPlugin) plugin).getDatabaseManager().getListPartiesNumber(),
+				ConfigParties.ADDITIONAL_LIST_LIMITPARTIES);
+		int limit = Math.max(1, ConfigParties.ADDITIONAL_LIST_PERPAGE);
 		
-		// Group up parties
-		parties = limitList(parties);
 		int maxPages;
-		if (parties.size() == 0)
+		if (numberPlayers == 0)
 			maxPages = 1;
-		else if (parties.size() % ConfigParties.LIST_PERPAGE == 0)
-			maxPages = parties.size() / ConfigParties.LIST_PERPAGE;
+		else if (numberPlayers % ConfigParties.ADDITIONAL_LIST_PERPAGE == 0)
+			maxPages = numberPlayers / ConfigParties.ADDITIONAL_LIST_PERPAGE;
 		else
-			maxPages = (parties.size() / ConfigParties.LIST_PERPAGE) + 1;
+			maxPages = (numberPlayers / ConfigParties.ADDITIONAL_LIST_PERPAGE) + 1;
 		
 		if (selectedPage > maxPages)
 			selectedPage = maxPages;
-		else if (selectedPage < 1)
-			selectedPage = 1;
 		
-		// Start printing
-		int currentPage = 0;
-		sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_HEADER
-				.replace("%number%",		Integer.toString(parties.size()))
-				.replace("%page%",		Integer.toString(selectedPage))
-				.replace("%maxpages%",	Integer.toString(maxPages)));
-		
-		if (parties.size() > 0) {
-			for (PartyImpl party : parties) {
-				int currentChoosenPage = (selectedPage - 1) * ConfigParties.LIST_PERPAGE;
-				if (currentPage >= currentChoosenPage && currentPage < (currentChoosenPage + ConfigParties.LIST_PERPAGE)) {
-					sendMessage(sender, partyPlayer, ((PartiesPlugin) plugin).getMessageUtils().convertPartyPlaceholders(Messages.ADDCMD_LIST_FORMATPARTY, party));
+		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
+		LinkedHashSet<PartyImpl> parties;
+		if (orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS) {
+			parties = new LinkedHashSet<>();
+			LinkedHashSet<PartyImpl> onlineParties = new LinkedHashSet<>(new TreeSet<PartyImpl>(Comparator.comparingInt(p -> p.getOnlineMembers(false).size())));
+			((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().forEach((party) -> {
+				party.refreshOnlineMembers();
+				onlineParties.add(party);
+			});
+			
+			// Limit and offset
+			Iterator<PartyImpl> iterator = onlineParties.iterator();
+			int n = 0;
+			for (int c = 0; iterator.hasNext() && n < limit; c++) {
+				PartyImpl p = iterator.next();
+				if (c >= offset) {
+					parties.add(p);
+					n++;
 				}
-				currentPage++;
 			}
 		} else {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_NOONE);
+			parties = ((PartiesPlugin) plugin).getDatabaseManager().getListParties(orderBy, limit, offset);
 		}
 		
-		sendMessage(sender, partyPlayer, Messages.ADDCMD_LIST_FOOTER
-				.replace("%number%",		Integer.toString(parties.size()))
-				.replace("%page%",		Integer.toString(selectedPage))
-				.replace("%maxpages%",	Integer.toString(maxPages)));
+		sendMessage(sender, player, Messages.ADDCMD_LIST_HEADER
+				.replace("%total%", Integer.toString(numberPlayers))
+				.replace("%page%", Integer.toString(selectedPage))
+				.replace("%maxpages%", Integer.toString(maxPages)));
 		
-		plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_LIST
-				.replace("{player}", sender.getName()), true);
+		if (parties.size() > 0) {
+			parties.forEach((party) -> {
+				party.refreshOnlineMembers();
+				sendMessage(sender, player, Messages.ADDCMD_LIST_FORMATPARTY, party);
+			});
+		} else {
+			sendMessage(sender, player, Messages.ADDCMD_LIST_NOONE);
+		}
+		
+		sendMessage(sender, player, Messages.ADDCMD_LIST_FOOTER
+				.replace("%total%", Integer.toString(numberPlayers))
+				.replace("%page%", Integer.toString(selectedPage))
+				.replace("%maxpages%", Integer.toString(maxPages)));
 	}
 	
-	private void order(List<PartyImpl> list, OrderType order) {
-		int from;
-		for (int c = 0; c < list.size() - 1;c++) {
-			from = c;
-			for (int c2 = c+1 ; c2 < list.size(); c2++) {
-				if (switchParty(list.get(c2), list.get(from), order)) {
-					from = c2;
-				}
-			}
-			if (from != c) {
-				PartyImpl temp = list.get(c);
-				list.set(c, list.get(from));
-				list.set(from, temp);
-			}
-		}
-	}
-	private boolean switchParty(PartyImpl first, PartyImpl second, OrderType order) {
-		boolean ret;
-		switch (order) {
-			case PLAYERS:
-				// Online players order
-				ret = first.getOnlineMembers(false).size() > second.getOnlineMembers(false).size();
-				break;
-			case ALLPLAYERS:
-				// Total players order
-				ret = first.getMembers().size() > second.getMembers().size();
-				break;
-			case KILLS:
-				// Party kills order
-				ret = first.getKills() > second.getKills();
-				break;
-			case EXPERIENCE:
-				// Party level order
-				ret = first.getExperience() > second.getExperience();
-				break;
-			default:
-				ret = first.getName().trim().compareTo(second.getName().trim()) < 0;
-				break;
+	@Override
+	public List<String> onTabComplete(@NonNull User sender, String[] args) {
+		List<String> ret = new ArrayList<>();
+		if (sender.hasPermission(permission)
+				&& args.length == 2
+				&& ConfigParties.ADDITIONAL_LIST_CHANGE_ORDER) {
+			ret.add(Messages.PARTIES_SYNTAX_NAME);
+			ret.add(Messages.PARTIES_SYNTAX_ONLINE_MEMBERS);
+			ret.add(Messages.PARTIES_SYNTAX_MEMBERS);
+			ret.add(Messages.PARTIES_SYNTAX_KILLS);
+			ret.add(Messages.PARTIES_SYNTAX_EXPERIENCE);
 		}
 		return ret;
-	}
-	
-	private List<PartyImpl> limitList(List<PartyImpl> list) {
-		List<PartyImpl> ret = list;
-		if (ConfigParties.LIST_LIMITPARTIES >= 0) {
-			ret = new ArrayList<>();
-			for (int c=0; c < ConfigParties.LIST_LIMITPARTIES; c++) {
-				try {
-					ret.add(list.get(c));
-				} catch (Exception ex) {
-					break;
-				}
-			}
-		}
-		return ret;
-	}
-	
-	private enum OrderType {
-		NAME, PLAYERS, ALLPLAYERS, KILLS, EXPERIENCE;
-		
-		static OrderType parse(String name) {
-			OrderType ret = NAME;
-			switch (name.toLowerCase(Locale.ENGLISH)) {
-				case "players":
-					ret = PLAYERS;
-					break;
-				case "allplayers":
-					ret = ALLPLAYERS;
-					break;
-				case "kills":
-					ret = KILLS;
-					break;
-				case "experience":
-					ret = EXPERIENCE;
-					break;
-				default:
-					// Nothing to do
-					break;
-			}
-			return ret;
-		}
 	}
 }

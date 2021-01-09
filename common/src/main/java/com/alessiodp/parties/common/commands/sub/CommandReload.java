@@ -5,19 +5,31 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.Getter;
 
 public class CommandReload extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandReload(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.RELOAD,
+				PartiesPermission.ADMIN_RELOAD,
+				ConfigMain.COMMANDS_CMD_RELOAD,
+				true
+		);
+		
+		syntax = baseSyntax();
+		
+		description = Messages.HELP_MAIN_DESCRIPTIONS_RELOAD;
+		help = Messages.HELP_MAIN_COMMANDS_RELOAD;
 	}
 	
 	@Override
@@ -27,8 +39,8 @@ public class CommandReload extends PartiesSubCommand {
 			// If the sender is a player
 			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
-			if (!sender.hasPermission(PartiesPermission.ADMIN_RELOAD.toString())) {
-				sendNoPermissionMessage(partyPlayer, PartiesPermission.ADMIN_RELOAD);
+			if (!sender.hasPermission(permission)) {
+				sendNoPermissionMessage(partyPlayer, permission);
 				return false;
 			}
 			
@@ -42,21 +54,11 @@ public class CommandReload extends PartiesSubCommand {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
-		if (partyPlayer != null)
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_RELOAD
-					.replace("{player}", sender.getName()), true);
-		else
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_RELOAD_CONSOLE, true);
-		
 		plugin.reloadConfiguration();
 		
-		if (partyPlayer != null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_CONFIGRELOAD);
-			
-			plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_RELOADED
-					.replace("{player}", sender.getName()), true);
-		} else {
-			plugin.getLoggerManager().log(PartiesConstants.DEBUG_CMD_RELOADED_CONSOLE, true);
-		}
+		sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_CONFIGRELOAD);
+		
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RELOADED,
+				sender.getName()), true);
 	}
 }

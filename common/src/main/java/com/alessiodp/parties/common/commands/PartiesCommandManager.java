@@ -3,7 +3,6 @@ package com.alessiodp.parties.common.commands;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.CommandManager;
 import com.alessiodp.core.common.commands.utils.CommandData;
-import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 
@@ -15,10 +14,9 @@ public abstract class PartiesCommandManager extends CommandManager {
 	}
 	
 	@Override
-	protected void prepareCommands() {
+	public void prepareCommands() {
 		commandOrder = new LinkedList<>();
 		commandOrder.addAll(ConfigMain.COMMANDS_ORDER);
-		CommonCommands.setup();
 	}
 	
 	@Override

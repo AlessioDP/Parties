@@ -1,14 +1,11 @@
 package com.alessiodp.parties.bungeecord.configuration;
 
-import com.alessiodp.core.bungeecord.configuration.adapter.BungeeConfigurationAdapter;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeMessages;
+import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
-
-import java.nio.file.Path;
 
 public class BungeePartiesConfigurationManager extends PartiesConfigurationManager {
 	
@@ -20,8 +17,8 @@ public class BungeePartiesConfigurationManager extends PartiesConfigurationManag
 		getConfigs().add(new BungeeConfigParties(plugin));
 	}
 	
-	@Override
-	protected ConfigurationAdapter initializeConfigurationAdapter(Path configurationFile) {
-		return new BungeeConfigurationAdapter(configurationFile);
+	public void makeConfigsSync() {
+		if (BungeeConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC)
+			((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigs();
 	}
 }

@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -12,19 +13,34 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.commands.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.CensorUtils;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandDesc extends PartiesSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandDesc(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.DESC,
+				PartiesPermission.USER_DESC,
+				ConfigMain.COMMANDS_CMD_DESC,
+				false
+		);
+		
+		syntax = String.format("%s <%s/%s>",
+				baseSyntax(),
+				Messages.PARTIES_SYNTAX_DESCRIPTION,
+				ConfigMain.COMMANDS_SUB_REMOVE
+		);
+		
+		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_DESC;
+		help = Messages.HELP_ADDITIONAL_COMMANDS_DESC;
 	}
 	
 	@Override
@@ -33,12 +49,12 @@ public class CommandDesc extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(PartiesPermission.DESC.toString())) {
-			sendNoPermissionMessage(partyPlayer, PartiesPermission.DESC);
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
-		PartyImpl party = partyPlayer.getPartyName().isEmpty() ? null : ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyName());
+		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 			return false;
@@ -48,7 +64,8 @@ public class CommandDesc extends PartiesSubCommand {
 			return false;
 		
 		if (commandData.getArgs().length < 2) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_WRONGCMD);
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
 			return false;
 		}
 		
@@ -79,13 +96,13 @@ public class CommandDesc extends PartiesSubCommand {
 			}
 			description = sb.toString();
 			
-			if (!((PartiesPlugin) plugin).getCensorUtils().checkAllowedCharacters(ConfigParties.DESC_ALLOWEDCHARS, description, PartiesConstants.DEBUG_CMD_DESC_REGEXERROR_AC)
-					|| (description.length() > ConfigParties.DESC_MAXLENGTH)
-					|| (description.length() < ConfigParties.DESC_MINLENGTH)) {
+			if (!CensorUtils.checkAllowedCharacters(ConfigParties.ADDITIONAL_DESC_ALLOWEDCHARS, description, PartiesConstants.DEBUG_CMD_DESC_REGEXERROR_ALLOWEDCHARS)
+					|| (description.length() > ConfigParties.ADDITIONAL_DESC_MAXLENGTH)
+					|| (description.length() < ConfigParties.ADDITIONAL_DESC_MINLENGTH)) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_INVALID);
 				return;
 			}
-			if (((PartiesPlugin) plugin).getCensorUtils().checkCensor(ConfigParties.DESC_CENSORREGEX, description, PartiesConstants.DEBUG_CMD_DESC_REGEXERROR_CEN)) {
+			if (CensorUtils.checkCensor(ConfigParties.ADDITIONAL_DESC_CENSORREGEX, description, PartiesConstants.DEBUG_CMD_DESC_REGEXERROR_CENSORED)) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_CENSORED);
 				return;
 			}
@@ -96,21 +113,18 @@ public class CommandDesc extends PartiesSubCommand {
 		
 		// Command starts
 		party.setDescription(description);
-		party.updateParty();
 		
 		if (isRemove) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_REMOVED);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_DESC_REM
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DESC_REM,
+					partyPlayer.getName(), party.getName()), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_DESC_BROADCAST, partyPlayer);
 			
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_CMD_DESC
-					.replace("{player}", sender.getName())
-					.replace("{party}", party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DESC,
+					partyPlayer.getName(), party.getName()), true);
 		}
 	}
 	

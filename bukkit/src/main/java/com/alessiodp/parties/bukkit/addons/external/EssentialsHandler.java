@@ -6,8 +6,9 @@ import com.earth2me.essentials.IEssentials;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class EssentialsHandler {
@@ -23,14 +24,20 @@ public class EssentialsHandler {
 			active = true;
 			essentials = Bukkit.getPluginManager().getPlugin(ADDON_NAME);
 			
-			plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-					.replace("{addon}", ADDON_NAME), true);
+			plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 		}
 	}
 	
-	public static void updateLastTeleportLocation(Player player) {
+	public static void updateLastTeleportLocation(UUID player) {
 		if (active && essentials != null) {
 			((IEssentials) essentials).getUser(player).setLastLocation();
 		}
+	}
+	
+	public static boolean isPlayerMuted(UUID player) {
+		if (active && essentials != null) {
+			return ((IEssentials) essentials).getUser(player).isMuted();
+		}
+		return false;
 	}
 }
