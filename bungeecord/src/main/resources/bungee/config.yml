@@ -232,7 +232,6 @@ commands:
     word-on: 'on'
     word-off: 'off'
     silent: 'silent'
-    fixed: 'fixed'
     remove: 'remove'
   order:
   - help

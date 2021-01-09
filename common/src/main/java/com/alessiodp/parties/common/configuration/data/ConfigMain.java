@@ -191,8 +191,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_SUB_OFF;
 	@ConfigOption(path = "commands.sub-commands.silent")
 	public static String		COMMANDS_SUB_SILENT;
-	@ConfigOption(path = "commands.sub-commands.fixed")
-	public static String		COMMANDS_SUB_FIXED;
 	@ConfigOption(path = "commands.sub-commands.remove")
 	public static String		COMMANDS_SUB_REMOVE;
 	

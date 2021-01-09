@@ -105,7 +105,6 @@ main-commands:
   create:
     created: '[{"text":"You have created the party %party%.\n","color":"aqua","bold":true},{"text":"Type ","color":"aqua","bold":false},{"text":"/party invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/party invite "}},{"text":" to invite your friend.","color":"aqua"}]'
     created-fixed: "&b&lYou have created the fixed party %party%"
-    console-must-fixed: "&cYou can only create fixed parties by console!"
     name-already-exists: "&cThe party name %party% already exists, choose a different name"
     name-too-long: "&cThe party name is too long!"
     name-too-short: "&cThe party name is too short!"

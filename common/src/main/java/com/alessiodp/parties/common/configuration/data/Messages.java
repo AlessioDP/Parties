@@ -137,8 +137,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_CREATE_CREATED;
 	@ConfigOption(path = "main-commands.create.created-fixed")
 	public static String MAINCMD_CREATE_CREATEDFIXED;
-	@ConfigOption(path = "main-commands.create.console-must-fixed")
-	public static String MAINCMD_CREATE_CONSOLE_MUST_FIXED;
 	@ConfigOption(path = "main-commands.create.name-already-exists")
 	public static String MAINCMD_CREATE_NAMEEXISTS;
 	@ConfigOption(path = "main-commands.create.name-too-long")
