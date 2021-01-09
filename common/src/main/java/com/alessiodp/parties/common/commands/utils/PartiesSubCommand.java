@@ -18,34 +18,34 @@ public abstract class PartiesSubCommand extends ADPSubCommand {
 		super(plugin, mainCommand, command, permission, commandName, executableByConsole);
 	}
 	
-	protected void sendNoPermissionMessage(PartyPlayerImpl partyPlayer, ADPPermission permission) {
+	public void sendNoPermissionMessage(PartyPlayerImpl partyPlayer, ADPPermission permission) {
 		if (partyPlayer != null)
 			partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
 					.replace("%permission%", permission.toString()));
 	}
 	
-	protected void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message) {
+	public void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message) {
 		if (receiver.isPlayer())
 			playerReceiver.sendMessage(message);
 		else
 			((PartiesPlugin) plugin).getMessageUtils().sendMessage(receiver, message, playerReceiver, playerReceiver != null ? ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(playerReceiver) : null);
 	}
 	
-	protected void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyPlayerImpl victim) {
+	public void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyPlayerImpl victim) {
 		if (receiver.isPlayer())
 			playerReceiver.sendMessage(message, victim);
 		else
 			((PartiesPlugin) plugin).getMessageUtils().sendMessage(receiver, message, victim, victim != null ? ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(victim) : null);
 	}
 	
-	protected void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyImpl party) {
+	public void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyImpl party) {
 		if (receiver.isPlayer())
 			playerReceiver.sendMessage(message, party);
 		else
 			((PartiesPlugin) plugin).getMessageUtils().sendMessage(receiver, message, playerReceiver, party);
 	}
 	
-	protected void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyPlayerImpl victim, PartyImpl party) {
+	public void sendMessage(User receiver, PartyPlayerImpl playerReceiver, String message, PartyPlayerImpl victim, PartyImpl party) {
 		if (receiver.isPlayer())
 			playerReceiver.sendMessage(message, victim, party);
 		else

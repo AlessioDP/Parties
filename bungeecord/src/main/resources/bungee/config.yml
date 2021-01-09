@@ -197,6 +197,7 @@ commands:
     claim: 'claim'
     color: 'color'
     create: 'create'
+    createfixed: 'createfixed'
     debug: 'debug'
     delete: 'delete'
     deny: 'deny'
@@ -236,6 +237,7 @@ commands:
   order:
   - help
   - create
+  - createfixed
   - accept
   - deny
   - ask

@@ -220,6 +220,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_INVITE_PLAYERINPARTY;
 	@ConfigOption(path = "main-commands.invite.already-invited")
 	public static String MAINCMD_INVITE_ALREADYINVITED;
+	@ConfigOption(path = "main-commands.invite.failed")
+	public static String MAINCMD_INVITE_FAILED;
 	
 	@ConfigOption(path = "main-commands.kick.sent")
 	public static String MAINCMD_KICK_SENT;
@@ -625,6 +627,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_COMMANDS_ASK;
 	@ConfigOption(path = "help.additional.commands.color")
 	public static String HELP_ADDITIONAL_COMMANDS_COLOR;
+	@ConfigOption(path = "help.additional.commands.createfixed")
+	public static String HELP_ADDITIONAL_COMMANDS_CREATEFIXED;
 	@ConfigOption(path = "help.additional.commands.debug")
 	public static String HELP_ADDITIONAL_COMMANDS_DEBUG;
 	@ConfigOption(path = "help.additional.commands.desc")
@@ -658,6 +662,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_ASK;
 	@ConfigOption(path = "help.additional.descriptions.color")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_COLOR;
+	@ConfigOption(path = "help.additional.descriptions.createfixed")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_CREATEFIXED;
 	@ConfigOption(path = "help.additional.descriptions.debug")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_DEBUG;
 	@ConfigOption(path = "help.additional.descriptions.desc")

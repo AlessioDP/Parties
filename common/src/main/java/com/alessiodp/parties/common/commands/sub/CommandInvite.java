@@ -55,26 +55,30 @@ public class CommandInvite extends PartiesSubCommand {
 		
 		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
 		if (party == null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
-			return false;
-		}
-		
-		if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_INVITE))
-			return false;
-		
-		if (commandData.getArgs().length != 2) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", syntax));
-			return false;
-		}
-		
-		if (party.isFull()) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYFULL);
-			return false;
+			if (!ConfigParties.GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE) {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+				return false;
+			}
+		} else {
+			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_INVITE))
+				return false;
+			
+			if (commandData.getArgs().length != 2) {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+						.replace("%syntax%", syntax));
+				return false;
+			}
+			
+			if (party.isFull()) {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYFULL);
+				return false;
+			}
+			
+			
+			((PartiesCommandData) commandData).setParty(party);
 		}
 		
 		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		((PartiesCommandData) commandData).setParty(party);
 		return true;
 	}
 	
@@ -109,6 +113,28 @@ public class CommandInvite extends PartiesSubCommand {
 			return;
 		}
 		
+		// Check for party, create one if option enabled
+		if (party == null) {
+			if (ConfigParties.GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE && ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE) {
+				String partyName = ((PartiesPlugin) plugin).getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, partyPlayer, null);
+				
+				if (((PartiesPlugin) plugin).getPartyManager().existsParty(partyName)) {
+					sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMEEXISTS.replace("%party%", partyName));
+					return;
+				}
+				
+				party = CommandCreate.createParty((PartiesPlugin) plugin, this, sender, partyPlayer, partyName, false);
+				
+				if (party == null || party.isFixed()) {
+					sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_FAILED, invitedPartyPlayer);
+					return;
+				}
+			} else {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+				return;
+			}
+		}
+		
 		if (invitedPartyPlayer.getIgnoredParties().contains(party.getId())) {
 			// Invited player ignoring the party, fake sent
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_SENT, invitedPartyPlayer);
@@ -124,7 +150,8 @@ public class CommandInvite extends PartiesSubCommand {
 		}
 		
 		boolean isRevoke = false;
-		Optional<PartyInvite> revokeInvite = invitedPartyPlayer.getPendingInvites().stream().filter(pv -> pv.getParty().equals(party)).findAny();
+		final PartyImpl finalParty = party;
+		Optional<PartyInvite> revokeInvite = invitedPartyPlayer.getPendingInvites().stream().filter(pv -> pv.getParty().getId().equals(finalParty.getId())).findAny();
 		if (revokeInvite.isPresent()) {
 			isRevoke = true;
 			

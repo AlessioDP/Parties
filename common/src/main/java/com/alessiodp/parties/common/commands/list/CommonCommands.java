@@ -26,6 +26,7 @@ public enum CommonCommands implements ADPCommand {
 	VERSION,
 	
 	COLOR,
+	CREATEFIXED,
 	DEBUG,
 	DESC,
 	FOLLOW,

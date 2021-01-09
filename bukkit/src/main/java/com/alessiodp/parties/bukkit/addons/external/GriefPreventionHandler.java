@@ -41,10 +41,9 @@ public class GriefPreventionHandler {
 			if (claim == null) {
 				return Result.NOEXIST;
 			}
-			if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())) {
-				if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_NEEDOWNER || !claim.managers.contains(claimer.getUniqueId().toString())) {
-					return Result.NOMANAGER;
-				}
+			if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())
+					&& (BukkitConfigMain.ADDONS_GRIEFPREVENTION_NEEDOWNER || !claim.managers.contains(claimer.getUniqueId().toString()))) {
+				return Result.NOMANAGER;
 			}
 			return Result.SUCCESS;
 		}
@@ -86,7 +85,8 @@ public class GriefPreventionHandler {
 				ret = ClaimPermission.Inventory;
 				break;
 			default:
-					ret = null;
+				ret = null;
+				break;
 			}
 			return ret;
 		}

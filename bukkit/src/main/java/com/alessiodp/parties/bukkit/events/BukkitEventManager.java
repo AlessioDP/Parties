@@ -65,8 +65,8 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed) {
-		return new BukkitPartiesPartyPreCreateEvent(player, name, tag, fixed);
+	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, boolean fixed) {
+		return new BukkitPartiesPartyPreCreateEvent(player, name, fixed);
 	}
 	
 	@Override

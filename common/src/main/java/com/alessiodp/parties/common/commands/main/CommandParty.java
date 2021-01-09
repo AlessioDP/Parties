@@ -12,6 +12,7 @@ import com.alessiodp.parties.common.commands.sub.CommandAsk;
 import com.alessiodp.parties.common.commands.sub.CommandChat;
 import com.alessiodp.parties.common.commands.sub.CommandColor;
 import com.alessiodp.parties.common.commands.sub.CommandCreate;
+import com.alessiodp.parties.common.commands.sub.CommandCreateFixed;
 import com.alessiodp.parties.common.commands.sub.CommandDelete;
 import com.alessiodp.parties.common.commands.sub.CommandDeny;
 import com.alessiodp.parties.common.commands.sub.CommandDesc;
@@ -84,6 +85,10 @@ public abstract class CommandParty extends ADPMainCommand {
 			// Color
 			if (ConfigParties.ADDITIONAL_COLOR_ENABLE)
 				register(new CommandColor(plugin, this));
+			
+			// Create fixed
+			if (ConfigParties.ADDITIONAL_FIXED_ENABLE)
+				register(new CommandCreateFixed(plugin, this));
 			
 			// Desc
 			if (ConfigParties.ADDITIONAL_DESC_ENABLE)

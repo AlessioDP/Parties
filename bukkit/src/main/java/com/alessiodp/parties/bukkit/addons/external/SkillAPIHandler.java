@@ -38,10 +38,10 @@ public class SkillAPIHandler {
 	
 	public static double getExp(Entity entity) {
 		double ret = 0;
-		if (active && BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE) {
-			if (!SkillAPI.getSettings().isUseOrbs()) {
-				ret = SkillAPI.getSettings().getYield(ListenerUtil.getName(entity));
-			}
+		if (active
+				&& BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE
+				&& !SkillAPI.getSettings().isUseOrbs()) {
+			ret = SkillAPI.getSettings().getYield(ListenerUtil.getName(entity));
 		}
 		return ret;
 	}

@@ -159,12 +159,13 @@ public abstract class PartyImpl implements Party {
 	/**
 	 * Create the party
 	 *
+	 * @param name the name of the party
 	 * @param leader the leader of the party, null if fixed
+	 * @param creator who is creating the party
 	 */
-	public void create(@Nullable String name, @Nullable String tag, @Nullable PartyPlayerImpl leader) {
+	public void create(@Nullable String name, @Nullable PartyPlayerImpl leader, @Nullable PartyPlayerImpl creator) {
 		lock.lock();
 		this.name = name;
-		this.tag = tag;
 		
 		if (leader == null) {
 			// Fixed
@@ -187,7 +188,7 @@ public abstract class PartyImpl implements Party {
 		lock.unlock();
 		
 		// Send sync packet + event
-		future.thenRun(() -> sendPacketCreate(leader)).exceptionally(ADPScheduler.exceptionally());
+		future.thenRun(() -> sendPacketCreate(creator)).exceptionally(ADPScheduler.exceptionally());
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_CREATE, getName()), true);
 	}
@@ -635,16 +636,15 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	public void calculateLevels() {
-		if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
-			if (expResult == null || cacheExperience != experience) {
-				try {
-					// Set the new level of the party
-					expResult = plugin.getExpManager().calculateLevel(experience);
-					// Update experience stamp
-					cacheExperience = experience;
-				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_LEVELERROR, getId().toString(), ex.getMessage() != null ? ex.getMessage() : ex.toString()));
-				}
+		if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE
+				&& (expResult == null || cacheExperience != experience)) {
+			try {
+				// Set the new level of the party
+				expResult = plugin.getExpManager().calculateLevel(experience);
+				// Update experience stamp
+				cacheExperience = experience;
+			} catch (Exception ex) {
+				plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_LEVELERROR, getId().toString(), ex.getMessage() != null ? ex.getMessage() : ex.toString()));
 			}
 		}
 	}
@@ -804,9 +804,9 @@ public abstract class PartyImpl implements Party {
 	
 	public abstract void sendPacketUpdate();
 	
-	public void sendPacketCreate(PartyPlayerImpl leader) {
+	public void sendPacketCreate(PartyPlayerImpl creator) {
 		// Calling API event
-		IPartyPostCreateEvent partiesPostEvent = plugin.getEventManager().preparePartyPostCreateEvent(leader, this);
+		IPartyPostCreateEvent partiesPostEvent = plugin.getEventManager().preparePartyPostCreateEvent(creator, this);
 		plugin.getEventManager().callEvent(partiesPostEvent);
 	}
 	

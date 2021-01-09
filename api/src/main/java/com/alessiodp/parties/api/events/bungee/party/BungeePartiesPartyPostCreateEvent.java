@@ -5,6 +5,7 @@ import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class BungeePartiesPartyPostCreateEvent extends BungeePartiesEvent implements IPartyPostCreateEvent {
 	private final PartyPlayer player;
@@ -15,7 +16,7 @@ public class BungeePartiesPartyPostCreateEvent extends BungeePartiesEvent implem
 		this.party = party;
 	}
 	
-	@NonNull
+	@Nullable
 	@Override
 	public PartyPlayer getCreator() {
 		return player;

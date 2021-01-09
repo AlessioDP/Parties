@@ -52,6 +52,12 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static int			GENERAL_NAME_MAXLENGTH;
 	@ConfigOption(path = "general.name.rename-cooldown")
 	public static int			GENERAL_NAME_RENAME_COOLDOWN;
+	@ConfigOption(path = "general.name.dynamic.enable")
+	public static boolean		GENERAL_NAME_DYNAMIC_ENABLE;
+	@ConfigOption(path = "general.name.dynamic.format")
+	public static String		GENERAL_NAME_DYNAMIC_FORMAT;
+	@ConfigOption(path = "general.name.dynamic.allow-in-create")
+	public static boolean		GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE;
 	
 	@ConfigOption(path = "general.join-leave-messages")
 	public static boolean		GENERAL_JOIN_LEAVE_MESSAGES;
@@ -62,6 +68,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean		GENERAL_INVITE_REVOKE;
 	@ConfigOption(path = "general.invite.prevent-invite-player-no-permission-join")
 	public static boolean		GENERAL_INVITE_PREVENTINVITEPERM;
+	@ConfigOption(path = "general.invite.auto-create-party-upon-invite")
+	public static boolean		GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE;
 	@ConfigOption(path = "general.invite.cooldown.enable")
 	public static boolean		GENERAL_INVITE_COOLDOWN_ENABLE;
 	@ConfigOption(path = "general.invite.cooldown.global")

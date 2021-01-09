@@ -36,18 +36,12 @@ public class ApiHandler implements PartiesAPI {
 	
 	@Override
 	public boolean createParty(@Nullable String name, @Nullable PartyPlayer leader) {
-		return createParty(name, null, leader);
-	}
-	
-	@Override
-	public boolean createParty(@Nullable String name, @Nullable String tag, @Nullable PartyPlayer leader) {
 		if (
 				name == null || !plugin.getDatabaseManager().existsParty(name)
-				|| tag == null || !plugin.getDatabaseManager().existsTag(tag)
 				|| leader == null || !leader.isInParty()
 		) {
 			PartyImpl partyImpl = plugin.getPartyManager().initializeParty(UUID.randomUUID());
-			partyImpl.create(name, tag, leader != null ? (PartyPlayerImpl) leader : null);
+			partyImpl.create(name, leader != null ? (PartyPlayerImpl) leader : null, null);
 			return true;
 		}
 		return false;

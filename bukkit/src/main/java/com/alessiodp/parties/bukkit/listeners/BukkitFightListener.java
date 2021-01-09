@@ -96,7 +96,7 @@ public class BukkitFightListener implements Listener {
 						BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 						
 						if (party != null
-								&& ppVictim.getPartyId().equals(ppAttacker.getPartyId())
+								&& ppAttacker.getPartyId().equals(ppVictim.getPartyId())
 								&& party.isFriendlyFireProtected()
 								&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 							// Calling API event
@@ -158,7 +158,7 @@ public class BukkitFightListener implements Listener {
 							Player victim = (Player) e;
 							if (!attacker.equals(victim)) {
 								PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
-								if (ppVictim.getPartyId() != null && ppVictim.getPartyId().equals(ppAttacker.getPartyId())) {
+								if (ppAttacker.getPartyId().equals(ppVictim.getPartyId())) {
 									// Calling API event
 									BukkitPartiesPotionsFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesPotionsFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 									plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
@@ -200,7 +200,7 @@ public class BukkitFightListener implements Listener {
 				BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 				
 				if (party != null
-						&& ppVictim.getPartyId().equals(ppAttacker.getPartyId())
+						&& ppAttacker.getPartyId().equals(ppVictim.getPartyId())
 						&& party.isFriendlyFireProtected()
 						&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 					// Calling API event

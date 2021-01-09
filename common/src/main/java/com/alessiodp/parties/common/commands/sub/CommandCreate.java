@@ -18,14 +18,10 @@ import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
-import com.alessiodp.parties.common.utils.PasswordUtils;
 
 
 public class CommandCreate extends PartiesSubCommand {
-	private final String syntaxPassword;
-	private final String syntaxFixed;
-	private final String syntaxPasswordFixed;
-	
+
 	public CommandCreate(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
 				plugin,
@@ -33,85 +29,52 @@ public class CommandCreate extends PartiesSubCommand {
 				CommonCommands.CREATE,
 				PartiesPermission.USER_CREATE,
 				ConfigMain.COMMANDS_CMD_CREATE,
-				ConfigParties.ADDITIONAL_FIXED_ENABLE
+				false
 		);
 		
-		syntax = String.format("%s <%s>",
-				baseSyntax(),
-				Messages.PARTIES_SYNTAX_NAME
-		);
-		
-		syntaxPassword = String.format("%s <%s> [%s]",
-				baseSyntax(),
-				Messages.PARTIES_SYNTAX_NAME,
-				Messages.PARTIES_SYNTAX_PASSWORD
-		);
-		
-		syntaxFixed = String.format("%s <%s> [%s]",
-				baseSyntax(),
-				Messages.PARTIES_SYNTAX_NAME,
-				ConfigMain.COMMANDS_SUB_FIXED
-		);
-		
-		syntaxPasswordFixed = String.format("%s <%s> [%s] [%s]",
-				baseSyntax(),
-				Messages.PARTIES_SYNTAX_NAME,
-				Messages.PARTIES_SYNTAX_PASSWORD,
-				ConfigMain.COMMANDS_SUB_FIXED
-		);
+		if (ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE) {
+			if (ConfigParties.GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE) {
+				syntax = String.format("%s [%s]",
+						baseSyntax(),
+						Messages.PARTIES_SYNTAX_NAME
+				);
+			} else {
+				syntax = baseSyntax();
+			}
+		} else {
+			syntax = String.format("%s <%s>",
+					baseSyntax(),
+					Messages.PARTIES_SYNTAX_NAME
+			);
+		}
 		
 		description = Messages.HELP_MAIN_DESCRIPTIONS_CREATE;
 		help = Messages.HELP_MAIN_COMMANDS_CREATE;
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
-		if (ConfigParties.ADDITIONAL_JOIN_ENABLE && ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE) {
-			if (ConfigParties.ADDITIONAL_FIXED_ENABLE && user.hasPermission(PartiesPermission.ADMIN_CREATE_FIXED))
-				return syntaxPasswordFixed;
-			return syntaxPassword;
-		} else if (ConfigParties.ADDITIONAL_FIXED_ENABLE && user.hasPermission(PartiesPermission.ADMIN_CREATE_FIXED))
-			return syntaxFixed;
-		return syntax;
-	}
-	
-	@Override
-	public String getConsoleSyntax() {
-		if (ConfigParties.ADDITIONAL_JOIN_ENABLE && ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
-			return syntaxPasswordFixed;
-		return syntaxFixed;
-	}
-	
-	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		if (sender.isPlayer()) {
-			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-			
-			// Checks for command prerequisites
-			if (!sender.hasPermission(permission)) {
-				sendNoPermissionMessage(partyPlayer, permission);
-				return false;
-			}
-			
-			if (partyPlayer.getPartyId() != null) {
-				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
-				return false;
-			}
-			
-			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-			commandData.addPermission(PartiesPermission.ADMIN_CREATE_FIXED);
-		} else if (!ConfigParties.ADDITIONAL_FIXED_ENABLE) {
-			// Console can only create fixed parties
-			sender.sendMessage(Messages.MAINCMD_CREATE_CONSOLE_MUST_FIXED, true);
+		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+		
+		// Checks for command prerequisites
+		if (!sender.hasPermission(permission)) {
+			sendNoPermissionMessage(partyPlayer, permission);
 			return false;
 		}
 		
-		if (commandData.getArgs().length < 2) {
-			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", getSyntaxForUser(sender)));
+		if (partyPlayer.isInParty()) {
+			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
 			return false;
 		}
+		
+		if (commandData.getArgs().length > 2) {
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
+			return false;
+		}
+		
+		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	
@@ -121,24 +84,26 @@ public class CommandCreate extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
-		String partyName = commandData.getArgs()[1];
-		if (partyName.length() > ConfigParties.GENERAL_NAME_MAXLENGTH) {
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMETOOLONG);
-			return;
-		}
-		if (partyName.length() < ConfigParties.GENERAL_NAME_MINLENGTH) {
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMETOOSHORT);
-			return;
-		}
+		String partyName;
 		
-		if (!CensorUtils.checkAllowedCharacters(ConfigParties.GENERAL_NAME_ALLOWEDCHARS, partyName, PartiesConstants.DEBUG_CMD_CREATE_REGEXERROR_ALLOWEDCHARS)) {
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_INVALIDNAME);
-			return;
-		}
-		
-		if (CensorUtils.checkCensor(ConfigParties.GENERAL_NAME_CENSORREGEX, partyName, PartiesConstants.DEBUG_CMD_CREATE_REGEXERROR_CENSORED)) {
-			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CENSORED);
-			return;
+		if (commandData.getArgs().length > 1) {
+			if (!ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE || ConfigParties.GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE) {
+				partyName = commandData.getArgs()[1];
+				
+				if (!checkName(this, sender, partyPlayer, partyName))
+					return;
+			} else {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+						.replace("%syntax%", syntax));
+				return;
+			}
+		} else {
+			if (!ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE) {
+				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+						.replace("%syntax%", syntax));
+				return;
+			}
+			partyName = ((PartiesPlugin) plugin).getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, partyPlayer, null);
 		}
 		
 		if (((PartiesPlugin) plugin).getPartyManager().existsParty(partyName)) {
@@ -146,94 +111,63 @@ public class CommandCreate extends PartiesSubCommand {
 			return;
 		}
 		
-		boolean isFixed = false;
-		String tag = null;
-		String password = null;
-		if (commandData.getArgs().length > 2) {
-			if (commandData.getArgs().length == 3) {
-				if (ConfigParties.ADDITIONAL_FIXED_ENABLE
-						&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_FIXED)
-						&& commandData.havePermission(PartiesPermission.ADMIN_CREATE_FIXED)) {
-					isFixed = true;
-				} else if (ConfigParties.ADDITIONAL_JOIN_ENABLE && ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE) {
-					password = commandData.getArgs()[2];
-				} else {
-					sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", getSyntaxForUser(sender)));
-					return;
-				}
-			} else if (commandData.getArgs().length == 4) {
-				if (ConfigParties.ADDITIONAL_JOIN_ENABLE && ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE) {
-					password = commandData.getArgs()[2];
-				} else {
-					sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", getSyntaxForUser(sender)));
-					return;
-				}
-				
-				if (ConfigParties.ADDITIONAL_FIXED_ENABLE
-						&& commandData.getArgs()[3].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_FIXED)
-						&& commandData.havePermission(PartiesPermission.ADMIN_CREATE_FIXED)) {
-					isFixed = true;
-				} else {
-					sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", getSyntaxForUser(sender)));
-					return;
-				}
-			} else {
-				sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-						.replace("%syntax%", getSyntaxForUser(sender)));
-				return;
-			}
-			
-			if (password != null) {
-				if (!PasswordUtils.isValid(commandData.getArgs()[1])) {
-					sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_INVALID);
-					return;
-				}
-				
-				password = PasswordUtils.hashText(password);
-			}
-		}
-		
-		if (partyPlayer == null && !isFixed) {
-			sendMessage(sender, null, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-						.replace("%syntax%", getSyntaxForUser(sender)));
-			return;
-		}
-		
 		if (partyPlayer != null && ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.CREATE, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		// Command starts
-		PartyImpl party;
+		createParty((PartiesPlugin) plugin, this, sender, partyPlayer, partyName, false);
+	}
+	
+	public static boolean checkName(PartiesSubCommand subCommand, User sender, PartyPlayerImpl partyPlayer, String partyName) {
+		if (partyName.length() > ConfigParties.GENERAL_NAME_MAXLENGTH) {
+			subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMETOOLONG);
+			return false;
+		}
 		
-		// Calling Pre API event
-		IPartyPreCreateEvent partiesPreEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreCreateEvent(partyPlayer, partyName, tag, isFixed);
-		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreEvent);
+		if (partyName.length() < ConfigParties.GENERAL_NAME_MINLENGTH) {
+			subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMETOOSHORT);
+			return false;
+		}
+		
+		if (!CensorUtils.checkAllowedCharacters(ConfigParties.GENERAL_NAME_ALLOWEDCHARS, partyName, PartiesConstants.DEBUG_CMD_CREATE_REGEXERROR_ALLOWEDCHARS)) {
+			subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_INVALIDNAME);
+			return false;
+		}
+		
+		if (CensorUtils.checkCensor(ConfigParties.GENERAL_NAME_CENSORREGEX, partyName, PartiesConstants.DEBUG_CMD_CREATE_REGEXERROR_CENSORED)) {
+			subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CENSORED);
+			return false;
+		}
+		return true;
+	}
+	
+	public static PartyImpl createParty(PartiesPlugin plugin, PartiesSubCommand subCommand, User sender, PartyPlayerImpl partyPlayer, String partyName, boolean fixed) {
+		PartyImpl ret = null;
+		IPartyPreCreateEvent partiesPreEvent = plugin.getEventManager().preparePartyPreCreateEvent(partyPlayer, partyName, fixed);
+		plugin.getEventManager().callEvent(partiesPreEvent);
 		
 		String newPartyName = partiesPreEvent.getPartyName();
-		String newTag = partiesPreEvent.getPartyTag();
-		boolean newIsFixed = partiesPreEvent.isFixed();
-		if (!partiesPreEvent.isCancelled()) {
-			party = ((PartiesPlugin) plugin).getPartyManager().initializeParty();
-			party.create(newPartyName, newTag, newIsFixed ? null : partyPlayer);
-			if (password != null)
-				party.setPassword(password);
+		boolean isFixed = partiesPreEvent.isFixed();
+		if (!partiesPreEvent.isCancelled() && (isFixed || partyPlayer != null)) {
+			PartyImpl party = plugin.getPartyManager().initializeParty();
+			party.create(newPartyName, isFixed ? null : partyPlayer, partyPlayer);
 			
-			if (newIsFixed) {
-				sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CREATEDFIXED, party);
+			if (isFixed) {
+				subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CREATEDFIXED, party);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CREATE_FIXED,
 						sender.getName(), party.getName()), true);
 			} else {
-				sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CREATED, party);
+				subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CREATED, party);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CREATE,
 						sender.getName(), party.getName()), true);
 			}
+			
+			ret = party;
 		} else {
 			plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_CREATEEVENT_DENY, partyName, sender.getName(), sender.getUUID().toString()), true);
 		}
+		return ret;
 	}
 }

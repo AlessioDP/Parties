@@ -15,7 +15,7 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 
 public class DynmapHandler {
-	private static PartiesPlugin plugin;
+	private static PartiesPlugin plugin = null;
 	private static final String ADDON_NAME = "Dynmap";
 	private static boolean active;
 	

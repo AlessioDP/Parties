@@ -3,22 +3,19 @@ package com.alessiodp.parties.api.events.bukkit.party;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent implements IPartyPreCreateEvent {
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private String name;
-	private String tag;
 	private boolean fixed;
 	
-	public BukkitPartiesPartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed) {
+	public BukkitPartiesPartyPreCreateEvent(PartyPlayer player, String name, boolean fixed) {
 		super(false);
 		cancelled = false;
 		this.player = player;
 		this.name = name;
-		this.tag = tag;
 		this.fixed = fixed;
 	}
 	
@@ -28,26 +25,15 @@ public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent impleme
 		return player;
 	}
 	
-	@NonNull
+	@Nullable
 	@Override
 	public String getPartyName() {
 		return name;
 	}
 	
-	@Nullable
 	@Override
-	public String getPartyTag() {
-		return tag;
-	}
-	
-	@Override
-	public void setPartyName(@NonNull String name) {
+	public void setPartyName(@Nullable String name) {
 		this.name = name;
-	}
-	
-	@Override
-	public void setPartyTag(@Nullable String tag) {
-		this.tag = tag;
 	}
 	
 	@Override

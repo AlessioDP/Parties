@@ -59,8 +59,8 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed) {
-		return new BungeePartiesPartyPreCreateEvent(player, name, tag, fixed);
+	public IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, boolean fixed) {
+		return new BungeePartiesPartyPreCreateEvent(player, name, fixed);
 	}
 	
 	@Override

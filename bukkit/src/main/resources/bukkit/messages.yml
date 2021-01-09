@@ -144,7 +144,6 @@ main-commands:
     # => %online_number%       = Number of online players
     content:
     - "&b============ &l%party%'s Info &r&b============"
-    - "&b&lTag&7: %tag%"
     - "&b&lDescription&7: %desc%"
     - "&bLeader&7: %list_rank_leader%"
     - "&bMods&7: %list_rank_moderator%"
@@ -175,6 +174,7 @@ main-commands:
     player-no-permission: "&c%player% doesn't have the permission to join"
     player-in-party: "&c%player% is already in a party"
     already-invited: "&c%player% was already invited"
+    failed: "&cFailed to invite the player %player%"
 
   kick:
     sent: "&aYou kicked %player% from the party!"
@@ -585,6 +585,7 @@ help:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       desc: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       follow: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -603,6 +604,7 @@ help:
       ask: 'Send a join request'
       claim: 'Grant permissions to the claim'
       color: 'Change party color'
+      createfixed: 'Create a new fixed party'
       debug: 'Debug issues'
       desc: 'Set/remove party description'
       follow: 'Toggle follow leader'

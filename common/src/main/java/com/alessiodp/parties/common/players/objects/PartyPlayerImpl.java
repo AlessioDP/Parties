@@ -368,6 +368,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			// Out of party
 			if (player.hasPermission(PartiesPermission.USER_CREATE))
 				ret.add(CommonCommands.CREATE);
+			if (ConfigParties.GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE && player.hasPermission(PartiesPermission.USER_INVITE) && player.hasPermission(PartiesPermission.USER_CREATE))
+				ret.add(CommonCommands.INVITE);
 			if (player.hasPermission(PartiesPermission.USER_ACCEPT))
 				ret.add(CommonCommands.ACCEPT);
 			if (player.hasPermission(PartiesPermission.USER_DENY))
@@ -392,6 +394,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.RENAME);
 			
 		}
+		if (ConfigParties.ADDITIONAL_FIXED_ENABLE && player.hasPermission(PartiesPermission.ADMIN_CREATE_FIXED))
+			ret.add(CommonCommands.CREATEFIXED);
 		if (ConfigParties.ADDITIONAL_LIST_ENABLE && player.hasPermission(PartiesPermission.USER_LIST))
 			ret.add(CommonCommands.LIST);
 		if (player.hasPermission(PartiesPermission.ADMIN_SPY))

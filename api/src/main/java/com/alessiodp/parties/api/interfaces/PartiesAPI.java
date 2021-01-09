@@ -32,16 +32,6 @@ public interface PartiesAPI {
 	boolean createParty(@Nullable String party, @Nullable PartyPlayer leader);
 	
 	/**
-	 * Create a party
-	 *
-	 * @param party  The party name
-	 * @param tag The party tag
-	 * @param leader The leader of the party as {@link PartyPlayer}, null if the party should be fixed
-	 * @return Returns true if successfully created
-	 */
-	boolean createParty(@Nullable String party, @Nullable String tag, @Nullable PartyPlayer leader);
-	
-	/**
 	 * Get the party by its name
 	 *
 	 * @param party The name of the {@link Party}

@@ -122,6 +122,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_COLOR;
 	@ConfigOption(path = "commands.main-commands.create")
 	public static String		COMMANDS_CMD_CREATE;
+	@ConfigOption(path = "commands.main-commands.createfixed")
+	public static String		COMMANDS_CMD_CREATEFIXED;
 	@ConfigOption(path = "commands.main-commands.debug")
 	public static String		COMMANDS_CMD_DEBUG;
 	@ConfigOption(path = "commands.main-commands.delete")

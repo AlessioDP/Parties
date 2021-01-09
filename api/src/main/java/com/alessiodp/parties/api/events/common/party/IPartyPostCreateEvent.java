@@ -4,6 +4,7 @@ import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface IPartyPostCreateEvent extends PartiesEvent {
 	/**
@@ -11,7 +12,7 @@ public interface IPartyPostCreateEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@Nullable
 	PartyPlayer getCreator();
 	
 	/**

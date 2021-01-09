@@ -97,25 +97,23 @@ public class MythicMobsHandler implements Listener {
 					
 					ExpDrop drop = new ExpDrop(killer, killedEntity, vanillaExp, skillapiExp);
 					boolean result = ((BukkitExpManager) plugin.getExpManager()).distributeExp(drop);
-					if (result) {
-						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
-							// Remove exp from the event if hooked
-							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL) {
-								// Be sure that we are removing exp from intangible drops
-								for (Drop d : event.getDrops().getLootTableIntangible().values()) {
-									if (d instanceof ExperienceDrop) {
-										d.setAmount(0);
-									}
+					if (result && BukkitConfigMain.ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP) {
+						// Remove exp from the event if hooked
+						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_NORMAL) {
+							// Be sure that we are removing exp from intangible drops
+							for (Drop d : event.getDrops().getLootTableIntangible().values()) {
+								if (d instanceof ExperienceDrop) {
+									d.setAmount(0);
 								}
-								// Add it to an array list that contains a list of entities
-								// that we need to manually remove drop experience
-								mobsExperienceToSuppress.add(event.getEntity().getUniqueId());
 							}
-							
-							// Remove skillapi exp from the event if hooked
-							if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI) {
-								event.getDrops().getLootTableIntangible().remove(SkillAPIDrop.class);
-							}
+							// Add it to an array list that contains a list of entities
+							// that we need to manually remove drop experience
+							mobsExperienceToSuppress.add(event.getEntity().getUniqueId());
+						}
+						
+						// Remove skillapi exp from the event if hooked
+						if (BukkitConfigMain.ADDITIONAL_EXP_DROP_GET_SKILLAPI) {
+							event.getDrops().getLootTableIntangible().remove(SkillAPIDrop.class);
 						}
 					}
 				}

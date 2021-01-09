@@ -37,7 +37,7 @@ public abstract class EventManager {
 		eventDispatcher.callEvent(event);
 	}
 	
-	public abstract IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, String tag, boolean fixed);
+	public abstract IPartyPreCreateEvent preparePartyPreCreateEvent(PartyPlayer player, String name, boolean fixed);
 	public abstract IPartyPostCreateEvent preparePartyPostCreateEvent(PartyPlayer player, Party party);
 	
 	public abstract IPartyPreDeleteEvent preparePartyPreDeleteEvent(Party party, DeleteCause cause, PartyPlayer kickedPlayer, PartyPlayer commandSender);

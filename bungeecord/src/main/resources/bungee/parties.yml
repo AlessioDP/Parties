@@ -49,6 +49,15 @@ general:
     maximum-length: 10
     # Cooldown for rename command (in seconds)
     rename-cooldown: 300
+    # Make party name automated, upon creation give a name based on player
+    # => format:           The format of the party name
+    # => allow-in-create:  Allow inserting name in create command
+    dynamic:
+      enable: false
+      # Do not uses spaces, names are not meant to be used with spaces
+      # By default the party will use the name of the player
+      format: "%player%"
+      allow-in-create: true
 
   # Show messages upon login and logout of party-mates
   join-leave-messages: false
@@ -60,6 +69,9 @@ general:
     revoke: true
     # Don't invite players that doesn't have the permission to join in parties
     prevent-invite-player-no-permission-join: true
+    # Automatically create the party if a player invite a player
+    # Warning: Dynamic name must be enabled
+    auto-create-party-upon-invite: false
     # Enable a cooldown to prevent invite spam
     # You can choose to set a cooldown for every invite (global) or individual players, in seconds
     cooldown:
