@@ -71,7 +71,7 @@ parties:
     missing-value: "&7 fehlt"
   #Define the format of Parties chat messages
   formats:
-    party-chat: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
+    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
     spy:
       party-chat: "&7[SPY] [%party%] %player%: %message%"
       broadcast: "&7[SPY] [%party%]: %message%"
@@ -154,6 +154,7 @@ main-commands:
     player-no-permission: "&c%player% fehlen die Rechte um der Gruppe beizutreten"
     player-in-party: "&c%player% ist bereits Mitglied einer Gruppe"
     already-invited: "&c%player% wurde bereits eingeladen"
+    invite-yourself: "&cYou cannot invite yourself"
     failed: "&cFailed to invite the player %player%"
   kick:
     sent: "&aYou kicked %player% from the party!"
