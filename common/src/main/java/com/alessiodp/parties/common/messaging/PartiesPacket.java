@@ -83,8 +83,7 @@ public class PartiesPacket extends ADPPacket {
 				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION, plugin.getVersion(), foundVersion));
 			}
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(Constants.DEBUG_LOG_MESSAGING_FAILED_READ
-					.replace("{message}", ex.getMessage()));
+			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex.getMessage()));
 		}
 		return ret;
 	}
