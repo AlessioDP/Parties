@@ -338,6 +338,42 @@ public class PartiesPlaceholderTest {
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
+	public void testPlaceholderListPlayersByNumber() {
+		/*when(mockDatabaseManager.getListParties(eq(PartiesDatabaseManager.ListOrder.NAME), anyInt(), anyInt())).then(args -> {
+			if (((int) args.getArgument(2)) == 0)
+				return Sets.newSet(party1);
+			else if (((int) args.getArgument(2)) == 1)
+				return Sets.newSet(party2);
+			else if (((int) args.getArgument(2)) == 2)
+				return Sets.newSet(party3);
+			return Sets.newSet();
+		});*/
+		
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_players_1");
+		
+		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
+		assertEquals(player1.getName(), placeholder.formatPlaceholder(null, party1, "list_players_1"));
+		
+		placeholder = PartiesPlaceholder.getPlaceholder("list_players_2");
+		
+		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
+		assertEquals(player2.getName(), placeholder.formatPlaceholder(null, party1, "list_players_2"));
+		
+		// No more parties
+		placeholder = PartiesPlaceholder.getPlaceholder("list_players_3");
+		
+		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
+		assertEquals("", placeholder.formatPlaceholder(null, party1, "list_players_3"));
+		
+		// Placeholder
+		placeholder = PartiesPlaceholder.getPlaceholder("list_players_1_player_id");
+		
+		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER_PLACEHOLDER, placeholder);
+		assertEquals(player1.getPlayerUUID().toString(), placeholder.formatPlaceholder(null, party1, "list_players_1_player_id"));
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPlayersTotal() {
 		when(mockDatabaseManager.getListPlayersInPartyNumber()).thenReturn(4);
 		
