@@ -218,6 +218,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_INVITE_PLAYERINPARTY;
 	@ConfigOption(path = "main-commands.invite.already-invited")
 	public static String MAINCMD_INVITE_ALREADYINVITED;
+	@ConfigOption(path = "main-commands.invite.invite-yourself")
+	public static String MAINCMD_INVITE_INVITE_YOURSELF;
 	@ConfigOption(path = "main-commands.invite.failed")
 	public static String MAINCMD_INVITE_FAILED;
 	

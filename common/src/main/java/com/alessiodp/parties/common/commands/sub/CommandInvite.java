@@ -53,6 +53,12 @@ public class CommandInvite extends PartiesSubCommand {
 			return false;
 		}
 		
+		if (commandData.getArgs().length != 2) {
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
+			return false;
+		}
+		
 		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
 		if (party == null) {
 			if (!ConfigParties.GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE) {
@@ -62,12 +68,6 @@ public class CommandInvite extends PartiesSubCommand {
 		} else {
 			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_INVITE))
 				return false;
-			
-			if (commandData.getArgs().length != 2) {
-				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-						.replace("%syntax%", syntax));
-				return false;
-			}
 			
 			if (party.isFull()) {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYFULL);
@@ -99,6 +99,11 @@ public class CommandInvite extends PartiesSubCommand {
 		
 		if (invitedPartyPlayer.isVanished()) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_PLAYEROFFLINE);
+			return;
+		}
+		
+		if (invitedPartyPlayer.getPlayerUUID().equals(sender.getUUID())) {
+			sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_INVITE_YOURSELF);
 			return;
 		}
 		

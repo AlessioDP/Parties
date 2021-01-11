@@ -173,6 +173,7 @@ main-commands:
     player-no-permission: "&c%player% doesn't have the permission to join"
     player-in-party: "&c%player% is already in a party"
     already-invited: "&c%player% was already invited"
+    invite-yourself: "&cYou cannot invite yourself"
     failed: "&cFailed to invite the player %player%"
 
   kick:
