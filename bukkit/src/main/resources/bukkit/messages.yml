@@ -80,7 +80,7 @@ parties:
 
   # Define the format of Parties chat messages
   formats:
-    party-chat: "&b[Party] %rank_chat% %player%&r&7: &b%message%"
+    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
     spy:
       party-chat: "&7[SPY] [%party%] %player%: %message%"
       broadcast: "&7[SPY] [%party%]: %message%"
