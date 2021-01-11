@@ -26,6 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -339,16 +340,6 @@ public class PartiesPlaceholderTest {
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPlayersByNumber() {
-		/*when(mockDatabaseManager.getListParties(eq(PartiesDatabaseManager.ListOrder.NAME), anyInt(), anyInt())).then(args -> {
-			if (((int) args.getArgument(2)) == 0)
-				return Sets.newSet(party1);
-			else if (((int) args.getArgument(2)) == 1)
-				return Sets.newSet(party2);
-			else if (((int) args.getArgument(2)) == 2)
-				return Sets.newSet(party3);
-			return Sets.newSet();
-		});*/
-		
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_players_1");
 		
 		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
@@ -369,7 +360,9 @@ public class PartiesPlaceholderTest {
 		placeholder = PartiesPlaceholder.getPlaceholder("list_players_1_player_id");
 		
 		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER_PLACEHOLDER, placeholder);
-		assertEquals(player1.getPlayerUUID().toString(), placeholder.formatPlaceholder(null, party1, "list_players_1_player_id"));
+		// Party.getMembers() returns a Set. The order is random, just check if the UUID is related to player1 or player2
+		String result = placeholder.formatPlaceholder(null, party1, "list_players_1_player_id");
+		assertTrue(result.equals(player1.getPlayerUUID().toString()) || result.equals(player2.getPlayerUUID().toString()));
 	}
 	
 	@Test
