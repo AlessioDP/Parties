@@ -148,8 +148,8 @@ main-commands:
       sent-revoked: "&7 %player%에게 보낸 초대가 폐지되었습니다."
       player-invite-revoked: "&7 %party%로부터 받은 초대가 폐지되었습니다."
     cooldown:
-      global: "&c다른 유저를 초대하기 전에 %seconds%를 기다려야 합니다."
-      individual: "&c같은 유저를 다시 초대하기 전에 %seconds%를 기다려야 합니다."
+      global: "&cYou need to wait %seconds% seconds before invite another player"
+      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
     player-offline: "&c접속중인 유저만 초대할 수 있습니다."
     player-no-permission: "&c%player% 는 참여할 권한이 없습니다"
     player-in-party: "&c%player%은 이미 파티가 있습니다."
@@ -249,8 +249,8 @@ additional-commands:
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% before ask to another party"
-      individual: "&cYou need to wait %seconds% before ask to the same party"
+      global: "&cYou need to wait %seconds% seconds before ask to another party"
+      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
   claim:
     claimed: "&a파티로부터 승인된 허가"
     removed: "&a파티로부터 권한이 제거 되었습니다"
