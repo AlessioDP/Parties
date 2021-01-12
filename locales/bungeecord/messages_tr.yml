@@ -251,11 +251,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cYou need to wait %seconds% seconds before ask to another party"
       individual: "&cYou need to wait %seconds% seconds before ask to the same party"
-  claim:
-    claimed: "&aPartiye Yetki Verildi"
-    removed: "&aParti Yetkileri Silindi"
-    no-manager: "&cClaim Atmak İçin Yönetici Olması Lazım"
-    claim-no-exists: "&cClaim Bulunamadı"
   color:
     info: "&bPartinin Şuanki Rengi: %color_code%%color_command%"
     empty: "&bPartinde Bir Renk Seçilmemiş"
@@ -419,30 +414,6 @@ additional-commands:
       sent: "&aTeleport request sent to the party"
       received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
       denied: "&7You denied the teleport request of %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cBurayı Almak İçin Yeterli Paran Yok[%price%$]"
-      color: "&c Renk Değiştirmek İçin Yeterli Paran Yok[%price%$]"
-      create: "&cParti Oluşturmak İçin Yeterli Paran Yok [%price%$]"
-      desc: "&cAçıklama Eklemek İçin Yeterli Paran Yok [%price%$]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cHome Komudunu Kullanmak İçin Yeterli Paran Yok[%price%$]"
-      join: "&cPartiye Katılmak İçin Yeterli Paran Yok [%price%$]"
-      motd: "&cMOTD Eklemek İçin Yeterli Paran Yok [%price%$]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cEv Belirlemek İçin Yeterli Paran Yok [%price%$]"
-      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
-      teleport: "&cIşınlanmak İçin Yeterli Paran Yok [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aKomutu Gerçekleştirmek İçin."
-      no-cmd: "&cDoğrulanacak Komut"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
