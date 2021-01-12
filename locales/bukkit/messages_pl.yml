@@ -454,7 +454,7 @@ additional-commands:
       protection: "&cYou don't have enough money to enable protection [%price%$]"
       rename: "&cYou don't have enough money to rename the party [%price%$]"
       sethome: "&cNie masz wystarczajaco pieniedzy by ustawic dom [%price%$]"
-      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
+      tag: "&cYou don't have enough money to set the tag [%price%$]"
       teleport: "&cNie masz wystarczajaco pieniedzy by sie teleportowac [%price%$]"
     confirm:
       warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
