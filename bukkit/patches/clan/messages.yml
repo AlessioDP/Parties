@@ -80,7 +80,7 @@ parties:
 
   # Define the format of Parties chat messages
   formats:
-    party-chat: "&b[Clan] %rank_chat% %player%&r&7: &b%message%"
+    party-chat: "&b[Clan] %player_rank_chat% %player%&r&7: &b%message%"
     spy:
       party-chat: "&7[SPY] [%party%] %player%: %message%"
       broadcast: "&7[SPY] [%party%]: %message%"
@@ -105,7 +105,6 @@ main-commands:
   create:
     created: '[{"text":"You have created the clan %party%.\n","color":"aqua","bold":true},{"text":"Type ","color":"aqua","bold":false},{"text":"/clan invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/clan invite "}},{"text":" to invite your friend.","color":"aqua"}]'
     created-fixed: "&b&lYou have created the fixed clan %party%"
-    console-must-fixed: "&cYou can only create fixed clans by console!"
     name-already-exists: "&cThe clan name %party% already exists, choose a different name"
     name-too-long: "&cThe clan name is too long!"
     name-too-short: "&cThe clan name is too short!"
@@ -168,12 +167,13 @@ main-commands:
       sent-revoked: "&7Revoked invite sent to %player%"
       player-invite-revoked: "&7Invite received from %party% has been revoked"
     cooldown:
-      global: "&cYou need to wait %seconds% before invite another player"
-      individual: "&cYou need to wait %seconds% before invite again the same player"
+      global: "&cYou need to wait %seconds% seconds before invite another player"
+      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
     player-offline: "&cYou can invite only online players"
     player-no-permission: "&c%player% doesn't have the permission to join"
     player-in-party: "&c%player% is already in a clan"
     already-invited: "&c%player% was already invited"
+    invite-yourself: "&cYou cannot invite yourself"
     failed: "&cFailed to invite the player %player%"
 
   kick:
@@ -277,8 +277,8 @@ additional-commands:
     cooldown:
       # [Special tags]
       # => %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% before ask to another clan"
-      individual: "&cYou need to wait %seconds% before ask to the same clan"
+      global: "&cYou need to wait %seconds% seconds before ask to another clan"
+      individual: "&cYou need to wait %seconds% seconds before ask to the same clan"
 
   claim:
     claimed: "&aGranted permission to the clan"
