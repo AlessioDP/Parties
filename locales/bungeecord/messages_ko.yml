@@ -251,11 +251,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cYou need to wait %seconds% seconds before ask to another party"
       individual: "&cYou need to wait %seconds% seconds before ask to the same party"
-  claim:
-    claimed: "&a파티로부터 승인된 허가"
-    removed: "&a파티로부터 권한이 제거 되었습니다"
-    no-manager: "&c당신은 요청을 관리해야 합니다"
-    claim-no-exists: "&c요청이 발견되지 않았습니다"
   color:
     info: "&b당신의 파티의 색은: %color_code%%color_command%"
     empty: "&b당신의 파티는 색상을 갖고 있지 않습니다"
@@ -419,30 +414,6 @@ additional-commands:
       sent: "&aTeleport request sent to the party"
       received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
       denied: "&7You denied the teleport request of %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&c당신은 권리를 사용하는데 충분한 돈을 갖고 있지 않습니다. [%price%원]"
-      color: "&c당신은 색깔 명령어를 사용하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      create: "&c당신은 파티를 생성하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      desc: "&c당신은 설명을 작성하는데에 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&c당신은 홈 명령어를 사용하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      join: "&c당신은 파티를 참가하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      motd: "&c당신은 오늘의 메시지를 설정하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&c당신은 홈을 설정하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
-      teleport: "&c당신은 텔레포트를 하는데에 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&a명령어를 사용했습니다."
-      no-cmd: "&c확인할 수 있는 명령이 없습니다."
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
