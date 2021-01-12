@@ -95,7 +95,7 @@ main-commands:
     name-too-long: "&cIl nome è troppo lungo!"
     name-too-short: "&cIl nome è troppo corto!"
     invalid-name: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9."
-    censored: "&cIl nome del party contiene delle parole censurate!"
+    censored: "&cIl nome del party contiene parole censurate!"
   delete:
     deleted: "&aParty %party% cancellato"
     deleted-silently: "&aParty %party% cancellato silenziosamente"
@@ -148,8 +148,8 @@ main-commands:
       sent-revoked: "&7Invito inviato a %player% revocato"
       player-invite-revoked: "&7L'invito ricevuto da %party% è stato revocato"
     cooldown:
-      global: "&cDevi attendere %seconds% secondi prima di invitare un altro player"
-      individual: "&cDevi attendere %seconds% secondi prima di invitare lo stesso player"
+      global: "&cYou need to wait %seconds% seconds before invite another player"
+      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
     player-offline: "&cPuoi invitare solamente i player online"
     player-no-permission: "&c%player% non ha il permesso di entrare"
     player-in-party: "&c%player% è già in un party"
@@ -185,7 +185,7 @@ main-commands:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
     cooldown: "&cDevi ancora aspettare %seconds% secondi"
-    censored: "&cIl messaggio contiene delle parole censurate!"
+    censored: "&cIl messaggio contiene parole censurate!"
     muted: "&cYou are muted!"
   rank:
     #[Special tags]
@@ -249,8 +249,8 @@ additional-commands:
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% before ask to another party"
-      individual: "&cYou need to wait %seconds% before ask to the same party"
+      global: "&cYou need to wait %seconds% seconds before ask to another party"
+      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
   claim:
     claimed: "&aConcessi i permessi al party"
     removed: "&aRimossi i permessi al party"
@@ -307,7 +307,7 @@ additional-commands:
     removed: "&bDescrizione del party rimossa"
     broadcast: ""
     invalid-chars: "&cCaratteri non validi. Utilizza: a-Z oppure 0-9. Minimo 3 e massimo 16 caratteri."
-    censored: "&cLa descrizione contiene delle parole censurate!"
+    censored: "&cLa descrizione contiene parole censurate!"
   exp:
     #[Special tags]
     #=> %exp%        = Experience gained
@@ -358,7 +358,7 @@ additional-commands:
       - "&bMOTD del party:"
       - "&b%motd%"
     invalid-chars: "&cCaratteri non validi. Puoi usare anche '. , /'. Minimo 3 e massimo 100 caratteri."
-    censored: "&cIl MOTD contiene delle parole censurate!"
+    censored: "&cIl MOTD contiene parole censurate!"
   mute:
     toggle-on: "&7Hai disabilitato le notifiche!"
     toggle-off: "&7Hai attivato le notifiche!"
