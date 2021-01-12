@@ -251,11 +251,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cYou need to wait %seconds% seconds before ask to another party"
       individual: "&cYou need to wait %seconds% seconds before ask to the same party"
-  claim:
-    claimed: "&aПредоставлено разрешение партии"
-    removed: "&aУдалено разрешение партии"
-    no-manager: "&cВы должны быть менеджером"
-    claim-no-exists: "&cПретензия не найдена"
   color:
     info: "&bВаш цвет партии: %color_code%%color_command%"
     empty: "&bУ твоей партии нет цвета"
@@ -419,30 +414,6 @@ additional-commands:
       sent: "&aTeleport request sent to the party"
       received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
       denied: "&7You denied the teleport request of %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cУ вас недостаточно денег для выполнения требования [%price%$]"
-      color: "&cУ вас нет достаточно денег, чтобы выполнить команду цвета [%price%$]"
-      create: "&cУ вас недостаточно денег для создания партии [%price%$]"
-      desc: "&cУ вас недостаточно денег, чтобы установить описание для выполнения телепорта [%price%$]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cУ вас недостаточно денег, чтобы использовать команду home [%price%$]"
-      join: "&cУ вас недостаточно денег, чтобы присоединиться к партии [%price%$]"
-      motd: "&cУ вас нет достаточно денег, чтобы создать приветствие [%price%$]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cУ вас нет достаточно денег, чтобы установить дом [%price%$]"
-      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
-      teleport: "&cУ вас нет достаточно денег, чтобы выполнить телепорт [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aВыполнение команды."
-      no-cmd: "&cНет команды для подтверждения"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
