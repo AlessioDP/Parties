@@ -251,11 +251,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cYou need to wait %seconds% seconds before ask to another party"
       individual: "&cYou need to wait %seconds% seconds before ask to the same party"
-  claim:
-    claimed: "&aPrzyznano uprawnienia do grupy"
-    removed: "&aZabrano uprawnienia do grupy"
-    no-manager: "&cMusisz być zarządcą tych włości"
-    claim-no-exists: "&cNie znaleziono przejętego terenu"
   color:
     info: "&bKolor twojej grupy to: %color_code%%color_command%"
     empty: "&bTwoja grupa nie ma ustawionego koloru"
@@ -419,30 +414,6 @@ additional-commands:
       sent: "&aTeleport request sent to the party"
       received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
       denied: "&7You denied the teleport request of %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cNie masz wystarczającej ilości pieniędzy, aby zająć teren [%price%$]"
-      color: "&cNie masz wystarczajaco pieniedzy by kupic zmiane koloru [%price%$]"
-      create: "&cNie masz wystarczajaco pieniedzy by stworzyc grupe [%price%$]"
-      desc: "&cNie masz wystarczajaco pieniedzy by ustawic opis [%price%$]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cNie masz wystarczajaco pieniedzy by przeniesc sie do domu [%price%$]"
-      join: "&cNie masz wystarczajaco pieniedzy by dolaczyc do grupy [%price%$]"
-      motd: "&cNie masz wystarczajaco pieniedzy by ustawic MOTD [%price%$]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cNie masz wystarczajaco pieniedzy by ustawic dom [%price%$]"
-      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
-      teleport: "&cNie masz wystarczajaco pieniedzy by sie teleportowac [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aWykonywanie komendy."
-      no-cmd: "&cNie ma komendy do wykonania"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
