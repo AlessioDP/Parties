@@ -454,7 +454,7 @@ additional-commands:
       protection: "&cYou don't have enough money to enable protection [%price%$]"
       rename: "&cYou don't have enough money to rename the party [%price%$]"
       sethome: "&c당신은 홈을 설정하는데 충분한 돈을 갖고 있지 않습니다 [%price%원]"
-      tag: "&cYou don't have enough money to perform set the tag [%price%$]"
+      tag: "&cYou don't have enough money to set the tag [%price%$]"
       teleport: "&c당신은 텔레포트를 하는데에 충분한 돈을 갖고 있지 않습니다 [%price%원]"
     confirm:
       warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
