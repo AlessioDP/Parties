@@ -148,8 +148,8 @@ main-commands:
       sent-revoked: "&7Отозванное приглашение %player%"
       player-invite-revoked: "&7Приглашение, полученное от %party%, было отозвано"
     cooldown:
-      global: "&cВам нужно подождать %seconds% перед приглашением другого игрока"
-      individual: "&cВам нужно подождать %seconds%, прежде чем снова пригласить того же игрока"
+      global: "&cYou need to wait %seconds% seconds before invite another player"
+      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
     player-offline: "&cВы можете приглашать только онлайн игроков"
     player-no-permission: "&c%player% не имеет разрешения на присоединение"
     player-in-party: "&c%player% уже в партии"
@@ -249,8 +249,8 @@ additional-commands:
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% before ask to another party"
-      individual: "&cYou need to wait %seconds% before ask to the same party"
+      global: "&cYou need to wait %seconds% seconds before ask to another party"
+      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
   claim:
     claimed: "&aПредоставлено разрешение партии"
     removed: "&aУдалено разрешение партии"
