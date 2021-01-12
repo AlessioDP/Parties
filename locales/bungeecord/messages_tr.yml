@@ -148,8 +148,8 @@ main-commands:
       sent-revoked: "&7%player% Adlı Oyuncuya Attığınız Daveti İptal Ettiniz"
       player-invite-revoked: "&7%party% Adlı Partiden Gelen Davet İptal Edildi"
     cooldown:
-      global: "&cBir Oyuncuyu Davet Etmeden Önce %seconds% Saniye Beklemelisin"
-      individual: "&cBirilerini Davet Etmek İçin %seconds% Saniye Beklemelisin"
+      global: "&cYou need to wait %seconds% seconds before invite another player"
+      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
     player-offline: "&cOyuncu Şuanda Aktif Değil"
     player-no-permission: "&c%player% Partiye Katılma Yetkisi Yok"
     player-in-party: "&c%player% Zaten Partide"
@@ -249,8 +249,8 @@ additional-commands:
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% before ask to another party"
-      individual: "&cYou need to wait %seconds% before ask to the same party"
+      global: "&cYou need to wait %seconds% seconds before ask to another party"
+      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
   claim:
     claimed: "&aPartiye Yetki Verildi"
     removed: "&aParti Yetkileri Silindi"
