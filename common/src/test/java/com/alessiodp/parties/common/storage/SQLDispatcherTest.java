@@ -173,7 +173,6 @@ public class SQLDispatcherTest {
 	
 	private void player(PartiesSQLDispatcher dispatcher, PlayersDao dao, boolean remove) {
 		PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
-		System.out.println(player);
 		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);
 		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		

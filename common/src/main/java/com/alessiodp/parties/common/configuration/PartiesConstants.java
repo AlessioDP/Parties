@@ -138,13 +138,10 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_KILL_ADD = "Adding a kill to the party %s by player %s";
 	
-	public static final String DEBUG_LIB_BANMANAGER_BAN = "Party %s deleted because leader got banned by player %s";
-	
 	public static final String DEBUG_MESSAGING_RECEIVED = "Received a Parties packet of type '%s'";
 	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong Parties packet";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PARTY = "Received a Parties packet, updated party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER = "Received a Parties packet, updated player %s";
-	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PARTY = "Received a Parties packet, loaded party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PLAYER = "Received a Parties packet, loaded player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY = "Received a Parties packet, unloaded party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER = "Received a Parties packet, unloaded player %s";
