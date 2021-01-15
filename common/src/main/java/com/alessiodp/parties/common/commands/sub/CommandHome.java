@@ -179,7 +179,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 				}
 			} else {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-						.replace("%syntax%", getSyntax()));
+						.replace("%syntax%", getSyntaxForUser(sender)));
 				return;
 			}
 		} else {
@@ -209,7 +209,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 				}
 			} else {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-						.replace("%syntax%", getSyntax()));
+						.replace("%syntax%", getSyntaxForUser(sender)));
 				return;
 			}
 		}
