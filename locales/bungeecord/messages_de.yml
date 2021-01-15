@@ -185,7 +185,7 @@ main-commands:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
-    censored: "&cThe message contains censored words!"
+    censored: "&cDie Nachricht enthält einen zensierten Wortlaut!"
     muted: "&cYou are muted!"
   rank:
     #[Special tags]
@@ -209,7 +209,7 @@ main-commands:
       content:
         - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
+        - "&cVerwende '&7/Party rank <username> <rank> <number>&c' um den Rang des richtigen Spielers zu ändern"
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
   rename:
     #[Special tags]
