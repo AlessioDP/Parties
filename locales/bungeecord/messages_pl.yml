@@ -23,23 +23,23 @@ parties:
     already-in-party: "&cJuz jestes w grupie!"
     party-not-found: "&cGrupa %party% nie istnieje"
     party-full: "&cTa grupa jest pelna!"
-    player-not-found: "&cThe player %player% has not been found"
+    player-not-found: "&cNie znaleziono gracza %player%"
     player-not-in-party: "&c%player% nie jest w zdanej grupie"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aWłączone'
+    disabled: '&cWyłączone'
+    toggled-on: '&aWł'
+    toggled-off: '&cWył'
+    word-yes: '&aTak'
+    word-no: '&cNie'
+    empty: '&8Puste'
+    none: '&8Brak'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    color: 'color'
-    description: 'desc'
-    experience: 'experience'
-    kills: 'kills'
+    wrong-message: '&cNiepoprawna składnia: Wpisz &7/%syntax%'
+    color: 'kolor'
+    description: 'opis'
+    experience: 'doświadczenie'
+    kills: 'zabójstwa'
     home: 'home'
     members: 'members'
     message: 'message'
