@@ -132,7 +132,7 @@ main-commands:
       - "&bJoueurs en ligne&7 : %online_number%"
   invite:
     sent: "&bVous avez invité %player% dans votre groupe"
-    player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
+    player-invited: "[{\"text\":\"&b%player% vous a invité dans le groupe %party%.\n&bVoulez-vous \"},{\"text\":\"&a&laccepter\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter l'invitation\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lrefuser\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Refuser l'invitation\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> &bpour choisir.\"}]"
     accept:
       broadcast: "&b&l%player% a rejoint le groupe"
       accepted: "&aVous avez accepté l'invitation du groupe"
@@ -148,8 +148,8 @@ main-commands:
       sent-revoked: "&7L'invitation envoyée à %player% a été révoquée"
       player-invite-revoked: "&7L'invitation reçue de %party% a été révoquée"
     cooldown:
-      global: "&cYou need to wait %seconds% seconds before invite another player"
-      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
+      global: "&cVous devez attendre %seconds% secondes avant d'inviter un autre joueur"
+      individual: "&cVous devez attendre %seconds% secondes avant d'inviter à nouveau le même joueur"
     player-offline: "&cVous ne pouvez inviter que des joueurs en ligne"
     player-no-permission: "&c%player% n'a pas la permission de rejoindre"
     player-in-party: "&c%player% est déjà dans un groupe"
@@ -161,7 +161,7 @@ main-commands:
     player-kicked: "&bVous avez été expulsé du groupe %party%"
     broadcast: "&b&l%player% a été expulsé du groupe"
     broadcast-disband: "&b&lLe groupe a été dissous parce que le chef a été expulsé"
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
+    broadcast-leader-changed: "&b&lLe chef a été expulsé du groupe, %player% est le nouveau chef"
     player-higher-rank: "&cVous ne pouvez pas expulser votre supérieur !"
     player-not-in-party: "&c%player% n'est pas dans votre groupe"
     players-conflict:
@@ -235,7 +235,7 @@ main-commands:
 additional-commands:
   ask:
     sent: "&aJoin request sent to %party%"
-    received: "[{\"text\":\"&b%player% want to join your party.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
+    received: "[{\"text\":\"&b%player% veut rejoindre votre groupe.\n&bVoulez-vous \"},{\"text\":\"&a&laccepter\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter la requête\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lrefuser\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> %player% &bpour choisir.\"}]"
     accept:
       broadcast: "&b&l%player% a rejoint le groupe"
       accepted: "&aYou accepted the ask request"
@@ -249,8 +249,8 @@ additional-commands:
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% seconds before ask to another party"
-      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
+      global: "&cVous devez attendre %seconds% secondes avant d'envoyer une requête à un autre groupe"
+      individual: "&cVous devez attendre %seconds% secondes avant d'envoyer une requête au même groupe"
   color:
     info: "&bLa couleur de votre groupe est : %color_code%%color_command%"
     empty: "&bVotre groupe n'a pas de couleur"
@@ -376,7 +376,7 @@ additional-commands:
       own-none: "&bYou do not have any nickname"
       other: "&bThe nickname of %player% is %player_nickname%"
       other-none: "&b%player% does not have any nickname"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
+    invalid-chars: "&cCaractères invalides. Vous pouvez aussi utiliser \". , /\". Minimum 3 et maximum 16 caractères."
     censored: "&cThe nickname contains censored words!"
   password:
     changed: "&aMot de passe du groupe changé"
@@ -401,7 +401,7 @@ additional-commands:
     changed: "&bParty tag changed"
     removed: "&bParty tag removed"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 10 chars."
+    invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 3 et maximum 10 caractères."
     censored: "&cThe tag contains censored words!"
     already-used: "&c The tag %tag% is already used"
   teleport:
@@ -412,7 +412,7 @@ additional-commands:
     cooldown: "&cVous devez attendre %seconds% secondes !"
     accept-request:
       sent: "&aTeleport request sent to the party"
-      received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
+      received: "[{\"text\":\"&bVoulez-vous vous faire téléporter vers %player%? \"},{\"text\":\"&a&lOui\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter la requête\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lnon\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> %player% &bpour choisir.\"}]"
       denied: "&7You denied the teleport request of %player%"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
