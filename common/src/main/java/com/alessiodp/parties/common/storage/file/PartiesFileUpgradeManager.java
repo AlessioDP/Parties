@@ -4,6 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.file.FileUpgradeManager;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseFile;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import lombok.NonNull;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -40,10 +41,11 @@ public class PartiesFileUpgradeManager extends FileUpgradeManager {
 				cn.getNode("color").setValue(data.getNode("color").getValue());
 				cn.getNode("kills").setValue(data.getNode("kills").getValue());
 				cn.getNode("password").setValue(data.getNode("password").getValue());
-				cn.getNode("home").setValue(data.getNode("home").getValue());
+				cn.getNode("home").setValue(data.getNode("home").getValue() != null ? "default," + data.getNode("home").getValue() + "," : null); // Add name + server
 				cn.getNode("protection").setValue(data.getNode("protection").getValue());
 				cn.getNode("experience").setValue(data.getNode("experience").getValue());
 				cn.getNode("follow").setValue(data.getNode("follow").getValue());
+				cn.getNode("members").setValue(data.getNode("members").getValue());
 			});
 			
 			databaseFile.getRootNode().getNode("players-old").setValue(databaseFile.getRootNode().getNode("players"));
@@ -58,7 +60,7 @@ public class PartiesFileUpgradeManager extends FileUpgradeManager {
 			});
 			
 			ConfigurationNode cn = databaseFile.getRootNode().getNode("map-parties-by-name");
-			idParties.forEach((name, id) -> cn.getNode(name).setValue(id));
+			idParties.forEach((name, id) -> cn.getNode(CommonUtils.toLowerCase(name)).setValue(id));
 			
 			databaseFile.getRootNode().getNode("parties-old").setValue(null);
 			databaseFile.getRootNode().getNode("players-old").setValue(null);

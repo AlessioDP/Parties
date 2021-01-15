@@ -115,12 +115,19 @@ public class MigrationsTest {
 		PartyImpl party = dispatcher.getPartyByName("test");
 		assertNotNull(party);
 		assertEquals("test description", party.getDescription());
+		assertEquals(2, party.getMembers().size());
 		
+		// Leader check
 		assertNotNull(party.getLeader());
 		PartyPlayerImpl leader = dispatcher.getPlayer(party.getLeader());
 		assertNotNull(leader);
 		assertEquals(party.getId(), leader.getPartyId());
 		
+		// Home check
+		assertEquals(1, party.getHomes().size());
+		assertEquals("default", party.getHomes().stream().findFirst().get().getName());
+		
+		// Another party
 		assertNotNull(dispatcher.getPartyByName("test2"));
 		
 		dispatcher.stop();
@@ -137,12 +144,19 @@ public class MigrationsTest {
 		PartyImpl party = dispatcher.getPartyByName("test");
 		assertNotNull(party);
 		assertEquals("test description", party.getDescription());
+		assertEquals(2, party.getMembers().size());
 		
+		// Leader check
 		assertNotNull(party.getLeader());
 		PartyPlayerImpl leader = dispatcher.getPlayer(party.getLeader());
 		assertNotNull(leader);
 		assertEquals(party.getId(), leader.getPartyId());
 		
+		// Home check
+		assertEquals(1, party.getHomes().size());
+		assertEquals("default", party.getHomes().stream().findFirst().get().getName());
+		
+		// Another party
 		assertNotNull(dispatcher.getPartyByName("test2"));
 		
 		dispatcher.stop();

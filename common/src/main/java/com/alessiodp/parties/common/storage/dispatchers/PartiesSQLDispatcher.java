@@ -282,7 +282,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 						party.get("color"),
 						party.get("kills"),
 						party.get("password"),
-						party.get("home"),
+						"default," + party.get("home") + ",",
 						party.get("protection"),
 						party.get("experience"),
 						party.get("follow")

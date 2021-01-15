@@ -20,6 +20,7 @@ parties:
     protection: false
     experience: 10.0
     follow: false
+    home: world,123.123,123.123,-123.123,0.0,0.0
   test2:
     leader: 2bd828fb-0337-3389-af9d-204fe4f4f02e
     members:
