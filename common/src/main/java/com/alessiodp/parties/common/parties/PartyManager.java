@@ -17,6 +17,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -248,14 +249,17 @@ public abstract class PartyManager {
 	public void disbandLoadedParties() {
 		if (ConfigParties.GENERAL_MEMBERS_DISBAND_PARTIES_ON_DISABLE) {
 			// Disband all loaded parties
-			cacheParties.values().forEach(party -> {
+			HashSet<PartyImpl> cachedParties = new HashSet<>(cacheParties.values());
+			cachedParties.forEach(party -> {
 				party.delete(DeleteCause.TIMEOUT, null, null);
 			});
+			cacheParties.clear();
 			
 			// Remove all timed out caches
 			for (Entry<UUID, CancellableTask> e : cacheMembersTimedOut.entrySet()) {
 				e.getValue().cancel();
 			}
+			cacheMembersTimedOut.clear();
 		}
 	}
 }

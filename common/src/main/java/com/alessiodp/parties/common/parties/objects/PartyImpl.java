@@ -210,7 +210,9 @@ public abstract class PartyImpl implements Party {
 		lock.unlock();
 		
 		// Send sync packet + event
-		sendPacketDelete(cause, kicked, commandSender);
+		plugin.getScheduler().runAsync(() -> {
+			sendPacketDelete(cause, kicked, commandSender);
+		});
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE, getName()), true);
 	}
