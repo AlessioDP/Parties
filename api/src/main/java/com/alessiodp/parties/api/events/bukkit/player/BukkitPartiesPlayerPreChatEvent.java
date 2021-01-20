@@ -4,9 +4,10 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import org.bukkit.event.Cancellable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class BukkitPartiesPlayerPreChatEvent extends BukkitPartiesEvent implements IPlayerPreChatEvent {
+public class BukkitPartiesPlayerPreChatEvent extends BukkitPartiesEvent implements IPlayerPreChatEvent, Cancellable {
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private final Party party;

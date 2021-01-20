@@ -3,9 +3,10 @@ package com.alessiodp.parties.api.events.bukkit.party;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import org.bukkit.event.Cancellable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent implements IPartyPreCreateEvent {
+public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent implements IPartyPreCreateEvent, Cancellable {
 	private boolean cancelled;
 	private final PartyPlayer player;
 	private String name;

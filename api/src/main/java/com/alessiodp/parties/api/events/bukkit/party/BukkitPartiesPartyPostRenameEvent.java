@@ -41,7 +41,7 @@ public class BukkitPartiesPartyPostRenameEvent extends BukkitPartiesEvent implem
 		return newName;
 	}
 	
-	@NonNull
+	@Nullable
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;

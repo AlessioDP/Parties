@@ -4,10 +4,11 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import org.bukkit.event.Cancellable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class BukkitPartiesPartyPreRenameEvent extends BukkitPartiesEvent implements IPartyPreRenameEvent {
+public class BukkitPartiesPartyPreRenameEvent extends BukkitPartiesEvent implements IPartyPreRenameEvent, Cancellable {
 	private boolean cancelled;
 	private final Party party;
 	private final String oldName;
@@ -47,7 +48,7 @@ public class BukkitPartiesPartyPreRenameEvent extends BukkitPartiesEvent impleme
 		newName = name;
 	}
 	
-	@NonNull
+	@Nullable
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;

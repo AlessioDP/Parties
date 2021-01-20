@@ -34,9 +34,9 @@ public interface IPartyPostRenameEvent extends PartiesEvent {
 	/**
 	 * Get the player who performed the command
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return Returns the {@link PartyPlayer} or null if not executed by a player
 	 */
-	@NonNull
+	@Nullable
 	PartyPlayer getPartyPlayer();
 	
 	/**

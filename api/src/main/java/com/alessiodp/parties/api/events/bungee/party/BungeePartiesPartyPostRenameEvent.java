@@ -40,7 +40,7 @@ public class BungeePartiesPartyPostRenameEvent extends BungeePartiesEvent implem
 		return newName;
 	}
 	
-	@NonNull
+	@Nullable
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
