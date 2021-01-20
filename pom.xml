@@ -71,7 +71,7 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.16</dev.lombok>
 		
-		<libs.adpcore>1.5.0</libs.adpcore>
+		<libs.adpcore>1.5.1</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>

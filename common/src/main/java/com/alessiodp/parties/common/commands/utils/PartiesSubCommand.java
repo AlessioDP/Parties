@@ -14,7 +14,7 @@ import lombok.NonNull;
 
 public abstract class PartiesSubCommand extends ADPSubCommand {
 	
-	public PartiesSubCommand(@NonNull ADPPlugin plugin, @NonNull ADPMainCommand mainCommand, @NonNull ADPCommand command, @NonNull ADPPermission permission, @NonNull String commandName, boolean executableByConsole) {
+	public PartiesSubCommand(@NonNull ADPPlugin plugin, @NonNull ADPMainCommand mainCommand, @NonNull ADPCommand command, ADPPermission permission, @NonNull String commandName, boolean executableByConsole) {
 		super(plugin, mainCommand, command, permission, commandName, executableByConsole);
 	}
 	
