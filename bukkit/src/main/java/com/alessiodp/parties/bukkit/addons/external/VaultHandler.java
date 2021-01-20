@@ -19,12 +19,11 @@ public class VaultHandler {
 	private static Economy economy;
 	
 	public void init() {
-		if (BukkitConfigMain.ADDONS_VAULT_ENABLE && Bukkit.getServer().getPluginManager().getPlugin(ADDON_NAME) != null) {
-			if (setupEconomy()) {
+		if (BukkitConfigMain.ADDONS_VAULT_ENABLE) {
+			if (Bukkit.getServer().getPluginManager().getPlugin(ADDON_NAME) != null && setupEconomy()) {
 				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			} else {
 				BukkitConfigMain.ADDONS_VAULT_ENABLE = false;
-				
 				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
