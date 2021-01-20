@@ -14,16 +14,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SkriptHandler {
 	@NonNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "Skript";
+	private static boolean loaded = false;
 	
 	public void init() {
-		if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME) && BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT) {
-			try {
-				SkriptAddon addon = Skript.registerAddon((JavaPlugin) plugin.getBootstrap());
-				addon.loadClasses(plugin.getPackageName() + ".skript");
-			} catch (Exception ex) {
-				ex.printStackTrace();
+		if (BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT) {
+			BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT = false;
+			if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
+				try {
+					if (!loaded) {
+						SkriptAddon addon = Skript.registerAddon((JavaPlugin) plugin.getBootstrap());
+						addon.setLanguageFileDirectory("bukkit/skript");
+						addon.loadClasses("com.alessiodp.parties.bukkit.addons.external.skript");
+						loaded = true;
+					}
+					
+					BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT = true;
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			}
-			plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 		}
 	}
 }

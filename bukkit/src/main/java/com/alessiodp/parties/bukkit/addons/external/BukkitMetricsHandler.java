@@ -59,6 +59,12 @@ public class BukkitMetricsHandler extends MetricsHandler {
 			return "Disabled";
 		}));
 		
+		metrics.addCustomChart(new Metrics.SimplePie("skript_support", () -> {
+			if (BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT)
+				return "Enabled";
+			return "Disabled";
+		}));
+		
 		metrics.addCustomChart(new Metrics.SimplePie("vault_system", () -> {
 			if (BukkitConfigMain.ADDONS_VAULT_ENABLE)
 				return "Enabled";

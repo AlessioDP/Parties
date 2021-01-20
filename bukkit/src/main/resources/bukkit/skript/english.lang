@@ -1,0 +1,5 @@
+version: ${plugin.version}
+
+types:
+	party: party
+	partyplayer: party player

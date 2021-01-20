@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -15,46 +16,45 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.UUID;
-
 @Name("Add To Party")
 @Description("Add the player to the party.")
-@Examples({"add player to the party test"})
+@Examples({"add player to the party \"test\""})
+@Since("3.0.0")
 public class EffAddToParty extends Effect {
 	static {
 		Skript.registerEffect(EffAddToParty.class,
-				"add %offlineplayers% to [the] party [with name] %string%",
-				"add %offlineplayers% to [the] party with id %string%");
+				"add %offlineplayers% to %party%",
+				"add %partyplayer% to %party%");
 	}
 	
 	private Expression<OfflinePlayer> players;
-	private Expression<String> party;
-	
-	private UUID partyId;
+	private Expression<PartyPlayer> partyPlayers;
+	private Expression<Party> party;
 	
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		players = (Expression<OfflinePlayer>) exprs[0];
 		if (matchedPattern == 0)
-			party = (Expression<String>) exprs[1];
+			players = (Expression<OfflinePlayer>) exprs[0];
 		else
-			partyId = UUID.fromString(String.valueOf(exprs[1]));
+			partyPlayers = (Expression<PartyPlayer>) exprs[0];
+		party = (Expression<Party>) exprs[1];
 		return true;
 	}
 	
 	@Override
 	protected void execute(Event e) {
-		Party p;
-		if (partyId != null)
-			p = Parties.getApi().getParty(partyId);
-		else
-			p = Parties.getApi().getParty(party.getSingle(e));
-		if (p != null) {
-			for (OfflinePlayer player : players.getArray(e)) {
+		if (players != null) {
+			for (OfflinePlayer player : players.getAll(e)) {
 				PartyPlayer partyPlayer = Parties.getApi().getPartyPlayer(player.getUniqueId());
-				if (partyPlayer != null) {
-					p.addMember(partyPlayer);
+				if (partyPlayer != null && !partyPlayer.isInParty()) {
+					party.getSingle(e).addMember(partyPlayer);
+				}
+			}
+		} else {
+			for (PartyPlayer partyPlayer : partyPlayers.getAll(e)) {
+				if (!partyPlayer.isInParty()) {
+					party.getSingle(e).addMember(partyPlayer);
 				}
 			}
 		}
@@ -62,8 +62,6 @@ public class EffAddToParty extends Effect {
 	
 	@Override
 	public String toString(@Nullable Event e, boolean debug) {
-		if (partyId != null)
-			return "add " + players.toString(e, debug) + " to party with id " + partyId.toString();
-		return "add " + players.toString(e, debug) + " to party " + party.toString(e, debug);
+		return "add " + (players != null ? players : partyPlayers).toString(e, debug) + " to " + party.toString(e, debug);
 	}
 }
