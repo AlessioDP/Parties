@@ -2,6 +2,7 @@ package com.alessiodp.parties.bungeecord.listeners;
 
 import com.alessiodp.core.bungeecord.user.BungeeUser;
 import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bungeecord.BungeePartiesPlugin;
 import com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
@@ -16,7 +17,6 @@ import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -47,32 +47,40 @@ public class BungeeFollowListener implements Listener {
 					plugin.getEventManager().callEvent(partyFollowEvent);
 					if (!partyFollowEvent.isCancelled()) {
 						// Let other players follow him
-						for (UUID uuid : party.getMembers()) {
-							BungeeUser member = (BungeeUser) plugin.getPlayer(uuid);
-							if (member != null
-									&& !member.getUUID().equals(player.getPlayerUUID())
-									&& !member.getServerName().equals(serverInfo.getName())) {
-								
-								member.sendMessage(plugin.getMessageUtils().convertPlaceholders(BungeeMessages.OTHER_FOLLOW_SERVER
-												.replace("%server%", serverInfo.getName()),
-										player, party
-								), true);
-								member.connectTo(serverInfo);
-								
-								if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
-									// Schedule it later
-									plugin.getScheduler().scheduleAsyncLater(() -> {
-										for (String command : BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
-											((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(member.getUUID()).chat(command);
-										}
-									}, BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
-								}
-							}
-						}
+						
+						sendMembers(party, player, serverInfo);
 					}
 				}
 			}
 		});
+	}
+	
+	private void sendMembers(PartyImpl party, PartyPlayerImpl player, ServerInfo serverInfo) {
+		for (PartyPlayer member : party.getOnlineMembers(true)) {
+			BungeeUser memberUser = (BungeeUser) plugin.getPlayer(member.getPlayerUUID());
+			if (memberUser != null
+					&& !memberUser.getUUID().equals(player.getPlayerUUID())
+					&& !memberUser.getServerName().equals(serverInfo.getName())) {
+				
+				memberUser.sendMessage(plugin.getMessageUtils().convertPlaceholders(BungeeMessages.OTHER_FOLLOW_SERVER
+								.replace("%server%", serverInfo.getName()),
+						player, party
+				), true);
+				memberUser.connectTo(serverInfo);
+				
+				if (BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
+					
+					// Schedule it later
+					plugin.getScheduler().scheduleAsyncLater(() -> {
+						for (String command : BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
+							memberUser.chat(
+									plugin.getMessageUtils().convertPlaceholders(command, (PartyPlayerImpl) member, party)
+							);
+						}
+					}, BungeeConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
+				}
+			}
+		}
 	}
 	
 	private boolean allowedServer(String serverName) {

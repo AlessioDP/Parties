@@ -147,11 +147,13 @@ additional:
 
   # [Follow system]
   # When the party leader joins a server, the entire party will follow him
-  # You can make it toggleable with 'toggle-command'
-  # You can decide which rank will follow the leader (leader rank or any other) [0 = all ranks]
+  # => toggle-command:    Make the follow toggleable with /party follow
+  # => delay:             Teleport other players after a specific delay (in milliseconds)
+  # => perform-commands:  Perform commands after a specific delay (in milliseconds)
   follow:
     enable: false
     toggle-command: false
+    delay: 0
     perform-commands:
       enable: false
       delay: 2000
@@ -271,4 +273,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 8
+  version: 9

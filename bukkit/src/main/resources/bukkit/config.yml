@@ -218,22 +218,23 @@ additional:
 
   # [Follow system]
   # When the party leader joins a world, the entire party will follow him
-  # You can make it toggleable with 'toggle-command'
-  # You can decide which rank will follow the leader (leader rank or any other) [0 = all ranks]
+  # => toggle-command:                Make the follow toggleable with /party follow
+  # => delay:                         Teleport other players after a specific delay (in milliseconds)
+  # => teleport-to-the-same-location: Teleport to the same world or player
+  # => timeout-portal:                Timeout before player can re-use portal (in milliseconds)
+  # => perform-commands:              Perform commands after a specific delay (in milliseconds)
   follow:
     enable: false
     toggle-command: false
-    # Type of teleport:
-    # => 1:   Teleport to the world spawn
-    # => 2:   Teleport to the same point of followed player
-    type-of-teleport: 1
-    rank-needed: 0
-    minimum-rank-to-follow: 0
-    # Timeout before player can re-use portal in ticks
-    # Important to fix join portals spam (20 ticks = 1 second)
-    timeout-portal: 100
-    list-worlds:
-    - '*'
+    delay: 0
+    teleport-to-the-same-location: true
+    timeout-portal: 5000
+    perform-commands:
+      enable: false
+      delay: 2000
+      commands: [ ]
+    # List of worlds not allowed to join into as group (Regexes allowed)
+    blocked-worlds: []
 
   # [Mute]
   # Enable mute system.
@@ -420,4 +421,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 9
+  version: 10

@@ -63,16 +63,12 @@ public class BukkitConfigMain extends ConfigMain {
 	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mythicmobs.handle-only-mm-mobs")
 	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_HANDLEONLYMMMOBS;
 	
-	@ConfigOption(path = "additional.follow.type-of-teleport")
-	public static int			ADDITIONAL_FOLLOW_TYPE;
-	@ConfigOption(path = "additional.follow.rank-needed")
-	public static int			ADDITIONAL_FOLLOW_RANKNEEDED;
-	@ConfigOption(path = "additional.follow.minimum-rank-to-follow")
-	public static int			ADDITIONAL_FOLLOW_RANKMINIMUM;
+	@ConfigOption(path = "additional.follow.teleport-to-the-same-location")
+	public static boolean		ADDITIONAL_FOLLOW_TELEPORT_TO_SAME_LOCATION;
 	@ConfigOption(path = "additional.follow.timeout-portal")
 	public static int			ADDITIONAL_FOLLOW_TIMEOUT;
-	@ConfigOption(path = "additional.follow.list-worlds")
-	public static List<String>	ADDITIONAL_FOLLOW_LISTWORLDS;
+	@ConfigOption(path = "additional.follow.blocked-worlds")
+	public static List<String>	ADDITIONAL_FOLLOW_BLOCKEDWORLDS;
 	
 	// Addons settings
 	@ConfigOption(path = "addons.banmanager.enable")

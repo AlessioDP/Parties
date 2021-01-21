@@ -14,12 +14,6 @@ public class BungeeConfigMain extends ConfigMain {
 	@Getter private final int latestVersion = PartiesConstants.VERSION_BUNGEE_CONFIG_MAIN;
 	
 	// Additional settings
-	@ConfigOption(path = "additional.follow.perform-commands.enable")
-	public static boolean ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE;
-	@ConfigOption(path = "additional.follow.perform-commands.delay")
-	public static int ADDITIONAL_FOLLOW_PERFORMCMD_DELAY;
-	@ConfigOption(path = "additional.follow.perform-commands.commands")
-	public static List<String> ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS;
 	@ConfigOption(path = "additional.follow.blocked-servers")
 	public static List<String> ADDITIONAL_FOLLOW_BLOCKEDSERVERS;
 	

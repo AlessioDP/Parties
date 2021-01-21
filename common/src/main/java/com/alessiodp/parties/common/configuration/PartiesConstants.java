@@ -15,10 +15,10 @@ public class PartiesConstants {
 	
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 9;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 10;
 	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 6;
 	public static final int VERSION_BUKKIT_MESSAGES = 11;
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 8;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 9;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 5;
 	public static final int VERSION_BUNGEE_MESSAGES = 9;
 	public static final int VERSION_DATABASE_YAML = 2;
@@ -131,6 +131,7 @@ public class PartiesConstants {
 	public static final String DEBUG_EXP_SEND_SKILLAPI = "Sending %s SkillAPI experience to the player %s";
 	
 	public static final String DEBUG_FOLLOW_SERVER_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
+	public static final String DEBUG_FOLLOW_WORLD_REGEXERROR = "Wrong regex pattern for allowed worlds of follow-server feature";
 	
 	public static final String DEBUG_FRIENDLYFIRE_DENIED = "Denied friendly fire (type %s) of player %s to player %s";
 	

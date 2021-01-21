@@ -91,6 +91,14 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		ADDITIONAL_FOLLOW_ENABLE;
 	@ConfigOption(path = "additional.follow.toggle-command")
 	public static boolean		ADDITIONAL_FOLLOW_TOGGLECMD;
+	@ConfigOption(path = "additional.follow.delay")
+	public static long			ADDITIONAL_FOLLOW_DELAY;
+	@ConfigOption(path = "additional.follow.perform-commands.enable")
+	public static boolean		ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE;
+	@ConfigOption(path = "additional.follow.perform-commands.delay")
+	public static int			ADDITIONAL_FOLLOW_PERFORMCMD_DELAY;
+	@ConfigOption(path = "additional.follow.perform-commands.commands")
+	public static List<String>	ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS;
 	
 	@ConfigOption(path = "additional.mute.enable")
 	public static boolean		ADDITIONAL_MUTE_ENABLE;
