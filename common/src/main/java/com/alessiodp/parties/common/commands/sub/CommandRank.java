@@ -220,8 +220,12 @@ public class CommandRank extends PartiesSubCommand {
 			promotedPp.setRank(rank.getLevel());
 		}
 		
-		sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_CHANGED, promotedPp);
-		party.broadcastMessage(Messages.MAINCMD_RANK_BROADCAST, promotedPp);
+		sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_CHANGED
+				.replace("%rank_name%", rank.getName())
+				.replace("%rank_chat%", rank.getChat()), promotedPp);
+		party.broadcastMessage(Messages.MAINCMD_RANK_BROADCAST
+				.replace("%rank_name%", rank.getName())
+				.replace("%rank_chat%", rank.getChat()), promotedPp);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RANK,
 				sender.getName(), promotedPp.getName(), party.getName(), oldRank, rank.getLevel(), otherParty), true);
