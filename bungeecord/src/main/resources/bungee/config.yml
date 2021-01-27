@@ -74,7 +74,7 @@ storage:
     h2:
       database-file: database
 
-    # [Remote SQL settings - MySQL/MariaDB]
+    # [Remote SQL settings - MySQL/MariaDB/PostgreSQL]
     remote-sql:
       address: localhost
       port: '3306'

@@ -1,4 +1,4 @@
--- MySQL database
+-- PostgreSQL database
 CREATE TABLE IF NOT EXISTS <prefix>parties (
 	"id"			CHAR(36) NOT NULL PRIMARY KEY,
 	"name"			VARCHAR(255) NOT NULL,
