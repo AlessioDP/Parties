@@ -352,7 +352,7 @@ additional-commands:
     valid-homes: "&bLista delle home valide:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClicca per teletrasportarti"}]}}}]'
   join:
     joined: "&aSei entrato nel party %party%"
     player-joined: "&b&l%player% è entrato nel party"
