@@ -122,7 +122,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	}
 	
 	public void removeFromParty(boolean saveToDatabase) {
-		String oldPartyId = partyId.toString();
+		UUID oldPartyId = partyId;
 		updateValue(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_CLEANUP, getName()), true);
 			rank = ConfigParties.RANK_SET_DEFAULT;
@@ -135,7 +135,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			}
 		}, saveToDatabase);
 		
-		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId, getPlayerUUID().toString()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId != null ? oldPartyId.toString() : "none", getPlayerUUID().toString()), true);
 	}
 	
 	@Override
