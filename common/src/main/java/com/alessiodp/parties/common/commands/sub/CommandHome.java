@@ -123,17 +123,21 @@ public abstract class CommandHome extends PartiesSubCommand {
 					return;
 				}
 			} else if (commandData.getArgs().length == 2) {
-				if (!sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
-					if (party == null) {
-						sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
-						return;
-					} else {
-						Optional<PartyHome> opt = party.getHomes().stream().filter((ph) -> ph.getName() != null && ph.getName().equalsIgnoreCase(commandData.getArgs()[1])).findAny();
-						if (opt.isPresent())
-							partyHome = (PartyHomeImpl) opt.get();
-					}
+				
+				// Not admin - Not in party
+				if (!sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS) && party == null) {
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+					return;
 				}
 				
+				// Get the partyHome of the current party
+				if (party != null) {
+					Optional<PartyHome> opt = party.getHomes().stream().filter((ph) -> ph.getName() != null && ph.getName().equalsIgnoreCase(commandData.getArgs()[1])).findAny();
+					if (opt.isPresent())
+						partyHome = (PartyHomeImpl) opt.get();
+				}
+				
+				// If no home but home.others permission
 				if (partyHome == null
 						&& sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
@@ -151,11 +155,13 @@ public abstract class CommandHome extends PartiesSubCommand {
 					}
 				}
 				
+				// Not in party
 				if (party == null) {
 					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 					return;
 				}
 				
+				// No party home found
 				if (partyHome == null) {
 					sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_INVALID_HOME, party);
 					printValidHomes(sender, partyPlayer, party);
