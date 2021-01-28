@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bungeecord.addons.external;
 
 import com.alessiodp.core.bungeecord.addons.external.bstats.bungeecord.Metrics;
+import com.alessiodp.core.bungeecord.addons.external.bstats.charts.SimplePie;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.addons.external.MetricsHandler;
 import com.alessiodp.core.common.utils.CommonUtils;
@@ -19,22 +20,22 @@ public class BungeeMetricsHandler extends MetricsHandler {
 	protected void registerMetrics() {
 		Metrics metrics = new Metrics((Plugin) plugin.getBootstrap(), plugin.getBstatsId());
 		
-		metrics.addCustomChart(new Metrics.SimplePie("type_of_party_used", () -> {
+		metrics.addCustomChart(new SimplePie("type_of_party_used", () -> {
 			if (BungeeConfigParties.ADDITIONAL_FIXED_ENABLE)
 				return "Fixed";
 			return "Normal";
 		}));
 		
 		// Config
-		metrics.addCustomChart(new Metrics.SimplePie("type_of_database_used", () -> plugin.getDatabaseManager().getDatabaseType().getFormattedName()));
+		metrics.addCustomChart(new SimplePie("type_of_database_used", () -> plugin.getDatabaseManager().getDatabaseType().getFormattedName()));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("auto_command_system", () -> {
+		metrics.addCustomChart(new SimplePie("auto_command_system", () -> {
 			if (BungeeConfigMain.ADDITIONAL_AUTOCMD_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("exp_levels", () -> {
+		metrics.addCustomChart(new SimplePie("exp_levels", () -> {
 			if (BungeeConfigMain.ADDITIONAL_EXP_ENABLE && BungeeConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
 				switch (CommonUtils.toLowerCase(BungeeConfigMain.ADDITIONAL_EXP_LEVELS_MODE)) {
 					case "normal":
@@ -53,57 +54,57 @@ public class BungeeMetricsHandler extends MetricsHandler {
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("follow_system", () -> {
+		metrics.addCustomChart(new SimplePie("follow_system", () -> {
 			if (BungeeConfigMain.ADDITIONAL_FOLLOW_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
 		// Parties
-		metrics.addCustomChart(new Metrics.SimplePie("color_system", () -> {
+		metrics.addCustomChart(new SimplePie("color_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_COLOR_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("friendly_fire_system", () -> {
+		metrics.addCustomChart(new SimplePie("friendly_fire_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("home_system", () -> {
+		metrics.addCustomChart(new SimplePie("home_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_HOME_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("kills_system", () -> {
+		metrics.addCustomChart(new SimplePie("kills_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_KILLS_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("nickname_system", () -> {
+		metrics.addCustomChart(new SimplePie("nickname_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_NICKNAME_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("tag_system", () -> {
+		metrics.addCustomChart(new SimplePie("tag_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_TAG_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new Metrics.SimplePie("teleport_system", () -> {
+		metrics.addCustomChart(new SimplePie("teleport_system", () -> {
 			if (BungeeConfigParties.ADDITIONAL_TELEPORT_ENABLE)
 				return "Enabled";
 			return "Disabled";
 		}));
 		
 		// Extra
-		metrics.addCustomChart(new Metrics.SimplePie("using_api", () -> {
+		metrics.addCustomChart(new SimplePie("using_api", () -> {
 			if (Parties.isFlagHook())
 				return "Yes";
 			return "No";
