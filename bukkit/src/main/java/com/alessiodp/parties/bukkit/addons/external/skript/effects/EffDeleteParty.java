@@ -20,7 +20,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class EffDeleteParty extends Effect {
 	static {
 		Skript.registerEffect(EffDeleteParty.class,
-				"delete %partie%");
+				"delete %party%");
 	}
 	
 	private Expression<Party> parties;
