@@ -4,16 +4,22 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap;
+import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
+import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.bungeecord.parties.objects.BungeePartyTeleportRequest;
+import com.alessiodp.parties.bungeecord.tasks.BungeeTeleportDelayTask;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandTeleport;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class BungeeCommandTeleport extends CommandTeleport {
@@ -22,7 +28,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 		super(plugin, mainCommand);
 	}
 	
-	public void performTeleport(PartyImpl party, PartyPlayerImpl player) {
+	public void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay) {
 		ProxiedPlayer bungeePlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(player.getPlayerUUID());
 		if (bungeePlayer != null) {
 			ServerInfo server = bungeePlayer.getServer().getInfo();
@@ -46,18 +52,61 @@ public class BungeeCommandTeleport extends CommandTeleport {
 								TimeUnit.SECONDS
 						);
 					} else {
-						teleportPlayer((PartiesPlugin) plugin, (PartyPlayerImpl) onlinePlayer, player, server);
+						handleSinglePlayerTeleport((PartiesPlugin) plugin, (PartyPlayerImpl) onlinePlayer, player, delay);
 					}
 				}
 			}
 		}
 	}
 	
-	public static void teleportPlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl playerExecutor, ServerInfo serverDestination) {
+	@Override
+	public void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer) {
+		ProxiedPlayer bungeeTargetPlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(targetPlayer.getPlayerUUID());
+		if (bungeeTargetPlayer != null) {
+			teleportSinglePlayer(
+					plugin, player, targetPlayer,
+					bungeeTargetPlayer.getServer().getInfo()
+			);
+		}
+	}
+	
+	@Override
+	public BungeeTeleportDelayTask teleportSinglePlayerWithDelay(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay) {
+		return new BungeeTeleportDelayTask(
+				plugin,
+				player,
+				delay,
+				targetPlayer
+		
+		);
+	}
+	
+	public static void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, ServerInfo serverInfo) {
 		ProxiedPlayer bungeePlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(player.getPlayerUUID());
 		if (bungeePlayer != null) {
-			bungeePlayer.connect(serverDestination);
-			player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTED, playerExecutor);
+			boolean serverChange = false;
+			if (!bungeePlayer.getServer().getInfo().equals(serverInfo)) {
+				serverChange = true;
+				bungeePlayer.connect(serverInfo);
+			}
+			
+			if (serverChange) {
+				plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+						.sendTeleport(plugin.getPlayer(player.getPlayerUUID()), targetPlayer),
+								BungeeConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY, TimeUnit.MILLISECONDS);
+			} else {
+				((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+						.sendTeleport(plugin.getPlayer(player.getPlayerUUID()), targetPlayer);
+			}
+			
+			player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
 		}
+	}
+	
+	private static byte[] makeTeleportRaw(UUID targetPlayer, String message) {
+		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
+		raw.writeUTF(targetPlayer.toString());
+		raw.writeUTF(message);
+		return raw.toByteArray();
 	}
 }

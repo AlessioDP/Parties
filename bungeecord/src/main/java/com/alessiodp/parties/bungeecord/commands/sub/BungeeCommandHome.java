@@ -6,7 +6,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
-import com.alessiodp.parties.bungeecord.tasks.BungeeHomeTask;
+import com.alessiodp.parties.bungeecord.tasks.BungeeHomeDelayTask;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandHome;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -14,7 +14,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.tasks.HomeTask;
+import com.alessiodp.parties.common.tasks.HomeDelayTask;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ProxyServer;
@@ -29,22 +29,22 @@ public class BungeeCommandHome extends CommandHome {
 	}
 	
 	@Override
-	protected void executeHome(User player, PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home) {
-		teleportToPartyHome(plugin, player, partyPlayer, party, home);
+	protected void teleportPlayer(User player, PartyPlayerImpl partyPlayer, PartyHomeImpl home) {
+		teleportToPartyHome((PartiesPlugin) plugin, player, partyPlayer, home);
 	}
 	
 	@Override
-	protected HomeTask executeHomeWithDelay(PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home, int delay) {
-		return new BungeeHomeTask(
+	protected HomeDelayTask teleportPlayerWithDelay(PartyPlayerImpl partyPlayer, PartyHomeImpl home, int delay) {
+		return new BungeeHomeDelayTask(
 				(PartiesPlugin) plugin,
 				partyPlayer,
-				party,
 				delay,
 				home
 		);
 	}
 	
-	public static void teleportToPartyHome(ADPPlugin plugin, User player, PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home) {
+	public static void teleportToPartyHome(PartiesPlugin plugin, User player, PartyPlayerImpl partyPlayer, PartyHomeImpl home) {
+		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
 		if (!home.getServer().isEmpty()) {
 			boolean serverChange = false;
 			if (BungeeConfigParties.ADDITIONAL_HOME_CROSS_SERVER && !((BungeeUser) player).getServer().getName().equalsIgnoreCase(home.getServer())) {
@@ -60,12 +60,16 @@ public class BungeeCommandHome extends CommandHome {
 				serverChange = true;
 			}
 			
-			String message = ((PartiesPlugin) plugin).getMessageUtils().convertPlaceholders(Messages.ADDCMD_HOME_TELEPORTED, partyPlayer, party);
+			String message = plugin.getMessageUtils().convertPlaceholders(Messages.ADDCMD_HOME_TELEPORTED, partyPlayer, party);
 			
 			if (serverChange) {
-				plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendHomeTeleport(player, makeHomeTeleportRaw(home.toString(), message)), BungeeConfigParties.ADDITIONAL_HOME_CROSS_SERVER_DELAY, TimeUnit.MILLISECONDS);
+				plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+						.sendHomeTeleport(player,
+								makeHomeTeleportRaw(home.toString(), message)),
+								BungeeConfigParties.ADDITIONAL_HOME_CROSS_SERVER_DELAY, TimeUnit.MILLISECONDS);
 			} else {
-				((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendHomeTeleport(player, makeHomeTeleportRaw(home.toString(), message));
+				((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+						.sendHomeTeleport(player, makeHomeTeleportRaw(home.toString(), message));
 			}
 		} else {
 			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_HOME_NO_SERVER, party.getId().toString()));

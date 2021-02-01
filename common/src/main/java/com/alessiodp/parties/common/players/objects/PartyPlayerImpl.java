@@ -54,7 +54,8 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<UUID> ignoredParties;
 	
 	
-	@Getter @Setter private CancellableTask homeTeleporting;
+	@Getter @Setter private CancellableTask pendingHomeDelay;
+	@Getter @Setter private CancellableTask pendingTeleportDelay;
 	
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected final ReentrantLock lock = new ReentrantLock();
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
@@ -129,13 +130,21 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			partyId = null;
 			nickname = null;
 			chatParty = false;
-			if (homeTeleporting != null) {
-				homeTeleporting.cancel();
-				homeTeleporting = null;
-			}
+			resetPendingDelays();
 		}, saveToDatabase);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId != null ? oldPartyId.toString() : "none", getPlayerUUID().toString()), true);
+	}
+	
+	public void resetPendingDelays() {
+		if (pendingHomeDelay != null) {
+			pendingHomeDelay.cancel();
+			pendingHomeDelay = null;
+		}
+		if (pendingTeleportDelay != null) {
+			pendingTeleportDelay.cancel();
+			pendingTeleportDelay = null;
+		}
 	}
 	
 	@Override

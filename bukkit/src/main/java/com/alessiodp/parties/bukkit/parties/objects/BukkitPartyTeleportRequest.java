@@ -17,7 +17,7 @@ public class BukkitPartyTeleportRequest extends PartyTeleportRequest {
 	protected void teleportPlayer() {
 		Player bukkitRequester = Bukkit.getPlayer(requester.getPlayerUUID());
 		if (bukkitRequester != null) {
-			BukkitCommandTeleport.teleportPlayer(plugin, player, requester, bukkitRequester.getLocation());
+			BukkitCommandTeleport.teleportSinglePlayer(plugin, player, requester, bukkitRequester.getLocation());
 		}
 	}
 }

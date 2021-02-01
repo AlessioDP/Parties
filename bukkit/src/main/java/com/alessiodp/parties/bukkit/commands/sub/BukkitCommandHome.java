@@ -5,14 +5,13 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
-import com.alessiodp.parties.bukkit.tasks.BukkitHomeTask;
+import com.alessiodp.parties.bukkit.tasks.BukkitHomeDelayTask;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandHome;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
-import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.tasks.HomeTask;
+import com.alessiodp.parties.common.tasks.HomeDelayTask;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,7 +23,7 @@ public class BukkitCommandHome extends CommandHome {
 	}
 	
 	@Override
-	protected void executeHome(User player, PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home) {
+	protected void teleportPlayer(User player, PartyPlayerImpl partyPlayer, PartyHomeImpl home) {
 		Location loc = new Location(
 				Bukkit.getWorld(home.getWorld()),
 				home.getX(),
@@ -34,31 +33,35 @@ public class BukkitCommandHome extends CommandHome {
 				home.getPitch()
 		);
 		
-		String message = ((PartiesPlugin) plugin).getMessageUtils().convertPlaceholders(Messages.ADDCMD_HOME_TELEPORTED, partyPlayer, party);
-		teleportToPartyHome((PartiesPlugin) plugin, player, loc, message);
+		BukkitUser bukkitUser = (BukkitUser) plugin.getPlayer(partyPlayer.getPlayerUUID());
+		if (bukkitUser != null)
+			teleportToPartyHome((PartiesPlugin) plugin, partyPlayer, bukkitUser, loc);
 	}
 	
 	@Override
-	protected HomeTask executeHomeWithDelay(PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home, int delay) {
-		return new BukkitHomeTask(
+	protected HomeDelayTask teleportPlayerWithDelay(PartyPlayerImpl partyPlayer, PartyHomeImpl home, int delay) {
+		return new BukkitHomeDelayTask(
 				(PartiesPlugin) plugin,
 				partyPlayer,
-				party,
 				delay,
 				home
 		);
 	}
 	
-	public static void teleportToPartyHome(PartiesPlugin plugin, User player, Location location, String message) {
+	public static void teleportToPartyHome(PartiesPlugin plugin, PartyPlayerImpl player, BukkitUser bukkitUser, Location location) {
+		teleportToPartyHome(plugin, player, bukkitUser, location, Messages.ADDCMD_HOME_TELEPORTED);
+	}
+	
+	public static void teleportToPartyHome(PartiesPlugin plugin, PartyPlayerImpl player, BukkitUser bukkitUser, Location location, String message) {
 		plugin.getScheduler().getSyncExecutor().execute(() -> {
-			((BukkitUser) player).teleportAsync(location).thenAccept(result -> {
+			bukkitUser.teleportAsync(location).thenAccept(result -> {
 				if (result) {
-					EssentialsHandler.updateLastTeleportLocation(player.getUUID());
-					player.sendMessage(message, true);
+					EssentialsHandler.updateLastTeleportLocation(player.getPlayerUUID());
+					player.sendMessage(message);
 					
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DONE, player.getUUID().toString()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DONE, player.getPlayerUUID().toString()), true);
 				} else {
-					plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_TELEPORT_ASYNC, player.getUUID().toString()));
+					plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_TELEPORT_ASYNC, player.getPlayerUUID().toString()));
 				}
 			});
 		});

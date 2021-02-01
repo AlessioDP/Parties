@@ -256,21 +256,34 @@ public class BukkitFightListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerGotHit(EntityDamageByEntityEvent event) {
-		if (event.getEntity() instanceof Player && BukkitConfigParties.ADDITIONAL_HOME_CANCEL_HIT) {
+		if (event.getEntity() instanceof Player && (BukkitConfigParties.ADDITIONAL_HOME_CANCEL_HIT || BukkitConfigParties.ADDITIONAL_TELEPORT_CANCEL_HIT)) {
 			// Make it async
 			plugin.getScheduler().runAsync(() -> {
 				BukkitPartyPlayerImpl partyPlayer = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(event.getEntity().getUniqueId());
+				User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
+				
 				// Check if the player is on home cooldown
-				if (partyPlayer.getHomeTeleporting() != null) {
+				if (partyPlayer.getPendingHomeDelay() != null) {
 					// Cancelling home task
-					partyPlayer.getHomeTeleporting().cancel();
+					partyPlayer.getPendingHomeDelay().cancel();
 					
-					User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
 					user.sendMessage(
 							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null)
 							, true);
 					
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT, partyPlayer.getPlayerUUID().toString()), true);
+				}
+				
+				// Check if the player is on teleport cooldown
+				if (partyPlayer.getPendingTeleportDelay() != null) {
+					// Cancelling home task
+					partyPlayer.getPendingTeleportDelay().cancel();
+					
+					user.sendMessage(
+							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED, partyPlayer, null)
+							, true);
+					
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_FIGHT, partyPlayer.getPlayerUUID().toString()), true);
 				}
 			});
 		}

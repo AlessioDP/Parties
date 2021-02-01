@@ -209,6 +209,12 @@ public abstract class PartyImpl implements Party {
 		}
 		lock.unlock();
 		
+		// Start cooldown on leave
+		if (ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && (ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL > 0 || ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL > 0)) {
+			plugin.getCooldownManager().startInviteAfterLeave(kicked.getPlayerUUID(), getId(), ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL);
+			plugin.getCooldownManager().startInviteAfterLeave(kicked.getPlayerUUID(), getId(), ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL);
+		}
+		
 		// Send sync packet + event
 		plugin.getScheduler().runAsync(() -> {
 			sendPacketDelete(cause, kicked, commandSender);
@@ -286,6 +292,13 @@ public abstract class PartyImpl implements Party {
 			ret = true;
 		}
 		lock.unlock();
+		
+		// Start cooldown on leave
+		if (ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && (ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL > 0 || ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL > 0)) {
+			System.out.println("Started cooldown");
+			plugin.getCooldownManager().startInviteAfterLeave(partyPlayer.getPlayerUUID(), null, ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL);
+			plugin.getCooldownManager().startInviteAfterLeave(partyPlayer.getPlayerUUID(), getId(), ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL);
+		}
 		
 		if (ret) {
 			// Send sync packet + event

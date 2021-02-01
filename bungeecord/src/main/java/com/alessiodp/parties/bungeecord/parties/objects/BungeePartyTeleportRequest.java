@@ -17,7 +17,7 @@ public class BungeePartyTeleportRequest extends PartyTeleportRequest {
 	protected void teleportPlayer() {
 		ProxiedPlayer bungeeRequester = ProxyServer.getInstance().getPlayer(requester.getPlayerUUID());
 		if (bungeeRequester != null) {
-			BungeeCommandTeleport.teleportPlayer(plugin, player, requester, bungeeRequester.getServer().getInfo());
+			BungeeCommandTeleport.teleportSinglePlayer(plugin, player, requester, bungeeRequester.getServer().getInfo());
 		}
 	}
 }

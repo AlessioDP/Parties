@@ -168,6 +168,14 @@ public class CommandInvite extends PartiesSubCommand {
 		
 		boolean mustStartCooldown = false;
 		if (!isRevoke && ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_INVITE_BYPASS)) {
+			// Check invited player cooldown
+			RequestCooldown inviteAfterLeaveCooldown = ((PartiesPlugin) plugin).getCooldownManager().canInviteAfterLeave(invitedPlayer.getUUID(), party.getId());
+			if (inviteAfterLeaveCooldown != null) {
+				sendMessage(sender, partyPlayer, Messages.MAINCMD_INVITE_COOLDOWN_ON_LEAVE
+						.replace("%seconds%", String.valueOf(inviteAfterLeaveCooldown.getWaitTime())));
+				return;
+			}
+			
 			// Check invite cooldown
 			mustStartCooldown = true;
 			RequestCooldown inviteCooldown = ((PartiesPlugin) plugin).getCooldownManager().canInvite(partyPlayer.getPlayerUUID(), invitedPlayer.getUUID());
@@ -175,6 +183,7 @@ public class CommandInvite extends PartiesSubCommand {
 			if (inviteCooldown != null) {
 				sendMessage(sender, partyPlayer, (inviteCooldown.isGlobal() ? Messages.MAINCMD_INVITE_COOLDOWN_GLOBAL : Messages.MAINCMD_INVITE_COOLDOWN_INDIVIDUAL)
 						.replace("%seconds%", String.valueOf(inviteCooldown.getCooldown() - inviteCooldown.getDiffTime())));
+				return;
 			}
 		}
 		
@@ -187,7 +196,7 @@ public class CommandInvite extends PartiesSubCommand {
 			party.invitePlayer(invitedPartyPlayer, partyPlayer);
 			
 			if (mustStartCooldown) {
-				((PartiesPlugin) plugin).getCooldownManager().startInviteCooldown(partyPlayer.getPlayerUUID(), invitedPartyPlayer.getPlayerUUID(), ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL);
+				((PartiesPlugin) plugin).getCooldownManager().startInviteCooldown(partyPlayer.getPlayerUUID(), null, ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL);
 				((PartiesPlugin) plugin).getCooldownManager().startInviteCooldown(partyPlayer.getPlayerUUID(), invitedPartyPlayer.getPlayerUUID(), ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL);
 			}
 		}

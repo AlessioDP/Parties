@@ -165,6 +165,7 @@ public class PartiesConstants {
 	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE = "Received a Parties packet, add new home to party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT = "Received a Parties packet, home teleporting player %s to %s";
 	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT_ERROR = "Received a Parties packet, home teleporting failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_TELEPORT = "Received a Parties packet, teleport player %s to %s";
 	public static final String DEBUG_MESSAGING_LISTEN_EXPERIENCE = "Received a Parties packet, gave %s experience to party %s (killer: %s)";
 	public static final String DEBUG_MESSAGING_LISTEN_LEVEL_UP = "Received a Parties packet, %s leveled up to %d";
 	public static final String DEBUG_MESSAGING_LISTEN_CONFIGS = "Received a Parties packet, configs sync";
@@ -205,9 +206,12 @@ public class PartiesConstants {
 	public static final String DEBUG_TASK_HOME_EXPIRED = "Home cooldown expired for player %s";
 	public static final String DEBUG_TASK_SETHOME_EXPIRED = "Set home cooldown expired for player %s";
 	public static final String DEBUG_TASK_INVITE_COOLDOWN_EXPIRED = "Invite cooldown expired for player %s";
+	public static final String DEBUG_TASK_INVITE_COOLDOWN_ON_LEAVE_EXPIRED = "Invite on leave cooldown expired for player %s";
 	public static final String DEBUG_TASK_RENAME_EXPIRED = "Rename cooldown expired for party %s";
 	public static final String DEBUG_TASK_TELEPORT_DONE = "Teleported the player %s to the party home";
 	public static final String DEBUG_TASK_TELEPORT_EXPIRED = "Teleport cooldown expired for player %s";
+	public static final String DEBUG_TASK_TELEPORT_DENIED_FIGHT = "Denied teleport cmd of player %s due to fight";
+	public static final String DEBUG_TASK_TELEPORT_DENIED_MOVING = "Denied teleport cmd of player %s due to moving";
 	
 	public static final String DEBUG_TELEPORT_ASYNC = "Failed to async teleport the player %s";
 }

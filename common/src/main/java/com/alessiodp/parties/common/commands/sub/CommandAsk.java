@@ -92,7 +92,7 @@ public class CommandAsk extends PartiesSubCommand {
 			
 			if (askCooldown != null) {
 				sendMessage(sender, partyPlayer, (askCooldown.isGlobal() ? Messages.ADDCMD_ASK_COOLDOWN_GLOBAL : Messages.ADDCMD_ASK_COOLDOWN_INDIVIDUAL)
-						.replace("%seconds%", String.valueOf(askCooldown.getCooldown() - askCooldown.getDiffTime())));
+						.replace("%seconds%", String.valueOf(askCooldown.getWaitTime())));
 			}
 		}
 		

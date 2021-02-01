@@ -18,6 +18,7 @@ public class CooldownManager {
 	private HashMap<UUID, Long> chatCooldown;
 	private HashMap<UUID, Long> homeCooldown;
 	private HashMap<UUID, List<RequestCooldown>> inviteCooldown;
+	private HashMap<UUID, List<RequestCooldown>> inviteAfterLeaveCooldown;
 	private HashMap<UUID, Long> renameCooldown;
 	private HashMap<UUID, Long> setHomeCooldown;
 	private HashMap<UUID, Long> teleportCooldown;
@@ -32,30 +33,34 @@ public class CooldownManager {
 		chatCooldown = new HashMap<>();
 		homeCooldown = new HashMap<>();
 		inviteCooldown = new HashMap<>();
+		inviteAfterLeaveCooldown = new HashMap<>();
 		renameCooldown = new HashMap<>();
 		setHomeCooldown = new HashMap<>();
 		teleportCooldown = new HashMap<>();
 	}
 	
 	private RequestCooldown getRequestCooldown(List<RequestCooldown> list, UUID target) {
+		RequestCooldown ret = null;
 		if (list != null) {
 			for (RequestCooldown ic : list) {
 				if (ic.isGlobal()) {
 					// Global
 					if (ic.isWaiting()) {
-						return ic;
+						// Get the highest one
+						ret = ret == null ? ic : (ic.getWaitTime() > ret.getWaitTime() ? ic : ret);
 					}
 				} else {
 					// Individual
 					if (target != null
 							&& target.equals(ic.getTarget())
 							&& ic.isWaiting()) {
-						return ic;
+						// Get the highest one
+						ret = ret == null ? ic : (ic.getWaitTime() > ret.getWaitTime() ? ic : ret);
 					}
 				}
 			}
 		}
-		return null;
+		return ret;
 	}
 	
 	public void insertRequestCooldown(HashMap<UUID, List<RequestCooldown>> map, UUID player, UUID target, int seconds, String debugMessage) {
@@ -125,6 +130,17 @@ public class CooldownManager {
 	public void startInviteCooldown(UUID player, UUID targetPlayer, int seconds) {
 		insertRequestCooldown(inviteCooldown, player, targetPlayer, seconds, PartiesConstants.DEBUG_TASK_INVITE_COOLDOWN_EXPIRED);
 	}
+	
+	public RequestCooldown canInviteAfterLeave(UUID targetPlayer, UUID party) {
+		System.out.println("Checking after leave: " + inviteAfterLeaveCooldown.get(targetPlayer));
+		return getRequestCooldown(inviteAfterLeaveCooldown.get(targetPlayer), party);
+	}
+	
+	public void startInviteAfterLeave(UUID targetPlayer, UUID party, int seconds) {
+		insertRequestCooldown(inviteAfterLeaveCooldown, targetPlayer, party, seconds, PartiesConstants.DEBUG_TASK_INVITE_COOLDOWN_ON_LEAVE_EXPIRED);
+		System.out.println("Started with cooldown of " + seconds + " a cooldown for uuid " + party);
+	}
+	
 	
 	public long canRename(PartyImpl party, int cooldown) {
 		if (party != null) {

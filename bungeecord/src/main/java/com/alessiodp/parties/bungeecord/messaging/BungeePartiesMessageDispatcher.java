@@ -125,6 +125,14 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		);
 	}
 	
+	public void sendTeleport(User user, PartyPlayerImpl target) {
+		sendPacketToUser(makePacket(PartiesPacket.PacketType.TELEPORT)
+						.setPlayerUuid(user.getUUID())
+						.setPayload(target.getPlayerUUID().toString())
+				, user
+		);
+	}
+	
 	public void sendPartyExperience(PartyImpl party, PartyPlayerImpl killer, double experience) {
 		// Not duplication: this is used to make an event in bukkit servers
 		sendPacket(makePacket(PartiesPacket.PacketType.EXPERIENCE)

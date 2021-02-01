@@ -76,6 +76,10 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static int			GENERAL_INVITE_COOLDOWN_GLOBAL;
 	@ConfigOption(path = "general.invite.cooldown.individual")
 	public static int			GENERAL_INVITE_COOLDOWN_INDIVIDUAL;
+	@ConfigOption(path = "general.invite.cooldown.on-leave.global")
+	public static int			GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL;
+	@ConfigOption(path = "general.invite.cooldown.on-leave.individual")
+	public static int			GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL;
 	
 	@ConfigOption(path = "general.chat.allow-colors")
 	public static boolean		GENERAL_CHAT_ALLOWCOLORS;
@@ -252,6 +256,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	
 	@ConfigOption(path = "additional.teleport.enable")
 	public static boolean		ADDITIONAL_TELEPORT_ENABLE;
+	@ConfigOption(path = "additional.teleport.delay")
+	public static int			ADDITIONAL_TELEPORT_DELAY;
 	@ConfigOption(path = "additional.teleport.cooldown")
 	public static int			ADDITIONAL_TELEPORT_COOLDOWN;
 	@ConfigOption(path = "additional.teleport.accept-request.enable")

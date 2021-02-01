@@ -98,10 +98,8 @@ public abstract class JoinLeaveListener {
 			
 			plugin.getPlayerManager().unloadPlayer(partyPlayer.getPlayerUUID());
 			
-			// Remove home teleport
-			if (ConfigParties.ADDITIONAL_HOME_ENABLE && partyPlayer.getHomeTeleporting() != null) {
-				partyPlayer.getHomeTeleporting().cancel();
-			}
+			// Reset pending delays
+			partyPlayer.resetPendingDelays();
 			
 			onLeaveComplete(partyPlayer);
 		});

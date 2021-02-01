@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bukkit.messaging;
 
 import com.alessiodp.core.bukkit.messaging.BukkitMessageListener;
+import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
@@ -32,6 +33,7 @@ import com.google.common.io.ByteStreams;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -274,13 +276,36 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 											home.getPitch()
 									);
 									
-									BukkitCommandHome.teleportToPartyHome((PartiesPlugin) plugin, user, location, message);
+									BukkitCommandHome.teleportToPartyHome((PartiesPlugin) plugin, partyPlayer, (BukkitUser) user, location, message);
 									
 									plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_HOME_TELEPORT,
 											packet.getPlayerUuid().toString(), homeSerialized), true);
 								}
 							} catch (Exception ex) {
 								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_HOME_TELEPORT_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+							}
+						}
+					}
+					break;
+				case TELEPORT:
+					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+					if (partyPlayer != null) {
+						User user = plugin.getPlayer(packet.getPlayerUuid());
+						
+						if (user != null) {
+							
+							try {
+								UUID targetUuid = UUID.fromString(packet.getPayload());
+								
+								Player bukkitTargetPlayer = Bukkit.getPlayer(targetUuid);
+								if (bukkitTargetPlayer != null) {
+									plugin.getScheduler().getSyncExecutor().execute(() -> ((BukkitUser) user).teleportAsync(bukkitTargetPlayer.getLocation()));
+								}
+								
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_TELEPORT,
+										packet.getPlayerUuid().toString(), packet.getPayload()), true);
+							} catch (Exception ex) {
+								ex.printStackTrace();
 							}
 						}
 					}

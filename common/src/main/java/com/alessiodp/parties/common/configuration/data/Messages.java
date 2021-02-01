@@ -210,6 +210,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_INVITE_COOLDOWN_GLOBAL;
 	@ConfigOption(path = "main-commands.invite.cooldown.individual")
 	public static String MAINCMD_INVITE_COOLDOWN_INDIVIDUAL;
+	@ConfigOption(path = "main-commands.invite.cooldown.on-leave")
+	public static String MAINCMD_INVITE_COOLDOWN_ON_LEAVE;
 	@ConfigOption(path = "main-commands.invite.player-offline")
 	public static String MAINCMD_INVITE_PLAYEROFFLINE;
 	@ConfigOption(path = "main-commands.invite.player-no-permission")
@@ -520,7 +522,11 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "additional-commands.teleport.teleporting")
 	public static String ADDCMD_TELEPORT_TELEPORTING;
 	@ConfigOption(path = "additional-commands.teleport.player-teleported")
-	public static String ADDCMD_TELEPORT_TELEPORTED;
+	public static String ADDCMD_TELEPORT_PLAYER_TELEPORTED;
+	@ConfigOption(path = "additional-commands.teleport.player-teleport-in")
+	public static String ADDCMD_TELEPORT_PLAYER_TELEPORTIN;
+	@ConfigOption(path = "additional-commands.teleport.player-teleport-denied")
+	public static String ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED;
 	@ConfigOption(path = "additional-commands.teleport.cooldown")
 	public static String ADDCMD_TELEPORT_COOLDOWN;
 	@ConfigOption(path = "additional-commands.teleport.accept-request.sent")

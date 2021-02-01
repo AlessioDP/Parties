@@ -78,6 +78,10 @@ general:
       enable: false
       global: 60
       individual: 0
+      # A cooldown to prevent to invite a player when he recently left a party
+      on-leave:
+        global: 0
+        individual: 0
 
   chat:
     # Allow sending messages with color codes (&1, &2, etc..)
@@ -264,6 +268,14 @@ additional:
       encode: "UTF-8"
       minimum-length: 1
       maximum-length: 16
+    # Enable a cooldown to prevent join request spam
+    # You can choose to set a cooldown for every join request (global) or individual parties, in seconds
+    # With 'start-cooldown-on-leave' you can force the cooldown to start if the player leaves a party
+    cooldown:
+      enable: false
+      start-cooldown-on-leave: false
+      global: 60
+      individual: 0
 
   # [Kills system]
   # Enable a counter of how many kills a party did
@@ -340,6 +352,9 @@ additional:
     # Teleport the player to the exact location
     # Otherwise you will be only teleported to its server
     exact-location: true
+    # Delay between connection and teleport in milliseconds (increase if not working out of the box)
+    exact-location-delay: 300
+    delay: 0
     cooldown: 60
     accept-request:
       # Members will be teleported only after accepting with /party accept/deny

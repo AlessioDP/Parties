@@ -35,4 +35,8 @@ public class RequestCooldown {
 	public boolean isWaiting() {
 		return getDiffTime() < cooldown;
 	}
+	
+	public long getWaitTime() {
+		return getCooldown() - getDiffTime();
+	}
 }

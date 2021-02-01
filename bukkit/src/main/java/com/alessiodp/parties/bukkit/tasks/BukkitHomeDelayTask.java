@@ -1,28 +1,26 @@
 package com.alessiodp.parties.bukkit.tasks;
 
+import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandHome;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
-import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.tasks.HomeTask;
+import com.alessiodp.parties.common.tasks.HomeDelayTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class BukkitHomeTask extends HomeTask {
-	
+public class BukkitHomeDelayTask extends HomeDelayTask {
 	private final Player bukkitPlayer;
 	private final Location startingLocation;
 	private final Location finalLocation;
 	private final double distanceLimitSquared;
 	
-	public BukkitHomeTask(PartiesPlugin plugin, PartyPlayerImpl partyPlayer, PartyImpl party, long delayTime, PartyHomeImpl home) {
-		super(plugin, partyPlayer, party, delayTime, home);
+	public BukkitHomeDelayTask(PartiesPlugin plugin, PartyPlayerImpl partyPlayer, long delayTime, PartyHomeImpl home) {
+		super(plugin, partyPlayer, delayTime, home);
 		
 		bukkitPlayer = Bukkit.getPlayer(partyPlayer.getPlayerUUID());
 		if (bukkitPlayer == null) {
@@ -57,7 +55,6 @@ public class BukkitHomeTask extends HomeTask {
 	
 	@Override
 	protected void performTeleport() {
-		String message = plugin.getMessageUtils().convertPlaceholders(Messages.ADDCMD_HOME_TELEPORTED, partyPlayer, party);
-		BukkitCommandHome.teleportToPartyHome(plugin, player, finalLocation, message);
+		BukkitCommandHome.teleportToPartyHome(plugin, partyPlayer, (BukkitUser) player, finalLocation);
 	}
 }

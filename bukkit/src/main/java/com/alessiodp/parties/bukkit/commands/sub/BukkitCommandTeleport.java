@@ -3,9 +3,9 @@ package com.alessiodp.parties.bukkit.commands.sub;
 import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
-import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.parties.objects.BukkitPartyTeleportRequest;
+import com.alessiodp.parties.bukkit.tasks.BukkitTeleportDelayTask;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandTeleport;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -26,43 +26,65 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		super(plugin, mainCommand);
 	}
 	
-	public void performTeleport(PartyImpl party, PartyPlayerImpl player) {
-		Player bukkitPlayer = Bukkit.getPlayer(player.getPlayerUUID());
-		if (bukkitPlayer != null) {
-			if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
-				player.sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT);
-			else
-				player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING);
-			
-			for (PartyPlayer onlinePlayer : party.getOnlineMembers(true)) {
-				if (!onlinePlayer.getPlayerUUID().equals(player.getPlayerUUID())) {
-					if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE) {
-						BukkitPartyTeleportRequest request = new BukkitPartyTeleportRequest((PartiesPlugin) plugin, (PartyPlayerImpl) onlinePlayer, player);
-						((PartyPlayerImpl) onlinePlayer).getPendingTeleportRequests().add(request);
-						
-						((PartyPlayerImpl) onlinePlayer).sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_RECEIVED, player, party);
-						
-						plugin.getScheduler().scheduleAsyncLater(
-								request::timeout,
-								ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_TIME,
-								TimeUnit.SECONDS
-						);
-					} else {
-						teleportPlayer((PartiesPlugin) plugin, (PartyPlayerImpl) onlinePlayer, player, bukkitPlayer.getLocation());
-					}
+	@Override
+	public void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay) {
+		if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
+			player.sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT);
+		else
+			player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING);
+		
+		for (PartyPlayer onlinePlayer : party.getOnlineMembers(true)) {
+			if (!onlinePlayer.getPlayerUUID().equals(player.getPlayerUUID())) {
+				if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE) {
+					BukkitPartyTeleportRequest request = new BukkitPartyTeleportRequest((PartiesPlugin) plugin, (PartyPlayerImpl) onlinePlayer, player);
+					((PartyPlayerImpl) onlinePlayer).getPendingTeleportRequests().add(request);
+					
+					((PartyPlayerImpl) onlinePlayer).sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_RECEIVED, player, party);
+					
+					plugin.getScheduler().scheduleAsyncLater(
+							request::timeout,
+							ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_TIME,
+							TimeUnit.SECONDS
+					);
+				} else {
+					handleSinglePlayerTeleport((PartiesPlugin) plugin, (PartyPlayerImpl) onlinePlayer, player, delay);
 				}
 			}
 		}
 	}
 	
-	public static void teleportPlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl playerExecutor, Location location) {
-		User user = plugin.getPlayer(player.getPlayerUUID());
-		if (user != null) {
+	@Override
+	public void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer) {
+		Player bukkitTargetPlayer = Bukkit.getPlayer(targetPlayer.getPlayerUUID());
+		if (bukkitTargetPlayer != null) {
+			teleportSinglePlayer(
+					plugin, player, targetPlayer,
+					Bukkit.getPlayer(targetPlayer.getPlayerUUID()).getLocation()
+			);
+		}
+	}
+	
+	@Override
+	public BukkitTeleportDelayTask teleportSinglePlayerWithDelay(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay) {
+		return new BukkitTeleportDelayTask(
+				plugin,
+				player,
+				delay,
+				targetPlayer
+				
+		);
+	}
+	
+	public static void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, Location location) {
+		BukkitUser bukkitUser = (BukkitUser) plugin.getPlayer(player.getPlayerUUID());
+		Player bukkitTargetPlayer = Bukkit.getPlayer(targetPlayer.getPlayerUUID());
+		if (bukkitUser != null && bukkitTargetPlayer != null) {
+			player.sendMessage(Messages.ADDCMD_HOME_TELEPORTED, targetPlayer);
 			plugin.getScheduler().getSyncExecutor().execute(() -> {
-				((BukkitUser) user).teleportAsync(location).thenAccept(result -> {
+				bukkitUser.teleportAsync(location).thenAccept(result -> {
 					if (result) {
-						EssentialsHandler.updateLastTeleportLocation(user.getUUID());
-						player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTED, playerExecutor);
+						EssentialsHandler.updateLastTeleportLocation(bukkitUser.getUUID());
+						player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
 					} else {
 						plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
 					}

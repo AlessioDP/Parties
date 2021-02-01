@@ -16,6 +16,11 @@ public class BungeeConfigParties extends ConfigParties {
 	@ConfigOption(path = "additional.home.cross-server-delay")
 	public static int			ADDITIONAL_HOME_CROSS_SERVER_DELAY;
 	
+	@ConfigOption(path = "additional.teleport.exact-location")
+	public static boolean		ADDITIONAL_TELEPORT_EXACT_LOCATION;
+	@ConfigOption(path = "additional.teleport.exact-location-delay")
+	public static int			ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY;
+	
 	public BungeeConfigParties(PartiesPlugin plugin) {
 		super(plugin);
 	}

@@ -18,7 +18,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.tasks.HomeTask;
+import com.alessiodp.parties.common.tasks.HomeDelayTask;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 
@@ -224,7 +224,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 				&& !((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_HOME))
 			return;
 		
-		if (partyPlayer.getHomeTeleporting() != null) {
+		if (partyPlayer.getPendingHomeDelay() != null) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_TELEPORTWAITING, party);
 			return;
 		}
@@ -257,15 +257,15 @@ public abstract class CommandHome extends PartiesSubCommand {
 		}
 		
 		if (delay > 0) {
-			HomeTask homeTask = executeHomeWithDelay(partyPlayer, party, partyHome, delay);
+			HomeDelayTask homeDelayTask = teleportPlayerWithDelay(partyPlayer, partyHome, delay);
 			
-			CancellableTask task = plugin.getScheduler().scheduleAsyncRepeating(homeTask, 0, 300, TimeUnit.MILLISECONDS);
-			partyPlayer.setHomeTeleporting(task);
+			CancellableTask task = plugin.getScheduler().scheduleAsyncRepeating(homeDelayTask, 0, 300, TimeUnit.MILLISECONDS);
+			partyPlayer.setPendingHomeDelay(task);
 			
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_TELEPORTIN
-					.replace("%time%", Integer.toString(delay)));
+					.replace("%seconds%", Integer.toString(delay)));
 		} else {
-			executeHome(sender, partyPlayer, party, partyHome);
+			teleportPlayer(sender, partyPlayer, partyHome);
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_HOME,
@@ -293,9 +293,11 @@ public abstract class CommandHome extends PartiesSubCommand {
 		}
 	}
 	
-	protected abstract void executeHome(User player, PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home);
+	// Teleport the player
+	protected abstract void teleportPlayer(User player, PartyPlayerImpl partyPlayer, PartyHomeImpl home);
 	
-	protected abstract HomeTask executeHomeWithDelay(PartyPlayerImpl partyPlayer, PartyImpl party, PartyHomeImpl home, int delay);
+	// Get the task for home delay
+	protected abstract HomeDelayTask teleportPlayerWithDelay(PartyPlayerImpl partyPlayer, PartyHomeImpl home, int delay);
 	
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
