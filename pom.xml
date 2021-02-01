@@ -69,7 +69,7 @@
 		<maven.shade.version>3.2.4</maven.shade.version>
 		
 		<dev.powermock>2.0.9</dev.powermock>
-		<dev.lombok>1.18.16</dev.lombok>
+		<dev.lombok>1.18.18</dev.lombok>
 		
 		<libs.adpcore>1.5.2</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
