@@ -341,7 +341,7 @@ additional-commands:
     teleported: "&7Teleportováno na domov párty"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
+    teleport-in: "&7Budeš teleportován/a za %seconds% sekund..."
     teleport-denied: "&7Teleportace zamítnuta"
     teleport-waiting: "&cJiž čekáš na teleportaci!"
     no-home: "&cZatím nebyl nastaven žádný domov"
@@ -353,7 +353,7 @@ additional-commands:
     valid-homes: "&bSeznam platných domovů:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aKlikni pro teleportaci"}]}}}]'
   join:
     joined: "&aPřipojil/a ses do párty %party%"
     player-joined: "&b&lHráč %player% se připojil do párty"
@@ -432,7 +432,7 @@ additional-commands:
     player-teleported: "&bTeleportováni k hráči %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-in: "&7Budeš teleportován/a za %seconds% sekund"
     player-teleport-denied: "&7Teleportace zamítnuta"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
