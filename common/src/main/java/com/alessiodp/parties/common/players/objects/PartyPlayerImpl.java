@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.locks.ReentrantLock;
 
 @EqualsAndHashCode
 @ToString
@@ -57,7 +56,6 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	@Getter @Setter private CancellableTask pendingHomeDelay;
 	@Getter @Setter private CancellableTask pendingTeleportDelay;
 	
-	@EqualsAndHashCode.Exclude @ToString.Exclude protected final ReentrantLock lock = new ReentrantLock();
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
 	
 	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid) {
@@ -92,13 +90,12 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		if (accessible) {
 			runnable.run();
 		} else {
-			lock.lock();
-			runnable.run();
-			
-			if (saveToDatabase)
-				updatePlayer().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
-			
-			lock.unlock();
+			synchronized (this) {
+				runnable.run();
+				
+				if (saveToDatabase)
+					updatePlayer().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
+			}
 		}
 	}
 	

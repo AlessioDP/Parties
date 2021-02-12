@@ -50,7 +50,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 @EqualsAndHashCode
 @ToString
@@ -81,7 +80,6 @@ public abstract class PartyImpl implements Party {
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyAskRequest> askRequests;
 	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final HashSet<PartyInvite> inviteRequests;
 	
-	@EqualsAndHashCode.Exclude @ToString.Exclude @Getter private final ReentrantLock lock = new ReentrantLock();
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
 	
 	protected PartyImpl(@NonNull PartiesPlugin plugin, @NonNull UUID id) {
@@ -121,11 +119,11 @@ public abstract class PartyImpl implements Party {
 		if (accessible) {
 			runnable.run();
 		} else {
-			lock.lock();
-			runnable.run();
-			
-			updateParty().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
-			lock.unlock();
+			synchronized (this) {
+				runnable.run();
+				
+				updateParty().thenRun(this::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());
+			}
 		}
 	}
 	
@@ -143,16 +141,13 @@ public abstract class PartyImpl implements Party {
 	 * @param leader the leader of the party, null if fixed
 	 */
 	public void setup(@NonNull String name, @Nullable String leader) throws IllegalArgumentException {
-		lock.lock();
-		try {
+		synchronized (this) {
 			this.name = name;
 			if (leader == null || leader.isEmpty() || leader.equals("fixed") || leader.equals("00000000-0000-0000-0000-000000000000")) {
 				this.leader = null;
 			} else {
 				this.leader = UUID.fromString(leader);
 			}
-		} finally {
-			lock.unlock();
 		}
 	}
 	
@@ -164,31 +159,32 @@ public abstract class PartyImpl implements Party {
 	 * @param creator who is creating the party
 	 */
 	public void create(@Nullable String name, @Nullable PartyPlayerImpl leader, @Nullable PartyPlayerImpl creator) {
-		lock.lock();
-		this.name = name;
-		
-		if (leader == null) {
-			// Fixed
-			this.leader = null;
-		} else {
-			// Normal
-			this.leader = leader.getPlayerUUID();
-			members.add(leader.getPlayerUUID());
+		CompletableFuture<Void> futureAfterUpdate;
+		synchronized (this) {
+			this.name = name;
 			
-			if (plugin.getOfflinePlayer(leader.getPlayerUUID()).isOnline())
-				onlineMembers.add(leader);
+			if (leader == null) {
+				// Fixed
+				this.leader = null;
+			} else {
+				// Normal
+				this.leader = leader.getPlayerUUID();
+				members.add(leader.getPlayerUUID());
+				
+				if (plugin.getOfflinePlayer(leader.getPlayerUUID()).isOnline())
+					onlineMembers.add(leader);
+				
+				// Update player
+				leader.addIntoParty(id, ConfigParties.RANK_SET_HIGHER);
+				
+			}
+			futureAfterUpdate = updateParty();
 			
-			// Update player
-			leader.addIntoParty(id, ConfigParties.RANK_SET_HIGHER);
-			
+			plugin.getPartyManager().addPartyToCache(this);
 		}
-		CompletableFuture<Void> future = updateParty();
-		
-		plugin.getPartyManager().addPartyToCache(this);
-		lock.unlock();
 		
 		// Send sync packet + event
-		future.thenRun(() -> sendPacketCreate(creator)).exceptionally(ADPScheduler.exceptionally());
+		futureAfterUpdate.thenRun(() -> sendPacketCreate(creator)).exceptionally(ADPScheduler.exceptionally());
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_CREATE, getName()), true);
 	}
@@ -199,15 +195,15 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	public void delete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
-		lock.lock();
-		plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
-		plugin.getDatabaseManager().removeParty(this); // Remove from database
-		
-		for (UUID uuid : getMembers()) {
-			PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(uuid);
-			pp.removeFromParty(true);
+		synchronized (this) {
+			plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
+			plugin.getDatabaseManager().removeParty(this); // Remove from database
+			
+			for (UUID uuid : getMembers()) {
+				PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(uuid);
+				pp.removeFromParty(true);
+			}
 		}
-		lock.unlock();
 		
 		// Start cooldown on leave
 		if (ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && (ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL > 0 || ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL > 0)) {
@@ -229,19 +225,20 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	public void rename(@Nullable String newName, PartyPlayerImpl player, boolean isAdmin) {
-		lock.lock();
+		CompletableFuture<Void> futureAfterUpdate;
 		String oldName = getName();
-		plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
-		
-		this.name = newName;
-		
-		plugin.getPartyManager().addPartyToCache(this); // Insert into online list
-		
-		CompletableFuture<Void> future = updateParty();
-		lock.unlock();
+		synchronized (this) {
+			plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
+			
+			this.name = newName;
+			
+			plugin.getPartyManager().addPartyToCache(this); // Insert into online list
+			
+			futureAfterUpdate = updateParty();
+		}
 		
 		// Send sync packet + event
-		future.thenRun(() -> sendPacketRename(oldName, getName(), player, isAdmin)).exceptionally(ADPScheduler.exceptionally());
+		futureAfterUpdate.thenRun(() -> sendPacketRename(oldName, getName(), player, isAdmin)).exceptionally(ADPScheduler.exceptionally());
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RENAME, oldName, getName()), true);
 	}
@@ -253,22 +250,22 @@ public abstract class PartyImpl implements Party {
 	
 	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
 		boolean ret = false;
-		CompletableFuture<Void> future = null;
-		lock.lock();
-		if (!isFull() && !members.contains(partyPlayer.getPlayerUUID())) {
-			members.add(partyPlayer.getPlayerUUID());
-			onlineMembers.add(partyPlayer);
-			
-			((PartyPlayerImpl) partyPlayer).addIntoParty(id, ConfigParties.RANK_SET_DEFAULT);
-			
-			future = updateParty();
-			ret = true;
+		CompletableFuture<Void> futureAfterUpdate = null;
+		synchronized (this) {
+			if (!isFull() && !members.contains(partyPlayer.getPlayerUUID())) {
+				members.add(partyPlayer.getPlayerUUID());
+				onlineMembers.add(partyPlayer);
+				
+				((PartyPlayerImpl) partyPlayer).addIntoParty(id, ConfigParties.RANK_SET_DEFAULT);
+				
+				futureAfterUpdate = updateParty();
+				ret = true;
+			}
 		}
-		lock.unlock();
 		
 		if (ret) {
 			// Send sync packet + event
-			future.thenRun(() -> sendPacketAddMember((PartyPlayerImpl) partyPlayer, cause, inviter)).exceptionally(ADPScheduler.exceptionally());
+			futureAfterUpdate.thenRun(() -> sendPacketAddMember((PartyPlayerImpl) partyPlayer, cause, inviter)).exceptionally(ADPScheduler.exceptionally());
 		}
 		return ret;
 	}
@@ -281,21 +278,20 @@ public abstract class PartyImpl implements Party {
 	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
 		boolean ret = false;
 		CompletableFuture<Void> future = null;
-		lock.lock();
-		if (members.contains(partyPlayer.getPlayerUUID())) {
-			members.remove(partyPlayer.getPlayerUUID());
-			onlineMembers.remove(partyPlayer);
-			
-			((PartyPlayerImpl) partyPlayer).removeFromParty(true);
-			
-			future = updateParty();
-			ret = true;
+		synchronized (this) {
+			if (members.contains(partyPlayer.getPlayerUUID())) {
+				members.remove(partyPlayer.getPlayerUUID());
+				onlineMembers.remove(partyPlayer);
+				
+				((PartyPlayerImpl) partyPlayer).removeFromParty(true);
+				
+				future = updateParty();
+				ret = true;
+			}
 		}
-		lock.unlock();
 		
 		// Start cooldown on leave
 		if (ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && (ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL > 0 || ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL > 0)) {
-			System.out.println("Started cooldown");
 			plugin.getCooldownManager().startInviteAfterLeave(partyPlayer.getPlayerUUID(), null, ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL);
 			plugin.getCooldownManager().startInviteAfterLeave(partyPlayer.getPlayerUUID(), getId(), ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL);
 		}
@@ -322,17 +318,17 @@ public abstract class PartyImpl implements Party {
 	@Override
 	public Set<PartyPlayer> getOnlineMembers(boolean bypassVanish) {
 		HashSet<PartyPlayer> ret = new HashSet<>();
-		lock.lock();
-		try {
-			for (PartyPlayer player : onlineMembers) {
-				if (bypassVanish || !((PartyPlayerImpl) player).isVanished())
-					ret.add(player);
+		synchronized (this) {
+			try {
+				for (PartyPlayer player : onlineMembers) {
+					if (bypassVanish || !((PartyPlayerImpl) player).isVanished())
+						ret.add(player);
+				}
+			} catch (ConcurrentModificationException ex) {
+				// Avoiding ConcurrentModificationException if something edits the hashmap
+				ex.printStackTrace();
 			}
-		} catch (ConcurrentModificationException ex) {
-			// Avoiding ConcurrentModificationException if something edits the hashmap
-			ex.printStackTrace();
 		}
-		lock.unlock();
 		return Collections.unmodifiableSet(ret);
 	}
 	
@@ -606,9 +602,6 @@ public abstract class PartyImpl implements Party {
 					((PartyPlayerImpl) player).playChatSound();
 				}
 				
-				IPlayerPostChatEvent partiesPostChatEvent = plugin.getEventManager().preparePlayerPostChatEvent(sender, this, message);
-				plugin.getEventManager().callEvent(partiesPostChatEvent);
-				
 				sendPacketChat(sender, message);
 				
 				return true;
@@ -620,11 +613,15 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	public void addOnlineMember(PartyPlayerImpl partyPlayer) {
-		onlineMembers.add(partyPlayer);
+		synchronized (this) {
+			onlineMembers.add(partyPlayer);
+		}
 	}
 	
 	public void removeOnlineMember(PartyPlayerImpl partyPlayer) {
-		onlineMembers.remove(partyPlayer);
+		synchronized (this) {
+			onlineMembers.remove(partyPlayer);
+		}
 	}
 	
 	/**
@@ -632,17 +629,14 @@ public abstract class PartyImpl implements Party {
 	 * Used when the party is loaded
 	 */
 	public void refreshOnlineMembers() {
-		lock.lock();
-		onlineMembers.clear();
-		for (UUID u : getMembers()) {
-			if (plugin.getOfflinePlayer(u).isOnline()) {
-				onlineMembers.add(plugin.getPlayerManager().getPlayer(u));
+		synchronized (this) {
+			onlineMembers.clear();
+			for (UUID u : getMembers()) {
+				if (plugin.getPlayer(u) != null) {
+					onlineMembers.add(plugin.getPlayerManager().getPlayer(u));
+				}
 			}
 		}
-		
-		plugin.getColorManager().loadDynamicColor(this);
-		
-		lock.unlock();
 	}
 	
 	@Override
