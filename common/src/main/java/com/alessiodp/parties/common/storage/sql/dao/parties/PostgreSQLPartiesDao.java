@@ -23,16 +23,16 @@ public interface PostgreSQLPartiesDao extends PartiesDao {
 	String QUERY_GET = "SELECT * FROM <prefix>parties WHERE \"id\"=?";
 	String QUERY_GET_BY_NAME = "SELECT * FROM <prefix>parties WHERE \"name\"=?";
 	String QUERY_EXISTS_TAG = "SELECT EXISTS(SELECT * FROM <prefix>parties WHERE \"tag\"=?) ";
-	String QUERY_GET_LIST_NUMBER = "SELECT count(*) FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>)<endif>";
-	String QUERY_GET_LIST_BY_NAME = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>)<endif> ORDER BY \"name\" ASC LIMIT :limit OFFSET :offset";
+	String QUERY_GET_LIST_NUMBER = "SELECT count(*) FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>)<endif>";
+	String QUERY_GET_LIST_BY_NAME = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>)<endif> ORDER BY \"name\" ASC LIMIT :limit OFFSET :offset";
 	String QUERY_GET_LIST_BY_MEMBERS = "SELECT <prefix>parties.*, COUNT(id) AS total" +
 			" FROM <prefix>parties" +
 			" INNER JOIN <prefix>players ON <prefix>players.party = <prefix>parties.id" +
-			"<if(blacklist)> WHERE name NOT IN (<blacklist>)<endif>" +
+			"<if(blacklist)> WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>)<endif>" +
 			" GROUP BY id" +
 			" ORDER BY total DESC LIMIT :limit OFFSET :offset";
-	String QUERY_GET_LIST_BY_KILLS = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) <endif>ORDER BY \"kills\" DESC LIMIT :limit OFFSET :offset";
-	String QUERY_GET_LIST_BY_EXPERIENCE = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) <endif>ORDER BY \"experience\" DESC LIMIT :limit OFFSET :offset";
+	String QUERY_GET_LIST_BY_KILLS = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>) <endif>ORDER BY \"kills\" DESC LIMIT :limit OFFSET :offset";
+	String QUERY_GET_LIST_BY_EXPERIENCE = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>) <endif>ORDER BY \"experience\" DESC LIMIT :limit OFFSET :offset";
 	String QUERY_GET_LIST_FIXED = "SELECT * FROM <prefix>parties WHERE leader IS NULL";
 	String QUERY_COUNT_ALL = "SELECT count(*) FROM <prefix>parties";
 	String QUERY_DELETE_ALL = "DELETE FROM <prefix>parties";

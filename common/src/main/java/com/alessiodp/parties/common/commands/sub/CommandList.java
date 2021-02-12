@@ -22,7 +22,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class CommandList extends PartiesSubCommand {
 	private final String syntaxOrder;
@@ -184,10 +186,12 @@ public class CommandList extends PartiesSubCommand {
 		LinkedHashSet<PartyImpl> parties;
 		if (orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS) {
 			parties = new LinkedHashSet<>();
-			LinkedHashSet<PartyImpl> onlineParties = new LinkedHashSet<>(new TreeSet<PartyImpl>(Comparator.comparingInt(p -> p.getOnlineMembers(false).size())));
+			Set<PartyImpl> onlineParties = new LinkedHashSet<>(new TreeSet<PartyImpl>(Comparator.comparingInt(p -> p.getOnlineMembers(false).size())));
 			((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().forEach((party) -> {
-				party.refreshOnlineMembers();
-				onlineParties.add(party);
+				if (!ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getName()) && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getId().toString())) {
+					party.refreshOnlineMembers();
+					onlineParties.add(party);
+				}
 			});
 			
 			// Limit and offset

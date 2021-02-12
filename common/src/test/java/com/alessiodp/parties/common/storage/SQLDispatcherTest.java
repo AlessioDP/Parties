@@ -35,6 +35,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -45,6 +46,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -472,6 +474,14 @@ public class SQLDispatcherTest {
 		assertEquals("test1", list.get(0).getName());
 		assertEquals("test3", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
+		
+		// Filter by id instead of name
+		PartyImpl firstParty = list.get(0);
+		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Arrays.asList("test2", firstParty.getId().toString());
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.NAME, 100, 0));
+		
+		assertEquals(6, list.size());
+		assertNotEquals(firstParty, list.get(0));
 	}
 	
 	private void listPartiesByMembers(PartiesSQLDispatcher dispatcher) {
