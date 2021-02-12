@@ -23,7 +23,7 @@ parties:
     already-in-party: "&c¡Ya estás en un equipo!"
     party-not-found: "&cEl equipo %party% no existe"
     party-full: "&cEl equipo esta lleno!"
-    player-not-found: "&cThe player %player% has not been found"
+    player-not-found: "&cEl jugador %player% no ha sido encontrado"
     player-not-in-party: "&c%player% no esta en ningún equipo"
   options:
     enabled: '&aEnabled'
