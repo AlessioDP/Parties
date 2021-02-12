@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.0.0-rc.3</version>
+    <version>3.0.0-rc.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-common</artifactId>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-api</artifactId>
-      <version>3.0.0-rc.3</version>
+      <version>3.0.0-rc.4</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -105,6 +105,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+      <version>2.7.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.23</version>
@@ -115,6 +121,12 @@
           <groupId>com.google.protobuf</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.18</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>

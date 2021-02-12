@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.0.0-rc.3</version>
+    <version>3.0.0-rc.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bukkit</artifactId>
@@ -116,13 +116,13 @@
     <dependency>
       <groupId>com.github.TechFortress</groupId>
       <artifactId>GriefPrevention</artifactId>
-      <version>16.16.0</version>
+      <version>16.17.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.Indyuce</groupId>
       <artifactId>MMOCore</artifactId>
-      <version>1.6</version>
+      <version>1.7.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
