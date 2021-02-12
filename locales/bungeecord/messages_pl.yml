@@ -150,6 +150,7 @@ main-commands:
     cooldown:
       global: "&cYou need to wait %seconds% seconds before invite another player"
       individual: "&cYou need to wait %seconds% seconds before invite again the same player"
+      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
     player-offline: "&cMozesz zaprosic wylacznie graczy online"
     player-no-permission: "&c%player% nie ma uprawnien by dolaczyc"
     player-in-party: "&c%player% jest juz w grupie"
@@ -317,8 +318,8 @@ additional-commands:
   home:
     teleported: "&7Teleportowano do domu grupy"
     #[Special tags]
-    #=> %time%          = Time of cooldown in seconds
-    teleport-in: "&7Zostaniesz teleportowany za %time% sekund..."
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7You will be teleported in %seconds% seconds..."
     teleport-denied: "&7Teleportacja odrzucona"
     teleport-waiting: "&cJuz czekasz na teleportacje!"
     no-home: "&cNie ma ustawionego domu"
@@ -407,6 +408,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teleportowano tutaj twoja grupe!"
     player-teleported: "&bTeleportowano do %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-denied: "&7Teleportacja odrzucona"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cMusisz poczekac %seconds% sekund!"
