@@ -228,6 +228,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 		switch (storageType) {
 			case H2:
 			case MARIADB:
+			case POSTGRESQL:
 				return -1;
 			case MYSQL:
 			case SQLITE:
@@ -282,7 +283,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 						party.get("color"),
 						party.get("kills"),
 						party.get("password"),
-						"default," + party.get("home") + ",",
+						!party.get("home").toString().isEmpty() ? "default," + party.get("home") + "," : "",
 						party.get("protection"),
 						party.get("experience"),
 						party.get("follow")

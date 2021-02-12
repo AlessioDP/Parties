@@ -19,9 +19,11 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import com.alessiodp.parties.common.storage.sql.dao.parties.H2PartiesDao;
 import com.alessiodp.parties.common.storage.sql.dao.parties.PartiesDao;
+import com.alessiodp.parties.common.storage.sql.dao.parties.PostgreSQLPartiesDao;
 import com.alessiodp.parties.common.storage.sql.dao.parties.SQLitePartiesDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.H2PlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.PlayersDao;
+import com.alessiodp.parties.common.storage.sql.dao.players.PostgreSQLPlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.SQLitePlayersDao;
 import org.junit.Before;
 import org.junit.Rule;
@@ -140,6 +142,8 @@ public class SQLDispatcherTest {
 	}
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMySQL(PartiesPlugin plugin) {
+		// Manual test only
+		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -152,7 +156,58 @@ public class SQLDispatcherTest {
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
 		PartiesSQLDispatcher ret = new PartiesSQLDispatcher(plugin, StorageType.MYSQL);
 		ret.init();
+		
+		ret.getConnectionFactory().getJdbi().onDemand(PartiesDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
 		return ret;
+		*/
+		return null;
+	}
+	
+	public static PartiesSQLDispatcher getSQLDispatcherMariaDB(PartiesPlugin plugin) {
+		// Manual test only
+		/*
+		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT = "3306";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE = "parties";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME = "root";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD = "";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE = 10;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME = 1800000;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
+		PartiesSQLDispatcher ret = new PartiesSQLDispatcher(plugin, StorageType.MARIADB);
+		ret.init();
+		
+		ret.getConnectionFactory().getJdbi().onDemand(PartiesDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
+		return ret;
+		*/
+		return null;
+	}
+	
+	public static PartiesSQLDispatcher getSQLDispatcherPostgreSQL(PartiesPlugin plugin) {
+		// Manual test only
+		/*
+		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT = "5432";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE = "parties";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME = "postgres";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD = "";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE = 10;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME = 1800000;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
+		PartiesSQLDispatcher ret = new PartiesSQLDispatcher(plugin, StorageType.POSTGRESQL);
+		ret.init();
+		
+		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class).deleteAll();
+		return ret;
+		*/
+		return null;
 	}
 	
 	@Test
@@ -165,10 +220,23 @@ public class SQLDispatcherTest {
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class), true);
 		dispatcher.stop();
 		
-		// Manual test only
-		//dispatcher = getSQLDispatcherMySQL(mockPlugin);
-		//player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class));
-		//dispatcher.stop();
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class), true);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class), true);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class), true);
+			dispatcher.stop();
+		}
 	}
 	
 	private void player(PartiesSQLDispatcher dispatcher, PlayersDao dao, boolean remove) {
@@ -211,6 +279,24 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), true);
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), true);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), true);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class), true);
+			dispatcher.stop();
+		}
 	}
 	
 	private void party(PartiesSQLDispatcher dispatcher, PartiesDao dao, boolean remove) {
@@ -268,6 +354,27 @@ public class SQLDispatcherTest {
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
 		exists(dispatcher);
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), false);
+			exists(dispatcher);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), false);
+			exists(dispatcher);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class), false);
+			exists(dispatcher);
+			dispatcher.stop();
+		}
 	}
 	
 	private void exists(PartiesSQLDispatcher dispatcher) {
@@ -306,12 +413,55 @@ public class SQLDispatcherTest {
 		listPartiesByKills(dispatcher);
 		listPartiesByExperience(dispatcher);
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			daoParties = dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class);
+			daoPlayers = dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class);
+			populateWithParties(dispatcher, daoParties, daoPlayers);
+			listPartiesNumber(dispatcher);
+			listPartiesByName(dispatcher);
+			listPartiesByMembers(dispatcher);
+			listPartiesByKills(dispatcher);
+			listPartiesByExperience(dispatcher);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			daoParties = dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class);
+			daoPlayers = dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class);
+			populateWithParties(dispatcher, daoParties, daoPlayers);
+			listPartiesNumber(dispatcher);
+			listPartiesByName(dispatcher);
+			listPartiesByMembers(dispatcher);
+			listPartiesByKills(dispatcher);
+			listPartiesByExperience(dispatcher);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			daoParties = dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class);
+			daoPlayers = dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class);
+			populateWithParties(dispatcher, daoParties, daoPlayers);
+			listPartiesNumber(dispatcher);
+			listPartiesByName(dispatcher);
+			listPartiesByMembers(dispatcher);
+			listPartiesByKills(dispatcher);
+			listPartiesByExperience(dispatcher);
+			dispatcher.stop();
+		}
 	}
 	
 	private void listPartiesNumber(PartiesSQLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
 		
 		assertEquals(7, dispatcher.getListPartiesNumber());
+		
+		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.emptyList();
+		
+		assertEquals(8, dispatcher.getListPartiesNumber());
 	}
 	
 	private void listPartiesByName(PartiesSQLDispatcher dispatcher) {
@@ -322,7 +472,6 @@ public class SQLDispatcherTest {
 		assertEquals("test1", list.get(0).getName());
 		assertEquals("test3", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
-		
 	}
 	
 	private void listPartiesByMembers(PartiesSQLDispatcher dispatcher) {
@@ -333,7 +482,6 @@ public class SQLDispatcherTest {
 		assertEquals("test8", list.get(0).getName());
 		assertEquals("test6", list.get(1).getName());
 		assertEquals("test1", list.get(6).getName());
-		
 	}
 	
 	private void listPartiesByKills(PartiesSQLDispatcher dispatcher) {
@@ -344,7 +492,6 @@ public class SQLDispatcherTest {
 		assertEquals("test4", list.get(0).getName());
 		assertEquals("test2", list.get(1).getName());
 		assertEquals("test5", list.get(6).getName());
-		
 	}
 	
 	private void listPartiesByExperience(PartiesSQLDispatcher dispatcher) {
@@ -355,7 +502,6 @@ public class SQLDispatcherTest {
 		assertEquals("test7", list.get(0).getName());
 		assertEquals("test5", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
-		
 	}
 	
 	@Test
@@ -369,6 +515,27 @@ public class SQLDispatcherTest {
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class), false);
 		countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class), false);
+			countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class), false);
+			countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class), false);
+			countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void countPlayersInParty(PartiesSQLDispatcher dispatcher, PlayersDao dao) {
@@ -397,6 +564,27 @@ public class SQLDispatcherTest {
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
 		countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), false);
+			countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), false);
+			countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class), false);
+			countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void countParties(PartiesSQLDispatcher dispatcher, PartiesDao dao) {
@@ -416,8 +604,6 @@ public class SQLDispatcherTest {
 		
 		assertEquals(dao.countAll(), 2);
 		assertEquals(dispatcher.getListPartiesNumber(), 2);
-		
-		
 	}
 	
 	@Test
@@ -431,6 +617,27 @@ public class SQLDispatcherTest {
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
 		listFixed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), false);
+			listFixed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class), false);
+			listFixed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PartiesDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class), false);
+			listFixed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void listFixed(PartiesSQLDispatcher dispatcher, PartiesDao dao) {

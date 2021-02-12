@@ -192,18 +192,48 @@ public class MigrationsTest {
 		dispatcher.stop();
 	}
 	
-	// Manual test only
-	/*
 	@Test
 	public void testDatabaseFreshMySQL() {
 		PartiesSQLDispatcher dispatcher = SQLDispatcherTest.getSQLDispatcherMySQL(mockPlugin);
-		dispatcher.init();
-		
-		dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> {
-			handle.execute("SELECT 1 FROM <prefix>parties");
-			handle.execute("SELECT 1 FROM <prefix>players");
-		});
-		
-		dispatcher.stop();
-	}*/
+		if (dispatcher != null) {
+			dispatcher.init();
+			
+			dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> {
+				handle.execute("SELECT 1 FROM <prefix>parties");
+				handle.execute("SELECT 1 FROM <prefix>players");
+			});
+			
+			dispatcher.stop();
+		}
+	}
+	
+	@Test
+	public void testDatabaseFreshMariaDB() {
+		PartiesSQLDispatcher dispatcher = SQLDispatcherTest.getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			dispatcher.init();
+			
+			dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> {
+				handle.execute("SELECT 1 FROM <prefix>parties");
+				handle.execute("SELECT 1 FROM <prefix>players");
+			});
+			
+			dispatcher.stop();
+		}
+	}
+	
+	@Test
+	public void testDatabaseFreshPostgreSQL() {
+		PartiesSQLDispatcher dispatcher = SQLDispatcherTest.getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			dispatcher.init();
+			
+			dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> {
+				handle.execute("SELECT 1 FROM <prefix>parties");
+				handle.execute("SELECT 1 FROM <prefix>players");
+			});
+			
+			dispatcher.stop();
+		}
+	}
 }
