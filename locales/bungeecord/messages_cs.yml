@@ -524,4 +524,4 @@ help:
       tag: 'Nastavit/odebrat štítek párty'
       teleport: 'Teleportovat párty k sobě'
 dont-edit-this:
-  version: 9
+  version: 10
