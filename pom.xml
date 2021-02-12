@@ -71,15 +71,15 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.18</dev.lombok>
 		
-		<libs.adpcore>1.5.2</libs.adpcore>
+		<libs.adpcore>1.5.3</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
-		<libs.griefPrevention>16.16.0</libs.griefPrevention>
+		<libs.griefPrevention>16.17.1</libs.griefPrevention>
 		<libs.lastLoginApi>1.4.3</libs.lastLoginApi>
 		<libs.levelPoints>da42a0e292</libs.levelPoints>
-		<libs.mmoCore>1.6</libs.mmoCore>
+		<libs.mmoCore>1.7.0</libs.mmoCore>
 		<libs.mythicMobs>4.10.0</libs.mythicMobs>
 		<libs.placeholderApi>2.10.9</libs.placeholderApi>
 		<libs.protocolLib>4.4.0</libs.protocolLib>
