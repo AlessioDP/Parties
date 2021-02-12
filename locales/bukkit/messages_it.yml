@@ -150,7 +150,7 @@ main-commands:
     cooldown:
       global: "&cDevi attendere %seconds% secondi prima di invitare un altro player"
       individual: "&cDevi attendere %seconds% secondi prima di invitare nuovamente lo stesso player"
-      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
+      on-leave: "&cDevi attendere %seconds% secondi prima di invitare questo player"
     player-offline: "&cPuoi invitare solamente i player online"
     player-no-permission: "&c%player% non ha il permesso di entrare"
     player-in-party: "&c%player% è già in un party"
@@ -341,7 +341,7 @@ additional-commands:
     teleported: "&7Teletrasportato alla home del party"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
+    teleport-in: "&7Sarai teletrasportato in %seconds% secondi..."
     teleport-denied: "&7Teletrasporto annullato"
     teleport-waiting: "&cStai già aspettando per il teletrasporto!"
     no-home: "&cNon esiste ancora una home"
@@ -432,7 +432,7 @@ additional-commands:
     player-teleported: "&bTeletrasportato da %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-in: "&7Sarai teletrasportato in %seconds% secondi"
     player-teleport-denied: "&7Teletrasporto annullato"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
