@@ -57,7 +57,7 @@ public abstract class CommandP extends ADPMainCommand {
 			);
 			
 			syntax = String.format("%s <%s>",
-					baseSyntax(),
+					mainCommand.getCommandName(),
 					Messages.PARTIES_SYNTAX_MESSAGE
 			);
 			
