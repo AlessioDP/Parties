@@ -12,19 +12,19 @@ parties:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9发现Parties的新版本: %version% (当前版本: %thisversion%)"
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
   configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
-    already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
+    invalid-command: "&c无效的命令"
+    configuration-reloaded: "&a已重载配置文件"
+    not-in-party: "&c你已经不在该帮派中"
+    already-in-party: "&c你已经在该帮派中！"
+    party-not-found: "&c帮派 %party% 不存在"
+    party-full: "&c该帮派已满人了！"
     player-not-found: "&cThe player %player% has not been found"
-    player-not-in-party: "&c%player% is not in a party"
+    player-not-in-party: "&c%player% 没有加入帮派"
   options:
     enabled: '&aEnabled'
     disabled: '&cDisabled'
@@ -58,17 +58,17 @@ parties:
   permissions:
     #[Special tags]
     #=> %permission%  = Missing permission
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
-    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
-  out-party: "Out party"
+    no-permission: "&c你没有权限使用该指令"
+    no-permission-in-party-general: "&c你没有权限使用该指令"
+    no-permission-in-party-rank: "&c只有 %rank_name% 能执行该命令"
+  out-party: "离开组队"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
-    player-empty: "&7Nobody"
-    player-unknown: "&6Someone"
-    missing-value: "&7Miss"
+    player-empty: "&7没有人"
+    player-unknown: "&6有人"
+    missing-value: "&7小姐"
   #Define the format of Parties chat messages
   formats:
     party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
@@ -86,20 +86,20 @@ main-commands:
     multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
     multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
+    enabled: "&a聊天设置为帮派"
+    disabled: "&a聊天设置为公开"
   create:
-    created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
-    created-fixed: "&b&lYou have created the fixed party %party%"
-    name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    name-too-long: "&cThe party name is too long!"
-    name-too-short: "&cThe party name is too short!"
-    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
-    censored: "&cThe party name contains censored words!"
+    created: "[{\"text\":\"你已经创建了帮派 %party%。\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" 邀请你的朋友。\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&l你已创建了帮派 %party%"
+    name-already-exists: "&c帮派 %party% 已经存在，选一个不同的名字"
+    name-too-long: "&c帮派名字过长！"
+    name-too-short: "&c帮派名字过短了！"
+    invalid-name: "&c无效字符。请使用 a-Z 和 0-9 中的字符。"
+    censored: "&c帮派名称中含有非法字符！"
   delete:
-    deleted: "&aParty %party% deleted"
-    deleted-silently: "&aParty %party% deleted silently"
-    broadcast: "&6&lYour party has been deleted"
+    deleted: "&a帮派 %party% 已被删除"
+    deleted-silently: "&a帮派 %party% 已被静静地删除"
+    broadcast: "&6&l你的帮派已经被删除了"
   deny:
     no-request: "&cYou have not pending request"
     no-exists: "&cThe request doesn't exist anymore"
@@ -107,13 +107,13 @@ main-commands:
     multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
     multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
   ignore:
-    start-ignore: "&7Ignoring %party% invites"
-    stop-ignore: "&7You stopped ignoring %party%"
+    start-ignore: "&7忽略 %party% 的邀请"
+    stop-ignore: "&7你停止忽略了 %party%"
     ignore-list:
-      header: "&b&lList ignored parties:"
+      header: "&b&l被忽略的帮派列表："
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7None"
+      empty: "&7无"
   info:
     #[Special tags]
     #=> %list_rank_RANK%           = The list of players of that rank
@@ -124,46 +124,47 @@ main-commands:
     #=> %online%              = List online players
     #=> %online_number%       = Number of online players
     content:
-      - "&b============ &l%party%'s Info &r&b============"
+      - "&b============ &l%party%的信息 &r&b============"
       - "&b&lDescription&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
       - "&bMembers&7: %list_rank_member%"
-      - "&bOnline players&7: %online_number%"
+      - "&b在线玩家&7: %online_number%"
   invite:
-    sent: "&bYou invited %player% in your party"
+    sent: "&b你邀请了 %player% 加入你的帮派"
     player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the party invite"
-      receipt: "&a%player% accepted your invite"
+      broadcast: "&b&l%player% 加入了帮派"
+      accepted: "&a你接受了该帮派的邀请"
+      receipt: "&a%player% 接受了您的邀请"
     deny:
       broadcast: ""
       denied: "&aYou denied the party invite"
       receipt: "&a%player% denied your invite"
     timeout:
-      no-response: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite to %party%"
+      no-response: "&7%player% 没有接受帮派的邀请"
+      timeout: "&7你没有接受组队邀请到 %party%"
     revoke:
-      sent-revoked: "&7Revoked invite sent to %player%"
-      player-invite-revoked: "&7Invite received from %party% has been revoked"
+      sent-revoked: "&7已撤销发送至 %player% 的邀请"
+      player-invite-revoked: "&7来自 %party% 的邀请已经被撤销了"
     cooldown:
       global: "&cYou need to wait %seconds% seconds before invite another player"
       individual: "&cYou need to wait %seconds% seconds before invite again the same player"
-    player-offline: "&cYou can invite only online players"
-    player-no-permission: "&c%player% doesn't have the permission to join"
-    player-in-party: "&c%player% is already in a party"
-    already-invited: "&c%player% was already invited"
+      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
+    player-offline: "&c你只可以邀请在线玩家"
+    player-no-permission: "&c%player% 没有加入的权限"
+    player-in-party: "&c%player% 已经在帮派中"
+    already-invited: "&c%player% 已经被邀请了"
     invite-yourself: "&cYou cannot invite yourself"
     failed: "&cFailed to invite the player %player%"
   kick:
     sent: "&aYou kicked %player% from the party!"
-    player-kicked: "&bYou have been kicked from %party%"
-    broadcast: "&b&l%player% has been kicked from the party"
-    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
+    player-kicked: "&b你已被踢出了 %party%"
+    broadcast: "&b&l%player%已被踢出队伍"
+    broadcast-disband: "&b&l帮派已被解散，因为领导者被踢了"
     broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
-    player-higher-rank: "&cYou cannot kick your superior!"
-    player-not-in-party: "&c%player% is not in your party"
+    player-higher-rank: "&c你不可以踢你的上级"
+    player-not-in-party: "&c%player% 不在你的帮派中"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -172,33 +173,33 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&c玩家名列表:"
         - "%list_players%"
-        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+        - "&c使用 '&7/party kick <username> <number>&c' 来踢出玩家"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: 上一次登录 %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"踢出这个玩家","color":"gold"}}}'
   leave:
-    left: "&b&lYou left the party %party%"
-    broadcast: "&b&l%player% left the party"
-    party-disbanded: "&6&lThe party has been disbanded because the leader left"
+    left: "&b&l你已离开 %party%"
+    broadcast: "&b&l%player% 已离开帮派"
+    party-disbanded: "&6&l帮派已被解散，因为领导人离开了"
     leader-changed: "&b&lThe leader left the party, the new leader is %player%"
   p:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou still have to wait %seconds% seconds"
-    censored: "&cThe message contains censored words!"
+    cooldown: "&c您需要等待 %seconds% 秒"
+    censored: "&c帮派名称中含有非法字符！"
     muted: "&cYou are muted!"
   rank:
     #[Special tags]
     #=> %rank_name%   = Rank wrote by the player
-    changed: "&a%player% rank changed into %rank_name%"
+    changed: "&a%player% 等级已更改为 %rank_name%"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
-    same-rank: "&c%player% is already %rank_name%!"
-    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
-    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
-    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
-    changing-yourself: "&cYou cannot change yourself rank!"
-    player-not-in-party: "&c%player% is not in your party"
+    wrong-rank: "&c职位 '%rank_name%' 不存在！"
+    same-rank: "&c%player% 已成为 %rank_name%！"
+    low-rank: "&c您不能编辑该玩家职位，其级别比你的级别高或相同！"
+    to-higher-rank: "&c你不能升为相等或更高级别！"
+    fixed-leader: "&c你无法让某个人成为特定帮派的领导人！"
+    changing-yourself: "&c你不能改变自己的职位！"
+    player-not-in-party: "&c%player% 不在你的帮派中"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -207,28 +208,28 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&c玩家名列表:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&c使用 '&7/party 等级 <username> <rank> <number>&c' 来更改右侧玩家的等级"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: 上一次登录 %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"改变这个玩家的等级","color":"gold"}}}'
   rename:
     #[Special tags]
     #=> %old%   = Old party name
-    renamed: "&aThe party %old% has been renamed into %party%"
-    broadcast: "&6Your party has been renamed into %party%!"
+    renamed: "&a帮派 %old% 已重命名为 %party%"
+    broadcast: "&6你的帮派已重命名为 %party%!"
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&c您需要等待 %seconds% 秒!"
   spy:
-    enabled: "&7Now you are a spy!"
-    disabled: "&7You are no longer a spy"
+    enabled: "&7现在你已成为一名间谍!"
+    disabled: "&7你不再是一名间谍"
   version:
     #[Special tags]
     #=> %version%    = Parties version
     #=> %newversion% = Latest Parties version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - 由 &6AlessioDP &7制作"
+    outdated: "&b&lParties &b%version% &7(%platform%) - 由 &6AlessioDP &7制作\n&a发现新版本: &2%newversion%"
 #/ =============================== \
 #|  ADDITIONAL COMMANDS  MESSAGES  |
 #\ =============================== /
@@ -237,7 +238,7 @@ additional-commands:
     sent: "&aJoin request sent to %party%"
     received: "[{\"text\":\"&b%player% want to join your party.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
+      broadcast: "&b&l%player% 加入了帮派"
       accepted: "&aYou accepted the ask request"
       receipt: "&a%party% accepted your ask request"
     deny:
@@ -252,15 +253,15 @@ additional-commands:
       global: "&cYou need to wait %seconds% seconds before ask to another party"
       individual: "&cYou need to wait %seconds% seconds before ask to the same party"
   claim:
-    claimed: "&aGranted permission to the party"
-    removed: "&aRemoved permission to the party"
-    no-manager: "&cYou need to be the manager of the claim"
-    claim-no-exists: "&cClaim not found"
+    claimed: "&a授权于该帮派"
+    removed: "&a已移除该帮派权限"
+    no-manager: "&c你必须成为该领地管理者"
+    claim-no-exists: "&c该领地找不到"
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&b你的帮派颜色是: %color_code%%color_command%"
+    empty: "&b你的帮派不存在该颜色"
+    changed: "&b帮派颜色已改为 %color_command%"
+    removed: "&b帮派颜色已删除"
     broadcast: ""
     wrong-color: "&c该颜色找不到. 你可以选择: red, green, special"
   debug:
@@ -308,77 +309,77 @@ additional-commands:
         - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&b帮派描述已更改"
+    removed: "&b帮派描述已删除"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
+    invalid-chars: "&c无效字符。使用 a-Z 和 0-9 中的字符。最小 3 位，最大 16 位。"
+    censored: "&c帮派名称中含有非法字符！"
   exp:
     #[Special tags]
     #=> %exp%        = Experience gained
     #=> %total_exp%  = Total experience dropped by the mob
     party:
-      gained: "&bGained %exp% party experience for killing the mob"
+      gained: "&b已从击杀生物中获取了%exp%帮派经验"
     normal:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&b已从击杀生物中获取了%exp%经验"
+      gained-others: "&b%player% 已击杀1生物, 你获取了%exp%经验"
     levelpoints:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&b已从击杀生物中获取了%exp%经验"
+      gained-others: "&b%player% 已击杀1生物, 你获取了%exp%经验"
     mmocore:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&b已从击杀生物中获取了%exp%经验"
+      gained-others: "&b%player% 已击杀1生物, 你获取了%exp%经验"
     skillapi:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&b已从击杀生物中获取了%exp%经验"
+      gained-others: "&b%player% 已击杀1生物, 你获取了%exp%经验"
     level:
       level-up: "&bParty leveled up to %experience_level%"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&a现在你的帮派成员将跟随你的领导人"
+    toggle-off: "&a帮派成员将不再跟随你的领导人"
   home:
-    teleported: "&7Teleported to the party home"
+    teleported: "&7已传送到帮派基地"
     #[Special tags]
-    #=> %time%          = Time of cooldown in seconds
-    teleport-in: "&7You will be teleported in %time% seconds..."
-    teleport-denied: "&7Teleport denied"
-    teleport-waiting: "&cYou are already waiting for the teleport!"
-    no-home: "&cThere isn't a home yet"
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7You will be teleported in %seconds% seconds..."
+    teleport-denied: "&7传送邀请被拒绝"
+    teleport-waiting: "&c你需等待传送！"
+    no-home: "&c还没有家"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&c您需要等待 %seconds% 秒!"
     must-select-home: "&cYou must select a valid home"
     invalid-home: "&cThe selected home doesn't exist"
     valid-homes: "&bList of valid homes:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %home%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a单击传送"}]}}}]'
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
-    wrong-password: "&cWrong password!"
+    joined: "&a你加入了帮派 %party%"
+    player-joined: "&b&l%player% 加入了帮派"
+    wrong-password: "&c密码错误！"
   list:
     #[Special tags]
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
+    header: "&b============ &l在线帮派列表 &r&b============"
+    footer: "&b================ &l%maxpages% 的第 %page% 页 &r&b================"
+    no-one: "&7没有人"
     format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %online_number%&7] %desc%"}]'
     invalid-order: '&cInvalid order type'
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&b帮派 MOTD 已更改"
+    removed: "&b帮派 MOTD 已删除"
     broadcast: ""
     content:
-      - "&bParty MOTD:"
+      - "&b帮派MOTD："
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
+    invalid-chars: "&c无效字符。您可以使用'.,/'。最小 3 位，最大 100 位。"
+    censored: "&cMOTD 中含有非法字符！"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
+    toggle-on: "&7您已禁用通知！"
+    toggle-off: "&7您启用了通知！"
   nickname:
     own:
       changed: "&bYou changed your nickname into %player_nickname%"
@@ -401,23 +402,23 @@ additional-commands:
     invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
     censored: "&cThe nickname contains censored words!"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&a帮派密码已更改"
+    removed: "&a帮派密码已删除"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+    invalid-chars: "&c无效字符。使用 a-Z 和 0-9 中的字符。最小 1 位，最大 16 位。"
   protection:
-    toggle-on: "&aNow your party is protected by friendly fire"
-    toggle-off: "&aYour party is not protected anymore by friendly fire"
-    protected: "&cYou can't hit your partymates"
-    warn-on-attack: "&c%player% tried to hit %victim%!"
+    toggle-on: "&a现在你的帮派被友谊之火保护"
+    toggle-off: "&a你的帮派不再被友谊之火保护"
+    protected: "&c你不可以攻击帮友"
+    warn-on-attack: "&c%player% 尝试攻击 %victim%！"
   sethome:
     changed: ""
-    removed: "&bParty home removed"
+    removed: "&b帮派基地已删除"
     removed-none: "&cNo party home found"
-    broadcast: "&aThe party has a new home!"
+    broadcast: "&a帮派有了一个新基地！"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&c您需要等待 %seconds% 秒!"
     max-homes: "&cYou reached the maximum number of homes"
   tag:
     changed: "&bParty tag changed"
@@ -427,11 +428,15 @@ additional-commands:
     censored: "&cThe tag contains censored words!"
     already-used: "&c The tag %tag% is already used"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
+    teleporting: "&7传送你的帮派到这里"
+    player-teleported: "&b传送到 %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-denied: "&7传送邀请被拒绝"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&c您需要等待 %seconds% 秒!"
     accept-request:
       sent: "&aTeleport request sent to the party"
       received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
@@ -441,25 +446,25 @@ additional-commands:
     #=> %price%          = Price of the command
     no-money:
       ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cYou don't have enough money to perform a claim [%price%$]"
-      color: "&cYou don't have enough money to perform the color command [%price%$]"
-      create: "&cYou don't have enough money to create a party [%price%$]"
-      desc: "&cYou don't have enough money to set the description [%price%$]"
+      claim: "&c你没有足够的钱来执行 [%price%$]"
+      color: "&c你没有足够的钱来执行 [%price%$]"
+      create: "&c你没有足够的钱来创建一个帮派 [%price%$]"
+      desc: "&c你没有足够的钱来设置描述 [%price%$]"
       follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cYou don't have enough money to use the home command [%price%$]"
-      join: "&cYou don't have enough money to join a party [%price%$]"
-      motd: "&cYou don't have enough money to set the MOTD [%price%$]"
+      home: "&c你没有足够的钱来使用该命令 [%price%$]"
+      join: "&c你没有足够的钱来加入一个帮派 [%price%$]"
+      motd: "&c你没有足够的钱来设置 MOTD [%price%$]"
       nickname: "&cYou don't have enough money to set the nickname [%price%$]"
       password: "&cYou don't have enough money to set the password [%price%$]"
       protection: "&cYou don't have enough money to enable protection [%price%$]"
       rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cYou don't have enough money to set the home [%price%$]"
+      sethome: "&c你没有足够的钱来设置基地 [%price%$]"
       tag: "&cYou don't have enough money to set the tag [%price%$]"
-      teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
+      teleport: "&c你没有足够的钱来执行一次传送 [%price%$]"
     confirm:
       warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aPerforming the command."
-      no-cmd: "&cThere is no command to confirm"
+      confirmed: "&a执行命令。"
+      no-cmd: "&c没有命令来确认"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
@@ -467,21 +472,21 @@ other:
   follow:
     #[Special tags]
     #=> %world%          = New world
-    following-world: "&7Following %player% in %world%"
+    following-world: "&7以下 %player% 在 %world%"
   fixed-parties:
-    default-join: "&bYou entered into %party%"
+    default-join: "&b你加入了 %party%"
   join-leave:
-    server-join: "&b%player% is online!"
-    server-leave: "&7%player% is offline!"
+    server-join: "&b%player% 在线！"
+    server-leave: "&7%player% 不在线！"
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b================= &l帮派帮助 %page%/%maxpages% &r&b================="
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'You can only make these commands:'
+    header: '您只能使用这些命令：'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
@@ -565,4 +570,4 @@ help:
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 11
+  version: 12

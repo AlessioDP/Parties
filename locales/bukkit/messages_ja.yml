@@ -150,6 +150,7 @@ main-commands:
     cooldown:
       global: "&cYou need to wait %seconds% seconds before invite another player"
       individual: "&cYou need to wait %seconds% seconds before invite again the same player"
+      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
     player-offline: "&cYou can invite only online players"
     player-no-permission: "&c%player% doesn't have the permission to join"
     player-in-party: "&c%player% is already in a party"
@@ -339,8 +340,8 @@ additional-commands:
   home:
     teleported: "&7Teleported to the party home"
     #[Special tags]
-    #=> %time%          = Time of cooldown in seconds
-    teleport-in: "&7You will be teleported in %time% seconds..."
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7You will be teleported in %seconds% seconds..."
     teleport-denied: "&7Teleport denied"
     teleport-waiting: "&cYou are already waiting for the teleport!"
     no-home: "&cThere isn't a home yet"
@@ -352,7 +353,7 @@ additional-commands:
     valid-homes: "&bList of valid homes:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %home%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
   join:
     joined: "&aYou joined the party %party%"
     player-joined: "&b&l%player% joined in the party"
@@ -429,6 +430,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teleporting your party here!"
     player-teleported: "&bTeleported to %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-denied: "&7Teleport denied"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
@@ -565,4 +570,4 @@ help:
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 11
+  version: 12

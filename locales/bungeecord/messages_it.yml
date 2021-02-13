@@ -150,6 +150,7 @@ main-commands:
     cooldown:
       global: "&cDevi attendere %seconds% secondi prima di invitare un altro player"
       individual: "&cDevi attendere %seconds% secondi prima di invitare nuovamente lo stesso player"
+      on-leave: "&cDevi attendere %seconds% secondi prima di invitare questo player"
     player-offline: "&cPuoi invitare solamente i player online"
     player-no-permission: "&c%player% non ha il permesso di entrare"
     player-in-party: "&c%player% è già in un party"
@@ -317,8 +318,8 @@ additional-commands:
   home:
     teleported: "&7Teletrasportato alla home del party"
     #[Special tags]
-    #=> %time%          = Time of cooldown in seconds
-    teleport-in: "&7Sarai teletrasportato in %time% secondi..."
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7Sarai teletrasportato in %seconds% secondi..."
     teleport-denied: "&7Teletrasporto annullato"
     teleport-waiting: "&cStai già aspettando per il teletrasporto!"
     no-home: "&cNon esiste ancora una home"
@@ -330,7 +331,7 @@ additional-commands:
     valid-homes: "&bLista delle home valide:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %home%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClicca per teletrasportarti"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClicca per teletrasportarti"}]}}}]'
   join:
     joined: "&aSei entrato nel party %party%"
     player-joined: "&b&l%player% è entrato nel party"
@@ -407,6 +408,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teletrasportando il tuo party qui!"
     player-teleported: "&bTeletrasportato da %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7Sarai teletrasportato in %seconds% secondi"
+    player-teleport-denied: "&7Teletrasporto annullato"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cDevi aspettare %seconds% secondi!"
@@ -519,4 +524,4 @@ help:
       tag: 'Imposta/rimuovi tag del party'
       teleport: 'Teletrasporta il party da te'
 dont-edit-this:
-  version: 9
+  version: 10

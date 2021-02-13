@@ -23,7 +23,7 @@ parties:
     already-in-party: "&c¡Ya estás en un equipo!"
     party-not-found: "&cEl equipo %party% no existe"
     party-full: "&cEl equipo esta lleno!"
-    player-not-found: "&cThe player %player% has not been found"
+    player-not-found: "&cEl jugador %player% no ha sido encontrado"
     player-not-in-party: "&c%player% no esta en ningún equipo"
   options:
     enabled: '&aEnabled'
@@ -150,6 +150,7 @@ main-commands:
     cooldown:
       global: "&cYou need to wait %seconds% seconds before invite another player"
       individual: "&cYou need to wait %seconds% seconds before invite again the same player"
+      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
     player-offline: "&cSolo puedes invitar a jugadores conectados"
     player-no-permission: "&c%player% no tiene permisos para entrar"
     player-in-party: "&c%player% ya esta en el equipo"
@@ -317,8 +318,8 @@ additional-commands:
   home:
     teleported: "&7Teletransportado a casa del equipo"
     #[Special tags]
-    #=> %time%          = Time of cooldown in seconds
-    teleport-in: "&7Seras teletransportado en %time% segundos..."
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7You will be teleported in %seconds% seconds..."
     teleport-denied: "&7Teletransporte denegado"
     teleport-waiting: "&cYa estas esperando para teletransportarte!"
     no-home: "&cNo hay una casa establecida para el equipo"
@@ -330,7 +331,7 @@ additional-commands:
     valid-homes: "&bList of valid homes:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %home%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
   join:
     joined: "&aHas entrado al equipo %party%"
     player-joined: "&b&l%player% ha entrado al equipo"
@@ -407,6 +408,10 @@ additional-commands:
   teleport:
     teleporting: "&7Teletransportando a la casa de tu equipo!"
     player-teleported: "&bTeletransportado a %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-denied: "&7Teletransporte denegado"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cTienes que esperar %seconds% segundos!"
@@ -519,4 +524,4 @@ help:
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 9
+  version: 10
