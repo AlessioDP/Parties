@@ -17,6 +17,9 @@ public class ExpManager {
 	
 	public void reload() {
 		mode = ExpMode.parse(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
+		if (ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE && mode == ExpMode.PROGRESSIVE) {
+			FormulaUtils.initializeEngine();
+		}
 	}
 	
 	public void reloadAll() {
@@ -34,7 +37,7 @@ public class ExpManager {
 	 */
 	public ExpResult calculateLevel(double experience) throws Exception {
 		ExpResult ret = new ExpResult();
-		if (ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+		if (mode != null && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
 			switch (mode) {
 				case PROGRESSIVE:
 					ret = calculateLevelProgressive(experience);

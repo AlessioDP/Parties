@@ -69,6 +69,10 @@
 							<pattern>org.reflections</pattern>
 							<shadedPattern>com.alessiodp.parties.libs.reflections</shadedPattern>
 						</relocation>
+						<relocation>
+							<pattern>jdk.nashorn</pattern>
+							<shadedPattern>com.alessiodp.parties.libs.nashorn</shadedPattern>
+						</relocation>
 					</relocations>
 				</configuration>
 				<executions>
