@@ -440,7 +440,7 @@ help:
   footer: ""
   perform-command: 'Esegui il comando'
   console-help:
-    header: 'Puoi solamente far questi comandi:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
