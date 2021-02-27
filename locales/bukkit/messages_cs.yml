@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aOprávnění odebráno párty"
     no-manager: "&cMusíš být správcem zabrání"
     claim-no-exists: "&cZabrání nenalezeno"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&bBarva tvé párty je: %color_code%%color_command%"
     empty: "&bTvá párty nemá barvu"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Vykoná příkaz'
   console-help:
-    header: 'Můžeš provádět pouze následující příkazy:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
