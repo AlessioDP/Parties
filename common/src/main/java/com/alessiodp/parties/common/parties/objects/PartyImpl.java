@@ -631,9 +631,13 @@ public abstract class PartyImpl implements Party {
 	public void refreshOnlineMembers() {
 		synchronized (this) {
 			onlineMembers.clear();
-			for (UUID u : getMembers()) {
-				if (plugin.getPlayer(u) != null) {
-					onlineMembers.add(plugin.getPlayerManager().getPlayer(u));
+			if (plugin.getPartyManager().getCacheParties().containsKey(getId())) {
+				// Load players only if the party is online (in cache)
+				// A party is always in cache if a player is online
+				for (UUID u : getMembers()) {
+					if (plugin.getPlayer(u) != null) {
+						onlineMembers.add(plugin.getPlayerManager().getPlayer(u));
+					}
 				}
 			}
 		}
