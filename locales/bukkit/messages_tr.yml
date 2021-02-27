@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aParti Yetkileri Silindi"
     no-manager: "&cClaim Atmak İçin Yönetici Olması Lazım"
     claim-no-exists: "&cClaim Bulunamadı"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&bPartinin Şuanki Rengi: %color_code%%color_command%"
     empty: "&bPartinde Bir Renk Seçilmemiş"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'Sadece Bu Komutları Kullanabilirsin:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
