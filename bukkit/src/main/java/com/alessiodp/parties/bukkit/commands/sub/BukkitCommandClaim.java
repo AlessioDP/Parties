@@ -66,6 +66,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 		if (commandData.getArgs().length != 2) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
 					.replace("%syntax%", syntax));
+			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_CLAIM_ALLOWED_PERMISSIONS);
 			return false;
 		}
 		
@@ -123,6 +124,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			// Return: Wrong command
 			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
 					.replace("%syntax%", syntax));
+			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_CLAIM_ALLOWED_PERMISSIONS);
 			break;
 		default:
 			GriefPreventionHandler.addPartyPermission(Bukkit.getPlayer(commandData.getSender().getUUID()), party, selection.getGPPermission());

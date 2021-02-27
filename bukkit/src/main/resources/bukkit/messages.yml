@@ -286,6 +286,7 @@ additional-commands:
     removed: "&aRemoved permission to the party"
     no-manager: "&cYou need to be the manager of the claim"
     claim-no-exists: "&cClaim not found"
+    allowed-permissions: "&cPermissions: trust, container & access"
 
   color:
     info: "&bYour party color is: %color_code%%color_command%"

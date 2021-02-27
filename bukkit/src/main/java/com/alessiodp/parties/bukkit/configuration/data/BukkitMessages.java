@@ -24,6 +24,8 @@ public class BukkitMessages extends Messages {
 	public static String ADDCMD_CLAIM_NOMANAGER;
 	@ConfigOption(path = "additional-commands.claim.claim-no-exists")
 	public static String ADDCMD_CLAIM_CLAIMNOEXISTS;
+	@ConfigOption(path = "additional-commands.claim.allowed-permissions")
+	public static String ADDCMD_CLAIM_ALLOWED_PERMISSIONS;
 	
 	@ConfigOption(path = "additional-commands.exp.normal.gained-killer")
 	public static String ADDCMD_EXP_NORMAL_GAINED_KILLER;
