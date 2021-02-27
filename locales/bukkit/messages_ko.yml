@@ -257,6 +257,7 @@ additional-commands:
     removed: "&a파티로부터 권한이 제거 되었습니다"
     no-manager: "&c당신은 요청을 관리해야 합니다"
     claim-no-exists: "&c요청이 발견되지 않았습니다"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&b당신의 파티의 색은: %color_code%%color_command%"
     empty: "&b당신의 파티는 색상을 갖고 있지 않습니다"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: '당신이 사용할 수 있는 명령어:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
