@@ -440,7 +440,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: '당신이 사용할 수 있는 명령어:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
