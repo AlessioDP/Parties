@@ -47,7 +47,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public CompletableFuture<Void> updatePlayer(PartyPlayerImpl player) {
-		return plugin.getScheduler().runAsync(() -> {
+		return executeSafelyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPLAYER, player.getName(), player.getPlayerUUID().toString()), true);
 			
 			((IPartiesDatabase) database).updatePlayer(player);
@@ -55,7 +55,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public PartyPlayerImpl getPlayer(UUID uuid) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPLAYER, uuid.toString()), true);
 			
 			return ((IPartiesDatabase) database).getPlayer(uuid);
@@ -63,7 +63,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public int getListPlayersInPartyNumber() {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPLAYERS_NUMBER, true);
 			
 			return ((IPartiesDatabase) database).getListPlayersInPartyNumber();
@@ -71,7 +71,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public CompletableFuture<Void> updateParty(PartyImpl party) {
-		return plugin.getScheduler().runAsync(() -> {
+		return executeSafelyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPARTY, CommonUtils.getNoEmptyOr(party.getName(), "_"), party.getId()), true);
 			
 			((IPartiesDatabase) database).updateParty(party);
@@ -79,7 +79,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public PartyImpl getParty(UUID id) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPARTY, id.toString()), true);
 			
 			return ((IPartiesDatabase) database).getParty(id);
@@ -87,7 +87,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public PartyImpl getPartyByName(String name) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPARTY, name), true);
 			
 			return ((IPartiesDatabase) database).getPartyByName(name);
@@ -95,7 +95,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public CompletableFuture<Void> removeParty(PartyImpl party) {
-		return plugin.getScheduler().runAsync(() -> {
+		return executeSafelyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_REMOVEPARTY, CommonUtils.getNoEmptyOr(party.getName(), "_"), party.getId()), true);
 			
 			((IPartiesDatabase) database).removeParty(party);
@@ -103,7 +103,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public boolean existsParty(String name) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_EXISTSPARTY, name), true);
 			
 			return ((IPartiesDatabase) database).existsParty(name);
@@ -111,7 +111,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public boolean existsTag(String tag) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_EXISTSTAG, tag), true);
 			
 			return ((IPartiesDatabase) database).existsTag(tag);
@@ -119,7 +119,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public LinkedHashSet<PartyImpl> getListParties(ListOrder order, int limit, int offset) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPARTIES, true);
 			
 			return ((IPartiesDatabase) database).getListParties(order, limit, offset);
@@ -127,7 +127,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public int getListPartiesNumber() {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPARTIES_NUMBER, true);
 			
 			return ((IPartiesDatabase) database).getListPartiesNumber();
@@ -135,7 +135,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	}
 	
 	public Set<PartyImpl> getListFixed() {
-		return plugin.getScheduler().runSupplyAsync(() -> {
+		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLFIXEDPARTIES, true);
 			
 			return ((IPartiesDatabase) database).getListFixed();
