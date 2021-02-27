@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aPermiso removido para el equipo"
     no-manager: "&cNecesitas ser el administrador de la reclamación"
     claim-no-exists: "&cClaim no encontrado"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&bEl color de tu equipo es: %color_code%%color_command%"
     empty: "&bTu equipo no tiene color"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'Puedes ejecutar solo estos comandos:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax

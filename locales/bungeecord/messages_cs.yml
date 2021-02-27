@@ -150,7 +150,7 @@ main-commands:
     cooldown:
       global: "&cMusíš počkat %seconds% sekund před pozváním dalšího hráče"
       individual: "&cMusíš počkat %seconds% sekund před opětovným pozváním stejného hráče"
-      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
+      on-leave: "&cMusíš počkat %seconds% sekund, než budeš moct pozvat tohoto hráče"
     player-offline: "&cMůžeš pozvat pouze online hráče"
     player-no-permission: "&c%player% nemá oprávnění k připojení"
     player-in-party: "&c%player% je již v párty"
@@ -426,7 +426,7 @@ other:
   follow:
     #[Special tags]
     #=> %server%          = New server
-    following-server: "&7Following %player% in %server%"
+    following-server: "&7Následování %player% na serveru %server%"
   fixed-parties:
     default-join: "&bVstoupil/a jsi do párty %party%"
   join-leave:

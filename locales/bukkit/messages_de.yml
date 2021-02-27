@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aDie Parzelle der Gruppe wurde entfernt"
     no-manager: "&cDu musst Inhaber dieser Parzelle sein"
     claim-no-exists: "&cEs konnte keine Parzelle gefunden werden"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&bDeine Gruppenfarbe ist: %color_code%%color_command%"
     empty: "&bDeine Gruppe verfügt über keine Farbe"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'Du kannst nur diese Befehle verwenden:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax

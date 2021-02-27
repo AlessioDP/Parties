@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aRimossi i permessi al party"
     no-manager: "&cDevi essere il manager del claim"
     claim-no-exists: "&aClaim non trovato"
+    allowed-permissions: "&cPermessi: trust, container & access"
   color:
     info: "&bIl colore del tuo party è: %color_code%%color_command%"
     empty: "&bIl tuo party non ha un colore"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Esegui il comando'
   console-help:
-    header: 'Puoi solamente far questi comandi:'
+    header: 'Puoi solamente eseguire questi comandi:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax

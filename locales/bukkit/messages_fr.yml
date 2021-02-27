@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aPermission retirée au groupe"
     no-manager: "&cVous devez être l'administrateur du claim"
     claim-no-exists: "&cClaim non trouvé"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&bLa couleur de votre groupe est : %color_code%%color_command%"
     empty: "&bVotre groupe n'a pas de couleur"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'Vous ne pouvez exécuter que ces commandes :'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
