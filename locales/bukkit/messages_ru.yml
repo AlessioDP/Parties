@@ -257,6 +257,7 @@ additional-commands:
     removed: "&aУдалено разрешение партии"
     no-manager: "&cВы должны быть менеджером"
     claim-no-exists: "&cПретензия не найдена"
+    allowed-permissions: "&cPermissions: trust, container & access"
   color:
     info: "&bВаш цвет партии: %color_code%%color_command%"
     empty: "&bУ твоей партии нет цвета"
@@ -486,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'Вы можете сделать только эти команды:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
