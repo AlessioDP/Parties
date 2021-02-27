@@ -150,7 +150,7 @@ main-commands:
     cooldown:
       global: "&cMusíš počkat %seconds% sekund před pozváním dalšího hráče"
       individual: "&cMusíš počkat %seconds% sekund před opětovným pozváním stejného hráče"
-      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
+      on-leave: "&cMusíš počkat %seconds% sekund, než budeš moct pozvat tohoto hráče"
     player-offline: "&cMůžeš pozvat pouze online hráče"
     player-no-permission: "&c%player% nemá oprávnění k připojení"
     player-in-party: "&c%player% je již v párty"
@@ -257,7 +257,7 @@ additional-commands:
     removed: "&aOprávnění odebráno párty"
     no-manager: "&cMusíš být správcem zabrání"
     claim-no-exists: "&cZabrání nenalezeno"
-    allowed-permissions: "&cPermissions: trust, container & access"
+    allowed-permissions: "&cOprávnění: trust, container & access"
   color:
     info: "&bBarva tvé párty je: %color_code%%color_command%"
     empty: "&bTvá párty nemá barvu"
@@ -487,7 +487,7 @@ help:
   footer: ""
   perform-command: 'Vykoná příkaz'
   console-help:
-    header: 'You can only perform these commands:'
+    header: 'Můžeš provádět pouze následující příkazy:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
