@@ -286,6 +286,7 @@ additional-commands:
     removed: "&aRemoved permission to the clan"
     no-manager: "&cYou need to be the manager of the claim"
     claim-no-exists: "&cClaim not found"
+    allowed-permissions: "&cPermissions: trust, container & access"
 
   color:
     info: "&bYour clan color is: %color_code%%color_command%"
@@ -541,7 +542,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'You can only make these commands:'
+    header: 'You can only perform these commands:'
     command: ' > %command% - %description%'
   # [Special tags]
   # => %syntax%          = Command syntax
