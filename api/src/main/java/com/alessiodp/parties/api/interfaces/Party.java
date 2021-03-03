@@ -237,7 +237,9 @@ public interface Party {
 	@Deprecated
 	default void setHome(@Nullable PartyHome home) {
 		HashSet<PartyHome> hs = new HashSet<>();
-		hs.add(home);
+		if (home != null) {
+			hs.add(home);
+		}
 		setHomes(hs);
 	}
 	
