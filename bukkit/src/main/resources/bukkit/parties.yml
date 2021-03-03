@@ -260,8 +260,7 @@ additional:
 
   # [Join system]
   # Enable the command "/party join" (can be disabled with permissions)
-  # You can enable password system too, this will enable the commands:
-  # "/party create <name> <password>" and "/party password"
+  # You can enable password system too, this will enable the command "/party password"
   join:
     enable: false
     password:
