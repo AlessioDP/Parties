@@ -99,8 +99,9 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 							packet.getPlayerUuid().toString()), true);
 					break;
 				case CREATE_PARTY:
-					PartyImpl finalParty = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+					PartyImpl finalParty = ((PartiesPlugin) plugin).getPartyManager().loadParty(packet.getPartyId());
 					if (finalParty != null) {
+						((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid());
 						PartyPlayerImpl leader = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
 						
 						// Calling API Event
@@ -136,6 +137,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					}
 					break;
 				case RENAME_PARTY:
+					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					if (party != null) {
 						try {
@@ -158,6 +160,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					}
 					break;
 				case ADD_MEMBER_PARTY:
+					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					if (party != null) {
 						try {
@@ -179,6 +182,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					}
 					break;
 				case REMOVE_MEMBER_PARTY:
+					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					if (party != null) {
 						try {
@@ -232,6 +236,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					}
 					break;
 				case ADD_HOME:
+					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
 					if (party != null && partyPlayer != null) {
@@ -312,6 +317,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					break;
 				case EXPERIENCE:
 					if (ConfigMain.ADDITIONAL_EXP_ENABLE) {
+						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
 						if (party != null) {
@@ -325,6 +331,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					break;
 				case LEVEL_UP:
 					if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 						if (party != null) {
 							IPartyLevelUpEvent partiesLevelUpEvent = ((PartiesPlugin) plugin).getEventManager().prepareLevelUpEvent(party, (int) packet.getPayloadNumber());
