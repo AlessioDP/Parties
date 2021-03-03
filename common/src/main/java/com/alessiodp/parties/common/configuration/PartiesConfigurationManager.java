@@ -60,6 +60,7 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		output.writeUTF(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
 		output.writeDouble(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START);
 		output.writeUTF(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP);
+		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION);
 		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT);
 		output.writeInt(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.size());
 		for (Object db : ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST) {
@@ -93,6 +94,7 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		ConfigMain.ADDITIONAL_EXP_LEVELS_MODE = input.readUTF();
 		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START = input.readDouble();
 		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP = input.readUTF();
+		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION = input.readBoolean();
 		ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT = input.readBoolean();
 		ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST = new ArrayList<>();
 		int fixedSize = input.readInt();

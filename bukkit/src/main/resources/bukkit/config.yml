@@ -132,6 +132,9 @@ additional:
         # => %previous%: Previous level experience
         start-level-experience: 50
         level-experience: "%previous% * 2"
+        # This is a special option that prevents loops in calculation
+        # Set this on false if you know what you are doing
+        safe-calculation: true
 
       # [Fixed mode]
       # Make a complete list of finite party levels

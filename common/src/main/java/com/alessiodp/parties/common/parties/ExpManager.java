@@ -3,6 +3,7 @@ package com.alessiodp.parties.common.parties;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.core.common.utils.FormulaUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.ExpResult;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
@@ -58,15 +59,27 @@ public class ExpManager {
 		int levelCount = 1;
 		double progressiveLevelExp = ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
 		double total = progressiveLevelExp;
-		while (experience >= total) {
-			// Calculate new level exp
-			progressiveLevelExp = Double.parseDouble(FormulaUtils.calculate(
-					ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP
-							.replace("%previous%", Double.toString(progressiveLevelExp))
-			));
-			// Add new level exp to the total
-			total = total + progressiveLevelExp;
-			levelCount++;
+		if (progressiveLevelExp > 0) {
+			while (experience >= total && (!ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION || levelCount < 1000)) {
+				// Calculate new level exp
+				progressiveLevelExp = Double.parseDouble(FormulaUtils.calculate(
+						ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP
+								.replace("%previous%", Double.toString(progressiveLevelExp))
+				));
+				// Add new level exp to the total
+				total = total + progressiveLevelExp;
+				levelCount++;
+			}
+			
+			if (experience >= total) {
+				// Safe calculation triggered
+				plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_SAFE_CALCULATION,
+						ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START, ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP
+				));
+			}
+		} else {
+			// Start experience cannot be 0
+			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_EXP_START_EXP_0);
 		}
 		
 		ret.setLevel(levelCount);

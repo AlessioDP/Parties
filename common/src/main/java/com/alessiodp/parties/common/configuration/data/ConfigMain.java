@@ -82,6 +82,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static double		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
 	@ConfigOption(path = "additional.exp-system.levels.progressive.level-experience")
 	public static String		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP;
+	@ConfigOption(path = "additional.exp-system.levels.progressive.safe-calculation")
+	public static boolean		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION;
 	@ConfigOption(path = "additional.exp-system.levels.fixed.repeat-last-one")
 	public static boolean		ADDITIONAL_EXP_LEVELS_FIXED_REPEAT;
 	@ConfigOption(path = "additional.exp-system.levels.fixed.list")

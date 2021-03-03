@@ -129,6 +129,8 @@ public class PartiesConstants {
 	public static final String DEBUG_EXP_SEND_LEVELPOINTS = "Sending %s LevelPoints experience to the player %s";
 	public static final String DEBUG_EXP_SEND_MMOCORE = "Sending %s MMOCore experience to the player %s";
 	public static final String DEBUG_EXP_SEND_SKILLAPI = "Sending %s SkillAPI experience to the player %s";
+	public static final String DEBUG_EXP_SAFE_CALCULATION = "Triggered and prevented an infinite calculation in progressive experience (start: %f, formula: '%s')";
+	public static final String DEBUG_EXP_START_EXP_0 = "The starting progressive experience cannot be 0";
 	
 	public static final String DEBUG_FOLLOW_SERVER_REGEXERROR = "Wrong regex pattern for allowed servers of follow-server feature";
 	public static final String DEBUG_FOLLOW_WORLD_REGEXERROR = "Wrong regex pattern for allowed worlds of follow-server feature";
