@@ -6,6 +6,5 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  ignore_updates:
-    - match:
-      dependency_name: "com.google.errorprone:javac"
+  ignore:
+      - dependency-name: "com.google.errorprone:javac"
