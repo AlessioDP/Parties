@@ -122,6 +122,11 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 							String uuidCommandSender = input.readUTF();
 							PartyPlayerImpl commandSender = uuidCommandSender.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidCommandSender));
 							
+							// Reload players
+							party.getMembers().forEach(u -> {
+								((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(u);
+							});
+							
 							// Unload party
 							((PartiesPlugin) plugin).getPartyManager().removePartyFromCache(party);
 							
