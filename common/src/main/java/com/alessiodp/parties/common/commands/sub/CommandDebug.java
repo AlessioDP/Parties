@@ -217,6 +217,8 @@ public class CommandDebug extends PartiesSubCommand {
 			}
 		} else {
 			// Player
+			User targetUser = plugin.getPlayer(targetPlayer.getPlayerUUID());
+			
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_DEBUG_PLAYER_HEADER);
 			
 			for (String line : Messages.ADDCMD_DEBUG_PLAYER_TEXT) {
@@ -228,6 +230,7 @@ public class CommandDebug extends PartiesSubCommand {
 						.replace("%chat%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(targetPlayer.isChatParty()))
 						.replace("%spy%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(targetPlayer.isSpy()))
 						.replace("%muted%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(targetPlayer.isMuted()))
+						.replace("%protection_bypass%", ((PartiesPlugin) plugin).getMessageUtils().formatYesNo(targetUser.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS)))
 				);
 			}
 		}

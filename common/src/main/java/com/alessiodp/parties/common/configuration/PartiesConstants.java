@@ -136,6 +136,7 @@ public class PartiesConstants {
 	public static final String DEBUG_FOLLOW_WORLD_REGEXERROR = "Wrong regex pattern for allowed worlds of follow-server feature";
 	
 	public static final String DEBUG_FRIENDLYFIRE_DENIED = "Denied friendly fire (type %s) of player %s to player %s";
+	public static final String DEBUG_FRIENDLYFIRE_FISH_NOT_SUPPORTED = "The prevent fish hook friendly fire is not supported in this MC version";
 	
 	public static final String DEBUG_HOME_NO_SERVER = "Home command executed but it doesn't contains the server destination (party: %s)";
 	
@@ -199,6 +200,7 @@ public class PartiesConstants {
 	public static final String DEBUG_PLAYER_JOIN_DEFAULTJOIN = "%s joined without party, default join into party %s";
 	public static final String DEBUG_PLAYER_JOIN_DEFAULTFAIL = "Failed to load default party %s";
 	
+	public static final String DEBUG_PLUGIN_BUNGEECORD_MODE = "BungeeCord mode enabled";
 	public static final String DEBUG_PLUGIN_RELOADING = "Reloading plugin...";
 	
 	public static final String DEBUG_TASK_ASK_COOLDOWN_EXPIRED = "Ask cooldown expired for player %s";
