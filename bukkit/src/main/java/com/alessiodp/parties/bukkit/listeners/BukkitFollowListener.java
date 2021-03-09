@@ -8,6 +8,7 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.players.objects.BukkitPartyPlayerImpl;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,7 @@ public class BukkitFollowListener implements Listener {
 		if (BukkitConfigMain.ADDITIONAL_FOLLOW_ENABLE) {
 			// Make it async
 			Player bukkitPlayer = event.getPlayer();
-			User user = plugin.getPlayer(bukkitPlayer.getUniqueId());
-			plugin.getScheduler().runAsync(() -> {
+			plugin.getScheduler().scheduleAsyncLater(() -> {
 				if (allowedWorld(event.getPlayer().getWorld().getName())) {
 					PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 					PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
@@ -54,7 +54,7 @@ public class BukkitFollowListener implements Listener {
 						sendMembers(party, player, bukkitPlayer, event.getFrom());
 					}
 				}
-			});
+			}, ConfigMain.ADDITIONAL_FOLLOW_DELAY, TimeUnit.MILLISECONDS);
 		}
 	}
 	

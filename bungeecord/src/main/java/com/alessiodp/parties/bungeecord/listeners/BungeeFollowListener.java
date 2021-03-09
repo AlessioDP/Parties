@@ -9,6 +9,7 @@ import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeMessages;
 import com.alessiodp.parties.bungeecord.events.BungeeEventManager;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class BungeeFollowListener implements Listener {
 		if (event.getPlayer().getServer() == null)
 			return;
 		
-		plugin.getScheduler().runAsync(() -> {
+		plugin.getScheduler().scheduleAsyncLater(() -> {
 			if (allowedServer(event.getPlayer().getServer().getInfo().getName())) {
 				PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 				PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
@@ -52,7 +53,7 @@ public class BungeeFollowListener implements Listener {
 					}
 				}
 			}
-		});
+		}, ConfigMain.ADDITIONAL_FOLLOW_DELAY, TimeUnit.MILLISECONDS);
 	}
 	
 	private void sendMembers(PartyImpl party, PartyPlayerImpl player, ServerInfo serverInfo) {
