@@ -237,6 +237,7 @@ additional:
     enable: true
     type: global
     warn-players-on-fight: true
+    prevent-fish-hook: false
 
   # [Home system]
   # Allow the creation of party homes

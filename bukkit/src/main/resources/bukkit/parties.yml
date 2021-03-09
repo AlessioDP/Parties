@@ -233,10 +233,12 @@ additional:
   # => command:  Toggle the party protection with "/party protection" command
   #
   # You can enable 'warn-players-on-fight' to warn leaders on friendly fire hits
+  # 'prevent-fish-hook' works only in 1.15+
   friendly-fire:
     enable: true
     type: global
     warn-players-on-fight: true
+    prevent-fish-hook: false
 
   # [Home system]
   # Allow the creation of party homes

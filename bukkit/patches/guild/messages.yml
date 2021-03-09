@@ -342,6 +342,7 @@ additional-commands:
         - "&bRank&7: %rank%"
         - "&bGuild&7: %party%"
         - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+        - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
 
   desc:

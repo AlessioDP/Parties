@@ -76,6 +76,7 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE);
 		output.writeUTF(ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE);
 		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT);
+		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK);
 		
 		// Kills
 		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_ENABLE);
@@ -106,6 +107,7 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = input.readBoolean();
 		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = input.readUTF();
 		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = input.readBoolean();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK = input.readBoolean();
 		
 		// Kills
 		ConfigParties.ADDITIONAL_KILLS_ENABLE = input.readBoolean();
