@@ -2,6 +2,7 @@ package com.alessiodp.parties.bukkit.listeners;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFishHookFriendlyFireBlockedEvent;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.parties.bukkit.events.BukkitEventManager;
@@ -31,6 +32,7 @@ import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -121,6 +123,7 @@ public class BukkitFightListener implements Listener {
 			}
 		}
 	}
+	
 	@EventHandler (ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
 		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
@@ -183,6 +186,7 @@ public class BukkitFightListener implements Listener {
 			}
 		}
 	}
+	
 	@EventHandler (ignoreCancelled = true)
 	public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
 		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
@@ -286,6 +290,49 @@ public class BukkitFightListener implements Listener {
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_FIGHT, partyPlayer.getPlayerUUID().toString()), true);
 				}
 			});
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true)
+	public void onPlayerFish(PlayerFishEvent event) {
+		if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY
+				&& event.getCaught() != null
+				&& event.getCaught() instanceof Player
+				&& BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
+				&& BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK) {
+			
+			// Friendly fire not allowed here
+			PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(event.getCaught().getUniqueId());
+			PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
+			BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
+			
+			if (party != null
+					&& ppAttacker.getPartyId().equals(ppVictim.getPartyId())
+					&& party.isFriendlyFireProtected()
+					&& !event.getPlayer().hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
+				// Calling API event
+				BukkitPartiesFishHookFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesFishHookFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
+				plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
+				
+				if (!partiesFriendlyFireEvent.isCancelled()) {
+					// Friendly fire confirmed
+					User userAttacker = plugin.getPlayer(event.getPlayer().getUniqueId());
+					userAttacker.sendMessage(
+							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
+							, true);
+					party.warnFriendlyFire(ppVictim, ppAttacker);
+					
+					try {
+						event.getHook().remove();
+						event.setCancelled(true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "fish hook", ppAttacker.getPlayerUUID().toString(), ppVictim.getPlayerUUID().toString()), true);
+					} catch (NoSuchMethodError ignored) {
+						// Hook remove not supported in this version
+						plugin.getLoggerManager().printError(PartiesConstants.DEBUG_FRIENDLYFIRE_FISH_NOT_SUPPORTED);
+					}
+				} else
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "fish hook", ppAttacker.getPlayerUUID().toString(), ppVictim.getPlayerUUID().toString()), true);
+			}
 		}
 	}
 	

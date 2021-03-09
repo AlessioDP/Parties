@@ -164,6 +164,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static String		ADDITIONAL_FRIENDLYFIRE_TYPE;
 	@ConfigOption(path = "additional.friendly-fire.warn-players-on-fight")
 	public static boolean		ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT;
+	@ConfigOption(path = "additional.friendly-fire.prevent-fish-hook")
+	public static boolean		ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK;
 	
 	@ConfigOption(path = "additional.home.enable")
 	public static boolean		ADDITIONAL_HOME_ENABLE;

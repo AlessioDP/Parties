@@ -19,6 +19,7 @@ import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreChat
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreLeaveEvent;
+import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFishHookFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
@@ -48,6 +49,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 
 public class BukkitEventManager extends EventManager {
 	public BukkitEventManager(PartiesPlugin plugin) {
@@ -140,6 +142,10 @@ public class BukkitEventManager extends EventManager {
 	
 	public BukkitPartiesFriendlyFireBlockedEvent preparePartiesFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, EntityDamageByEntityEvent originalEvent) {
 		return new BukkitPartiesFriendlyFireBlockedEvent(victim, attacker, originalEvent);
+	}
+	
+	public BukkitPartiesFishHookFriendlyFireBlockedEvent preparePartiesFishHookFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, PlayerFishEvent originalEvent) {
+		return new BukkitPartiesFishHookFriendlyFireBlockedEvent(victim, attacker, originalEvent);
 	}
 	
 	public BukkitPartiesPotionsFriendlyFireBlockedEvent preparePartiesPotionsFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, PotionSplashEvent originalEvent) {
