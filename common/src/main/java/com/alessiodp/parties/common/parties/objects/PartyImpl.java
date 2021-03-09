@@ -625,10 +625,10 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	/**
-	 * Refresh online player list.
+	 * Refresh party dynamic data.
 	 * Used when the party is loaded
 	 */
-	public void refreshOnlineMembers() {
+	public void refresh() {
 		synchronized (this) {
 			onlineMembers.clear();
 			if (plugin.getPartyManager().getCacheParties().containsKey(getId())) {
@@ -640,6 +640,9 @@ public abstract class PartyImpl implements Party {
 					}
 				}
 			}
+			
+			// Load color
+			plugin.getColorManager().loadDynamicColor(this);
 		}
 	}
 	

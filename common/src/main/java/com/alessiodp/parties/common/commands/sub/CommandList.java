@@ -189,7 +189,7 @@ public class CommandList extends PartiesSubCommand {
 			Set<PartyImpl> onlineParties = new LinkedHashSet<>(new TreeSet<PartyImpl>(Comparator.comparingInt(p -> p.getOnlineMembers(false).size())));
 			((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().forEach((party) -> {
 				if (!ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getName()) && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getId().toString())) {
-					party.refreshOnlineMembers();
+					party.refresh();
 					onlineParties.add(party);
 				}
 			});
@@ -215,7 +215,7 @@ public class CommandList extends PartiesSubCommand {
 		
 		if (parties.size() > 0) {
 			parties.forEach((party) -> {
-				party.refreshOnlineMembers();
+				party.refresh();
 				sendMessage(sender, player, Messages.ADDCMD_LIST_FORMATPARTY, party);
 			});
 		} else {

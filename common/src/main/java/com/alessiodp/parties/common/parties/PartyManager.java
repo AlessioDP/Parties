@@ -132,7 +132,7 @@ public abstract class PartyManager {
 		}
 		
 		if (ret != null) {
-			ret.refreshOnlineMembers();
+			ret.refresh();
 		}
 		return ret;
 	}
@@ -153,7 +153,7 @@ public abstract class PartyManager {
 		}
 		
 		if (ret != null) {
-			ret.refreshOnlineMembers();
+			ret.refresh();
 		}
 		return ret;
 	}
