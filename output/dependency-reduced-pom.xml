@@ -3,12 +3,12 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>output</artifactId>
   <build>
-    <defaultGoal>install</defaultGoal>
+    <defaultGoal>package install</defaultGoal>
     <directory>${basedir}/target</directory>
     <finalName>${project.parent.name}-${project.version}</finalName>
     <plugins>
@@ -27,7 +27,6 @@
           <artifactSet>
             <includes>
               <include>com.alessiodp.parties:*</include>
-              <include>com.alessiodp.core:*</include>
             </includes>
           </artifactSet>
           <relocations>
@@ -72,6 +71,15 @@
               <shadedPattern>com.alessiodp.parties.libs.nashorn</shadedPattern>
             </relocation>
           </relocations>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/MANIFEST.MF</exclude>
+                <exclude>META-INF/**</exclude>
+              </excludes>
+            </filter>
+          </filters>
         </configuration>
       </plugin>
     </plugins>
@@ -80,7 +88,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.18</version>
+      <version>1.18.20</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

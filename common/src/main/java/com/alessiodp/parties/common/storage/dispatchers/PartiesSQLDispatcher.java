@@ -220,7 +220,14 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 	
 	@Override
 	public Set<PartyImpl> getListFixed() {
-		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(partiesDao).getListFixed());
+		Set<PartyImpl> ret = this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(partiesDao).getListFixed());
+		// Load members
+		for (PartyImpl party : ret) {
+			party.setAccessible(true);
+			party.setMembers(this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).getInParty(party.getId().toString())));
+			party.setAccessible(false);
+		}
+		return ret;
 	}
 	
 	@Override

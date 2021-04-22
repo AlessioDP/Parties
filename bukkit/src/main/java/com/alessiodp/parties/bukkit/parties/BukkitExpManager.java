@@ -134,26 +134,14 @@ public class BukkitExpManager extends ExpManager {
 								.replace("%exp%", CommonUtils.formatDouble(totalParty)), drop.getKiller(), party), true);
 						
 					}
-					if (totalNormal > 0 && !shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL)) {
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_NORMAL, CommonUtils.formatDouble(totalNormal), player.getUniqueId().toString()), true);
-						
-						player.giveExp((int) totalNormal);
-					}
-					if (totalLevelPoints > 0 && !shareExperience(totalLevelPoints, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.LEVELPOINTS)) {
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_LEVELPOINTS, CommonUtils.formatDouble(totalLevelPoints), player.getUniqueId().toString()), true);
-						
-						LevelPointsHandler.giveExp(player, totalLevelPoints);
-					}
-					if (totalMmoCore > 0 && !shareExperience(totalMmoCore, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.MMOCORE)) {
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_MMOCORE, CommonUtils.formatDouble(totalMmoCore), player.getUniqueId().toString()), true);
-						
-						MMOCoreHandler.giveExp(player.getUniqueId(), player.getLocation(), totalMmoCore);
-					}
-					if (totalSkillapi > 0 && !shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI)) {
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_SEND_SKILLAPI, CommonUtils.formatDouble(totalSkillapi), player.getUniqueId().toString()), true);
-						
-						SkillAPIHandler.giveExp(player.getUniqueId(), totalSkillapi);
-					}
+					if (totalNormal > 0)
+						shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL);
+					if (totalLevelPoints > 0)
+						shareExperience(totalLevelPoints, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.LEVELPOINTS);
+					if (totalMmoCore > 0)
+						shareExperience(totalMmoCore, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.MMOCORE);
+					if (totalSkillapi > 0)
+						shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI);
 				}
 			}
 		}

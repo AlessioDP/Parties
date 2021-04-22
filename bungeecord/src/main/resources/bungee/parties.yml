@@ -223,6 +223,7 @@ additional:
     enable: false
     default-party:
       # When a player join into the server, put him into a party (if he doesn't have one)
+      # You can bypass this default join with the permission: parties.admin.join.default.bypass)
       enable: false
       party: "default"
 

@@ -3,12 +3,12 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bungeecord</artifactId>
   <build>
-    <defaultGoal>install</defaultGoal>
+    <defaultGoal>clean package install</defaultGoal>
     <resources>
       <resource>
         <targetPath>.</targetPath>
@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-common</artifactId>
-      <version>3.0.2</version>
+      <version>3.0.3</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.18</version>
+      <version>1.18.20</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

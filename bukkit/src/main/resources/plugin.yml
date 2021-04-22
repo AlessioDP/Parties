@@ -39,8 +39,6 @@ permissions:
     description: Allow access to /party invite
   parties.user.join:
     description: Allow access to /party join
-  parties.user.join.default:
-    description: Join into the default party
   parties.user.kick:
     description: Allow access to /party kick
   parties.user.leave:
@@ -153,7 +151,6 @@ permissions:
       parties.user.info.others: true
       parties.user.invite: true
       parties.user.join: true
-      parties.user.join.default: true
       parties.user.kick: true
       parties.user.leave: true
       parties.user.list: true

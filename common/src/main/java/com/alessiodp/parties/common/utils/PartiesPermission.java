@@ -21,7 +21,6 @@ public enum PartiesPermission implements ADPPermission {
 	USER_INFO_OTHERS	("parties.user.info.others"),
 	USER_INVITE			("parties.user.invite"),
 	USER_JOIN			("parties.user.join"),
-	USER_JOIN_DEFAULT	("parties.user.join.default"),
 	USER_KICK			("parties.user.kick"),
 	USER_LEAVE			("parties.user.leave"),
 	USER_LIST			("parties.user.list"),

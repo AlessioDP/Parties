@@ -4,6 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Pair;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
@@ -183,13 +184,11 @@ public class CommandList extends PartiesSubCommand {
 			selectedPage = maxPages;
 		
 		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
-		LinkedHashSet<PartyImpl> parties;
+		LinkedHashSet<Pair<Integer, PartyImpl>> parties = new LinkedHashSet<>();
 		if (orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS) {
-			parties = new LinkedHashSet<>();
 			Set<PartyImpl> onlineParties = new LinkedHashSet<>(new TreeSet<PartyImpl>(Comparator.comparingInt(p -> p.getOnlineMembers(false).size())));
 			((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().forEach((party) -> {
 				if (!ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getName()) && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getId().toString())) {
-					party.refresh();
 					onlineParties.add(party);
 				}
 			});
@@ -200,12 +199,16 @@ public class CommandList extends PartiesSubCommand {
 			for (int c = 0; iterator.hasNext() && n < limit; c++) {
 				PartyImpl p = iterator.next();
 				if (c >= offset) {
-					parties.add(p);
+					parties.add(new Pair<>(c + 1, p));
 					n++;
 				}
 			}
 		} else {
-			parties = ((PartiesPlugin) plugin).getDatabaseManager().getListParties(orderBy, limit, offset);
+			int index = 1;
+			for (PartyImpl party : ((PartiesPlugin) plugin).getDatabaseManager().getListParties(orderBy, limit, offset)) {
+				parties.add(new Pair<>(index, party));
+				index++;
+			}
 		}
 		
 		sendMessage(sender, player, Messages.ADDCMD_LIST_HEADER
@@ -214,9 +217,10 @@ public class CommandList extends PartiesSubCommand {
 				.replace("%maxpages%", Integer.toString(maxPages)));
 		
 		if (parties.size() > 0) {
-			parties.forEach((party) -> {
-				party.refresh();
-				sendMessage(sender, player, Messages.ADDCMD_LIST_FORMATPARTY, party);
+			parties.forEach((pair) -> {
+				pair.getValue().refresh();
+				sendMessage(sender, player, Messages.ADDCMD_LIST_FORMATPARTY
+						.replace("%index%", pair.getKey().toString()), pair.getValue());
 			});
 		} else {
 			sendMessage(sender, player, Messages.ADDCMD_LIST_NOONE);

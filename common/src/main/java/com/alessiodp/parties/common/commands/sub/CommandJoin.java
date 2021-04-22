@@ -72,7 +72,7 @@ public class CommandJoin extends PartiesSubCommand {
 		}
 		
 		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
-			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
 					.replace("%syntax%", getSyntaxForUser(sender)));
 			return false;
 		}

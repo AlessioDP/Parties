@@ -38,7 +38,7 @@ public class CommandDebug extends PartiesSubCommand {
 				CommonCommands.DEBUG,
 				PartiesPermission.ADMIN_DEBUG,
 				ConfigMain.COMMANDS_CMD_DEBUG,
-				false
+				true
 		);
 		
 		syntax = String.format("%s <%s/%s/%s/%s> ...",
@@ -74,11 +74,16 @@ public class CommandDebug extends PartiesSubCommand {
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
+		PartyPlayerImpl partyPlayer = null;
+		if (sender.isPlayer()) {
+			partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			
+			if (!sender.hasPermission(permission)) {
+				sendNoPermissionMessage(partyPlayer, permission);
+				return false;
+			}
+			
+			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		}
 		
 		if (commandData.getArgs().length < 2) {
@@ -87,7 +92,6 @@ public class CommandDebug extends PartiesSubCommand {
 			return false;
 		}
 		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 		return true;
 	}
 	

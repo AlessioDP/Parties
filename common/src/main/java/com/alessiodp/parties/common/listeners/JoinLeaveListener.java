@@ -41,7 +41,6 @@ public abstract class JoinLeaveListener {
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN, player.getName(),
 						party.getId() != null ? (party.getName() + "|" + party.getId().toString()) : "none"), true);
 			} else if (ConfigParties.ADDITIONAL_FIXED_DEFAULT_ENABLE
-					&& player.hasPermission(PartiesPermission.USER_JOIN_DEFAULT)
 					&& !player.hasPermission(PartiesPermission.ADMIN_JOIN_DEFAULT_BYPASS)) {
 				// Party not found - checking for default one
 				party = plugin.getPartyManager().loadParty(ConfigParties.ADDITIONAL_FIXED_DEFAULT_PARTY);

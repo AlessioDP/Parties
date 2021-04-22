@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bukkit</artifactId>
@@ -38,10 +38,18 @@
         <configuration>
           <artifactSet>
             <includes>
-              <include>com.alessiodp.parties:parties-common</include>
+              <include>com.alessiodp.parties:parties-bukkit</include>
               <include>com.alessiodp.core:core-bukkit</include>
             </includes>
           </artifactSet>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/MANIFEST.MF</exclude>
+              </excludes>
+            </filter>
+          </filters>
         </configuration>
       </plugin>
     </plugins>
@@ -53,7 +61,7 @@
     </repository>
     <repository>
       <id>mikeprimm-repo</id>
-      <url>http://repo.mikeprimm.com/</url>
+      <url>https://repo.mikeprimm.com/</url>
     </repository>
     <repository>
       <id>paper-repo</id>
@@ -61,7 +69,7 @@
     </repository>
     <repository>
       <id>lumine-repo</id>
-      <url>http://mvn.lumine.io/repository/maven-public/</url>
+      <url>https://mvn.lumine.io/repository/maven-public/</url>
     </repository>
     <repository>
       <id>placeholderapi</id>
@@ -69,7 +77,7 @@
     </repository>
     <repository>
       <id>codemc-repo</id>
-      <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+      <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
     </repository>
     <repository>
       <id>jitpack-repo</id>
@@ -77,6 +85,12 @@
     </repository>
   </repositories>
   <dependencies>
+    <dependency>
+      <groupId>com.alessiodp.parties</groupId>
+      <artifactId>parties-common</artifactId>
+      <version>3.0.3</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>me.confuser.banmanager</groupId>
       <artifactId>BanManagerBukkit</artifactId>
@@ -122,13 +136,13 @@
     <dependency>
       <groupId>net.Indyuce</groupId>
       <artifactId>MMOCore</artifactId>
-      <version>1.7.0</version>
+      <version>1.7.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.lumine.xikage</groupId>
       <artifactId>MythicMobs</artifactId>
-      <version>4.10.0</version>
+      <version>4.11.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -188,7 +202,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.18</version>
+      <version>1.18.20</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

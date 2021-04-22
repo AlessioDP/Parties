@@ -7,13 +7,13 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.0.2</version>
+		<version>3.0.3</version>
 	</parent>
 	
 	<artifactId>parties-bungeecord</artifactId>
 	
 	<build>
-		<defaultGoal>install</defaultGoal>
+		<defaultGoal>clean package install</defaultGoal>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>

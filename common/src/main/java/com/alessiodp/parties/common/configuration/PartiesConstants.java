@@ -125,10 +125,6 @@ public class PartiesConstants {
 	public static final String DEBUG_EXP_MMBYPASS = "Bypassing vanilla event due to MythicMob kill";
 	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '%s' killed by player %s (uuid: %s)";
 	public static final String DEBUG_EXP_SEND_PARTY = "Sending %s party experience to the party %s";
-	public static final String DEBUG_EXP_SEND_NORMAL = "Sending %s normal experience to the player %s";
-	public static final String DEBUG_EXP_SEND_LEVELPOINTS = "Sending %s LevelPoints experience to the player %s";
-	public static final String DEBUG_EXP_SEND_MMOCORE = "Sending %s MMOCore experience to the player %s";
-	public static final String DEBUG_EXP_SEND_SKILLAPI = "Sending %s SkillAPI experience to the player %s";
 	public static final String DEBUG_EXP_SAFE_CALCULATION = "Triggered and prevented an infinite calculation in progressive experience (start: %f, formula: '%s')";
 	public static final String DEBUG_EXP_START_EXP_0 = "The starting progressive experience cannot be 0";
 	
