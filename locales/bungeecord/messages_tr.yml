@@ -26,13 +26,13 @@ parties:
     player-not-found: "&cThe player %player% has not been found"
     player-not-in-party: "&c%player% Bir partide mevcut değil"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
+    enabled: '&aAktif'
+    disabled: '&cDevre Dışı'
+    toggled-on: '&aAçık'
+    toggled-off: '&cKapalı'
+    word-yes: '&aEvet'
+    word-no: '&cHayır'
+    empty: '&8Boş'
     none: '&8None'
   syntax:
     wrong-message: '&cWrong syntax: Type &7/%syntax%'
@@ -297,6 +297,7 @@ additional-commands:
         - "&bRank&7: %rank%"
         - "&bParty&7: %party%"
         - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+        - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
     changed: "&bParti açıklaması değişti"
