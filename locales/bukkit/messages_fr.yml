@@ -23,37 +23,37 @@ parties:
     already-in-party: "&cVous êtes déjà dans un groupe !"
     party-not-found: "&cLe groupe %party% n'existe pas"
     party-full: "&cLe groupe est complet !"
-    player-not-found: "&cThe player %player% has not been found"
+    player-not-found: "&cLe joueur %player% n'a pas été trouvé"
     player-not-in-party: "&c%player% n'est pas dans un groupe"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aActivé'
+    disabled: '&cDésactivé'
+    toggled-on: '&aActif'
+    toggled-off: '&cDésactiver'
+    word-yes: '&aOui'
+    word-no: '&cNon'
+    empty: '&8Vide'
+    none: '&8Rien'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    color: 'color'
+    wrong-message: '&cMauvaise syntaxe: écrivez &7/%syntax%'
+    color: 'couleur'
     description: 'desc'
-    experience: 'experience'
-    kills: 'kills'
+    experience: 'expérience'
+    kills: 'éliminations'
     home: 'home'
-    members: 'members'
+    members: 'membres'
     message: 'message'
     motd: 'motd'
-    name: 'name'
-    nickname: 'nickname'
-    online-members: 'online_members'
-    order: 'order'
+    name: 'nom'
+    nickname: 'pseudo'
+    online-members: 'membre_en_ligne'
+    order: 'l''ordre'
     page: 'page'
     party: 'party'
-    password: 'password'
+    password: 'mot de passe'
     permission: 'permission'
-    player: 'player'
-    rank: 'rank'
+    player: 'joueur'
+    rank: 'rang'
     tag: 'tag'
   permissions:
     #[Special tags]
@@ -80,9 +80,9 @@ parties:
 #\ =============================== /
 main-commands:
   accept:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want accept:"
+    no-request: "&cVous n'avez aucune demande en attente"
+    no-exists: "&cLa requête n'existe plus"
+    multiple-requests: "&cChoisissez la requête que vous souhaitez accepter:"
     multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
     multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
   chat:
@@ -101,9 +101,9 @@ main-commands:
     deleted-silently: "&aGroupe %party% supprimé en silence"
     broadcast: "&6&lVotre groupe a été supprimé"
   deny:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want deny:"
+    no-request: "&cVous n'avez aucune demande en attente"
+    no-exists: "&cLa requête n'existe plus"
+    multiple-requests: "&cChoisissez la demande que vous souhaitez refuser :"
     multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
     multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
   ignore:
@@ -127,8 +127,8 @@ main-commands:
       - "&b============ &lInfos du groupe %party% &r&b============"
       - "&b&lDescription&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
-      - "&bMods&7: %list_rank_moderator%"
-      - "&bMembers&7: %list_rank_member%"
+      - "&bModérateurs&7 : %list_rank_moderator%"
+      - "&bMembres&7 : %list_rank_member%"
       - "&bJoueurs en ligne&7 : %online_number%"
   invite:
     sent: "&bVous avez invité %player% dans votre groupe"
@@ -156,9 +156,9 @@ main-commands:
     player-in-party: "&c%player% est déjà dans un groupe"
     already-invited: "&c%player% était déjà invité"
     invite-yourself: "&cYou cannot invite yourself"
-    failed: "&cFailed to invite the player %player%"
+    failed: "&cImpossible d'inviter le joueur %player%"
   kick:
-    sent: "&aYou kicked %player% from the party!"
+    sent: "&aVous avez expulsé %player% du groupe !"
     player-kicked: "&bVous avez été expulsé du groupe %party%"
     broadcast: "&b&l%player% a été expulsé du groupe"
     broadcast-disband: "&b&lLe groupe a été dissous parce que le chef a été expulsé"
@@ -240,13 +240,13 @@ additional-commands:
     accept:
       broadcast: "&b&l%player% a rejoint le groupe"
       accepted: "&aYou accepted the ask request"
-      receipt: "&a%party% accepted your ask request"
+      receipt: "&a%party% a accepté votre demande"
     deny:
       broadcast: ""
-      denied: "&aYou denied the %player% ask request"
-      receipt: "&a%party% denied your ask request"
+      denied: "&aVous avez refusé la demande de %player%"
+      receipt: "&a%party% a refusé votre demande"
     timeout:
-      no-response: "&7%party% didn't accept the ask request"
+      no-response: "&7%party% n'a pas accepté la demande"
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
@@ -257,7 +257,7 @@ additional-commands:
     removed: "&aPermission retirée au groupe"
     no-manager: "&cVous devez être l'administrateur du claim"
     claim-no-exists: "&cClaim non trouvé"
-    allowed-permissions: "&cPermissions: trust, container & access"
+    allowed-permissions: "&cPermissions : trust, container & access"
   color:
     info: "&bLa couleur de votre groupe est : %color_code%%color_command%"
     empty: "&bVotre groupe n'a pas de couleur"
@@ -335,7 +335,7 @@ additional-commands:
       gained-killer: "&bVous avez gagné %exp% expérience pour avoir tué la créature"
       gained-others: "&b%player% a tué une créature, vous avez gagné %exp% expérience"
     level:
-      level-up: "&bParty leveled up to %experience_level%"
+      level-up: "&bLe groupe a atteint le niveau %experience_level%"
   follow:
     toggle-on: "&aLes membres de votre groupe suivront à présent votre chef"
     toggle-off: "&aLes membres de votre groupe ne suivront plus votre chef"
@@ -351,7 +351,7 @@ additional-commands:
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cVous devez attendre %seconds% secondes !"
     must-select-home: "&cYou must select a valid home"
-    invalid-home: "&cThe selected home doesn't exist"
+    invalid-home: "&cLa résidence sélectionnée n'existe pas"
     valid-homes: "&bList of valid homes:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
@@ -427,8 +427,8 @@ additional-commands:
     removed: "&bParty tag removed"
     broadcast: ""
     invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 3 et maximum 10 caractères."
-    censored: "&cThe tag contains censored words!"
-    already-used: "&c The tag %tag% is already used"
+    censored: "&cLe tag contient des mots censurés !"
+    already-used: "&cLe tag %tag% est déjà utilisé"
   teleport:
     teleporting: "&7Téléportation de votre groupe ici !"
     player-teleported: "&bVous avez été téléporté vers %player%"
@@ -440,7 +440,7 @@ additional-commands:
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cVous devez attendre %seconds% secondes !"
     accept-request:
-      sent: "&aTeleport request sent to the party"
+      sent: "&aDemande de téléportation envoyée au groupe"
       received: "[{\"text\":\"&bVoulez-vous vous faire téléporter vers %player%? \"},{\"text\":\"&a&lOui\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter la requête\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lnon\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> %player% &bpour choisir.\"}]"
       denied: "&7You denied the teleport request of %player%"
   vault:
@@ -488,7 +488,7 @@ help:
   footer: ""
   perform-command: 'Perform the command'
   console-help:
-    header: 'You can only perform these commands:'
+    header: 'Vous ne pouvez exécuter que ces commandes :'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
@@ -521,17 +521,17 @@ help:
       create: 'Create a new party'
       delete: 'Delete the party'
       deny: 'Deny a party request'
-      ignore: 'Add/remove/show ignored parties'
+      ignore: 'Ajouter/supprimer/afficher les groupes ignorés'
       info: 'Show party information'
       invite: 'Invite a player to your party'
       kick: 'Kick a player from the party'
       leave: 'Leave your party'
       p: 'Send a message to the party'
       rank: 'Change rank of the player'
-      reload: 'Reload Parties configuration files'
+      reload: 'Recharger les fichiers de configuration de Parties'
       rename: 'Rename the party'
       spy: 'Spy messages of other parties'
-      version: 'Show Parties information'
+      version: 'Afficher les informations à propos de Parties'
   additional:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -557,17 +557,17 @@ help:
       claim: 'Grant permissions to the claim'
       color: 'Change party color'
       createfixed: 'Create a new fixed party'
-      debug: 'Debug issues'
+      debug: 'Problèmes de débogage'
       desc: 'Set/remove party description'
       follow: 'Toggle follow leader'
       home: 'Teleport to the party home'
       join: 'Join into the party'
-      list: 'List of online parties'
+      list: 'Liste des groupes en ligne'
       motd: 'Set/remove party motd'
-      mute: 'Toggle notifications'
+      mute: 'Activer/désactiver les notifications'
       nickname: 'Set/remove member nickname'
       password: 'Change party password'
-      protection: 'Toggle friendly fire protection'
+      protection: 'Activer/désactiver la protection contre le feu allié'
       sethome: 'Set/remove party home'
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
