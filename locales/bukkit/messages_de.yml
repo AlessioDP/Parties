@@ -23,26 +23,26 @@ parties:
     already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
     party-not-found: "&cDie Gruppe %party% existiert nicht"
     party-full: "&cDiese Gruppe ist voll!"
-    player-not-found: "&cThe player %player% has not been found"
+    player-not-found: "&cDer Spieler %player% wurde nicht gefunden"
     player-not-in-party: "&c%player% ist kein Mitglied einer Gruppe"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aAktiviert'
+    disabled: '&cDeaktiviert'
+    toggled-on: '&aAn'
+    toggled-off: '&cAus'
+    word-yes: '&aJa'
+    word-no: '&cNein'
+    empty: '&8Leer'
+    none: '&8Keine'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    color: 'color'
-    description: 'desc'
-    experience: 'experience'
+    wrong-message: '&cFalsche Syntax: Typ &7/%syntax%'
+    color: 'farbe'
+    description: 'beschreibung'
+    experience: 'erfahrung'
     kills: 'kills'
-    home: 'home'
-    members: 'members'
-    message: 'message'
+    home: 'zuhause'
+    members: 'mitglieder'
+    message: 'nachricht'
     motd: 'motd'
     name: 'name'
     nickname: 'nickname'
@@ -50,10 +50,10 @@ parties:
     order: 'order'
     page: 'page'
     party: 'party'
-    password: 'password'
+    password: 'passwort'
     permission: 'permission'
-    player: 'player'
-    rank: 'rank'
+    player: 'spieler'
+    rank: 'rang'
     tag: 'tag'
   permissions:
     #[Special tags]
@@ -125,10 +125,10 @@ main-commands:
     #=> %online_number%       = Number of online players
     content:
       - "&b============ &lInfos zu %party% &r&b============"
-      - "&b&lDescription&7: %desc%"
+      - "&b&lBeschreibung&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
-      - "&bMembers&7: %list_rank_member%"
+      - "&bMitglieder&7: %list_rank_member%"
       - "&bOnline players&7: %online_number%"
   invite:
     sent: "&bDu hast %player% in deine Gruppe eingeladen"
@@ -158,7 +158,7 @@ main-commands:
     invite-yourself: "&cYou cannot invite yourself"
     failed: "&cFailed to invite the player %player%"
   kick:
-    sent: "&aYou kicked %player% from the party!"
+    sent: "&aDu hast %player% aus der Party gekickt!"
     player-kicked: "&bDu wurdest aus der Gruppe %party% geworfen"
     broadcast: "&b&l%player% wurde aus der Gruppe geworfen"
     broadcast-disband: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
@@ -397,9 +397,9 @@ additional-commands:
       target-removed: "&b%player% removed your nickname"
       no-permission: "&cYou cannot change other player nicknames"
     show:
-      own: "&bYour nickname is %player_nickname%"
+      own: "&bDein Nickname ist %player_nickname%"
       own-none: "&bYou do not have any nickname"
-      other: "&bThe nickname of %player% is %player_nickname%"
+      other: "&bDer Nickname von %player% ist %player_nickname%"
       other-none: "&b%player% does not have any nickname"
     invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
     censored: "&cThe nickname contains censored words!"
@@ -555,7 +555,7 @@ help:
     descriptions:
       ask: 'Send a join request'
       claim: 'Grant permissions to the claim'
-      color: 'Change party color'
+      color: 'Party-Farbe ändern'
       createfixed: 'Create a new fixed party'
       debug: 'Debug issues'
       desc: 'Set/remove party description'
@@ -566,10 +566,10 @@ help:
       motd: 'Set/remove party motd'
       mute: 'Toggle notifications'
       nickname: 'Set/remove member nickname'
-      password: 'Change party password'
+      password: 'Gruppenpasswort ändern'
       protection: 'Toggle friendly fire protection'
       sethome: 'Set/remove party home'
-      tag: 'Set/remove party tag'
-      teleport: 'Teleport your party to you'
+      tag: 'Gruppen-Tag setzen / entfernen'
+      teleport: 'Teleportiere deine Party zu dir'
 dont-edit-this:
   version: 12
