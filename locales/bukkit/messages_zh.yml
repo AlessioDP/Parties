@@ -362,6 +362,7 @@ additional-commands:
     wrong-password: "&c密码错误！"
   list:
     #[Special tags]
+    #=> %index%     = The party index
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
