@@ -170,7 +170,9 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					if (party != null) {
 						try {
 							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(input.readUTF()));
+							UUID playerUuid = UUID.fromString(input.readUTF());
+							((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(playerUuid);
+							PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUuid);
 							JoinCause cause = JoinCause.valueOf(input.readUTF());
 							String uuidInviter = input.readUTF();
 							PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
@@ -192,7 +194,9 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					if (party != null) {
 						try {
 							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(input.readUTF()));
+							UUID playerUuid = UUID.fromString(input.readUTF());
+							((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(playerUuid);
+							PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUuid);
 							LeaveCause cause = LeaveCause.valueOf(input.readUTF());
 							String uuidInviter = input.readUTF();
 							PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));

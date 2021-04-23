@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.0.3</version>
+		<version>3.0.4</version>
 	</parent>
 	
 	<artifactId>parties-common</artifactId>
@@ -49,6 +49,14 @@
 							<shadedPattern>com.alessiodp.parties.core.common.addons.external.simpleyaml</shadedPattern>
 						</relocation>
 					</relocations>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/MANIFEST.MF</exclude>
+							</excludes>
+						</filter>
+					</filters>
 				</configuration>
 				<executions>
 					<execution>
