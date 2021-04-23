@@ -77,7 +77,7 @@
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.5.0</libs.lastLoginApi>
+		<libs.lastLoginApi>1.5.1</libs.lastLoginApi>
 		<libs.levelPoints>da42a0e292</libs.levelPoints>
 		<libs.mmoCore>1.7.1</libs.mmoCore>
 		<libs.mythicMobs>4.11.2</libs.mythicMobs>
