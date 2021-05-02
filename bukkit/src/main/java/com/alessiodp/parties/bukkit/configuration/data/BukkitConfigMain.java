@@ -105,7 +105,22 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		ADDONS_GRIEFPREVENTION_CMD_ACCESS;
 	@ConfigOption(path = "addons.griefprevention.sub-commands.remove")
 	public static String		ADDONS_GRIEFPREVENTION_CMD_REMOVE;
-	
+
+	@ConfigOption(path = "addons.griefdefender.enable")
+	public static boolean		ADDONS_GRIEFDEFENDER_ENABLE;
+	@ConfigOption(path = "addons.griefdefender.need-to-be-owner-claim")
+	public static boolean		ADDONS_GRIEFDEFENDER_NEEDOWNER;
+	@ConfigOption(path = "addons.griefdefender.sub-commands.trust")
+	public static String		ADDONS_GRIEFDEFENDER_CMD_TRUST;
+	@ConfigOption(path = "addons.griefdefender.sub-commands.container")
+	public static String		ADDONS_GRIEFDEFENDER_CMD_CONTAINER;
+	@ConfigOption(path = "addons.griefdefender.sub-commands.access")
+	public static String		ADDONS_GRIEFDEFENDER_CMD_ACCESS;
+	@ConfigOption(path = "addons.griefdefender.sub-commands.manager")
+	public static String		ADDONS_GRIEFDEFENDER_CMD_MANAGER;
+	@ConfigOption(path = "addons.griefdefender.sub-commands.remove")
+	public static String		ADDONS_GRIEFDEFENDER_CMD_REMOVE;
+
 	@ConfigOption(path = "addons.vault.enable")
 	public static boolean		ADDONS_VAULT_ENABLE;
 	@ConfigOption(path = "addons.vault.confirm-command.enable")

@@ -22,9 +22,9 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BukkitCommandClaim extends PartiesSubCommand {
+public class BukkitCommandGPClaim extends PartiesSubCommand {
 	
-	public BukkitCommandClaim(ADPPlugin plugin, ADPMainCommand mainCommand) {
+	public BukkitCommandGPClaim(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
 				plugin,
 				mainCommand,

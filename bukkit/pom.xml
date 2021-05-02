@@ -162,6 +162,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.github.bloodmc</groupId>
+			<artifactId>GriefDefenderApi</artifactId>
+			<version>920a610</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>net.Indyuce</groupId>
 			<artifactId>MMOCore</artifactId>
 			<version>${libs.mmoCore}</version>
