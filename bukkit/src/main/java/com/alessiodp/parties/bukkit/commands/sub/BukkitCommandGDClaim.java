@@ -142,11 +142,11 @@ public class BukkitCommandGDClaim extends PartiesSubCommand {
     public List<String> onTabComplete(User sender, String[] args) {
         List<String> ret = new ArrayList<>();
         if (args.length == 2) {
-            ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_ACCESS);
-            ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_CONTAINER);
-            ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_TRUST);
+            ret.add(BukkitConfigMain.ADDONS_GRIEFDEFENDER_CMD_ACCESS);
+            ret.add(BukkitConfigMain.ADDONS_GRIEFDEFENDER_CMD_CONTAINER);
+            ret.add(BukkitConfigMain.ADDONS_GRIEFDEFENDER_CMD_TRUST);
             ret.add(BukkitConfigMain.ADDONS_GRIEFDEFENDER_CMD_MANAGER);
-            ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_REMOVE);
+            ret.add(BukkitConfigMain.ADDONS_GRIEFDEFENDER_CMD_REMOVE);
         }
         return ret;
     }
