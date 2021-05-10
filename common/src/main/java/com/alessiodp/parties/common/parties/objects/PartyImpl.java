@@ -635,8 +635,9 @@ public abstract class PartyImpl implements Party {
 				// Load players only if the party is online (in cache)
 				// A party is always in cache if a player is online
 				for (UUID u : getMembers()) {
-					if (plugin.getPlayer(u) != null) {
-						onlineMembers.add(plugin.getPlayerManager().getPlayer(u));
+					PartyPlayerImpl player = plugin.getPlayerManager().getCachePlayers().get(u);
+					if (player != null) {
+						onlineMembers.add(player);
 					}
 				}
 			}
