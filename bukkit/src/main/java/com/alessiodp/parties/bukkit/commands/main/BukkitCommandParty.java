@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bukkit.commands.main;
 
-import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandClaim;
+import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandGPClaim;
+import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandGDClaim;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandConfirm;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandDebug;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandHome;
@@ -20,10 +21,14 @@ public class BukkitCommandParty extends CommandParty {
 		description = BukkitConfigMain.COMMANDS_DESC_PARTY;
 		
 		if (!((PartiesPlugin) plugin).isBungeeCordEnabled()) {
-			// Claim
+			// GriefPrevention Claim
 			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE)
-				super.register(new BukkitCommandClaim(plugin, this));
-			
+				super.register(new BukkitCommandGPClaim(plugin, this));
+
+			// GriefDefender Claim
+			if (BukkitConfigMain.ADDONS_GRIEFDEFENDER_ENABLE)
+				super.register(new BukkitCommandGDClaim(plugin, this));
+
 			// Confirm
 			if (BukkitConfigMain.ADDONS_VAULT_ENABLE && BukkitConfigMain.ADDONS_VAULT_CONFIRM_ENABLE)
 				super.register(new BukkitCommandConfirm(plugin, this));

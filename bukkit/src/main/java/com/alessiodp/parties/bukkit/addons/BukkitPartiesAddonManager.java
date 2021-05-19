@@ -5,6 +5,7 @@ import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsChatHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.addons.external.GriefPreventionHandler;
+import com.alessiodp.parties.bukkit.addons.external.GriefDefenderHandler;
 import com.alessiodp.parties.bukkit.addons.external.LevelPointsHandler;
 import com.alessiodp.parties.bukkit.addons.external.MMOCoreHandler;
 import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
@@ -21,6 +22,7 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final EssentialsHandler essentials;
 	private final EssentialsChatHandler essentialsChat;
 	private final GriefPreventionHandler griefPrevention;
+	private final GriefDefenderHandler griefDefender;
 	private final LevelPointsHandler levelPoints;
 	private final MMOCoreHandler mmoCore;
 	private final MythicMobsHandler mythicMobs;
@@ -37,6 +39,7 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		essentials = new EssentialsHandler(plugin);
 		essentialsChat = new EssentialsChatHandler(plugin);
 		griefPrevention = new GriefPreventionHandler(plugin);
+		griefDefender = new GriefDefenderHandler(plugin);
 		levelPoints = new LevelPointsHandler(plugin);
 		mmoCore = new MMOCoreHandler(plugin);
 		mythicMobs = new MythicMobsHandler(plugin);
@@ -55,6 +58,7 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		essentials.init();
 		essentialsChat.init();
 		griefPrevention.init();
+		griefDefender.init();
 		levelPoints.init();
 		mmoCore.init();
 		mythicMobs.init();
