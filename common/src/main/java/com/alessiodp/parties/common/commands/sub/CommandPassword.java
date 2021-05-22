@@ -28,14 +28,14 @@ public class CommandPassword extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.PASSWORD,
 				PartiesPermission.USER_PASSWORD,
-				ConfigMain.COMMANDS_CMD_PASSWORD,
+				ConfigMain.COMMANDS_SUB_PASSWORD,
 				false
 		);
 		
 		syntax = String.format("%s <%s/%s>",
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_PASSWORD,
-				ConfigMain.COMMANDS_SUB_REMOVE
+				ConfigMain.COMMANDS_MISC_REMOVE
 		);
 		
 		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_PASSWORD;
@@ -82,7 +82,7 @@ public class CommandPassword extends PartiesSubCommand {
 		// Command handling
 		boolean isRemove = false;
 		String password = "";
-		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {
@@ -119,7 +119,7 @@ public class CommandPassword extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			ret.add(ConfigMain.COMMANDS_SUB_REMOVE);
+			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		}
 		return ret;
 	}

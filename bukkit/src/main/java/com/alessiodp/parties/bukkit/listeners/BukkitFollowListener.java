@@ -1,7 +1,6 @@
 package com.alessiodp.parties.bukkit.listeners;
 
 import com.alessiodp.core.bukkit.user.BukkitUser;
-import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;

@@ -132,13 +132,11 @@ public class CooldownManager {
 	}
 	
 	public RequestCooldown canInviteAfterLeave(UUID targetPlayer, UUID party) {
-		System.out.println("Checking after leave: " + inviteAfterLeaveCooldown.get(targetPlayer));
 		return getRequestCooldown(inviteAfterLeaveCooldown.get(targetPlayer), party);
 	}
 	
 	public void startInviteAfterLeave(UUID targetPlayer, UUID party, int seconds) {
 		insertRequestCooldown(inviteAfterLeaveCooldown, targetPlayer, party, seconds, PartiesConstants.DEBUG_TASK_INVITE_COOLDOWN_ON_LEAVE_EXPIRED);
-		System.out.println("Started with cooldown of " + seconds + " a cooldown for uuid " + party);
 	}
 	
 	

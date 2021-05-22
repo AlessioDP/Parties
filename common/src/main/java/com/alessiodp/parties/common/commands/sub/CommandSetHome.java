@@ -30,20 +30,20 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.SETHOME,
 				PartiesPermission.USER_SETHOME,
-				ConfigMain.COMMANDS_CMD_SETHOME,
+				ConfigMain.COMMANDS_SUB_SETHOME,
 				false
 		);
 		
 		if (ConfigParties.ADDITIONAL_HOME_MAX_HOMES > 1) {
 			syntax = String.format("%s [%s] <%s>",
 					baseSyntax(),
-					ConfigMain.COMMANDS_SUB_REMOVE,
+					ConfigMain.COMMANDS_MISC_REMOVE,
 					Messages.PARTIES_SYNTAX_HOME
 			);
 		} else {
 			syntax = String.format("%s [%s]",
 					baseSyntax(),
-					ConfigMain.COMMANDS_SUB_REMOVE
+					ConfigMain.COMMANDS_MISC_REMOVE
 			);
 		}
 		
@@ -84,11 +84,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 		
 		// Command handling
 		String selectedHome = null;
-		boolean isRemove = false;
-		
-		if (commandData.getArgs().length > 1 && commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
-			isRemove = true;
-		}
+		boolean isRemove = commandData.getArgs().length > 1 && commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE);
 		
 		if (ConfigParties.ADDITIONAL_HOME_MAX_HOMES > 1) {
 			if (commandData.getArgs().length == 1) {
@@ -202,7 +198,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			ret.add(ConfigMain.COMMANDS_SUB_REMOVE);
+			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		}
 		return ret;
 	}

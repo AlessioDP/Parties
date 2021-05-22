@@ -24,7 +24,7 @@ public class CommandInfo extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.INFO,
 				PartiesPermission.USER_INFO,
-				ConfigMain.COMMANDS_CMD_INFO,
+				ConfigMain.COMMANDS_SUB_INFO,
 				true
 		);
 		

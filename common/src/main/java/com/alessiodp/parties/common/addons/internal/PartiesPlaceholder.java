@@ -27,6 +27,7 @@ public enum PartiesPlaceholder {
 	DESC,
 	EXPERIENCE_TOTAL,
 	EXPERIENCE_LEVEL,
+	EXPERIENCE_LEVEL_ROMAN,
 	EXPERIENCE_LEVEL_EXPERIENCE,
 	EXPERIENCE_LEVELUP_CURRENT,
 	EXPERIENCE_LEVELUP_NECESSARY,
@@ -176,6 +177,8 @@ public enum PartiesPlaceholder {
 				return party != null ? Integer.toString(Double.valueOf(party.getExperience()).intValue()) : emptyPlaceholder;
 			case EXPERIENCE_LEVEL:
 				return party != null ? Integer.toString(party.getLevel()) : emptyPlaceholder;
+			case EXPERIENCE_LEVEL_ROMAN:
+				return party != null ? plugin.getMessageUtils().formatNumberAsRoman(party.getLevel()) : emptyPlaceholder;
 			case EXPERIENCE_LEVEL_EXPERIENCE:
 				// Casting to int to avoid printing x.0/x.5 in placeholder
 				return party != null ? Integer.toString((int) party.getLevelExperience()) : emptyPlaceholder;
@@ -227,23 +230,26 @@ public enum PartiesPlaceholder {
 							}
 							OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
 							if (offlinePlayer != null) {
-								if (offlinePlayer.isOnline() && !pl.isVanished()) {
-									sb.append(
-											plugin.getMessageUtils().convertPlaceholders(
-													Messages.PARTIES_LIST_ONLINEFORMAT,
-													pl,
-													party
-											)
-									);
-								} else if (this.equals(LIST_RANK)) {
-									sb.append(
-											plugin.getMessageUtils().convertPlaceholders(
-													Messages.PARTIES_LIST_OFFLINEFORMAT,
-													pl,
-													party
-											)
-									);
-								}
+								if (!offlinePlayer.getName().isEmpty()) {
+									if (offlinePlayer.isOnline() && !pl.isVanished()) {
+										sb.append(
+												plugin.getMessageUtils().convertPlaceholders(
+														Messages.PARTIES_LIST_ONLINEFORMAT,
+														pl,
+														party
+												)
+										);
+									} else if (this.equals(LIST_RANK)) {
+										sb.append(
+												plugin.getMessageUtils().convertPlaceholders(
+														Messages.PARTIES_LIST_OFFLINEFORMAT,
+														pl,
+														party
+												)
+										);
+									}
+								} else
+									sb.append(Messages.PARTIES_LIST_UNKNOWN);
 							} else
 								sb.append(Messages.PARTIES_LIST_UNKNOWN);
 						}

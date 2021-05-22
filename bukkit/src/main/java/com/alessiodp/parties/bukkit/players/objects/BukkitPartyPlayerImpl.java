@@ -83,7 +83,7 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 		
 		if (isInParty()) {
 			// Other commands
-			if (BukkitConfigMain.ADDONS_GRIEFPREVENTION_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM))
+			if (BukkitConfigMain.ADDONS_CLAIM_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM))
 				ret.add(BukkitCommands.CLAIM);
 			
 		}

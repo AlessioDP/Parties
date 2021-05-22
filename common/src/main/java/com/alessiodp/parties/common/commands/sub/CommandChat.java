@@ -24,14 +24,14 @@ public class CommandChat extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.CHAT,
 				PartiesPermission.USER_CHAT,
-				ConfigMain.COMMANDS_CMD_CHAT,
+				ConfigMain.COMMANDS_SUB_CHAT,
 				false
 		);
 		
 		syntax = String.format("%s [%s/%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_ON,
-				ConfigMain.COMMANDS_SUB_OFF
+				ConfigMain.COMMANDS_MISC_ON,
+				ConfigMain.COMMANDS_MISC_OFF
 		);
 		
 		description = Messages.HELP_MAIN_DESCRIPTIONS_CHAT;

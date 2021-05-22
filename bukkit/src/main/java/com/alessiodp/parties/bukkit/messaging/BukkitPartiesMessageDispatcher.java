@@ -9,7 +9,7 @@ import lombok.NonNull;
 
 public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 	public BukkitPartiesMessageDispatcher(@NonNull ADPPlugin plugin) {
-		super(plugin, false);
+		super(plugin, true);
 	}
 	
 	public void sendUpdateParty(PartyImpl party) {

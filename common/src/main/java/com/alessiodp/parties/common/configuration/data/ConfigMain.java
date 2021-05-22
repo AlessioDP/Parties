@@ -116,93 +116,98 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@ConfigOption(path = "commands.help-pages.commands-per-page")
 	public static int			COMMANDS_HELP_PERPAGE;
 	
-	@ConfigOption(path = "commands.main-commands.help")
-	public static String		COMMANDS_CMD_HELP;
-	@ConfigOption(path = "commands.main-commands.party")
-	public static String		COMMANDS_CMD_PARTY;
-	@ConfigOption(path = "commands.main-commands.p")
-	public static String		COMMANDS_CMD_P;
-	@ConfigOption(path = "commands.main-commands.accept")
-	public static String		COMMANDS_CMD_ACCEPT;
-	@ConfigOption(path = "commands.main-commands.ask")
-	public static String		COMMANDS_CMD_ASK;
-	@ConfigOption(path = "commands.main-commands.chat")
-	public static String		COMMANDS_CMD_CHAT;
-	@ConfigOption(path = "commands.main-commands.color")
-	public static String		COMMANDS_CMD_COLOR;
-	@ConfigOption(path = "commands.main-commands.create")
-	public static String		COMMANDS_CMD_CREATE;
-	@ConfigOption(path = "commands.main-commands.createfixed")
-	public static String		COMMANDS_CMD_CREATEFIXED;
-	@ConfigOption(path = "commands.main-commands.debug")
-	public static String		COMMANDS_CMD_DEBUG;
-	@ConfigOption(path = "commands.main-commands.delete")
-	public static String		COMMANDS_CMD_DELETE;
-	@ConfigOption(path = "commands.main-commands.deny")
-	public static String		COMMANDS_CMD_DENY;
-	@ConfigOption(path = "commands.main-commands.desc")
-	public static String		COMMANDS_CMD_DESC;
-	@ConfigOption(path = "commands.main-commands.follow")
-	public static String		COMMANDS_CMD_FOLLOW;
-	@ConfigOption(path = "commands.main-commands.home")
-	public static String		COMMANDS_CMD_HOME;
-	@ConfigOption(path = "commands.main-commands.ignore")
-	public static String		COMMANDS_CMD_IGNORE;
-	@ConfigOption(path = "commands.main-commands.info")
-	public static String		COMMANDS_CMD_INFO;
-	@ConfigOption(path = "commands.main-commands.invite")
-	public static String		COMMANDS_CMD_INVITE;
-	@ConfigOption(path = "commands.main-commands.join")
-	public static String		COMMANDS_CMD_JOIN;
-	@ConfigOption(path = "commands.main-commands.kick")
-	public static String		COMMANDS_CMD_KICK;
-	@ConfigOption(path = "commands.main-commands.leave")
-	public static String		COMMANDS_CMD_LEAVE;
-	@ConfigOption(path = "commands.main-commands.list")
-	public static String		COMMANDS_CMD_LIST;
-	@ConfigOption(path = "commands.main-commands.motd")
-	public static String		COMMANDS_CMD_MOTD;
-	@ConfigOption(path = "commands.main-commands.mute")
-	public static String		COMMANDS_CMD_MUTE;
-	@ConfigOption(path = "commands.main-commands.nickname")
-	public static String		COMMANDS_CMD_NICKNAME;
-	@ConfigOption(path = "commands.main-commands.password")
-	public static String		COMMANDS_CMD_PASSWORD;
-	@ConfigOption(path = "commands.main-commands.protection")
-	public static String		COMMANDS_CMD_PROTECTION;
-	@ConfigOption(path = "commands.main-commands.rank")
-	public static String		COMMANDS_CMD_RANK;
-	@ConfigOption(path = "commands.main-commands.reload")
-	public static String		COMMANDS_CMD_RELOAD;
-	@ConfigOption(path = "commands.main-commands.rename")
-	public static String		COMMANDS_CMD_RENAME;
-	@ConfigOption(path = "commands.main-commands.sethome")
-	public static String		COMMANDS_CMD_SETHOME;
-	@ConfigOption(path = "commands.main-commands.spy")
-	public static String		COMMANDS_CMD_SPY;
-	@ConfigOption(path = "commands.main-commands.tag")
-	public static String		COMMANDS_CMD_TAG;
-	@ConfigOption(path = "commands.main-commands.teleport")
-	public static String		COMMANDS_CMD_TELEPORT;
-	@ConfigOption(path = "commands.main-commands.version")
-	public static String		COMMANDS_CMD_VERSION;
+	@ConfigOption(path = "commands.main-commands.party.command")
+	public static String		COMMANDS_MAIN_PARTY_COMMAND;
+	@ConfigOption(path = "commands.main-commands.party.aliases")
+	public static List<String>		COMMANDS_MAIN_PARTY_ALIASES;
+	@ConfigOption(path = "commands.main-commands.p.command")
+	public static String			COMMANDS_MAIN_P_COMMAND;
+	@ConfigOption(path = "commands.main-commands.p.aliases")
+	public static List<String>		COMMANDS_MAIN_P_ALIASES;
 	
-	@ConfigOption(path = "commands.sub-commands.config")
-	public static String		COMMANDS_SUB_CONFIG;
-	@ConfigOption(path = "commands.sub-commands.exp")
-	public static String		COMMANDS_SUB_EXP;
-	@ConfigOption(path = "commands.sub-commands.party")
-	public static String		COMMANDS_SUB_PARTY;
-	@ConfigOption(path = "commands.sub-commands.player")
-	public static String		COMMANDS_SUB_PLAYER;
-	@ConfigOption(path = "commands.sub-commands.word-on")
-	public static String		COMMANDS_SUB_ON;
-	@ConfigOption(path = "commands.sub-commands.word-off")
-	public static String		COMMANDS_SUB_OFF;
-	@ConfigOption(path = "commands.sub-commands.silent")
-	public static String		COMMANDS_SUB_SILENT;
-	@ConfigOption(path = "commands.sub-commands.remove")
-	public static String		COMMANDS_SUB_REMOVE;
+	@ConfigOption(path = "commands.sub-commands.help")
+	public static String		COMMANDS_SUB_HELP;
+	@ConfigOption(path = "commands.sub-commands.accept")
+	public static String		COMMANDS_SUB_ACCEPT;
+	@ConfigOption(path = "commands.sub-commands.ask")
+	public static String		COMMANDS_SUB_ASK;
+	@ConfigOption(path = "commands.sub-commands.chat")
+	public static String		COMMANDS_SUB_CHAT;
+	@ConfigOption(path = "commands.sub-commands.color")
+	public static String		COMMANDS_SUB_COLOR;
+	@ConfigOption(path = "commands.sub-commands.create")
+	public static String		COMMANDS_SUB_CREATE;
+	@ConfigOption(path = "commands.sub-commands.createfixed")
+	public static String		COMMANDS_SUB_CREATEFIXED;
+	@ConfigOption(path = "commands.sub-commands.debug")
+	public static String		COMMANDS_SUB_DEBUG;
+	@ConfigOption(path = "commands.sub-commands.delete")
+	public static String		COMMANDS_SUB_DELETE;
+	@ConfigOption(path = "commands.sub-commands.deny")
+	public static String		COMMANDS_SUB_DENY;
+	@ConfigOption(path = "commands.sub-commands.desc")
+	public static String		COMMANDS_SUB_DESC;
+	@ConfigOption(path = "commands.sub-commands.follow")
+	public static String		COMMANDS_SUB_FOLLOW;
+	@ConfigOption(path = "commands.sub-commands.home")
+	public static String		COMMANDS_SUB_HOME;
+	@ConfigOption(path = "commands.sub-commands.ignore")
+	public static String		COMMANDS_SUB_IGNORE;
+	@ConfigOption(path = "commands.sub-commands.info")
+	public static String		COMMANDS_SUB_INFO;
+	@ConfigOption(path = "commands.sub-commands.invite")
+	public static String		COMMANDS_SUB_INVITE;
+	@ConfigOption(path = "commands.sub-commands.join")
+	public static String		COMMANDS_SUB_JOIN;
+	@ConfigOption(path = "commands.sub-commands.kick")
+	public static String		COMMANDS_SUB_KICK;
+	@ConfigOption(path = "commands.sub-commands.leave")
+	public static String		COMMANDS_SUB_LEAVE;
+	@ConfigOption(path = "commands.sub-commands.list")
+	public static String		COMMANDS_SUB_LIST;
+	@ConfigOption(path = "commands.sub-commands.motd")
+	public static String		COMMANDS_SUB_MOTD;
+	@ConfigOption(path = "commands.sub-commands.mute")
+	public static String		COMMANDS_SUB_MUTE;
+	@ConfigOption(path = "commands.sub-commands.nickname")
+	public static String		COMMANDS_SUB_NICKNAME;
+	@ConfigOption(path = "commands.sub-commands.password")
+	public static String		COMMANDS_SUB_PASSWORD;
+	@ConfigOption(path = "commands.sub-commands.protection")
+	public static String		COMMANDS_SUB_PROTECTION;
+	@ConfigOption(path = "commands.sub-commands.rank")
+	public static String		COMMANDS_SUB_RANK;
+	@ConfigOption(path = "commands.sub-commands.reload")
+	public static String		COMMANDS_SUB_RELOAD;
+	@ConfigOption(path = "commands.sub-commands.rename")
+	public static String		COMMANDS_SUB_RENAME;
+	@ConfigOption(path = "commands.sub-commands.sethome")
+	public static String		COMMANDS_SUB_SETHOME;
+	@ConfigOption(path = "commands.sub-commands.spy")
+	public static String		COMMANDS_SUB_SPY;
+	@ConfigOption(path = "commands.sub-commands.tag")
+	public static String		COMMANDS_SUB_TAG;
+	@ConfigOption(path = "commands.sub-commands.teleport")
+	public static String		COMMANDS_SUB_TELEPORT;
+	@ConfigOption(path = "commands.sub-commands.version")
+	public static String		COMMANDS_SUB_VERSION;
+	
+	@ConfigOption(path = "commands.misc-commands.config")
+	public static String		COMMANDS_MISC_CONFIG;
+	@ConfigOption(path = "commands.misc-commands.exp")
+	public static String		COMMANDS_MISC_EXP;
+	@ConfigOption(path = "commands.misc-commands.party")
+	public static String		COMMANDS_MISC_PARTY;
+	@ConfigOption(path = "commands.misc-commands.player")
+	public static String		COMMANDS_MISC_PLAYER;
+	@ConfigOption(path = "commands.misc-commands.word-on")
+	public static String		COMMANDS_MISC_ON;
+	@ConfigOption(path = "commands.misc-commands.word-off")
+	public static String		COMMANDS_MISC_OFF;
+	@ConfigOption(path = "commands.misc-commands.silent")
+	public static String		COMMANDS_MISC_SILENT;
+	@ConfigOption(path = "commands.misc-commands.remove")
+	public static String		COMMANDS_MISC_REMOVE;
 	
 	@ConfigOption(path = "commands.order")
 	public static List<String>	COMMANDS_ORDER;

@@ -26,14 +26,14 @@ public class CommandFollow extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.FOLLOW,
 				PartiesPermission.USER_FOLLOW,
-				ConfigMain.COMMANDS_CMD_FOLLOW,
+				ConfigMain.COMMANDS_SUB_FOLLOW,
 				false
 		);
 		
 		syntax = String.format("%s [%s/%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_ON,
-				ConfigMain.COMMANDS_SUB_OFF
+				ConfigMain.COMMANDS_MISC_ON,
+				ConfigMain.COMMANDS_MISC_OFF
 		);
 		
 		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_FOLLOW;

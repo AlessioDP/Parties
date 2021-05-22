@@ -28,7 +28,7 @@ public class CommandLeave extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.LEAVE,
 				PartiesPermission.USER_LEAVE,
-				ConfigMain.COMMANDS_CMD_LEAVE,
+				ConfigMain.COMMANDS_SUB_LEAVE,
 				false
 		);
 		

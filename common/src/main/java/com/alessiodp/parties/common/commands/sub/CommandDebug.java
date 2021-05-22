@@ -37,33 +37,33 @@ public class CommandDebug extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.DEBUG,
 				PartiesPermission.ADMIN_DEBUG,
-				ConfigMain.COMMANDS_CMD_DEBUG,
+				ConfigMain.COMMANDS_SUB_DEBUG,
 				true
 		);
 		
 		syntax = String.format("%s <%s/%s/%s/%s> ...",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_CONFIG,
-				ConfigMain.COMMANDS_SUB_EXP,
-				ConfigMain.COMMANDS_SUB_PARTY,
-				ConfigMain.COMMANDS_SUB_PLAYER
+				ConfigMain.COMMANDS_MISC_CONFIG,
+				ConfigMain.COMMANDS_MISC_EXP,
+				ConfigMain.COMMANDS_MISC_PARTY,
+				ConfigMain.COMMANDS_MISC_PLAYER
 		);
 		syntaxConfig = String.format("%s %s",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_CONFIG
+				ConfigMain.COMMANDS_MISC_CONFIG
 		);
 		syntaxExp = String.format("%s %s",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_EXP
+				ConfigMain.COMMANDS_MISC_EXP
 		);
 		syntaxParty = String.format("%s %s <%s>",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_PARTY,
+				ConfigMain.COMMANDS_MISC_PARTY,
 				Messages.PARTIES_SYNTAX_PARTY
 		);
 		syntaxPlayer = String.format("%s %s [%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_PLAYER,
+				ConfigMain.COMMANDS_MISC_PLAYER,
 				Messages.PARTIES_SYNTAX_PLAYER
 		);
 		
@@ -105,21 +105,21 @@ public class CommandDebug extends PartiesSubCommand {
 		PartyImpl targetParty = null;
 		PartyPlayerImpl targetPlayer = null;
 		CommandType commandType;
-		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_CONFIG)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_CONFIG)) {
 			commandType = CommandType.CONFIG;
 			if (commandData.getArgs().length != 2) {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
 						.replace("%syntax%", syntaxConfig));
 				return;
 			}
-		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_EXP)) {
+		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_EXP)) {
 			commandType = CommandType.EXP;
 			if (commandData.getArgs().length != 2) {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
 						.replace("%syntax%", syntaxExp));
 				return;
 			}
-		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PARTY)) {
+		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_PARTY)) {
 			commandType = CommandType.PARTY;
 			if (commandData.getArgs().length == 3) {
 				targetParty = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[2]);
@@ -134,7 +134,7 @@ public class CommandDebug extends PartiesSubCommand {
 						.replace("%syntax%", syntaxParty));
 				return;
 			}
-		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PLAYER)) {
+		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_PLAYER)) {
 			commandType = CommandType.PLAYER;
 			if (commandData.getArgs().length == 2) {
 				targetPlayer = partyPlayer;
@@ -245,16 +245,16 @@ public class CommandDebug extends PartiesSubCommand {
 		List<String> ret = new ArrayList<>();
 		if (sender.hasPermission(permission)) {
 			if (args.length == 2) {
-				ret.add(ConfigMain.COMMANDS_SUB_CONFIG);
-				ret.add(ConfigMain.COMMANDS_SUB_EXP);
-				ret.add(ConfigMain.COMMANDS_SUB_PARTY);
-				ret.add(ConfigMain.COMMANDS_SUB_PLAYER);
+				ret.add(ConfigMain.COMMANDS_MISC_CONFIG);
+				ret.add(ConfigMain.COMMANDS_MISC_EXP);
+				ret.add(ConfigMain.COMMANDS_MISC_PARTY);
+				ret.add(ConfigMain.COMMANDS_MISC_PLAYER);
 			} else if(args.length == 3) {
-				if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PARTY)) {
+				if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_PARTY)) {
 					((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().stream()
 							.filter(p -> p.getName() != null && !p.getName().isEmpty())
 							.forEach(p -> ret.add(p.getName()));
-				} else if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PLAYER)) {
+				} else if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_PLAYER)) {
 					return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 2);
 				}
 			}

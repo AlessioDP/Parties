@@ -24,14 +24,14 @@ public class CommandMute extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.MUTE,
 				PartiesPermission.USER_MUTE,
-				ConfigMain.COMMANDS_CMD_MUTE,
+				ConfigMain.COMMANDS_SUB_MUTE,
 				false
 		);
 		
 		syntax = String.format("%s [%s/%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_ON,
-				ConfigMain.COMMANDS_SUB_OFF
+				ConfigMain.COMMANDS_MISC_ON,
+				ConfigMain.COMMANDS_MISC_OFF
 		);
 		
 		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_MUTE;

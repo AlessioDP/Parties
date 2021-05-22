@@ -277,9 +277,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				}
 				
 				formattedMessage = Color.translateAlternateColorCodes(formattedMessage).replace("%message%", chatMessage);
-				
 				if (party.dispatchChatMessage(this, formattedMessage, true)) {
-					
 					plugin.getPlayerManager().sendSpyMessage(new SpyMessage(plugin)
 							.setType(SpyMessage.SpyType.MESSAGE)
 							.setMessage(plugin.getJsonHandler().removeJson(chatMessage))

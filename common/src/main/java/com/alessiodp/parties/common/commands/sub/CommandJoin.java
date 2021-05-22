@@ -29,7 +29,7 @@ public class CommandJoin extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.JOIN,
 				PartiesPermission.USER_JOIN,
-				ConfigMain.COMMANDS_CMD_JOIN,
+				ConfigMain.COMMANDS_SUB_JOIN,
 				false
 		);
 		

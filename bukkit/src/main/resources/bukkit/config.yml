@@ -269,6 +269,22 @@ addons:
     prevent-chat-muted: true
     auto-kick-banned: true
 
+  # [Claim plugins]
+  # Supporting: GriefPrevention & GriefDefender
+  # Enable a command that you can use to grant permissions to all party members
+  # The command is "/party claim" and can be run only by Owner/Manager of the claim
+  claim:
+    enable: false
+    # Only: griefprevention / griefdefender
+    plugin: griefprevention
+    need-to-be-owner-claim: false
+    sub-commands:
+      trust: "trust"
+      container: "container"
+      access: "access"
+      manager: "manager"
+      remove: "remove"
+
   # [Dynmap]
   # Generate a map mark for each party home
   # Warning: If you are using BungeeCord, be sure to set the right server id at the start of config.yml
@@ -286,18 +302,6 @@ addons:
       label-multiple: "<b>%party%</b>'s home: %home%"
       # Use Dynmap icon names
       icon: "house"
-
-  # [GriefPrevention]
-  # Enable a command that you can use to grant permissions to all party members
-  # The command is "/party claim" and can be run only by Owner/Manager of the claim
-  griefprevention:
-    enable: false
-    need-to-be-owner-claim: false
-    sub-commands:
-      trust: "trust"
-      container: "container"
-      access: "access"
-      remove: "remove"
 
   # [Vault]
   # Set a price to each party command (use doubles: 1.1, 1.5, ...)
@@ -336,13 +340,17 @@ commands:
   tab-support: true
   help-pages:
     commands-per-page: 9
-  descriptions:
-    party: 'Parties help page'
-    p: 'Send a party message'
   main-commands:
+    party:
+      command: 'party'
+      description: 'Parties help page'
+      aliases: []
+    p:
+      command: 'p'
+      description: 'Send a party message'
+      aliases: []
+  sub-commands:
     help: 'help'
-    party: 'party'
-    p: 'p'
     accept: 'accept'
     ask: 'ask'
     chat: 'chat'
@@ -377,7 +385,7 @@ commands:
     tag: 'tag'
     teleport: 'teleport'
     version: 'version'
-  sub-commands:
+  misc-commands:
     config: 'config'
     exp: 'exp'
     party: 'party'
@@ -424,4 +432,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 12
+  version: 13

@@ -42,7 +42,7 @@ public class LLAPIHandler {
 			ret = hook.getPlayerName(uuid);
 		} else {
 			User user = plugin.getPlayer(uuid);
-			ret = user != null ? user.getName() : "";
+			ret = user != null ? user.getName() : "Unknown";
 		}
 		return ret;
 	}

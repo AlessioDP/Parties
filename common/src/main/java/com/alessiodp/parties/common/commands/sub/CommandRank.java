@@ -35,7 +35,7 @@ public class CommandRank extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.RANK,
 				PartiesPermission.USER_RANK,
-				ConfigMain.COMMANDS_CMD_RANK,
+				ConfigMain.COMMANDS_SUB_RANK,
 				true
 		);
 		

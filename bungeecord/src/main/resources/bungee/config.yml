@@ -193,9 +193,14 @@ commands:
   help-pages:
     commands-per-page: 9
   main-commands:
+    party:
+      command: 'party'
+      aliases: []
+    p:
+      command: 'p'
+      aliases: []
+  sub-commands:
     help: 'help'
-    party: 'party'
-    p: 'p'
     accept: 'accept'
     ask: 'ask'
     chat: 'chat'
@@ -229,7 +234,7 @@ commands:
     tag: 'tag'
     teleport: 'teleport'
     version: 'version'
-  sub-commands:
+  misc-commands:
     config: 'config'
     exp: 'exp'
     party: 'party'
@@ -276,4 +281,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 11
+  version: 12

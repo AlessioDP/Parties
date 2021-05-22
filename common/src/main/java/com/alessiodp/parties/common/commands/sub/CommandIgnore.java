@@ -25,7 +25,7 @@ public class CommandIgnore extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.IGNORE,
 				PartiesPermission.USER_IGNORE,
-				ConfigMain.COMMANDS_CMD_IGNORE,
+				ConfigMain.COMMANDS_SUB_IGNORE,
 				false
 		);
 		

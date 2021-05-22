@@ -193,6 +193,9 @@ public class PartiesPlaceholderTest {
 		placeholder = PartiesPlaceholder.getPlaceholder("experience_level");
 		assertEquals(PartiesPlaceholder.EXPERIENCE_LEVEL, placeholder);
 		
+		placeholder = PartiesPlaceholder.getPlaceholder("experience_level_roman");
+		assertEquals(PartiesPlaceholder.EXPERIENCE_LEVEL_ROMAN, placeholder);
+		
 		placeholder = PartiesPlaceholder.getPlaceholder("experience_level_experience");
 		assertEquals(PartiesPlaceholder.EXPERIENCE_LEVEL_EXPERIENCE, placeholder);
 		

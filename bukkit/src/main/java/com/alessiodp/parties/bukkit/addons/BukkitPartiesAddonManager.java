@@ -1,11 +1,10 @@
 package com.alessiodp.parties.bukkit.addons;
 
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
+import com.alessiodp.parties.bukkit.addons.external.ClaimHandler;
 import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsChatHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
-import com.alessiodp.parties.bukkit.addons.external.GriefPreventionHandler;
-import com.alessiodp.parties.bukkit.addons.external.GriefDefenderHandler;
 import com.alessiodp.parties.bukkit.addons.external.LevelPointsHandler;
 import com.alessiodp.parties.bukkit.addons.external.MMOCoreHandler;
 import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
@@ -18,11 +17,10 @@ import com.alessiodp.parties.common.addons.PartiesAddonManager;
 
 public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final BanManagerHandler banManager;
+	private final ClaimHandler claimHandler;
 	private final DynmapHandler dynmap;
 	private final EssentialsHandler essentials;
 	private final EssentialsChatHandler essentialsChat;
-	private final GriefPreventionHandler griefPrevention;
-	private final GriefDefenderHandler griefDefender;
 	private final LevelPointsHandler levelPoints;
 	private final MMOCoreHandler mmoCore;
 	private final MythicMobsHandler mythicMobs;
@@ -35,11 +33,10 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		super(plugin);
 		
 		banManager = new BanManagerHandler(plugin);
+		claimHandler = new ClaimHandler(plugin);
 		dynmap = new DynmapHandler(plugin);
 		essentials = new EssentialsHandler(plugin);
 		essentialsChat = new EssentialsChatHandler(plugin);
-		griefPrevention = new GriefPreventionHandler(plugin);
-		griefDefender = new GriefDefenderHandler(plugin);
 		levelPoints = new LevelPointsHandler(plugin);
 		mmoCore = new MMOCoreHandler(plugin);
 		mythicMobs = new MythicMobsHandler(plugin);
@@ -54,11 +51,10 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		super.loadAddons();
 		
 		banManager.init();
+		claimHandler.init();
 		dynmap.init();
 		essentials.init();
 		essentialsChat.init();
-		griefPrevention.init();
-		griefDefender.init();
 		levelPoints.init();
 		mmoCore.init();
 		mythicMobs.init();

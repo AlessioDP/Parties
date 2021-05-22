@@ -4,7 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.bukkit.addons.external.GriefPreventionHandler;
+import com.alessiodp.parties.bukkit.addons.external.ClaimHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
@@ -22,15 +22,15 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BukkitCommandGPClaim extends PartiesSubCommand {
+public class BukkitCommandClaim extends PartiesSubCommand {
 	
-	public BukkitCommandGPClaim(ADPPlugin plugin, ADPMainCommand mainCommand) {
+	public BukkitCommandClaim(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
 				plugin,
 				mainCommand,
 				BukkitCommands.CLAIM,
 				PartiesPermission.USER_CLAIM,
-				BukkitConfigMain.COMMANDS_CMD_CLAIM,
+				BukkitConfigMain.COMMANDS_SUB_CLAIM,
 				false
 		);
 		
@@ -83,17 +83,19 @@ public class BukkitCommandGPClaim extends PartiesSubCommand {
 		
 		// Command handling
 		Selection selection = Selection.FAILED_GENERAL;
-		if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_TRUST))
+		if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_CLAIM_CMD_TRUST))
 			selection = Selection.TRUST;
-		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_CONTAINER))
+		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_CLAIM_CMD_CONTAINER))
 			selection = Selection.CONTAINER;
-		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_ACCESS))
+		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_CLAIM_CMD_ACCESS))
 			selection = Selection.ACCESS;
-		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_REMOVE))
+		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_CLAIM_CMD_MANAGER) && ClaimHandler.canChangeManager())
+			selection = Selection.MANAGER;
+		else if (commandData.getArgs()[1].equalsIgnoreCase(BukkitConfigMain.ADDONS_CLAIM_CMD_REMOVE))
 			selection = Selection.REMOVE;
 		
 		if (!selection.equals(Selection.FAILED_GENERAL)) {
-			GriefPreventionHandler.Result res = GriefPreventionHandler.isManager(Bukkit.getPlayer(commandData.getSender().getUUID()));
+			ClaimHandler.Result res = ClaimHandler.isManager(Bukkit.getPlayer(commandData.getSender().getUUID()));
 			switch (res) {
 			case NOEXIST:
 				selection = Selection.FAILED_NOEXIST;
@@ -127,8 +129,8 @@ public class BukkitCommandGPClaim extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_CLAIM_ALLOWED_PERMISSIONS);
 			break;
 		default:
-			GriefPreventionHandler.addPartyPermission(Bukkit.getPlayer(commandData.getSender().getUUID()), party, selection.getGPPermission());
-			sendMessage(sender, partyPlayer, selection.getGPPermission().isRemove() ? BukkitMessages.ADDCMD_CLAIM_REMOVED : BukkitMessages.ADDCMD_CLAIM_CLAIMED);
+			ClaimHandler.addPartyPermission(Bukkit.getPlayer(commandData.getSender().getUUID()), party, selection.getPermission());
+			sendMessage(sender, partyPlayer, selection.getPermission().isRemove() ? BukkitMessages.ADDCMD_CLAIM_REMOVED : BukkitMessages.ADDCMD_CLAIM_CLAIMED);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CLAIM,
 					partyPlayer.getName(), selection.name()), true);
@@ -140,31 +142,36 @@ public class BukkitCommandGPClaim extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_ACCESS);
-			ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_CONTAINER);
-			ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_TRUST);
-			ret.add(BukkitConfigMain.ADDONS_GRIEFPREVENTION_CMD_REMOVE);
+			ret.add(BukkitConfigMain.ADDONS_CLAIM_CMD_ACCESS);
+			ret.add(BukkitConfigMain.ADDONS_CLAIM_CMD_CONTAINER);
+			ret.add(BukkitConfigMain.ADDONS_CLAIM_CMD_TRUST);
+			if (ClaimHandler.canChangeManager())
+				ret.add(BukkitConfigMain.ADDONS_CLAIM_CMD_MANAGER);
+			ret.add(BukkitConfigMain.ADDONS_CLAIM_CMD_REMOVE);
 		}
 		return ret;
 	}
 	
 	private enum Selection {
-		TRUST, CONTAINER, ACCESS, REMOVE, FAILED_GENERAL, FAILED_NOEXIST, FAILED_NOMANAGER;
+		TRUST, CONTAINER, ACCESS, MANAGER, REMOVE, FAILED_GENERAL, FAILED_NOEXIST, FAILED_NOMANAGER;
 		
-		GriefPreventionHandler.PermissionType getGPPermission() {
-			GriefPreventionHandler.PermissionType ret;
+		ClaimHandler.PermissionType getPermission() {
+			ClaimHandler.PermissionType ret;
 			switch (this) {
 			case TRUST:
-				ret = GriefPreventionHandler.PermissionType.BUILD;
+				ret = ClaimHandler.PermissionType.BUILD;
 				break;
 			case CONTAINER:
-				ret = GriefPreventionHandler.PermissionType.INVENTORY;
+				ret = ClaimHandler.PermissionType.INVENTORY;
 				break;
 			case ACCESS:
-				ret = GriefPreventionHandler.PermissionType.ACCESS;
+				ret = ClaimHandler.PermissionType.ACCESS;
+				break;
+			case MANAGER:
+				ret = ClaimHandler.PermissionType.MANAGE;
 				break;
 			default:
-				ret = GriefPreventionHandler.PermissionType.REMOVE;
+				ret = ClaimHandler.PermissionType.REMOVE;
 				break;
 			}
 			return ret;

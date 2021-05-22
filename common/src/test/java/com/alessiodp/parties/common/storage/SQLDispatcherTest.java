@@ -7,6 +7,7 @@ import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.sql.connection.ConnectionFactory;
 import com.alessiodp.core.common.user.OfflineUser;
+import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
@@ -35,6 +36,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -207,8 +209,7 @@ public class SQLDispatcherTest {
 		
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class).deleteAll();
-		return ret;
-		*/
+		return ret;*/
 		return null;
 	}
 	
@@ -713,6 +714,56 @@ public class SQLDispatcherTest {
 		party.setAccessible(false);
 		
 		dispatcher.updateParty(party);
+	}
+	
+	@Test
+	public void testMultipleOperations() {
+		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
+		PartiesDao dao = dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class);
+		ArrayList<CompletableFuture<?>> lst = new ArrayList<CompletableFuture<?>>();
+		final int concurrentOperations = 20;
+		
+		PartyImpl mockParty = mock(PartyImpl.class);
+		doReturn(CompletableFuture.completedFuture(null)).when(mockParty).updateParty();
+		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);
+		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
+		
+		PartyManager mockPartyManager = mock(PartyManager.class);
+		when(mockPlugin.getPartyManager()).thenReturn(mockPartyManager);
+		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> initializeParty(mockPlugin, mock.getArgument(0)));
+		
+		PlayerManager mockPlayerManager = mock(PlayerManager.class);
+		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
+		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mockPlugin, mock.getArgument(0)));
+		
+		for (int c=0; c < concurrentOperations; c++) {
+			int finalC = c;
+			lst.add(CompletableFuture.runAsync(() -> {
+				PartyImpl party = initializeParty(mockPlugin, UUID.randomUUID());
+				PartyPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
+				
+				party.setAccessible(true);
+				party.setup("test-" + finalC, player.getPlayerUUID().toString());
+				party.setDescription("description");
+				party.setKills(10);
+				party.setMembers(Collections.singleton(player.getPlayerUUID()));
+				party.setAccessible(false);
+				
+				
+				player.setAccessible(true);
+				player.setPartyId(party.getId());
+				player.setAccessible(false);
+				dispatcher.updatePlayer(player);
+				
+				dispatcher.updateParty(party);
+				
+				Party sameParty = dispatcher.getParty(party.getId());
+				assertEquals(sameParty, party);
+			}));
+		}
+		
+		lst.forEach(CompletableFuture::join);
+		assertEquals(concurrentOperations, dao.countAll());
 	}
 	
 	public static PartyPlayerImpl initializePlayer(PartiesPlugin mockPlugin, UUID uuid) {

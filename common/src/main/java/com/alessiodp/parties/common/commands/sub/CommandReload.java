@@ -22,7 +22,7 @@ public class CommandReload extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.RELOAD,
 				PartiesPermission.ADMIN_RELOAD,
-				ConfigMain.COMMANDS_CMD_RELOAD,
+				ConfigMain.COMMANDS_SUB_RELOAD,
 				true
 		);
 		

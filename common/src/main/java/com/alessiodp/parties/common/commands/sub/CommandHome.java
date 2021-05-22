@@ -36,7 +36,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.HOME,
 				PartiesPermission.USER_HOME,
-				ConfigMain.COMMANDS_CMD_HOME,
+				ConfigMain.COMMANDS_SUB_HOME,
 				false
 		);
 		
@@ -303,7 +303,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			ret.add(ConfigMain.COMMANDS_SUB_REMOVE);
+			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		}
 		return ret;
 	}

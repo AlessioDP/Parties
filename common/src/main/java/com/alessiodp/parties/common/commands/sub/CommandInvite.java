@@ -29,7 +29,7 @@ public class CommandInvite extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.INVITE,
 				PartiesPermission.USER_INVITE,
-				ConfigMain.COMMANDS_CMD_INVITE,
+				ConfigMain.COMMANDS_SUB_INVITE,
 				false
 		);
 		

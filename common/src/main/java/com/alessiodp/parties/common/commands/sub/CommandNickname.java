@@ -35,7 +35,7 @@ public class CommandNickname extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.NICKNAME,
 				PartiesPermission.USER_NICKNAME,
-				ConfigMain.COMMANDS_CMD_NICKNAME,
+				ConfigMain.COMMANDS_SUB_NICKNAME,
 				true
 		);
 		
@@ -43,7 +43,7 @@ public class CommandNickname extends PartiesSubCommand {
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_PLAYER,
 				Messages.PARTIES_SYNTAX_NICKNAME,
-				ConfigMain.COMMANDS_SUB_REMOVE
+				ConfigMain.COMMANDS_MISC_REMOVE
 		);
 		
 		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_NICKNAME;
@@ -165,7 +165,7 @@ public class CommandNickname extends PartiesSubCommand {
 			// Set/remove
 			boolean isRemove = false;
 			String nickname = "";
-			if (commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+			if (commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 				// Remove command
 				isRemove = true;
 			} else {
@@ -227,7 +227,7 @@ public class CommandNickname extends PartiesSubCommand {
 		if (args.length == 2) {
 			return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);
 		} else if (args.length == 3)
-			ret.add(ConfigMain.COMMANDS_SUB_REMOVE);
+			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		return ret;
 	}
 }

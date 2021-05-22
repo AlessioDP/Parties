@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.0.4</version>
+	<version>3.1.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -71,13 +71,13 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.20</dev.lombok>
 		
-		<libs.adpcore>1.5.5</libs.adpcore>
+		<libs.adpcore>1.5.7</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.5.0</libs.lastLoginApi>
+		<libs.lastLoginApi>1.5.1</libs.lastLoginApi>
 		<libs.levelPoints>da42a0e292</libs.levelPoints>
 		<libs.mmoCore>1.7.1</libs.mmoCore>
 		<libs.mythicMobs>4.11.2</libs.mythicMobs>

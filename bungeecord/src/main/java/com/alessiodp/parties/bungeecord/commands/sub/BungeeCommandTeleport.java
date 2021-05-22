@@ -31,8 +31,6 @@ public class BungeeCommandTeleport extends CommandTeleport {
 	public void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay) {
 		ProxiedPlayer bungeePlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(player.getPlayerUUID());
 		if (bungeePlayer != null) {
-			ServerInfo server = bungeePlayer.getServer().getInfo();
-			
 			if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
 				player.sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT);
 			else

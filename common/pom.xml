@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.0.4</version>
+		<version>3.1.0</version>
 	</parent>
 	
 	<artifactId>parties-common</artifactId>
@@ -116,7 +116,7 @@
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>3.4.5</version>
+			<version>4.0.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -128,13 +128,13 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.24</version>
+			<version>8.0.25</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.19</version>
+			<version>42.2.20</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

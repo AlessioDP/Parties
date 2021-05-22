@@ -32,7 +32,7 @@ public class CommandAccept extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.ACCEPT,
 				PartiesPermission.USER_ACCEPT,
-				ConfigMain.COMMANDS_CMD_ACCEPT,
+				ConfigMain.COMMANDS_SUB_ACCEPT,
 				false
 		);
 		

@@ -26,7 +26,7 @@ public class CommandAsk extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.ASK,
 				PartiesPermission.USER_ASK,
-				ConfigMain.COMMANDS_CMD_ASK,
+				ConfigMain.COMMANDS_SUB_ASK,
 				false
 		);
 		

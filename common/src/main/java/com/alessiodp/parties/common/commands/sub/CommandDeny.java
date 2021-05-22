@@ -32,7 +32,7 @@ public class CommandDeny extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.DENY,
 				PartiesPermission.USER_DENY,
-				ConfigMain.COMMANDS_CMD_DENY,
+				ConfigMain.COMMANDS_SUB_DENY,
 				false
 		);
 		

@@ -36,7 +36,7 @@ public class CommandKick extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.KICK,
 				PartiesPermission.USER_KICK,
-				ConfigMain.COMMANDS_CMD_KICK,
+				ConfigMain.COMMANDS_SUB_KICK,
 				true
 		);
 		

@@ -78,6 +78,23 @@ public class BukkitConfigMain extends ConfigMain {
 	@ConfigOption(path = "addons.banmanager.auto-kick-banned")
 	public static boolean		ADDONS_BANMANAGER_AUTOKICK;
 	
+	@ConfigOption(path = "addons.claim.enable")
+	public static boolean		ADDONS_CLAIM_ENABLE;
+	@ConfigOption(path = "addons.claim.plugin")
+	public static String		ADDONS_CLAIM_PLUGIN;
+	@ConfigOption(path = "addons.claim.need-to-be-owner-claim")
+	public static boolean		ADDONS_CLAIM_NEEDOWNER;
+	@ConfigOption(path = "addons.claim.sub-commands.trust")
+	public static String		ADDONS_CLAIM_CMD_TRUST;
+	@ConfigOption(path = "addons.claim.sub-commands.container")
+	public static String		ADDONS_CLAIM_CMD_CONTAINER;
+	@ConfigOption(path = "addons.claim.sub-commands.access")
+	public static String		ADDONS_CLAIM_CMD_ACCESS;
+	@ConfigOption(path = "addons.claim.sub-commands.manager")
+	public static String		ADDONS_CLAIM_CMD_MANAGER;
+	@ConfigOption(path = "addons.claim.sub-commands.remove")
+	public static String		ADDONS_CLAIM_CMD_REMOVE;
+	
 	@ConfigOption(path = "addons.dynmap.enable")
 	public static boolean		ADDONS_DYNMAP_ENABLE;
 	@ConfigOption(path = "addons.dynmap.hide-by-default")
@@ -92,34 +109,6 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		ADDONS_DYNMAP_MARKER_LABEL_MULTIPLE;
 	@ConfigOption(path = "addons.dynmap.markers.icon")
 	public static String		ADDONS_DYNMAP_MARKER_ICON;
-	
-	@ConfigOption(path = "addons.griefprevention.enable")
-	public static boolean		ADDONS_GRIEFPREVENTION_ENABLE;
-	@ConfigOption(path = "addons.griefprevention.need-to-be-owner-claim")
-	public static boolean		ADDONS_GRIEFPREVENTION_NEEDOWNER;
-	@ConfigOption(path = "addons.griefprevention.sub-commands.trust")
-	public static String		ADDONS_GRIEFPREVENTION_CMD_TRUST;
-	@ConfigOption(path = "addons.griefprevention.sub-commands.container")
-	public static String		ADDONS_GRIEFPREVENTION_CMD_CONTAINER;
-	@ConfigOption(path = "addons.griefprevention.sub-commands.access")
-	public static String		ADDONS_GRIEFPREVENTION_CMD_ACCESS;
-	@ConfigOption(path = "addons.griefprevention.sub-commands.remove")
-	public static String		ADDONS_GRIEFPREVENTION_CMD_REMOVE;
-
-	@ConfigOption(path = "addons.griefdefender.enable")
-	public static boolean		ADDONS_GRIEFDEFENDER_ENABLE;
-	@ConfigOption(path = "addons.griefdefender.need-to-be-owner-claim")
-	public static boolean		ADDONS_GRIEFDEFENDER_NEEDOWNER;
-	@ConfigOption(path = "addons.griefdefender.sub-commands.trust")
-	public static String		ADDONS_GRIEFDEFENDER_CMD_TRUST;
-	@ConfigOption(path = "addons.griefdefender.sub-commands.container")
-	public static String		ADDONS_GRIEFDEFENDER_CMD_CONTAINER;
-	@ConfigOption(path = "addons.griefdefender.sub-commands.access")
-	public static String		ADDONS_GRIEFDEFENDER_CMD_ACCESS;
-	@ConfigOption(path = "addons.griefdefender.sub-commands.manager")
-	public static String		ADDONS_GRIEFDEFENDER_CMD_MANAGER;
-	@ConfigOption(path = "addons.griefdefender.sub-commands.remove")
-	public static String		ADDONS_GRIEFDEFENDER_CMD_REMOVE;
 
 	@ConfigOption(path = "addons.vault.enable")
 	public static boolean		ADDONS_VAULT_ENABLE;
@@ -162,15 +151,15 @@ public class BukkitConfigMain extends ConfigMain {
 	
 	
 	// Commands settings
-	@ConfigOption(path = "commands.descriptions.party")
-	public static String		COMMANDS_DESC_PARTY;
-	@ConfigOption(path = "commands.descriptions.p")
-	public static String		COMMANDS_DESC_P;
+	@ConfigOption(path = "commands.main-commands.party.description")
+	public static String		COMMANDS_MAIN_PARTY_DESCRIPTION;
+	@ConfigOption(path = "commands.main-commands.p.description")
+	public static String		COMMANDS_MAIN_P_DESCRIPTION;
 	
-	@ConfigOption(path = "commands.main-commands.claim")
-	public static String		COMMANDS_CMD_CLAIM;
-	@ConfigOption(path = "commands.main-commands.confirm")
-	public static String		COMMANDS_CMD_CONFIRM;
+	@ConfigOption(path = "commands.sub-commands.claim")
+	public static String		COMMANDS_SUB_CLAIM;
+	@ConfigOption(path = "commands.sub-commands.confirm")
+	public static String		COMMANDS_SUB_CONFIRM;
 	
 	
 	public BukkitConfigMain(PartiesPlugin plugin) {

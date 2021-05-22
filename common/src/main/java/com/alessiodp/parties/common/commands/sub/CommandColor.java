@@ -30,7 +30,7 @@ public class CommandColor extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.COLOR,
 				PartiesPermission.USER_COLOR,
-				ConfigMain.COMMANDS_CMD_COLOR,
+				ConfigMain.COMMANDS_SUB_COLOR,
 				false
 		);
 		
@@ -91,7 +91,7 @@ public class CommandColor extends PartiesSubCommand {
 		
 		boolean isRemove = false;
 		PartyColor color = null;
-		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {

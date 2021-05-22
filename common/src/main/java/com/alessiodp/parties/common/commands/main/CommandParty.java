@@ -47,8 +47,9 @@ import java.util.Map;
 public abstract class CommandParty extends ADPMainCommand {
 	
 	public CommandParty(PartiesPlugin plugin) {
-		super(plugin, CommonCommands.PARTY, ConfigMain.COMMANDS_CMD_PARTY, true);
+		super(plugin, CommonCommands.PARTY, ConfigMain.COMMANDS_MAIN_PARTY_COMMAND, true);
 		
+		aliases = ConfigMain.COMMANDS_MAIN_PARTY_ALIASES;
 		subCommands = new HashMap<>();
 		subCommandsByEnum = new HashMap<>();
 		tabSupport = ConfigMain.COMMANDS_TABSUPPORT;
@@ -142,7 +143,7 @@ public abstract class CommandParty extends ADPMainCommand {
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /party to /party help
-				subCommand = CommonUtils.toLowerCase(ConfigMain.COMMANDS_CMD_HELP);
+				subCommand = CommonUtils.toLowerCase(ConfigMain.COMMANDS_SUB_HELP);
 			} else {
 				subCommand = CommonUtils.toLowerCase(args[0]);
 			}

@@ -27,7 +27,7 @@ public class CommandHelp extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.HELP,
 				PartiesPermission.USER_HELP,
-				ConfigMain.COMMANDS_CMD_HELP,
+				ConfigMain.COMMANDS_SUB_HELP,
 				false
 		);
 		

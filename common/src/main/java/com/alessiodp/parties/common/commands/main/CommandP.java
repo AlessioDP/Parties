@@ -24,8 +24,9 @@ public abstract class CommandP extends ADPMainCommand {
 	private final CommandSendMessage commandSendMessage;
 	
 	public CommandP(PartiesPlugin plugin) {
-		super(plugin, CommonCommands.P, ConfigMain.COMMANDS_CMD_P, false);
+		super(plugin, CommonCommands.P, ConfigMain.COMMANDS_MAIN_P_COMMAND, false);
 		
+		aliases = ConfigMain.COMMANDS_MAIN_P_ALIASES;
 		subCommands = new HashMap<>();
 		subCommandsByEnum = new HashMap<>();
 		tabSupport = false;
@@ -52,7 +53,7 @@ public abstract class CommandP extends ADPMainCommand {
 					mainCommand,
 					CommonCommands.P,
 					PartiesPermission.USER_SENDMESSAGE,
-					ConfigMain.COMMANDS_CMD_P,
+					ConfigMain.COMMANDS_MAIN_P_COMMAND,
 					false
 			);
 			

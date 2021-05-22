@@ -29,14 +29,14 @@ public class CommandDesc extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.DESC,
 				PartiesPermission.USER_DESC,
-				ConfigMain.COMMANDS_CMD_DESC,
+				ConfigMain.COMMANDS_SUB_DESC,
 				false
 		);
 		
 		syntax = String.format("%s <%s/%s>",
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_DESCRIPTION,
-				ConfigMain.COMMANDS_SUB_REMOVE
+				ConfigMain.COMMANDS_MISC_REMOVE
 		);
 		
 		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_DESC;
@@ -83,7 +83,7 @@ public class CommandDesc extends PartiesSubCommand {
 		// Command handling
 		boolean isRemove = false;
 		String description = "";
-		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 			// Remove command
 			isRemove = true;
 		} else {
@@ -132,7 +132,7 @@ public class CommandDesc extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			ret.add(ConfigMain.COMMANDS_SUB_REMOVE);
+			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		}
 		return ret;
 	}

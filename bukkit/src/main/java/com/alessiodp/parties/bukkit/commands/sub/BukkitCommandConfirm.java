@@ -24,7 +24,7 @@ public class BukkitCommandConfirm extends PartiesSubCommand {
 				mainCommand,
 				BukkitCommands.CONFIRM,
 				null,
-				BukkitConfigMain.COMMANDS_CMD_CONFIRM,
+				BukkitConfigMain.COMMANDS_SUB_CONFIRM,
 				false
 		);
 		

@@ -21,7 +21,7 @@ import java.util.UUID;
 public class BungeePartiesMessageListener extends BungeeMessageListener {
 	
 	public BungeePartiesMessageListener(@NonNull ADPPlugin plugin) {
-		super(plugin, false);
+		super(plugin, true);
 	}
 	
 	@Override

@@ -29,7 +29,7 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.TELEPORT,
 				PartiesPermission.USER_TELEPORT,
-				ConfigMain.COMMANDS_CMD_TELEPORT,
+				ConfigMain.COMMANDS_SUB_TELEPORT,
 				false
 		);
 		

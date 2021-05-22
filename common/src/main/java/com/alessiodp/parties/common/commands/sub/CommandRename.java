@@ -30,7 +30,7 @@ public class CommandRename extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.RENAME,
 				PartiesPermission.USER_RENAME,
-				ConfigMain.COMMANDS_CMD_RENAME,
+				ConfigMain.COMMANDS_SUB_RENAME,
 				true
 		);
 		

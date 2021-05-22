@@ -8,6 +8,6 @@ public class BukkitCommandP extends CommandP {
 	public BukkitCommandP(PartiesPlugin instance) {
 		super(instance);
 		
-		description = BukkitConfigMain.COMMANDS_DESC_P;
+		description = BukkitConfigMain.COMMANDS_MAIN_P_DESCRIPTION;
 	}
 }

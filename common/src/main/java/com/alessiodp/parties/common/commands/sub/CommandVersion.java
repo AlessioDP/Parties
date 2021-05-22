@@ -21,7 +21,7 @@ public class CommandVersion extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.VERSION,
 				PartiesPermission.ADMIN_VERSION,
-				ConfigMain.COMMANDS_CMD_VERSION,
+				ConfigMain.COMMANDS_SUB_VERSION,
 				true
 		);
 		

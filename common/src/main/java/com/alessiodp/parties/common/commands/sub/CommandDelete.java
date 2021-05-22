@@ -29,7 +29,7 @@ public class CommandDelete extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.DELETE,
 				PartiesPermission.ADMIN_DELETE,
-				ConfigMain.COMMANDS_CMD_DELETE,
+				ConfigMain.COMMANDS_SUB_DELETE,
 				true
 		);
 		
@@ -41,7 +41,7 @@ public class CommandDelete extends PartiesSubCommand {
 		syntaxSilent = String.format("%s <%s> [%s]",
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_PARTY,
-				ConfigMain.COMMANDS_SUB_SILENT
+				ConfigMain.COMMANDS_MISC_SILENT
 		);
 		
 		description = Messages.HELP_MAIN_DESCRIPTIONS_DELETE;
@@ -100,7 +100,7 @@ public class CommandDelete extends PartiesSubCommand {
 		boolean isSilent = false;
 		if (commandData.getArgs().length == 3) {
 			if (commandData.havePermission(PartiesPermission.ADMIN_DELETE_SILENT)
-					&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_SILENT)) {
+					&& commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_SILENT)) {
 				isSilent = true;
 			} else {
 				sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
@@ -135,7 +135,7 @@ public class CommandDelete extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 3 && sender.hasPermission(PartiesPermission.ADMIN_DELETE_SILENT)) {
-			ret.add(ConfigMain.COMMANDS_SUB_SILENT);
+			ret.add(ConfigMain.COMMANDS_MISC_SILENT);
 			if (!args[2].isEmpty()) {
 				ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[2]);
 			}

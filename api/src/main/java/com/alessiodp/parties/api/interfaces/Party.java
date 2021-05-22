@@ -47,7 +47,7 @@ public interface Party {
 	}
 	
 	/**
-	 * Get the party members sub
+	 * Get a list of party members. It will contains members of every rank, leader too.
 	 *
 	 * @return Returns the members sub of the party
 	 */
@@ -225,6 +225,7 @@ public interface Party {
 	
 	/**
 	 * @deprecated Use {@code getHomes()} instead
+	 * @return The {@code PartyHome} of the party
 	 */
 	@Deprecated
 	default PartyHome getHome() {
@@ -233,6 +234,7 @@ public interface Party {
 	
 	/**
 	 * @deprecated Use {@code setHomes(...)} instead
+	 * @param home The new party home
 	 */
 	@Deprecated
 	default void setHome(@Nullable PartyHome home) {

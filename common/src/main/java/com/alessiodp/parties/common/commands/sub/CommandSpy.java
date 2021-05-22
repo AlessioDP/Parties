@@ -24,14 +24,14 @@ public class CommandSpy extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.SPY,
 				PartiesPermission.ADMIN_SPY,
-				ConfigMain.COMMANDS_CMD_SPY,
+				ConfigMain.COMMANDS_SUB_SPY,
 				false
 		);
 		
 		syntax = String.format("%s [%s/%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_ON,
-				ConfigMain.COMMANDS_SUB_OFF
+				ConfigMain.COMMANDS_MISC_ON,
+				ConfigMain.COMMANDS_MISC_OFF
 		);
 		
 		description = Messages.HELP_MAIN_DESCRIPTIONS_SPY;

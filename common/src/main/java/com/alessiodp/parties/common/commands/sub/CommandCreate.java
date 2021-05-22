@@ -28,7 +28,7 @@ public class CommandCreate extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.CREATE,
 				PartiesPermission.USER_CREATE,
-				ConfigMain.COMMANDS_CMD_CREATE,
+				ConfigMain.COMMANDS_SUB_CREATE,
 				false
 		);
 		

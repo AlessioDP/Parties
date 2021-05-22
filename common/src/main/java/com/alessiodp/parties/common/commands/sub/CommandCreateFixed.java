@@ -22,7 +22,7 @@ public class CommandCreateFixed extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.CREATEFIXED,
 				PartiesPermission.ADMIN_CREATE_FIXED,
-				ConfigMain.COMMANDS_CMD_CREATEFIXED,
+				ConfigMain.COMMANDS_SUB_CREATEFIXED,
 				true
 		);
 		

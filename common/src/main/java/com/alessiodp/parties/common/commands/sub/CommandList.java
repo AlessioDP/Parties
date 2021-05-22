@@ -25,7 +25,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 public class CommandList extends PartiesSubCommand {
 	private final String syntaxOrder;
@@ -36,7 +35,7 @@ public class CommandList extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.LIST,
 				PartiesPermission.USER_LIST,
-				ConfigMain.COMMANDS_CMD_LIST,
+				ConfigMain.COMMANDS_SUB_LIST,
 				true
 		);
 		

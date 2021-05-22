@@ -30,21 +30,21 @@ public class CommandTag extends PartiesSubCommand {
 				mainCommand,
 				CommonCommands.TAG,
 				PartiesPermission.USER_TAG,
-				ConfigMain.COMMANDS_CMD_TAG,
+				ConfigMain.COMMANDS_SUB_TAG,
 				false
 		);
 		
 		syntax = String.format("%s <%s/%s>",
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_TAG,
-				ConfigMain.COMMANDS_SUB_REMOVE
+				ConfigMain.COMMANDS_MISC_REMOVE
 		);
 		
 		syntaxOthers = String.format("%s [%s] <%s/%s>",
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_PARTY,
 				Messages.PARTIES_SYNTAX_TAG,
-				ConfigMain.COMMANDS_SUB_REMOVE
+				ConfigMain.COMMANDS_MISC_REMOVE
 		);
 		
 		description = Messages.HELP_ADDITIONAL_DESCRIPTIONS_TAG;
@@ -89,7 +89,7 @@ public class CommandTag extends PartiesSubCommand {
 		if (commandData.getArgs().length == 3 && sender.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS)) {
 			party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
 			if (party != null) {
-				if (!commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+				if (!commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 					tag = commandData.getArgs()[2];
 				}
 			} else {
@@ -109,7 +109,7 @@ public class CommandTag extends PartiesSubCommand {
 				return;
 			}
 			
-			if (!commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_REMOVE)) {
+			if (!commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 				tag = commandData.getArgs()[1];
 			}
 		} else {
@@ -164,7 +164,7 @@ public class CommandTag extends PartiesSubCommand {
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
-			ret.add(ConfigMain.COMMANDS_SUB_REMOVE);
+			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		}
 		return ret;
 	}
