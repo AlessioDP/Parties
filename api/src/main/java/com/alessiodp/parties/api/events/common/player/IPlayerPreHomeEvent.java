@@ -3,12 +3,13 @@ package com.alessiodp.parties.api.events.common.player;
 import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
+import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface IPlayerPreChatEvent extends PartiesEvent, Cancellable {
+public interface IPlayerPreHomeEvent extends PartiesEvent, Cancellable {
 	/**
-	 * Get the player who sent the message
+	 * Get the player who is getting teleported
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
@@ -24,18 +25,10 @@ public interface IPlayerPreChatEvent extends PartiesEvent, Cancellable {
 	Party getParty();
 	
 	/**
-	 * Get the message of the player
+	 * Get the destination home
 	 *
-	 * @return Returns the message
+	 * @return Returns the {@link PartyHome}
 	 */
 	@NonNull
-	String getMessage();
-	
-	/**
-	 * Set the message of the player
-	 *
-	 * @param message The
-	 *                message to set
-	 */
-	void setMessage(String message);
+	PartyHome getHome();
 }

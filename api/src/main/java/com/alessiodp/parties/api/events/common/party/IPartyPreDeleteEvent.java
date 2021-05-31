@@ -12,7 +12,7 @@ public interface IPartyPreDeleteEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the party that is getting cancelled
 	 *
-	 * @return Returns the the {@link Party}
+	 * @return Returns the {@link Party}
 	 */
 	@NonNull
 	Party getParty();

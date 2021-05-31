@@ -6,6 +6,7 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Cancellable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+// Cancellable due to Skript event support
 public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent implements IPartyPreCreateEvent, Cancellable {
 	private boolean cancelled;
 	private final PartyPlayer player;

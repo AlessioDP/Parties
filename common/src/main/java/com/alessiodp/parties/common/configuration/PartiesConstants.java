@@ -30,10 +30,12 @@ public class PartiesConstants {
 	public static final String DEBUG_API_DELETEEVENT_DENY = "PartiesDeleteEvent is cancelled, ignoring delete of party %s by player %s (uuid: %s)";
 	public static final String DEBUG_API_DELETEEVENT_DENY_GENERIC = "PartiesDeleteEvent is cancelled, ignoring delete of party %s";
 	public static final String DEBUG_API_RENAMEEVENT_DENY = "PartiesRenameEvent is cancelled, ignoring rename of party %s into %s by player %s";
+	public static final String DEBUG_API_HOMEEVENT_DENY = "PartiesHomeEvent is cancelled, ignoring home teleport of player %s: %s";
 	public static final String DEBUG_API_JOINEVENT_DENY = "PartiesJoinEvent is cancelled, ignoring join of player %s into party %s";
 	public static final String DEBUG_API_LEAVEEVENT_DENY = "PartiesLeaveEvent is cancelled, ignoring leave of player %s from party %s";
 	public static final String DEBUG_API_INVITEEVENT_DENY = "PartiesInviteEvent is cancelled, ignoring invite of player %s in party %s by %s";
 	public static final String DEBUG_API_FRIENDLYFIREEVENT_DENY = "PartiesFriendlyFireEvent is cancelled, ignoring fight (type %s) of player %s to player %s";
+	public static final String DEBUG_API_TELEPORTEVENT_DENY = "PartiesTeleportEvent is cancelled, ignoring teleport of player %s: %s";
 	
 	
 	public static final String DEBUG_AUTOCMD_PERFORM = "Performing autocommand to player %s with '%s'";
@@ -138,8 +140,8 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_KILL_ADD = "Adding a kill to the party %s by player %s";
 	
-	public static final String DEBUG_MESSAGING_RECEIVED = "Received a Parties packet of type '%s'";
-	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong Parties packet";
+	public static final String DEBUG_MESSAGING_RECEIVED = "Received a Parties packet of type '%s' from channel '%s'";
+	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong Parties packet from channel '%s'";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PARTY = "Received a Parties packet, updated party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER = "Received a Parties packet, updated player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PLAYER = "Received a Parties packet, loaded player %s";

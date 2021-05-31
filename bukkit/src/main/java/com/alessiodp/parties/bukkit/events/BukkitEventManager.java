@@ -12,13 +12,17 @@ import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreCreate
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostHomeEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreHomeEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreLeaveEvent;
+import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreTeleportEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFishHookFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
@@ -30,13 +34,18 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreHomeEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreTeleportEvent;
+import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.events.EventManager;
 import com.alessiodp.parties.api.enums.DeleteCause;
@@ -45,6 +54,7 @@ import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireB
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -129,6 +139,26 @@ public class BukkitEventManager extends EventManager {
 	@Override
 	public IPlayerPostInviteEvent preparePlayerPostInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party) {
 		return new BukkitPartiesPlayerPostInviteEvent(invitedPlayer, inviter, party);
+	}
+	
+	@Override
+	public IPlayerPreHomeEvent preparePlayerPreHomeEvent(PartyPlayer player, Party party, PartyHome home) {
+		return new BukkitPartiesPlayerPreHomeEvent(player, party, home);
+	}
+	
+	@Override
+	public IPlayerPostHomeEvent preparePlayerPostHomeEvent(PartyPlayer player, Party party, PartyHome home) {
+		return new BukkitPartiesPlayerPostHomeEvent(player, party, home);
+	}
+	
+	@Override
+	public IPlayerPreTeleportEvent preparePlayerPreTeleportEvent(PartyPlayer player, Party party, Object destination) {
+		return new BukkitPartiesPlayerPreTeleportEvent(player, party, (Location) destination);
+	}
+	
+	@Override
+	public IPlayerPostTeleportEvent preparePlayerPostTeleportEvent(PartyPlayer player, Party party, Object destination) {
+		return new BukkitPartiesPlayerPostTeleportEvent(player, party, (Location) destination);
 	}
 	
 	@Override

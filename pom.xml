@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.1.0</version>
+	<version>3.1.1</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -71,7 +71,7 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.20</dev.lombok>
 		
-		<libs.adpcore>1.5.7</libs.adpcore>
+		<libs.adpcore>1.5.8</libs.adpcore>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>

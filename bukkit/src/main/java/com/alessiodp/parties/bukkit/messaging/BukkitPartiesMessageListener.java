@@ -40,17 +40,22 @@ import java.util.UUID;
 public class BukkitPartiesMessageListener extends BukkitMessageListener {
 	
 	public BukkitPartiesMessageListener(@NonNull ADPPlugin plugin) {
-		super(plugin, false);
+		super(plugin, false, true, false);
 	}
 	
 	@Override
-	public void handlePacket(byte[] bytes) {
+	public void handlePacket(byte[] bytes, String channel) {
+		if (channel.equals(getSubChannel()))
+			handleFromSub(bytes, channel); // Dispatch BungeeCord -> Spigot
+	}
+	
+	public void handleFromSub(byte[] bytes, String channel) {
 		PartiesPacket packet = PartiesPacket.read(plugin, bytes);
 		if (packet != null) {
 			PartyImpl party;
 			PartyPlayerImpl partyPlayer;
 			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name(), channel), true);
 			switch (packet.getType()) {
 				case UPDATE_PARTY:
 					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
@@ -290,7 +295,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 											home.getPitch()
 									);
 									
-									BukkitCommandHome.teleportToPartyHome((PartiesPlugin) plugin, partyPlayer, (BukkitUser) user, location, message);
+									BukkitCommandHome.teleportToPartyHome((PartiesPlugin) plugin, partyPlayer, (BukkitUser) user, home, location, message);
 									
 									plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_HOME_TELEPORT,
 											packet.getPlayerUuid().toString(), homeSerialized), true);
@@ -362,7 +367,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					// Not supported packet type
 			}
 		} else {
-			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_MESSAGING_RECEIVED_WRONG);
+			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED_WRONG, channel));
 		}
 	}
 }

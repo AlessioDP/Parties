@@ -12,13 +12,18 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreHomeEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreTeleportEvent;
+import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
@@ -59,6 +64,12 @@ public abstract class EventManager {
 	
 	public abstract IPlayerPreInviteEvent preparePlayerPreInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party);
 	public abstract IPlayerPostInviteEvent preparePlayerPostInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party);
+	
+	public abstract IPlayerPreHomeEvent preparePlayerPreHomeEvent(PartyPlayer player, Party party, PartyHome home);
+	public abstract IPlayerPostHomeEvent preparePlayerPostHomeEvent(PartyPlayer player, Party party, PartyHome home);
+	
+	public abstract IPlayerPreTeleportEvent preparePlayerPreTeleportEvent(PartyPlayer player, Party party, Object destination);
+	public abstract IPlayerPostTeleportEvent preparePlayerPostTeleportEvent(PartyPlayer player, Party party, Object destination);
 	
 	public abstract IPartyLevelUpEvent prepareLevelUpEvent(Party party, int newLevel);
 }

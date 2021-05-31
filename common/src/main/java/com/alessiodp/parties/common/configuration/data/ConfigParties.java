@@ -336,8 +336,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 				rank.setName(csBlocks.getString(key + ".name", key));
 				rank.setChat(csBlocks.getString(key + ".chat", rank.getName()));
 				rank.setLevel(csBlocks.getInt(key + ".level", 1));
-				if (csBlocks.get("inheritence") != null) {
-					Optional<PartyRankImpl> opt = ranks.stream().filter(r -> r.getConfigName().equals(csBlocks.getString("inheritence"))).findAny();
+				if (csBlocks.get(key + ".inheritence") != null) {
+					Optional<PartyRankImpl> opt = ranks.stream().filter(r -> r.getConfigName().equals(csBlocks.getString(key + ".inheritence"))).findAny();
 					if (opt.isPresent())
 						rank.setPermissions(new ArrayList<>(opt.get().getPermissions()));
 				}

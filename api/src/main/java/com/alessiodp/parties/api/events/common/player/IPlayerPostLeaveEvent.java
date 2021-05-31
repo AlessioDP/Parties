@@ -19,7 +19,7 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the the {@link Party}
+	 * @return Returns the {@link Party}
 	 */
 	@NonNull
 	Party getParty();

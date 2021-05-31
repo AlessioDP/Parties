@@ -3,6 +3,8 @@ package com.alessiodp.parties.bukkit.commands.sub;
 import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostTeleportEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreTeleportEvent;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.parties.objects.BukkitPartyTeleportRequest;
 import com.alessiodp.parties.bukkit.tasks.BukkitTeleportDelayTask;
@@ -80,16 +82,27 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		Player bukkitTargetPlayer = Bukkit.getPlayer(targetPlayer.getPlayerUUID());
 		if (bukkitUser != null && bukkitTargetPlayer != null) {
 			player.sendMessage(Messages.ADDCMD_HOME_TELEPORTED, targetPlayer);
-			plugin.getScheduler().getSyncExecutor().execute(() -> {
-				bukkitUser.teleportAsync(location).thenAccept(result -> {
-					if (result) {
-						EssentialsHandler.updateLastTeleportLocation(bukkitUser.getUUID());
-						player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
-					} else {
-						plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
-					}
+			
+			PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
+			IPlayerPreTeleportEvent partiesPreTeleportEvent = plugin.getEventManager().preparePlayerPreTeleportEvent(player, party, location);
+			plugin.getEventManager().callEvent(partiesPreTeleportEvent);
+			if (!partiesPreTeleportEvent.isCancelled()) {
+				plugin.getScheduler().getSyncExecutor().execute(() -> {
+					bukkitUser.teleportAsync(location).thenAccept(result -> {
+						if (result) {
+							EssentialsHandler.updateLastTeleportLocation(bukkitUser.getUUID());
+							player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
+							
+							IPlayerPostTeleportEvent partiesPostTeleportEvent = plugin.getEventManager().preparePlayerPostTeleportEvent(player, party, location);
+							plugin.getEventManager().callEvent(partiesPostTeleportEvent);
+						} else {
+							plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
+						}
+					});
 				});
-			});
+			} else
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_TELEPORTEVENT_DENY,
+						player.getName(), party.getName()), true);
 		}
 	}
 }

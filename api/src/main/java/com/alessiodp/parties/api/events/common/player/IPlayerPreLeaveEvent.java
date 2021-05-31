@@ -20,7 +20,7 @@ public interface IPlayerPreLeaveEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the the {@link Party}
+	 * @return Returns the {@link Party}
 	 */
 	@NonNull
 	Party getParty();
@@ -51,6 +51,4 @@ public interface IPlayerPreLeaveEvent extends PartiesEvent, Cancellable {
 	 */
 	@Nullable
 	PartyPlayer getKicker();
-	
-	
 }

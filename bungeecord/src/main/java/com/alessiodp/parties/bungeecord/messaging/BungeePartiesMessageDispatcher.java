@@ -12,43 +12,43 @@ import lombok.NonNull;
 
 public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 	public BungeePartiesMessageDispatcher(@NonNull ADPPlugin plugin) {
-		super(plugin, false);
+		super(plugin, false, true, false);
 	}
 	
 	public void sendUpdateParty(PartyImpl party) {
 		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
 			.setPartyId(party.getId())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendUpdatePlayer(PartyPlayerImpl partyPlayer) {
 		sendPacket(makePacket(PartiesPacket.PacketType.UPDATE_PLAYER)
 				.setPlayerUuid(partyPlayer.getPartyId())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendLoadParty(PartyImpl party) {
 		sendPacket(makePacket(PartiesPacket.PacketType.LOAD_PARTY)
 				.setPartyId(party.getId())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendLoadPlayer(PartyPlayerImpl partyPlayer) {
 		sendPacket(makePacket(PartiesPacket.PacketType.LOAD_PLAYER)
 				.setPlayerUuid(partyPlayer.getPlayerUUID())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendUnloadParty(PartyImpl party) {
 		sendPacket(makePacket(PartiesPacket.PacketType.UNLOAD_PARTY)
 				.setPartyId(party.getId())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendUnloadPlayer(PartyPlayerImpl partyPlayer) {
 		sendPacket(makePacket(PartiesPacket.PacketType.UNLOAD_PLAYER)
 				.setPlayerUuid(partyPlayer.getPlayerUUID())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendPlaySound(User user, byte[] raw) {
@@ -56,42 +56,42 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 				.setPlayerUuid(user.getUUID())
 				.setPayloadRaw(raw)
 				, user
-		);
+		, getSubChannel());
 	}
 	
 	public void sendCreateParty(PartyImpl party, PartyPlayerImpl leader) {
 		sendPacket(makePacket(PartiesPacket.PacketType.CREATE_PARTY)
 						.setPartyId(party.getId())
 						.setPlayerUuid(leader.getPlayerUUID())
-		);
+		, getSubChannel());
 	}
 	
 	public void sendDeleteParty(PartyImpl party, byte[] raw) {
 		sendPacket(makePacket(PartiesPacket.PacketType.DELETE_PARTY)
 				.setPartyId(party.getId())
 				.setPayloadRaw(raw)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendRenameParty(PartyImpl party, byte[] raw) {
 		sendPacket(makePacket(PartiesPacket.PacketType.RENAME_PARTY)
 				.setPartyId(party.getId())
 				.setPayloadRaw(raw)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendAddMemberParty(PartyImpl party, byte[] raw) {
 		sendPacket(makePacket(PartiesPacket.PacketType.ADD_MEMBER_PARTY)
 				.setPartyId(party.getId())
 				.setPayloadRaw(raw)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendRemoveMemberParty(PartyImpl party, byte[] raw) {
 		sendPacket(makePacket(PartiesPacket.PacketType.REMOVE_MEMBER_PARTY)
 				.setPartyId(party.getId())
 				.setPayloadRaw(raw)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendChatMessage(PartyImpl party, PartyPlayerImpl player, String message) {
@@ -99,14 +99,14 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 				.setPartyId(party.getId())
 				.setPlayerUuid(player.getPlayerUUID())
 				.setPayload(message)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendInvitePlayer(PartyImpl party, byte[] raw) {
 		sendPacket(makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
 				.setPartyId(party.getId())
 				.setPayloadRaw(raw)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendAddHome(PartyImpl party, PartyPlayerImpl player, byte[] raw) {
@@ -114,7 +114,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 				.setPartyId(party.getId())
 				.setPlayerUuid(player.getPlayerUUID())
 				.setPayloadRaw(raw)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendHomeTeleport(User user, byte[] raw) {
@@ -122,7 +122,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 						.setPlayerUuid(user.getUUID())
 						.setPayloadRaw(raw)
 				, user
-		);
+		, getSubChannel());
 	}
 	
 	public void sendTeleport(User user, PartyPlayerImpl target) {
@@ -130,7 +130,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 						.setPlayerUuid(user.getUUID())
 						.setPayload(target.getPlayerUUID().toString())
 				, user
-		);
+		, getSubChannel());
 	}
 	
 	public void sendPartyExperience(PartyImpl party, PartyPlayerImpl killer, double experience) {
@@ -139,19 +139,20 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 				.setPartyId(party.getId())
 				.setPlayerUuid(killer.getPlayerUUID())
 				.setPayloadNumber(experience)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendLevelUp(PartyImpl party, int newLevel) {
 		sendPacket(makePacket(PartiesPacket.PacketType.LEVEL_UP)
 				.setPartyId(party.getId())
 				.setPayloadNumber(newLevel)
-		);
+		, getSubChannel());
 	}
 	
 	public void sendConfigs() {
 		sendPacket(makePacket(PartiesPacket.PacketType.CONFIGS)
-				.setPayloadRaw(((PartiesConfigurationManager) plugin.getConfigurationManager()).makeConfigsPacket()));
+				.setPayloadRaw(((PartiesConfigurationManager) plugin.getConfigurationManager()).makeConfigsPacket())
+		, getSubChannel());
 	}
 	
 	private PartiesPacket makePacket(PartiesPacket.PacketType type) {

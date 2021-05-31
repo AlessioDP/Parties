@@ -98,7 +98,6 @@ public class BukkitExpManager extends ExpManager {
 								// Convert option not set
 								return false;
 						}
-						ret = true;
 					}
 					if (drop.getSkillApi() > 0) {
 						switch (convertSkillapi) {
@@ -121,7 +120,6 @@ public class BukkitExpManager extends ExpManager {
 								// Convert option not set
 								return false;
 						}
-						ret = true;
 					}
 					
 					// Send experience
@@ -132,16 +130,16 @@ public class BukkitExpManager extends ExpManager {
 						
 						user.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_EXP_PARTY_GAINED
 								.replace("%exp%", CommonUtils.formatDouble(totalParty)), drop.getKiller(), party), true);
-						
+						ret = true;
 					}
 					if (totalNormal > 0)
-						shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL);
+						ret = shareExperience(totalNormal, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.NORMAL) || ret;
 					if (totalLevelPoints > 0)
-						shareExperience(totalLevelPoints, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.LEVELPOINTS);
+						ret = shareExperience(totalLevelPoints, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.LEVELPOINTS) || ret;
 					if (totalMmoCore > 0)
-						shareExperience(totalMmoCore, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.MMOCORE);
+						ret = shareExperience(totalMmoCore, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.MMOCORE) || ret;
 					if (totalSkillapi > 0)
-						shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI);
+						ret = shareExperience(totalSkillapi, drop.getKiller(), party, drop.getEntityKilled(), ExpConvert.SKILLAPI) || ret;
 				}
 			}
 		}

@@ -21,17 +21,22 @@ import java.util.UUID;
 public class BungeePartiesMessageListener extends BungeeMessageListener {
 	
 	public BungeePartiesMessageListener(@NonNull ADPPlugin plugin) {
-		super(plugin, true);
+		super(plugin, true, false);
 	}
 	
 	@Override
-	protected void handlePacket(byte[] bytes) {
+	protected void handlePacket(byte[] bytes, String channel) {
+		if (channel.equals(getMainChannel()))
+			handleChannelMain(bytes, channel); // Dispatch Spigot -> BungeeCord
+	}
+	
+	protected void handleChannelMain(byte[] bytes, String channel) {
 		PartiesPacket packet = PartiesPacket.read(plugin, bytes);
 		if (packet != null) {
 			PartyImpl party;
 			PartyPlayerImpl partyPlayer;
 			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name(), channel), true);
 			switch (packet.getType()) {
 				case INVITE_PLAYER:
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
@@ -56,7 +61,7 @@ public class BungeePartiesMessageListener extends BungeeMessageListener {
 					if (party != null) {
 						String serializedHome = packet.getPayload();
 						CommandSetHome.savePartyHome(party, PartyHomeImpl.deserialize(serializedHome));
-							
+						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE,
 								party.getId().toString()), true);
 					}
@@ -83,6 +88,8 @@ public class BungeePartiesMessageListener extends BungeeMessageListener {
 					// Nothing to do
 					break;
 			}
+		} else {
+			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED_WRONG, channel));
 		}
 	}
 }

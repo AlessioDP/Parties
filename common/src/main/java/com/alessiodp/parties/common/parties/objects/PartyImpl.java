@@ -590,23 +590,24 @@ public abstract class PartyImpl implements Party {
 				.setPlayer(null));
 	}
 	
-	public boolean dispatchChatMessage(PartyPlayerImpl sender, String message, boolean dispatchBetweenServers) {
-		if (message != null && !message.isEmpty()) {
-			IPlayerPreChatEvent partiesPreChatEvent = plugin.getEventManager().preparePlayerPreChatEvent(sender, this, message);
+	public boolean dispatchChatMessage(PartyPlayerImpl sender, String formattedMessage, String chatMessage, boolean dispatchBetweenServers) {
+		if (formattedMessage != null && !formattedMessage.isEmpty() && chatMessage != null && !chatMessage.isEmpty()) {
+			IPlayerPreChatEvent partiesPreChatEvent = plugin.getEventManager().preparePlayerPreChatEvent(sender, this, chatMessage);
 			plugin.getEventManager().callEvent(partiesPreChatEvent);
 			
 			if (!partiesPreChatEvent.isCancelled()) {
-				String newMessage = partiesPreChatEvent.getMessage();
+				String newChatMessage = partiesPreChatEvent.getMessage();
+				String newFormattedMessage = formattedMessage.replace("%message%", newChatMessage);
 				for (PartyPlayer player : getOnlineMembers(true)) {
-					((PartyPlayerImpl) player).sendDirect(newMessage);
+					((PartyPlayerImpl) player).sendDirect(newFormattedMessage);
 					((PartyPlayerImpl) player).playChatSound();
 				}
 				
-				sendPacketChat(sender, message);
+				sendPacketChat(sender, newChatMessage);
 				
 				return true;
 			} else {
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, sender.getName(), message), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_CHATEVENT_DENY, sender.getName(), chatMessage), true);
 			}
 		}
 		return false;

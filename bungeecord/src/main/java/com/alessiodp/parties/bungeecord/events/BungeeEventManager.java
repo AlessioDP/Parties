@@ -12,13 +12,17 @@ import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreCreate
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostHomeEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreHomeEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreLeaveEvent;
+import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreTeleportEvent;
 import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
@@ -29,18 +33,24 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreHomeEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
+import com.alessiodp.parties.api.events.common.player.IPlayerPreTeleportEvent;
+import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.events.EventManager;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import net.md_5.bungee.api.config.ServerInfo;
 
 public class BungeeEventManager extends EventManager {
 	
@@ -121,6 +131,26 @@ public class BungeeEventManager extends EventManager {
 	@Override
 	public IPlayerPostInviteEvent preparePlayerPostInviteEvent(PartyPlayer invitedPlayer, PartyPlayer inviter, Party party) {
 		return new BungeePartiesPlayerPostInviteEvent(invitedPlayer, inviter, party);
+	}
+	
+	@Override
+	public IPlayerPreHomeEvent preparePlayerPreHomeEvent(PartyPlayer player, Party party, PartyHome home) {
+		return new BungeePartiesPlayerPreHomeEvent(player, party, home);
+	}
+	
+	@Override
+	public IPlayerPostHomeEvent preparePlayerPostHomeEvent(PartyPlayer player, Party party, PartyHome home) {
+		return new BungeePartiesPlayerPostHomeEvent(player, party, home);
+	}
+	
+	@Override
+	public IPlayerPreTeleportEvent preparePlayerPreTeleportEvent(PartyPlayer player, Party party, Object destination) {
+		return new BungeePartiesPlayerPreTeleportEvent(player, party, (ServerInfo) destination);
+	}
+	
+	@Override
+	public IPlayerPostTeleportEvent preparePlayerPostTeleportEvent(PartyPlayer player, Party party, Object destination) {
+		return new BungeePartiesPlayerPostTeleportEvent(player, party, (ServerInfo) destination);
 	}
 	
 	@Override

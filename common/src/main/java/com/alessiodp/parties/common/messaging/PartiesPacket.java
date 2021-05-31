@@ -60,30 +60,36 @@ public class PartiesPacket extends ADPPacket {
 			String foundVersion = input.readUTF();
 			
 			if (foundVersion.equals(plugin.getVersion())) {
-				String type = input.readUTF();
-				String partyId = input.readUTF();
-				String playerUuid = input.readUTF();
-				String payload = input.readUTF();
-				double payloadNumber = input.readDouble();
-				byte[] raw = new byte[input.readInt()];
-				input.readFully(raw);
-				
-				PartiesPacket packet = new PartiesPacket(foundVersion);
-				packet.type = PacketType.valueOf(type);
-				if (!partyId.isEmpty())
-					packet.partyId = UUID.fromString(partyId);
-				if (!playerUuid.isEmpty())
-					packet.playerUuid = UUID.fromString(playerUuid);
-				if (!payload.isEmpty())
-					packet.payload = payload;
-				packet.payloadNumber = payloadNumber;
-				packet.payloadRaw = raw;
-				ret = packet;
+				try {
+					String type = input.readUTF();
+					String partyId = input.readUTF();
+					String playerUuid = input.readUTF();
+					String payload = input.readUTF();
+					double payloadNumber = input.readDouble();
+					byte[] raw = new byte[input.readInt()];
+					input.readFully(raw);
+					
+					PartiesPacket packet = new PartiesPacket(foundVersion);
+					packet.type = PacketType.valueOf(type);
+					if (!partyId.isEmpty())
+						packet.partyId = UUID.fromString(partyId);
+					if (!playerUuid.isEmpty())
+						packet.playerUuid = UUID.fromString(playerUuid);
+					if (!payload.isEmpty())
+						packet.payload = payload;
+					packet.payloadNumber = payloadNumber;
+					packet.payloadRaw = raw;
+					ret = packet;
+				} catch (Exception ex) {
+					plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex.getMessage()));
+					ex.printStackTrace();
+				}
 			} else {
 				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION, plugin.getVersion(), foundVersion));
 			}
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex.getMessage()));
+			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION, plugin.getVersion(), "none"));
+			ex.printStackTrace();
 		}
 		return ret;
 	}
