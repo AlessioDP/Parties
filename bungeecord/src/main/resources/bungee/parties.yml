@@ -121,7 +121,7 @@ general:
 # Here you can setup rank permissions for each party rank
 # You can negate a permission with -
 #
-# Full permissions list: https://alessiodp.com/docs/parties/permissions/#rank_based_permissions
+# Full permissions list: https://alessiodp.com/docs/parties/permissions#rank
 ranks:
   member:
     level: 5
