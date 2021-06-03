@@ -230,7 +230,7 @@ public enum PartiesPlaceholder {
 							}
 							OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
 							if (offlinePlayer != null) {
-								if (!offlinePlayer.getName().isEmpty()) {
+								if (pl.getName() != null && !pl.getName().isEmpty()) {
 									if (offlinePlayer.isOnline() && !pl.isVanished()) {
 										sb.append(
 												plugin.getMessageUtils().convertPlaceholders(
