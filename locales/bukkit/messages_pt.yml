@@ -12,108 +12,108 @@ parties:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9Nova versão do plugin Parties encontrada: %version% (Sua versão atual: %thisversion%)"
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  configuration-outdated: "&cO arquivo de configuração '%config%' do plugin Parties está desatualizada!"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
-    already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
-    player-not-found: "&cThe player %player% has not been found"
-    player-not-in-party: "&c%player% is not in a party"
+    invalid-command: "&cComando Inválido"
+    configuration-reloaded: "&aConfiguração atualizada"
+    not-in-party: "&cVocê não está em uma equipe"
+    already-in-party: "&cVocê já está em uma equipe!"
+    party-not-found: "&cA equipe %party% não existe"
+    party-full: "&cA equipe está lotada!"
+    player-not-found: "&cO jogador %player% não foi encontrado"
+    player-not-in-party: "&c%player% não está em nenhuma equipe"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aAtivado'
+    disabled: '&cDesativado'
+    toggled-on: '&aLigado'
+    toggled-off: '&cDesligado'
+    word-yes: '&aSim'
+    word-no: '&cNão'
+    empty: '&8Vazio'
+    none: '&8Nenhum'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    color: 'color'
-    description: 'desc'
-    experience: 'experience'
-    kills: 'kills'
-    home: 'home'
-    members: 'members'
-    message: 'message'
-    motd: 'motd'
-    name: 'name'
+    wrong-message: '&cSintaxe errada: Digite &7/%syntax%'
+    color: 'cor'
+    description: 'descrição'
+    experience: 'experiência'
+    kills: 'mortes'
+    home: 'casa'
+    members: 'membros'
+    message: 'mensagem'
+    motd: 'mensagem do dia'
+    name: 'nome'
     nickname: 'nickname'
-    online-members: 'online_members'
-    order: 'order'
-    page: 'page'
-    party: 'party'
-    password: 'password'
-    permission: 'permission'
-    player: 'player'
+    online-members: 'membros_online'
+    order: 'ordem'
+    page: 'página'
+    party: 'equipe'
+    password: 'senha'
+    permission: 'permissão'
+    player: 'jogador'
     rank: 'rank'
     tag: 'tag'
   permissions:
     #[Special tags]
     #=> %permission%  = Missing permission
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
-    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
-  out-party: "Out party"
+    no-permission: "&cVocê não tem acesso a esse comando"
+    no-permission-in-party-general: "&cSeu cargo não possui acesso a esse comando"
+    no-permission-in-party-rank: "&cVocê precisa ter o cargo de %rank_name% para executar esse comando"
+  out-party: "Fora da equipe"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
-    player-empty: "&7Nobody"
-    player-unknown: "&6Someone"
-    missing-value: "&7Miss"
+    player-empty: "&7Ninguém"
+    player-unknown: "&6Alguém"
+    missing-value: "&7Faltando"
   #Define the format of Parties chat messages
   formats:
-    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
+    party-chat: "&b[Equipe] %player_rank_chat% %player%&r&7: &b%message%"
     spy:
-      party-chat: "&7[SPY] [%party%] %player%: %message%"
-      broadcast: "&7[SPY] [%party%]: %message%"
+      party-chat: "&7[Espião] [%party%] %player%: %message%"
+      broadcast: "&7[Espião] [%party%]: %message%"
 #/ =============================== \
 #|     MAIN COMMANDS  MESSAGES     |
 #\ =============================== /
 main-commands:
   accept:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want accept:"
-    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
-    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
+    no-request: "&cVocê não tem solicitações pendentes"
+    no-exists: "&cEste pedido não existe mais"
+    multiple-requests: "&cEscolha o pedido que deseja aceitar:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Clique aqui para aceitar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Aceitar o pedido","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Clique aqui para aceitar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Aceitar o pedido","color":"gold"}]}}}]'
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
+    enabled: "&aChat definido para equipe"
+    disabled: "&aCanal de chat alterado para público"
   create:
-    created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
-    created-fixed: "&b&lYou have created the fixed party %party%"
-    name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    name-too-long: "&cThe party name is too long!"
-    name-too-short: "&cThe party name is too short!"
-    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
-    censored: "&cThe party name contains censored words!"
+    created: "[{\"text\":\"Você criou a equipe: %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" para convidar um amigo\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lVocê criou a equipe fixa %party%"
+    name-already-exists: "&cO nome da equipe %party% já existe, escolha um nome diferente"
+    name-too-long: "&cO nome da equipe é muito longo!"
+    name-too-short: "&cO nome da equipe é muito curto!"
+    invalid-name: "&cCaracteres inválidos. Use: a-Z ou 0-9."
+    censored: "&cO nome da equipe contém palavras censuradas!"
   delete:
-    deleted: "&aParty %party% deleted"
-    deleted-silently: "&aParty %party% deleted silently"
-    broadcast: "&6&lYour party has been deleted"
+    deleted: "&aEquipe %party% excluída"
+    deleted-silently: "&aEquipe %party% excluída silenciosamente"
+    broadcast: "&6&lSua equipe foi excluída"
   deny:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want deny:"
-    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
-    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
+    no-request: "&cVocê não tem solicitações pendentes"
+    no-exists: "&cEste pedido não existe mais"
+    multiple-requests: "&cEscolha o pedido que você deseja negar:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Clique aqui para recusar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Recusar o pedid","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Clique aqui para recusar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Recusar o pedido","color":"gold"}]}}}]'
   ignore:
-    start-ignore: "&7Ignoring %party% invites"
-    stop-ignore: "&7You stopped ignoring %party%"
+    start-ignore: "&7Ignorando convites de %party%"
+    stop-ignore: "&7Você parou de ignorar a equipe %party%"
     ignore-list:
-      header: "&b&lList ignored parties:"
+      header: "&b&lLista de grupos ignorados:"
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7None"
+      empty: "&7Nenhum"
   info:
     #[Special tags]
     #=> %list_rank_RANK%           = The list of players of that rank
@@ -124,47 +124,47 @@ main-commands:
     #=> %online%              = List online players
     #=> %online_number%       = Number of online players
     content:
-      - "&b============ &l%party%'s Info &r&b============"
-      - "&b&lDescription&7: %desc%"
-      - "&bLeader&7: %list_rank_leader%"
-      - "&bMods&7: %list_rank_moderator%"
-      - "&bMembers&7: %list_rank_member%"
-      - "&bOnline players&7: %online_number%"
+      - "&b======== &l informação de %party% &r&b========"
+      - "&b&lDescrição&7: %desc%"
+      - "&bLíder&7: %list_rank_leader%"
+      - "&bModeradores&7: %list_rank_moderator%"
+      - "&bMembros&7: %list_rank_member%"
+      - "&bJogadores online&7: %online_number%"
   invite:
-    sent: "&bYou invited %player% in your party"
-    player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
+    sent: "&bVocê convidou %player% para sua equipe"
+    player-invited: "[{\"text\":\"&b%player% convidou você para equipe %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar o convite\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Negar o convite\"}]}}},{\"text\":\"&b?\n&bVocê pode digitar &7/party <accept/deny> &bpara escolher.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the party invite"
-      receipt: "&a%player% accepted your invite"
+      broadcast: "&b&l%player% entrou na equipe"
+      accepted: "&aVocê aceitou o convite de equipe"
+      receipt: "&a%player% aceitou seu convite"
     deny:
       broadcast: ""
-      denied: "&aYou denied the party invite"
-      receipt: "&a%player% denied your invite"
+      denied: "&aVocê negou o convite de equipe"
+      receipt: "&a%player% negou o seu convite"
     timeout:
-      no-response: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite to %party%"
+      no-response: "&7%player% não aceitou o convite de dequipe"
+      timeout: "&7Você não aceitou o convite de equipe para %party%"
     revoke:
-      sent-revoked: "&7Revoked invite sent to %player%"
-      player-invite-revoked: "&7Invite received from %party% has been revoked"
+      sent-revoked: "&7Convite revogado para %player%"
+      player-invite-revoked: "&7Convite recebido de %party% foi revogado"
     cooldown:
-      global: "&cYou need to wait %seconds% seconds before invite another player"
-      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
-      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
-    player-offline: "&cYou can invite only online players"
-    player-no-permission: "&c%player% doesn't have the permission to join"
-    player-in-party: "&c%player% is already in a party"
-    already-invited: "&c%player% was already invited"
-    invite-yourself: "&cYou cannot invite yourself"
-    failed: "&cFailed to invite the player %player%"
+      global: "&cVocê precisa esperar %seconds% segundos antes de enviar um pedido a outra equipe"
+      individual: "&cVocê precisa esperar %seconds% segundos antes de enviar outro pedido a este jogador"
+      on-leave: "&cVocê precisa esperar %seconds% antes de enviar outro pedido a este jogador"
+    player-offline: "&cVocê pode convidar apenas jogadores online"
+    player-no-permission: "&c%player% não possui permissão para entrar"
+    player-in-party: "&c%player% já está em uma equipe"
+    already-invited: "&c%player% já foi convidado"
+    invite-yourself: "&cVocê não pode se convidar"
+    failed: "&cFalha ao convidar o jogador %player%"
   kick:
-    sent: "&aYou kicked %player% from the party!"
-    player-kicked: "&bYou have been kicked from %party%"
-    broadcast: "&b&l%player% has been kicked from the party"
-    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
-    player-higher-rank: "&cYou cannot kick your superior!"
-    player-not-in-party: "&c%player% is not in your party"
+    sent: "&aVocê expulsou %player% da equipe!"
+    player-kicked: "&bVocê foi expulso da equipe %party%"
+    broadcast: "&b&l%player% foi chutado para fora da equipe"
+    broadcast-disband: "&b&lA equipe foi desfeita porque o líder a abandonou"
+    broadcast-leader-changed: "&b&lO líder da equipe a abandonou, o novo líder é: %player%"
+    player-higher-rank: "&cVocê não pode expulsar um jogador com cargo superior ao seu!"
+    player-not-in-party: "&c%player% não está na sua equipe"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -173,33 +173,33 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&cForam encontrados alguns jogadores com esse nome:"
         - "%list_players%"
-        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+        - "&cUse o comando '&7/party kick <nome_do_jogador> <número> &c' para chutar o jogador"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: último login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Chutar este jogador","color":"gold"}}}'
   leave:
-    left: "&b&lYou left the party %party%"
-    broadcast: "&b&l%player% left the party"
-    party-disbanded: "&6&lThe party has been disbanded because the leader left"
-    leader-changed: "&b&lThe leader left the party, the new leader is %player%"
+    left: "&b&lVocê saiu da equipe %party%"
+    broadcast: "&b&l%player% saiu da equipe"
+    party-disbanded: "&6&lA equipe foi desfeita porque o líder a abandonou"
+    leader-changed: "&b&lO líder da equipe a abandonou, o novo líder é: %player%"
   p:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou still have to wait %seconds% seconds"
-    censored: "&cThe message contains censored words!"
-    muted: "&cYou are muted!"
+    cooldown: "&cVocê ainda tem que esperar %seconds% segundos"
+    censored: "&cA mensagem contém palavras censuradas!"
+    muted: "&cVocê está silenciado!"
   rank:
     #[Special tags]
     #=> %rank_name%   = Rank wrote by the player
-    changed: "&a%player% rank changed into %rank_name%"
+    changed: "&a%player% mudou seu cargo para %rank_name%"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
-    same-rank: "&c%player% is already %rank_name%!"
-    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
-    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
-    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
-    changing-yourself: "&cYou cannot change yourself rank!"
-    player-not-in-party: "&c%player% is not in your party"
+    wrong-rank: "&cO cargo '%rank_name%' não existe!"
+    same-rank: "&c%player% já tem o cargo de %rank_name%!"
+    low-rank: "&cVocê não pode editar jogadores com um cargo equivalente ou superior ao seu!"
+    to-higher-rank: "&cVocê não pode promover para um rank equivalente ou superior ao seu!"
+    fixed-leader: "&cVocê não pode fazer de alguém um líder de uma equipe fixa!"
+    changing-yourself: "&cVocê não tem permissão para mudar o seu rank!"
+    player-not-in-party: "&c%player% não está na sua equipe"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -208,63 +208,63 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&cForam encontrados alguns jogadores com esse nome:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cUse o comando '&7/party rank <nome_do_jogador> <cargo> <número>&c' para mudar o cargo de um jogador"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: último login%lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Mudar o rank deste jogador","color":"gold"}}}'
   rename:
     #[Special tags]
     #=> %old%   = Old party name
-    renamed: "&aThe party %old% has been renamed into %party%"
-    broadcast: "&6Your party has been renamed into %party%!"
+    renamed: "&aA equipe %old% mudou seu nome para %party%"
+    broadcast: "&6Sua equipe mudou o nome para %party%!"
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cVocê precisa esperar %seconds% segundos!"
   spy:
-    enabled: "&7Now you are a spy!"
-    disabled: "&7You are no longer a spy"
+    enabled: "&7Agora você é um espião!"
+    disabled: "&7Você não é mais um espião"
   version:
     #[Special tags]
     #=> %version%    = Parties version
     #=> %newversion% = Latest Parties version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Desenvolvido por &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Desenvolvido por &6AlessioDP\n&aNova versão encontrada: &2%newversion%"
 #/ =============================== \
 #|  ADDITIONAL COMMANDS  MESSAGES  |
 #\ =============================== /
 additional-commands:
   ask:
-    sent: "&aJoin request sent to %party%"
-    received: "[{\"text\":\"&b%player% want to join your party.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
+    sent: "&aPedido de entrada enviado para %party%"
+    received: "[{\"text\":\"&b%player% quer entrar na sua equipe\n&bO que vai fazer?\"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar o pedido\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Recusar o pedido\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bVocê pode usar o comando &7/party <accept/deny> %player% &bpara escolher.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the ask request"
-      receipt: "&a%party% accepted your ask request"
+      broadcast: "&b&l%player% entrou na equipe"
+      accepted: "&aVocê aceitou o pedido"
+      receipt: "&a%party% aceitou o seu pedido"
     deny:
       broadcast: ""
-      denied: "&aYou denied the %player% ask request"
-      receipt: "&a%party% denied your ask request"
+      denied: "&aVocê negou a solicitação de %player%"
+      receipt: "&a%party% recusou o seu pedido"
     timeout:
-      no-response: "&7%party% didn't accept the ask request"
+      no-response: "&7%party% não aceitou a solicitação"
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% seconds before ask to another party"
-      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
+      global: "&cVocê precisa esperar %seconds% segundos antes de enviar um pedido a outra equipe"
+      individual: "&cVocê precisa esperar %seconds% antes de enviar outro pedido a esta equipe"
   claim:
-    claimed: "&aGranted permission to the party"
-    removed: "&aRemoved permission to the party"
-    no-manager: "&cYou need to be the manager of the claim"
-    claim-no-exists: "&cClaim not found"
-    allowed-permissions: "&cPermissions: trust, container & access"
+    claimed: "&aConcedida permissão para a equipe"
+    removed: "&aPermissão removida do grupo"
+    no-manager: "&cVocê precisa ser o gerente da reivindicação"
+    claim-no-exists: "&cReivindicação não encontrada"
+    allowed-permissions: "&cPermissões: confiança, contêiner e acesso"
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&bA cor da sua equipe é: %color_code%%color_command%"
+    empty: "&bSua equipe não tem cor"
+    changed: "&bCor da equipe alterada para %color_command%"
+    removed: "&bCor da equipe removida"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
+    wrong-color: "&cCor não encontrada. você pode selecionar: vermelho, verde ou especial!"
   debug:
     config:
       header: '&b================== &lDebug Config &r&b=================='
@@ -311,163 +311,163 @@ additional-commands:
         - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&bDescrição da equipe alterada"
+    removed: "&bDescrição da equipe alterada"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
+    invalid-chars: "&cCaracteres inválidos. Use: a-Z ou 0-9. Mínimo de 3 e máximo 16 caracteres."
+    censored: "&cA descrição contém palavras censuradas!"
   exp:
     #[Special tags]
     #=> %exp%        = Experience gained
     #=> %total_exp%  = Total experience dropped by the mob
     party:
-      gained: "&bGained %exp% party experience for killing the mob"
+      gained: "&bGanhou %exp% de experiência em equipe por matar a criatura"
     normal:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bGanhou %exp% de experiência por matar um monstro"
+      gained-others: "&b%player% matou uma criatura, você ganhou %exp% de experiência"
     levelpoints:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bGanhou %exp% de experiência por matar um monstro"
+      gained-others: "&b%player% matou uma criatura, você ganhou %exp% de experiência"
     mmocore:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bGanhou %exp% de experiência por matar um monstro"
+      gained-others: "&b%player% matou uma criatura, você ganhou %exp% de experiência"
     skillapi:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bGanhou %exp% de experiência por matar um monstro"
+      gained-others: "&b%player% matou uma criatura, você ganhou %exp% de experiência"
     level:
-      level-up: "&bParty leveled up to %experience_level%"
+      level-up: "&bA equipe subiu de nível para %experience_level%"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&aAgora os membros da sua equipe irão seguir o seu líder"
+    toggle-off: "&aOs membros da sua equipe não irão mais seguir o seu líder"
   home:
-    teleported: "&7Teleported to the party home"
+    teleported: "&7Teleporta para a casa da sua equipe"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
-    teleport-denied: "&7Teleport denied"
-    teleport-waiting: "&cYou are already waiting for the teleport!"
-    no-home: "&cThere isn't a home yet"
+    teleport-in: "&7Você será teleportado em %seconds% segundos..."
+    teleport-denied: "&7Teletransporte negado"
+    teleport-waiting: "&cVocê já está esperando pelo teleporte!"
+    no-home: "&cAinda não há uma casa"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    must-select-home: "&cYou must select a valid home"
-    invalid-home: "&cThe selected home doesn't exist"
-    valid-homes: "&bList of valid homes:"
+    cooldown: "&cVocê precisa esperar %seconds% segundos!"
+    must-select-home: "&cVocê deve selecionar uma casa válida"
+    invalid-home: "&cA casa selecionada não existe"
+    valid-homes: "&bLista de casas válidas:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClique para teleportar"}]}}}]'
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
-    wrong-password: "&cWrong password!"
+    joined: "&aVocê se juntou a equipe %party%"
+    player-joined: "&b&l%player% entrou na equipe"
+    wrong-password: "&cSenha errada!"
   list:
     #[Special tags]
     #=> %index%     = The party index
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %online_number%&7] %desc%"}]'
-    invalid-order: '&cInvalid order type'
+    header: "&b========== &lLista de equipes online &r&b=========="
+    footer: "&b=============== &lPágina %page% de %maxpages% &r&b==============="
+    no-one: "&7Ninguém"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aMostrar informação"}]}}},{"text":" &7[&6Online %online_number%&7] %desc%"}]'
+    invalid-order: '&cTipo de ordem inválido'
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&bA mensagem do dia da equipe foi alterada"
+    removed: "&bA mensagem do dia da equipe foi removida"
     broadcast: ""
     content:
-      - "&bParty MOTD:"
+      - "&bA mensagem do dia da equipe:"
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
+    invalid-chars: "&cCaracteres inválidos. Você pode usar '.,/\". Mínimo de 3 e máximo de 100 caracteres."
+    censored: "&cA mensagem do dia contém palavras censuradas!"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
+    toggle-on: "&7Você desativou as notificações!"
+    toggle-off: "&7Você ativou as notificações!"
   nickname:
     own:
-      changed: "&bYou changed your nickname into %player_nickname%"
-      removed: "&bYou removed your own nickname"
-      no-permission: "&cYou cannot change your own nickname"
+      changed: "&bVocê mudou seu apelido para %player_nickname%"
+      removed: "&bVocê removeu seu próprio apelido"
+      no-permission: "&cVocê não tem permissão para mudar o seu apelido"
     others:
-      changed: "&bChanged nickname of %player% into %player_nickname%"
+      changed: "&bA pelido de %player% alterado para %player_nickname%"
       #Special tags:
       #=> %nickname%   = The target player nickname
       #Tags are parsed for sender
-      target-changed: "&b%player% changed your nickname into %nickname%"
-      removed: "&bRemoved nickname of %player%"
-      target-removed: "&b%player% removed your nickname"
-      no-permission: "&cYou cannot change other player nicknames"
+      target-changed: "&b%player% mudou seu apelido para %nickname%"
+      removed: "&bApelido removido de %player%"
+      target-removed: "&b%player% removeu seu apelido"
+      no-permission: "&cVocê não tem permissão para mudar o seu apelido"
     show:
-      own: "&bYour nickname is %player_nickname%"
-      own-none: "&bYou do not have any nickname"
-      other: "&bThe nickname of %player% is %player_nickname%"
-      other-none: "&b%player% does not have any nickname"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
-    censored: "&cThe nickname contains censored words!"
+      own: "&bSeu apelido é %player_nickname%"
+      own-none: "&bVocê não tem nenhum apelido"
+      other: "&bApelido de %player% é %player_nickname%"
+      other-none: "&b%player% não tem nenhum apelido"
+    invalid-chars: "&cCaracteres inválidos. Você pode usar '.,/\". Mínimo de 3 e máximo de 16 caracteres."
+    censored: "&cO apelido contém palavras censuradas!"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&aSenha da equipe alterada"
+    removed: "&aSenha da equipe removida"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+    invalid-chars: "&cCaracteres inválidos. Use: a-Z ou 0-9. Mínimo de 1 e máximo 16 caracteres."
   protection:
-    toggle-on: "&aNow your party is protected by friendly fire"
-    toggle-off: "&aYour party is not protected anymore by friendly fire"
-    protected: "&cYou can't hit your partymates"
-    warn-on-attack: "&c%player% tried to hit %victim%!"
+    toggle-on: "&aAgora sua equipe está protegida por fogo amigo"
+    toggle-off: "&aSua equipe não está mais protegida por fogo amigo"
+    protected: "&cVocê não pode bater em seus colegas de equipe"
+    warn-on-attack: "&c%player% tentou bater em %victim%!"
   sethome:
     changed: ""
-    removed: "&bParty home removed"
-    removed-none: "&cNo party home found"
-    broadcast: "&aThe party has a new home!"
+    removed: "&bA casa da equipe foi removida"
+    removed-none: "&cNenhuma casa para a equipe encontrada"
+    broadcast: "&aA equipe tem uma nova casa!"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    max-homes: "&cYou reached the maximum number of homes"
+    cooldown: "&cVocê precisa esperar %seconds% segundos!"
+    max-homes: "&cSua equipe atingiu o número máximo de usuários"
   tag:
-    changed: "&bParty tag changed"
-    removed: "&bParty tag removed"
+    changed: "&bA tag da equipe foi alterada"
+    removed: "&bA tag da equipe foi removida"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 10 chars."
-    censored: "&cThe tag contains censored words!"
-    already-used: "&c The tag %tag% is already used"
+    invalid-chars: "&cCaracteres inválidos. Use: a-Z ou 0-9. Mínimo de 3 e máximo 10 caracteres."
+    censored: "&cA tag contém palavras censuradas!"
+    already-used: "&c A tag %tag% já está sendo utilizada"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
+    teleporting: "&7Teleportando sua equipe aqui!"
+    player-teleported: "&bTeleportado para %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-denied: "&7Teleport denied"
+    player-teleport-in: "&7Você será teleportado em %seconds% segundos"
+    player-teleport-denied: "&7Teletransporte negado"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cVocê precisa esperar %seconds% segundos!"
     accept-request:
-      sent: "&aTeleport request sent to the party"
-      received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
-      denied: "&7You denied the teleport request of %player%"
+      sent: "&aPedido de teleporte enviado para a equipe"
+      received: "[{\"text\":\"&bVocê quer ser teleportado para %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar pedido\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Recusar pedido\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bVocê pode usar &7/party <accept/deny> %player% &bpara escolher.\"}]"
+      denied: "&7Você negou a solicitação de teleporte de %player%"
   vault:
     #[Special tags]
     #=> %price%          = Price of the command
     no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cYou don't have enough money to perform a claim [%price%$]"
-      color: "&cYou don't have enough money to perform the color command [%price%$]"
-      create: "&cYou don't have enough money to create a party [%price%$]"
-      desc: "&cYou don't have enough money to set the description [%price%$]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cYou don't have enough money to use the home command [%price%$]"
-      join: "&cYou don't have enough money to join a party [%price%$]"
-      motd: "&cYou don't have enough money to set the MOTD [%price%$]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cYou don't have enough money to set the home [%price%$]"
-      tag: "&cYou don't have enough money to set the tag [%price%$]"
-      teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
+      ask: "&cVocê não tem dinheiro suficiente para enviar um pedido de adesão [%price%$]"
+      claim: "&cVocê não tem dinheiro suficiente para executar uma reivindicação [%price%$]"
+      color: "&cVocê não tem dinheiro suficiente para executar o comando de cores [%price%$]"
+      create: "&cVocê não tem dinheiro suficiente para criar uma equipe [%price%$]"
+      desc: "&cVocê não tem dinheiro suficiente para definir a descrição [%price%$]"
+      follow: "&cVocê não tem dinheiro suficiente para ativar a função de seguir[%price%$]"
+      home: "&cVocê não tem dinheiro suficiente para usar o comando 'home' [%price%$]"
+      join: "&cVocê não tem dinheiro suficiente para entrar em uma equipe [%price%$]"
+      motd: "&cVocê não tem dinheiro suficiente para definir a mensagem do dia[%price%$]"
+      nickname: "&cVocê não tem dinheiro suficiente para definir o apelido [%price%$]"
+      password: "&cVocê não tem dinheiro suficiente para definir a senha [%price%$]"
+      protection: "&cVocê não tem dinheiro suficiente para ativar a proteção de pvp [%price%$]"
+      rename: "&cVocê não tem dinheiro suficiente para renomear a party [%price%$]"
+      sethome: "&cVocê não tem dinheiro suficiente para definir a casa da equipe [%price%$]"
+      tag: "&cVocê não tem dinheiro suficiente para definir a tag [%price%$]"
+      teleport: "&cVocê não tem dinheiro suficiente para realizar um teletransporte [%price%$]"
     confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aPerforming the command."
-      no-cmd: "&cThere is no command to confirm"
+      warn-onbuy: "[{\"text\":\"&aCommand %cmd% custo: %price%$.\n\"},{\"text\":\"&2&lClique aqui para confirmar\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aou digite &7/party confirm &apara usar isto\"}]"
+      confirmed: "&aExecutando o comando."
+      no-cmd: "&cNão há nenhum comando para confirmar"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
@@ -475,21 +475,21 @@ other:
   follow:
     #[Special tags]
     #=> %world%          = New world
-    following-world: "&7Following %player% in %world%"
+    following-world: "&7Seguindo %player% no %world%"
   fixed-parties:
-    default-join: "&bYou entered into %party%"
+    default-join: "&bVocê entrou na equipe %party%"
   join-leave:
-    server-join: "&b%player% is online!"
-    server-leave: "&7%player% is offline!"
+    server-join: "&b%player% está online!"
+    server-leave: "&7%player% está offline!"
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b========== &lAjuda do plugin Parties %page%/%maxpages% &r&b=========="
   footer: ""
-  perform-command: 'Perform the command'
+  perform-command: 'Realizar o comando'
   console-help:
-    header: 'You can only perform these commands:'
+    header: 'Você só pode usar estes comandos:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
@@ -516,23 +516,23 @@ help:
       spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      help: 'Show help pages'
-      accept: 'Accept a party request'
-      chat: 'Toggle party chat'
-      create: 'Create a new party'
-      delete: 'Delete the party'
-      deny: 'Deny a party request'
-      ignore: 'Add/remove/show ignored parties'
-      info: 'Show party information'
-      invite: 'Invite a player to your party'
-      kick: 'Kick a player from the party'
-      leave: 'Leave your party'
-      p: 'Send a message to the party'
-      rank: 'Change rank of the player'
-      reload: 'Reload Parties configuration files'
-      rename: 'Rename the party'
-      spy: 'Spy messages of other parties'
-      version: 'Show Parties information'
+      help: 'Mostra as páginas de ajuda'
+      accept: 'Aceita uma solicitação de equipe'
+      chat: 'Ativar/Desativar o chat de equipe'
+      create: 'Criar nova equipe'
+      delete: 'Excluir a equipe'
+      deny: 'Negar o pedido de equipe'
+      ignore: 'Adicionar/remover/mostrar equipe ignoradas'
+      info: 'Mostrar informações da equipe'
+      invite: 'Convida um jogador para sua equipe'
+      kick: 'Expulsa um jogador da equipe'
+      leave: 'Sair da equipe'
+      p: 'Escrever no chat de equipe'
+      rank: 'Alterar o cargo do jogador na equipe'
+      reload: 'Recarregar arquivos de configuração do plugin'
+      rename: 'Renomear a equipe'
+      spy: 'Mensagens de espionagem de outras equipes'
+      version: 'Mostrar informações da equipe'
   additional:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -554,23 +554,23 @@ help:
       tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      ask: 'Send a join request'
-      claim: 'Grant permissions to the claim'
-      color: 'Change party color'
-      createfixed: 'Create a new fixed party'
-      debug: 'Debug issues'
-      desc: 'Set/remove party description'
-      follow: 'Toggle follow leader'
-      home: 'Teleport to the party home'
-      join: 'Join into the party'
-      list: 'List of online parties'
-      motd: 'Set/remove party motd'
-      mute: 'Toggle notifications'
-      nickname: 'Set/remove member nickname'
-      password: 'Change party password'
-      protection: 'Toggle friendly fire protection'
-      sethome: 'Set/remove party home'
-      tag: 'Set/remove party tag'
-      teleport: 'Teleport your party to you'
+      ask: 'Enviar pedido para entrar na equipe'
+      claim: 'Concede permissão para uma reivindicação'
+      color: 'Alterar as cores da equipe'
+      createfixed: 'Criar uma nova equipe fixa'
+      debug: 'Depurar problemas'
+      desc: 'Definir/Remover descrição da equipe'
+      follow: 'Ativar modo ''seguir'' líder'
+      home: 'Teletransportar para a casa da equipe'
+      join: 'Junte-se à uma equipe'
+      list: 'Lista de equipes online'
+      motd: 'Definir/remover mensagem do dia da equipe'
+      mute: 'Ativar/desativar notificações'
+      nickname: 'Definir/remover apelido do membro'
+      password: 'Mudar senha'
+      protection: 'Alternar proteção contra fogo amigo'
+      sethome: 'Definir/remover a casa da equipe'
+      tag: 'Definir/Remover tag da equipe'
+      teleport: 'Teleporte sua equipe até você'
 dont-edit-this:
   version: 12
