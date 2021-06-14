@@ -428,7 +428,7 @@ other:
   follow:
     #[Special tags]
     #=> %server%          = New server
-    following-server: "&7Following %player% in %server%"
+    following-server: "&7Seguindo %player% no %server%"
   fixed-parties:
     default-join: "&bVocê entrou na equipe %party%"
   join-leave:
