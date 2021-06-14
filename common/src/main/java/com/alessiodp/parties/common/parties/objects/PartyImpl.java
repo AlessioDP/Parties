@@ -140,7 +140,7 @@ public abstract class PartyImpl implements Party {
 	 * @param name the name of the party
 	 * @param leader the leader of the party, null if fixed
 	 */
-	public void setup(@NonNull String name, @Nullable String leader) throws IllegalArgumentException {
+	public void setup(@Nullable String name, @Nullable String leader) throws IllegalArgumentException {
 		synchronized (this) {
 			this.name = name;
 			if (leader == null || leader.isEmpty() || leader.equals("fixed") || leader.equals("00000000-0000-0000-0000-000000000000")) {

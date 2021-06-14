@@ -209,7 +209,8 @@ public class SQLDispatcherTest {
 		
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class).deleteAll();
-		return ret;*/
+		return ret;
+		*/
 		return null;
 	}
 	

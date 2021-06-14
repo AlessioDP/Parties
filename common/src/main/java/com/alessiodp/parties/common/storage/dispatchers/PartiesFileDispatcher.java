@@ -19,9 +19,9 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.storage.file.PartiesFileUpgradeManager;
 import com.alessiodp.parties.common.storage.interfaces.IPartiesDatabase;
-import ninja.leaping.configurate.ConfigurationNode;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDatabase {
 	
@@ -61,111 +60,119 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	
 	@Override
 	public void updatePlayer(PartyPlayerImpl player) {
-		ConfigurationNode node = database.getRootNode().getNode("players", player.getPlayerUUID().toString());
+		ConfigurationNode node = database.getRootNode().node("players", player.getPlayerUUID().toString());
 		
-		if (player.isPersistent()) {
-			if (player.getPartyId() != null) {
-				node.getNode("party").setValue(player.getPartyId().toString());
-				node.getNode("rank").setValue(player.getRank());
-				node.getNode("nickname").setValue(player.getNickname());
+		try {
+			
+			if (player.isPersistent()) {
+				if (player.getPartyId() != null) {
+					node.node("party").set(player.getPartyId().toString());
+					node.node("rank").set(player.getRank());
+					node.node("nickname").set(player.getNickname());
+				} else {
+					node.node("party").set(null);
+					node.node("rank").set(null);
+					node.node("nickname").set(null);
+				}
+				
+				node.node("options", "chat").set(player.isChatParty() ? true : null);
+				node.node("options", "spy").set(player.isSpy() ? true : null);
+				node.node("options", "mute").set(player.isMuted() ? true : null);
 			} else {
-				node.getNode("party").setValue(null);
-				node.getNode("rank").setValue(null);
-				node.getNode("nickname").setValue(null);
+				node.set(null);
 			}
 			
-			node.getNode("options", "chat").setValue(player.isChatParty() ? true : null);
-			node.getNode("options", "spy").setValue(player.isSpy() ? true : null);
-			node.getNode("options", "mute").setValue(player.isMuted() ? true : null);
-		} else {
-			node.setValue(null);
+			save();
+		} catch (SerializationException ex) {
+			ex.printStackTrace();
 		}
-		
-		save();
 	}
 	
 	@Override
 	public PartyPlayerImpl getPlayer(UUID uuid) {
-		ConfigurationNode node = database.getRootNode().getNode("players", uuid.toString());
+		ConfigurationNode node = database.getRootNode().node("players", uuid.toString());
 		return getPlayerFromNode(node);
 	}
 	
 	@Override
 	public int getListPlayersInPartyNumber() {
-		return (int) database.getRootNode().getNode("players").getChildrenList().stream().filter(p -> !p.getNode("party").isEmpty()).count();
+		return (int) database.getRootNode().node("players").childrenList().stream().filter(p -> !p.node("party").empty()).count();
 	}
 	
 	@Override
 	public void updateParty(PartyImpl party) {
-		ConfigurationNode node = database.getRootNode().getNode("parties", party.getId().toString());
-		
-		// Save in map name -> id
-		ConfigurationNode mapNameToId = database.getRootNode().getNode("map-parties-by-name");
-		if (!node.getNode("name").isEmpty() && !node.getNode("name").getValue("").equals(CommonUtils.toLowerCase(party.getName())))
-			mapNameToId.removeChild(CommonUtils.toLowerCase(node.getNode("name").getString(""))); // Remove old name
-		mapNameToId.getNode(CommonUtils.toLowerCase(party.getName())).setValue(party.getId().toString());
-		
-		// Save party
-		node.getNode("name").setValue(party.getName());
-		node.getNode("tag").setValue(CommonUtils.getNoEmptyOr(party.getTag(), null));
-		node.getNode("description").setValue(CommonUtils.getNoEmptyOr(party.getDescription(), null));
-		node.getNode("motd").setValue(CommonUtils.getNoEmptyOr(party.getMotd(), null));
-		node.getNode("color").setValue(party.getColor() != null ? party.getColor().getName() : null);
-		node.getNode("kills").setValue(party.getKills() > 0 ? party.getKills() : null);
-		node.getNode("password").setValue(CommonUtils.getNoEmptyOr(party.getTag(), null));
-		node.getNode("protection").setValue(party.getProtection() ? true : null);
-		node.getNode("experience").setValue(party.getExperience() > 0 ? party.getExperience() : null);
-		node.getNode("follow").setValue(party.isFollowEnabled() ? null : false); // By default is true, so insert it only if false
-		node.getNode("home").setValue(party.getHomes().size() > 0 ? PartyHomeImpl.serializeMultiple(party.getHomes()) : null);
-		node.getNode("leader").setValue(party.getLeader() != null ? party.getLeader().toString() : null);
-		
-		List<String> lt = new ArrayList<>();
-		for (UUID uuid : party.getMembers())
-			lt.add(uuid.toString());
-		node.getNode("members").setValue(lt);
-		
 		try {
-			database.saveFile();
-		} catch (IOException ex) {
-			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_DB_FILE_ERROR, ex);
+			ConfigurationNode node = database.getRootNode().node("parties", party.getId().toString());
+			
+			// Save in map name -> id
+			if (party.getName() != null) {
+				ConfigurationNode mapNameToId = database.getRootNode().node("map-parties-by-name");
+				if (!node.node("name").empty() && !node.node("name").getString("").equals(CommonUtils.toLowerCase(party.getName())))
+					mapNameToId.removeChild(CommonUtils.toLowerCase(node.node("name").getString(""))); // Remove old name
+				mapNameToId.node(CommonUtils.toLowerCase(party.getName())).set(party.getId().toString());
+			}
+			
+			// Save party
+			node.node("name").set(party.getName());
+			node.node("tag").set(CommonUtils.getNoEmptyOr(party.getTag(), null));
+			node.node("description").set(CommonUtils.getNoEmptyOr(party.getDescription(), null));
+			node.node("motd").set(CommonUtils.getNoEmptyOr(party.getMotd(), null));
+			node.node("color").set(party.getColor() != null ? party.getColor().getName() : null);
+			node.node("kills").set(party.getKills() > 0 ? party.getKills() : null);
+			node.node("password").set(CommonUtils.getNoEmptyOr(party.getTag(), null));
+			node.node("protection").set(party.getProtection() ? true : null);
+			node.node("experience").set(party.getExperience() > 0 ? party.getExperience() : null);
+			node.node("follow").set(party.isFollowEnabled() ? null : false); // By default is true, so insert it only if false
+			node.node("home").set(party.getHomes().size() > 0 ? PartyHomeImpl.serializeMultiple(party.getHomes()) : null);
+			node.node("leader").set(party.getLeader() != null ? party.getLeader().toString() : null);
+			
+			List<String> lt = new ArrayList<>();
+			for (UUID uuid : party.getMembers())
+				lt.add(uuid.toString());
+			node.node("members").set(lt);
+			
+			save();
+		} catch (SerializationException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
 	@Override
 	public PartyImpl getParty(UUID id) {
-		ConfigurationNode node = database.getRootNode().getNode("parties", id.toString());
+		ConfigurationNode node = database.getRootNode().node("parties", id.toString());
 		return getPartyFromNode(node);
 	}
 	
 	@Override
 	public PartyImpl getPartyByName(String name) {
-		String partyId = database.getRootNode().getNode("map-parties-by-name", CommonUtils.toLowerCase(name)).getString();
+		String partyId = database.getRootNode().node("map-parties-by-name", CommonUtils.toLowerCase(name)).getString();
 		return partyId != null ? getParty(UUID.fromString(partyId)) : null;
 	}
 	
 	@Override
 	public void removeParty(PartyImpl party) {
-		// Only remove the party, players are handled by Party.removeParty()
-		database.getRootNode().getNode("parties", party.getId().toString()).setValue(null);
-		database.getRootNode().getNode("map-parties-by-name").removeChild(CommonUtils.toLowerCase(party.getName()));
-		
 		try {
-			database.saveFile();
-		} catch (IOException ex) {
-			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_DB_FILE_ERROR, ex);
+			// Only remove the party, players are handled by Party.removeParty()
+			database.getRootNode().node("parties", party.getId().toString()).set(null);
+			if (party.getName() != null)
+				database.getRootNode().node("map-parties-by-name").removeChild(CommonUtils.toLowerCase(party.getName()));
+			
+			save();
+		} catch (SerializationException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
 	@Override
 	public boolean existsParty(String name) {
-		return !database.getRootNode().getNode("map-parties-by-name", CommonUtils.toLowerCase(name)).isEmpty();
+		return !database.getRootNode().node("map-parties-by-name", CommonUtils.toLowerCase(name)).empty();
 	}
 	
 	@Override
 	public boolean existsTag(String tag) {
 		String lowerTag = CommonUtils.toLowerCase(tag);
-		for (ConfigurationNode confNode : database.getRootNode().getNode("parties").getChildrenMap().values()) {
-			if (CommonUtils.toLowerCase(confNode.getNode("tag").getString("")).equals(lowerTag)) {
+		for (ConfigurationNode confNode : database.getRootNode().node("parties").childrenMap().values()) {
+			if (CommonUtils.toLowerCase(confNode.node("tag").getString("")).equals(lowerTag)) {
 				return true;
 			}
 		}
@@ -174,7 +181,7 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	
 	@Override
 	public LinkedHashSet<PartyImpl> getListParties(PartiesDatabaseManager.ListOrder order, int limit, int offset) {
-		ConfigurationNode configurationNode = database.getRootNode().getNode("parties");
+		ConfigurationNode configurationNode = database.getRootNode().node("parties");
 		LinkedHashSet<PartyImpl> ret = new LinkedHashSet<>();
 		
 		List<String> lowerCaseBlacklist = new ArrayList<>();
@@ -208,37 +215,43 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	
 	private TreeSet<Pair<String, String>> listByName(ConfigurationNode node, List<String> lowerCaseBlacklist) {
 		TreeSet<Pair<String, String>> ret = new TreeSet<>((p1, p2) -> p1.getValue().compareTo(p2.getValue()));
-		for (ConfigurationNode confNode : node.getChildrenMap().values()) {
-			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.getNode("name").getString(""))))
-				ret.add(new Pair<>((String) confNode.getKey(), confNode.getNode("name").getString()));
+		for (ConfigurationNode confNode : node.childrenMap().values()) {
+			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.node("name").getString(""))))
+				ret.add(new Pair<>((String) confNode.key(), confNode.node("name").getString()));
 		}
 		return ret;
 	}
 	
 	private TreeSet<Pair<String, Integer>> listByMembers(ConfigurationNode node, List<String> lowerCaseBlacklist) {
-		Function<Object, String> f = o -> (String) o;
 		TreeSet<Pair<String, Integer>> ret = new TreeSet<>((p1, p2) -> p2.getValue().compareTo(p1.getValue()));
-		for (ConfigurationNode confNode : node.getChildrenMap().values()) {
-			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.getNode("name").getString(""))))
-				ret.add(new Pair<>((String) confNode.getKey(), confNode.getNode("members").getList(f).size()));
+		for (ConfigurationNode confNode : node.childrenMap().values()) {
+			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.node("name").getString("")))) {
+				try {
+					List<String> members = confNode.node("members").getList(String.class);
+					if (members != null)
+						ret.add(new Pair<>((String) confNode.key(), members.size()));
+				} catch (SerializationException ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
 		return ret;
 	}
 	
 	private TreeSet<Pair<String, Integer>> listByKills(ConfigurationNode node, List<String> lowerCaseBlacklist) {
 		TreeSet<Pair<String, Integer>> ret = new TreeSet<>((p1, p2) -> p2.getValue().compareTo(p1.getValue()));
-		for (ConfigurationNode confNode : node.getChildrenMap().values()) {
-			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.getNode("name").getString(""))))
-				ret.add(new Pair<>((String) confNode.getKey(), confNode.getNode("kills").getInt()));
+		for (ConfigurationNode confNode : node.childrenMap().values()) {
+			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.node("name").getString(""))))
+				ret.add(new Pair<>((String) confNode.key(), confNode.node("kills").getInt()));
 		}
 		return ret;
 	}
 	
 	private TreeSet<Pair<String, Double>> listByExperience(ConfigurationNode node, List<String> lowerCaseBlacklist) {
 		TreeSet<Pair<String, Double>> ret = new TreeSet<>((p1, p2) -> p2.getValue().compareTo(p1.getValue()));
-		for (ConfigurationNode confNode : node.getChildrenMap().values()) {
-			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.getNode("name").getString(""))))
-				ret.add(new Pair<>((String) confNode.getKey(), confNode.getNode("experience").getDouble()));
+		for (ConfigurationNode confNode : node.childrenMap().values()) {
+			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.node("name").getString(""))))
+				ret.add(new Pair<>((String) confNode.key(), confNode.node("experience").getDouble()));
 		}
 		return ret;
 	}
@@ -250,8 +263,8 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 		for (String b : ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES)
 			lowerCaseBlacklist.add(CommonUtils.toLowerCase(b));
 		
-		for (ConfigurationNode confNode : database.getRootNode().getNode("parties").getChildrenMap().values()) {
-			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.getNode("name").getString(""))))
+		for (ConfigurationNode confNode : database.getRootNode().node("parties").childrenMap().values()) {
+			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(confNode.node("name").getString(""))))
 				ret++;
 		}
 		return ret;
@@ -260,8 +273,8 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	@Override
 	public Set<PartyImpl> getListFixed() {
 		Set<PartyImpl> ret = new HashSet<>();
-		for (ConfigurationNode confNode : database.getRootNode().getNode("parties").getChildrenMap().values()) {
-			if (confNode.getNode("leader").getValue() == null) {
+		for (ConfigurationNode confNode : database.getRootNode().node("parties").childrenMap().values()) {
+			if (confNode.node("leader").isNull()) {
 				ret.add(getPartyFromNode(confNode));
 			}
 		}
@@ -270,15 +283,15 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	
 	private PartyPlayerImpl getPlayerFromNode(ConfigurationNode node) {
 		PartyPlayerImpl ret = null;
-		if (node != null && node.getKey() != null && node.getValue() != null) {
-			ret = ((PartiesPlugin) plugin).getPlayerManager().initializePlayer(UUID.fromString(node.getKey().toString()));
+		if (node != null && node.key() != null && !node.isNull()) {
+			ret = ((PartiesPlugin) plugin).getPlayerManager().initializePlayer(UUID.fromString(node.key().toString()));
 			ret.setAccessible(true);
-			if (!node.getNode("party").isEmpty()) {
-				ret.setPartyId(UUID.fromString(node.getNode("party").getString("")));
-				ret.setRank(node.getNode("rank").getInt());
+			if (!node.node("party").empty()) {
+				ret.setPartyId(UUID.fromString(node.node("party").getString("")));
+				ret.setRank(node.node("rank").getInt());
 			}
-			ret.setSpy(node.getNode("options", "spy").getBoolean(false));
-			ret.setMuted(node.getNode("options", "mute").getBoolean(false));
+			ret.setSpy(node.node("options", "spy").getBoolean(false));
+			ret.setMuted(node.node("options", "mute").getBoolean(false));
 			ret.setAccessible(false);
 		}
 		return ret;
@@ -286,31 +299,36 @@ public class PartiesFileDispatcher extends FileDispatcher implements IPartiesDat
 	
 	private PartyImpl getPartyFromNode(ConfigurationNode node) {
 		PartyImpl ret = null;
-		if (node != null && node.getKey() != null && node.getValue() != null) {
-			ret = ((PartiesPlugin) plugin).getPartyManager().initializeParty(UUID.fromString(node.getKey().toString()));
+		if (node != null && node.key() != null && !node.isNull()) {
+			ret = ((PartiesPlugin) plugin).getPartyManager().initializeParty(UUID.fromString(node.key().toString()));
 			
 			ret.setAccessible(true);
-			ret.setup(node.getNode("name").getString(), node.getNode("leader").getString());
-			ret.setDescription(node.getNode("tag").getString());
-			ret.setDescription(node.getNode("description").getString());
-			ret.setMotd(node.getNode("motd").getString());
-			ret.setColor(((PartiesPlugin) plugin).getColorManager().searchColorByName(node.getNode("color").getString()));
-			ret.setKills(node.getNode("kills").getInt(0));
-			ret.setPassword(node.getNode("password").getString());
-			ret.getHomes().addAll(PartyHomeImpl.deserializeMultiple(node.getNode("home").getString()));
-			ret.setProtection(node.getNode("protection").getBoolean(false));
-			ret.setExperience(node.getNode("experience").getDouble(0));
-			ret.setFollowEnabled(node.getNode("follow").getBoolean(true));
+			ret.setup(node.node("name").getString(), node.node("leader").getString());
+			ret.setDescription(node.node("tag").getString());
+			ret.setDescription(node.node("description").getString());
+			ret.setMotd(node.node("motd").getString());
+			ret.setColor(((PartiesPlugin) plugin).getColorManager().searchColorByName(node.node("color").getString()));
+			ret.setKills(node.node("kills").getInt(0));
+			ret.setPassword(node.node("password").getString());
+			ret.getHomes().addAll(PartyHomeImpl.deserializeMultiple(node.node("home").getString()));
+			ret.setProtection(node.node("protection").getBoolean(false));
+			ret.setExperience(node.node("experience").getDouble(0));
+			ret.setFollowEnabled(node.node("follow").getBoolean(true));
 			ret.setAccessible(false);
 			
 			// Members check
-			Function<Object, String> f = o -> (String) o;
-			for (String id : node.getNode("members").getList(f)) {
-				try {
-					ret.getMembers().add(UUID.fromString(id));
-				} catch (Exception ex) {
-					plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_DB_FILE_ERROR, ex);
+			try {
+				if (!node.node("members").isNull()) {
+					for (String id : node.node("members").getList(String.class)) {
+						try {
+							ret.getMembers().add(UUID.fromString(id));
+						} catch (Exception ex) {
+							plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_DB_FILE_ERROR, ex);
+						}
+					}
 				}
+			} catch (SerializationException ex) {
+				ex.printStackTrace();
 			}
 		}
 		return ret;

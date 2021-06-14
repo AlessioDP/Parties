@@ -41,7 +41,7 @@ public abstract class CommandP extends ADPMainCommand {
 			plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), commandSendMessage, args);
 		} else {
 			// Console
-			plugin.logConsole(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD), false);
+			plugin.logConsole(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD));
 		}
 		return true;
 	}

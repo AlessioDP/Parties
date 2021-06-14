@@ -130,9 +130,9 @@ public class FileDispatcherTest {
 		player.setMuted(true);
 		player.setAccessible(false);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("players").getChildrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 0);
 		dispatcher.updatePlayer(player);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("players").getChildrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 1);
 		
 		PartyPlayerImpl newPlayer = dispatcher.getPlayer(player.getPlayerUUID());
 		
@@ -143,7 +143,7 @@ public class FileDispatcherTest {
 		player.setMuted(false);
 		player.setAccessible(false);
 		dispatcher.updatePlayer(player);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("players").getChildrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 0);
 	}
 	
 	@Test
@@ -183,11 +183,11 @@ public class FileDispatcherTest {
 		player.setAccessible(false);
 		dispatcher.updatePlayer(player);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 0);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("map-parties-by-name").getChildrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 0);
 		dispatcher.updateParty(party);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 1);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("map-parties-by-name").getChildrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 1);
 		
 		PartyImpl newParty = dispatcher.getParty(party.getId());
 		
@@ -196,8 +196,8 @@ public class FileDispatcherTest {
 		// Party remove
 		if (remove) {
 			dispatcher.removeParty(party);
-			assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 0);
-			assertEquals(dispatcher.getDatabase().getRootNode().getNode("map-parties-by-name").getChildrenMap().size(), 0);
+			assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 0);
+			assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 0);
 		}
 	}
 	
@@ -300,11 +300,11 @@ public class FileDispatcherTest {
 		party.setDescription("description");
 		party.setAccessible(false);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 1);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("map-parties-by-name").getChildrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 1);
 		dispatcher.updateParty(party);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 2);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("map-parties-by-name").getChildrenMap().size(), 2);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 2);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 2);
 		
 		assertEquals(party, dispatcher.getParty(party.getId()));
 		assertEquals(party, dispatcher.getPartyByName(party.getName()));
@@ -316,8 +316,8 @@ public class FileDispatcherTest {
 	}
 	
 	private void populateWithParties(PartiesFileDispatcher dispatcher) {
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 0);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("players").getChildrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 0);
 		
 		insertOneParty(dispatcher, "test1", 1, 170, 200);
 		insertOneParty(dispatcher, "test2", 2, 180, 300);
@@ -328,8 +328,8 @@ public class FileDispatcherTest {
 		insertOneParty(dispatcher, "test7", 7, 150, 800);
 		insertOneParty(dispatcher, "test8", 8, 160, 100);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("parties").getChildrenMap().size(), 8);
-		assertEquals(dispatcher.getDatabase().getRootNode().getNode("players").getChildrenMap().size(), 36);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 8);
+		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 36);
 	}
 	
 	private void insertOneParty(PartiesFileDispatcher dispatcher, String partyName, int numberOfPlayers, int kills, double experience) {

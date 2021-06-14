@@ -9,7 +9,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	
-	<artifactId>output</artifactId>
+	<artifactId>output-java16</artifactId>
 	
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
@@ -18,7 +18,7 @@
 	<build>
 		<defaultGoal>package install</defaultGoal>
 		<directory>${basedir}/target</directory>
-		<finalName>${project.parent.name}-${project.version}</finalName>
+		<finalName>${project.parent.name}-${project.version}-J16</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -39,34 +39,6 @@
 						<relocation>
 							<pattern>net.byteflux.libby</pattern>
 							<shadedPattern>com.alessiodp.parties.core.common.addons.external.libby</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>org.spongepowered.configurate</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.configurate</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>com.zaxxer.hikari</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.hikari</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>org.jdbi</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.jdbi</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>org.mariadb</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.mariadb</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>com.mysql</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.mysql</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>org.postgresql</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.postgresql</shadedPattern>
-						</relocation>
-						<relocation>
-							<pattern>org.openjdk.nashorn</pattern>
-							<shadedPattern>com.alessiodp.parties.libs.nashorn</shadedPattern>
 						</relocation>
 					</relocations>
 					<filters>

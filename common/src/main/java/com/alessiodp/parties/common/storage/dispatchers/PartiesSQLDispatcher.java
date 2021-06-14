@@ -32,6 +32,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatabase {
@@ -100,6 +101,22 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 				break;
 			default:
 				// Unsupported storage type
+		}
+		return ret;
+	}
+	
+	@Override
+	protected TreeSet<String> lookupMigrateScripts() {
+		TreeSet<String> ret = super.lookupMigrateScripts();
+		switch (storageType) {
+			case MYSQL:
+			case SQLITE:
+				ret.add("0__Conversion.sql");
+			case MARIADB:
+			case POSTGRESQL:
+			case H2:
+				ret.add("1__Initial_database.sql");
+				break;
 		}
 		return ret;
 	}

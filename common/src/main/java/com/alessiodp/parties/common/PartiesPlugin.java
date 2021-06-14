@@ -50,7 +50,8 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	@Override
 	public void onDisabling() {
-		getPartyManager().disbandLoadedParties();
+		if (getPartyManager() != null) // Can be null if plugin failed to load
+			getPartyManager().disbandLoadedParties();
 	}
 	
 	@Override
