@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.1.4</version>
+	<version>3.1.5</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -74,7 +74,7 @@
 		<dev.lombok>1.18.20</dev.lombok>
 		
 		<!-- ADP Core Libraries -->
-		<libs.adpcore>1.6.1</libs.adpcore>
+		<libs.adpcore>1.6.2</libs.adpcore>
 		<!-- External libraries -->
 		<libs.configurate>4.1.1</libs.configurate>
 		<libs.h2>1.4.200</libs.h2>

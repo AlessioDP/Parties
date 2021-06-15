@@ -11,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class BukkitTeleportDelayTask extends TeleportDelayTask {
 	private final Player bukkitPlayer;
 	private final Location startingLocation;
@@ -29,8 +31,10 @@ public class BukkitTeleportDelayTask extends TeleportDelayTask {
 	
 	@Override
 	protected boolean canRunning() {
-		if (BukkitConfigParties.ADDITIONAL_TELEPORT_CANCEL_MOVING
-				&& bukkitPlayer.getLocation().distanceSquared(startingLocation) > distanceLimitSquared) {
+		if (BukkitConfigParties.ADDITIONAL_TELEPORT_CANCEL_MOVING && (
+				!Objects.equals(startingLocation.getWorld(), bukkitPlayer.getLocation().getWorld())
+				|| bukkitPlayer.getLocation().distanceSquared(startingLocation) > distanceLimitSquared
+		)) {
 			// Cancel teleport
 			cancel();
 			

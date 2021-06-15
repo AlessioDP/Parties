@@ -13,6 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class BukkitHomeDelayTask extends HomeDelayTask {
 	private final Player bukkitPlayer;
 	private final Location startingLocation;
@@ -40,8 +42,10 @@ public class BukkitHomeDelayTask extends HomeDelayTask {
 	
 	@Override
 	protected boolean canRunning() {
-		if (BukkitConfigParties.ADDITIONAL_HOME_CANCEL_MOVING
-				&& bukkitPlayer.getLocation().distanceSquared(startingLocation) > distanceLimitSquared) {
+		if (BukkitConfigParties.ADDITIONAL_HOME_CANCEL_MOVING && (
+				!Objects.equals(startingLocation.getWorld(), bukkitPlayer.getLocation().getWorld())
+				|| bukkitPlayer.getLocation().distanceSquared(startingLocation) > distanceLimitSquared
+		)) {
 			// Cancel teleport
 			cancel();
 			
