@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.2</version>
+    <version>3.1.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>output</artifactId>
@@ -39,7 +39,7 @@
               <shadedPattern>com.alessiodp.parties.core.common.addons.external.libby</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>ninja.leaping.configurate</pattern>
+              <pattern>org.spongepowered.configurate</pattern>
               <shadedPattern>com.alessiodp.parties.libs.configurate</shadedPattern>
             </relocation>
             <relocation>
@@ -63,11 +63,7 @@
               <shadedPattern>com.alessiodp.parties.libs.postgresql</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>org.reflections</pattern>
-              <shadedPattern>com.alessiodp.parties.libs.reflections</shadedPattern>
-            </relocation>
-            <relocation>
-              <pattern>jdk.nashorn</pattern>
+              <pattern>org.openjdk.nashorn</pattern>
               <shadedPattern>com.alessiodp.parties.libs.nashorn</shadedPattern>
             </relocation>
           </relocations>
@@ -96,12 +92,36 @@
       <artifactId>powermock-module-junit4</artifactId>
       <version>2.0.9</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>powermock-module-junit4-common</artifactId>
+          <groupId>org.powermock</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>junit</artifactId>
+          <groupId>junit</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>hamcrest-core</artifactId>
+          <groupId>org.hamcrest</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
       <version>2.0.9</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>powermock-api-support</artifactId>
+          <groupId>org.powermock</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mockito-core</artifactId>
+          <groupId>org.mockito</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <properties>
