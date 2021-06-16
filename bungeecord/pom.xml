@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.5</version>
+		<version>3.1.6</version>
 	</parent>
 	
 	<artifactId>parties-bungeecord</artifactId>
