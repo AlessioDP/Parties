@@ -83,7 +83,7 @@
 		<libs.mariadb>2.7.2</libs.mariadb>
 		<libs.mysql>8.0.25</libs.mysql>
 		<libs.nashorn>15.2</libs.nashorn>
-		<libs.postgresql>42.2.21</libs.postgresql>
+		<libs.postgresql>42.2.22</libs.postgresql>
 		<libs.slf4j>1.7.30</libs.slf4j>
 		<libs.sqlite>3.34.0</libs.sqlite>
 		
