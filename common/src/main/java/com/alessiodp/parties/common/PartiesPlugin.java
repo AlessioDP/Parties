@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common;
 
 import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.addons.ExternalLibraries;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.ConsoleColor;
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
@@ -23,6 +24,9 @@ import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.common.utils.MessageUtils;
 import com.alessiodp.parties.common.utils.PartiesPlayerUtils;
 import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class PartiesPlugin extends ADPPlugin {
 	// Plugin fields
@@ -138,4 +142,16 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	public abstract String getServerName(PartyPlayerImpl player);
 	public abstract String getServerId(PartyPlayerImpl player);
+	
+	@Override
+	public List<ExternalLibraries.Usage> getLibrariesUsages() {
+		return Arrays.asList(
+				ExternalLibraries.Usage.H2,
+				ExternalLibraries.Usage.MYSQL,
+				ExternalLibraries.Usage.MARIADB,
+				ExternalLibraries.Usage.POSTGRESQL,
+				ExternalLibraries.Usage.SQLITE,
+				ExternalLibraries.Usage.SCRIPT
+		);
+	}
 }

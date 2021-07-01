@@ -186,7 +186,7 @@ public abstract class PartyImpl implements Party {
 		// Send sync packet + event
 		futureAfterUpdate.thenRun(() -> sendPacketCreate(creator)).exceptionally(ADPScheduler.exceptionally());
 		
-		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_CREATE, getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_CREATE, getName() != null ? getName() : "_"), true);
 	}
 	
 	@Override
@@ -216,7 +216,7 @@ public abstract class PartyImpl implements Party {
 			sendPacketDelete(cause, kicked, commandSender);
 		});
 		
-		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE, getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_DELETE, getName() != null ? getName() : "_"), true);
 	}
 	
 	@Override
@@ -240,7 +240,7 @@ public abstract class PartyImpl implements Party {
 		// Send sync packet + event
 		futureAfterUpdate.thenRun(() -> sendPacketRename(oldName, getName(), player, isAdmin)).exceptionally(ADPScheduler.exceptionally());
 		
-		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RENAME, oldName, getName()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RENAME, oldName, getName() != null ? getName() : "_"), true);
 	}
 	
 	@Override

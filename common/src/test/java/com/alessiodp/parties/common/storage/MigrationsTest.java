@@ -1,7 +1,6 @@
 package com.alessiodp.parties.common.storage;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.addons.ADPLibraryManager;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.user.OfflineUser;
@@ -12,7 +11,7 @@ import com.alessiodp.parties.common.parties.PartyManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.storage.dispatchers.PartiesFileDispatcher;
+import com.alessiodp.parties.common.storage.dispatchers.PartiesYAMLDispatcher;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -59,11 +58,6 @@ public class MigrationsTest {
 		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> getClass().getClassLoader().getResourceAsStream(mock.getArgument(0)));
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
 		
-		// Mock class loaders
-		ADPLibraryManager mockLibraryManager = mock(ADPLibraryManager.class);
-		when(mockLibraryManager.getIsolatedClassLoaderOf(any())).thenReturn(getClass().getClassLoader());
-		when(mockPlugin.getLibraryManager()).thenReturn(mockLibraryManager);
-		
 		// Mock managers for player/party initialization
 		ColorManager mockColorManager = mock(ColorManager.class);
 		when(mockPlugin.getColorManager()).thenReturn(mockColorManager);
@@ -98,7 +92,7 @@ public class MigrationsTest {
 	public void testDatabase2_6_X() throws IOException {
 		// YAML
 		ConfigMain.STORAGE_SETTINGS_YAML_DBFILE = "database_2_6_X.yml";
-		PartiesFileDispatcher fileDispatcher = new PartiesFileDispatcher(mockPlugin, StorageType.YAML);
+		PartiesYAMLDispatcher fileDispatcher = new PartiesYAMLDispatcher(mockPlugin);
 		prepareDatabase(ConfigMain.STORAGE_SETTINGS_YAML_DBFILE);
 		database2_6_X_YAML(fileDispatcher);
 		
@@ -109,7 +103,7 @@ public class MigrationsTest {
 		database2_6_X_SQL(dispatcher);
 	}
 	
-	private void database2_6_X_YAML(PartiesFileDispatcher dispatcher) {
+	private void database2_6_X_YAML(PartiesYAMLDispatcher dispatcher) {
 		dispatcher.init();
 		
 		PartyImpl party = dispatcher.getPartyByName("test");

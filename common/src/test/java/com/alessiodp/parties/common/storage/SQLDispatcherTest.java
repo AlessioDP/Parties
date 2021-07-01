@@ -1,7 +1,6 @@
 package com.alessiodp.parties.common.storage;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.addons.ADPLibraryManager;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
@@ -104,11 +103,6 @@ public class SQLDispatcherTest {
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
 		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
-		
-		// Mock class loaders
-		ADPLibraryManager mockLibraryManager = mock(ADPLibraryManager.class);
-		when(mockLibraryManager.getIsolatedClassLoaderOf(any())).thenReturn(getClass().getClassLoader());
-		when(mockPlugin.getLibraryManager()).thenReturn(mockLibraryManager);
 		
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 	}

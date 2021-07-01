@@ -11,7 +11,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.storage.dispatchers.PartiesFileDispatcher;
+import com.alessiodp.parties.common.storage.dispatchers.PartiesYAMLDispatcher;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import com.alessiodp.parties.common.storage.interfaces.IPartiesDatabase;
 
@@ -29,7 +29,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 		IDatabaseDispatcher ret = null;
 		switch (storageType) {
 			case YAML:
-				ret = new PartiesFileDispatcher(plugin, storageType);
+				ret = new PartiesYAMLDispatcher(plugin);
 				break;
 			case MARIADB:
 			case MYSQL:

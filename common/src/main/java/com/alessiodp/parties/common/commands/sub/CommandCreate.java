@@ -156,12 +156,12 @@ public class CommandCreate extends PartiesSubCommand {
 				subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CREATEDFIXED, party);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CREATE_FIXED,
-						sender.getName(), party.getName()), true);
+						sender.getName(), party.getName() != null ? party.getName() : "_"), true);
 			} else {
 				subCommand.sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CREATED, party);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_CREATE,
-						sender.getName(), party.getName()), true);
+						sender.getName(), party.getName() != null ? party.getName() : "_"), true);
 			}
 			
 			ret = party;

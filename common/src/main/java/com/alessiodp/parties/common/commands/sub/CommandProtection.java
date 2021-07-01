@@ -88,7 +88,7 @@ public class CommandProtection extends PartiesSubCommand {
 		sendMessage(sender, partyPlayer, protection ? Messages.ADDCMD_PROTECTION_ON : Messages.ADDCMD_PROTECTION_OFF);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PROTECTION,
-				partyPlayer.getName(), party.getName(), protection), true);
+				partyPlayer.getName(), party.getName() != null ? party.getName() : "_", protection), true);
 	}
 	
 	@Override

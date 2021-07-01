@@ -102,7 +102,7 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 		performTeleport(party, partyPlayer, delay);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_TELEPORT,
-				partyPlayer.getName(), party.getName()), true);
+				partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 	}
 	
 	// Perform the teleport command and handle cooldown

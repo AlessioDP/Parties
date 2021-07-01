@@ -85,6 +85,7 @@ public class CommandPassword extends PartiesSubCommand {
 		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 			// Remove command
 			isRemove = true;
+			password = null;
 		} else {
 			// Normal command
 			if (!PasswordUtils.isValid(commandData.getArgs()[1])) {
@@ -105,13 +106,13 @@ public class CommandPassword extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_REMOVED);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PASSWORD_REM,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_PASSWORD_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_PASSWORD_BROADCAST, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_PASSWORD,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		}
 	}
 	

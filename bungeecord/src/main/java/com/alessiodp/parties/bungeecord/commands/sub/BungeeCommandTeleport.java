@@ -108,7 +108,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 				plugin.getEventManager().callEvent(partiesPostTeleportEvent);
 			} else
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_TELEPORTEVENT_DENY,
-						player.getName(), party.getName()), true);
+						player.getName(), party.getName() != null ? party.getName() : "_"), true);
 		}
 	}
 }

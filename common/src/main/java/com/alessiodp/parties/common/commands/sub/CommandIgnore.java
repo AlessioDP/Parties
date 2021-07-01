@@ -114,7 +114,7 @@ public class CommandIgnore extends PartiesSubCommand {
 							.replace("%party%", ignoredParty));
 					
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_IGNORE_START,
-							partyPlayer.getName(), party.getName()), true);
+							partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 				} else {
 					// Add
 					partyPlayer.getIgnoredParties().add(party.getId());
@@ -122,7 +122,7 @@ public class CommandIgnore extends PartiesSubCommand {
 							.replace("%party%", ignoredParty));
 					
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_IGNORE_STOP,
-							partyPlayer.getName(), party.getName()), true);
+							partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 				}
 			}
 		}

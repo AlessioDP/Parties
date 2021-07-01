@@ -92,7 +92,7 @@ public class CommandLeave extends PartiesSubCommand {
 						party.broadcastMessage(Messages.MAINCMD_LEAVE_LEADER_CHANGED, newLeader);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE_LEADER_CHANGE,
-								partyPlayer.getName(), party.getName(), newLeader.getName()), true);
+								partyPlayer.getName(), party.getName() != null ? party.getName() : "_", newLeader.getName()), true);
 					}
 				}
 				
@@ -110,7 +110,7 @@ public class CommandLeave extends PartiesSubCommand {
 						party.delete(DeleteCause.LEAVE, partyPlayer, partyPlayer);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE,
-								partyPlayer.getName(), party.getName(), true), true);
+								partyPlayer.getName(), party.getName() != null ? party.getName() : "_", true), true);
 					} else
 						plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
 				}

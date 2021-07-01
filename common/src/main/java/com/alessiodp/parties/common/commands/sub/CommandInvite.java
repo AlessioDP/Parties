@@ -202,7 +202,7 @@ public class CommandInvite extends PartiesSubCommand {
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_INVITE,
-				partyPlayer.getName(), invitedPartyPlayer.getName(), party.getName(), isRevoke), true);
+				partyPlayer.getName(), invitedPartyPlayer.getName() != null ? party.getName() : "_", party.getName(), isRevoke), true);
 	}
 	
 	@Override

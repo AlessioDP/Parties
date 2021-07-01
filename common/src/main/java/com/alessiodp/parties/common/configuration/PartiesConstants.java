@@ -190,16 +190,17 @@ public class PartiesConstants {
 	public static final String DEBUG_PLAYER_PARTY_JOIN = "Added player %s into party %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_PARTY_LEAVE = "Removed player %s from party %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_RELOADED = "Reloaded player %s";
-	public static final String DEBUG_PLAYER_CLEANUP = "Cleaning up player %s";
-	public static final String DEBUG_PLAYER_GET_DATABASE = "Got player %s from database (party: %s)";
-	public static final String DEBUG_PLAYER_GET_LIST = "Got player %s from list (party: %s)";
-	public static final String DEBUG_PLAYER_GET_NEW = "Got a new player %s";
+	public static final String DEBUG_PLAYER_CLEANUP = "Cleaning up player %s (p-uuid: %s)";
+	public static final String DEBUG_PLAYER_GET_DATABASE = "Got player %s from database (party: %s) (p-uuid: %s)";
+	public static final String DEBUG_PLAYER_GET_LIST = "Got player %s from list (party: %s) (p-uuid: %s)";
+	public static final String DEBUG_PLAYER_GET_NEW = "Got a new player %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_JOIN = "%s entered in the game (party: %s)";
 	public static final String DEBUG_PLAYER_JOIN_DEFAULTJOIN = "%s joined without party, default join into party %s";
 	public static final String DEBUG_PLAYER_JOIN_DEFAULTFAIL = "Failed to load default party %s";
 	
 	public static final String DEBUG_PLUGIN_BUNGEECORD_MODE = "BungeeCord mode enabled";
 	public static final String DEBUG_PLUGIN_RELOADING = "Reloading plugin...";
+	public static final String DEBUG_SYNC_DIFFERENT_STORAGE = "Found a different storage in BungeeCord (%s), you are using %s";
 	
 	public static final String DEBUG_TASK_ASK_COOLDOWN_EXPIRED = "Ask cooldown expired for player %s";
 	public static final String DEBUG_TASK_CHAT_EXPIRED = "Chat cooldown expired for player %s";

@@ -22,7 +22,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class EssentialsChatHandler implements Listener {
 	@NonNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "EssentialsChat";
-	private final Pattern PATTERN = Pattern.compile("\\{parties_([a-z_]+)}", Pattern.CASE_INSENSITIVE);
+	private final Pattern PATTERN = Pattern.compile("\\{parties_([a-z0-9_]+)}", Pattern.CASE_INSENSITIVE);
 	
 	public void init() {
 		if (Bukkit.getPluginManager().getPlugin(ADDON_NAME) != null) {

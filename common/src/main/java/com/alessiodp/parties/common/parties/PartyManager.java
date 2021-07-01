@@ -110,7 +110,7 @@ public abstract class PartyManager {
 			party =  plugin.getDatabaseManager().getParty(id);
 			addPartyToCache(party);
 			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RELOADED, party.getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RELOADED, party.getName() != null ? party.getName() : "_"), true);
 			return true;
 		}
 		return false;
@@ -125,10 +125,10 @@ public abstract class PartyManager {
 				// Load from db
 				ret = plugin.getDatabaseManager().getParty(id);
 				if (ret != null) {
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_DATABASE, ret.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_DATABASE, ret.getName() != null ? ret.getName() : "_"), true);
 				}
 			} else
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_LIST, ret.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_LIST, ret.getName() != null ? ret.getName() : "_"), true);
 		}
 		
 		if (ret != null) {
@@ -146,10 +146,10 @@ public abstract class PartyManager {
 				// Load from db
 				ret = plugin.getDatabaseManager().getPartyByName(name);
 				if (ret != null) {
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_DATABASE, ret.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_DATABASE, ret.getName() != null ? ret.getName() : "_"), true);
 				}
 			} else
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_LIST, ret.getName()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_GET_LIST, ret.getName() != null ? ret.getName() : "_"), true);
 		}
 		
 		if (ret != null) {

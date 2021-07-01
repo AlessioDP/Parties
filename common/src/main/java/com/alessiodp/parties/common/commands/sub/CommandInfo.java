@@ -115,6 +115,6 @@ public class CommandInfo extends PartiesSubCommand {
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_INFO,
-				sender.getName(), party.getName()), true);
+				sender.getName(), party.getName() != null ? party.getName() : "_"), true);
 	}
 }

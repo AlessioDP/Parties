@@ -81,7 +81,7 @@ public class BungeeCommandHome extends CommandHome {
 				plugin.getEventManager().callEvent(partiesPostHomeEvent);
 			} else
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_HOMEEVENT_DENY,
-						player.getName(), party.getName()), true);
+						player.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
 			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_HOME_NO_SERVER, party.getId().toString()));
 		}

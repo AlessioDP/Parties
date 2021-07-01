@@ -91,7 +91,7 @@ public class CommandFollow extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_FOLLOW_OFF);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_FOLLOW,
-				partyPlayer.getName(), follow, party.getName()), true);
+				partyPlayer.getName(), follow, party.getName() != null ? party.getName() : "_"), true);
 	}
 	
 	@Override

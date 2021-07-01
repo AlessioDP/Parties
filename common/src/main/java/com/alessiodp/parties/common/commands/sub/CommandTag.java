@@ -150,13 +150,13 @@ public class CommandTag extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_TAG_REMOVED);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_TAG_REM,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_TAG_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_TAG_BROADCAST, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_TAG,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		}
 	}
 	

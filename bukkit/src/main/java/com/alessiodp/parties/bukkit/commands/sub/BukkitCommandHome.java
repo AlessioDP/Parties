@@ -78,6 +78,6 @@ public class BukkitCommandHome extends CommandHome {
 			});
 		} else
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_HOMEEVENT_DENY,
-					player.getName(), party.getName()), true);
+					player.getName(), party.getName() != null ? party.getName() : "_"), true);
 	}
 }

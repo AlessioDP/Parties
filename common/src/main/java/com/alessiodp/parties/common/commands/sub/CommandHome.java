@@ -269,7 +269,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_HOME,
-				partyPlayer.getName(), party.getName(), CommonUtils.getNoEmptyOr(partyHome.getName(), "default")), true);
+				partyPlayer.getName(), party.getName() != null ? party.getName() : "_", CommonUtils.getNoEmptyOr(partyHome.getName(), "default")), true);
 	}
 	
 

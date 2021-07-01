@@ -55,6 +55,9 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 	public byte[] makeConfigsPacket() {
 		ByteArrayDataOutput output = ByteStreams.newDataOutput();
 		
+		// Storage check
+		output.writeUTF(ConfigMain.STORAGE_TYPE_DATABASE);
+		
 		// Experience
 		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE);
 		output.writeUTF(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
@@ -89,6 +92,11 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 	
 	public void parseConfigsPacket(byte[] raw) {
 		ByteArrayDataInput input = ByteStreams.newDataInput(raw);
+		
+		// Storage check
+		String storage = input.readUTF();
+		if (!storage.equalsIgnoreCase(ConfigMain.STORAGE_TYPE_DATABASE))
+			plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_SYNC_DIFFERENT_STORAGE, storage, ConfigMain.STORAGE_TYPE_DATABASE), true);
 		
 		// Experience
 		ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE = input.readBoolean();

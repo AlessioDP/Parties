@@ -193,7 +193,7 @@ public class CommandKick extends PartiesSubCommand {
 						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK_LEADER_CHANGE,
-								sender.getName(), kickedPp.getName(), party.getName(), newLeader.getName()), true);
+								sender.getName(), kickedPp.getName(), party.getName() != null ? party.getName() : "_", newLeader.getName()), true);
 					}
 				}
 				
@@ -210,7 +210,7 @@ public class CommandKick extends PartiesSubCommand {
 						party.delete(DeleteCause.KICK, kickedPp, partyPlayer);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
-								sender.getName(), kickedPp.getName(), party.getName(), otherParty, true), true);
+								sender.getName(), kickedPp.getName(), party.getName() != null ? party.getName() : "_", otherParty, true), true);
 					} else
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
 				}
@@ -227,7 +227,7 @@ public class CommandKick extends PartiesSubCommand {
 				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST, kickedPp);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_KICK,
-						sender.getName(), kickedPp.getName(), party.getName(), otherParty, false), true);
+						sender.getName(), kickedPp.getName(), party.getName() != null ? party.getName() : "_", otherParty, false), true);
 			}
 		} else
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId().toString()), true);

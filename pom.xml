@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.1.6</version>
+	<version>3.1.7</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -49,7 +49,6 @@
 		<module>bungeecord</module>
 		<module>common</module>
 		<module>output</module>
-		<module>output-java16</module>
 	</modules>
 	
 	<properties>
@@ -73,28 +72,14 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.20</dev.lombok>
 		
-		<!-- ADP Core Libraries -->
-		<libs.adpcore>1.6.3</libs.adpcore>
-		<!-- External libraries -->
-		<libs.configurate>4.1.1</libs.configurate>
+		<libs.adpcore>1.6.4</libs.adpcore>
+		<!-- ADP Core Test Libraries -->
 		<libs.h2>1.4.200</libs.h2>
 		<libs.hikaricp>4.0.3</libs.hikaricp>
-		<libs.jdbi>3.20.1</libs.jdbi>
 		<libs.mariadb>2.7.2</libs.mariadb>
 		<libs.mysql>8.0.25</libs.mysql>
-		<libs.nashorn>15.2</libs.nashorn>
-		<libs.postgresql>42.2.21</libs.postgresql>
-		<libs.slf4j>1.7.30</libs.slf4j>
+		<libs.postgresql>42.2.22</libs.postgresql>
 		<libs.sqlite>3.34.0</libs.sqlite>
-		
-		<!-- Sub external libraries -->
-		<libs.asm>7.3.1</libs.asm>
-		<libs.jdbi.antlr>3.5.2</libs.jdbi.antlr>
-		<libs.jdbi.antlr4>4.9</libs.jdbi.antlr4>
-		<libs.jdbi.caffeine>2.9.1</libs.jdbi.caffeine>
-		<libs.jdbi.geantyref>1.3.11</libs.jdbi.geantyref>
-		<libs.jdbi.st4>4.3.1</libs.jdbi.st4>
-		<!-- End ADP Core Libraries -->
 		
 		<!-- External plugins -->
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
@@ -102,7 +87,7 @@
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.5.2</libs.lastLoginApi>
+		<libs.lastLoginApi>1.5.3</libs.lastLoginApi>
 		<libs.levelPoints>da42a0e292</libs.levelPoints>
 		<libs.mmoCore>1.7.1</libs.mmoCore>
 		<libs.mythicMobs>4.12.0</libs.mythicMobs>

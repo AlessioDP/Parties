@@ -122,7 +122,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	public void removeFromParty(boolean saveToDatabase) {
 		UUID oldPartyId = partyId;
 		updateValue(() -> {
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_CLEANUP, getName()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_CLEANUP, getName(), getPlayerUUID()), true);
 			rank = ConfigParties.RANK_SET_DEFAULT;
 			partyId = null;
 			nickname = null;

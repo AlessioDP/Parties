@@ -1,6 +1,6 @@
-# / ===================================================== \
-# |    This is the main configuration file of Parties     |
-# \ ===================================================== /
+# / ================================================================ \
+# |    This is the main BungeeCord configuration file of Parties     |
+# \ ================================================================ /
 #
 # For any problem be sure to:
 # - Read the entire documentation on: https://alessiodp.com/docs/parties
@@ -180,7 +180,7 @@ additional:
   placeholders:
     customs:
       example1: "[%color_code%%party%] "
-      example2: "[%rank_chat% %party%] "
+      example2: "[%player_rank_chat% %party%] "
       example3: "&b%party% &7- "
 
 

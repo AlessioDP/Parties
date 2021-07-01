@@ -131,9 +131,9 @@ public class CommandJoin extends PartiesSubCommand {
 			party.broadcastMessage(Messages.ADDCMD_JOIN_PLAYERJOINED, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_JOIN,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_JOINEVENT_DENY,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 	}
 }

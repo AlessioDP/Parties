@@ -168,7 +168,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 			}
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_SETHOME_REM,
-					partyPlayer.getName(), party.getName(), CommonUtils.getNoEmptyOr(selectedHome, "default")), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_", CommonUtils.getNoEmptyOr(selectedHome, "default")), true);
 		} else {
 			getLocationAndSave(partyPlayer, party, selectedHome);
 			
@@ -176,7 +176,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 			party.broadcastMessage(Messages.ADDCMD_SETHOME_BROADCAST, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_SETHOME,
-					partyPlayer.getName(), party.getName(), CommonUtils.getNoEmptyOr(selectedHome, "default")), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_", CommonUtils.getNoEmptyOr(selectedHome, "default")), true);
 		}
 	}
 	

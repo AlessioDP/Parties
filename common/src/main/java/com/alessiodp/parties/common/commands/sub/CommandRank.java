@@ -228,7 +228,7 @@ public class CommandRank extends PartiesSubCommand {
 				.replace("%rank_chat%", rank.getChat()), promotedPp);
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_RANK,
-				sender.getName(), promotedPp.getName(), party.getName(), oldRank, rank.getLevel(), otherParty), true);
+				sender.getName(), promotedPp.getName(), party.getName() != null ? party.getName() : "_", oldRank, rank.getLevel(), otherParty), true);
 	}
 	
 	@Override

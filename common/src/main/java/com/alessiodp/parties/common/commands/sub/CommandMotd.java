@@ -111,13 +111,13 @@ public class CommandMotd extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_REMOVED);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_MOTD,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_MOTD_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_MOTD_BROADCAST, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_MOTD_REM,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		}
 	}
 	

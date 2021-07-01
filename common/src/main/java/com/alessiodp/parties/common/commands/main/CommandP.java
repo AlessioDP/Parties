@@ -137,7 +137,7 @@ public abstract class CommandP extends ADPMainCommand {
 			
 			if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
-						partyPlayer.getName(), party.getName(), message), true);
+						partyPlayer.getName(), party.getName() != null ? party.getName() : "_", message), true);
 		}
 	}
 }

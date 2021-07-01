@@ -82,7 +82,7 @@ public abstract class PlayerManager {
 			if (ret != null) {
 				// Get player from online list
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_LIST, ret.getName(),
-						ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
+						ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none", ret.getPlayerUUID()), true);
 			} else {
 				// Get player from database
 				ret = plugin.getDatabaseManager().getPlayer(uuid);
@@ -90,10 +90,10 @@ public abstract class PlayerManager {
 				// Load new player
 				if (ret == null) {
 					ret = initializePlayer(uuid);
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_NEW, ret.getName()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_NEW, ret.getName(), ret.getPlayerUUID()), true);
 				} else {
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GET_DATABASE, ret.getName(),
-							ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none"), true);
+							ret.getPartyId() != null ? (ret.getPartyId().toString()) : "none", ret.getPlayerUUID()), true);
 				}
 			}
 		}

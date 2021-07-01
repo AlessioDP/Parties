@@ -108,6 +108,6 @@ public class CommandAsk extends PartiesSubCommand {
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_ASK,
-				partyPlayer.getName(), party.getName()), true);
+				partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 	}
 }

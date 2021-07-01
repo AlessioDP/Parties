@@ -6,28 +6,6 @@ version: ${plugin.version}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
 softdepend: [BanManager, dynmap, GriefPrevention, LastLoginAPI, LevelPoints, MMOCore, MythicMobs, PlaceholderAPI, ProtocolLib, SkillAPI, Skript, Vault]
-libraries:
-  - org.spongepowered:configurate-yaml:${libs.configurate}
-  - org.spongepowered:configurate-core:${libs.configurate}
-  - com.h2database:h2:${libs.h2}
-  - com.zaxxer:HikariCP:${libs.hikaricp}
-  - org.jdbi:jdbi3-core:${libs.jdbi}
-  - org.jdbi:jdbi3-stringtemplate4:${libs.jdbi}
-  - org.jdbi:jdbi3-sqlobject:${libs.jdbi}
-  - org.mariadb.jdbc:mariadb-java-client:${libs.mariadb}
-  - mysql:mysql-connector-java:${libs.mysql}
-  - org.openjdk.nashorn:nashorn-core:${libs.nashorn}
-  - org.postgresql:postgresql:${libs.postgresql}
-  - org.slf4j:slf4j-api:${libs.slf4j}
-  - org.slf4j:slf4j-simple:${libs.slf4j}
-  - org.xerial:sqlite-jdbc:${libs.sqlite}
-  - org.ow2.asm:asm:${libs.asm}
-  - org.ow2.asm:asm-util:${libs.asm}
-  - org.antlr:antlr-runtime:${libs.jdbi.antlr}
-  - org.antlr:antlr4-runtime:${libs.jdbi.antlr4}
-  - com.github.ben-manes.caffeine:caffeine:${libs.jdbi.caffeine}
-  - io.leangen.geantyref:geantyref:${libs.jdbi.geantyref}
-  - org.antlr:ST4:${libs.jdbi.st4}
 permissions:
   parties.user.accept:
     description: Allow access to /party accept

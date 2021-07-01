@@ -74,7 +74,7 @@ public abstract class ChatListener {
 						
 						if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT) {
 							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
-									partyPlayer.getName(), party.getName(), finalMessage), true);
+									partyPlayer.getName(), party.getName() != null ? party.getName() : "_", finalMessage), true);
 						}
 					}
 				} else

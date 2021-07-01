@@ -118,13 +118,13 @@ public class CommandDesc extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_REMOVED);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DESC_REM,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_DESC_CHANGED);
 			party.broadcastMessage(Messages.ADDCMD_DESC_BROADCAST, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DESC,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		}
 	}
 	

@@ -139,7 +139,7 @@ public class CommandDeny extends PartiesSubCommand {
 						partyAskRequest.deny(partyPlayer);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DENY_ASK,
-								partyPlayer.getName(), partyAskRequest.getAsker().getName(), partyAskRequest.getParty().getName()), true);
+								partyPlayer.getName(), partyAskRequest.getAsker().getName(), partyAskRequest.getParty().getName() != null ? partyAskRequest.getParty().getName() : "_"), true);
 						return;
 					}
 				}
@@ -235,7 +235,7 @@ public class CommandDeny extends PartiesSubCommand {
 			partyInvite.deny();
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DENY_INVITE,
-					partyPlayer.getName(), partyInvite.getParty().getName()), true);
+					partyPlayer.getName(), partyInvite.getParty().getName() != null ? partyInvite.getParty().getName() : "_"), true);
 		}
 	}
 }

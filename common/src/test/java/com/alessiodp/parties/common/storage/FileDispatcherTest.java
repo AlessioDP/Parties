@@ -1,10 +1,8 @@
 package com.alessiodp.parties.common.storage;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.addons.ADPLibraryManager;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
-import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -15,7 +13,7 @@ import com.alessiodp.parties.common.parties.PartyManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.common.storage.dispatchers.PartiesFileDispatcher;
+import com.alessiodp.parties.common.storage.dispatchers.PartiesYAMLDispatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,6 +32,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -93,16 +92,11 @@ public class FileDispatcherTest {
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
 		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
-		
-		// Mock class loaders
-		ADPLibraryManager mockLibraryManager = mock(ADPLibraryManager.class);
-		when(mockLibraryManager.getIsolatedClassLoaderOf(any())).thenReturn(getClass().getClassLoader());
-		when(mockPlugin.getLibraryManager()).thenReturn(mockLibraryManager);
 	}
 	
-	private PartiesFileDispatcher getFileDispatcher() {
+	private PartiesYAMLDispatcher getFileDispatcher() {
 		ConfigMain.STORAGE_SETTINGS_YAML_DBFILE = "database.yaml";
-		PartiesFileDispatcher ret = new PartiesFileDispatcher(mockPlugin, StorageType.YAML);
+		PartiesYAMLDispatcher ret = new PartiesYAMLDispatcher(mockPlugin);
 		ret.init();
 		assertFalse(ret.isFailed());
 		return ret;
@@ -111,12 +105,12 @@ public class FileDispatcherTest {
 	
 	@Test
 	public void testPlayer() {
-		PartiesFileDispatcher dispatcher = getFileDispatcher();
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
 		player(dispatcher);
 		dispatcher.stop();
 	}
 	
-	private void player(PartiesFileDispatcher dispatcher) {
+	private void player(PartiesYAMLDispatcher dispatcher) {
 		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
 		PartyPlayerImpl mockPlayer = mock(player.getClass());
 		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
@@ -130,9 +124,9 @@ public class FileDispatcherTest {
 		player.setMuted(true);
 		player.setAccessible(false);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 0);
+		assertNull(dispatcher.getDatabase().getYaml().getConfigurationSection("players"));
 		dispatcher.updatePlayer(player);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("players").getKeys(false).size(), 1);
 		
 		PartyPlayerImpl newPlayer = dispatcher.getPlayer(player.getPlayerUUID());
 		
@@ -143,17 +137,17 @@ public class FileDispatcherTest {
 		player.setMuted(false);
 		player.setAccessible(false);
 		dispatcher.updatePlayer(player);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 0);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("players").getKeys(false).size(), 0);
 	}
 	
 	@Test
 	public void testParty() {
-		PartiesFileDispatcher dispatcher = getFileDispatcher();
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
 		party(dispatcher, true);
 		dispatcher.stop();
 	}
 	
-	private void party(PartiesFileDispatcher dispatcher, boolean remove) {
+	private void party(PartiesYAMLDispatcher dispatcher, boolean remove) {
 		PartyImpl party = initializeParty(UUID.randomUUID());
 		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
 		
@@ -183,11 +177,11 @@ public class FileDispatcherTest {
 		player.setAccessible(false);
 		dispatcher.updatePlayer(player);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 0);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 0);
+		assertNull(dispatcher.getDatabase().getYaml().getConfigurationSection("parties"));
+		assertNull(dispatcher.getDatabase().getYaml().getConfigurationSection("map-parties-by-name"));
 		dispatcher.updateParty(party);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 1);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("parties").getKeys(false).size(), 1);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("map-parties-by-name").getKeys(false).size(), 1);
 		
 		PartyImpl newParty = dispatcher.getParty(party.getId());
 		
@@ -196,20 +190,20 @@ public class FileDispatcherTest {
 		// Party remove
 		if (remove) {
 			dispatcher.removeParty(party);
-			assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 0);
-			assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 0);
+			assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("parties").getKeys(false).size(), 0);
+			assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("map-parties-by-name").getKeys(false).size(), 0);
 		}
 	}
 	
 	@Test
 	public void testExists() {
-		PartiesFileDispatcher dispatcher = getFileDispatcher();
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
 		party(dispatcher, false);
 		exists(dispatcher);
 		dispatcher.stop();
 	}
 	
-	private void exists(PartiesFileDispatcher dispatcher) {
+	private void exists(PartiesYAMLDispatcher dispatcher) {
 		assertTrue(dispatcher.existsParty("test"));
 		assertFalse(dispatcher.existsParty("test2"));
 	}
@@ -224,7 +218,7 @@ public class FileDispatcherTest {
 		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
 		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mock.getArgument(0)));
 		
-		PartiesFileDispatcher dispatcher = getFileDispatcher();
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
 		populateWithParties(dispatcher);
 		listPartiesNumber(dispatcher);
 		listPartiesByName(dispatcher);
@@ -234,13 +228,13 @@ public class FileDispatcherTest {
 		dispatcher.stop();
 	}
 	
-	private void listPartiesNumber(PartiesFileDispatcher dispatcher) {
+	private void listPartiesNumber(PartiesYAMLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
 		
 		assertEquals(7, dispatcher.getListPartiesNumber());
 	}
 	
-	private void listPartiesByName(PartiesFileDispatcher dispatcher) {
+	private void listPartiesByName(PartiesYAMLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.NAME, 100, 0));
 		
@@ -251,7 +245,7 @@ public class FileDispatcherTest {
 		
 	}
 	
-	private void listPartiesByMembers(PartiesFileDispatcher dispatcher) {
+	private void listPartiesByMembers(PartiesYAMLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test7");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, 100, 0));
 		
@@ -262,7 +256,7 @@ public class FileDispatcherTest {
 		
 	}
 	
-	private void listPartiesByKills(PartiesFileDispatcher dispatcher) {
+	private void listPartiesByKills(PartiesYAMLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test3");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.KILLS, 100, 0));
 		
@@ -273,7 +267,7 @@ public class FileDispatcherTest {
 		
 	}
 	
-	private void listPartiesByExperience(PartiesFileDispatcher dispatcher) {
+	private void listPartiesByExperience(PartiesYAMLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test6");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, 100, 0));
 		
@@ -286,13 +280,13 @@ public class FileDispatcherTest {
 	
 	@Test
 	public void testListFixed() {
-		PartiesFileDispatcher dispatcher = getFileDispatcher();
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
 		party(dispatcher, false);
 		listFixed(dispatcher);
 		dispatcher.stop();
 	}
 	
-	private void listFixed(PartiesFileDispatcher dispatcher) {
+	private void listFixed(PartiesYAMLDispatcher dispatcher) {
 		PartyImpl party = initializeParty(UUID.randomUUID());
 		
 		party.setAccessible(true);
@@ -300,11 +294,11 @@ public class FileDispatcherTest {
 		party.setDescription("description");
 		party.setAccessible(false);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 1);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 1);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("parties").getKeys(false).size(), 1);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("map-parties-by-name").getKeys(false).size(), 1);
 		dispatcher.updateParty(party);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 2);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("map-parties-by-name").childrenMap().size(), 2);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("parties").getKeys(false).size(), 2);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("map-parties-by-name").getKeys(false).size(), 2);
 		
 		assertEquals(party, dispatcher.getParty(party.getId()));
 		assertEquals(party, dispatcher.getPartyByName(party.getName()));
@@ -315,9 +309,9 @@ public class FileDispatcherTest {
 		assertEquals(party, list.iterator().next());
 	}
 	
-	private void populateWithParties(PartiesFileDispatcher dispatcher) {
-		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 0);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 0);
+	private void populateWithParties(PartiesYAMLDispatcher dispatcher) {
+		assertNull(dispatcher.getDatabase().getYaml().getConfigurationSection("parties"));
+		assertNull(dispatcher.getDatabase().getYaml().getConfigurationSection("players"));
 		
 		insertOneParty(dispatcher, "test1", 1, 170, 200);
 		insertOneParty(dispatcher, "test2", 2, 180, 300);
@@ -328,11 +322,11 @@ public class FileDispatcherTest {
 		insertOneParty(dispatcher, "test7", 7, 150, 800);
 		insertOneParty(dispatcher, "test8", 8, 160, 100);
 		
-		assertEquals(dispatcher.getDatabase().getRootNode().node("parties").childrenMap().size(), 8);
-		assertEquals(dispatcher.getDatabase().getRootNode().node("players").childrenMap().size(), 36);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("parties").getKeys(false).size(), 8);
+		assertEquals(dispatcher.getDatabase().getYaml().getConfigurationSection("players").getKeys(false).size(), 36);
 	}
 	
-	private void insertOneParty(PartiesFileDispatcher dispatcher, String partyName, int numberOfPlayers, int kills, double experience) {
+	private void insertOneParty(PartiesYAMLDispatcher dispatcher, String partyName, int numberOfPlayers, int kills, double experience) {
 		PartyImpl mockParty = mock(PartyImpl.class);
 		doReturn(CompletableFuture.completedFuture(null)).when(mockParty).updateParty();
 		PartyPlayerImpl mockPlayer = mock(PartyPlayerImpl.class);

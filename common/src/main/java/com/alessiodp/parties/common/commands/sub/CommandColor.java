@@ -114,13 +114,13 @@ public class CommandColor extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_COLOR_REMOVED);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_COLOR_REM,
-					partyPlayer.getName(), party.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_COLOR_CHANGED, party);
 			party.broadcastMessage(Messages.ADDCMD_COLOR_BROADCAST, partyPlayer);
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_COLOR,
-					partyPlayer.getName(), party.getName(), color.getName()), true);
+					partyPlayer.getName(), party.getName() != null ? party.getName() : "_", color.getName()), true);
 		}
 	}
 	
