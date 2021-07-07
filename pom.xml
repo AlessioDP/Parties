@@ -78,7 +78,7 @@
 		<libs.hikaricp>4.0.3</libs.hikaricp>
 		<libs.mariadb>2.7.2</libs.mariadb>
 		<libs.mysql>8.0.25</libs.mysql>
-		<libs.postgresql>42.2.22</libs.postgresql>
+		<libs.postgresql>42.2.23</libs.postgresql>
 		<libs.sqlite>3.34.0</libs.sqlite>
 		
 		<!-- External plugins -->
