@@ -94,7 +94,7 @@
 		<libs.placeholderApi>2.10.9</libs.placeholderApi>
 		<libs.protocolLib>4.4.0</libs.protocolLib>
 		<libs.skript>2.5.3</libs.skript>
-		<libs.vaultApi>1.7</libs.vaultApi>
+		<libs.vaultApi>1.7.1</libs.vaultApi>
 	</properties>
 	
 	<build>
