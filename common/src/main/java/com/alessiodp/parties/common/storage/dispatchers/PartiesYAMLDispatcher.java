@@ -164,7 +164,6 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 	
 	@Override
 	public boolean existsTag(String tag) {
-		String lowerTag = CommonUtils.toLowerCase(tag);
 		ConfigurationSection node = database.getYaml().getConfigurationSection("parties");
 		for (String key : node.getKeys(false)) {
 			if (node.getString(key + ".tag", null) != null && tag.equalsIgnoreCase(node.getString(key + ".tag"))) {
