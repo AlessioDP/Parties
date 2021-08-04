@@ -121,15 +121,15 @@ main-commands:
     #=> %list_rank_RANK_number%    = The number of players of that rank
     #=> %list_rank_RANK_online%    = Online players of that rank
     #=> %list_rank_RANK_online_number%    = The number of online players of that rank
-    #=> %online%              = List online players
-    #=> %online_number%       = Number of online players
+    #=> %members_online%              = List online players
+    #=> %members_online_number%       = Number of online players
     content:
       - "&b============ &lInfos zu %party% &r&b============"
       - "&b&lBeschreibung&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
       - "&bMitglieder&7: %list_rank_member%"
-      - "&bOnline players&7: %online_number%"
+      - "&bOnline players&7: %members_online_number%"
   invite:
     sent: "&bDu hast %player% in deine Gruppe eingeladen"
     player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
@@ -187,7 +187,7 @@ main-commands:
     #=> %seconds%   = Remaining time in seconds
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
     censored: "&cDie Nachricht enthält einen zensierten Wortlaut!"
-    muted: "&cYou are muted!"
+    muted: "&cDu bist gemutet!"
   rank:
     #[Special tags]
     #=> %rank_name%   = Rank wrote by the player
@@ -320,7 +320,7 @@ additional-commands:
     teleported: "&7Teleportiere zum Gruppenhome"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
+    teleport-in: "&7Du wirst in %seconds% Sekunden teleportiert..."
     teleport-denied: "&7Teleportation ist hier nicht möglich"
     teleport-waiting: "&cDu wartest bereits auf einen Teleport!"
     no-home: "&cEs wurde noch kein Gruppenhome gesetzt"
@@ -346,7 +346,7 @@ additional-commands:
     header: "&b=========== &lListe der Gruppen Online &r&b==========="
     footer: "&b================= &lSeite %page% von %maxpages% &r&b================="
     no-one: "&7keine"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %online_number%&7] %desc%"}]'
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_number%&7] %desc%"}]'
     invalid-order: '&cInvalid order type'
   motd:
     changed: "&bDas Motto der Gruppe wurde geändert"
@@ -378,7 +378,7 @@ additional-commands:
       own: "&bDein Nickname ist %player_nickname%"
       own-none: "&bYou do not have any nickname"
       other: "&bDer Nickname von %player% ist %player_nickname%"
-      other-none: "&b%player% does not have any nickname"
+      other-none: "&b%player% hat keinen Nicknamen"
     invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
     censored: "&cThe nickname contains censored words!"
   password:
@@ -526,4 +526,4 @@ help:
       tag: 'Gruppen-Tag setzen / entfernen'
       teleport: 'Teleportiere deine Party zu dir'
 dont-edit-this:
-  version: 10
+  version: 11
