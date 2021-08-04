@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.alessiodp.lastloginapi</groupId>
       <artifactId>lastloginapi-api</artifactId>
-      <version>1.5.3</version>
+      <version>1.5.2</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.25</version>
+      <version>8.0.26</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
