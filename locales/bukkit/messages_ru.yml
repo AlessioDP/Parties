@@ -26,16 +26,16 @@ parties:
     player-not-found: "&cThe player %player% has not been found"
     player-not-in-party: "&c%player% не в партии"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aВключено'
+    disabled: '&cОтключено'
+    toggled-on: '&aВкл'
+    toggled-off: '&cВыкл'
+    word-yes: '&aДа'
+    word-no: '&cНет'
+    empty: '&8Пусто'
+    none: '&8Ничего'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
+    wrong-message: '&cНеверный синтакс: Напишите &7/%syntax%'
     color: 'color'
     description: 'desc'
     experience: 'experience'
