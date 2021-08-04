@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.bukkit.party;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.interfaces.Party;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPartyLevelUpEvent extends BukkitPartiesEvent implements IPartyLevelUpEvent {
 	private final Party party;
@@ -15,7 +15,7 @@ public class BukkitPartiesPartyLevelUpEvent extends BukkitPartiesEvent implement
 		this.newLevel = newLevel;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;

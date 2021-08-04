@@ -136,7 +136,7 @@ public abstract class CommandP extends ADPMainCommand {
 				((PartiesPlugin) plugin).getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
 			
 			if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_P,
+				plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_CMD_P,
 						partyPlayer.getName(), party.getName() != null ? party.getName() : "_", message), true);
 		}
 	}

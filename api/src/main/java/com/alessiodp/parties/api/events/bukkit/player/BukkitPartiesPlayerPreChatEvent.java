@@ -5,7 +5,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPreChatEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Cancellable;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPlayerPreChatEvent extends BukkitPartiesEvent implements IPlayerPreChatEvent, Cancellable {
 	private boolean cancelled;
@@ -20,19 +20,19 @@ public class BukkitPartiesPlayerPreChatEvent extends BukkitPartiesEvent implemen
 		this.message = message;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public String getMessage() {
 		return message;

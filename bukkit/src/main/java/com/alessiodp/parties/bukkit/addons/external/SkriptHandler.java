@@ -21,7 +21,7 @@ public class SkriptHandler {
 			BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT = false;
 			if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
 				try {
-					if (!loaded) {
+					if (!loaded && Skript.isAcceptRegistrations()) {
 						SkriptAddon addon = Skript.registerAddon((JavaPlugin) plugin.getBootstrap());
 						addon.setLanguageFileDirectory("bukkit/skript");
 						addon.loadClasses("com.alessiodp.parties.bukkit.addons.external.skript");
@@ -29,10 +29,11 @@ public class SkriptHandler {
 					}
 					
 					BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT = true;
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 				}
-				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			}
 		}
 	}

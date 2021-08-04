@@ -5,8 +5,8 @@ import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BungeePartiesPartyPreDeleteEvent extends BungeePartiesEvent implements IPartyPreDeleteEvent {
 	private boolean cancelled;
@@ -22,13 +22,13 @@ public class BungeePartiesPartyPreDeleteEvent extends BungeePartiesEvent impleme
 		this.commandSender = commandSender;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public DeleteCause getCause() {
 		return cause;

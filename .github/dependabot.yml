@@ -8,3 +8,10 @@ updates:
   open-pull-requests-limit: 10
   ignore:
       - dependency-name: "com.google.errorprone:javac"
+      - dependency-name: "org.yaml:snakeyaml"
+      - dependency-name: "com.h2database:h2"
+      - dependency-name: "com.zaxxer:HikariCP"
+      - dependency-name: "org.mariadb.jdbc:mariadb-java-client"
+      - dependency-name: "mysql:mysql-connector-java"
+      - dependency-name: "org.postgresql:postgresql"
+      - dependency-name: "org.xerial:sqlite-jdbc"

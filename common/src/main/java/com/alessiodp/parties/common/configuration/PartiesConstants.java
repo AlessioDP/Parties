@@ -15,12 +15,12 @@ public class PartiesConstants {
 	
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG_MAIN = 13;
+	public static final int VERSION_BUKKIT_CONFIG_MAIN = 14;
 	public static final int VERSION_BUKKIT_CONFIG_PARTIES = 8;
-	public static final int VERSION_BUKKIT_MESSAGES = 12;
-	public static final int VERSION_BUNGEE_CONFIG_MAIN = 12;
+	public static final int VERSION_BUKKIT_MESSAGES = 13;
+	public static final int VERSION_BUNGEE_CONFIG_MAIN = 13;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 7;
-	public static final int VERSION_BUNGEE_MESSAGES = 10;
+	public static final int VERSION_BUNGEE_MESSAGES = 11;
 	public static final int VERSION_DATABASE_YAML = 2;
 	
 	
@@ -144,6 +144,7 @@ public class PartiesConstants {
 	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong Parties packet from channel '%s'";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PARTY = "Received a Parties packet, updated party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER = "Received a Parties packet, updated player %s";
+	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PARTY = "Received a Parties packet, loaded party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PLAYER = "Received a Parties packet, loaded player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY = "Received a Parties packet, unloaded party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER = "Received a Parties packet, unloaded player %s";

@@ -5,8 +5,8 @@ import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BungeePartiesPlayerPreLeaveEvent extends BungeePartiesEvent implements IPlayerPreLeaveEvent {
 	private boolean cancelled;
@@ -22,19 +22,19 @@ public class BungeePartiesPlayerPreLeaveEvent extends BungeePartiesEvent impleme
 		this.kicker = kicker;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public LeaveCause getCause() {
 		return cause;

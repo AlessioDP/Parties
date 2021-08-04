@@ -1,7 +1,7 @@
 package com.alessiodp.parties.api.interfaces;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface PartyInvite {
 	/**
@@ -9,14 +9,14 @@ public interface PartyInvite {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the invited player
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull PartyPlayer getInvitedPlayer();
+	@NotNull PartyPlayer getInvitedPlayer();
 	
 	/**
 	 * Get who sent the invite request

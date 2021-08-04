@@ -185,7 +185,12 @@ public class CommandList extends PartiesSubCommand {
 		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
 		LinkedHashSet<Pair<Integer, PartyImpl>> parties = new LinkedHashSet<>();
 		if (orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS) {
-			Set<PartyImpl> onlineParties = new LinkedHashSet<>(new TreeSet<PartyImpl>(Comparator.comparingInt(p -> p.getOnlineMembers(false).size())));
+			Set<PartyImpl> onlineParties = new TreeSet<>(Comparator
+					.comparing(p -> ((PartyImpl) p).getOnlineMembers(false).size())
+					.reversed()
+					.thenComparing(p -> ((PartyImpl) p).getName())
+					.thenComparing(p -> ((PartyImpl) p).getId()));
+			
 			((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().forEach((party) -> {
 				if (party.getName() != null && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getName()) && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getId().toString())) {
 					onlineParties.add(party);

@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BungeePartiesPartyPostRenameEvent extends BungeePartiesEvent implements IPartyPostRenameEvent {
 	private final Party party;
@@ -22,7 +22,7 @@ public class BungeePartiesPartyPostRenameEvent extends BungeePartiesEvent implem
 		this.isAdmin = isAdmin;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;

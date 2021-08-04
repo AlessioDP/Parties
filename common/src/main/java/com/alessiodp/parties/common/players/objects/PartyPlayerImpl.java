@@ -23,7 +23,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -156,7 +157,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	}
 	
 	@Override
-	public PartyAskRequest askToJoin(@org.checkerframework.checker.nullness.qual.NonNull Party party, boolean sendMessages) {
+	public PartyAskRequest askToJoin(@NotNull Party party, boolean sendMessages) {
 		return ((PartyImpl) party).askToJoin(this, sendMessages);
 	}
 	

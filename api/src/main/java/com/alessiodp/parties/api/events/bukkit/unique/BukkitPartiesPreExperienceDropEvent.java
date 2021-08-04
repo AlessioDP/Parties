@@ -5,7 +5,7 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.entity.Entity;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPreExperienceDropEvent extends BukkitPartiesEvent implements Cancellable {
 	private boolean cancelled;
@@ -30,7 +30,7 @@ public class BukkitPartiesPreExperienceDropEvent extends BukkitPartiesEvent impl
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	public PartyPlayer getPlayer() {
 		return player;
 	}
@@ -40,7 +40,7 @@ public class BukkitPartiesPreExperienceDropEvent extends BukkitPartiesEvent impl
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	public Party getParty() {
 		return party;
 	}
@@ -50,7 +50,7 @@ public class BukkitPartiesPreExperienceDropEvent extends BukkitPartiesEvent impl
 	 *
 	 * @return The killed {@link Entity}
 	 */
-	@NonNull
+	@NotNull
 	public Entity getKilledEntity() {
 		return killedEntity;
 	}

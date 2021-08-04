@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	/**
@@ -13,7 +13,7 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	PartyPlayer getPartyPlayer();
 	
 	/**
@@ -21,7 +21,7 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 	
 	/**
@@ -29,7 +29,7 @@ public interface IPlayerPostLeaveEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@code LeaveCause} of the event
 	 */
-	@NonNull
+	@NotNull
 	LeaveCause getCause();
 	
 	/**

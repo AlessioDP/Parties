@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreInviteEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BungeePartiesPlayerPreInviteEvent extends BungeePartiesEvent implements IPlayerPreInviteEvent {
 	private boolean cancelled;
@@ -19,7 +19,7 @@ public class BungeePartiesPlayerPreInviteEvent extends BungeePartiesEvent implem
 		this.party = party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getInvitedPlayer() {
 		return invitedPlayer;
@@ -31,7 +31,7 @@ public class BungeePartiesPlayerPreInviteEvent extends BungeePartiesEvent implem
 		return inviter;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;

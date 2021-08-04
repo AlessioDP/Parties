@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.common.party;
 import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface IPartyPreCreateEvent extends PartiesEvent, Cancellable {
 	/**

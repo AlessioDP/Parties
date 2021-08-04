@@ -342,41 +342,30 @@ public class PartiesPlaceholderTest {
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
-	public void testPlaceholderListPlayersByNumber() {
-		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_players_1");
+	public void testPlaceholderListMembersByNumber() {
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_members_1");
 		
-		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
-		assertEquals(player1.getName(), placeholder.formatPlaceholder(null, party1, "list_players_1"));
+		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER, placeholder);
+		assertEquals(player1.getName(), placeholder.formatPlaceholder(null, party1, "list_members_1"));
 		
-		placeholder = PartiesPlaceholder.getPlaceholder("list_players_2");
+		placeholder = PartiesPlaceholder.getPlaceholder("list_members_2");
 		
-		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
-		assertEquals(player2.getName(), placeholder.formatPlaceholder(null, party1, "list_players_2"));
+		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER, placeholder);
+		assertEquals(player2.getName(), placeholder.formatPlaceholder(null, party1, "list_members_2"));
 		
 		// No more parties
-		placeholder = PartiesPlaceholder.getPlaceholder("list_players_3");
+		placeholder = PartiesPlaceholder.getPlaceholder("list_members_3");
 		
-		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER, placeholder);
-		assertEquals("", placeholder.formatPlaceholder(null, party1, "list_players_3"));
+		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER, placeholder);
+		assertEquals("", placeholder.formatPlaceholder(null, party1, "list_members_3"));
 		
 		// Placeholder
-		placeholder = PartiesPlaceholder.getPlaceholder("list_players_1_player_id");
+		placeholder = PartiesPlaceholder.getPlaceholder("list_members_1_player_id");
 		
-		assertEquals(PartiesPlaceholder.LIST_PLAYERS_NUMBER_PLACEHOLDER, placeholder);
+		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER_PLACEHOLDER, placeholder);
 		// Party.getMembers() returns a Set. The order is random, just check if the UUID is related to player1 or player2
-		String result = placeholder.formatPlaceholder(null, party1, "list_players_1_player_id");
+		String result = placeholder.formatPlaceholder(null, party1, "list_members_1_player_id");
 		assertTrue(result.equals(player1.getPlayerUUID().toString()) || result.equals(player2.getPlayerUUID().toString()));
-	}
-	
-	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
-	public void testPlaceholderListPlayersTotal() {
-		when(mockDatabaseManager.getListPlayersInPartyNumber()).thenReturn(4);
-		
-		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_players_total");
-		
-		assertEquals(PartiesPlaceholder.LIST_PLAYERS_TOTAL, placeholder);
-		assertEquals("4", placeholder.formatPlaceholder(player1, party1, "list_players_total"));
 	}
 	
 	@Test
@@ -409,36 +398,31 @@ public class PartiesPlaceholderTest {
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
-	public void testOnline() {
+	public void testMembers() {
 		Messages.PARTIES_LIST_EMPTY = "empty";
 		Messages.PARTIES_LIST_ONLINEFORMAT = "player";
+		Messages.PARTIES_LIST_OFFLINEFORMAT = "offlineplayer";
 		Messages.PARTIES_LIST_SEPARATOR = ",";
 		
 		MessageUtils messageUtils = mock(MessageUtils.class);
 		when(mockPlugin.getMessageUtils()).thenReturn(messageUtils);
 		when(messageUtils.convertPlaceholders(any(), any(), any())).then(args -> args.getArgument(0));
 		
-		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("online");
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("members");
 		
-		assertEquals(PartiesPlaceholder.ONLINE, placeholder);
-		assertEquals(Messages.PARTIES_LIST_EMPTY, placeholder.formatPlaceholder(player1, party1, "online"));
-		
-		party1.addOnlineMember(player1);
-		assertEquals(Messages.PARTIES_LIST_ONLINEFORMAT, placeholder.formatPlaceholder(player1, party1, "online"));
+		assertEquals(PartiesPlaceholder.MEMBERS, placeholder);
+		assertEquals(Messages.PARTIES_LIST_OFFLINEFORMAT + Messages.PARTIES_LIST_SEPARATOR + Messages.PARTIES_LIST_OFFLINEFORMAT, placeholder.formatPlaceholder(player1, party1, "members"));
 		
 		
 	}
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
-	public void testOnlineNumber() {
-		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("online_number");
+	public void testMembersNumber() {
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("members_number");
 		
-		assertEquals(PartiesPlaceholder.ONLINE_NUMBER, placeholder);
-		assertEquals("0", placeholder.formatPlaceholder(player1, party1, "online_number"));
-		
-		party1.addOnlineMember(player1);
-		assertEquals("1", placeholder.formatPlaceholder(player1, party1, "online_number"));
+		assertEquals(PartiesPlaceholder.MEMBERS_NUMBER, placeholder);
+		assertEquals("2", placeholder.formatPlaceholder(player1, party1, "members_number"));
 	}
 	
 	@Test

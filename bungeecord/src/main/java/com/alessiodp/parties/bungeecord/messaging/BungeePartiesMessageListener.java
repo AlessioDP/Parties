@@ -78,7 +78,7 @@ public class BungeePartiesMessageListener extends BungeeMessageListener {
 					}
 					break;
 				case REQUEST_CONFIGS:
-					if (ConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
 						((BungeePartiesConfigurationManager) plugin.getConfigurationManager()).makeConfigsSync();
 						
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_REQUEST_CONFIGS, true);

@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.bungee.party;
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.interfaces.Party;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeePartiesPartyLevelUpEvent extends BungeePartiesEvent implements IPartyLevelUpEvent {
 	private final Party party;
@@ -14,7 +14,7 @@ public class BungeePartiesPartyLevelUpEvent extends BungeePartiesEvent implement
 		this.newLevel = newLevel;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;

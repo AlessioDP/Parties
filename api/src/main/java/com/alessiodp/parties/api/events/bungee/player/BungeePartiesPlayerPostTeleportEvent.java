@@ -5,7 +5,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import net.md_5.bungee.api.config.ServerInfo;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeePartiesPlayerPostTeleportEvent extends BungeePartiesEvent implements IPlayerPostTeleportEvent {
 	private final PartyPlayer player;
@@ -18,13 +18,13 @@ public class BungeePartiesPlayerPostTeleportEvent extends BungeePartiesEvent imp
 		this.destination = destination;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
@@ -35,7 +35,7 @@ public class BungeePartiesPlayerPostTeleportEvent extends BungeePartiesEvent imp
 	 *
 	 * @return Returns the {@link ServerInfo}
 	 */
-	@NonNull
+	@NotNull
 	public ServerInfo getDestination() {
 		return destination;
 	}

@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IPlayerPreInviteEvent extends PartiesEvent, Cancellable {
 	/**
@@ -13,7 +13,7 @@ public interface IPlayerPreInviteEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	PartyPlayer getInvitedPlayer();
 	
 	/**
@@ -29,7 +29,7 @@ public interface IPlayerPreInviteEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 	
 }

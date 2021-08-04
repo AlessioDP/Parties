@@ -6,7 +6,7 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Cancellable;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPlayerPreHomeEvent extends BukkitPartiesEvent implements IPlayerPreHomeEvent, Cancellable {
 	private boolean cancelled;
@@ -21,20 +21,21 @@ public class BukkitPartiesPlayerPreHomeEvent extends BukkitPartiesEvent implemen
 		this.home = home;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
+	@NotNull
 	@Override
-	public @NonNull PartyHome getHome() {
+	public PartyHome getHome() {
 		return home;
 	}
 	

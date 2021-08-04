@@ -45,10 +45,18 @@ parties:
     server-name: ServerName
     server-id: server
     # Experts only!
-    # The plugin will sync some options with BungeeCord Parties
+    # The plugin need to keep data in sync with BungeeCord Parties
     # You can disable it to increase performances a bit
-    # Do not do that if you are using: exp system
-    config-sync: true
+    # If you do not use Parties in Spigot servers, you can disable them
+    packets:
+      # These options will stop to handle data from bungee server
+      load-players: true
+      load-parties: true
+      player-sync: true
+      party-sync: true
+      config-sync: true
+      chat: true
+      sounds: true
 
 
 # / =============================== \
@@ -432,4 +440,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 13
+  version: 14

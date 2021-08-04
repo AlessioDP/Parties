@@ -204,7 +204,7 @@ public class CooldownManager {
 			homeCooldown.put(player, unixNow);
 			
 			plugin.getScheduler().scheduleAsyncLater(() -> {
-				homeCooldown.remove(player);
+				resetHomeCooldown(player);
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_EXPIRED, player.toString()), true);
 			}, seconds, TimeUnit.SECONDS);

@@ -5,7 +5,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPreTeleportEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import net.md_5.bungee.api.config.ServerInfo;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeePartiesPlayerPreTeleportEvent extends BungeePartiesEvent implements IPlayerPreTeleportEvent {
 	private boolean cancelled;
@@ -19,13 +19,13 @@ public class BungeePartiesPlayerPreTeleportEvent extends BungeePartiesEvent impl
 		this.destination = destination;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
@@ -36,7 +36,7 @@ public class BungeePartiesPlayerPreTeleportEvent extends BungeePartiesEvent impl
 	 *
 	 * @return Returns the {@link ServerInfo}
 	 */
-	@NonNull
+	@NotNull
 	public ServerInfo getDestination() {
 		return destination;
 	}

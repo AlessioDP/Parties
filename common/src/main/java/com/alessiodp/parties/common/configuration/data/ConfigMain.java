@@ -31,8 +31,20 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@ConfigOption(path = "parties.debug-command")
 	public static boolean		PARTIES_DEBUG_COMMAND;
 	
-	@ConfigOption(path = "parties.bungeecord.config-sync")
-	public static boolean		PARTIES_BUNGEECORD_CONFIG_SYNC;
+	@ConfigOption(path = "parties.bungeecord.packets.load-players")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_LOAD_PLAYERS;
+	@ConfigOption(path = "parties.bungeecord.packets.load-parties")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_LOAD_PARTIES;
+	@ConfigOption(path = "parties.bungeecord.packets.player-sync")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_PLAYER_SYNC;
+	@ConfigOption(path = "parties.bungeecord.packets.party-sync")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC;
+	@ConfigOption(path = "parties.bungeecord.packets.config-sync")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC;
+	@ConfigOption(path = "parties.bungeecord.packets.chat")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_CHAT;
+	@ConfigOption(path = "parties.bungeecord.packets.sounds")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_SOUNDS;
 	
 	
 	// Storage settings

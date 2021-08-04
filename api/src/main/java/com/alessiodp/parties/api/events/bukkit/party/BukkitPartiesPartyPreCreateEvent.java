@@ -4,7 +4,7 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Cancellable;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 // Cancellable due to Skript event support
 public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent implements IPartyPreCreateEvent, Cancellable {

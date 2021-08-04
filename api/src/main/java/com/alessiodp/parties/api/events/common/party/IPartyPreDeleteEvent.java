@@ -5,8 +5,8 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IPartyPreDeleteEvent extends PartiesEvent, Cancellable {
 	/**
@@ -14,7 +14,7 @@ public interface IPartyPreDeleteEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 	
 	/**
@@ -22,7 +22,7 @@ public interface IPartyPreDeleteEvent extends PartiesEvent, Cancellable {
 	 *
 	 * @return Returns the {@link DeleteCause} of the delete
 	 */
-	@NonNull
+	@NotNull
 	DeleteCause getCause();
 	
 	/**

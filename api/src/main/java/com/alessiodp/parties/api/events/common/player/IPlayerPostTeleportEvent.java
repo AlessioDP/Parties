@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.common.player;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public interface IPlayerPostTeleportEvent extends PartiesEvent {
 	/**
@@ -11,7 +11,7 @@ public interface IPlayerPostTeleportEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	PartyPlayer getPartyPlayer();
 	
 	/**
@@ -19,6 +19,6 @@ public interface IPlayerPostTeleportEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 }

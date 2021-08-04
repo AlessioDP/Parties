@@ -3,8 +3,8 @@ package com.alessiodp.parties.api.events.common.party;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface IPartyGetExperienceEvent extends PartiesEvent {
 	/**
@@ -12,7 +12,7 @@ public interface IPartyGetExperienceEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 	
 	/**
@@ -27,7 +27,7 @@ public interface IPartyGetExperienceEvent extends PartiesEvent {
 	 *
 	 * @return The {@link ExpSource}
 	 */
-	@NonNull
+	@NotNull
 	ExpSource getSource();
 	
 	/**

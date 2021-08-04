@@ -1,7 +1,7 @@
 package com.alessiodp.parties.api.interfaces;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 import java.util.UUID;
@@ -13,14 +13,14 @@ public interface PartyPlayer {
 	 *
 	 * @return Returns the {@link UUID} of the player
 	 */
-	@NonNull UUID getPlayerUUID();
+	@NotNull UUID getPlayerUUID();
 	
 	/**
 	 * Get the name
 	 *
 	 * @return Returns the name of the player
 	 */
-	@NonNull String getName();
+	@NotNull String getName();
 	
 	/**
 	 * Is the player inside a party?
@@ -172,7 +172,7 @@ public interface PartyPlayer {
 	 * @param party The {@link Party} to ask
 	 * @return Returns the {@link PartyAskRequest} instance
 	 */
-	default PartyAskRequest askToJoin(@NonNull Party party) {
+	default PartyAskRequest askToJoin(@NotNull Party party) {
 		return askToJoin(party, true);
 	}
 	
@@ -183,5 +183,5 @@ public interface PartyPlayer {
 	 * @param sendMessages True if the event should send messages to players
 	 * @return Returns the {@link PartyAskRequest} instance
 	 */
-	PartyAskRequest askToJoin(@NonNull Party party, boolean sendMessages);
+	PartyAskRequest askToJoin(@NotNull Party party, boolean sendMessages);
 }

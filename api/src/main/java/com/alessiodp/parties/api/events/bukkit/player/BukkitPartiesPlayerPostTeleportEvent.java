@@ -5,7 +5,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPostTeleportEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Location;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPlayerPostTeleportEvent extends BukkitPartiesEvent implements IPlayerPostTeleportEvent {
 	private final PartyPlayer player;
@@ -19,13 +19,13 @@ public class BukkitPartiesPlayerPostTeleportEvent extends BukkitPartiesEvent imp
 		this.destination = destination;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
@@ -36,7 +36,7 @@ public class BukkitPartiesPlayerPostTeleportEvent extends BukkitPartiesEvent imp
 	 *
 	 * @return Returns the {@link Location}
 	 */
-	@NonNull
+	@NotNull
 	public Location getDestination() {
 		return destination;
 	}

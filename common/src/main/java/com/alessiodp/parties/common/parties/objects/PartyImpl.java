@@ -41,7 +41,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -244,11 +245,11 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer) {
+	public boolean addMember(@NotNull PartyPlayer partyPlayer) {
 		return addMember(partyPlayer, JoinCause.OTHERS, null);
 	}
 	
-	public boolean addMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
+	public boolean addMember(@NotNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
 		boolean ret = false;
 		CompletableFuture<Void> futureAfterUpdate = null;
 		synchronized (this) {
@@ -271,11 +272,11 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer) {
+	public boolean removeMember(@NotNull PartyPlayer partyPlayer) {
 		return removeMember(partyPlayer, LeaveCause.OTHERS, null);
 	}
 	
-	public boolean removeMember(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
+	public boolean removeMember(@NotNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
 		boolean ret = false;
 		CompletableFuture<Void> future = null;
 		synchronized (this) {
@@ -314,7 +315,7 @@ public abstract class PartyImpl implements Party {
 		});
 	}
 	
-	@org.checkerframework.checker.nullness.qual.NonNull
+	@NotNull
 	@Override
 	public Set<PartyPlayer> getOnlineMembers(boolean bypassVanish) {
 		HashSet<PartyPlayer> ret = new HashSet<>();
@@ -333,7 +334,7 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public void changeLeader(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer leaderPartyPlayer) {
+	public void changeLeader(@NotNull PartyPlayer leaderPartyPlayer) {
 		updateValue(() -> {
 			UUID oldLeader = this.leader;
 			this.leader = leaderPartyPlayer.getPlayerUUID();
@@ -731,7 +732,7 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	@Override
-	public PartyInvite invitePlayer(@org.checkerframework.checker.nullness.qual.NonNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
+	public PartyInvite invitePlayer(@NotNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
 		PartyInvite ret = null;
 		
 		IPlayerPreInviteEvent playerPreInviteEvent = plugin.getEventManager().preparePlayerPreInviteEvent(invitedPlayer, inviter, this);
@@ -871,7 +872,7 @@ public abstract class PartyImpl implements Party {
 	protected byte[] makeRawDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
 		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
 		raw.writeUTF(cause.name());
-		raw.writeUTF(kicked.getPlayerUUID().toString());
+		raw.writeUTF(kicked != null ? kicked.getPlayerUUID().toString() : "");
 		raw.writeUTF(commandSender != null ? commandSender.getPlayerUUID().toString() : "");
 		return raw.toByteArray();
 	}

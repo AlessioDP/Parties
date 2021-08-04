@@ -33,7 +33,7 @@ public class BukkitJoinLeaveListener extends JoinLeaveListener implements Listen
 	protected void onJoinComplete(PartyPlayerImpl partyPlayer) {
 		// If its the first player to join ask for config sync
 		if (plugin.isBungeeCordEnabled()
-				&& BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC
+				&& BukkitConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC
 				&& ((BukkitPartiesBootstrap) plugin.getBootstrap()).getServer().getOnlinePlayers().size() == 1) {
 			((BukkitPartiesConfigurationManager) plugin.getConfigurationManager()).makeConfigsRequest();
 		}

@@ -6,7 +6,7 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPlayerPreTeleportEvent extends BukkitPartiesEvent implements IPlayerPreTeleportEvent, Cancellable {
 	private boolean cancelled;
@@ -21,13 +21,13 @@ public class BukkitPartiesPlayerPreTeleportEvent extends BukkitPartiesEvent impl
 		this.destination = destination;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
@@ -38,7 +38,7 @@ public class BukkitPartiesPlayerPreTeleportEvent extends BukkitPartiesEvent impl
 	 *
 	 * @return Returns the {@link Location}
 	 */
-	@NonNull
+	@NotNull
 	public Location getDestination() {
 		return destination;
 	}

@@ -2,7 +2,7 @@ package com.alessiodp.parties.api.events.common.party;
 
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public interface IPartyLevelUpEvent extends PartiesEvent {
 	/**
@@ -10,7 +10,7 @@ public interface IPartyLevelUpEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 	
 	/**

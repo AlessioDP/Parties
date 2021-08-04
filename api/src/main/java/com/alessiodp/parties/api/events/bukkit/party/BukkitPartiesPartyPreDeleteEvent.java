@@ -6,8 +6,8 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Cancellable;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BukkitPartiesPartyPreDeleteEvent extends BukkitPartiesEvent implements IPartyPreDeleteEvent, Cancellable {
 	private boolean cancelled;
@@ -24,13 +24,13 @@ public class BukkitPartiesPartyPreDeleteEvent extends BukkitPartiesEvent impleme
 		this.commandSender = commandSender;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public DeleteCause getCause() {
 		return cause;

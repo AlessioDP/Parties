@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BukkitPartiesFishHookFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
 	private boolean cancelled;
@@ -25,7 +25,7 @@ public class BukkitPartiesFishHookFriendlyFireBlockedEvent extends BukkitParties
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	public PartyPlayer getPlayerVictim() {
 		return victim;
 	}
@@ -35,7 +35,7 @@ public class BukkitPartiesFishHookFriendlyFireBlockedEvent extends BukkitParties
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	public PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}

@@ -5,8 +5,8 @@ import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BungeePartiesPlayerPostJoinEvent extends BungeePartiesEvent implements IPlayerPostJoinEvent {
 	private final PartyPlayer player;
@@ -21,19 +21,19 @@ public class BungeePartiesPlayerPostJoinEvent extends BungeePartiesEvent impleme
 		this.inviter = inviter;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public JoinCause getCause() {
 		return cause;

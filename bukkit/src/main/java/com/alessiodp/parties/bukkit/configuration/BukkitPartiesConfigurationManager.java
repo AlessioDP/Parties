@@ -18,7 +18,6 @@ public class BukkitPartiesConfigurationManager extends PartiesConfigurationManag
 	}
 	
 	public void makeConfigsRequest() {
-		if (BukkitConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC)
-			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigsRequest();
+		((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigsRequest();
 	}
 }

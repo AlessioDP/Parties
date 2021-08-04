@@ -5,8 +5,8 @@ import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Cancellable;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BukkitPartiesPartyPreRenameEvent extends BukkitPartiesEvent implements IPartyPreRenameEvent, Cancellable {
 	private boolean cancelled;
@@ -25,7 +25,7 @@ public class BukkitPartiesPartyPreRenameEvent extends BukkitPartiesEvent impleme
 		this.isAdmin = isAdmin;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;

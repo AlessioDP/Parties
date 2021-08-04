@@ -5,7 +5,7 @@ import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeePartiesPlayerPostHomeEvent extends BungeePartiesEvent implements IPlayerPostHomeEvent {
 	private final PartyPlayer player;
@@ -18,20 +18,21 @@ public class BungeePartiesPlayerPostHomeEvent extends BungeePartiesEvent impleme
 		this.home = home;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
+	@NotNull
 	@Override
-	public @NonNull PartyHome getHome() {
+	public PartyHome getHome() {
 		return home;
 	}
 }

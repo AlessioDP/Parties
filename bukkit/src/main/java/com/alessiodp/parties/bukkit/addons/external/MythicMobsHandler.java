@@ -66,10 +66,8 @@ public class MythicMobsHandler implements Listener {
 	}
 	
 	public static boolean isMythicMob(Entity entity) {
-		boolean ret = false;
-		if (BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE && MythicMobs.inst().getAPIHelper().isMythicMob(entity))
-			ret = true;
-		return ret;
+		return BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE
+				&& MythicMobs.inst().getAPIHelper().isMythicMob(entity);
 	}
 	
 	@EventHandler

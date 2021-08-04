@@ -36,10 +36,19 @@ parties:
   # Some tweaks for BungeeCord
   bungeecord:
     # Experts only!
-    # The plugin will sync some options with Bukkit Parties
+    # The plugin need to keep data in sync with Bukkit Parties
     # You can disable it to increase performances a bit
-    # Do not do that if you are using: exp system
-    config-sync: true
+    # If you do not use Parties in Spigot servers, you can disable them
+    packets:
+      # These options will stop to send data to sub servers
+      load-players: true
+      load-parties: true
+      player-sync: true
+      party-sync: true
+      config-sync: true
+      chat: true
+      sounds: true
+
 
 
 # / =============================== \
@@ -281,4 +290,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 12
+  version: 13

@@ -4,7 +4,7 @@ import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeePartiesPlayerPostChatEvent extends BungeePartiesEvent implements IPlayerPostChatEvent {
 	private final PartyPlayer player;
@@ -17,19 +17,19 @@ public class BungeePartiesPlayerPostChatEvent extends BungeePartiesEvent impleme
 		this.message = message;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public String getMessage() {
 		return message;

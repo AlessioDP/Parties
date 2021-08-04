@@ -3,7 +3,7 @@ package com.alessiodp.parties.api.events.bungee.party;
 import com.alessiodp.parties.api.events.bungee.BungeePartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class BungeePartiesPartyPreCreateEvent extends BungeePartiesEvent implements IPartyPreCreateEvent {
 	private boolean cancelled;

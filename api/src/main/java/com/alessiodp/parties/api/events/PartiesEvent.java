@@ -1,7 +1,7 @@
 package com.alessiodp.parties.api.events;
 
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public interface PartiesEvent {
 	/**
@@ -9,7 +9,7 @@ public interface PartiesEvent {
 	 *
 	 * @return Returns the {@link PartiesAPI}
 	 */
-	@NonNull
+	@NotNull
 	PartiesAPI getApi();
 	
 	/**

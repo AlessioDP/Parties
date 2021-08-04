@@ -1,7 +1,7 @@
 package com.alessiodp.parties.api.interfaces;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface PartyHome {
 	
@@ -24,7 +24,7 @@ public interface PartyHome {
 	 *
 	 * @return Returns the world name
 	 */
-	@NonNull String getWorld();
+	@NotNull String getWorld();
 	
 	/**
 	 * Set the world name

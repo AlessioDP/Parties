@@ -33,7 +33,8 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
 			player.sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT);
 		else
-			player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING);
+			player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING
+					.replace("%seconds", Integer.toString(delay)));
 		
 		for (PartyPlayer onlinePlayer : party.getOnlineMembers(true)) {
 			if (!onlinePlayer.getPlayerUUID().equals(player.getPlayerUUID())) {
@@ -81,7 +82,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		BukkitUser bukkitUser = (BukkitUser) plugin.getPlayer(player.getPlayerUUID());
 		Player bukkitTargetPlayer = Bukkit.getPlayer(targetPlayer.getPlayerUUID());
 		if (bukkitUser != null && bukkitTargetPlayer != null) {
-			player.sendMessage(Messages.ADDCMD_HOME_TELEPORTED, targetPlayer);
+			player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
 			
 			PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
 			IPlayerPreTeleportEvent partiesPreTeleportEvent = plugin.getEventManager().preparePlayerPreTeleportEvent(player, party, location);

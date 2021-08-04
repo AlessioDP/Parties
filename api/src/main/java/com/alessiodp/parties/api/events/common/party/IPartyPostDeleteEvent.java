@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public interface IPartyPostDeleteEvent extends PartiesEvent {
@@ -14,7 +14,7 @@ public interface IPartyPostDeleteEvent extends PartiesEvent {
 	 *
 	 * @return Returns the deleted {@link Party}
 	 */
-	@NonNull
+	@NotNull
 	Party getParty();
 	
 	/**
@@ -23,7 +23,7 @@ public interface IPartyPostDeleteEvent extends PartiesEvent {
 	 * @return Returns the name of the deleted party
 	 * @deprecated Use getParty()
 	 */
-	@NonNull
+	@NotNull
 	@Deprecated
 	default String getPartyName() {
 		return getParty().getName() != null ? getParty().getName() : "";
@@ -34,7 +34,7 @@ public interface IPartyPostDeleteEvent extends PartiesEvent {
 	 *
 	 * @return Returns the {@link DeleteCause} of the delete
 	 */
-	@NonNull
+	@NotNull
 	DeleteCause getCause();
 	
 	/**

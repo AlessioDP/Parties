@@ -10,8 +10,8 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,12 +48,12 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
-	public Party getParty(@NonNull String party) {
+	public Party getParty(@NotNull String party) {
 		return plugin.getPartyManager().getParty(party);
 	}
 	
 	@Override
-	public Party getParty(@NonNull UUID party) {
+	public Party getParty(@NotNull UUID party) {
 		return plugin.getPartyManager().getParty(party);
 	}
 	

@@ -58,217 +58,250 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name(), channel), true);
 			switch (packet.getType()) {
 				case UPDATE_PARTY:
-					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC && ((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UPDATE_PARTY,
 								packet.getPartyId().toString()), true);
 					}
 					break;
 				case UPDATE_PLAYER:
-					if (((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid())) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PLAYER_SYNC && ((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid())) {
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER,
 								packet.getPlayerUuid().toString()), true);
 					}
 					break;
-				case LOAD_PLAYER:
-					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().loadPlayer(packet.getPlayerUuid());
-					if (partyPlayer != null) {
-						if (partyPlayer.isInParty()) {
-							// Load party
-							((PartiesPlugin) plugin).getPartyManager().loadParty(partyPlayer.getPartyId());
-						}
-						
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_LOAD_PLAYER,
-								packet.getPlayerUuid().toString()), true);
-					}
-					break;
-				case UNLOAD_PARTY:
-					party = ((PartiesPlugin) plugin).getPartyManager().getCacheParties().get(packet.getPartyId());
-					if (party != null) {
-						((PartiesPlugin) plugin).getPartyManager().unloadParty(party);
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY,
+				case LOAD_PARTY:
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PARTIES) {
+						((PartiesPlugin) plugin).getPartyManager().loadParty(packet.getPartyId());
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_LOAD_PARTY,
 								packet.getPartyId().toString()), true);
 					}
 					break;
+				case LOAD_PLAYER:
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PLAYERS) {
+						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().loadPlayer(packet.getPlayerUuid());
+						if (partyPlayer != null) {
+							if (partyPlayer.isInParty()) {
+								// Load party
+								((PartiesPlugin) plugin).getPartyManager().loadParty(partyPlayer.getPartyId());
+							}
+							
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_LOAD_PLAYER,
+									packet.getPlayerUuid().toString()), true);
+						}
+					}
+					break;
+				case UNLOAD_PARTY:
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PARTIES) {
+						party = ((PartiesPlugin) plugin).getPartyManager().getCacheParties().get(packet.getPartyId());
+						if (party != null) {
+							((PartiesPlugin) plugin).getPartyManager().unloadParty(party);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY,
+									packet.getPartyId().toString()), true);
+						}
+					}
+					break;
 				case UNLOAD_PLAYER:
-					((PartiesPlugin) plugin).getPlayerManager().unloadPlayer(packet.getPlayerUuid());
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER,
-							packet.getPlayerUuid().toString()), true);
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PLAYERS) {
+						((PartiesPlugin) plugin).getPlayerManager().unloadPlayer(packet.getPlayerUuid());
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER,
+								packet.getPlayerUuid().toString()), true);
+					}
 					break;
 				case PLAY_SOUND:
-					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
-					if (partyPlayer != null) {
-						((BukkitPartyPlayerImpl) partyPlayer).playPacketSound(packet.getPayloadRaw());
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_SOUNDS) {
+						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+						if (partyPlayer != null) {
+							((BukkitPartyPlayerImpl) partyPlayer).playPacketSound(packet.getPayloadRaw());
+						}
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_PLAY_SOUND,
+								packet.getPlayerUuid().toString()), true);
 					}
-					
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_PLAY_SOUND,
-							packet.getPlayerUuid().toString()), true);
 					break;
 				case CREATE_PARTY:
-					PartyImpl finalParty = ((PartiesPlugin) plugin).getPartyManager().loadParty(packet.getPartyId());
-					if (finalParty != null) {
-						((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid());
-						PartyPlayerImpl leader = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
-						
-						// Calling API Event
-						IPartyPostCreateEvent partiesPostCreateEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostCreateEvent(leader, finalParty);
-						((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostCreateEvent);
-						
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_CREATE_PARTY,
-								packet.getPartyId().toString(), leader != null ? leader.getPlayerUUID().toString() : "none"), true);
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						PartyImpl finalParty = ((PartiesPlugin) plugin).getPartyManager().loadParty(packet.getPartyId());
+						if (finalParty != null) {
+							((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(packet.getPlayerUuid());
+							PartyPlayerImpl leader = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+							
+							// Calling API Event
+							IPartyPostCreateEvent partiesPostCreateEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostCreateEvent(leader, finalParty);
+							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostCreateEvent);
+							
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_CREATE_PARTY,
+									packet.getPartyId().toString(), leader != null ? leader.getPlayerUUID().toString() : "none"), true);
+						}
 					}
 					break;
 				case DELETE_PARTY:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							DeleteCause cause = DeleteCause.valueOf(input.readUTF());
-							PartyPlayerImpl kicked = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(input.readUTF()));
-							String uuidCommandSender = input.readUTF();
-							PartyPlayerImpl commandSender = uuidCommandSender.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidCommandSender));
-							
-							// Reload players
-							party.getMembers().forEach(u -> {
-								((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(u);
-							});
-							
-							// Unload party
-							((PartiesPlugin) plugin).getPartyManager().removePartyFromCache(party);
-							
-							// Calling API Event
-							IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party, cause, kicked, commandSender);
-							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
-							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_DELETE_PARTY,
-									party.getId().toString(), cause.name(), kicked != null ? kicked.getPlayerUUID().toString() : "none", commandSender != null ? commandSender.getPlayerUUID().toString() : "none"), true);
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_DELETE_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						if (party != null) {
+							try {
+								ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
+								DeleteCause cause = DeleteCause.valueOf(input.readUTF());
+								String uuidKicked = input.readUTF();
+								PartyPlayerImpl kicked = uuidKicked.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidKicked));
+								String uuidCommandSender = input.readUTF();
+								PartyPlayerImpl commandSender = uuidCommandSender.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidCommandSender));
+								
+								// Reload players
+								party.getMembers().forEach(u -> {
+									((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(u);
+								});
+								
+								// Unload party
+								((PartiesPlugin) plugin).getPartyManager().removePartyFromCache(party);
+								
+								// Calling API Event
+								IPartyPostDeleteEvent partiesPostDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostDeleteEvent(party, cause, kicked, commandSender);
+								((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostDeleteEvent);
+								
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_DELETE_PARTY,
+										party.getId().toString(), cause.name(), kicked != null ? kicked.getPlayerUUID().toString() : "none", commandSender != null ? commandSender.getPlayerUUID().toString() : "none"), true);
+							} catch (Exception ex) {
+								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_DELETE_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+							}
 						}
 					}
 					break;
 				case RENAME_PARTY:
-					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							String oldName = input.readUTF();
-							String newName = input.readUTF();
-							String uuidPlayer = input.readUTF();
-							PartyPlayerImpl player = uuidPlayer.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidPlayer));
-							boolean isAdmin = input.readBoolean();
-							
-							// Calling API Event
-							IPartyPostRenameEvent partiesPostRenameEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostRenameEvent(party, oldName, newName, player, isAdmin);
-							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostRenameEvent);
-							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_RENAME_PARTY,
-									party.getId().toString(), oldName, newName, player != null ? player.getPlayerUUID().toString() : "none"), true);
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_RENAME_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						if (party != null) {
+							try {
+								ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
+								String oldName = input.readUTF();
+								String newName = input.readUTF();
+								String uuidPlayer = input.readUTF();
+								PartyPlayerImpl player = uuidPlayer.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidPlayer));
+								boolean isAdmin = input.readBoolean();
+								
+								// Calling API Event
+								IPartyPostRenameEvent partiesPostRenameEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPostRenameEvent(party, oldName, newName, player, isAdmin);
+								((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostRenameEvent);
+								
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_RENAME_PARTY,
+										party.getId().toString(), oldName, newName, player != null ? player.getPlayerUUID().toString() : "none"), true);
+							} catch (Exception ex) {
+								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_RENAME_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+							}
 						}
 					}
 					break;
 				case ADD_MEMBER_PARTY:
-					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							UUID playerUuid = UUID.fromString(input.readUTF());
-							((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(playerUuid);
-							PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUuid);
-							JoinCause cause = JoinCause.valueOf(input.readUTF());
-							String uuidInviter = input.readUTF();
-							PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
-							
-							// Calling API Event
-							IPlayerPostJoinEvent partiesPostJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostJoinEvent(player, party, cause, inviter);
-							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostJoinEvent);
-							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY,
-									player.getPlayerUUID().toString(), party.getId().toString(), cause.name(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						if (party != null) {
+							try {
+								ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
+								UUID playerUuid = UUID.fromString(input.readUTF());
+								((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(playerUuid);
+								PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUuid);
+								JoinCause cause = JoinCause.valueOf(input.readUTF());
+								String uuidInviter = input.readUTF();
+								PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
+								
+								// Calling API Event
+								IPlayerPostJoinEvent partiesPostJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostJoinEvent(player, party, cause, inviter);
+								((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostJoinEvent);
+								
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY,
+										player.getPlayerUUID().toString(), party.getId().toString(), cause.name(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
+							} catch (Exception ex) {
+								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+							}
 						}
 					}
 					break;
 				case REMOVE_MEMBER_PARTY:
-					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							UUID playerUuid = UUID.fromString(input.readUTF());
-							((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(playerUuid);
-							PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUuid);
-							LeaveCause cause = LeaveCause.valueOf(input.readUTF());
-							String uuidInviter = input.readUTF();
-							PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
-							
-							// Calling API Event
-							IPlayerPostLeaveEvent partiesPostLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostLeaveEvent(player, party, cause, inviter);
-							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostLeaveEvent);
-							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY,
-									player.getPlayerUUID().toString(), party.getId().toString(), cause.name(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						if (party != null) {
+							try {
+								ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
+								UUID playerUuid = UUID.fromString(input.readUTF());
+								((PartiesPlugin) plugin).getPlayerManager().reloadPlayer(playerUuid);
+								PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUuid);
+								LeaveCause cause = LeaveCause.valueOf(input.readUTF());
+								String uuidInviter = input.readUTF();
+								PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
+								
+								// Calling API Event
+								IPlayerPostLeaveEvent partiesPostLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostLeaveEvent(player, party, cause, inviter);
+								((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostLeaveEvent);
+								
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY,
+										player.getPlayerUUID().toString(), party.getId().toString(), cause.name(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
+							} catch (Exception ex) {
+								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+							}
 						}
 					}
 					break;
 				case CHAT_MESSAGE:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
-					if (party != null && partyPlayer != null) {
-						// Calling API event
-						IPlayerPostChatEvent partiesPostChatEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostChatEvent(partyPlayer, party, packet.getPayload());
-						((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostChatEvent);
-						
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE,
-								partyPlayer.getPlayerUUID().toString(), packet.getPartyId().toString(), packet.getPayload()), true);
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CHAT) {
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+						if (party != null && partyPlayer != null) {
+							// Calling API event
+							IPlayerPostChatEvent partiesPostChatEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostChatEvent(partyPlayer, party, packet.getPayload());
+							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostChatEvent);
+							
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE,
+									partyPlayer.getPlayerUUID().toString(), packet.getPartyId().toString(), packet.getPayload()), true);
+						}
 					}
 					break;
 				case INVITE_PLAYER:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							PartyPlayerImpl invitedPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(input.readUTF()));
-							String uuidInviter = input.readUTF();
-							PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
-							
-							// Calling API Event
-							IPlayerPostInviteEvent partiesPostInviteEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostInviteEvent(invitedPlayer, inviter, party);
-							((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostInviteEvent);
-							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY,
-									invitedPlayer.getPlayerUUID().toString(), party.getId().toString(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						if (party != null) {
+							try {
+								ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
+								PartyPlayerImpl invitedPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(input.readUTF()));
+								String uuidInviter = input.readUTF();
+								PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
+								
+								// Calling API Event
+								IPlayerPostInviteEvent partiesPostInviteEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPostInviteEvent(invitedPlayer, inviter, party);
+								((PartiesPlugin) plugin).getEventManager().callEvent(partiesPostInviteEvent);
+								
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY,
+										invitedPlayer.getPlayerUUID().toString(), party.getId().toString(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
+							} catch (Exception ex) {
+								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
+							}
 						}
 					}
 					break;
 				case ADD_HOME:
-					((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
-					if (party != null && partyPlayer != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							String name = input.readUTF();
-							String server = input.readUTF();
-							
-							PartyHomeImpl home = BukkitCommandSetHome.getHomeLocationOfPlayer(partyPlayer, name, server);
-							if (home != null) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
+						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
+						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
+						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
+						if (party != null && partyPlayer != null) {
+							try {
+								ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
+								String name = input.readUTF();
+								String server = input.readUTF();
 								
-								((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddHome(party, home.toString());
-								
-								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME,
-										home, party.getId().toString(), partyPlayer.getPlayerUUID().toString(), server), true);
+								PartyHomeImpl home = BukkitCommandSetHome.getHomeLocationOfPlayer(partyPlayer, name, server);
+								if (home != null) {
+									
+									if (((PartiesPlugin) plugin).isBungeeCordEnabled())
+										((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddHome(party, home.toString());
+									
+									plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME,
+											home, party.getId().toString(), partyPlayer.getPlayerUUID().toString(), server), true);
+								}
+							} catch (Exception ex) {
+								plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
 							}
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
 						}
 					}
 					break;
@@ -330,7 +363,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 					}
 					break;
 				case EXPERIENCE:
-					if (ConfigMain.ADDITIONAL_EXP_ENABLE) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC && ConfigMain.ADDITIONAL_EXP_ENABLE) {
 						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
@@ -344,7 +377,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 							CommonUtils.formatDouble(packet.getPayloadNumber()), packet.getPartyId().toString(), packet.getPlayerUuid() != null ? packet.getPlayerUuid().toString() : "none"), true);
 					break;
 				case LEVEL_UP:
-					if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC && ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
 						((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId());
 						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 						if (party != null) {
@@ -357,7 +390,7 @@ public class BukkitPartiesMessageListener extends BukkitMessageListener {
 							packet.getPartyId().toString(), (int) packet.getPayloadNumber()), true);
 					break;
 				case CONFIGS:
-					if (ConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC) {
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
 						((PartiesConfigurationManager) plugin.getConfigurationManager()).parseConfigsPacket(packet.getPayloadRaw());
 						
 						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_CONFIGS, true);

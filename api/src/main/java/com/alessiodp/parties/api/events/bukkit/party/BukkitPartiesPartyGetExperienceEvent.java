@@ -4,8 +4,8 @@ import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BukkitPartiesPartyGetExperienceEvent extends BukkitPartiesEvent implements IPartyGetExperienceEvent {
 	private final Party party;
@@ -22,7 +22,7 @@ public class BukkitPartiesPartyGetExperienceEvent extends BukkitPartiesEvent imp
 		this.killer = killer;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public Party getParty() {
 		return party;
@@ -33,7 +33,7 @@ public class BukkitPartiesPartyGetExperienceEvent extends BukkitPartiesEvent imp
 		return experience;
 	}
 	
-	@NonNull
+	@NotNull
 	@Override
 	public ExpSource getSource() {
 		return source;

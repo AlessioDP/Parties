@@ -1,7 +1,7 @@
 package com.alessiodp.parties.api.interfaces;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ public interface Party {
 	 *
 	 * @return Returns the id of the party
 	 */
-	@NonNull UUID getId();
+	@NotNull UUID getId();
 	
 	/**
 	 * Get the party name
@@ -51,14 +51,14 @@ public interface Party {
 	 *
 	 * @return Returns the members sub of the party
 	 */
-	@NonNull Set<UUID> getMembers();
+	@NotNull Set<UUID> getMembers();
 	
 	/**
 	 * Get a list of online members
 	 *
 	 * @return Returns an unmodifiable {@code Set<PartyPlayer>}
 	 */
-	@NonNull default Set<PartyPlayer> getOnlineMembers() {
+	@NotNull default Set<PartyPlayer> getOnlineMembers() {
 		return getOnlineMembers(true);
 	}
 	
@@ -68,7 +68,7 @@ public interface Party {
 	 * @param bypassVanish Bypass player with vanish?
 	 * @return Returns an unmodifiable {@code Set<PartyPlayer>}
 	 */
-	@NonNull Set<PartyPlayer> getOnlineMembers(boolean bypassVanish);
+	@NotNull Set<PartyPlayer> getOnlineMembers(boolean bypassVanish);
 	
 	/**
 	 * Add the player to the party
@@ -76,7 +76,7 @@ public interface Party {
 	 * @param partyPlayer The {@link PartyPlayer} to add
 	 * @return Returns true if successfully added
 	 */
-	boolean addMember(@NonNull PartyPlayer partyPlayer);
+	boolean addMember(@NotNull PartyPlayer partyPlayer);
 	
 	/**
 	 * Remove the player from the party
@@ -84,7 +84,7 @@ public interface Party {
 	 * @param partyPlayer The {@link PartyPlayer} to remove
 	 * @return Returns true if successfully removed
 	 */
-	boolean removeMember(@NonNull PartyPlayer partyPlayer);
+	boolean removeMember(@NotNull PartyPlayer partyPlayer);
 	
 	/**
 	 * Get a list of pending invite requests
@@ -99,7 +99,7 @@ public interface Party {
 	 * @param partyPlayer The {@link PartyPlayer} to invite
 	 * @return Returns the {@link PartyInvite} instance
 	 */
-	default PartyInvite invitePlayer(@NonNull PartyPlayer partyPlayer) {
+	default PartyInvite invitePlayer(@NotNull PartyPlayer partyPlayer) {
 		return invitePlayer(partyPlayer, null);
 	}
 	
@@ -110,7 +110,7 @@ public interface Party {
 	 * @param inviter The {@link PartyPlayer} who is inviting partyPlayer
 	 * @return Returns the {@link PartyInvite} instance
 	 */
-	default PartyInvite invitePlayer(@NonNull PartyPlayer partyPlayer, @Nullable PartyPlayer inviter) {
+	default PartyInvite invitePlayer(@NotNull PartyPlayer partyPlayer, @Nullable PartyPlayer inviter) {
 		return invitePlayer(partyPlayer, inviter, true);
 	}
 	
@@ -122,7 +122,7 @@ public interface Party {
 	 * @param sendMessages True if the event should send messages to players
 	 * @return Returns the {@link PartyInvite} instance
 	 */
-	PartyInvite invitePlayer(@NonNull PartyPlayer partyPlayer, @Nullable PartyPlayer inviter, boolean sendMessages);
+	PartyInvite invitePlayer(@NotNull PartyPlayer partyPlayer, @Nullable PartyPlayer inviter, boolean sendMessages);
 	
 	/**
 	 * Get a list of pending ask requests
@@ -150,7 +150,7 @@ public interface Party {
 	 *
 	 * @param leaderPartyPlayer The {@link PartyPlayer} to promote as leader
 	 */
-	void changeLeader(@NonNull PartyPlayer leaderPartyPlayer);
+	void changeLeader(@NotNull PartyPlayer leaderPartyPlayer);
 	
 	/**
 	 * Is the party fixed?
@@ -214,14 +214,14 @@ public interface Party {
 	 *
 	 * @return Returns the {@code Set<PartyHome>} of the party
 	 */
-	@NonNull Set<PartyHome> getHomes();
+	@NotNull Set<PartyHome> getHomes();
 	
 	/**
 	 * Set the set of homes of the party
 	 *
 	 * @param homes The {@code Set<PartyHome>} of the party
 	 */
-	void setHomes(@NonNull Set<PartyHome> homes);
+	void setHomes(@NotNull Set<PartyHome> homes);
 	
 	/**
 	 * @deprecated Use {@code getHomes()} instead

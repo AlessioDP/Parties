@@ -4,7 +4,7 @@ import com.alessiodp.parties.api.events.Cancellable;
 import com.alessiodp.parties.api.events.bukkit.BukkitPartiesEvent;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesEvent implements Cancellable {
 	private boolean cancelled;
@@ -24,7 +24,7 @@ public class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesE
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	public PartyPlayer getPlayerVictim() {
 		return victim;
 	}
@@ -34,7 +34,7 @@ public class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesE
 	 *
 	 * @return Returns the {@link PartyPlayer}
 	 */
-	@NonNull
+	@NotNull
 	public PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}
@@ -44,7 +44,7 @@ public class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesE
 	 *
 	 * @return Returns the original {@link PotionSplashEvent}
 	 */
-	@NonNull
+	@NotNull
 	public PotionSplashEvent getOriginalEvent() {
 		return originalEvent;
 	}

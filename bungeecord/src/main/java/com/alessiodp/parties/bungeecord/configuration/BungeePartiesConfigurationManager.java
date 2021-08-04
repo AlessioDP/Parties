@@ -18,7 +18,6 @@ public class BungeePartiesConfigurationManager extends PartiesConfigurationManag
 	}
 	
 	public void makeConfigsSync() {
-		if (BungeeConfigMain.PARTIES_BUNGEECORD_CONFIG_SYNC)
-			((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigs();
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendConfigs();
 	}
 }

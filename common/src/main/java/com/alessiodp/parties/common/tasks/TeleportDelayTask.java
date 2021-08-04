@@ -5,7 +5,7 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 
 public abstract class TeleportDelayTask extends TeleportingDelayTask implements Runnable {
-	protected PartyPlayerImpl targetPlayer;
+	protected final PartyPlayerImpl targetPlayer;
 	
 	public TeleportDelayTask(PartiesPlugin plugin, PartyPlayerImpl partyPlayer, long delayTime, PartyPlayerImpl targetPlayer) {
 		super(plugin, partyPlayer, delayTime);

@@ -1,8 +1,8 @@
 package com.alessiodp.parties.api.interfaces;
 
 import com.alessiodp.parties.api.enums.Status;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +37,7 @@ public interface PartiesAPI {
 	 * @param party The name of the {@link Party}
 	 * @return Returns the {@link Party}
 	 */
-	Party getParty(@NonNull String party);
+	Party getParty(@NotNull String party);
 	
 	/**
 	 * Get the party by its id
@@ -45,7 +45,7 @@ public interface PartiesAPI {
 	 * @param party The id of the {@link Party}
 	 * @return Returns the {@link Party}
 	 */
-	Party getParty(@NonNull UUID party);
+	Party getParty(@NotNull UUID party);
 	
 	/**
 	 * Get the player by his {@link UUID}
