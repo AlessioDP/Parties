@@ -76,7 +76,7 @@
 		<dev.lombok>1.18.20</dev.lombok>
 		
 		<libs.adpcore>1.6.5</libs.adpcore>
-		<libs.api.annotations>21.0.1</libs.api.annotations>
+		<libs.api.annotations>22.0.0</libs.api.annotations>
 		<libs.api.spigot>1.17-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.17-R0.1-SNAPSHOT</libs.api.bungeecord>
 		<!-- ADP Core Test Libraries -->
