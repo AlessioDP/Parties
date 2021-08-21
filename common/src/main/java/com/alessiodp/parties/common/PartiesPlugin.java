@@ -1,8 +1,8 @@
 package com.alessiodp.parties.common;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.addons.ExternalLibraries;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
+import com.alessiodp.core.common.libraries.LibraryUsage;
 import com.alessiodp.core.common.logging.ConsoleColor;
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.common.api.ApiHandler;
@@ -144,14 +144,14 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	public abstract String getServerId(PartyPlayerImpl player);
 	
 	@Override
-	public List<ExternalLibraries.Usage> getLibrariesUsages() {
+	public List<LibraryUsage> getLibrariesUsages() {
 		return Arrays.asList(
-				ExternalLibraries.Usage.H2,
-				ExternalLibraries.Usage.MYSQL,
-				ExternalLibraries.Usage.MARIADB,
-				ExternalLibraries.Usage.POSTGRESQL,
-				ExternalLibraries.Usage.SQLITE,
-				ExternalLibraries.Usage.SCRIPT
+				LibraryUsage.H2,
+				LibraryUsage.MYSQL,
+				LibraryUsage.MARIADB,
+				LibraryUsage.POSTGRESQL,
+				LibraryUsage.SQLITE,
+				LibraryUsage.SCRIPT
 		);
 	}
 }

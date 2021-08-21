@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.9</version>
+		<version>3.1.10</version>
 	</parent>
 	
 	<artifactId>parties-common</artifactId>
@@ -40,10 +40,6 @@
 						</includes>
 					</artifactSet>
 					<relocations>
-						<relocation>
-							<pattern>net.byteflux.libby</pattern>
-							<shadedPattern>com.alessiodp.parties.core.common.addons.external.libby</shadedPattern>
-						</relocation>
 						<relocation>
 							<pattern>org.simpleyaml</pattern>
 							<shadedPattern>com.alessiodp.parties.core.common.addons.external.simpleyaml</shadedPattern>

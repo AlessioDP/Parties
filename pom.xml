@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.1.9</version>
+	<version>3.1.10</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -75,14 +75,14 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.20</dev.lombok>
 		
-		<libs.adpcore>1.6.5</libs.adpcore>
-		<libs.api.annotations>21.0.1</libs.api.annotations>
+		<libs.adpcore>1.6.6</libs.adpcore>
+		<libs.api.annotations>22.0.0</libs.api.annotations>
 		<libs.api.spigot>1.17-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.17-R0.1-SNAPSHOT</libs.api.bungeecord>
 		<!-- ADP Core Test Libraries -->
 		<libs.h2>1.4.200</libs.h2>
 		<libs.hikaricp>4.0.3</libs.hikaricp>
-		<libs.mariadb>2.7.2</libs.mariadb>
+		<libs.mariadb>2.7.3</libs.mariadb>
 		<libs.mysql>8.0.26</libs.mysql>
 		<libs.postgresql>42.2.23</libs.postgresql>
 		<libs.sqlite>3.36.0.1</libs.sqlite>
@@ -93,7 +93,7 @@
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.18.0</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.5.2</libs.lastLoginApi>
+		<libs.lastLoginApi>1.6.0</libs.lastLoginApi>
 		<libs.levelPoints>da42a0e292</libs.levelPoints>
 		<libs.mmoCore>1.7.1</libs.mmoCore>
 		<libs.mythicMobs>4.12.0</libs.mythicMobs>

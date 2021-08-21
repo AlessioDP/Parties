@@ -82,7 +82,6 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		BukkitUser bukkitUser = (BukkitUser) plugin.getPlayer(player.getPlayerUUID());
 		Player bukkitTargetPlayer = Bukkit.getPlayer(targetPlayer.getPlayerUUID());
 		if (bukkitUser != null && bukkitTargetPlayer != null) {
-			player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
 			
 			PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
 			IPlayerPreTeleportEvent partiesPreTeleportEvent = plugin.getEventManager().preparePlayerPreTeleportEvent(player, party, location);
