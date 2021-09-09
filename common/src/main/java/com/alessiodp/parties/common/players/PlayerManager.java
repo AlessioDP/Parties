@@ -64,7 +64,7 @@ public abstract class PlayerManager {
 	
 	public boolean reloadPlayer(UUID uuid) {
 		// Reload the player from database
-		// Used by packet PLAYER_UPDATED
+		// Used by packet UPDATE_PLAYER
 		if (getCachePlayers().containsKey(uuid)) {
 			unloadPlayer(uuid);
 			loadPlayer(uuid);

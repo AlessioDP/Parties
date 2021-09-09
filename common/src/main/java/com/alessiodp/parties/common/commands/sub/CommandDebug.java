@@ -73,26 +73,7 @@ public class CommandDebug extends PartiesSubCommand {
 
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = null;
-		if (sender.isPlayer()) {
-			partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-			
-			if (!sender.hasPermission(permission)) {
-				sendNoPermissionMessage(partyPlayer, permission);
-				return false;
-			}
-			
-			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		}
-		
-		if (commandData.getArgs().length < 2) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", syntax));
-			return false;
-		}
-		
-		return true;
+		return handlePreRequisitesFull(commandData, null, 2, Integer.MAX_VALUE);
 	}
 	
 	@Override
@@ -259,7 +240,7 @@ public class CommandDebug extends PartiesSubCommand {
 				}
 			}
 		}
-		return ret;
+		return plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[args.length - 1]);
 	}
 	
 	protected String parseDebugExp(String line) {

@@ -42,27 +42,7 @@ public class CommandProtection extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
-		if (party == null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
-			return false;
-		}
-		
-		if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_EDIT_PROTECTION))
-			return false;
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		((PartiesCommandData) commandData).setParty(party);
-		return true;
+		return handlePreRequisitesFullWithParty(commandData, true, 2, 2, PartiesPermission.PRIVATE_EDIT_PROTECTION);
 	}
 	
 	@Override

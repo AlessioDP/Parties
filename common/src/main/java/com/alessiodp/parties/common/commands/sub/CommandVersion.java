@@ -33,17 +33,7 @@ public class CommandVersion extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = sender.isPlayer() ? ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID()) : null;
-		
-		// Checks for command prerequisites
-		if (partyPlayer != null && !sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		return true;
+		return handlePreRequisitesFull(commandData, null);
 	}
 	
 	@Override

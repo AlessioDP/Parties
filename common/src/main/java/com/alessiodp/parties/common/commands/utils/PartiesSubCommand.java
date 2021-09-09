@@ -5,11 +5,13 @@ import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.ADPPermission;
 import com.alessiodp.core.common.commands.utils.ADPSubCommand;
+import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import lombok.NonNull;
 
 public abstract class PartiesSubCommand extends ADPSubCommand {
@@ -50,5 +52,62 @@ public abstract class PartiesSubCommand extends ADPSubCommand {
 			playerReceiver.sendMessage(message, victim, party);
 		else
 			((PartiesPlugin) plugin).getMessageUtils().sendMessage(receiver, message, victim, party);
+	}
+	
+	protected boolean handlePreRequisitesFull(CommandData commandData, Boolean inParty) {
+		return handlePreRequisitesFull(commandData, inParty, 0, Integer.MAX_VALUE);
+	}
+	
+	protected boolean handlePreRequisitesFull(CommandData commandData, Boolean inParty, int argMin) {
+		return handlePreRequisitesFull(commandData, inParty, argMin, Integer.MAX_VALUE);
+	}
+	
+	protected boolean handlePreRequisitesFull(CommandData commandData, Boolean inParty, int argMin, int argMax) {
+		User sender = commandData.getSender();
+		if (sender.isPlayer()) {
+			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			
+			// Checks for command prerequisites
+			if (!sender.hasPermission(permission)) {
+				sendNoPermissionMessage(partyPlayer, permission);
+				return false;
+			}
+			
+			if (inParty != null) {
+				if (inParty && partyPlayer.getPartyId() == null) {
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
+					return false;
+				} else if (!inParty && partyPlayer.getPartyId() != null) {
+					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
+					return false;
+				}
+			}
+			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+		}
+		
+		if (commandData.getArgs().length < argMin || commandData.getArgs().length > argMax) {
+			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", syntax));
+			return false;
+		}
+		return true;
+	}
+	
+	protected boolean handlePreRequisitesFullWithParty(CommandData commandData, Boolean inParty, int argMin, int argMax, PartiesPermission requiredRank) {
+		boolean ret = handlePreRequisitesFull(commandData, inParty, argMin, argMax);
+		
+		if (ret && commandData.getSender().isPlayer()) {
+			PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(((PartiesCommandData) commandData).getPartyPlayer());
+			if (party == null) {
+				sendMessage(commandData.getSender(), ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_COMMON_NOTINPARTY);
+				return false;
+			}
+			
+			if (requiredRank != null && !((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), requiredRank))
+				return false;
+			
+			((PartiesCommandData) commandData).setParty(party);
+		}
+		return ret;
 	}
 }

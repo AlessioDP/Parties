@@ -56,7 +56,7 @@ public class CommandAccept extends PartiesSubCommand {
 		if (player != null
 				&& player.isInParty()
 				&& (ConfigParties.ADDITIONAL_ASK_ENABLE
-						|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE))) {
+					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE))) {
 			return syntaxAskTeleport;
 		}
 		return syntax;
@@ -64,37 +64,22 @@ public class CommandAccept extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+		boolean ret = handlePreRequisitesFull(commandData, null, 0, 2);
 		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		if (commandData.getArgs().length > 2) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", getSyntaxForUser(sender)));
-			return false;
-		}
-		
-		if (partyPlayer.getPartyId() != null) {
+		if (ret && ((PartiesCommandData) commandData).getPartyPlayer().getPartyId() != null) {
 			if ((ConfigParties.ADDITIONAL_ASK_ENABLE
-						&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_ASK_ACCEPT)
-					)
+					&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), PartiesPermission.PRIVATE_ASK_ACCEPT)
+			)
 					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE
-						&& ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE
-						&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_TELEPORT_ACCEPT))) {
-				((PartiesCommandData) commandData).setParty(((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId()));
+					&& ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE
+					&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), PartiesPermission.PRIVATE_TELEPORT_ACCEPT))) {
+				((PartiesCommandData) commandData).setParty(((PartiesPlugin) plugin).getPartyManager().getParty(((PartiesCommandData) commandData).getPartyPlayer().getPartyId()));
 			} else {
-				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
+				sendMessage(commandData.getSender(), ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_COMMON_ALREADYINPARTY);
 				return false;
 			}
 		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		return true;
+		return ret;
 	}
 	
 	@Override

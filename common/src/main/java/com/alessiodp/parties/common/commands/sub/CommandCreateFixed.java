@@ -37,31 +37,7 @@ public class CommandCreateFixed extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		if (sender.isPlayer()) {
-			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-			
-			// Checks for command prerequisites
-			if (!sender.hasPermission(permission)) {
-				sendNoPermissionMessage(partyPlayer, permission);
-				return false;
-			}
-			
-			if (partyPlayer.getPartyId() != null) {
-				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
-				return false;
-			}
-			
-			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		}
-		
-		if (commandData.getArgs().length != 2) {
-			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", syntax));
-			return false;
-		}
-		
-		return true;
+		return handlePreRequisitesFull(commandData, false, 2, 2);
 	}
 	
 	@Override

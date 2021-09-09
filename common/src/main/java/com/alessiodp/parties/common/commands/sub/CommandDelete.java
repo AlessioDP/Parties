@@ -62,26 +62,11 @@ public class CommandDelete extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		if (sender.isPlayer()) {
-			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-			
-			// Checks for command prerequisites
-			if (!sender.hasPermission(permission)) {
-				sendNoPermissionMessage(partyPlayer, permission);
-				return false;
-			}
-			
-			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
+		boolean ret = handlePreRequisitesFull(commandData, null, 2, 3);
+		if (ret && ((PartiesCommandData) commandData).getPartyPlayer() != null) {
 			commandData.addPermission(PartiesPermission.ADMIN_DELETE_SILENT);
 		}
-		
-		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
-			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", getSyntaxForUser(sender)));
-			return false;
-		}
-		return true;
+		return ret;
 	}
 	
 	@Override
@@ -136,9 +121,7 @@ public class CommandDelete extends PartiesSubCommand {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 3 && sender.hasPermission(PartiesPermission.ADMIN_DELETE_SILENT)) {
 			ret.add(ConfigMain.COMMANDS_MISC_SILENT);
-			if (!args[2].isEmpty()) {
-				ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[2]);
-			}
+			ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[2]);
 		}
 		return ret;
 	}

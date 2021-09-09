@@ -34,19 +34,7 @@ public class CommandReload extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		if (sender.isPlayer()) {
-			// If the sender is a player
-			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-			
-			if (!sender.hasPermission(permission)) {
-				sendNoPermissionMessage(partyPlayer, permission);
-				return false;
-			}
-			
-			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		}
-		return true;
+		return handlePreRequisitesFull(commandData, null);
 	}
 	
 	@Override

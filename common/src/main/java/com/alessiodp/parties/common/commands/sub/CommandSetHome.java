@@ -53,27 +53,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
-		if (party == null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
-			return false;
-		}
-		
-		if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_EDIT_HOME))
-			return false;
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		((PartiesCommandData) commandData).setParty(party);
-		return true;
+		return handlePreRequisitesFullWithParty(commandData, true, Integer.MIN_VALUE, Integer.MAX_VALUE, PartiesPermission.PRIVATE_EDIT_HOME);
 	}
 	
 	@Override
@@ -197,7 +177,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 	@Override
 	public List<String> onTabComplete(User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
-		if (args.length == 2) {
+		if (args.length == 2 && ConfigMain.COMMANDS_MISC_REMOVE.startsWith(args[1])) {
 			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);
 		}
 		return ret;

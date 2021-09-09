@@ -45,33 +45,7 @@ public class CommandColor extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
-		if (party == null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
-			return false;
-		}
-		
-		if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_EDIT_COLOR))
-			return false;
-		
-		if (commandData.getArgs().length > 2) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", syntax));
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		((PartiesCommandData) commandData).setParty(party);
-		return true;
+		return handlePreRequisitesFullWithParty(commandData, false, 2, 2, PartiesPermission.PRIVATE_EDIT_COLOR);
 	}
 	
 	@Override
@@ -132,6 +106,6 @@ public class CommandColor extends PartiesSubCommand {
 				ret.add(color.getCommand());
 			}
 		}
-		return ret;
+		return plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[args.length - 1]);
 	}
 }

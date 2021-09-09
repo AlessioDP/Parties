@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.10</version>
+		<version>3.1.11</version>
 	</parent>
 	
 	<artifactId>parties-bukkit</artifactId>
@@ -224,10 +224,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>com.sucy.skill</groupId>
 			<artifactId>SkillAPI</artifactId>
-			<version>3.108</version>
+			<version>${libs.skillApi}</version>
+			<scope>provided</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>com.github.promcteam</groupId>
+			<artifactId>proskillapi</artifactId>
+			<version>${libs.proSkillApi}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

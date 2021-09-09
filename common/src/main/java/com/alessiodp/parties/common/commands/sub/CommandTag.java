@@ -53,17 +53,7 @@ public class CommandTag extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		return true;
+		return handlePreRequisitesFull(commandData, null);
 	}
 	
 	@Override

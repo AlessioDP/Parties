@@ -57,29 +57,11 @@ public class CommandJoin extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
+		boolean ret = handlePreRequisitesFull(commandData, false, 2, 3);
+		if (ret && ((PartiesCommandData) commandData).getPartyPlayer() != null) {
+			commandData.addPermission(PartiesPermission.ADMIN_JOIN_BYPASS);
 		}
-		
-		if (partyPlayer.isInParty()) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
-			return false;
-		}
-		
-		if (commandData.getArgs().length < 2 || commandData.getArgs().length > 3) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", getSyntaxForUser(sender)));
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		commandData.addPermission(PartiesPermission.ADMIN_JOIN_BYPASS);
-		return true;
+		return ret;
 	}
 	
 	@Override

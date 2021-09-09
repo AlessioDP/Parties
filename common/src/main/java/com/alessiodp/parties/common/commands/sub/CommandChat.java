@@ -40,22 +40,7 @@ public class CommandChat extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		if (partyPlayer.getPartyId() == null) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		return true;
+		return handlePreRequisitesFull(commandData, true, 1, 2);
 	}
 	
 	@Override

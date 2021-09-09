@@ -114,7 +114,7 @@ public class CommandList extends PartiesSubCommand {
 						return;
 					}
 				}
-			} else if (commandData.getArgs().length == 3) {
+			} else if (commandData.getArgs().length == 3 && ConfigParties.ADDITIONAL_LIST_CHANGE_ORDER) {
 				orderBy = PartiesDatabaseManager.ListOrder.parse(commandData.getArgs()[1]);
 				if (orderBy == null) {
 					sendMessage(sender, player, Messages.ADDCMD_LIST_INVALID_ORDER);

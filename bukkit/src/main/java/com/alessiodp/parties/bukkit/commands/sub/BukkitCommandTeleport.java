@@ -34,7 +34,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 			player.sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT);
 		else
 			player.sendMessage(Messages.ADDCMD_TELEPORT_TELEPORTING
-					.replace("%seconds", Integer.toString(delay)));
+					.replace("%seconds%", Integer.toString(delay)));
 		
 		for (PartyPlayer onlinePlayer : party.getOnlineMembers(true)) {
 			if (!onlinePlayer.getPlayerUUID().equals(player.getPlayerUUID())) {

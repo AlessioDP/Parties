@@ -54,28 +54,7 @@ public class CommandCreate extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-		
-		// Checks for command prerequisites
-		if (!sender.hasPermission(permission)) {
-			sendNoPermissionMessage(partyPlayer, permission);
-			return false;
-		}
-		
-		if (partyPlayer.isInParty()) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_ALREADYINPARTY);
-			return false;
-		}
-		
-		if (commandData.getArgs().length > 2) {
-			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-					.replace("%syntax%", syntax));
-			return false;
-		}
-		
-		((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
-		return true;
+		return handlePreRequisitesFull(commandData, false, 2, 2);
 	}
 	
 	@Override
