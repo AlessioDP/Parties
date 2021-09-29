@@ -98,8 +98,6 @@
 		<libs.mmoCore>1.8.0</libs.mmoCore>
 		<libs.mythicMobs>4.12.0</libs.mythicMobs>
 		<libs.placeholderApi>2.10.10</libs.placeholderApi>
-		<libs.protocolLib>4.4.0</libs.protocolLib>
-		<libs.skillApi>3.108</libs.skillApi>
 		<libs.premiumVanish>2.7.3</libs.premiumVanish>
 		<libs.proSkillApi>1.98</libs.proSkillApi>
 		<libs.skript>2.5.3</libs.skript>

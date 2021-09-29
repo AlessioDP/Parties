@@ -88,11 +88,6 @@
 			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<repository>
-			<!-- ProtocolLib repo -->
-			<id>codemc-repo</id>
-			<url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-		</repository>
-		<repository>
 			<!-- LevelPoints/Skript/Vault repo -->
 			<id>jitpack-repo</id>
 			<url>https://jitpack.io</url>
@@ -212,25 +207,6 @@
 			<version>${libs.placeholderApi}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.comphenix.protocol</groupId>
-			<artifactId>ProtocolLib-API</artifactId>
-			<version>${libs.protocolLib}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!--
-		<dependency>
-			<groupId>com.sucy.skill</groupId>
-			<artifactId>SkillAPI</artifactId>
-			<version>${libs.skillApi}</version>
-			<scope>provided</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>com.github.promcteam</groupId>
 			<artifactId>proskillapi</artifactId>
