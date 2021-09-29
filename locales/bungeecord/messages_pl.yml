@@ -115,21 +115,13 @@ main-commands:
       separator: "&7, "
       empty: "&7Brak"
   info:
-    #[Special tags]
-    #=> %list_rank_RANK%           = The list of players of that rank
-    #Example: %list_rank_member%, %list_rank_moderator% (%list_rank_leader% it's unique)
-    #=> %list_rank_RANK_number%    = The number of players of that rank
-    #=> %list_rank_RANK_online%    = Online players of that rank
-    #=> %list_rank_RANK_online_number%    = The number of online players of that rank
-    #=> %members_online%              = List online players
-    #=> %members_online_number%       = Number of online players
     content:
       - "&b============ &lInfo o %party% &r&b============"
       - "&b&lDescription&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
       - "&bMembers&7: %list_rank_member%"
-      - "&bOnline players&7: %members_online_number%"
+      - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&bZaprosiles gracza %player% do twojej grupy"
     player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
@@ -198,7 +190,7 @@ main-commands:
     low-rank: "&cNie mozesz edytowac graczy z ranga ta sama lub wyzsza co twoja!"
     to-higher-rank: "&cNie mozesz awansowac graczy z ranga ta sama lub wyzsza co twoja!"
     fixed-leader: "&cNie mozesz zmienic lidera w grupie stalej!"
-    changing-yourself: "&cNie mozesz zmienic sobie stopnia!"
+    changing-yourself: "&cYou cannot change your own rank!"
     player-not-in-party: "&c%player% nie jest w twojej grupie"
     players-conflict:
       #[Special tags]
@@ -346,7 +338,7 @@ additional-commands:
     header: "&b============ &lLista grup online &r&b============"
     footer: "&b================ &lStrona %page% z %maxpages% &r&b================"
     no-one: "&7Brak"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_number%&7] %desc%"}]'
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
     invalid-order: '&cInvalid order type'
   motd:
     changed: "&bMOTD grupy zmienione"
@@ -526,4 +518,4 @@ help:
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 11
+  version: 12
