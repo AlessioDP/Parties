@@ -189,6 +189,12 @@
 			<artifactId>MMOCore</artifactId>
 			<version>${libs.mmoCore}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.lumine.xikage</groupId>
@@ -218,6 +224,12 @@
 			<artifactId>proskillapi</artifactId>
 			<version>${libs.proSkillApi}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.SkriptLang</groupId>
