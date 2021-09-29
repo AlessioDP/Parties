@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.11</version>
+    <version>3.1.12</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bukkit</artifactId>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-common</artifactId>
-      <version>3.1.11</version>
+      <version>3.1.12</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -176,7 +176,7 @@
     <dependency>
       <groupId>com.github.Zoon20X</groupId>
       <artifactId>LevelPoints-Recoded</artifactId>
-      <version>da42a0e292</version>
+      <version>12bde91fb5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

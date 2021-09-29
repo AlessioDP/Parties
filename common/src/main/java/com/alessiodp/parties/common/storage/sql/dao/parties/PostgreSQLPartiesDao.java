@@ -30,9 +30,9 @@ public interface PostgreSQLPartiesDao extends PartiesDao {
 			" INNER JOIN <prefix>players ON <prefix>players.party = <prefix>parties.id" +
 			"<if(blacklist)> WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>)<endif>" +
 			" GROUP BY id" +
-			" ORDER BY total DESC LIMIT :limit OFFSET :offset";
-	String QUERY_GET_LIST_BY_KILLS = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>) <endif>ORDER BY \"kills\" DESC LIMIT :limit OFFSET :offset";
-	String QUERY_GET_LIST_BY_EXPERIENCE = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>) <endif>ORDER BY \"experience\" DESC LIMIT :limit OFFSET :offset";
+			" ORDER BY total DESC, \"name\" ASC LIMIT :limit OFFSET :offset";
+	String QUERY_GET_LIST_BY_KILLS = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>) <endif>ORDER BY \"kills\" DESC, \"name\" ASC LIMIT :limit OFFSET :offset";
+	String QUERY_GET_LIST_BY_EXPERIENCE = "SELECT * FROM <prefix>parties <if(blacklist)>WHERE name NOT IN (<blacklist>) AND id NOT IN (<blacklist>) <endif>ORDER BY \"experience\" DESC, \"name\" ASC LIMIT :limit OFFSET :offset";
 	String QUERY_GET_LIST_FIXED = "SELECT * FROM <prefix>parties WHERE leader IS NULL";
 	String QUERY_COUNT_ALL = "SELECT count(*) FROM <prefix>parties";
 	String QUERY_DELETE_ALL = "DELETE FROM <prefix>parties";

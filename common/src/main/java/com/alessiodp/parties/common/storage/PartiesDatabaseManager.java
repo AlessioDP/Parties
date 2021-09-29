@@ -6,6 +6,7 @@ import com.alessiodp.core.common.storage.DatabaseManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
 import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
@@ -15,10 +16,15 @@ import com.alessiodp.parties.common.storage.dispatchers.PartiesYAMLDispatcher;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesSQLDispatcher;
 import com.alessiodp.parties.common.storage.interfaces.IPartiesDatabase;
 
+import java.util.AbstractCollection;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class PartiesDatabaseManager extends DatabaseManager {
 	public PartiesDatabaseManager(ADPPlugin plugin) {
@@ -122,6 +128,14 @@ public class PartiesDatabaseManager extends DatabaseManager {
 		return executeSafelySupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPARTIES, true);
 			
+			if (order == ListOrder.ONLINE_MEMBERS) {
+				return ((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().stream().sorted(Comparator
+								.comparing(p -> ((PartyImpl) p).getOnlineMembers(false).size())
+								.reversed()
+								.thenComparing(p -> ((PartyImpl) p).getName())
+								.thenComparing(p -> ((PartyImpl) p).getId()))
+						.collect(LinkedHashSet<PartyImpl>::new, HashSet::add, AbstractCollection::addAll);
+			}
 			return ((IPartiesDatabase) database).getListParties(order, limit, offset);
 		}).join();
 	}

@@ -198,6 +198,7 @@ additional:
 # \ =============================== /
 commands:
   # Enable tab support (/party <tab> to see every allowed command)
+  # Warning: If you change any of this settings you need to restart the server
   tab-support: true
   help-pages:
     commands-per-page: 9

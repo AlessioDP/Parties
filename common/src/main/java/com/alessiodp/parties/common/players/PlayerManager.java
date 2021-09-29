@@ -101,7 +101,7 @@ public abstract class PlayerManager {
 	}
 	
 	public void sendSpyMessage(SpyMessage message) {
-		if (message.getMessage() != null && !message.getMessage().isEmpty()) {
+		if (message.getMessage() != null && !message.getMessage().isEmpty() && message.isEnabled()) {
 			UUID skip = message.getPlayer() != null ? message.getPlayer().getPlayerUUID() : null;
 			for (UUID uuid : getCacheSpies()) {
 				if (!uuid.equals(skip) && !message.getParty().getMembers().contains(uuid)) {

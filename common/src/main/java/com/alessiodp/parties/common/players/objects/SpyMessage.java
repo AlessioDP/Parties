@@ -37,6 +37,17 @@ public class SpyMessage {
 		return this;
 	}
 	
+	public boolean isEnabled() {
+		switch (type) {
+			case MESSAGE:
+				return !Messages.PARTIES_FORMATS_SPY_PARTY_CHAT.isEmpty();
+			case BROADCAST:
+				return !Messages.PARTIES_FORMATS_SPY_BROADCAST.isEmpty();
+			default:
+				return true;
+		}
+	}
+	
 	public String toMessage() {
 		String format;
 		switch (type) {

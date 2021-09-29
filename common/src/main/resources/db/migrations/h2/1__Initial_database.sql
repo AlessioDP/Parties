@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `<prefix>players` (
 	`uuid`			CHAR(36) NOT NULL PRIMARY KEY,
 	`party`			CHAR(36),
 	`rank`			INT DEFAULT 0,
-	`nickname`		VARCHAR(100),
+	`nickname`		VARCHAR(255),
 	`chat`			INT DEFAULT 0,
 	`spy`			INT DEFAULT 0,
 	`mute`			INT DEFAULT 0

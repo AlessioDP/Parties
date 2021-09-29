@@ -54,6 +54,12 @@ public abstract class MessageUtils {
 		return ret;
 	}
 	
+	public String convertRawPlaceholder(String placeholder, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
+		PartiesPlaceholder newPlaceholder = PartiesPlaceholder.getPlaceholder(placeholder);
+		
+		return newPlaceholder != null ? newPlaceholder.formatPlaceholder(player, party, placeholder, emptyPlaceholder) : null;
+	}
+	
 	public void sendMessage(User receiver, String message, PartyPlayerImpl victim, PartyImpl party) {
 		if (receiver != null && message != null && !message.isEmpty()) {
 			String formattedMessage = plugin.getMessageUtils().convertPlaceholders(message, victim, party);

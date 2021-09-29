@@ -733,7 +733,7 @@ public abstract class PartyImpl implements Party {
 	
 	@Override
 	public PartyInvite invitePlayer(@NotNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter, boolean sendMessages) {
-		PartyInvite ret = null;
+		PartyInviteImpl ret = null;
 		
 		IPlayerPreInviteEvent playerPreInviteEvent = plugin.getEventManager().preparePlayerPreInviteEvent(invitedPlayer, inviter, this);
 		plugin.getEventManager().callEvent(playerPreInviteEvent);
@@ -756,11 +756,11 @@ public abstract class PartyImpl implements Party {
 				IPlayerPostInviteEvent playerPostInviteEvent = plugin.getEventManager().preparePlayerPostInviteEvent(invitedPlayer, inviter, this);
 				plugin.getEventManager().callEvent(playerPostInviteEvent);
 				
-				plugin.getScheduler().scheduleAsyncLater(
+				ret.setActiveTask(plugin.getScheduler().scheduleAsyncLater(
 						ret::timeout,
 						ConfigParties.GENERAL_INVITE_TIMEOUT,
 						TimeUnit.SECONDS
-				);
+				));
 			}
 		} else {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_INVITEEVENT_DENY, invitedPlayer.getPlayerUUID().toString(), getId().toString(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);

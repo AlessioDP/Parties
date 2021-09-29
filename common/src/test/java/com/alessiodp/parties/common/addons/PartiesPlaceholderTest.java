@@ -11,7 +11,9 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PlayerManager;
+import com.alessiodp.parties.common.players.RankManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.utils.MessageUtils;
 import lombok.NonNull;
@@ -23,10 +25,10 @@ import org.powermock.core.MockRepository;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,6 +41,7 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 public class PartiesPlaceholderTest {
 	private PartiesPlugin mockPlugin;
 	private PartiesDatabaseManager mockDatabaseManager;
+	private MessageUtils mockMessageUtils;
 	
 	private PartyImpl party1;
 	private PartyImpl party2;
@@ -67,6 +70,11 @@ public class PartiesPlaceholderTest {
 		// Mock database manager
 		mockDatabaseManager = mock(PartiesDatabaseManager.class);
 		when(mockPlugin.getDatabaseManager()).thenReturn(mockDatabaseManager);
+		
+		// Mock message utils
+		mockMessageUtils = mock(MessageUtils.class);
+		when(mockPlugin.getMessageUtils()).thenReturn(mockMessageUtils);
+		when(mockMessageUtils.convertRawPlaceholder(any(), any(), any(), any())).thenCallRealMethod();
 		
 		// Mock names
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
@@ -342,31 +350,28 @@ public class PartiesPlaceholderTest {
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
-	public void testPlaceholderListMembersByNumber() {
-		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_members_1");
+	public void testPlaceholderListRank() {
+		RankManager mockRankManager = mock(RankManager.class);
+		when(mockPlugin.getRankManager()).thenReturn(mockRankManager);
+		when(mockRankManager.searchRankByHardName(any())).thenReturn(new PartyRankImpl("myrank", "myrank", "", 20, Collections.emptyList(), true));
 		
-		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER, placeholder);
-		assertEquals(player1.getName(), placeholder.formatPlaceholder(null, party1, "list_members_1"));
+		when(mockMessageUtils.convertPlaceholders(any(), any(), any())).thenReturn("Dummy");
 		
-		placeholder = PartiesPlaceholder.getPlaceholder("list_members_2");
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_rank_myrank");
+		assertEquals(PartiesPlaceholder.LIST_RANK, placeholder);
+		assertEquals(player1.getName(), placeholder.formatPlaceholder(null, party1, "list_rank_myrank"));
 		
-		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER, placeholder);
-		assertEquals(player2.getName(), placeholder.formatPlaceholder(null, party1, "list_members_2"));
+		placeholder = PartiesPlaceholder.getPlaceholder("list_rank_myrank_total");
+		assertEquals(PartiesPlaceholder.LIST_RANK_TOTAL, placeholder);
 		
-		// No more parties
-		placeholder = PartiesPlaceholder.getPlaceholder("list_members_3");
+		placeholder = PartiesPlaceholder.getPlaceholder("list_rank_myrank_1");
+		assertEquals(PartiesPlaceholder.LIST_RANK_NUMBER, placeholder);
 		
-		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER, placeholder);
-		assertEquals("", placeholder.formatPlaceholder(null, party1, "list_members_3"));
-		
-		// Placeholder
-		placeholder = PartiesPlaceholder.getPlaceholder("list_members_1_player_id");
-		
-		assertEquals(PartiesPlaceholder.LIST_MEMBERS_NUMBER_PLACEHOLDER, placeholder);
-		// Party.getMembers() returns a Set. The order is random, just check if the UUID is related to player1 or player2
-		String result = placeholder.formatPlaceholder(null, party1, "list_members_1_player_id");
-		assertTrue(result.equals(player1.getPlayerUUID().toString()) || result.equals(player2.getPlayerUUID().toString()));
+		placeholder = PartiesPlaceholder.getPlaceholder("list_rank_myrank_1_placeholder");
+		assertEquals(PartiesPlaceholder.LIST_RANK_NUMBER_PLACEHOLDER, placeholder);
 	}
+	
+	
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
@@ -418,11 +423,18 @@ public class PartiesPlaceholderTest {
 	
 	@Test
 	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
-	public void testMembersNumber() {
-		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("members_number");
+	public void testMembersTotal() {
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("members_total");
+		assertEquals(PartiesPlaceholder.MEMBERS_TOTAL, placeholder);
+		assertEquals("2", placeholder.formatPlaceholder(player1, party1, "members_total"));
 		
-		assertEquals(PartiesPlaceholder.MEMBERS_NUMBER, placeholder);
-		assertEquals("2", placeholder.formatPlaceholder(player1, party1, "members_number"));
+		placeholder = PartiesPlaceholder.getPlaceholder("members_online_total");
+		assertEquals(PartiesPlaceholder.MEMBERS_ONLINE_TOTAL, placeholder);
+		assertEquals("0", placeholder.formatPlaceholder(player1, party1, "members_online_total"));
+		
+		placeholder = PartiesPlaceholder.getPlaceholder("members_offline_total");
+		assertEquals(PartiesPlaceholder.MEMBERS_OFFLINE_TOTAL, placeholder);
+		assertEquals("2", placeholder.formatPlaceholder(player1, party1, "members_offline_total"));
 	}
 	
 	@Test

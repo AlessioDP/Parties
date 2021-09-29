@@ -45,4 +45,10 @@ public class PlaceholderAPIHandler {
 			ret = hook.parsePlaceholders(Bukkit.getOfflinePlayer(uuid), message);
 		return ret;
 	}
+	
+	public static String formatRawPlaceholder(UUID uuid, String placeholder) {
+		if (active && hook != null)
+			return hook.parsePlaceholders(Bukkit.getOfflinePlayer(uuid), placeholder);
+		return null;
+	}
 }

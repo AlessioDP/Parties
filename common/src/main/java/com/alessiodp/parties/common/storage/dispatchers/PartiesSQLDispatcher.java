@@ -218,7 +218,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 		else if (order == PartiesDatabaseManager.ListOrder.EXPERIENCE)
 			ret = this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(partiesDao).getListByExperience(blacklist, limit, offset));
 		else
-			throw new IllegalStateException("Cannot get the list of parties with the order" + order.name());
+			throw new IllegalStateException("Cannot get the list of parties with the order " + order.name());
 		
 		// Load members
 		for (PartyImpl party : ret) {

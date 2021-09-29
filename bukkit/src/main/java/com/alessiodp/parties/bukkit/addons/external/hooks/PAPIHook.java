@@ -69,8 +69,8 @@ public class PAPIHook extends PlaceholderExpansion {
 			
 			PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder(identifier);
 			
-			return placeholder != null ? placeholder.formatPlaceholder(partyPlayer, party, identifier) : "";
+			return placeholder != null ? placeholder.formatPlaceholder(partyPlayer, party, identifier) : null;
 		}
-		return identifier;
+		return null;
 	}
 }

@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.11</version>
+		<version>3.1.12</version>
 	</parent>
 	
 	<artifactId>parties-bungeecord</artifactId>
@@ -71,6 +71,11 @@
 			<id>AuraDevelopmentTeam</id>
 			<url>https://maven.aura-dev.team/repository/auradev-releases/</url>
 		</repository>
+		<repository>
+			<!-- PremiumVanish repo -->
+			<id>jitpack-repo</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	
 	<dependencies>
@@ -104,6 +109,12 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.LeonMangler</groupId>
+			<artifactId>PremiumVanishAPI</artifactId>
+			<version>${libs.premiumVanish}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

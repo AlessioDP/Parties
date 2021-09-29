@@ -38,6 +38,12 @@ public class BungeePartiesMessageListener extends BungeeMessageListener {
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name(), channel), true);
 			switch (packet.getType()) {
+				case UPDATE_PARTY:
+					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UPDATE_PARTY,
+								packet.getPartyId().toString()), true);
+					}
+					break;
 				case INVITE_PLAYER:
 					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
 					if (party != null) {

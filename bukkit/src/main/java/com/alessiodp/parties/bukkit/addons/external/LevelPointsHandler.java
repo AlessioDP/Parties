@@ -3,10 +3,11 @@ package com.alessiodp.parties.bukkit.addons.external;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
-import levelpoints.Containers.PlayerContainer;
-import levelpoints.Utils.AsyncEvents;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import me.zoon20x.levelpoints.LevelPoints;
+import me.zoon20x.levelpoints.containers.Player.PlayerData;
+import me.zoon20x.levelpoints.containers.Player.PlayerStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -34,10 +35,11 @@ public class LevelPointsHandler {
 	
 	public static void giveExp(Player player, double experience) {
 		if (active) {
-			PlayerContainer playerContainer = AsyncEvents.getPlayerContainer(player);
-			if (playerContainer != null) {
+			PlayerStorage playerStorage = LevelPoints.getPlayerStorage();
+			if (playerStorage != null) {
 				try {
-					playerContainer.addEXP(experience);
+					PlayerData pd = playerStorage.getLoadedData(player.getUniqueId());
+					pd.addEXP(experience);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

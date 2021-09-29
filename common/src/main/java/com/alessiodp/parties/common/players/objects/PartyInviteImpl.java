@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.players.objects;
 
+import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
 import com.alessiodp.parties.api.interfaces.Party;
@@ -12,15 +13,17 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode
 public class PartyInviteImpl implements PartyInvite {
 	@NonNull private final PartiesPlugin plugin;
-	@Getter @Setter private Party party;
-	@Getter @Setter private PartyPlayer invitedPlayer;
-	@Getter @Setter private PartyPlayer inviter;
+	@Getter @Setter private final Party party;
+	@Getter @Setter private final PartyPlayer invitedPlayer;
+	@Getter @Setter private final PartyPlayer inviter;
+	@Getter @Setter @EqualsAndHashCode.Exclude private CancellableTask activeTask;
 	
 	@Override
 	public void accept(boolean sendMessages) {
@@ -78,6 +81,9 @@ public class PartyInviteImpl implements PartyInvite {
 				((PartyPlayerImpl) invitedPlayer).sendMessage(Messages.MAINCMD_INVITE_REVOKE_REVOKED, (PartyPlayerImpl) inviter, (PartyImpl) party);
 			}
 		}
+		
+		if (activeTask != null)
+			activeTask.cancel();
 	}
 	
 	@Override

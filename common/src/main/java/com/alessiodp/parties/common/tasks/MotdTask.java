@@ -29,10 +29,8 @@ public class MotdTask implements Runnable {
 				
 			if (party != null && party.getMotd() != null && !party.getMotd().isEmpty()) {
 				// Formatting motd
-				StringBuilder motd = new StringBuilder();
-				for (String str : party.getMotd().split(ConfigParties.ADDITIONAL_MOTD_NEWLINECODE)) {
-					motd.append(str).append("\n");
-				}
+				String motd = party.getMotd();
+				motd = motd.replace(ConfigParties.ADDITIONAL_MOTD_NEWLINECODE, "\n");
 				
 				for (String line : Messages.ADDCMD_MOTD_CONTENT) {
 					line = line.replace("%motd%", "%temporary_motd%"); // Used to bypass tags from convertAllPlaceholders

@@ -2,6 +2,7 @@ package com.alessiodp.parties.bungeecord.players.objects;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bungeecord.addons.external.BungeeChatHandler;
+import com.alessiodp.parties.bungeecord.addons.external.PremiumVanishHandler;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -57,7 +58,7 @@ public class BungeePartyPlayerImpl extends PartyPlayerImpl {
 	
 	@Override
 	public boolean isVanished() {
-		return false;
+		return PremiumVanishHandler.isPlayerVanished(getPlayerUUID());
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ public class ExpManager {
 	
 	public void reload() {
 		mode = ExpMode.parse(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
-		if (ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE && mode == ExpMode.PROGRESSIVE) {
+		if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE && mode == ExpMode.PROGRESSIVE) {
 			FormulaUtils.initializeEngine();
 		}
 	}

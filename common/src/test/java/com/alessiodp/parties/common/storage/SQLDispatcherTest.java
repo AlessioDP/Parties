@@ -141,7 +141,6 @@ public class SQLDispatcherTest {
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMySQL(PartiesPlugin plugin) {
 		// Manual test only
-		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -158,13 +157,11 @@ public class SQLDispatcherTest {
 		ret.getConnectionFactory().getJdbi().onDemand(PartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
 		return ret;
-		*/
-		return null;
+		//return null;
 	}
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMariaDB(PartiesPlugin plugin) {
 		// Manual test only
-		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -181,13 +178,11 @@ public class SQLDispatcherTest {
 		ret.getConnectionFactory().getJdbi().onDemand(PartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
 		return ret;
-		*/
-		return null;
+		//return null;
 	}
 	
 	public static PartiesSQLDispatcher getSQLDispatcherPostgreSQL(PartiesPlugin plugin) {
 		// Manual test only
-		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -204,8 +199,7 @@ public class SQLDispatcherTest {
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class).deleteAll();
 		return ret;
-		*/
-		return null;
+		//return null;
 	}
 	
 	@Test
@@ -455,28 +449,37 @@ public class SQLDispatcherTest {
 	private void listPartiesNumber(PartiesSQLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
 		
-		assertEquals(7, dispatcher.getListPartiesNumber());
+		assertEquals(8, dispatcher.getListPartiesNumber());
 		
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.emptyList();
 		
-		assertEquals(8, dispatcher.getListPartiesNumber());
+		assertEquals(9, dispatcher.getListPartiesNumber());
 	}
 	
 	private void listPartiesByName(PartiesSQLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.NAME, 100, 0));
 		
-		assertEquals(7, list.size());
+		assertEquals(8, list.size());
 		assertEquals("test1", list.get(0).getName());
 		assertEquals("test3", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
+		assertEquals("zlast", list.get(7).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.NAME, 1, 0));
+		assertEquals(1, list.size());
+		assertEquals("test1", list.get(0).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.NAME, 1, 1));
+		assertEquals(1, list.size());
+		assertEquals("test3", list.get(0).getName());
 		
 		// Filter by id instead of name
 		PartyImpl firstParty = list.get(0);
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Arrays.asList("test2", firstParty.getId().toString());
 		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.NAME, 100, 0));
 		
-		assertEquals(6, list.size());
+		assertEquals(7, list.size());
 		assertNotEquals(firstParty, list.get(0));
 	}
 	
@@ -484,30 +487,56 @@ public class SQLDispatcherTest {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test7");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, 100, 0));
 		
-		assertEquals(7, list.size());
+		assertEquals(8, list.size());
 		assertEquals("test8", list.get(0).getName());
-		assertEquals("test6", list.get(1).getName());
-		assertEquals("test1", list.get(6).getName());
+		assertEquals("zlast", list.get(1).getName());
+		assertEquals("test6", list.get(2).getName());
+		assertEquals("test1", list.get(7).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, 1, 0));
+		assertEquals(1, list.size());
+		assertEquals("test8", list.get(0).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, 1, 1));
+		assertEquals(1, list.size());
+		assertEquals("zlast", list.get(0).getName());
 	}
 	
 	private void listPartiesByKills(PartiesSQLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test3");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.KILLS, 100, 0));
 		
-		assertEquals(7, list.size());
+		assertEquals(8, list.size());
 		assertEquals("test4", list.get(0).getName());
 		assertEquals("test2", list.get(1).getName());
-		assertEquals("test5", list.get(6).getName());
+		assertEquals("test5", list.get(7).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.KILLS, 1, 0));
+		assertEquals(1, list.size());
+		assertEquals("test4", list.get(0).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.KILLS, 1, 1));
+		assertEquals(1, list.size());
+		assertEquals("test2", list.get(0).getName());
 	}
 	
 	private void listPartiesByExperience(PartiesSQLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test6");
 		List<PartyImpl> list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, 100, 0));
 		
-		assertEquals(7, list.size());
+		assertEquals(8, list.size());
 		assertEquals("test7", list.get(0).getName());
 		assertEquals("test5", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
+		assertEquals("zlast", list.get(7).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, 1, 0));
+		assertEquals(1, list.size());
+		assertEquals("test7", list.get(0).getName());
+		
+		list = new LinkedList<>(dispatcher.getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, 1, 1));
+		assertEquals(1, list.size());
+		assertEquals("test5", list.get(0).getName());
 	}
 	
 	@Test
@@ -679,9 +708,10 @@ public class SQLDispatcherTest {
 		insertOneParty(dispatcher, "test6", 6, 140, 700);
 		insertOneParty(dispatcher, "test7", 7, 150, 800);
 		insertOneParty(dispatcher, "test8", 8, 160, 100);
+		insertOneParty(dispatcher, "zlast", 8, 160, 100);
 		
-		assertEquals(daoParties.countAll(), 8);
-		assertEquals(daoPlayers.countAll(), 36);
+		assertEquals(daoParties.countAll(), 9);
+		assertEquals(daoPlayers.countAll(), 44);
 	}
 	
 	private void insertOneParty(PartiesSQLDispatcher dispatcher, String partyName, int numberOfPlayers, int kills, double experience) {
