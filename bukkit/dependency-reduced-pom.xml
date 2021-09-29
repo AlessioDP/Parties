@@ -168,6 +168,12 @@
       <artifactId>MythicMobs</artifactId>
       <version>4.12.0</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>*</artifactId>
+          <groupId>*</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.github.Zoon20X</groupId>

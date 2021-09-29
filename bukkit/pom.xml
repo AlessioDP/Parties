@@ -195,6 +195,12 @@
 			<artifactId>MythicMobs</artifactId>
 			<version>${libs.mythicMobs}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.Zoon20X</groupId>
