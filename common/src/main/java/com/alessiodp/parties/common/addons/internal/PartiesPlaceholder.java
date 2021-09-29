@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.addons.internal;
 
 import com.alessiodp.core.common.user.OfflineUser;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.core.common.utils.Pair;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -75,6 +76,7 @@ public enum PartiesPlaceholder {
 	NAME,
 	OUT_PARTY,
 	PARTY,
+	PLAYER_DISPLAY_NAME,
 	PLAYER_ID,
 	PLAYER_NAME,
 	PLAYER_NICKNAME,
@@ -444,6 +446,12 @@ public enum PartiesPlaceholder {
 				return party != null && party.getName() != null ? party.getName() : emptyPlaceholder;
 			case OUT_PARTY:
 				return party == null ? Messages.PARTIES_OUT_PARTY : emptyPlaceholder;
+			case PLAYER_DISPLAY_NAME:
+				if (player != null) {
+					User user = plugin.getPlayer(player.getPlayerUUID());
+					return user != null ? user.getDisplayName() : player.getName();
+				}
+				return emptyPlaceholder;
 			case PLAYER_ID:
 				if (player != null) {
 					return player.getPlayerUUID().toString();
