@@ -141,6 +141,7 @@ public class SQLDispatcherTest {
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMySQL(PartiesPlugin plugin) {
 		// Manual test only
+		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -157,11 +158,13 @@ public class SQLDispatcherTest {
 		ret.getConnectionFactory().getJdbi().onDemand(PartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
 		return ret;
-		//return null;
+		*/
+		return null;
 	}
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMariaDB(PartiesPlugin plugin) {
 		// Manual test only
+		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -178,11 +181,13 @@ public class SQLDispatcherTest {
 		ret.getConnectionFactory().getJdbi().onDemand(PartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
 		return ret;
-		//return null;
+		*/
+		return null;
 	}
 	
 	public static PartiesSQLDispatcher getSQLDispatcherPostgreSQL(PartiesPlugin plugin) {
 		// Manual test only
+		/*
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -199,7 +204,8 @@ public class SQLDispatcherTest {
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPartiesDao.class).deleteAll();
 		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class).deleteAll();
 		return ret;
-		//return null;
+		*/
+		return null;
 	}
 	
 	@Test

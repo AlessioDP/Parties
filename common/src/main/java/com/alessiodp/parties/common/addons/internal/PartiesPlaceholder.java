@@ -486,52 +486,48 @@ public enum PartiesPlaceholder {
 	
 	private String parseListPartiesBy(PartyPlayerImpl player, String identifier, String emptyPlaceholder, Pattern pattern, PartiesDatabaseManager.ListOrder order) {
 		Matcher matcher = pattern.matcher(identifier);
-		if (matcher.find()) {
-			if (matcher.group(1) != null) {
-				try {
-					int number = Integer.parseInt(matcher.group(1));
-					Optional<PartyImpl> partyOptional = plugin.getDatabaseManager().getListParties(order, 1, number - 1).stream().findAny();
-					
-					if (partyOptional.isPresent()) {
-						if (matcher.group(3) != null) {
-							return plugin.getMessageUtils().convertRawPlaceholder(matcher.group(3), player, partyOptional.get(), emptyPlaceholder);
-						}
-						
-						return partyOptional.get().getName() != null ? partyOptional.get().getName() : emptyPlaceholder;
+		if (matcher.find() && matcher.group(1) != null) {
+			try {
+				int number = Integer.parseInt(matcher.group(1));
+				Optional<PartyImpl> partyOptional = plugin.getDatabaseManager().getListParties(order, 1, number - 1).stream().findAny();
+				
+				if (partyOptional.isPresent()) {
+					if (matcher.group(3) != null) {
+						return plugin.getMessageUtils().convertRawPlaceholder(matcher.group(3), player, partyOptional.get(), emptyPlaceholder);
 					}
-					return emptyPlaceholder;
-				} catch (NumberFormatException ignored) {}
-			}
+					
+					return partyOptional.get().getName() != null ? partyOptional.get().getName() : emptyPlaceholder;
+				}
+				return emptyPlaceholder;
+			} catch (NumberFormatException ignored) {}
 		}
 		return null;
 	}
 	
 	private String parseListRank(PartyImpl party, String identifier, String emptyPlaceholder, Pattern pattern) {
 		Matcher matcher = pattern.matcher(identifier);
-		if (matcher.find()) {
-			if (party != null) {
-				ArrayList<PartyPlayerImpl> members = getMembersByRank(party, matcher.group(1));
-				if (members != null) {
-					if (pattern.equals(PATTERN_LIST_RANK_ONLINE))
-						filterMembers(members, true);
-					else if (pattern.equals(PATTERN_LIST_RANK_OFFLINE))
-						filterMembers(members, false);
+		if (matcher.find() && party != null) {
+			ArrayList<PartyPlayerImpl> members = getMembersByRank(party, matcher.group(1));
+			if (members != null) {
+				if (pattern.equals(PATTERN_LIST_RANK_ONLINE))
+					filterMembers(members, true);
+				else if (pattern.equals(PATTERN_LIST_RANK_OFFLINE))
+					filterMembers(members, false);
+				
+				try {
+					int number = Integer.parseInt(matcher.group(3));
+					PartyPlayerImpl target = members.get(number - 1);
 					
-					try {
-						int number = Integer.parseInt(matcher.group(3));
-						PartyPlayerImpl target = members.get(number - 1);
-						
-						if (target != null) {
-							if (matcher.group(5) != null) {
-								return plugin.getMessageUtils().convertRawPlaceholder(matcher.group(5), target, party, emptyPlaceholder);
-							}
-							
-							return target.getName();
+					if (target != null) {
+						if (matcher.group(5) != null) {
+							return plugin.getMessageUtils().convertRawPlaceholder(matcher.group(5), target, party, emptyPlaceholder);
 						}
-					} catch (NumberFormatException ignored) {
-					} catch (IndexOutOfBoundsException ignored) {
-						return emptyPlaceholder;
+						
+						return target.getName();
 					}
+				} catch (NumberFormatException ignored) {
+				} catch (IndexOutOfBoundsException ignored) {
+					return emptyPlaceholder;
 				}
 			}
 		}
