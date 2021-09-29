@@ -121,7 +121,7 @@ main-commands:
       - "&bVedoucí&7: %list_rank_leader%"
       - "&bModerátoři&7: %list_rank_moderator%"
       - "&bČlenové&7: %list_rank_member%"
-      - "&bOnline players&7: %members_online_total%"
+      - "&bOnline hráči&7: %members_online_total%"
   invite:
     sent: "&bPozval/a jsi hráče %player% do své párty"
     player-invited: "[{\"text\":\"&b%player% tě pozval do párty %party%.\n&bChceš \"},{\"text\":\"&a&lpřijmout\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Přijmout žádost\"}]}}},{\"text\":\" &bnebo \"},{\"text\":\"&c&lodmítnout\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Odmítnout žádost\"}]}}},{\"text\":\"&b žádost ?\n&bMůžeš použít &7/party <accept/deny> &bpro vybrání.\"}]"
@@ -190,7 +190,7 @@ main-commands:
     low-rank: "&cNemůžeš upravovat hráče se stejnou nebo vyšší hodností než máš ty!"
     to-higher-rank: "&cNemůžeš povýšit na stejnou nebo vyšší hodnost než máš ty!"
     fixed-leader: "&cNemůžeš někoho učinit vedoucím pevné párty!"
-    changing-yourself: "&cYou cannot change your own rank!"
+    changing-yourself: "&cNemůžeš sám/sama sobě změnit hodnost!"
     player-not-in-party: "&c%player% není ve tvé párty"
     players-conflict:
       #[Special tags]
@@ -338,7 +338,7 @@ additional-commands:
     header: "&b============ &lSeznam online párty &r&b============"
     footer: "&b================ &lStrana%page% z %maxpages% &r&b================"
     no-one: "&7Nikdo"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aZobrazit info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
     invalid-order: '&cNeplatný typ pořadí'
   motd:
     changed: "&bMOTD párty změněno"
