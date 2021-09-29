@@ -115,21 +115,13 @@ main-commands:
       separator: "&7, "
       empty: "&7无"
   info:
-    #[Special tags]
-    #=> %list_rank_RANK%           = The list of players of that rank
-    #Example: %list_rank_member%, %list_rank_moderator% (%list_rank_leader% it's unique)
-    #=> %list_rank_RANK_number%    = The number of players of that rank
-    #=> %list_rank_RANK_online%    = Online players of that rank
-    #=> %list_rank_RANK_online_number%    = The number of online players of that rank
-    #=> %members_online%              = List online players
-    #=> %members_online_number%       = Number of online players
     content:
       - "&b============ &l%party%的信息 &r&b============"
       - "&b&l描述&7: %desc%"
       - "&b领导者&7: %list_rank_leader%"
       - "&b组织者&7: %list_rank_moderator%"
       - "&b成员&7: %list_rank_member%"
-      - "&b在线玩家&7: %members_online_number%"
+      - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&b你邀请了 %player% 加入你的帮派"
     player-invited: "[{\"text\":\"&b%player% 已经邀请您加入团队 %party%。\n&b您是否想要 \"},{\"text\":\"&a&l接受\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6接受邀请\"}]}}},{\"text\":\" &b或者 \"},{\"text\":\"&c&l拒绝\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6拒绝邀请\"}]}}},{\"text\":\"&b?\n&b您也可以使用 &7/party <accept/deny> &b来选择。\"}]"
@@ -198,7 +190,7 @@ main-commands:
     low-rank: "&c您不能编辑该玩家职位，其级别比你的级别高或相同！"
     to-higher-rank: "&c你不能升为相等或更高级别！"
     fixed-leader: "&c你无法让某个人成为特定帮派的领导人！"
-    changing-yourself: "&c你不能改变自己的职位！"
+    changing-yourself: "&cYou cannot change your own rank!"
     player-not-in-party: "&c%player% 不在你的帮派中"
     players-conflict:
       #[Special tags]
@@ -369,7 +361,7 @@ additional-commands:
     header: "&b============ &l在线帮派列表 &r&b============"
     footer: "&b================ &l%maxpages% 的第 %page% 页 &r&b================"
     no-one: "&7没有人"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6在线 %members_online_number%&7] %desc%"}]'
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
     invalid-order: '&c无效的排列类型'
   motd:
     changed: "&b帮派 MOTD 已更改"
@@ -573,4 +565,4 @@ help:
       tag: '设置/移除 团队的标签'
       teleport: '传送您的团队到您的位置'
 dont-edit-this:
-  version: 13
+  version: 14
