@@ -121,7 +121,7 @@ main-commands:
       - "&bLíder&7: %list_rank_leader%"
       - "&bModeradores&7: %list_rank_moderator%"
       - "&bMembros&7: %list_rank_member%"
-      - "&bOnline players&7: %members_online_total%"
+      - "&bJogadores online&7: %members_online_total%"
   invite:
     sent: "&bVocê convidou %player% para sua equipe"
     player-invited: "[{\"text\":\"&b%player% convidou você para equipe %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar o convite\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Negar o convite\"}]}}},{\"text\":\"&b?\n&bVocê pode digitar &7/party <accept/deny> &bpara escolher.\"}]"
@@ -190,7 +190,7 @@ main-commands:
     low-rank: "&cVocê não pode editar jogadores com um cargo equivalente ou superior ao seu!"
     to-higher-rank: "&cVocê não pode promover para um rank equivalente ou superior ao seu!"
     fixed-leader: "&cVocê não pode fazer de alguém um líder de uma equipe fixa!"
-    changing-yourself: "&cYou cannot change your own rank!"
+    changing-yourself: "&cVocê não tem permissão para mudar o seu rank!"
     player-not-in-party: "&c%player% não está na sua equipe"
     players-conflict:
       #[Special tags]
@@ -361,7 +361,7 @@ additional-commands:
     header: "&b========== &lLista de equipes online &r&b=========="
     footer: "&b=============== &lPágina %page% de %maxpages% &r&b==============="
     no-one: "&7Ninguém"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aMostrar informação"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
     invalid-order: '&cTipo de ordem inválido'
   motd:
     changed: "&bA mensagem do dia da equipe foi alterada"
