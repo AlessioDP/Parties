@@ -211,7 +211,7 @@ main-commands:
     broadcast: "&6Je groep is hernoemd naar %party%!"
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cJe moet %seconds% seconden wachten!"
   spy:
     enabled: "&7Nu ben je een spion!"
     disabled: "&7Je bent niet langer een spion"
@@ -246,17 +246,17 @@ additional-commands:
       individual: "&cJe moet %seconds% seconden wachten voordat je aan dezelfde groep vraagt"
   claim:
     claimed: "&aheeft toestemming verleend aan de groep"
-    removed: "&aRemoved permission to the party"
-    no-manager: "&cYou need to be the manager of the claim"
-    claim-no-exists: "&cClaim not found"
-    allowed-permissions: "&cPermissions: trust, container & access"
+    removed: "&aheeft toestemming verwijderd naar de groep"
+    no-manager: "&cJe moet de manager van de claim zijn"
+    claim-no-exists: "&cClaim niet gevonden"
+    allowed-permissions: "&cRechten: trust, container & access"
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&bJouw groepkleur is: %color_code%%color_command%"
+    empty: "&bJe party heeft geen kleur"
+    changed: "&bParty kleur veranderd in %color_command%"
+    removed: "&bParty kleur verwijderd"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
+    wrong-color: "&ckleur niet gevonden. U kunt selecteren: rood, groen of speciaal!"
   debug:
     config:
       header: '&b================== &lDebug Config &r&b=================='
@@ -303,163 +303,163 @@ additional-commands:
         - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&bParty beschrijving veranderd"
+    removed: "&bPartybeschrijving verwijderd"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
+    invalid-chars: "&cOngeldige tekens. Gebruik: a-Z of 0-9. Minimaal 3 en max 16 tekens."
+    censored: "&cDe beschrijving bevat gecensureerde woorden!"
   exp:
     #[Special tags]
     #=> %exp%        = Experience gained
     #=> %total_exp%  = Total experience dropped by the mob
     party:
-      gained: "&bGained %exp% party experience for killing the mob"
+      gained: "&bheeft %exp% groepservaring gekregen voor het doden van de mob"
     normal:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bheeft %exp% ervaring gekregen voor het doden van de mob"
+      gained-others: "&b%player% heeft een mob gedood, je hebt %exp% ervaring opgedaan"
     levelpoints:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bheeft %exp% ervaring gekregen voor het doden van de mob"
+      gained-others: "&b%player% heeft een mob gedood, je hebt %exp% ervaring opgedaan"
     mmocore:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bheeft %exp% ervaring gekregen voor het doden van de mob"
+      gained-others: "&b%player% heeft een mob gedood, je hebt %exp% ervaring opgedaan"
     skillapi:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
+      gained-killer: "&bheeft %exp% ervaring gekregen voor het doden van de mob"
+      gained-others: "&b%player% heeft een mob gedood, je hebt %exp% ervaring opgedaan"
     level:
-      level-up: "&bParty leveled up to %experience_level%"
+      level-up: "&bGroep level tot %experience_level%"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&aNu zullen je groepsleden jouw leider volgen"
+    toggle-off: "&aJe groepsleden zullen je leider niet meer volgen"
   home:
-    teleported: "&7Teleported to the party home"
+    teleported: "&7geteleporteerd naar de party home"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
-    teleport-denied: "&7Teleport denied"
-    teleport-waiting: "&cYou are already waiting for the teleport!"
-    no-home: "&cThere isn't a home yet"
+    teleport-in: "&7Je wordt geteleporteerd over %seconds% seconden..."
+    teleport-denied: "&7Teleport geweigerd"
+    teleport-waiting: "&cJe bent al aan het wachten op de teleport!"
+    no-home: "&cEr is nog geen huis"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    must-select-home: "&cYou must select a valid home"
-    invalid-home: "&cThe selected home doesn't exist"
-    valid-homes: "&bList of valid homes:"
+    cooldown: "&cJe moet %seconds% seconden wachten!"
+    must-select-home: "&cU moet een geldig huis selecteren"
+    invalid-home: "&cHet geselecteerde huis bestaat niet"
+    valid-homes: "&blijst met geldige woningen:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"}, "hoverEvent":{"show_text","value":{"text":"","extra":[{"text":"&aKlik om te teleporteren"}}]}}}]'
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
-    wrong-password: "&cWrong password!"
+    joined: "&aJe bent toegetreden tot de groep %party%"
+    player-joined: "&b&l%player% is toegetreden tot de groep"
+    wrong-password: "&cverkeerd wachtwoord!"
   list:
     #[Special tags]
     #=> %index%     = The party index
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
-    invalid-order: '&cInvalid order type'
+    header: "&b============ &lOnline Parties Lijst &r&b============"
+    footer: "&b================ &lPagina %page% van %maxpages% &r&b============"
+    no-one: "&7Niemand"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aToon info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cOngeldig bestellingstype'
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&bParty MOTD veranderd"
+    removed: "&bParty MOTD verwijderd"
     broadcast: ""
     content:
       - "&bParty MOTD:"
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
+    invalid-chars: "&cOngeldige karakters. U kunt ook ' , /'. Minimaal 3 en max 100 tekens."
+    censored: "&cDe MOTD bevat gecensureerde woorden!"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
+    toggle-on: "&7Je hebt meldingen uitgeschakeld!"
+    toggle-off: "&7Je hebt meldingen ingeschakeld!"
   nickname:
     own:
-      changed: "&bYou changed your nickname into %player_nickname%"
-      removed: "&bYou removed your own nickname"
-      no-permission: "&cYou cannot change your own nickname"
+      changed: "&bJe hebt je bijnaam veranderd in %player_nickname%"
+      removed: "&bJe hebt je eigen bijnaam verwijderd"
+      no-permission: "&cJe kan je eigen bijnaam niet wijzigen"
     others:
-      changed: "&bChanged nickname of %player% into %player_nickname%"
+      changed: "&bheeft bijnaam van %player% veranderd in %player_nickname%"
       #Special tags:
       #=> %nickname%   = The target player nickname
       #Tags are parsed for sender
-      target-changed: "&b%player% changed your nickname into %nickname%"
-      removed: "&bRemoved nickname of %player%"
-      target-removed: "&b%player% removed your nickname"
-      no-permission: "&cYou cannot change other player nicknames"
+      target-changed: "&b%player% heeft je bijnaam veranderd in %nickname%"
+      removed: "&bVerwijderde bijnaam van %player%"
+      target-removed: "&b%player% verwijderde je bijnaam"
+      no-permission: "&cJe kan de nicknames van andere spelers niet veranderen"
     show:
-      own: "&bYour nickname is %player_nickname%"
-      own-none: "&bYou do not have any nickname"
-      other: "&bThe nickname of %player% is %player_nickname%"
-      other-none: "&b%player% does not have any nickname"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
-    censored: "&cThe nickname contains censored words!"
+      own: "&bJe bijnaam is %player_nickname%"
+      own-none: "&bJe hebt geen bijnaam"
+      other: "&bDe bijnaam van %player% is %player_nickname%"
+      other-none: "&b%player% heeft geen bijnaam"
+    invalid-chars: "&cOngeldige karakters. U kunt ook ' , /'. Minimaal 3 en max 16 tekens."
+    censored: "&cDe bijnaam bevat gecensureerde woorden!"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&aParty wachtwoord veranderd"
+    removed: "&aParty wachtwoord verwijderd"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+    invalid-chars: "&cOngeldige tekens. Gebruik: a-Z of 0-9. Minimaal 1 en max 16 tekens."
   protection:
-    toggle-on: "&aNow your party is protected by friendly fire"
-    toggle-off: "&aYour party is not protected anymore by friendly fire"
-    protected: "&cYou can't hit your partymates"
-    warn-on-attack: "&c%player% tried to hit %victim%!"
+    toggle-on: "&aNu is uw party beschermd door een friendly fire"
+    toggle-off: "&aJe party is niet meer beschermd door een friendly fire"
+    protected: "&cJe kan je partymaten niet raken"
+    warn-on-attack: "&c%player% probeerde %victim% te raken!"
   sethome:
     changed: ""
-    removed: "&bParty home removed"
-    removed-none: "&cNo party home found"
-    broadcast: "&aThe party has a new home!"
+    removed: "&bParty home verwijderd"
+    removed-none: "&cGeen party home gevonden"
+    broadcast: "&aDe groep heeft een nieuw huis!"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    max-homes: "&cYou reached the maximum number of homes"
+    cooldown: "&cJe moet %seconds% seconden wachten!"
+    max-homes: "&cU heeft het maximum aantal huizen bereikt"
   tag:
-    changed: "&bParty tag changed"
-    removed: "&bParty tag removed"
+    changed: "&bParty tag veranderd"
+    removed: "&bParty tag verwijderd"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 10 chars."
-    censored: "&cThe tag contains censored words!"
-    already-used: "&c The tag %tag% is already used"
+    invalid-chars: "&cOngeldige tekens. Gebruik: a-Z of 0-9. Minimaal 3 en max 10 tekens."
+    censored: "&cDe tag bevat gecensureerde woorden!"
+    already-used: "&c De tag %tag% wordt al gebruikt"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
+    teleporting: "&7Teleporteert je party hier!"
+    player-teleported: "&bgeteleporteerd naar %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-denied: "&7Teleport denied"
+    player-teleport-in: "&7Je zult geteleporteerd worden over %seconds% seconden"
+    player-teleport-denied: "&7Teleport geweigerd"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cJe moet %seconds% seconden wachten!"
     accept-request:
-      sent: "&aTeleport request sent to the party"
-      received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
-      denied: "&7You denied the teleport request of %player%"
+      sent: "&aTeleporteer aanvraag verstuurd naar de party"
+      received: "[{\"text\":\"&bWil je geteleporteerd worden naar %player%? \"},{\"text\":\"&a&lJa\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6accepteert de request\"}]},{\"text\":\" &bof \"}, \"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}}}},{\"text\":\"&b?\n&bJe kunt &7/party <accept/deny> %player% &bgebruiken om te kiezen.\"}]"
+      denied: "&7U heeft het teleport verzoek van %player% geweigerd"
   vault:
     #[Special tags]
     #=> %price%          = Price of the command
     no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cYou don't have enough money to perform a claim [%price%$]"
-      color: "&cYou don't have enough money to perform the color command [%price%$]"
-      create: "&cYou don't have enough money to create a party [%price%$]"
-      desc: "&cYou don't have enough money to set the description [%price%$]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cYou don't have enough money to use the home command [%price%$]"
-      join: "&cYou don't have enough money to join a party [%price%$]"
-      motd: "&cYou don't have enough money to set the MOTD [%price%$]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cYou don't have enough money to set the home [%price%$]"
-      tag: "&cYou don't have enough money to set the tag [%price%$]"
-      teleport: "&cYou don't have enough money to perform a teleport [%price%$]"
+      ask: "&cU heeft niet genoeg geld om een toetredingsaanvraag [%price% $] te sturen"
+      claim: "&cU heeft niet genoeg geld om een claim [%price% $] uit te voeren"
+      color: "&cU heeft niet genoeg geld om de kleuropdracht [%price% $] uit te voeren"
+      create: "&cU heeft niet genoeg geld om een party te maken [%price%$]"
+      desc: "&cU heeft niet genoeg geld om de beschrijving [%price% $] in te stellen"
+      follow: "&cU heeft niet genoeg geld om volg [%price% $] in te schakelen"
+      home: "&cU heeft niet genoeg geld om de home command [%price% $] te gebruiken"
+      join: "&cU heeft niet genoeg geld om deel te nemen aan een party [%price%$]"
+      motd: "&cU heeft niet genoeg geld om de MOTD [%price% $] in te stellen"
+      nickname: "&cU heeft niet genoeg geld om de bijnaam [%price% $] in te stellen"
+      password: "&cU heeft niet genoeg geld om het wachtwoord in te stellen [%price%$]"
+      protection: "&cU heeft niet genoeg geld om bescherming [%price% $] in te schakelen"
+      rename: "&cU heeft niet genoeg geld om de party [%price% $] te hernoemen"
+      sethome: "&cU heeft niet genoeg geld om de woning [%price% $] in te stellen"
+      tag: "&cU heeft niet genoeg geld om de tag [%price% $] in te stellen"
+      teleport: "&cU heeft niet genoeg geld om een teleport [%price% $] uit te voeren"
     confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aPerforming the command."
-      no-cmd: "&cThere is no command to confirm"
+      warn-onbuy: "[{\"text\":\"&aCommand %cmd% kost %price%$.\n\"},{\"text\":\"&2&lKlik hier om te bevestigen\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"}, \"hoverEvent\":{\"show_text\", value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aof type &7/party confirm &aom het te gebruiken\"}]"
+      confirmed: "&avoert het commando uit."
+      no-cmd: "&cEr is geen opdracht om te bevestigen"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
@@ -467,9 +467,9 @@ other:
   follow:
     #[Special tags]
     #=> %world%          = New world
-    following-world: "&7Following %player% in %world%"
+    following-world: "&7Volgt %player% in %world%"
   fixed-parties:
-    default-join: "&bYou entered into %party%"
+    default-join: "&bJe bent ingetreden in %party%"
   join-leave:
     server-join: "&b%player% is online!"
     server-leave: "&7%player% is offline!"
@@ -477,11 +477,11 @@ other:
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b============= &lParty Help %page%/%maxpages% &r&b============="
   footer: ""
-  perform-command: 'Perform the command'
+  perform-command: 'Voer het commando uit'
   console-help:
-    header: 'You can only perform these commands:'
+    header: 'Je kunt alleen deze commando''s uitvoeren:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
@@ -508,23 +508,23 @@ help:
       spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      help: 'Show help pages'
-      accept: 'Accept a party request'
-      chat: 'Toggle party chat'
-      create: 'Create a new party'
-      delete: 'Delete the party'
-      deny: 'Deny a party request'
-      ignore: 'Add/remove/show ignored parties'
-      info: 'Show party information'
-      invite: 'Invite a player to your party'
-      kick: 'Kick a player from the party'
-      leave: 'Leave your party'
-      p: 'Send a message to the party'
-      rank: 'Change rank of the player'
-      reload: 'Reload Parties configuration files'
-      rename: 'Rename the party'
-      spy: 'Spy messages of other parties'
-      version: 'Show Parties information'
+      help: 'Help-pagina''s weergeven'
+      accept: 'Accepteer een party verzoek'
+      chat: 'Schakel groepschat aan/uit'
+      create: 'Maak een nieuwe groep aan'
+      delete: 'Verwijder de party'
+      deny: 'Weiger een party verzoek'
+      ignore: 'Genegeerde parties toevoegen/verwijderen/tonen'
+      info: 'Toon party informatie'
+      invite: 'Nodig een speler uit voor jouw party'
+      kick: 'Een speler uit de party verwijderen'
+      leave: 'Verlaat je party'
+      p: 'Stuur een bericht naar de party'
+      rank: 'Wijzig rang van de speler'
+      reload: 'Herlaad de configuratiebestanden van de parties plugin'
+      rename: 'Hernoem de party'
+      spy: 'Berichten van andere parties spioneren'
+      version: 'Toon party informatie'
   additional:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -546,23 +546,23 @@ help:
       tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      ask: 'Send a join request'
-      claim: 'Grant permissions to the claim'
-      color: 'Change party color'
-      createfixed: 'Create a new fixed party'
-      debug: 'Debug issues'
-      desc: 'Set/remove party description'
-      follow: 'Toggle follow leader'
-      home: 'Teleport to the party home'
-      join: 'Join into the party'
-      list: 'List of online parties'
-      motd: 'Set/remove party motd'
-      mute: 'Toggle notifications'
-      nickname: 'Set/remove member nickname'
-      password: 'Change party password'
-      protection: 'Toggle friendly fire protection'
-      sethome: 'Set/remove party home'
-      tag: 'Set/remove party tag'
-      teleport: 'Teleport your party to you'
+      ask: 'Verstuur een samenvoegingsverzoek'
+      claim: 'Geef toestemming aan de claim'
+      color: 'Verander groepkleur'
+      createfixed: 'Maak een nieuwe vaste partij'
+      debug: 'Foutopsporing problemen'
+      desc: 'Beschrijving groep/verwijderen'
+      follow: 'Wissel volgleider'
+      home: 'Teleporteer naar de party home'
+      join: 'Word lid van de groep'
+      list: 'Lijst van online partijen'
+      motd: 'Motd groep/verwijderen'
+      mute: 'Meldingen aan/uit'
+      nickname: 'Bijnaam lid/verwijderen'
+      password: 'Wachtwoord van de partij wijzigen'
+      protection: 'Wissel vriendschappelijke brandbeveiliging'
+      sethome: 'Startpagina instellen/verwijderen'
+      tag: 'Groepslabel instellen/verwijderen'
+      teleport: 'Teleporteer je party naar jou'
 dont-edit-this:
   version: 14
