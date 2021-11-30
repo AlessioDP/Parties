@@ -36,4 +36,10 @@ public class BungeeJoinLeaveListener extends JoinLeaveListener implements Listen
 	protected void onLeaveComplete(PartyPlayerImpl partyPlayer) {
 		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendUnloadPlayer(partyPlayer);
 	}
+	
+	
+	@Override
+	protected boolean moderationOnServerBan() {
+		return false;
+	}
 }

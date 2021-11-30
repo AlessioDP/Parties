@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bungeecord.addons.external;
 
 import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import dev.aura.bungeechat.api.account.AccountManager;
 import dev.aura.bungeechat.api.account.BungeeChatAccount;
@@ -20,10 +21,12 @@ public class BungeeChatHandler {
 	
 	public void init() {
 		active = false;
-		if (ProxyServer.getInstance().getPluginManager().getPlugin(ADDON_NAME) != null) {
-			active = true;
-			
-			plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+		if (BungeeConfigMain.ADDITIONAL_MODERATION_ENABLE && BungeeConfigMain.ADDITIONAL_MODERATION_PLUGINS_BUNGEECHAT) {
+			if (ProxyServer.getInstance().getPluginManager().getPlugin(ADDON_NAME) != null) {
+				active = true;
+				
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+			}
 		}
 	}
 	

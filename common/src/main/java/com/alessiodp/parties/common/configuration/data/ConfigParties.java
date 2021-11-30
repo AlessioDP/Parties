@@ -24,12 +24,12 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean	GENERAL_MEMBERS_ON_PARTY_LEAVE_CHANGE_LEADER;
 	@ConfigOption(path = "general.members.disband-parties-on-disable")
 	public static boolean	GENERAL_MEMBERS_DISBAND_PARTIES_ON_DISABLE;
-	@ConfigOption(path = "general.members.on-player-leave.change-leader")
-	public static boolean	GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER;
-	@ConfigOption(path = "general.members.on-player-leave.kick-from-party")
-	public static boolean	GENERAL_MEMBERS_ON_LEAVE_KICK_FROM_PARTY;
-	@ConfigOption(path = "general.members.on-player-leave.delay")
-	public static int		GENERAL_MEMBERS_ON_LEAVE_DELAY;
+	@ConfigOption(path = "general.members.on-player-leave-from-server.change-leader")
+	public static boolean	GENERAL_MEMBERS_ON_LEAVE_SERVER_CHANGE_LEADER;
+	@ConfigOption(path = "general.members.on-player-leave-from-server.kick-from-party")
+	public static boolean	GENERAL_MEMBERS_ON_LEAVE_SERVER_KICK_FROM_PARTY;
+	@ConfigOption(path = "general.members.on-player-leave-from-server.delay")
+	public static int		GENERAL_MEMBERS_ON_LEAVE_SERVER_DELAY;
 	
 	@ConfigOption(path = "general.broadcast.titles.enable")
 	public static boolean		GENERAL_BROADCAST_TITLES_ENABLE;
@@ -89,8 +89,6 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static int			GENERAL_CHAT_COOLDOWN;
 	@ConfigOption(path = "general.chat.censor-regex")
 	public static String		GENERAL_CHAT_CENSORREGEX;
-	@ConfigOption(path = "general.chat.prevent-muted-players")
-	public static boolean		GENERAL_CHAT_PREVENT_MUTED_PLAYERS;
 	@ConfigOption(path = "general.chat.direct.enable")
 	public static boolean		GENERAL_CHAT_DIRECT_ENABLED;
 	@ConfigOption(path = "general.chat.direct.prefix")

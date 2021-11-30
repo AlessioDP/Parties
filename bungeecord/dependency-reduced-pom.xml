@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.12</version>
+    <version>3.1.13</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bungeecord</artifactId>
@@ -72,8 +72,20 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-common</artifactId>
-      <version>3.1.12</version>
+      <version>3.1.13</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.DevLeoko.AdvancedBan</groupId>
+      <artifactId>AdvancedBan-Bungee</artifactId>
+      <version>2.3.0</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>*</artifactId>
+          <groupId>*</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>dev.aura.bungeechat.api</groupId>
@@ -96,7 +108,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.20</version>
+      <version>1.18.22</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

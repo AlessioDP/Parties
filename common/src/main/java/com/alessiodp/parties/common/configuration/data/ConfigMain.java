@@ -114,6 +114,15 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@ConfigOption(path = "additional.follow.perform-commands.commands")
 	public static List<String>	ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS;
 	
+	@ConfigOption(path = "additional.moderation.enable")
+	public static boolean		ADDITIONAL_MODERATION_ENABLE;
+	@ConfigOption(path = "additional.moderation.prevent-chat-muted")
+	public static boolean		ADDITIONAL_MODERATION_PREVENTCHAT;
+	@ConfigOption(path = "additional.moderation.auto-kick-banned")
+	public static boolean		ADDITIONAL_MODERATION_AUTOKICK;
+	@ConfigOption(path = "additional.moderation.plugins.advancedban")
+	public static boolean		ADDITIONAL_MODERATION_PLUGINS_ADVANCEDBAN;
+	
 	@ConfigOption(path = "additional.mute.enable")
 	public static boolean		ADDITIONAL_MUTE_ENABLE;
 	@ConfigOption(path = "additional.mute.block.invite")

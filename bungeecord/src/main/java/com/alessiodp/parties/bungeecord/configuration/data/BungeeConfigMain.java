@@ -17,6 +17,9 @@ public class BungeeConfigMain extends ConfigMain {
 	@ConfigOption(path = "additional.follow.blocked-servers")
 	public static List<String> ADDITIONAL_FOLLOW_BLOCKEDSERVERS;
 	
+	@ConfigOption(path = "additional.moderation.plugins.bungeechat")
+	public static boolean		ADDITIONAL_MODERATION_PLUGINS_BUNGEECHAT;
+	
 	public BungeeConfigMain(PartiesPlugin plugin) {
 		super(plugin);
 	}

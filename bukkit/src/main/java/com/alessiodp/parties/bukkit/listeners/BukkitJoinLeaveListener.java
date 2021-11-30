@@ -43,4 +43,9 @@ public class BukkitJoinLeaveListener extends JoinLeaveListener implements Listen
 	protected void onLeaveComplete(PartyPlayerImpl partyPlayer) {
 		// Nothing to do
 	}
+	
+	@Override
+	protected boolean moderationOnServerBan() {
+		return BukkitConfigMain.ADDITIONAL_MODERATION_HANDLE_SERVER_BAN;
+	}
 }

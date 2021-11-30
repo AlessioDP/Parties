@@ -1,6 +1,7 @@
 package com.alessiodp.parties.bukkit.addons.external;
 
 import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.earth2me.essentials.IEssentials;
 import lombok.NonNull;
@@ -35,7 +36,7 @@ public class EssentialsHandler {
 	}
 	
 	public static boolean isPlayerMuted(UUID player) {
-		if (active && essentials != null) {
+		if (active && essentials != null && BukkitConfigMain.ADDITIONAL_MODERATION_PLUGINS_ESSENTIALS) {
 			return ((IEssentials) essentials).getUser(player).isMuted();
 		}
 		return false;

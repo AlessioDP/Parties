@@ -172,6 +172,19 @@ public abstract class PartyManager {
 		return getParty(player.getPartyId());
 	}
 	
+	public boolean findNewPartyLeader(PartyImpl party) {
+		PartyPlayerImpl newLeader = party.findNewLeader();
+		
+		if (newLeader != null) {
+			party.changeLeader(newLeader);
+			
+			party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
+			
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_CHANGE_LEADER, party.getId().toString(), newLeader.getPlayerUUID().toString()), true);
+			return true;
+		}
+		return false;
+	}
 	
 	public void removePlayerTimedOut(PartyPlayerImpl player, PartyImpl party) {
 		boolean mustDelete = false;
@@ -182,22 +195,15 @@ public abstract class PartyManager {
 		
 		if (!partiesPreLeaveEvent.isCancelled()) {
 			
-			if (party.getOnlineMembers(true).size() == 0) {
-				mustDelete = true;
-			} else if (party.getLeader() != null && party.getLeader().equals(player.getPlayerUUID())) {
+			if (party.getLeader() != null && party.getLeader().equals(player.getPlayerUUID())) {
 				mustDelete = true;
 				// Leader
-				if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER) {
-					// Change leader
-					PartyPlayerImpl newLeader = party.findNewLeader();
-					
-					if (newLeader != null) {
+				if (ConfigParties.GENERAL_MEMBERS_ON_PARTY_LEAVE_CHANGE_LEADER || ConfigParties.GENERAL_MEMBERS_ON_LEAVE_SERVER_CHANGE_LEADER) {
+					// Change leader due to player leave
+					boolean foundNewLeader = findNewPartyLeader(party);
+					if (foundNewLeader) {
+						// Do not delete the party anymore
 						mustDelete = false;
-						party.changeLeader(newLeader);
-						
-						party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
-						
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_CHANGE_LEADER, party.getId().toString(), newLeader.getPlayerUUID().toString()), true);
 					}
 				}
 			}
@@ -235,6 +241,8 @@ public abstract class PartyManager {
 				// Kick member
 				party.removeMember(player, LeaveCause.TIMEOUT, player);
 				
+				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEAVE_SERVER, player);
+				
 				// Calling Post API Leave event
 				IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
 				plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostLeaveEvent));
@@ -260,6 +268,20 @@ public abstract class PartyManager {
 				e.getValue().cancel();
 			}
 			cacheMembersTimedOut.clear();
+		}
+	}
+	
+	public void kickBannedPlayer(UUID player) {
+		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(player);
+		if (partyPlayer != null)
+			kickBannedPlayer(partyPlayer);
+	}
+	
+	public void kickBannedPlayer(PartyPlayerImpl partyPlayer) {
+		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
+		if (party != null) {
+			// If not handled by on leave kick, handle it
+			party.memberLeftTimeout(partyPlayer, 0);
 		}
 	}
 }

@@ -800,7 +800,7 @@ public abstract class PartyImpl implements Party {
 	}
 	
 	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer) {
-		return memberLeftTimeout(kickedPlayer, ConfigParties.GENERAL_MEMBERS_ON_LEAVE_DELAY);
+		return memberLeftTimeout(kickedPlayer, ConfigParties.GENERAL_MEMBERS_ON_LEAVE_SERVER_DELAY);
 	}
 	
 	/**
@@ -811,12 +811,22 @@ public abstract class PartyImpl implements Party {
 	 */
 	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer, int delay) {
 		boolean ret = false;
-		if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_CHANGE_LEADER || ConfigParties.GENERAL_MEMBERS_ON_LEAVE_KICK_FROM_PARTY) {
+		if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_SERVER_KICK_FROM_PARTY) {
+			// Kick the player + eventually change leader
 			if (delay > 0) {
 				plugin.getPartyManager().getCacheMembersTimedOut().put(kickedPlayer.getPlayerUUID(), plugin.getScheduler().scheduleAsyncLater(() -> plugin.getPartyManager().removePlayerTimedOut(kickedPlayer, this), delay, TimeUnit.SECONDS));
 				ret = true;
 			} else
 				plugin.getPartyManager().removePlayerTimedOut(kickedPlayer, this);
+		} else if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_SERVER_CHANGE_LEADER) {
+			// Just find a new leader if the current one left
+			if (getLeader() != null && getLeader().equals(kickedPlayer.getPlayerUUID())) {
+				if (delay > 0) {
+					plugin.getPartyManager().getCacheMembersTimedOut().put(kickedPlayer.getPlayerUUID(), plugin.getScheduler().scheduleAsyncLater(() -> plugin.getPartyManager().findNewPartyLeader(this), delay, TimeUnit.SECONDS));
+					ret = true;
+				} else
+					plugin.getPartyManager().findNewPartyLeader(this);
+			}
 		}
 		return ret;
 	}

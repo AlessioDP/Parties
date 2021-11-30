@@ -175,6 +175,18 @@ additional:
       - "lobby"
       - "hub"
 
+  # [Moderation]
+  # Auto kick banned users
+  # Prevent to speak in party chat if the player is muted
+  # Select what plugin to handle in 'plugins'
+  moderation:
+    enable: false
+    prevent-chat-muted: true
+    auto-kick-banned: true
+    plugins:
+      advancedban: false
+      bungeechat: false
+
   # [Mute]
   # Enable mute system.
   # If an user uses mute command, he won't receive notifications

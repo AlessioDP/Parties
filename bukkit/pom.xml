@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.12</version>
+		<version>3.1.13</version>
 	</parent>
 	
 	<artifactId>parties-bukkit</artifactId>
@@ -114,6 +114,18 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.github.DevLeoko.AdvancedBan</groupId>
+			<artifactId>AdvancedBan-Bukkit</artifactId>
+			<version>${libs.advancedBan}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>me.confuser.banmanager</groupId>
 			<artifactId>BanManagerBukkit</artifactId>

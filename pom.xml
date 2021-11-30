@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.1.12</version>
+	<version>3.1.13</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -73,21 +73,22 @@
 		
 		<!-- Dev libraries -->
 		<dev.powermock>2.0.9</dev.powermock>
-		<dev.lombok>1.18.20</dev.lombok>
+		<dev.lombok>1.18.22</dev.lombok>
 		
-		<libs.adpcore>1.6.10</libs.adpcore>
-		<libs.api.annotations>22.0.0</libs.api.annotations>
-		<libs.api.spigot>1.17-R0.1-SNAPSHOT</libs.api.spigot>
-		<libs.api.bungeecord>1.17-R0.1-SNAPSHOT</libs.api.bungeecord>
+		<libs.adpcore>1.6.11</libs.adpcore>
+		<libs.api.annotations>23.0.0</libs.api.annotations>
+		<libs.api.spigot>1.18-rc3-R0.1-SNAPSHOT</libs.api.spigot>
+		<libs.api.bungeecord>1.18-R0.1-SNAPSHOT</libs.api.bungeecord>
 		<!-- ADP Core Test Libraries -->
 		<libs.h2>1.4.200</libs.h2>
 		<libs.hikaricp>4.0.3</libs.hikaricp>
 		<libs.mariadb>2.7.4</libs.mariadb>
-		<libs.mysql>8.0.26</libs.mysql>
-		<libs.postgresql>42.2.23</libs.postgresql>
+		<libs.mysql>8.0.27</libs.mysql>
+		<libs.postgresql>42.3.1</libs.postgresql>
 		<libs.sqlite>3.36.0.3</libs.sqlite>
 		
 		<!-- External plugins -->
+		<libs.advancedBan>2.3.0</libs.advancedBan>
 		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
@@ -95,12 +96,13 @@
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
 		<libs.lastLoginApi>1.6.0</libs.lastLoginApi>
 		<libs.levelPoints>12bde91fb5</libs.levelPoints>
-		<libs.mmoCore>1.7.1</libs.mmoCore>
+		<libs.mmoCore>1.8.2</libs.mmoCore>
 		<libs.mythicMobs>4.12.0</libs.mythicMobs>
 		<libs.placeholderApi>2.10.10</libs.placeholderApi>
 		<libs.premiumVanish>2.7.3</libs.premiumVanish>
-		<libs.proSkillApi>1.98</libs.proSkillApi>
-		<libs.skript>2.5.3</libs.skript>
+		<libs.proSkillApi>1.1.7.6</libs.proSkillApi>
+		<libs.skillApi>1.98</libs.skillApi>
+		<libs.skript>2.6</libs.skript>
 		<libs.vaultApi>1.7</libs.vaultApi>
 	</properties>
 	

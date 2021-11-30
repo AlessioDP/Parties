@@ -235,6 +235,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_KICK_BROADCAST_DISBAND;
 	@ConfigOption(path = "main-commands.kick.broadcast-leader-changed")
 	public static String MAINCMD_KICK_BROADCAST_LEADER_CHANGED;
+	@ConfigOption(path = "main-commands.kick.broadcast-leave-server")
+	public static String MAINCMD_KICK_BROADCAST_LEAVE_SERVER;
 	@ConfigOption(path = "main-commands.kick.player-higher-rank")
 	public static String MAINCMD_KICK_PLAYERHIGHERRANK;
 	@ConfigOption(path = "main-commands.kick.player-not-in-party")

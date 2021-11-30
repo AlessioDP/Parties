@@ -1,10 +1,12 @@
 package com.alessiodp.parties.bungeecord.players.objects;
 
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.parties.bungeecord.addons.external.BungeeAdvancedBanHandler;
 import com.alessiodp.parties.bungeecord.addons.external.BungeeChatHandler;
 import com.alessiodp.parties.bungeecord.addons.external.PremiumVanishHandler;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.google.common.io.ByteArrayDataOutput;
@@ -63,6 +65,11 @@ public class BungeePartyPlayerImpl extends PartyPlayerImpl {
 	
 	@Override
 	public boolean isChatMuted() {
-		return BungeeChatHandler.isPlayerMuted(getPlayerUUID());
+		if (ConfigMain.ADDITIONAL_MODERATION_ENABLE
+				&& ConfigMain.ADDITIONAL_MODERATION_PREVENTCHAT) {
+			return BungeeChatHandler.isPlayerMuted(getPlayerUUID())
+					|| BungeeAdvancedBanHandler.isMuted(getPlayerUUID());
+		}
+		return false;
 	}
 }

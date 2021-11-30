@@ -247,6 +247,20 @@ additional:
     # List of worlds not allowed to join into as group (Regexes allowed)
     blocked-worlds: []
 
+  # [Moderation]
+  # Auto kick banned users
+  # Prevent to speak in party chat if the player is muted
+  # Select what plugin to handle in 'plugins'
+  moderation:
+    enable: false
+    prevent-chat-muted: true
+    auto-kick-banned: true
+    handle-server-ban: true
+    plugins:
+      advancedban: false
+      banmanager: false
+      essentials: false
+
   # [Mute]
   # Enable mute system.
   # If an user uses mute command, he won't receive notifications
@@ -269,14 +283,6 @@ additional:
 # |         ADDONS SETTINGS         |
 # \ =============================== /
 addons:
-  # [BanManager]
-  # Auto kick banned users
-  # Prevent to speak in party chat if the player is muted
-  banmanager:
-    enable: false
-    prevent-chat-muted: true
-    auto-kick-banned: true
-
   # [Claim plugins]
   # Supporting: GriefPrevention & GriefDefender
   # Enable a command that you can use to grant permissions to all party members

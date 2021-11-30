@@ -70,14 +70,14 @@ public class BukkitConfigMain extends ConfigMain {
 	@ConfigOption(path = "additional.follow.blocked-worlds")
 	public static List<String>	ADDITIONAL_FOLLOW_BLOCKEDWORLDS;
 	
-	// Addons settings
-	@ConfigOption(path = "addons.banmanager.enable")
-	public static boolean		ADDONS_BANMANAGER_ENABLE;
-	@ConfigOption(path = "addons.banmanager.prevent-chat-muted")
-	public static boolean		ADDONS_BANMANAGER_PREVENTCHAT;
-	@ConfigOption(path = "addons.banmanager.auto-kick-banned")
-	public static boolean		ADDONS_BANMANAGER_AUTOKICK;
+	@ConfigOption(path = "additional.moderation.handle-server-ban")
+	public static boolean		ADDITIONAL_MODERATION_HANDLE_SERVER_BAN;
+	@ConfigOption(path = "additional.moderation.plugins.banmanager")
+	public static boolean		ADDITIONAL_MODERATION_PLUGINS_BANMANAGER;
+	@ConfigOption(path = "additional.moderation.plugins.essentials")
+	public static boolean		ADDITIONAL_MODERATION_PLUGINS_ESSENTIALS;
 	
+	// Addons settings
 	@ConfigOption(path = "addons.claim.enable")
 	public static boolean		ADDONS_CLAIM_ENABLE;
 	@ConfigOption(path = "addons.claim.plugin")
@@ -109,7 +109,7 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		ADDONS_DYNMAP_MARKER_LABEL_MULTIPLE;
 	@ConfigOption(path = "addons.dynmap.markers.icon")
 	public static String		ADDONS_DYNMAP_MARKER_ICON;
-
+	
 	@ConfigOption(path = "addons.vault.enable")
 	public static boolean		ADDONS_VAULT_ENABLE;
 	@ConfigOption(path = "addons.vault.confirm-command.enable")

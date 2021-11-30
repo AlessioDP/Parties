@@ -24,7 +24,7 @@ public class Types {
 				.since("3.0.0")
 				.parser(new Parser<Party>() {
 					@Override
-					public Party parse(String s, ParseContext context, ParserInstance pi) {
+					public Party parse(String s, ParseContext context) {
 						return null;
 					}
 					
@@ -62,7 +62,7 @@ public class Types {
 				.since("3.0.0")
 				.parser(new Parser<PartyPlayer>() {
 					@Override
-					public PartyPlayer parse(String s, ParseContext context, ParserInstance pi) {
+					public PartyPlayer parse(String s, ParseContext context) {
 						return null;
 					}
 					

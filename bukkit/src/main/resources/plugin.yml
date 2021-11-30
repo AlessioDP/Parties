@@ -5,7 +5,7 @@ website: ${plugin.website}
 version: ${plugin.version}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
 api-version: 1.13
-softdepend: [BanManager, dynmap, GriefPrevention, LastLoginAPI, LevelPoints, MMOCore, MythicMobs, PlaceholderAPI, SkillAPI, Skript, Vault]
+softdepend: [BanManager, dynmap, GriefPrevention, LastLoginAPI, LevelPoints, MMOCore, MythicMobs, PlaceholderAPI, ProSkillAPI, SkillAPI, Skript, Vault]
 permissions:
   parties.user.accept:
     description: Allow access to /party accept

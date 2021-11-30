@@ -46,7 +46,7 @@ public abstract class ChatListener {
 					// Chat allowed
 					boolean mustWait = false;
 					
-					if (ConfigParties.GENERAL_CHAT_PREVENT_MUTED_PLAYERS && partyPlayer.isChatMuted()) {
+					if (partyPlayer.isChatMuted()) {
 						partyPlayer.sendMessage(Messages.MAINCMD_P_MUTED);
 						return;
 					}

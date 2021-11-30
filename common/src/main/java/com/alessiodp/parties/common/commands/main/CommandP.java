@@ -106,7 +106,7 @@ public abstract class CommandP extends ADPMainCommand {
 			// Command handling
 			String message = plugin.getCommandManager().getCommandUtils().handleCommandString(commandData.getArgs(), 0);
 			
-			if (ConfigParties.GENERAL_CHAT_PREVENT_MUTED_PLAYERS && partyPlayer.isChatMuted()) {
+			if (partyPlayer.isChatMuted()) {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_P_MUTED);
 				return;
 			}
@@ -130,14 +130,15 @@ public abstract class CommandP extends ADPMainCommand {
 			
 			// Command starts
 			
-			partyPlayer.performPartyMessage(message);
-			
-			if (mustStartCooldown)
-				((PartiesPlugin) plugin).getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
-			
-			if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
-				plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_CMD_P,
-						partyPlayer.getName(), party.getName() != null ? party.getName() : "_", message), true);
+			boolean success = partyPlayer.performPartyMessage(message);
+			if (success) {
+				if (mustStartCooldown)
+					((PartiesPlugin) plugin).getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+				
+				if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
+					plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_CMD_P,
+							partyPlayer.getName(), party.getName() != null ? party.getName() : "_", message), true);
+			}
 		}
 	}
 }

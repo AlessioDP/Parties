@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
+import com.alessiodp.parties.bukkit.addons.external.BukkitAdvancedBanHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
@@ -13,6 +14,7 @@ import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
@@ -91,17 +93,6 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	}
 	
 	@Override
-	public boolean performPartyMessage(String message) {
-		if (BukkitConfigMain.ADDONS_BANMANAGER_ENABLE
-				&& BukkitConfigMain.ADDONS_BANMANAGER_PREVENTCHAT
-				&& BanManagerHandler.isMuted(getPlayerUUID())) {
-			return false;
-		}
-		
-		return super.performPartyMessage(message);
-	}
-	
-	@Override
 	public void sendPacketUpdate() {
 		if (plugin.isBungeeCordEnabled()) {
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendUpdatePlayer(this);
@@ -121,6 +112,12 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	
 	@Override
 	public boolean isChatMuted() {
-		return BanManagerHandler.isMuted(getPlayerUUID()) || EssentialsHandler.isPlayerMuted(getPlayerUUID());
+		if (ConfigMain.ADDITIONAL_MODERATION_ENABLE
+				&& ConfigMain.ADDITIONAL_MODERATION_PREVENTCHAT) {
+			return BukkitAdvancedBanHandler.isMuted(getPlayerUUID())
+					|| BanManagerHandler.isMuted(getPlayerUUID())
+					|| EssentialsHandler.isPlayerMuted(getPlayerUUID());
+		}
+		return false;
 	}
 }

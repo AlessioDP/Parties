@@ -34,7 +34,7 @@ public class CommandColor extends PartiesSubCommand {
 				false
 		);
 		
-		syntax = String.format("%s <%s>",
+		syntax = String.format("%s [%s]",
 				baseSyntax(),
 				Messages.PARTIES_SYNTAX_COLOR
 		);
@@ -45,7 +45,7 @@ public class CommandColor extends PartiesSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFullWithParty(commandData, false, 2, 2, PartiesPermission.PRIVATE_EDIT_COLOR);
+		return handlePreRequisitesFullWithParty(commandData, true, 1, 2, PartiesPermission.PRIVATE_EDIT_COLOR);
 	}
 	
 	@Override

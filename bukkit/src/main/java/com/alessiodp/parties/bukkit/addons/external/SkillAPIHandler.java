@@ -17,20 +17,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SkillAPIHandler {
 	@NonNull private final PartiesPlugin plugin;
-	private static final String ADDON_NAME = "SkillAPI";
+	private static final String ADDON_NAME_1 = "SkillAPI";
+	private static final String ADDON_NAME_2 = "ProSkillAPI";
 	private static boolean active;
 	
 	public void init() {
 		active = false;
 		if (BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE) {
-			if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
+			if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME_1)) {
 				active = true;
-				
-				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME_1), true);
+			} else if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME_2)) {
+				active = true;
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME_2), true);
 			} else {
 				BukkitConfigMain.ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE = false;
 				
-				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME_1), true);
 				
 			}
 		}

@@ -4,6 +4,7 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
@@ -100,6 +101,14 @@ public abstract class JoinLeaveListener {
 			// Reset pending delays
 			partyPlayer.resetPendingDelays();
 			
+			// Check if banned
+			if (player.isBanned()
+					&& ConfigMain.ADDITIONAL_MODERATION_ENABLE
+					&& ConfigMain.ADDITIONAL_MODERATION_AUTOKICK
+					&& moderationOnServerBan()) {
+				plugin.getPartyManager().kickBannedPlayer(partyPlayer);
+			}
+			
 			onLeaveComplete(partyPlayer);
 		});
 	}
@@ -107,4 +116,6 @@ public abstract class JoinLeaveListener {
 	protected abstract void onJoinComplete(PartyPlayerImpl partyPlayer);
 	
 	protected abstract void onLeaveComplete(PartyPlayerImpl partyPlayer);
+	
+	protected abstract boolean moderationOnServerBan();
 }

@@ -19,11 +19,11 @@ general:
     # If you kick players on leave, you should enable this option
     #   to prevent ghost parties
     disband-parties-on-disable: false
-    # Settings for on player leave event
+    # Settings for on player leave from server event
     # => change-leader:      Change the leader if he leaves
     # => kick-from-party:    Kick the player from the party
     # => delay:              Delay time in seconds before actions
-    on-player-leave:
+    on-player-leave-from-server:
       change-leader: false
       kick-from-party: false
       delay: 600
@@ -93,8 +93,6 @@ general:
     allowed-characters: '[\p{L}\s]+'
     # Censor party chat message with a regex
     censor-regex: ''
-    # Prevent chat message if the user is muted (BanManager/EssentialsX required)
-    prevent-muted-players: false
     # Enable a chat prefix to directly send the message into the party chat
     # For example: "@this is a party message"
     direct:
