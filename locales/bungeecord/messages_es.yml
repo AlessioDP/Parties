@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&bHas sido expulsado del equipo %party%"
     broadcast: "&b&l%player% ha sido expulsado del equipo"
     broadcast-disband: "&b&lEl equipo ha sido disuelto porque el líder salio"
-    broadcast-leader-changed: "&b&lEl líder ha sido expulsado de la fiesta. El nuevo líder es %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% ha sido expulsado del equipo"
     player-higher-rank: "&c¡No puedes expulsar a tu superior!"
     player-not-in-party: "&c%player% no esta en tu equipo"
     players-conflict:
