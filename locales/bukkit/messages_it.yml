@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&cSei stato cacciato dal %party%"
     broadcast: "&b&l%player% è stato cacciato dal party"
     broadcast-disband: "&b&lIl party si è sciolto poichè il leader è stato cacciato"
-    broadcast-leader-changed: "&b&lIl leader è stato cacciato dal party, il nuovo leader è %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% è stato cacciato dal party"
     player-higher-rank: "&cNon puoi cacciare un tuo superiore!"
     player-not-in-party: "&c%player% non è nel tuo party"
     players-conflict:
