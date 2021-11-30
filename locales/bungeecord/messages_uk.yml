@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&bYou have been kicked from %party%"
     broadcast: "&b&l%player% has been kicked from the party"
     broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% has been kicked from the party"
     player-higher-rank: "&cYou cannot kick your superior!"
     player-not-in-party: "&c%player% is not in your party"
     players-conflict:
