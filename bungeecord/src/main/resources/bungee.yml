@@ -4,4 +4,4 @@ author: ${plugin.author}
 website: ${plugin.website}
 version: ${plugin.version}
 main: com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap
-softDepends: [BungeeChat, LastLoginAPI]
+softDepends: [AdvancedBan, BungeeChat, LastLoginAPI]
