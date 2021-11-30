@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&b%party%에서 쫓겨났습니다."
     broadcast: "&b&l%player%가 파티에서 추방되었습니다."
     broadcast-disband: "&b&l파티리더가 추방되어서 파티가 해체되었습니다."
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player%가 파티에서 추방되었습니다."
     player-higher-rank: "&c당신보다 상관의 사람을 추방할 수 없습니다."
     player-not-in-party: "&c%player%은 당신의 파티에 있지 않습니다."
     players-conflict:
