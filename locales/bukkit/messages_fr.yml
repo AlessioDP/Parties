@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&bVous avez été expulsé du groupe %party%"
     broadcast: "&b&l%player% a été expulsé du groupe"
     broadcast-disband: "&b&lLe groupe a été dissous parce que le chef a été expulsé"
-    broadcast-leader-changed: "&b&lLe chef a été expulsé du groupe, %player% est le nouveau chef"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% a été expulsé du groupe"
     player-higher-rank: "&cVous ne pouvez pas expulser votre supérieur !"
     player-not-in-party: "&c%player% n'est pas dans votre groupe"
     players-conflict:

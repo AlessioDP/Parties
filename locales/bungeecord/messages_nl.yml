@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&bJe bent verwijderd van %party%"
     broadcast: "&b&l%player% is uit de groep gezet"
     broadcast-disband: "&b&lDe groep is ontbonden omdat de leider uit het spel is gezet"
-    broadcast-leader-changed: "&b&lDe leider is uit de groep gezet, de nieuwe leider is %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% is uit de groep gezet"
     player-higher-rank: "&cJe kan je Leider niet kicken!"
     player-not-in-party: "&c%player% zit niet in je groep"
     players-conflict:

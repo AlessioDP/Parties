@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&bТебя выгнали из партии %party%"
     broadcast: "&b&l%player% был выгнан с партии"
     broadcast-disband: "&b&lПартия была распущена, потому что руководитель вышел из партии"
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% был выгнан с партии"
     player-higher-rank: "&cТы не можешь выгнать своего начальника!"
     player-not-in-party: "&c%player% не в вашей партии"
     players-conflict:

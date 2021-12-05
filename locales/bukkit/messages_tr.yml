@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&b%party% partisinden atıldın"
     broadcast: "&b&l%player% partiden atıldı"
     broadcast-disband: "&b&lParti kapandı çünkü lider atıldı"
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the party, the new leader is %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% partiden atıldı"
     player-higher-rank: "&cSenden daha üst birini atamazsın!"
     player-not-in-party: "&c%player% Senin partin değil"
     players-conflict:

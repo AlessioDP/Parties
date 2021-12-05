@@ -154,7 +154,8 @@ main-commands:
     player-kicked: "&bByl/a jsi vyhozen/a z párty %party%"
     broadcast: "&b&l%player% byl/a vyhozen/a z párty"
     broadcast-disband: "&b&lPárty byla rozpuštěna, protože byl vyhozen vedoucí"
-    broadcast-leader-changed: "&b&lVedoucí byl vyhozen z párty, nový vedoucí je %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% byl/a vyhozen/a z párty"
     player-higher-rank: "&cNemůžeš vyhodit své nadřízené!"
     player-not-in-party: "&c%player% není ve tvé párty"
     players-conflict:
