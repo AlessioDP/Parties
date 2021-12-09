@@ -75,7 +75,7 @@
 		<dev.powermock>2.0.9</dev.powermock>
 		<dev.lombok>1.18.22</dev.lombok>
 		
-		<libs.adpcore>1.6.11</libs.adpcore>
+		<libs.adpcore>1.7.0</libs.adpcore>
 		<libs.api.annotations>23.0.0</libs.api.annotations>
 		<libs.api.spigot>1.18-rc3-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.18-R0.1-SNAPSHOT</libs.api.bungeecord>
