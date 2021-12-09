@@ -1,18 +1,16 @@
 package com.alessiodp.parties.common.parties;
 
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@RunWith(PowerMockRunner.class)
 public class PartyHomeTest {
+	
 	@Test
 	public void testDeserialize() {
 		PartyHomeImpl expected = new PartyHomeImpl("name", "world", 100, 200, 300, 10, 20);

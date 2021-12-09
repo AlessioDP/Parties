@@ -3,40 +3,42 @@ package com.alessiodp.parties.common.utils;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.parties.common.PartiesPlugin;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		ADPPlugin.class
-})
 public class CensorUtilsTest {
-	@Before
-	public void setUp() {
+	private static MockedStatic<ADPPlugin> staticPlugin;
+	
+	@BeforeAll
+	public static void setUp() {
 		PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
 		when(mockPlugin.getLoggerManager()).thenReturn(mockLoggerManager);
-		
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
 		
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
 		doAnswer((args) -> {
 			System.out.println((String) args.getArgument(0));
 			return null;
 		}).when(mockLoggerManager).logDebug(anyString(), anyBoolean());
+		
+		staticPlugin = Mockito.mockStatic(ADPPlugin.class);
+		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+	}
+	
+	@AfterAll
+	public static void tearDown() {
+		staticPlugin.close();
 	}
 	
 	@Test

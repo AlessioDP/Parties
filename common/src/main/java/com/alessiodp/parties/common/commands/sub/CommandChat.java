@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;

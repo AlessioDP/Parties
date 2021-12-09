@@ -25,15 +25,13 @@ import com.alessiodp.parties.common.storage.sql.dao.players.H2PlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.PlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.PostgreSQLPlayersDao;
 import com.alessiodp.parties.common.storage.sql.dao.players.SQLitePlayersDao;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.MockedStatic;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,32 +43,25 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		ADPPlugin.class
-})
 public class SQLDispatcherTest {
-	@Rule
-	public final TemporaryFolder testFolder = new TemporaryFolder();
+	private static final PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
+	private static MockedStatic<ADPPlugin> staticPlugin;
 	
-	private PartiesPlugin mockPlugin;
-	
-	@Before
-	public void setUp() {
-		mockPlugin = mock(PartiesPlugin.class);
+	@BeforeAll
+	public static void setUp() {
 		ADPBootstrap mockBootstrap = mock(ADPBootstrap.class);
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
 		when(mockPlugin.getPluginFallbackName()).thenReturn("parties");
@@ -83,12 +74,8 @@ public class SQLDispatcherTest {
 		when(mockPlugin.getColorManager()).thenReturn(mockColorManager);
 		when(mockColorManager.searchColorByName(anyString())).thenReturn(null);
 		
-		// Mock static ADPPlugin, used in DAOs
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
-		
 		// Mock debug methods
-		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> getClass().getClassLoader().getResourceAsStream(mock.getArgument(0)));
+		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> ClassLoader.getSystemResourceAsStream(mock.getArgument(0)));
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
 		doAnswer((args) -> {
 			System.out.println((String) args.getArgument(0));
@@ -105,6 +92,14 @@ public class SQLDispatcherTest {
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
 		
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		
+		staticPlugin = mockStatic(ADPPlugin.class);
+		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+	}
+	
+	@AfterAll
+	public static void tearDown() {
+		staticPlugin.close();
 	}
 	
 	private PartiesSQLDispatcher getSQLDispatcherH2() {
@@ -121,17 +116,13 @@ public class SQLDispatcherTest {
 		return ret;
 	}
 	
-	private PartiesSQLDispatcher getSQLDispatcherSQLite() {
+	private PartiesSQLDispatcher getSQLDispatcherSQLite(Path temporaryDirectory) {
 		ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE = "";
 		PartiesSQLDispatcher ret = new PartiesSQLDispatcher(mockPlugin, StorageType.SQLITE) {
 			@Override
 			public ConnectionFactory initConnectionFactory() {
 				ConnectionFactory ret = super.initConnectionFactory();
-				try {
-					ret.setDatabaseUrl("jdbc:sqlite:" + testFolder.newFile("database.db").toPath().toString());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				ret.setDatabaseUrl("jdbc:sqlite:" + temporaryDirectory.resolve("database.db"));
 				return ret;
 			}
 		};
@@ -209,12 +200,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testPlayer() {
+	public void testPlayer(@TempDir Path tempDir) {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class), true);
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class), true);
 		dispatcher.stop();
 		
@@ -269,12 +260,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testParty() {
+	public void testParty(@TempDir Path tempDir) {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class), true);
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), true);
 		dispatcher.stop();
 		
@@ -342,13 +333,13 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testExists() {
+	public void testExists(@TempDir Path tempDir) {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class), false);
 		exists(dispatcher);
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
 		exists(dispatcher);
 		dispatcher.stop();
@@ -381,7 +372,7 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testListParties() {
+	public void testListParties(@TempDir Path tempDir) {
 		PartyManager mockPartyManager = mock(PartyManager.class);
 		when(mockPlugin.getPartyManager()).thenReturn(mockPartyManager);
 		when(mockPartyManager.initializeParty(any())).thenAnswer((mock) -> initializeParty(mockPlugin, mock.getArgument(0)));
@@ -401,7 +392,7 @@ public class SQLDispatcherTest {
 		listPartiesByExperience(dispatcher);
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		daoParties = dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class);
 		daoPlayers = dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class);
 		populateWithParties(dispatcher, daoParties, daoPlayers);
@@ -546,13 +537,13 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testCountPlayersInParty() {
+	public void testCountPlayersInParty(@TempDir Path tempDir) {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class), false);
 		countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class), false);
 		countPlayersInParty(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
 		dispatcher.stop();
@@ -595,13 +586,13 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testCountParties() {
+	public void testCountParties(@TempDir Path tempDir) {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class), false);
 		countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
 		countParties(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class));
 		dispatcher.stop();
@@ -648,13 +639,13 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testListFixed() {
+	public void testListFixed(@TempDir Path tempDir) {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class), false);
 		listFixed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		party(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class), false);
 		listFixed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePartiesDao.class));
 		dispatcher.stop();
@@ -788,8 +779,12 @@ public class SQLDispatcherTest {
 				
 				dispatcher.updateParty(party);
 				
-				Party sameParty = dispatcher.getParty(party.getId());
-				assertEquals(sameParty, party);
+				try (MockedStatic<ADPPlugin> staticPlugin = mockStatic(ADPPlugin.class)) {
+					// Make a try with resource mock static for the completable future
+					when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+					Party sameParty = dispatcher.getParty(party.getId());
+					assertEquals(sameParty, party);
+				}
 			}));
 		}
 		

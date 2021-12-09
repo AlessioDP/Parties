@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.13</version>
+    <version>3.1.14</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bungeecord</artifactId>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-common</artifactId>
-      <version>3.1.13</version>
+      <version>3.1.14</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -110,42 +110,6 @@
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.9</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>powermock-module-junit4-common</artifactId>
-          <groupId>org.powermock</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit</artifactId>
-          <groupId>junit</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>hamcrest-core</artifactId>
-          <groupId>org.hamcrest</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.9</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>powermock-api-support</artifactId>
-          <groupId>org.powermock</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>mockito-core</artifactId>
-          <groupId>org.mockito</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>

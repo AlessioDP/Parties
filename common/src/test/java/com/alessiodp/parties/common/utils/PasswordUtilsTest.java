@@ -1,20 +1,17 @@
 package com.alessiodp.parties.common.utils;
 
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(PowerMockRunner.class)
 public class PasswordUtilsTest {
 	
-	@Before
-	public void setUp() {
+	@BeforeAll
+	public static void setUp() {
 		// Configuration
 		ConfigParties.ADDITIONAL_JOIN_PASSWORD_ALLOWEDCHARS = "[a-zA-Z0-9]+";
 		ConfigParties.ADDITIONAL_JOIN_PASSWORD_MINLENGTH = 3;

@@ -20,8 +20,6 @@ public abstract class MessageUtils {
 	private static final int[] ROMAN_VALUES = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 	private static final String[] ROMAN_LITERALS = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 	
-	
-	
 	public String convertPlaceholders(String message, PartyPlayerImpl player, PartyImpl party) {
 		return convertPlaceholders(message, player, party, "");
 	}

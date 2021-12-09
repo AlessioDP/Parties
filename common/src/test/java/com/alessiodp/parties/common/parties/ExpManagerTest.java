@@ -1,43 +1,29 @@
 package com.alessiodp.parties.common.parties;
 
-import com.alessiodp.core.common.utils.FormulaUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.ExpResult;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.script.*", "com.sun.script.*"})
-@PrepareForTest({
-		ConfigMain.class,
-		ExpManager.class,
-		FormulaUtils.class,
-		PartiesPlugin.class
-})
 public class ExpManagerTest {
-	private boolean runnable = false;
-	private ExpManager expManager;
+	private static final PartiesPlugin mockPlugin = Mockito.mock(PartiesPlugin.class);
+	private static boolean runnable = false;
+	private static ExpManager expManager;
 	
-	@Before
-	public void setUp() {
+	@BeforeAll
+	public static void setUp() {
 		// Java 15 we use JDK Nashorn module but cannot be loaded in earlier versions
 		int version = Integer.parseInt(System.getProperties().getProperty("java.version").split("\\.")[0]);
 		if (version < 15)
 			runnable = true;
 		
 		if (runnable) {
-			PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
-			
 			ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE = true;
 			ConfigMain.ADDITIONAL_EXP_LEVELS_MODE = "progressive";
 			

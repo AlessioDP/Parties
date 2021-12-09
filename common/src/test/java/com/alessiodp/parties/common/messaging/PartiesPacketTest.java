@@ -4,20 +4,25 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
 public class PartiesPacketTest {
+	private static final PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
 	private static final String VERSION = "1";
+	
+	@BeforeAll
+	public static void setUp() {
+		when(mockPlugin.getVersion()).thenReturn(VERSION);
+	}
+	
 	
 	@Test
 	public void testBuildBasic() {
@@ -50,29 +55,26 @@ public class PartiesPacketTest {
 	
 	@Test
 	public void testReadBasic() {
-		PartiesPlugin plugin = mockPlugin();
 		PartiesPacket packet = makePacket()
 				.setType(PartiesPacket.PacketType.values()[0]);
 		
-		PartiesPacket newPacket = PartiesPacket.read(plugin, packet.build());
+		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
 		
 		assertEquals(packet, newPacket);
 	}
 	
 	@Test
 	public void testReadBasicFail() {
-		PartiesPlugin plugin = mockPlugin();
 		PartiesPacket packet = makePacket()
 				.setType(PartiesPacket.PacketType.values()[0]);
 		
-		PartiesPacket newPacket = PartiesPacket.read(plugin, packet.build());
+		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
 		packet = packet.setPayloadNumber(1D);
 		assertNotEquals(packet, newPacket);
 	}
 	
 	@Test
 	public void testReadAdvanced() {
-		PartiesPlugin plugin = mockPlugin();
 		PartiesPacket packet = makePacket()
 				.setType(PartiesPacket.PacketType.values()[0])
 				.setPlayerUuid(UUID.randomUUID())
@@ -80,15 +82,13 @@ public class PartiesPacketTest {
 				.setPayload("text")
 				.setPayloadNumber(100D);
 		
-		PartiesPacket newPacket = PartiesPacket.read(plugin, packet.build());
+		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
 		
 		assertEquals(packet, newPacket);
 	}
 	
 	@Test
 	public void testReadWithPayloadRaw() {
-		PartiesPlugin plugin = mockPlugin();
-		
 		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
 		raw.writeInt(1);
 		raw.writeInt(2);
@@ -96,7 +96,7 @@ public class PartiesPacketTest {
 				.setType(PartiesPacket.PacketType.values()[0])
 				.setPayloadRaw(raw.toByteArray());
 		
-		PartiesPacket newPacket = PartiesPacket.read(plugin, packet.build());
+		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
 		
 		assertEquals(packet, newPacket);
 		
@@ -107,8 +107,6 @@ public class PartiesPacketTest {
 	
 	@Test
 	public void testReadWithPayloadRawFail() {
-		PartiesPlugin plugin = mockPlugin();
-		
 		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
 		raw.writeInt(1);
 		raw.writeInt(2);
@@ -116,18 +114,12 @@ public class PartiesPacketTest {
 				.setType(PartiesPacket.PacketType.values()[0])
 				.setPayloadRaw(raw.toByteArray());
 		
-		PartiesPacket newPacket = PartiesPacket.read(plugin, packet.build());
+		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
 		
 		raw.writeInt(3);
 		packet.setPayloadRaw(raw.toByteArray());
 		
 		assertNotEquals(packet, newPacket);
-	}
-	
-	private PartiesPlugin mockPlugin() {
-		PartiesPlugin ret = mock(PartiesPlugin.class);
-		when(ret.getVersion()).thenReturn(VERSION);
-		return ret;
 	}
 	
 	private PartiesPacket makePacket() {

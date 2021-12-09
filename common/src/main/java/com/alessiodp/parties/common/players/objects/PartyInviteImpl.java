@@ -9,7 +9,6 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -20,9 +19,9 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class PartyInviteImpl implements PartyInvite {
 	@NonNull private final PartiesPlugin plugin;
-	@Getter @Setter private final Party party;
-	@Getter @Setter private final PartyPlayer invitedPlayer;
-	@Getter @Setter private final PartyPlayer inviter;
+	@Getter private final Party party;
+	@Getter private final PartyPlayer invitedPlayer;
+	@Getter private final PartyPlayer inviter;
 	@Getter @Setter @EqualsAndHashCode.Exclude private CancellableTask activeTask;
 	
 	@Override

@@ -22,8 +22,6 @@ import com.alessiodp.parties.common.tasks.HomeDelayTask;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 

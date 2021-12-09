@@ -1,6 +1,5 @@
 package com.alessiodp.parties.bukkit.addons;
 
-import com.alessiodp.core.common.addons.external.simpleyaml.configuration.file.YamlFile;
 import com.alessiodp.parties.bukkit.addons.external.BanManagerHandler;
 import com.alessiodp.parties.bukkit.addons.external.BukkitAdvancedBanHandler;
 import com.alessiodp.parties.bukkit.addons.external.ClaimHandler;
@@ -17,10 +16,6 @@ import com.alessiodp.parties.bukkit.addons.external.VaultHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.PartiesAddonManager;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
 public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final BukkitAdvancedBanHandler advancedBanHandler;
 	private final BanManagerHandler banManager;
@@ -35,18 +30,6 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final SkillAPIHandler skillAPI;
 	private final SkriptHandler skriptHandler;
 	private final VaultHandler vault;
-	
-	static {
-		InputStream is = null;
-		String name = "_";
-		try {
-			YamlFile f = YamlFile.loadConfiguration(PartiesPlugin.getInstance().getResource("plugin.yml"));
-			name = f.getString("name");
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-		System.out.println("################################" + name);
-	}
 	
 	public BukkitPartiesAddonManager(PartiesPlugin plugin) {
 		super(plugin);

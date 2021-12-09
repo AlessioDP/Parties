@@ -17,31 +17,31 @@ import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.utils.MessageUtils;
 import lombok.NonNull;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.internal.util.collections.Sets;
-import org.powermock.core.MockRepository;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
 public class PartiesPlaceholderTest {
-	private PartiesPlugin mockPlugin;
-	private PartiesDatabaseManager mockDatabaseManager;
-	private MessageUtils mockMessageUtils;
+	private static final PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
+	private static final PartiesDatabaseManager mockDatabaseManager = mock(PartiesDatabaseManager.class);
+	private static final MessageUtils mockMessageUtils = mock(MessageUtils.class);
+	private static MockedStatic<ADPPlugin> staticPlugin;
 	
 	private PartyImpl party1;
 	private PartyImpl party2;
@@ -51,28 +51,12 @@ public class PartiesPlaceholderTest {
 	private PartyPlayerImpl player3;
 	private PartyPlayerImpl player4;
 	
-	@Before
-	public void setUp() {
-		MockRepository.clear();
-		mockPlugin = mock(PartiesPlugin.class);
-		// Mock logger
+	@BeforeAll
+	public static void setUp() {
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
 		when(mockPlugin.getLoggerManager()).thenReturn(mockLoggerManager);
-		
-		// Mock getInstance
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
-		
-		// Mock player manager
-		TestPlayerManager playerManager = spy(new TestPlayerManager(mockPlugin));
-		when(mockPlugin.getPlayerManager()).thenReturn(playerManager);
-		
-		// Mock database manager
-		mockDatabaseManager = mock(PartiesDatabaseManager.class);
 		when(mockPlugin.getDatabaseManager()).thenReturn(mockDatabaseManager);
 		
-		// Mock message utils
-		mockMessageUtils = mock(MessageUtils.class);
 		when(mockPlugin.getMessageUtils()).thenReturn(mockMessageUtils);
 		when(mockMessageUtils.convertRawPlaceholder(any(), any(), any(), any())).thenCallRealMethod();
 		
@@ -81,6 +65,17 @@ public class PartiesPlaceholderTest {
 		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
 		
+		staticPlugin = mockStatic(ADPPlugin.class);
+		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+	}
+	
+	@AfterAll
+	public static void tearDown() {
+		staticPlugin.close();
+	}
+	
+	@BeforeEach
+	public void setUpEach() {
 		party1 = new TestPartyImpl(mockPlugin, UUID.randomUUID());
 		party2 = new TestPartyImpl(mockPlugin, UUID.randomUUID());
 		party3 = new TestPartyImpl(mockPlugin, UUID.randomUUID());
@@ -117,6 +112,8 @@ public class PartiesPlaceholderTest {
 		player4.setRank(20);
 		player4.setAccessible(false);
 		
+		TestPlayerManager playerManager = spy(new TestPlayerManager(mockPlugin));
+		when(mockPlugin.getPlayerManager()).thenReturn(playerManager);
 		when(playerManager.getPlayer(any())).then(uuid -> {
 			if (uuid.getArgument(0).equals(player1.getPlayerUUID()))
 				return player1;
@@ -131,7 +128,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderColorCode() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("color_code");
 		
@@ -145,7 +141,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderColorCommand() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("color_command");
 		
@@ -159,7 +154,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderColorName() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("color_name");
 		
@@ -173,7 +167,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderDesc() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("desc");
 		
@@ -187,7 +180,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderExperience() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("experience_total");
 		assertEquals(PartiesPlaceholder.EXPERIENCE_TOTAL, placeholder);
@@ -215,7 +207,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderKills() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("kills");
 		
@@ -229,7 +220,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderLeaderName() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("leader_name");
 		
@@ -238,7 +228,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderLeaderUuid() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("leader_uuid");
 		
@@ -247,7 +236,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPartiesTotal() {
 		when(mockDatabaseManager.getListPartiesNumber()).thenReturn(3);
 		
@@ -258,9 +246,8 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPartiesByName() {
-		when(mockDatabaseManager.getListParties(eq(PartiesDatabaseManager.ListOrder.NAME), anyInt(), anyInt())).then(args -> {
+		doAnswer(args -> {
 			if (((int) args.getArgument(2)) == 0)
 				return Sets.newSet(party1);
 			else if (((int) args.getArgument(2)) == 1)
@@ -268,7 +255,7 @@ public class PartiesPlaceholderTest {
 			else if (((int) args.getArgument(2)) == 2)
 				return Sets.newSet(party3);
 			return Sets.newSet();
-		});
+		}).when(mockDatabaseManager).getListParties(eq(PartiesDatabaseManager.ListOrder.NAME), anyInt(), anyInt());
 		
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_name_1");
 		
@@ -294,9 +281,8 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPartiesByOnlineMembers() {
-		when(mockDatabaseManager.getListParties(eq(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS), anyInt(), anyInt())).then(args -> {
+		doAnswer(args -> {
 			if (((int) args.getArgument(2)) == 0)
 				return Sets.newSet(party3);
 			else if (((int) args.getArgument(2)) == 1)
@@ -304,7 +290,7 @@ public class PartiesPlaceholderTest {
 			else if (((int) args.getArgument(2)) == 2)
 				return Sets.newSet(party1);
 			return Sets.newSet();
-		});
+		}).when(mockDatabaseManager).getListParties(eq(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS), anyInt(), anyInt());
 		
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_online_members_1");
 		
@@ -330,7 +316,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListPartiesByOthers() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_members_1");
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_MEMBERS_NUMBER, placeholder);
@@ -349,7 +334,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderListRank() {
 		RankManager mockRankManager = mock(RankManager.class);
 		when(mockPlugin.getRankManager()).thenReturn(mockRankManager);
@@ -371,10 +355,7 @@ public class PartiesPlaceholderTest {
 		assertEquals(PartiesPlaceholder.LIST_RANK_NUMBER_PLACEHOLDER, placeholder);
 	}
 	
-	
-	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderMotd() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("motd");
 		
@@ -388,7 +369,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderName() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("name");
 		
@@ -402,16 +382,13 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testMembers() {
 		Messages.PARTIES_LIST_EMPTY = "empty";
 		Messages.PARTIES_LIST_ONLINEFORMAT = "player";
 		Messages.PARTIES_LIST_OFFLINEFORMAT = "offlineplayer";
 		Messages.PARTIES_LIST_SEPARATOR = ",";
 		
-		MessageUtils messageUtils = mock(MessageUtils.class);
-		when(mockPlugin.getMessageUtils()).thenReturn(messageUtils);
-		when(messageUtils.convertPlaceholders(any(), any(), any())).then(args -> args.getArgument(0));
+		when(mockMessageUtils.convertPlaceholders(any(), any(), any())).then(args -> args.getArgument(0));
 		
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("members");
 		
@@ -422,7 +399,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testMembersTotal() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("members_total");
 		assertEquals(PartiesPlaceholder.MEMBERS_TOTAL, placeholder);
@@ -438,7 +414,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlayerInParty() {
 		Messages.PARTIES_OUT_PARTY = "out";
 		
@@ -450,7 +425,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderTag() {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("tag");
 		
@@ -464,7 +438,6 @@ public class PartiesPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, PartiesPlaceholder.class})
 	public void testPlaceholderPlayerNickname() {
 		ConfigParties.ADDITIONAL_NICKNAME_FORMAT = "~%nickname%";
 		

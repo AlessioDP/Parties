@@ -9,34 +9,31 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
 public class RankManagerTest {
-	private PartiesPlugin mockPlugin;
-	private RankManager rankManager;
+	private static final PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
+	private static RankManager rankManager;
 	
-	private PartyRankImpl rank1;
-	private PartyRankImpl rank2;
-	private PartyRankImpl rank3;
+	private static PartyRankImpl rank1;
+	private static PartyRankImpl rank2;
+	private static PartyRankImpl rank3;
 	
-	@Before
-	public void setUp() {
+	@BeforeAll
+	public static void setUp() {
 		// Ranks
 		rank1 = new PartyRankImpl(
 				"rank1", "rank1", "rank1", 1,
@@ -53,8 +50,6 @@ public class RankManagerTest {
 		
 		// Configuration
 		ConfigParties.RANK_LIST = Sets.newSet(rank1, rank2, rank3);
-		
-		mockPlugin = mock(PartiesPlugin.class);
 		
 		rankManager = new RankManager(mockPlugin);
 		rankManager.reload();

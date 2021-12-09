@@ -14,14 +14,14 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.PlayerManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.storage.dispatchers.PartiesYAMLDispatcher;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -30,36 +30,29 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		ADPPlugin.class
-})
 public class FileDispatcherTest {
-	@Rule
-	public final TemporaryFolder testFolder = new TemporaryFolder();
+	private static final PartiesPlugin mockPlugin = mock(PartiesPlugin.class);
+	private static MockedStatic<ADPPlugin> staticPlugin;
+	private static int databaseId = 1;
 	
-	private PartiesPlugin mockPlugin;
-	
-	@Before
-	public void setUp() {
-		mockPlugin = mock(PartiesPlugin.class);
+	@BeforeAll
+	public static void setUp(@TempDir Path tempDir) {
 		ADPBootstrap mockBootstrap = mock(ADPBootstrap.class);
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
 		when(mockPlugin.getPluginFallbackName()).thenReturn("parties");
-		when(mockPlugin.getFolder()).thenReturn(testFolder.getRoot().toPath());
+		when(mockPlugin.getFolder()).thenReturn(tempDir);
 		when(mockPlugin.getBootstrap()).thenReturn(mockBootstrap);
 		when(mockPlugin.getLoggerManager()).thenReturn(mockLoggerManager);
 		when(mockPlugin.getVersion()).thenReturn("1.0.0");
@@ -68,12 +61,8 @@ public class FileDispatcherTest {
 		when(mockPlugin.getColorManager()).thenReturn(mockColorManager);
 		when(mockColorManager.searchColorByName(anyString())).thenReturn(null);
 		
-		// Mock static ADPPlugin, used in DAOs
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
-		
 		// Mock debug methods
-		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> getClass().getClassLoader().getResourceAsStream(mock.getArgument(0)));
+		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> ClassLoader.getSystemResourceAsStream(mock.getArgument(0)));
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
 		doAnswer((args) -> {
 			System.out.println((String) args.getArgument(0));
@@ -92,10 +81,18 @@ public class FileDispatcherTest {
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
 		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
+		
+		staticPlugin = Mockito.mockStatic(ADPPlugin.class);
+		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+	}
+	
+	@AfterAll
+	public static void tearDown() {
+		staticPlugin.close();
 	}
 	
 	private PartiesYAMLDispatcher getFileDispatcher() {
-		ConfigMain.STORAGE_SETTINGS_YAML_DBFILE = "database.yaml";
+		ConfigMain.STORAGE_SETTINGS_YAML_DBFILE = "database-" + (databaseId++) + ".yaml";
 		PartiesYAMLDispatcher ret = new PartiesYAMLDispatcher(mockPlugin);
 		ret.init();
 		assertFalse(ret.isFailed());
