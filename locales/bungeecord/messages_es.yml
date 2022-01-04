@@ -15,7 +15,7 @@ parties:
   update-available: "&9Nueva versión de Parties encontrada: %version% (Actual: %thisversion%)"
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cEl archivo de configuracion '%config%' de Parties esta desactualizado!"
+  configuration-outdated: "&c¡El archivo de configuración '%config%' de Parties está desactualizado!"
   common-messages:
     invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"
@@ -154,7 +154,7 @@ main-commands:
     player-kicked: "&bHas sido expulsado del equipo %party%"
     broadcast: "&b&l%player% ha sido expulsado del equipo"
     broadcast-disband: "&b&lEl equipo ha sido disuelto porque el líder salio"
-    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leader-changed: "&b&lEl nuevo líder es %player%"
     broadcast-leave-server: "&b&l%player% ha sido expulsado del equipo"
     player-higher-rank: "&c¡No puedes expulsar a tu superior!"
     player-not-in-party: "&c%player% no esta en tu equipo"
