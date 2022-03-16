@@ -190,7 +190,9 @@ main-commands:
     same-rank: "&c%player% már a %rank_name% rangba van!"
     low-rank: "&cNem szerkesztheted az azonos vagy magasabb rangú játékosokat!"
     to-higher-rank: "&cNem támogathatod az azonos vagy magasabb rangú játékosokat!"
+    full: "&cRank %rank_name% reached the maximum number of players"
     fixed-leader: "&cNem tehetsz valakit egy fix party vezetőjévé!"
+    demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cNem változtathatod meg a saját rangodat!"
     player-not-in-party: "&c%player% nem a partyd tagja"
     players-conflict:
@@ -257,8 +259,17 @@ additional-commands:
     changed: "&bParty szín kicserélve erre %color_command%"
     removed: "&bParty szín törölve"
     broadcast: ""
-    wrong-color: "&cA szín nem található. Válaszható színek: piros, zöld vagy speciális Fontos: angolul írdbe a színek nevét!"
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
+    bungeecord:
+      sent: "&bSent a debug BungeeCord request into the network"
+      server-players: "&cThere must be at least 1 player in the server"
+      sync: "Parties is synced correctly"
+      not-sync: "Parties is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -271,16 +282,12 @@ additional-commands:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
         - "&bExp system&7: %exp%"
-        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
-        - "%levels_options%"
-        - "&bExp drop&7: %drop%"
-        - "&bSharing enable/players/range/round&7: %sharing%&7/%sharing_number%&7/%sharing_range%/%sharing_round%"
-        - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
-        - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
-        - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
-      level-options:
-        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
     party:
       header: '&b================== &lDebug Party &r&b=================='
       text:
@@ -290,7 +297,7 @@ additional-commands:
         - "&bNumber members/online&7: %members%&7/%members_online%"
         - "&bDescription&7: %description%"
         - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
         - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
         - "&bExperience&7: %experience%"
     player:
@@ -310,25 +317,10 @@ additional-commands:
     invalid-chars: "&cHelytelen karakterek. Használd az angol Abc betűit vagy számokat. Minimum 3 és maximum 16 karaktert használhatsz névnek."
     censored: "&cA leírás csúnya szót tartalmaz!"
   exp:
-    #[Special tags]
+    #[Special tag]
     #=> %exp%        = Experience gained
-    #=> %total_exp%  = Total experience dropped by the mob
-    party:
-      gained: "&bA party %exp% exp tapasztalatot szerzett a szörnyek megöléséért"
-    normal:
-      gained-killer: "&bKaptál %exp% exp tapasztalatot a szörny megöléséért"
-      gained-others: "&b%player% megölt egy szörnyet, ezért a party miat kaptál %exp% exp tapasztalatot"
-    levelpoints:
-      gained-killer: "&bKaptál %exp% exp tapasztalatot a szörny megöléséért"
-      gained-others: "&b%player% megölt egy szörnyet, ezért a party miat kaptál %exp% exp tapasztalatot"
-    mmocore:
-      gained-killer: "&bKaptál %exp% exp tapasztalatot a szörny megöléséért"
-      gained-others: "&b%player% megölt egy szörnyet, ezért a party miat kaptál %exp% exp tapasztalatot"
-    skillapi:
-      gained-killer: "&bKaptál %exp% exp tapasztalatot a szörny megöléséért"
-      gained-others: "&b%player% megölt egy szörnyet, ezért a party miat kaptál %exp% exp tapasztalatot"
-    level:
-      level-up: "&bParty szintet lépett a %experience_level% szintre"
+    gained-experience: "&bA party %exp% exp tapasztalatot szerzett a szörnyek megöléséért"
+    level-up: "&bParty szintet lépett a %experience_level% szintre"
   follow:
     toggle-on: "&aA party tagjaid most követnek téged"
     toggle-off: "&aA party tagjaid közül csak néhányan fognak követni"
@@ -352,7 +344,15 @@ additional-commands:
   join:
     joined: "&aCsatlakoztál a %party% partyba"
     player-joined: "&b&l%player% csatlakozott a partyba"
-    wrong-password: "&cHelytelen jelszó!"
+    open-close:
+      opened: "&bThe party is now open"
+      closed: "&bThe party is now closed"
+      already-open: "&cThe party is already open"
+      already-closed: "&cThe party is already closed"
+      cooldown: "&cKérlek várj %seconds% másodpercet!"
+      cannot-join: "&cYou cannot join this party"
+    password:
+      wrong-password: "&cHelytelen jelszó!"
   list:
     #[Special tags]
     #=> %index%     = The party index
@@ -530,6 +530,7 @@ help:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -541,6 +542,7 @@ help:
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -549,6 +551,7 @@ help:
     descriptions:
       ask: 'Küldj csatlakozás kérelmet'
       claim: 'Engedélyek megadása a foglaláshoz'
+      close: 'Close the party'
       color: 'Party színének megváltoztatása'
       createfixed: 'Új party rögzített party létrehozása'
       debug: 'Debug issues'
@@ -560,6 +563,7 @@ help:
       motd: 'Party MOTD beállítás/törlés'
       mute: 'Értesítések'
       nickname: 'Tag becenév beállítása/törlése'
+      open: 'Open the party'
       password: 'Party jelszó módosítása'
       protection: 'Baráti tűz védelem'
       sethome: 'Party otthon beállítás/törlés'
