@@ -60,33 +60,35 @@ public class BukkitFollowListener implements Listener {
 	private void sendMembers(PartyImpl party, PartyPlayerImpl player, Player bukkitPlayer, World oldWorld) {
 		for (PartyPlayer member : party.getOnlineMembers(true)) {
 			BukkitUser memberUser = (BukkitUser) plugin.getPlayer(member.getPlayerUUID());
-			Player bukkitMember = Bukkit.getPlayer(member.getPlayerUUID());
-			if (bukkitMember != null
-					&& !bukkitMember.getUniqueId().equals(bukkitPlayer.getUniqueId())
-					&& bukkitMember.getWorld().equals(oldWorld)) {
-				plugin.getScheduler().getSyncExecutor().execute(() -> {
-					((BukkitPartyPlayerImpl) member).setPortalPause(true);
-					
-					plugin.getScheduler().scheduleAsyncLater(() -> {
-						((BukkitPartyPlayerImpl) member).setPortalPause(false);
-					}, BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT * 50L, TimeUnit.MILLISECONDS);
-					
-					((BukkitPartyPlayerImpl) member).sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.OTHER_FOLLOW_WORLD
-							.replace("%world%", bukkitPlayer.getWorld().getName()), player, party));
-					
-					Location destination = BukkitConfigMain.ADDITIONAL_FOLLOW_TELEPORT_TO_SAME_LOCATION ? bukkitPlayer.getLocation() : bukkitPlayer.getWorld().getSpawnLocation();
-					
-					memberUser.teleportAsync(destination).thenRun(() -> {
-						if (BukkitConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
-							// Schedule it later
-							plugin.getScheduler().scheduleAsyncLater(() -> {
-								for (String command : BukkitConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
-									plugin.getScheduler().getSyncExecutor().execute(() -> bukkitMember.performCommand(plugin.getMessageUtils().convertPlaceholders(command, (PartyPlayerImpl) member, party)));
-								}
-							}, BukkitConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
-						}
+			if (memberUser != null) {
+				Player bukkitMember = Bukkit.getPlayer(member.getPlayerUUID());
+				if (bukkitMember != null
+						&& !bukkitMember.getUniqueId().equals(bukkitPlayer.getUniqueId())
+						&& bukkitMember.getWorld().equals(oldWorld)) {
+					plugin.getScheduler().getSyncExecutor().execute(() -> {
+						((BukkitPartyPlayerImpl) member).setPortalPause(true);
+						
+						plugin.getScheduler().scheduleAsyncLater(() -> {
+							((BukkitPartyPlayerImpl) member).setPortalPause(false);
+						}, BukkitConfigMain.ADDITIONAL_FOLLOW_TIMEOUT * 50L, TimeUnit.MILLISECONDS);
+						
+						((BukkitPartyPlayerImpl) member).sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.OTHER_FOLLOW_WORLD
+								.replace("%world%", bukkitPlayer.getWorld().getName()), player, party));
+						
+						Location destination = BukkitConfigMain.ADDITIONAL_FOLLOW_TELEPORT_TO_SAME_LOCATION ? bukkitPlayer.getLocation() : bukkitPlayer.getWorld().getSpawnLocation();
+						
+						memberUser.teleportAsync(destination).thenRun(() -> {
+							if (BukkitConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
+								// Schedule it later
+								plugin.getScheduler().scheduleAsyncLater(() -> {
+									for (String command : BukkitConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_COMMANDS) {
+										plugin.getScheduler().getSyncExecutor().execute(() -> bukkitMember.performCommand(plugin.getMessageUtils().convertPlaceholders(command, (PartyPlayerImpl) member, party)));
+									}
+								}, BukkitConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_DELAY, TimeUnit.MILLISECONDS);
+							}
+						});
 					});
-				});
+				}
 			}
 		}
 	}
@@ -103,8 +105,7 @@ public class BukkitFollowListener implements Listener {
 					if (serverName.matches(regex))
 						ret = false;
 				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_FOLLOW_WORLD_REGEXERROR);
-					ex.printStackTrace();
+					plugin.getLoggerManager().logError(PartiesConstants.DEBUG_FOLLOW_WORLD_REGEXERROR, ex);
 				}
 			}
 		}

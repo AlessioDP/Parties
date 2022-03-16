@@ -10,39 +10,35 @@ public interface IPartyPostRenameEvent extends PartiesEvent {
 	/**
 	 * Get the renamed party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the old party name
 	 *
-	 * @return Returns the old name of the party
+	 * @return the old name of the party
 	 */
-	@Nullable
-	String getOldPartyName();
+	@Nullable String getOldPartyName();
 	
 	/**
 	 * Get the new party name
 	 *
-	 * @return Returns the new name of the party
+	 * @return the new name of the party
 	 */
-	@Nullable
-	String getNewPartyName();
+	@Nullable String getNewPartyName();
 	
 	/**
 	 * Get the player who performed the command
 	 *
-	 * @return Returns the {@link PartyPlayer} or null if not executed by a player
+	 * @return the {@link PartyPlayer} or null if not executed by a player
 	 */
-	@Nullable
-	PartyPlayer getPartyPlayer();
+	@Nullable PartyPlayer getPartyPlayer();
 	
 	/**
 	 * Is it an admin renaming?
 	 *
-	 * @return Returns {@code true} if the rename has been performed by an admin
+	 * @return {@code true} if the rename has been performed by an admin
 	 */
 	boolean isAdmin();
 	

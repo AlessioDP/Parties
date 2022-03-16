@@ -17,6 +17,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
+@SuppressWarnings("NullableProblems")
 @Name("Get Party")
 @Description("Get the party with the given name/id.")
 @Examples({"send \"the %party \"test\"%\"",
@@ -52,7 +53,7 @@ public class ExprGetParty extends SimpleExpression<Party> {
 	
 	@Override
 	@Nullable
-	protected Party[] get(Event e) {
+	protected @org.jetbrains.annotations.Nullable Party[] get(Event e) {
 		Party party = getParty(nameOrId.getSingle(e));
 		if (party != null) {
 			return new Party[]{party};

@@ -12,7 +12,7 @@ public final class Parties {
 	/**
 	 * Get the {@link PartiesAPI} instance
 	 *
-	 * @return Returns the {@link PartiesAPI} interface
+	 * @return the {@link PartiesAPI} interface
 	 * @throws IllegalStateException if PartiesAPI has not been initialized, in other words,
 	 *                               PartiesAPI has not been loaded
 	 */
@@ -26,7 +26,7 @@ public final class Parties {
 	/**
 	 * Set the Parties API instance. This should not be used.
 	 *
-	 * @param instance The PartiesAPI instance.
+	 * @param instance the PartiesAPI instance.
 	 */
 	public static void setApi(PartiesAPI instance) {
 		api = instance;
@@ -35,7 +35,7 @@ public final class Parties {
 	/**
 	 * Flag to know if Parties has been hooked
 	 *
-	 * @return Returns true if the API has been hooked at least one time
+	 * @return true if the API has been hooked at least one time
 	 */
 	public static boolean isFlagHook() {
 		return flagHook;

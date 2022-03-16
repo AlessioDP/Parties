@@ -7,6 +7,7 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import com.alessiodp.parties.api.interfaces.Party;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Level")
 @Description("Get the level number of the given party.")
 @Examples({"send \"%level of party with name \"test\"%\"",

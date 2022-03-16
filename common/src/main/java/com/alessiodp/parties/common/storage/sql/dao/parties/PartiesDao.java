@@ -14,10 +14,10 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface PartiesDao {
-	String QUERY_UPDATE = "INSERT INTO `<prefix>parties` (`id`, `name`, `tag`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`, `follow`)" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+	String QUERY_UPDATE = "INSERT INTO `<prefix>parties` (`id`, `name`, `tag`, `leader`, `description`, `motd`, `color`, `kills`, `password`, `home`, `protection`, `experience`, `follow`, `isopen`)" +
+			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
 			" ON DUPLICATE KEY" +
-			" UPDATE `name`=VALUES(`name`), `tag`=VALUES(`tag`), `leader`=VALUES(`leader`), `description`=VALUES(`description`), `motd`=VALUES(`motd`), `color`=VALUES(`color`), `kills`=VALUES(`kills`), `password`=VALUES(`password`), `home`=VALUES(`home`), `protection`=VALUES(`protection`), `experience`=VALUES(`experience`), `follow`=VALUES(`follow`)";
+			" UPDATE `name`=VALUES(`name`), `tag`=VALUES(`tag`), `leader`=VALUES(`leader`), `description`=VALUES(`description`), `motd`=VALUES(`motd`), `color`=VALUES(`color`), `kills`=VALUES(`kills`), `password`=VALUES(`password`), `home`=VALUES(`home`), `protection`=VALUES(`protection`), `experience`=VALUES(`experience`), `follow`=VALUES(`follow`), `isopen`=VALUES(`isopen`)";
 	
 	String QUERY_REMOVE = "DELETE FROM `<prefix>parties` WHERE `id`=?";
 	String QUERY_EXISTS = "SELECT EXISTS(SELECT * FROM `<prefix>parties` WHERE `name`=?)";
@@ -39,7 +39,7 @@ public interface PartiesDao {
 	String QUERY_DELETE_ALL = "DELETE FROM `<prefix>parties`";
 	
 	@SqlUpdate(QUERY_UPDATE)
-	void update(String id, String name, String tag, String leader, String description, String motd, String color, int kills, String password, String home, boolean protection, double experience, boolean follow);
+	void update(String id, String name, String tag, String leader, String description, String motd, String color, int kills, String password, String home, boolean protection, double experience, boolean follow, Boolean isopen);
 	
 	@SqlUpdate(QUERY_REMOVE)
 	void remove(String id);

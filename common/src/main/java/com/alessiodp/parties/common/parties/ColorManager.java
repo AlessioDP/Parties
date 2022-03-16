@@ -1,11 +1,14 @@
 package com.alessiodp.parties.common.parties;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.api.interfaces.PartyColor;
+import com.alessiodp.parties.common.utils.PartiesPermission;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class ColorManager {
@@ -33,17 +36,6 @@ public class ColorManager {
 		return ret;
 	}
 	
-	public PartyColor searchColorByCommand(String cmd) {
-		PartyColor ret = null;
-		for (PartyColor pc : colorList) {
-			if (pc.getCommand().equalsIgnoreCase(cmd)) {
-				ret = pc;
-				break;
-			}
-		}
-		return ret;
-	}
-	
 	public void loadDynamicColor(PartyImpl party) {
 		if (ConfigParties.ADDITIONAL_COLOR_ENABLE && ConfigParties.ADDITIONAL_COLOR_DYNAMIC && party.getColor() == null) {
 			PartyColor selected = null;
@@ -64,5 +56,17 @@ public class ColorManager {
 			if (selected != null)
 				party.setDynamicColor(selected);
 		}
+	}
+	
+	public Set<PartyColorImpl> getAvailableColors(User user) {
+		if (user.hasPermission(PartiesPermission.USER_COLOR))
+			return colorList;
+		
+		Set<PartyColorImpl> ret = new HashSet<>();
+		for (PartyColorImpl color : colorList) {
+			if (user.hasPermission(PartiesPermission.USER_COLOR + "." + color.getName()))
+				ret.add(color);
+		}
+		return ret;
 	}
 }

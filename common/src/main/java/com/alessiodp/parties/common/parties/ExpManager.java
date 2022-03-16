@@ -8,17 +8,17 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.ExpResult;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class ExpManager {
-	@NonNull protected final PartiesPlugin plugin;
+	@NotNull protected final PartiesPlugin plugin;
 	@Getter protected ExpMode mode;
 	
 	public void reload() {
-		mode = ExpMode.parse(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
-		if (ConfigMain.ADDITIONAL_EXP_ENABLE && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE && mode == ExpMode.PROGRESSIVE) {
+		mode = ExpMode.parse(ConfigMain.ADDITIONAL_EXP_MODE);
+		if (ConfigMain.ADDITIONAL_EXP_ENABLE && mode == ExpMode.PROGRESSIVE) {
 			FormulaUtils.initializeEngine();
 		}
 	}
@@ -32,19 +32,18 @@ public class ExpManager {
 	/**
 	 * Calculate the level
 	 *
-	 * @param experience The total experience
-	 * @return The {@link ExpResult} of the calculation
-	 * @throws Exception Something gone wrong
+	 * @param experience the total experience
+	 * @return the {@link ExpResult} of the calculation
 	 */
-	public ExpResult calculateLevel(double experience) throws Exception {
+	public ExpResult calculateLevel(double experience) {
 		ExpResult ret = new ExpResult();
-		if (mode != null && ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
+		if (mode != null && ConfigMain.ADDITIONAL_EXP_ENABLE) {
 			switch (mode) {
 				case PROGRESSIVE:
 					ret = calculateLevelProgressive(experience);
 					break;
 				case FIXED:
-					ret = ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT ? calculateLevelFixedRepeat(experience) : calculateLevelFixedNoRepeat(experience);
+					ret = ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT ? calculateLevelFixedRepeat(experience) : calculateLevelFixedNoRepeat(experience);
 					break;
 				default:
 					// Nothing to do
@@ -54,32 +53,35 @@ public class ExpManager {
 		return ret;
 	}
 	
-	private ExpResult calculateLevelProgressive(double experience) throws Exception {
+	private ExpResult calculateLevelProgressive(double experience) {
 		ExpResult ret = new ExpResult();
 		int levelCount = 1;
-		double progressiveLevelExp = ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
+		double progressiveLevelExp = ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START;
 		double total = progressiveLevelExp;
 		if (progressiveLevelExp > 0) {
-			while (experience >= total && (!ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION || levelCount < 1000)) {
+			while (experience >= total && (!ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION || levelCount < 1000)) {
 				// Calculate new level exp
-				progressiveLevelExp = Double.parseDouble(FormulaUtils.calculate(
-						ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP
-								.replace("%previous%", Double.toString(progressiveLevelExp))
-				));
+				progressiveLevelExp = FormulaUtils.calculateAsDouble(ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP
+						.replace("%previous%", Double.toString(progressiveLevelExp)));
+				
 				// Add new level exp to the total
 				total = total + progressiveLevelExp;
+				if (progressiveLevelExp <= 0) {
+					// Trigger safe calculation
+					break;
+				}
 				levelCount++;
 			}
 			
 			if (experience >= total) {
 				// Safe calculation triggered
-				plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_EXP_SAFE_CALCULATION,
-						ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START, ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP
+				plugin.getLoggerManager().logWarn(String.format(PartiesConstants.DEBUG_EXP_SAFE_CALCULATION,
+						ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START, ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP
 				));
 			}
 		} else {
 			// Start experience cannot be 0
-			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_EXP_START_EXP_0);
+			plugin.getLoggerManager().logError(PartiesConstants.DEBUG_EXP_START_EXP_0);
 		}
 		
 		ret.setLevel(levelCount);
@@ -96,8 +98,8 @@ public class ExpManager {
 		double total = 0;
 		double levelExperience = 0;
 		
-		for (int i = 0; i < ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.size(); i++) {
-			levelExperience = ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.get(i);
+		for (int i = 0; i < ConfigMain.ADDITIONAL_EXP_FIXED_LIST.size(); i++) {
+			levelExperience = ConfigMain.ADDITIONAL_EXP_FIXED_LIST.get(i);
 			total = total + levelExperience;
 			
 			if (experience < total) {
@@ -123,14 +125,14 @@ public class ExpManager {
 	
 	private ExpResult calculateLevelFixedRepeat(double experience) {
 		ExpResult ret = new ExpResult();
-		final int lastLevel = ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.size() - 1;
+		final int lastLevel = ConfigMain.ADDITIONAL_EXP_FIXED_LIST.size() - 1;
 		int levelCount = 1;
 		double total = 0;
 		double levelExperience = 0;
 		
 		int i = 0;
 		while (i <= lastLevel) {
-			levelExperience = ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.get(i);
+			levelExperience = ConfigMain.ADDITIONAL_EXP_FIXED_LIST.get(i);
 			total = total + levelExperience;
 			
 			if (experience < total)

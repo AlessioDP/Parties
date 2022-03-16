@@ -18,6 +18,7 @@ import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
+import org.jetbrains.annotations.NotNull;
 
 
 public class CommandCreate extends PartiesSubCommand {
@@ -53,12 +54,16 @@ public class CommandCreate extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFull(commandData, false, 2, 2);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		return handlePreRequisitesFull(
+				commandData,
+				false,
+				ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE && ConfigParties.GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE ? 1 : 2,
+				2);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
@@ -82,15 +87,15 @@ public class CommandCreate extends PartiesSubCommand {
 						.replace("%syntax%", syntax));
 				return;
 			}
-			partyName = ((PartiesPlugin) plugin).getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, partyPlayer, null);
+			partyName = getPlugin().getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, partyPlayer, null);
 		}
 		
-		if (((PartiesPlugin) plugin).getPartyManager().existsParty(partyName)) {
+		if (getPlugin().getPartyManager().existsParty(partyName)) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMEEXISTS.replace("%party%", partyName));
 			return;
 		}
 		
-		if (partyPlayer != null && ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.CREATE, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (partyPlayer != null && getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.CREATE, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		// Command starts

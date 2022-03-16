@@ -2,9 +2,8 @@ package com.alessiodp.parties.common.parties;
 
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.RequestCooldown;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,32 +13,95 @@ import java.util.concurrent.TimeUnit;
 
 public class CooldownManager {
 	protected final PartiesPlugin plugin;
-	private HashMap<UUID, List<RequestCooldown>> askCooldown;
-	private HashMap<UUID, Long> chatCooldown;
-	private HashMap<UUID, Long> homeCooldown;
-	private HashMap<UUID, List<RequestCooldown>> inviteCooldown;
-	private HashMap<UUID, List<RequestCooldown>> inviteAfterLeaveCooldown;
-	private HashMap<UUID, Long> renameCooldown;
-	private HashMap<UUID, Long> setHomeCooldown;
-	private HashMap<UUID, Long> teleportCooldown;
 	
-	public CooldownManager(@NonNull PartiesPlugin plugin) {
+	private HashMap<Action, HashMap<UUID, Long>> actions;
+	private HashMap<MultiAction, HashMap<UUID, List<RequestCooldown>>> multiActions;
+	
+	public CooldownManager(@NotNull PartiesPlugin plugin) {
 		this.plugin = plugin;
 		reload();
 	}
 	
 	protected void reload() {
-		askCooldown = new HashMap<>();
-		chatCooldown = new HashMap<>();
-		homeCooldown = new HashMap<>();
-		inviteCooldown = new HashMap<>();
-		inviteAfterLeaveCooldown = new HashMap<>();
-		renameCooldown = new HashMap<>();
-		setHomeCooldown = new HashMap<>();
-		teleportCooldown = new HashMap<>();
+		actions = new HashMap<>();
+		multiActions = new HashMap<>();
+		
+		for (Action action : Action.values())
+			actions.put(action, new HashMap<>());
+		
+		for (MultiAction multiAction : MultiAction.values())
+			multiActions.put(multiAction, new HashMap<>());
 	}
 	
-	private RequestCooldown getRequestCooldown(List<RequestCooldown> list, UUID target) {
+	/**
+	 * Check if the user can perform the action
+	 *
+	 * @param action the action to perform
+	 * @param subject the subject
+	 * @param cooldown the cooldown of the action
+	 * @return the time remaining of the cooldown
+	 */
+	public long canAction(Action action, UUID subject, int cooldown) {
+		if (subject != null) {
+			return calculateCooldown(actions.get(action).get(subject), cooldown);
+		}
+		return 0;
+	}
+	
+	/**
+	 * Check if the user can perform the multi action. Returning the {@link RequestCooldown}.
+	 *
+	 * @param multiAction the multi action to perform
+	 * @param subject the subject
+	 * @param target the target
+	 * @return the request cooldown
+	 */
+	public RequestCooldown canMultiAction(MultiAction multiAction, UUID subject, UUID target) {
+		return subject != null ? getRequestCooldown(multiActions.get(multiAction).get(subject), target) : null;
+	}
+	
+	/**
+	 * Start the action cooldown for the given player
+	 *
+	 * @param action the action to perform
+	 * @param subject the subject
+	 * @param seconds cooldown time in seconds
+	 */
+	public void startAction(Action action, UUID subject, int seconds) {
+		if (subject != null && seconds > 0) {
+			long unixNow = System.currentTimeMillis() / 1000L;
+			
+			actions.get(action).put(subject, unixNow);
+			
+			plugin.getScheduler().scheduleAsyncLater(() -> {
+				actions.get(action).remove(subject);
+				
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_ACTION_EXPIRED, action.name(), subject), true);
+			}, seconds, TimeUnit.SECONDS);
+		}
+	}
+	
+	/**
+	 * Start the multi action cooldown for the given player
+	 *
+	 * @param multiAction the multi action to perform
+	 * @param subject the subject
+	 * @param target the target
+	 * @param seconds cooldown time in seconds
+	 */
+	public void startMultiAction(MultiAction multiAction, UUID subject, UUID target, int seconds) {
+		insertRequestCooldown(multiActions.get(multiAction), subject, target, seconds, multiAction);
+	}
+	
+	protected long calculateCooldown(Long unixBefore, int cooldown) {
+		long unixNow = System.currentTimeMillis() / 1000L;
+		if (unixBefore != null && (unixNow - unixBefore) < cooldown) {
+			return cooldown - (unixNow - unixBefore);
+		}
+		return 0;
+	}
+	
+	protected RequestCooldown getRequestCooldown(List<RequestCooldown> list, UUID target) {
 		RequestCooldown ret = null;
 		if (list != null) {
 			for (RequestCooldown ic : list) {
@@ -63,176 +125,49 @@ public class CooldownManager {
 		return ret;
 	}
 	
-	public void insertRequestCooldown(HashMap<UUID, List<RequestCooldown>> map, UUID player, UUID target, int seconds, String debugMessage) {
+	protected void insertRequestCooldown(HashMap<UUID, List<RequestCooldown>> map, UUID subject, UUID target, int seconds, MultiAction multiAction) {
 		if (seconds > 0) {
-			List<RequestCooldown> list = map.get(player);
+			List<RequestCooldown> list = map.get(subject);
 			if (list == null)
 				list = new ArrayList<>();
 			RequestCooldown ic = new RequestCooldown(
 					plugin,
-					player,
+					subject,
 					target,
 					seconds
 			);
 			list.add(ic);
-			map.put(player, list);
+			map.put(subject, list);
 			
 			plugin.getScheduler().scheduleAsyncLater(() -> {
-				List<RequestCooldown> newList = map.get(player);
+				List<RequestCooldown> newList = map.get(subject);
 				if (newList != null) {
 					newList.remove(ic);
 					
 					if (newList.isEmpty()) {
-						map.remove(player);
+						map.remove(subject);
 					} else {
-						map.put(player, newList);
+						map.put(subject, newList);
 					}
 				}
 				
-				plugin.getLoggerManager().logDebug(String.format(debugMessage, player.toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_ACTION_EXPIRED, multiAction.name(), subject.toString()), true);
 			}, seconds, TimeUnit.SECONDS);
 		}
 	}
 	
-	public RequestCooldown canAsk(UUID player, UUID targetParty) {
-		return getRequestCooldown(askCooldown.get(player), targetParty);
+	
+	/**
+	 * An action that can be executed only one time
+	 */
+	public enum Action {
+		CHAT, CLOSE, HOME, OPEN, RENAME, SETHOME, TELEPORT
 	}
 	
-	public void startAskCooldown(UUID player, UUID targetParty, int seconds) {
-		insertRequestCooldown(askCooldown, player, targetParty, seconds, PartiesConstants.DEBUG_TASK_ASK_COOLDOWN_EXPIRED);
-	}
-	
-	public long canChat(UUID player, int cooldown) {
-		if (player != null) {
-			return calculateCooldown(chatCooldown.get(player), cooldown);
-		}
-		return 0;
-	}
-	
-	public void startChatCooldown(UUID player, int seconds) {
-		if (seconds > 0) {
-			long unixNow = System.currentTimeMillis() / 1000L;
-			
-			chatCooldown.put(player, unixNow);
-			
-			plugin.getScheduler().scheduleAsyncLater(() -> {
-				chatCooldown.remove(player);
-				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_CHAT_EXPIRED, player.toString()), true);
-			}, seconds, TimeUnit.SECONDS);
-		}
-	}
-	
-	public RequestCooldown canInvite(UUID player, UUID targetPlayer) {
-		return getRequestCooldown(inviteCooldown.get(player), targetPlayer);
-	}
-	
-	public void startInviteCooldown(UUID player, UUID targetPlayer, int seconds) {
-		insertRequestCooldown(inviteCooldown, player, targetPlayer, seconds, PartiesConstants.DEBUG_TASK_INVITE_COOLDOWN_EXPIRED);
-	}
-	
-	public RequestCooldown canInviteAfterLeave(UUID targetPlayer, UUID party) {
-		return getRequestCooldown(inviteAfterLeaveCooldown.get(targetPlayer), party);
-	}
-	
-	public void startInviteAfterLeave(UUID targetPlayer, UUID party, int seconds) {
-		insertRequestCooldown(inviteAfterLeaveCooldown, targetPlayer, party, seconds, PartiesConstants.DEBUG_TASK_INVITE_COOLDOWN_ON_LEAVE_EXPIRED);
-	}
-	
-	
-	public long canRename(PartyImpl party, int cooldown) {
-		if (party != null) {
-			return calculateCooldown(renameCooldown.get(party.getId()), cooldown);
-		}
-		return 0;
-	}
-	
-	public void startRenameCooldown(PartyImpl party, int seconds) {
-		if (seconds > 0) {
-			long unixNow = System.currentTimeMillis() / 1000L;
-			
-			renameCooldown.put(party.getId(), unixNow);
-			
-			plugin.getScheduler().scheduleAsyncLater(() -> {
-				renameCooldown.remove(party.getId());
-				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_RENAME_EXPIRED, party.getId().toString()), true);
-			}, seconds, TimeUnit.SECONDS);
-		}
-	}
-	
-	public long canTeleport(UUID player, int cooldown) {
-		if (player != null) {
-			return calculateCooldown(teleportCooldown.get(player), cooldown);
-		}
-		return 0;
-	}
-	
-	public void startTeleportCooldown(UUID player, int seconds) {
-		if (player != null && seconds > 0) {
-			long unixNow = System.currentTimeMillis() / 1000L;
-			
-			teleportCooldown.put(player, unixNow);
-			
-			plugin.getScheduler().scheduleAsyncLater(() -> {
-				teleportCooldown.remove(player);
-				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_EXPIRED, player.toString()), true);
-			}, seconds, TimeUnit.SECONDS);
-		}
-	}
-	
-	protected long calculateCooldown(Long unixBefore, int cooldown) {
-		long unixNow = System.currentTimeMillis() / 1000L;
-		if (unixBefore != null && (unixNow - unixBefore) < cooldown) {
-			return cooldown - (unixNow - unixBefore);
-		}
-		return 0;
-	}
-	
-	public long canHome(UUID player, int cooldown) {
-		if (player != null) {
-			return calculateCooldown(homeCooldown.get(player), cooldown);
-		}
-		return 0;
-	}
-	
-	public void startHomeCooldown(UUID player, int seconds) {
-		if (player != null && seconds > 0) {
-			long unixNow = System.currentTimeMillis() / 1000L;
-			
-			homeCooldown.put(player, unixNow);
-			
-			plugin.getScheduler().scheduleAsyncLater(() -> {
-				resetHomeCooldown(player);
-				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_EXPIRED, player.toString()), true);
-			}, seconds, TimeUnit.SECONDS);
-		}
-	}
-	
-	public void resetHomeCooldown(UUID player) {
-		homeCooldown.remove(player);
-	}
-	
-	public long canSetHome(UUID player, int cooldown) {
-		if (player != null) {
-			return calculateCooldown(setHomeCooldown.get(player), cooldown);
-		}
-		return 0;
-	}
-	
-	public void startSetHomeCooldown(UUID player, int seconds) {
-		if (player != null && seconds > 0) {
-			long unixNow = System.currentTimeMillis() / 1000L;
-			
-			setHomeCooldown.put(player, unixNow);
-			
-			plugin.getScheduler().scheduleAsyncLater(() -> {
-				setHomeCooldown.remove(player);
-				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_SETHOME_EXPIRED, player.toString()), true);
-			}, seconds, TimeUnit.SECONDS);
-		}
+	/**
+	 * An action that can be executed multiple times with different values
+	 */
+	public enum MultiAction {
+		ASK, INVITE, INVITE_AFTER_LEAVE
 	}
 }

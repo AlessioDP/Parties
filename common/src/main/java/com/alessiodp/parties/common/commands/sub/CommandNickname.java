@@ -5,7 +5,6 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.external.LLAPIHandler;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
@@ -19,11 +18,14 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -51,11 +53,11 @@ public class CommandNickname extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = null;
 		if (sender.isPlayer()) {
-			partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			partyPlayer = getPlugin().getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
 			if (!sender.hasPermission(permission)) {
@@ -69,8 +71,8 @@ public class CommandNickname extends PartiesSubCommand {
 					return false;
 				}
 				
-				if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRank(partyPlayer, PartiesPermission.PRIVATE_EDIT_NICKNAME_OWN)
-						&& !((PartiesPlugin) plugin).getRankManager().checkPlayerRank(partyPlayer, PartiesPermission.PRIVATE_EDIT_NICKNAME_OTHERS)) {
+				if (!getPlugin().getRankManager().checkPlayerRank(partyPlayer, RankPermission.EDIT_NICKNAME_OWN)
+						&& !getPlugin().getRankManager().checkPlayerRank(partyPlayer, RankPermission.EDIT_NICKNAME_OTHERS)) {
 					sendMessage(sender, partyPlayer, Messages.PARTIES_PERM_NORANK_GENERAL);
 					return false;
 				}
@@ -88,13 +90,13 @@ public class CommandNickname extends PartiesSubCommand {
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl senderPp = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
 		String playerName = commandData.getArgs()[1];
-		UUID playerUUID = null;
+		UUID playerUUID;
 		
 		Set<UUID> matchingPlayers;
 		if (LLAPIHandler.isEnabled()) {
@@ -115,7 +117,7 @@ public class CommandNickname extends PartiesSubCommand {
 			return;
 		}
 		
-		listPlayers.removeIf((uuid) -> !((PartiesPlugin) plugin).getPlayerManager().getPlayer(uuid).isInParty());
+		listPlayers.removeIf((uuid) -> !getPlugin().getPlayerManager().getPlayer(uuid).isInParty());
 		playerUUID = listPlayers.stream().findAny().orElse(null);
 		
 		if (playerUUID == null) {
@@ -125,8 +127,9 @@ public class CommandNickname extends PartiesSubCommand {
 		}
 		
 		OfflineUser targetPlayer = plugin.getOfflinePlayer(playerUUID);
-		PartyPlayerImpl targetPp = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(playerUUID);
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(targetPp.getPartyId());
+		Objects.requireNonNull(targetPlayer);
+		PartyPlayerImpl targetPp = getPlugin().getPlayerManager().getPlayer(playerUUID);
+		PartyImpl party = getPlugin().getPartyManager().getParty(targetPp.getPartyId());
 		boolean isOwn = senderPp != null && senderPp.getPlayerUUID().equals(targetPp.getPlayerUUID());
 		
 		if (party == null) {
@@ -136,17 +139,17 @@ public class CommandNickname extends PartiesSubCommand {
 		
 		if (senderPp != null) {
 			if (isOwn) {
-				if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRank(senderPp, PartiesPermission.PRIVATE_EDIT_NICKNAME_OWN)) {
+				if (!getPlugin().getRankManager().checkPlayerRank(senderPp, RankPermission.EDIT_NICKNAME_OWN)) {
 					sendMessage(sender, senderPp, Messages.ADDCMD_NICKNAME_OWN_NO_PERMISSION);
 					return;
 				}
 			} else {
-				if (!targetPp.getPartyId().equals(senderPp.getPartyId()) && !commandData.havePermission(PartiesPermission.ADMIN_NICKNAME_OTHERS)) {
+				if (!party.getId().equals(senderPp.getPartyId()) && !commandData.havePermission(PartiesPermission.ADMIN_NICKNAME_OTHERS)) {
 					sendMessage(sender, senderPp, Messages.ADDCMD_NICKNAME_OTHERS_NO_PERMISSION);
 					return;
 				}
 				
-				if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRank(senderPp, PartiesPermission.PRIVATE_EDIT_NICKNAME_OTHERS)) {
+				if (!getPlugin().getRankManager().checkPlayerRank(senderPp, RankPermission.EDIT_NICKNAME_OTHERS)) {
 					sendMessage(sender, senderPp, Messages.ADDCMD_NICKNAME_OTHERS_NO_PERMISSION);
 					return;
 				}
@@ -182,7 +185,7 @@ public class CommandNickname extends PartiesSubCommand {
 					return;
 				}
 				
-				if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.NICKNAME, senderPp, commandData.getCommandLabel(), commandData.getArgs()))
+				if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.NICKNAME, senderPp, commandData.getCommandLabel(), commandData.getArgs()))
 					return;
 			}
 			
@@ -222,7 +225,7 @@ public class CommandNickname extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
 			return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);

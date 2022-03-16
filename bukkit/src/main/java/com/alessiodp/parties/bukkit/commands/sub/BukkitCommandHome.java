@@ -62,17 +62,18 @@ public class BukkitCommandHome extends CommandHome {
 		plugin.getEventManager().callEvent(partiesPreHomeEvent);
 		if (!partiesPreHomeEvent.isCancelled()) {
 			plugin.getScheduler().getSyncExecutor().execute(() -> {
+				EssentialsHandler.updateLastTeleportLocation(player.getPlayerUUID());
+				
 				bukkitUser.teleportAsync(location).thenAccept(result -> {
 					if (result) {
-						EssentialsHandler.updateLastTeleportLocation(player.getPlayerUUID());
 						player.sendMessage(message);
 						
 						IPlayerPostHomeEvent partiesPostHomeEvent = plugin.getEventManager().preparePlayerPostHomeEvent(player, party, home);
 						plugin.getEventManager().callEvent(partiesPostHomeEvent);
 						
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DONE, player.getPlayerUUID().toString()), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DONE, player.getPlayerUUID()), true);
 					} else {
-						plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_TELEPORT_ASYNC, player.getPlayerUUID().toString()));
+						plugin.getLoggerManager().logError(String.format(PartiesConstants.DEBUG_TELEPORT_ASYNC, player.getPlayerUUID()));
 					}
 				});
 			});

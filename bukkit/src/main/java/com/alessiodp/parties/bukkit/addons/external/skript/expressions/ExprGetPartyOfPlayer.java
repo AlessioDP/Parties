@@ -17,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@SuppressWarnings("NullableProblems")
 @Name("Get Party Of Player")
 @Description("Get the party of the given player.")
 @Examples({"send \"the %party of player%\"",

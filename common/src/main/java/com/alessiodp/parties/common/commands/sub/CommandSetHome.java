@@ -5,7 +5,6 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -13,11 +12,14 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +54,22 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFullWithParty(commandData, true, Integer.MIN_VALUE, Integer.MAX_VALUE, PartiesPermission.PRIVATE_EDIT_HOME);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		boolean ret = handlePreRequisitesFullWithParty(commandData, true, Integer.MIN_VALUE, Integer.MAX_VALUE, RankPermission.EDIT_HOME);
+		if (ret) {
+			commandData.addPermission(PartiesPermission.ADMIN_COOLDOWN_SETHOME_BYPASS);
+		}
+		return ret;
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
 		// Command handling
-		String selectedHome = null;
+		String selectedHome;
 		boolean isRemove = commandData.getArgs().length > 1 && commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE);
 		
 		if (ConfigParties.ADDITIONAL_HOME_MAX_HOMES > 1) {
@@ -109,9 +115,9 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 		
 		if (!isRemove) {
 			boolean mustStartCooldown = false;
-			if (ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_SETHOME_BYPASS)) {
+			if (ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_SETHOME_BYPASS)) {
 				mustStartCooldown = true;
-				long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canSetHome(sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME);
+				long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.SETHOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME);
 				
 				if (remainingCooldown > 0) {
 					sendMessage(sender, partyPlayer, Messages.ADDCMD_SETHOME_COOLDOWN
@@ -120,17 +126,17 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 				}
 			}
 			
-			if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.SETHOME, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+			if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.SETHOME, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 				return;
 			
 			if (mustStartCooldown) {
-				((PartiesPlugin) plugin).getCooldownManager().startSetHomeCooldown(sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME);
+				getPlugin().getCooldownManager().startAction(CooldownManager.Action.SETHOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME);
 			}
 		}
 		
 		// Command starts
 		if (isRemove) {
-			boolean removed = false;
+			boolean removed;
 			if (selectedHome == null || ConfigParties.ADDITIONAL_HOME_MAX_HOMES <= 1) {
 				party.getHomes().clear();
 				removed = true;
@@ -167,7 +173,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 			if (ConfigParties.ADDITIONAL_HOME_MAX_HOMES <= 1)
 				party.getHomes().clear();
 			else {
-				party.getHomes().removeIf(h -> h.getName().equalsIgnoreCase(home.getName()));
+				party.getHomes().removeIf(h -> h.getName() != null && h.getName().equalsIgnoreCase(home.getName()));
 			}
 			party.getHomes().add(home);
 			party.updateParty();
@@ -175,7 +181,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2 && ConfigMain.COMMANDS_MISC_REMOVE.startsWith(args[1])) {
 			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);

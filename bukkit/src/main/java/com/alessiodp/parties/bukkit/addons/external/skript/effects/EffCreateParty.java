@@ -15,6 +15,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@SuppressWarnings("NullableProblems")
 @Name("Create Party")
 @Description("Create a party with the given name and player as leader.")
 @Examples({"create party with name test and leader player"})

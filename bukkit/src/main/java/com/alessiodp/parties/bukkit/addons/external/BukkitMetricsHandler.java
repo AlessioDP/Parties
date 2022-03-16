@@ -4,15 +4,14 @@ import com.alessiodp.core.bukkit.addons.external.bstats.bukkit.Metrics;
 import com.alessiodp.core.bukkit.addons.external.bstats.charts.SimplePie;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.addons.external.MetricsHandler;
-import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigParties;
-import lombok.NonNull;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitMetricsHandler extends MetricsHandler {
-	public BukkitMetricsHandler(@NonNull ADPPlugin plugin) {
+	public BukkitMetricsHandler(@NotNull ADPPlugin plugin) {
 		super(plugin);
 	}
 	
@@ -35,22 +34,9 @@ public class BukkitMetricsHandler extends MetricsHandler {
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new SimplePie("exp_levels", () -> {
-			if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE && BukkitConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
-				switch (CommonUtils.toLowerCase(BukkitConfigMain.ADDITIONAL_EXP_LEVELS_MODE)) {
-					case "normal":
-						return "Normal";
-					case "levelpoints":
-						return "LevelPoints";
-					case "mmocore":
-						return "MMOCore";
-					case "skillapi":
-						return "SkillAPI";
-					default:
-						return "Party";
-					
-				}
-			}
+		metrics.addCustomChart(new SimplePie("experience_system", () -> {
+			if (BukkitConfigMain.ADDITIONAL_EXP_ENABLE)
+				return "Enabled";
 			return "Disabled";
 		}));
 		

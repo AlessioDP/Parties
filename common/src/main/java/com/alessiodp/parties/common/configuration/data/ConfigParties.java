@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.configuration.data;
 
 import com.alessiodp.core.common.addons.external.simpleyaml.configuration.ConfigurationSection;
+import com.alessiodp.core.common.addons.external.simpleyaml.configuration.MemorySection;
 import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -8,7 +9,6 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.parties.objects.PartyColorImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -113,6 +113,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	
 	
 	// Ranks settings
+	@ConfigOption(path = "ranks")
+	public static MemorySection RAW_RANK_LIST;
 	public static Set<PartyRankImpl> RANK_LIST;
 	public static int			RANK_SET_DEFAULT;
 	public static int			RANK_SET_HIGHER;
@@ -136,6 +138,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean		ADDITIONAL_COLOR_COLORCMD;
 	@ConfigOption(path = "additional.color.dynamic-color")
 	public static boolean		ADDITIONAL_COLOR_DYNAMIC;
+	@ConfigOption(path = "additional.color.list-colors")
+	public static MemorySection RAW_ADDITIONAL_COLOR_LIST;
 	public static Set<PartyColorImpl> ADDITIONAL_COLOR_LIST;
 	
 	@ConfigOption(path = "additional.description.enable")
@@ -164,6 +168,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static boolean		ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT;
 	@ConfigOption(path = "additional.friendly-fire.prevent-fish-hook")
 	public static boolean		ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK;
+	@ConfigOption(path = "additional.friendly-fire.prevent-damage-with-magic")
+	public static boolean		ADDITIONAL_FRIENDLYFIRE_PREVENT_DAMAGE_MAGIC;
 	
 	@ConfigOption(path = "additional.home.enable")
 	public static boolean		ADDITIONAL_HOME_ENABLE;
@@ -178,6 +184,16 @@ public abstract class ConfigParties extends ConfigurationFile {
 	
 	@ConfigOption(path = "additional.join.enable")
 	public static boolean		ADDITIONAL_JOIN_ENABLE;
+	@ConfigOption(path = "additional.join.open-close.enable")
+	public static boolean		ADDITIONAL_JOIN_OPENCLOSE_ENABLE;
+	@ConfigOption(path = "additional.join.open-close.hide-opposite-command")
+	public static boolean		ADDITIONAL_JOIN_OPENCLOSE_HIDE_OPPOSITE;
+	@ConfigOption(path = "additional.join.open-close.open-by-default")
+	public static boolean		ADDITIONAL_JOIN_OPENCLOSE_OPEN_BY_DEFAULT;
+	@ConfigOption(path = "additional.join.open-close.cooldown-open")
+	public static int			ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_OPEN;
+	@ConfigOption(path = "additional.join.open-close.cooldown-close")
+	public static int			ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_CLOSE;
 	@ConfigOption(path = "additional.join.password.enable")
 	public static boolean		ADDITIONAL_JOIN_PASSWORD_ENABLE;
 	@ConfigOption(path = "additional.join.password.allowed-characters")
@@ -274,34 +290,31 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public void loadDefaults() {
 		loadDefaultConfigOptions();
 		
-		ArrayList<String> rankPermissions = new ArrayList<>(Arrays.asList(
-				"party.sendmessage",
-				"party.home",
-				"party.desc",
-				"party.motd",
-				"party.claim"
-		));
-		
 		RANK_LIST = new HashSet<>();
-		RANK_LIST.add(new PartyRankImpl(
-				"member", "Member", "&bMember", 5,
-				rankPermissions, true)
-		);
-		rankPermissions = new ArrayList<>(rankPermissions);
-		rankPermissions.addAll(Arrays.asList(
+		PartyRankImpl rankMember = new PartyRankImpl(
+				"member", "Member", "&bMember", 5, 0, null,
+				Arrays.asList(
+						"party.sendmessage",
+						"party.home",
+						"party.desc",
+						"party.motd",
+						"party.claim"
+				), true);
+		PartyRankImpl rankModerator = new PartyRankImpl(
+				"moderator", "Moderator", "&cModerator", 10, 0, rankMember,
+				Arrays.asList(
 						"party.ask.accept",
 						"party.ask.deny",
 						"party.invite",
 						"party.kick"
-		));
-		RANK_LIST.add(new PartyRankImpl(
-				"moderator", "Moderator", "&cModerator", 10,
-				rankPermissions, false)
-		);
-		RANK_LIST.add(new PartyRankImpl(
-				"leader", "Leader", "&4&lLeader", 20,
-				new ArrayList<>(Collections.singleton("*")), false)
-		);
+				), false);
+		PartyRankImpl rankLeader = new PartyRankImpl(
+				"member", "Member", "&bMember", 5, 0, null,
+				Collections.singletonList("*"), true);
+		RANK_LIST.add(rankMember);
+		RANK_LIST.add(rankModerator);
+		RANK_LIST.add(rankLeader);
+		
 		RANK_SET_DEFAULT = 5;
 		RANK_SET_HIGHER = 20;
 		
@@ -321,6 +334,15 @@ public abstract class ConfigParties extends ConfigurationFile {
 		handleColors();
 	}
 	
+	@Override
+	public void save() {
+		// Save custom sections first
+		saveRanks();
+		saveColors();
+		
+		super.save();
+	}
+	
 	private void handleRanks() {
 		Set<PartyRankImpl> ranks = new HashSet<>();
 		PartyRankImpl rank;
@@ -337,10 +359,12 @@ public abstract class ConfigParties extends ConfigurationFile {
 				if (csBlocks.get(key + ".inheritence") != null) {
 					Optional<PartyRankImpl> opt = ranks.stream().filter(r -> r.getConfigName().equals(csBlocks.getString(key + ".inheritence"))).findAny();
 					if (opt.isPresent())
-						rank.setPermissions(new ArrayList<>(opt.get().getPermissions()));
+						rank.setInheritence(opt.get());
 				}
 				rank.getPermissions().addAll(csBlocks.getStringList(key + ".permissions"));
 				rank.setDefault(csBlocks.getBoolean(key + ".default", false));
+				if (!rank.isDefault())
+					rank.setSlot(csBlocks.getInt(key + ".slot", 0));
 				ranks.add(rank);
 				
 				if (rank.isDefault())
@@ -357,7 +381,7 @@ public abstract class ConfigParties extends ConfigurationFile {
 				if (def == null) {
 					// Give error: default rank not found
 					def = lower;
-					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_NODEFAULT);
+					plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_NODEFAULT);
 				}
 				
 				// Save rank list
@@ -366,36 +390,99 @@ public abstract class ConfigParties extends ConfigurationFile {
 				ConfigParties.RANK_SET_HIGHER = higher.getLevel();
 			}  else if (ranks.size() == 1) {
 				// At least 2 ranks needed
-				plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_ONLYONE);
+				plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_ONLYONE);
 			} else {
 				// Give error: no ranks found
-				plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_EMPTY);
+				plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_EMPTY);
 			}
 		} else {
 			// Give error: no ranks node found
-			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_NOTFOUND);
+			plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_RANK_NOTFOUND);
+		}
+	}
+	
+	private void saveRanks() {
+		if (ConfigParties.RAW_RANK_LIST != null) {
+			// Cleanup unused colors
+			for (String rank : ConfigParties.RAW_RANK_LIST.getKeys(false)) {
+				boolean found = false;
+				for (PartyRankImpl partyRank : ((PartiesPlugin) plugin).getRankManager().getRankList()) {
+					if (partyRank.getConfigName().equals(rank)) {
+						found = true;
+						break;
+					}
+				}
+				
+				if (!found) {
+					ConfigParties.RAW_RANK_LIST.remove(rank);
+				}
+			}
+			
+			// Update colors
+			for (PartyRankImpl partyRank : ((PartiesPlugin) plugin).getRankManager().getRankList()) {
+				ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".level", partyRank.getLevel());
+				ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".name", partyRank.getName());
+				ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".chat", partyRank.getChat());
+				if (partyRank.isDefault())
+					ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".default", partyRank.isDefault());
+				if (partyRank.getSlot() > 0)
+					ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".slot", partyRank.getSlot());
+				if (partyRank.getInheritence() != null)
+					ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".inheritence", partyRank.getInheritence().getConfigName());
+				ConfigParties.RAW_RANK_LIST.set(partyRank.getConfigName() + ".permissions", partyRank.getPermissions());
+			}
 		}
 	}
 	
 	private void handleColors() {
 		Set<PartyColorImpl> colors = new HashSet<>();
-		PartyColorImpl color;
 		
-		ConfigurationSection csBlocks = configuration.getConfigurationSection("additional.color.list-colors");
-		if (csBlocks != null) {
-			for (String key : csBlocks.getKeys(false)) {
-				color = new PartyColorImpl(key);
-				color.setCommand(csBlocks.getString(key + ".command", ""));
-				color.setCode(csBlocks.getString(key + ".code", ""));
-				color.setDynamicPriority(csBlocks.getInt(key + ".dynamic.priority", -1));
-				color.setDynamicMembers(csBlocks.getInt(key + ".dynamic.members", -1));
-				color.setDynamicKills(csBlocks.getInt(key + ".dynamic.kills", -1));
+		if (ConfigParties.RAW_ADDITIONAL_COLOR_LIST != null) {
+			for (String key : ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getKeys(false)) {
+				PartyColorImpl color = new PartyColorImpl(key);
+				color.setCommand(ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getString(key + ".command", ""));
+				color.setCode(ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getString(key + ".code", ""));
+				color.setDynamicPriority(ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getInt(key + ".dynamic.priority", -1));
+				color.setDynamicMembers(ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getInt(key + ".dynamic.members", -1));
+				color.setDynamicKills(ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getInt(key + ".dynamic.kills", -1));
 				colors.add(color);
 			}
 			ConfigParties.ADDITIONAL_COLOR_LIST = colors;
 		} else {
-			// Give error: no ranks node found
-			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_COLOR_NOTFOUND);
+			plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_COLOR_NOTFOUND);
+		}
+		ConfigParties.ADDITIONAL_COLOR_LIST.stream().findFirst().get().setDynamicMembers(15);
+	}
+	
+	private void saveColors() {
+		if (ConfigParties.RAW_ADDITIONAL_COLOR_LIST != null) {
+			// Cleanup unused colors
+			for (String color : ConfigParties.RAW_ADDITIONAL_COLOR_LIST.getKeys(false)) {
+				boolean found = false;
+				for (PartyColorImpl partyColor : ((PartiesPlugin) plugin).getColorManager().getColorList()) {
+					if (partyColor.getName().equals(color)) {
+						found = true;
+						break;
+					}
+				}
+				
+				if (!found) {
+					ConfigParties.RAW_ADDITIONAL_COLOR_LIST.remove(color);
+				}
+			}
+			
+			// Update colors
+			for (PartyColorImpl partyColor : ((PartiesPlugin) plugin).getColorManager().getColorList()) {
+				ConfigParties.RAW_ADDITIONAL_COLOR_LIST.set(partyColor.getName() + ".command", partyColor.getCommand());
+				ConfigParties.RAW_ADDITIONAL_COLOR_LIST.set(partyColor.getName() + ".code", partyColor.getCode());
+				if (partyColor.getDynamicPriority() > 0
+						&& partyColor.getDynamicKills() > 0
+						&& partyColor.getDynamicMembers() > 0) {
+					ConfigParties.RAW_ADDITIONAL_COLOR_LIST.set(partyColor.getName() + ".dynamic.priority", partyColor.getDynamicPriority());
+					ConfigParties.RAW_ADDITIONAL_COLOR_LIST.set(partyColor.getName() + ".dynamic.kills", partyColor.getDynamicKills());
+					ConfigParties.RAW_ADDITIONAL_COLOR_LIST.set(partyColor.getName() + ".dynamic.members", partyColor.getDynamicMembers());
+				}
+			}
 		}
 	}
 }

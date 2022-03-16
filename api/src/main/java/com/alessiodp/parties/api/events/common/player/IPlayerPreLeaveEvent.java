@@ -12,32 +12,29 @@ public interface IPlayerPreLeaveEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player that is leaveing the party
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	PartyPlayer getPartyPlayer();
+	@NotNull PartyPlayer getPartyPlayer();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the leave cause
 	 *
-	 * @return Returns the {@code LeaveCause} of the event
+	 * @return the {@code LeaveCause} of the event
 	 */
-	@NotNull
-	LeaveCause getCause();
+	@NotNull LeaveCause getCause();
 	
 	/**
 	 * Has the player been kicked?
 	 *
-	 * @return Returns {@code true} if the player has been kicked
-	 * @deprecated Use getCause()
+	 * @return {@code true} if the player has been kicked
+	 * @deprecated use getCause() instead
 	 */
 	@Deprecated
 	default boolean isKicked() {
@@ -47,8 +44,7 @@ public interface IPlayerPreLeaveEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the kicker
 	 *
-	 * @return Returns the {@link PartyPlayer} that has kicked the player, returns {@code null} if {@link #isKicked()} returns {@code false}
+	 * @return the {@link PartyPlayer} that has kicked the player, returns {@code null} if {@link #isKicked()} returns {@code false}
 	 */
-	@Nullable
-	PartyPlayer getKicker();
+	@Nullable PartyPlayer getKicker();
 }

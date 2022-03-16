@@ -8,112 +8,112 @@ public interface PartyHome {
 	/**
 	 * Gets the name of the home
 	 *
-	 * @return Returns the name
+	 * @return the name
 	 */
 	@Nullable String getName();
 	
 	/**
 	 * Set the name
 	 *
-	 * @param name The name to set
+	 * @param name the name to set
 	 */
 	void setName(String name);
 	
 	/**
 	 * Gets the world name of the location
 	 *
-	 * @return Returns the world name
+	 * @return the world name
 	 */
 	@NotNull String getWorld();
 	
 	/**
 	 * Set the world name
 	 *
-	 * @param world The world name to set
+	 * @param world the world name to set
 	 */
 	void setWorld(String world);
 	
 	/**
 	 * Get the x-coordinate of the location
 	 *
-	 * @return Returns the x-coordinate
+	 * @return the x-coordinate
 	 */
 	double getX();
 	
 	/**
 	 * Set the x-coordinate
 	 *
-	 * @param x The x-coordinate to set
+	 * @param x the x-coordinate to set
 	 */
 	void setX(double x);
 	
 	/**
 	 * Get the y-coordinate of the location
 	 *
-	 * @return Returns the y-coordinate
+	 * @return the y-coordinate
 	 */
 	double getY();
 	
 	/**
 	 * Set the y-coordinate
 	 *
-	 * @param y The y-coordinate to set
+	 * @param y the y-coordinate to set
 	 */
 	void setY(double y);
 	
 	/**
 	 * Get the z-coordinate of the location
 	 *
-	 * @return Returns the z-coordinate
+	 * @return the z-coordinate
 	 */
 	double getZ();
 	
 	/**
 	 * Set the z-coordinate
 	 *
-	 * @param z The z-coordinate to set
+	 * @param z the z-coordinate to set
 	 */
 	void setZ(double z);
 	
 	/**
 	 * Get the yaw of the location
 	 *
-	 * @return Returns the yaw
+	 * @return the yaw
 	 */
 	float getYaw();
 	
 	/**
 	 * Set the yaw
 	 *
-	 * @param yaw The yaw to set
+	 * @param yaw the yaw to set
 	 */
 	void setYaw(float yaw);
 	
 	/**
 	 * Get the pitch of the location
 	 *
-	 * @return Returns the pitch
+	 * @return the pitch
 	 */
 	float getPitch();
 	
 	/**
 	 * Set the pitch
 	 *
-	 * @param pitch The pitch to set
+	 * @param pitch the pitch to set
 	 */
 	void setPitch(float pitch);
 	
 	/**
 	 * Get the BungeeCord server of the location
 	 *
-	 * @return Returns the server
+	 * @return the server
 	 */
 	@Nullable String getServer();
 	
 	/**
 	 * Set the BungeeCord server
 	 *
-	 * @param server The server to set
+	 * @param server the server to set
 	 */
 	void setServer(String server);
 }

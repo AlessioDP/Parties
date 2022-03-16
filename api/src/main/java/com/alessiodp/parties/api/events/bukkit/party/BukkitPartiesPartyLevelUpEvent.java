@@ -15,9 +15,8 @@ public class BukkitPartiesPartyLevelUpEvent extends BukkitPartiesEvent implement
 		this.newLevel = newLevel;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	

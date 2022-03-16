@@ -6,19 +6,20 @@ import com.alessiodp.core.common.configuration.ConfigurationManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
+import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-
-import java.util.ArrayList;
 
 public abstract class PartiesConfigurationManager extends ConfigurationManager {
 	
 	public PartiesConfigurationManager(ADPPlugin plugin) {
 		super(plugin);
+	}
+	
+	@Override
+	protected boolean isAutoUpgradeEnabled() {
+		return ConfigMain.PARTIES_AUTOMATIC_UPGRADE_CONFIGS;
 	}
 	
 	@Override
@@ -52,76 +53,55 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		throw new IllegalStateException("No Messages configuration file found");
 	}
 	
-	public byte[] makeConfigsPacket() {
-		ByteArrayDataOutput output = ByteStreams.newDataOutput();
-		
-		// Storage check
-		output.writeUTF(ConfigMain.STORAGE_TYPE_DATABASE);
-		
-		// Experience
-		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE);
-		output.writeUTF(ConfigMain.ADDITIONAL_EXP_LEVELS_MODE);
-		output.writeDouble(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START);
-		output.writeUTF(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP);
-		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION);
-		output.writeBoolean(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT);
-		output.writeInt(ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.size());
-		for (Object db : ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST) {
-			double val;
-			if (db instanceof Integer)
-				val = ((Integer) db).doubleValue();
-			else
-				val = (double) db;
-			output.writeDouble(val);
-		}
-		
-		// Friendly fire
-		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE);
-		output.writeUTF(ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE);
-		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT);
-		output.writeBoolean(ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK);
-		
-		// Kills
-		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_ENABLE);
-		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL);
-		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE);
-		output.writeBoolean(ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS);
-		
-		return output.toByteArray();
+	public PartiesPacket.ConfigData makePacketConfigData() {
+		return new PartiesPacket.ConfigData(
+				ConfigMain.STORAGE_TYPE_DATABASE,
+				ConfigMain.ADDITIONAL_EXP_ENABLE,
+				ConfigMain.ADDITIONAL_EXP_EARN_FROM_MOBS,
+				ConfigMain.ADDITIONAL_EXP_MODE,
+				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START,
+				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP,
+				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION,
+				ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT,
+				ConfigMain.ADDITIONAL_EXP_FIXED_LIST,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK,
+				ConfigParties.ADDITIONAL_KILLS_ENABLE,
+				ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL,
+				ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE,
+				ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS
+		);
 	}
 	
-	public void parseConfigsPacket(byte[] raw) {
-		ByteArrayDataInput input = ByteStreams.newDataInput(raw);
-		
+	public void parsePacketConfigData(PartiesPacket.ConfigData configData) {
 		// Storage check
-		String storage = input.readUTF();
+		String storage = configData.getStorageTypeDatabase();
 		if (!storage.equalsIgnoreCase(ConfigMain.STORAGE_TYPE_DATABASE))
 			plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_SYNC_DIFFERENT_STORAGE, storage, ConfigMain.STORAGE_TYPE_DATABASE), true);
 		
 		// Experience
-		ConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE = input.readBoolean();
-		ConfigMain.ADDITIONAL_EXP_LEVELS_MODE = input.readUTF();
-		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START = input.readDouble();
-		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP = input.readUTF();
-		ConfigMain.ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION = input.readBoolean();
-		ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_REPEAT = input.readBoolean();
-		ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST = new ArrayList<>();
-		int fixedSize = input.readInt();
-		for (int c = 0; c < fixedSize; c++) {
-			ConfigMain.ADDITIONAL_EXP_LEVELS_FIXED_LIST.add(input.readDouble());
-		}
+		ConfigMain.ADDITIONAL_EXP_ENABLE = configData.isAdditionalExpEnable();
+		ConfigMain.ADDITIONAL_EXP_EARN_FROM_MOBS = configData.isAdditionalExpEarnFromMobs();
+		ConfigMain.ADDITIONAL_EXP_MODE = configData.getAdditionalExpMode();
+		ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START = configData.getAdditionalExpProgressiveStart();
+		ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP = configData.getAdditionalExpProgressiveLevelExp();
+		ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION = configData.isAdditionalExpProgressiveSafeCalculation();
+		ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT = configData.isAdditionalExpFixedRepeat();
+		ConfigMain.ADDITIONAL_EXP_FIXED_LIST = configData.getAdditionalExpFixedList();
 		
 		// Friendly fire
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = input.readBoolean();
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = input.readUTF();
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = input.readBoolean();
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK = input.readBoolean();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = configData.isAdditionalFriendlyFireEnable();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = configData.getAdditionalFriendlyFireType();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = configData.isAdditionalFriendlyFireWarnOnFight();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK = configData.isAdditionalFriendlyFirePreventFishHook();
 		
 		// Kills
-		ConfigParties.ADDITIONAL_KILLS_ENABLE = input.readBoolean();
-		ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL = input.readBoolean();
-		ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE = input.readBoolean();
-		ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS = input.readBoolean();
+		ConfigParties.ADDITIONAL_KILLS_ENABLE = configData.isAdditionalKillsEnable();
+		ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL = configData.isAdditionalKillsMobNeutral();
+		ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE = configData.isAdditionalKillsMobHostile();
+		ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS = configData.isAdditionalKillsMobPlayers();
 		
 		((PartiesPlugin) plugin).getExpManager().reloadAll(); // Reload ExpManager
 	}

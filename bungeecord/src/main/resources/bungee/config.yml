@@ -32,9 +32,15 @@ parties:
   # Useful to debug problems related to the plugin
   debug-command: true
 
+  # Automatic upgrade configs if outdated, otherwise just alert
+  automatic-upgrade-configs: false
+
   # [BungeeCord settings]
   # Some tweaks for BungeeCord
   bungeecord:
+    # Support for RedisBungee plugin
+    redis-support: false
+
     # Experts only!
     # The plugin need to keep data in sync with Bukkit Parties
     # You can disable it to increase performances a bit
@@ -46,9 +52,10 @@ parties:
       player-sync: true
       party-sync: true
       config-sync: true
+      debug-bungeecord: true
       chat: true
+      broadcast: true
       sounds: true
-
 
 
 # / =============================== \
@@ -97,6 +104,9 @@ storage:
       # Property used to alert when the connection is not using a valid SSL certificate
       use-ssl: false
       charset: 'utf8'
+      # Additional parameters for connections (jdbc:....?thisIsA=Parameter)
+      # Only for MariaDB/MySQL, syntax: '?pameter1=value1&parameter2=value2'
+      additional-parameters: ''
 
 
 # / =============================== \
@@ -117,45 +127,43 @@ additional:
     regex-whitelist: '^(\/server|\/anothercommand).*'
 
   # [Exp system]
-  # Full documentation here: https://alessiodp.com/docs/parties/explevels/
-  # You can setup a level system for parties or decide how to handle dropped mob exp
+  # Full documentation here: https://alessiodp.com/docs/parties/explevels
   exp-system:
     enable: false
-    levels:
-      enable: true
-      # Modes: progressive, fixed
-      mode: progressive
+    # Modes: progressive, fixed
+    mode: progressive
+    # Get experience from dead vanilla mobs (you need to install Parties in Spigot servers)
+    earn-exp-from-mobs: false
 
-      # [Progressive mode]
-      # Make infinite levels with a progressive multiplier
-      progressive:
-        # Level 1: 50, Level 2: 100, Level 3: 200, Level 4: 400
-        # Special tags:
-        # => %previous%: Previous level experience
-        start-level-experience: 50
-        level-experience: "%previous% * 2"
-        # This is a special option that prevents loops in calculation
-        # Set this on false if you know what you are doing
-        safe-calculation: true
+    # [Progressive mode]
+    # Make infinite levels with a progressive multiplier
+    progressive:
+      # Level 1: 50, Level 2: 100, Level 3: 200, Level 4: 400
+      # Special tags:
+      # => %previous%: Previous level experience
+      start-level-experience: 50
+      level-experience: "%previous% * 2"
+      # This is a special option that prevents loops in calculation
+      # Set this on false if you know what you are doing
+      safe-calculation: true
 
-      # [Fixed mode]
-      # Make a complete list of finite party levels
-      # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
-      #
-      # repeat-last-one =>  Should the last one end the number of levels?
-      #                     If on true, the number of levels will be infinite
-      #                     Otherwise the party will reach that level as maximum
-      fixed:
-        repeat-last-one: true
-        list:
-          - 50
-          - 100
-          - 200
-          - 350
-          - 650
-          - 900
-    # [Exp dropping]
-    # Exp dropping is handled by Parties in Bukkit/Spigot server
+    # [Fixed mode]
+    # Make a complete list of finite party levels
+    # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
+    #
+    # repeat-last-one =>  Should the last one end the number of levels?
+    #                     If on true, the number of levels will be infinite
+    #                     Otherwise the party will reach that level as maximum
+    fixed:
+      repeat-last-one: true
+      list:
+        - 50
+        - 100
+        - 200
+        - 350
+        - 650
+        - 900
+
 
   # [Follow system]
   # When the party leader joins a server, the entire party will follow him
@@ -227,6 +235,7 @@ commands:
     ask: 'ask'
     chat: 'chat'
     claim: 'claim'
+    close: 'close'
     color: 'color'
     create: 'create'
     createfixed: 'createfixed'
@@ -246,6 +255,7 @@ commands:
     motd: 'motd'
     mute: 'mute'
     nickname: 'nickname'
+    open: 'open'
     password: 'password'
     protection: 'protection'
     rank: 'rank'
@@ -284,6 +294,8 @@ commands:
   - tag
   - desc
   - motd
+  - open
+  - close
   - nickname
   - protection
   - follow

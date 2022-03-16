@@ -6,8 +6,10 @@ import com.alessiodp.core.bukkit.addons.internal.title.BukkitTitleHandler;
 import com.alessiodp.core.bukkit.scheduling.ADPBukkitScheduler;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.parties.api.interfaces.PartiesOptions;
 import com.alessiodp.parties.bukkit.addons.BukkitPartiesAddonManager;
 import com.alessiodp.parties.bukkit.addons.external.BukkitMetricsHandler;
+import com.alessiodp.parties.bukkit.api.BukkitPartiesOptionsHandler;
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.bukkit.commands.BukkitPartiesCommandManager;
 import com.alessiodp.parties.bukkit.configuration.BukkitPartiesConfigurationManager;
@@ -16,7 +18,6 @@ import com.alessiodp.parties.bukkit.listeners.BukkitExpListener;
 import com.alessiodp.parties.bukkit.listeners.BukkitFightListener;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessenger;
 import com.alessiodp.parties.bukkit.parties.BukkitPartyManager;
-import com.alessiodp.parties.bukkit.parties.BukkitExpManager;
 import com.alessiodp.parties.bukkit.players.BukkitPlayerManager;
 import com.alessiodp.parties.bukkit.utils.BukkitEconomyManager;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -61,7 +62,6 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	protected void postHandle() {
 		addonManager = new BukkitPartiesAddonManager(this);
 		economyManager = new BukkitEconomyManager(this);
-		expManager = new BukkitExpManager(this);
 		eventManager = new BukkitEventManager(this);
 		
 		super.postHandle();
@@ -77,14 +77,14 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	@Override
 	protected  void initializeJsonHandler() {
 		if (((BukkitPartiesBootstrap) getBootstrap()).isSpigot())
-			jsonHandler = new SpigotJsonHandler();
+			jsonHandler = new SpigotJsonHandler(this);
 		else
-			jsonHandler = new BukkitJsonHandler();
+			jsonHandler = new BukkitJsonHandler(this);
 	}
 	
 	@Override
 	protected  void initializeTitleHandler() {
-		titleHandler = new BukkitTitleHandler();
+		titleHandler = new BukkitTitleHandler(this);
 	}
 	
 	@Override
@@ -105,6 +105,11 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
 			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
 		}
+	}
+	
+	@Override
+	protected PartiesOptions initApiOptions() {
+		return new BukkitPartiesOptionsHandler();
 	}
 	
 	@Override

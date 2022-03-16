@@ -8,16 +8,14 @@ public interface IPartyLevelUpEvent extends PartiesEvent {
 	/**
 	 * Get the party that leveled up
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the new party level
 	 *
-	 * @return Returns the new level of the party
+	 * @return the new level of the party
 	 */
 	int getNewLevel();
-	
 }

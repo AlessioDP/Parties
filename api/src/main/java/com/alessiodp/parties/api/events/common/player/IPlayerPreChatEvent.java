@@ -10,32 +10,42 @@ public interface IPlayerPreChatEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player who sent the message
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	PartyPlayer getPartyPlayer();
+	@NotNull PartyPlayer getPartyPlayer();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
+	
+	/**
+	 * Get the formatted message of the player
+	 *
+	 * @return the formatted message
+	 */
+	@NotNull String getFormattedMessage();
+	
+	/**
+	 * Set the formatted message of the player. This message should contain %message% placeholder
+	 *
+	 * @param formattedMessage the formatted message to set
+	 */
+	void setFormattedMessage(String formattedMessage);
 	
 	/**
 	 * Get the message of the player
 	 *
-	 * @return Returns the message
+	 * @return the message
 	 */
-	@NotNull
-	String getMessage();
+	@NotNull String getMessage();
 	
 	/**
 	 * Set the message of the player
 	 *
-	 * @param message The
-	 *                message to set
+	 * @param message the message to set
 	 */
 	void setMessage(String message);
 }

@@ -4,15 +4,14 @@ import com.alessiodp.core.bungeecord.addons.external.bstats.bungeecord.Metrics;
 import com.alessiodp.core.bungeecord.addons.external.bstats.charts.SimplePie;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.addons.external.MetricsHandler;
-import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
-import lombok.NonNull;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeeMetricsHandler extends MetricsHandler {
-	public BungeeMetricsHandler(@NonNull ADPPlugin plugin) {
+	public BungeeMetricsHandler(@NotNull ADPPlugin plugin) {
 		super(plugin);
 	}
 	
@@ -35,22 +34,9 @@ public class BungeeMetricsHandler extends MetricsHandler {
 			return "Disabled";
 		}));
 		
-		metrics.addCustomChart(new SimplePie("exp_levels", () -> {
-			if (BungeeConfigMain.ADDITIONAL_EXP_ENABLE && BungeeConfigMain.ADDITIONAL_EXP_LEVELS_ENABLE) {
-				switch (CommonUtils.toLowerCase(BungeeConfigMain.ADDITIONAL_EXP_LEVELS_MODE)) {
-					case "normal":
-						return "Normal";
-					case "levelpoints":
-						return "LevelPoints";
-					case "mmocore":
-						return "MMOCore";
-					case "skillapi":
-						return "SkillAPI";
-					default:
-						return "Party";
-					
-				}
-			}
+		metrics.addCustomChart(new SimplePie("experience_system", () -> {
+			if (BungeeConfigMain.ADDITIONAL_EXP_ENABLE)
+				return "Enabled";
 			return "Disabled";
 		}));
 		

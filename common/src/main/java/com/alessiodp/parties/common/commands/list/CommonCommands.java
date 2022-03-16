@@ -25,6 +25,7 @@ public enum CommonCommands implements ADPCommand {
 	TAG,
 	VERSION,
 	
+	CLOSE,
 	COLOR,
 	CREATEFIXED,
 	DEBUG,
@@ -36,6 +37,7 @@ public enum CommonCommands implements ADPCommand {
 	MOTD,
 	MUTE,
 	NICKNAME,
+	OPEN,
 	PASSWORD,
 	PROTECTION,
 	SETHOME,

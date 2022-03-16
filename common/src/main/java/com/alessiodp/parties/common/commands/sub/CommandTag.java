@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -17,6 +16,8 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,32 +53,36 @@ public class CommandTag extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFull(commandData, null);
-	}
-	
-	@Override
-	public String getSyntaxForUser(User user) {
+	public @NotNull String getSyntaxForUser(User user) {
 		if (user.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
 			return syntaxOthers;
 		return syntax;
 	}
 	
 	@Override
-	public String getConsoleSyntax() {
+	public @NotNull String getConsoleSyntax() {
 		return syntaxOthers;
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		boolean ret = handlePreRequisitesFull(commandData, null);
+		if (ret) {
+			commandData.addPermission(PartiesPermission.ADMIN_TAG_OTHERS);
+		}
+		return ret;
+	}
+	
+	@Override
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		PartyImpl party;
 		
 		// Command handling
 		String tag = null;
-		if (commandData.getArgs().length == 3 && sender.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS)) {
-			party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
+		if (commandData.getArgs().length == 3 && commandData.havePermission(PartiesPermission.ADMIN_TAG_OTHERS)) {
+			party = getPlugin().getPartyManager().getParty(commandData.getArgs()[1]);
 			if (party != null) {
 				if (!commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 					tag = commandData.getArgs()[2];
@@ -88,14 +93,14 @@ public class CommandTag extends PartiesSubCommand {
 				return;
 			}
 		} else if (commandData.getArgs().length == 2) {
-			party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
+			party = getPlugin().getPartyManager().getParty(partyPlayer.getPartyId());
 			
 			if (party == null) {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 				return;
 			}
 			
-			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_EDIT_TAG)) {
+			if (!getPlugin().getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.EDIT_TAG)) {
 				return;
 			}
 			
@@ -123,13 +128,13 @@ public class CommandTag extends PartiesSubCommand {
 		
 		if (tag != null
 				&& ConfigParties.ADDITIONAL_TAG_MUST_BE_UNIQUE
-				&& ((PartiesPlugin) plugin).getPartyManager().existsTag(tag)) {
+				&& getPlugin().getPartyManager().existsTag(tag)) {
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_TAG_ALREADY_USED.replace("%tag%", tag));
 			return;
 		}
 		
-		if (!sender.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS)
-				&& ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.TAG, partyPlayer, commandData.getCommandLabel(), commandData.getArgs())) {
+		if (!commandData.havePermission(PartiesPermission.ADMIN_TAG_OTHERS)
+				&& getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.TAG, partyPlayer, commandData.getCommandLabel(), commandData.getArgs())) {
 			return;
 		}
 		
@@ -151,7 +156,7 @@ public class CommandTag extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
 			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);

@@ -5,11 +5,14 @@ import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostBroadcastEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreBroadcastEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
@@ -29,13 +32,13 @@ import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.events.PartiesEvent;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public abstract class EventManager {
-	@NonNull protected final PartiesPlugin plugin;
-	@NonNull protected final EventDispatcher eventDispatcher;
+	@NotNull protected final PartiesPlugin plugin;
+	@NotNull protected final EventDispatcher eventDispatcher;
 	
 	public final void callEvent(PartiesEvent event) {
 		event.setApi(plugin.getApi());
@@ -53,8 +56,11 @@ public abstract class EventManager {
 	
 	public abstract IPartyGetExperienceEvent preparePartyGetExperienceEvent(Party party, double experience, PartyPlayer killer);
 	
-	public abstract IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String message);
-	public abstract IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String message);
+	public abstract IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String formattedMessage, String message);
+	public abstract IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String formattedMessage, String message);
+	
+	public abstract IPartyPreBroadcastEvent preparePartyPreBroadcastEvent(Party party, String message, PartyPlayer player);
+	public abstract IPartyPostBroadcastEvent preparePartyPostBroadcastEvent(Party party, String message, PartyPlayer player);
 	
 	public abstract IPlayerPreJoinEvent preparePlayerPreJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter);
 	public abstract IPlayerPostJoinEvent preparePlayerPostJoinEvent(PartyPlayer player, Party party, JoinCause cause, PartyPlayer inviter);
@@ -71,5 +77,6 @@ public abstract class EventManager {
 	public abstract IPlayerPreTeleportEvent preparePlayerPreTeleportEvent(PartyPlayer player, Party party, Object destination);
 	public abstract IPlayerPostTeleportEvent preparePlayerPostTeleportEvent(PartyPlayer player, Party party, Object destination);
 	
+	public abstract IPartyPreExperienceDropEvent preparePreExperienceDropEvent(Party party, PartyPlayer player, Object killedEntity, double experience);
 	public abstract IPartyLevelUpEvent prepareLevelUpEvent(Party party, int newLevel);
 }

@@ -274,8 +274,12 @@ public abstract class Messages extends ConfigurationFile {
 	public static String MAINCMD_RANK_LOWRANK;
 	@ConfigOption(path = "main-commands.rank.to-higher-rank")
 	public static String MAINCMD_RANK_TOHIGHERRANK;
+	@ConfigOption(path = "main-commands.rank.full")
+	public static String MAINCMD_RANK_FULL;
 	@ConfigOption(path = "main-commands.rank.fixed-leader")
 	public static String MAINCMD_RANK_FIXEDLEADER;
+	@ConfigOption(path = "main-commands.rank.demote-leader")
+	public static String MAINCMD_RANK_DEMOTELEADER;
 	@ConfigOption(path = "main-commands.rank.changing-yourself")
 	public static String MAINCMD_RANK_CHANGINGYOURSELF;
 	@ConfigOption(path = "main-commands.rank.player-not-in-party")
@@ -337,8 +341,17 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_COLOR_REMOVED;
 	@ConfigOption(path = "additional-commands.color.broadcast")
 	public static String ADDCMD_COLOR_BROADCAST;
+	@ConfigOption(path = "additional-commands.color.available-colors.color")
+	public static String ADDCMD_COLOR_AVAILABLE_COLORS_COLOR;
+	@ConfigOption(path = "additional-commands.color.available-colors.separator")
+	public static String ADDCMD_COLOR_AVAILABLE_COLORS_SEPARATOR;
 	@ConfigOption(path = "additional-commands.color.wrong-color")
 	public static String ADDCMD_COLOR_WRONGCOLOR;
+	
+	@ConfigOption(path = "additional-commands.debug.bungeecord.sync")
+	public static String ADDCMD_DEBUG_BUNGEECORD_SYNC;
+	@ConfigOption(path = "additional-commands.debug.bungeecord.not-sync")
+	public static String ADDCMD_DEBUG_BUNGEECORD_NOT_SYNC;
 	
 	@ConfigOption(path = "additional-commands.debug.config.header")
 	public static String ADDCMD_DEBUG_CONFIG_HEADER;
@@ -353,10 +366,10 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_DEBUG_EXP_HEADER;
 	@ConfigOption(path = "additional-commands.debug.exp.text")
 	public static List<String> ADDCMD_DEBUG_EXP_TEXT;
-	@ConfigOption(path = "additional-commands.debug.exp.level-options.progressive")
-	public static String ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_PROGRESSIVE;
-	@ConfigOption(path = "additional-commands.debug.exp.level-options.fixed")
-	public static String ADDCMD_DEBUG_EXP_LEVEL_OPTIONS_FIXED;
+	@ConfigOption(path = "additional-commands.debug.exp.mode-options.progressive")
+	public static String ADDCMD_DEBUG_EXP_MODE_OPTIONS_PROGRESSIVE;
+	@ConfigOption(path = "additional-commands.debug.exp.mode-options.fixed")
+	public static String ADDCMD_DEBUG_EXP_MODE_OPTIONS_FIXED;
 	
 	@ConfigOption(path = "additional-commands.debug.party.header")
 	public static String ADDCMD_DEBUG_PARTY_HEADER;
@@ -381,10 +394,10 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "additional-commands.desc.censored")
 	public static String ADDCMD_DESC_CENSORED;
 	
-	@ConfigOption(path = "additional-commands.exp.party.gained")
-	public static String ADDCMD_EXP_PARTY_GAINED;
-	@ConfigOption(path = "additional-commands.exp.level.level-up")
-	public static String ADDCMD_EXP_PARTY_LEVEL_LEVEL_UP;
+	@ConfigOption(path = "additional-commands.exp.gained-experience")
+	public static String ADDCMD_EXP_PARTY_GAINED_EXPERIENCE;
+	@ConfigOption(path = "additional-commands.exp.level-up")
+	public static String ADDCMD_EXP_PARTY_LEVEL_UP;
 	
 	@ConfigOption(path = "additional-commands.follow.toggle-on")
 	public static String ADDCMD_FOLLOW_ON;
@@ -416,8 +429,20 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_JOIN_JOINED;
 	@ConfigOption(path = "additional-commands.join.player-joined")
 	public static String ADDCMD_JOIN_PLAYERJOINED;
-	@ConfigOption(path = "additional-commands.join.wrong-password")
-	public static String ADDCMD_JOIN_WRONGPASSWORD;
+	@ConfigOption(path = "additional-commands.join.open-close.opened")
+	public static String ADDCMD_JOIN_OPENCLOSE_OPENED;
+	@ConfigOption(path = "additional-commands.join.open-close.closed")
+	public static String ADDCMD_JOIN_OPENCLOSE_CLOSED;
+	@ConfigOption(path = "additional-commands.join.open-close.already-open")
+	public static String ADDCMD_JOIN_OPENCLOSE_ALREADY_OPEN;
+	@ConfigOption(path = "additional-commands.join.open-close.already-closed")
+	public static String ADDCMD_JOIN_OPENCLOSE_ALREADY_CLOSED;
+	@ConfigOption(path = "additional-commands.join.open-close.cooldown")
+	public static String ADDCMD_JOIN_OPENCLOSE_COOLDOWN;
+	@ConfigOption(path = "additional-commands.join.open-close.cannot-join")
+	public static String ADDCMD_JOIN_OPENCLOSE_CANNOT_JOIN;
+	@ConfigOption(path = "additional-commands.join.password.wrong-password")
+	public static String ADDCMD_JOIN_PASSWORD_WRONGPASSWORD;
 	
 	@ConfigOption(path = "additional-commands.list.header")
 	public static String ADDCMD_LIST_HEADER;
@@ -633,6 +658,8 @@ public abstract class Messages extends ConfigurationFile {
 	
 	@ConfigOption(path = "help.additional.commands.ask")
 	public static String HELP_ADDITIONAL_COMMANDS_ASK;
+	@ConfigOption(path = "help.additional.commands.close")
+	public static String HELP_ADDITIONAL_COMMANDS_CLOSE;
 	@ConfigOption(path = "help.additional.commands.color")
 	public static String HELP_ADDITIONAL_COMMANDS_COLOR;
 	@ConfigOption(path = "help.additional.commands.createfixed")
@@ -655,6 +682,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_COMMANDS_MUTE;
 	@ConfigOption(path = "help.additional.commands.nickname")
 	public static String HELP_ADDITIONAL_COMMANDS_NICKNAME;
+	@ConfigOption(path = "help.additional.commands.open")
+	public static String HELP_ADDITIONAL_COMMANDS_OPEN;
 	@ConfigOption(path = "help.additional.commands.password")
 	public static String HELP_ADDITIONAL_COMMANDS_PASSWORD;
 	@ConfigOption(path = "help.additional.commands.protection")
@@ -668,6 +697,8 @@ public abstract class Messages extends ConfigurationFile {
 	
 	@ConfigOption(path = "help.additional.descriptions.ask")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_ASK;
+	@ConfigOption(path = "help.additional.descriptions.close")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_CLOSE;
 	@ConfigOption(path = "help.additional.descriptions.color")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_COLOR;
 	@ConfigOption(path = "help.additional.descriptions.createfixed")
@@ -690,6 +721,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_MUTE;
 	@ConfigOption(path = "help.additional.descriptions.nickname")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_NICKNAME;
+	@ConfigOption(path = "help.additional.descriptions.open")
+	public static String HELP_ADDITIONAL_DESCRIPTIONS_OPEN;
 	@ConfigOption(path = "help.additional.descriptions.password")
 	public static String HELP_ADDITIONAL_DESCRIPTIONS_PASSWORD;
 	@ConfigOption(path = "help.additional.descriptions.protection")

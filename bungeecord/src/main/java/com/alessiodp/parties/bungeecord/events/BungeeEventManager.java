@@ -5,11 +5,14 @@ import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyLevelUpEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostBroadcastEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPostRenameEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreBroadcastEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.bungee.party.BungeePartiesPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostChatEvent;
 import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPostHomeEvent;
@@ -26,11 +29,14 @@ import com.alessiodp.parties.api.events.bungee.player.BungeePartiesPlayerPreTele
 import com.alessiodp.parties.api.events.bungee.unique.BungeePartiesPartyFollowEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostBroadcastEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreBroadcastEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
@@ -94,13 +100,23 @@ public class BungeeEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String message) {
-		return new BungeePartiesPlayerPreChatEvent(player, party, message);
+	public IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String formattedMessage, String message) {
+		return new BungeePartiesPlayerPreChatEvent(player, party, formattedMessage, message);
 	}
 	
 	@Override
-	public IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String message) {
-		return new BungeePartiesPlayerPostChatEvent(player, party, message);
+	public IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String formattedMessage, String message) {
+		return new BungeePartiesPlayerPostChatEvent(player, party, formattedMessage, message);
+	}
+	
+	@Override
+	public IPartyPreBroadcastEvent preparePartyPreBroadcastEvent(Party party, String message, PartyPlayer player) {
+		return new BungeePartiesPartyPreBroadcastEvent(party, message, player);
+	}
+	
+	@Override
+	public IPartyPostBroadcastEvent preparePartyPostBroadcastEvent(Party party, String message, PartyPlayer player) {
+		return new BungeePartiesPartyPostBroadcastEvent(party, message, player);
 	}
 	
 	@Override
@@ -151,6 +167,11 @@ public class BungeeEventManager extends EventManager {
 	@Override
 	public IPlayerPostTeleportEvent preparePlayerPostTeleportEvent(PartyPlayer player, Party party, Object destination) {
 		return new BungeePartiesPlayerPostTeleportEvent(player, party, (ServerInfo) destination);
+	}
+	
+	@Override
+	public IPartyPreExperienceDropEvent preparePreExperienceDropEvent(Party party, PartyPlayer player, Object killedEntity, double experience) {
+		return new BungeePartiesPartyPreExperienceDropEvent(party, player, killedEntity, experience);
 	}
 	
 	@Override

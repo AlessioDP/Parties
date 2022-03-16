@@ -71,11 +71,11 @@ public class FileDispatcherTest {
 		doAnswer((args) -> {
 			System.out.println((String) args.getArgument(0));
 			return null;
-		}).when(mockLoggerManager).printError(anyString());
+		}).when(mockLoggerManager).logError(anyString());
 		doAnswer((args) -> {
 			((Exception) args.getArgument(1)).printStackTrace();
 			return null;
-		}).when(mockLoggerManager).printErrorStacktrace(any(), any());
+		}).when(mockLoggerManager).logError(any(), any());
 		
 		// Mock names
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
@@ -98,7 +98,6 @@ public class FileDispatcherTest {
 		assertFalse(ret.isFailed());
 		return ret;
 	}
-	
 	
 	@Test
 	public void testPlayer() {
@@ -227,8 +226,10 @@ public class FileDispatcherTest {
 	
 	private void listPartiesNumber(PartiesYAMLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
-		
 		assertEquals(7, dispatcher.getListPartiesNumber());
+		
+		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.emptyList();
+		assertEquals(8, dispatcher.getListPartiesNumber());
 	}
 	
 	private void listPartiesByName(PartiesYAMLDispatcher dispatcher) {
@@ -273,6 +274,50 @@ public class FileDispatcherTest {
 		assertEquals("test5", list.get(1).getName());
 		assertEquals("test8", list.get(6).getName());
 		
+	}
+	
+	@Test
+	public void testCountPlayersInParty() {
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
+		countPlayersInParty(dispatcher);
+		dispatcher.stop();
+	}
+	
+	private void countPlayersInParty(PartiesYAMLDispatcher dispatcher) {
+		PartyPlayerImpl player = initializePlayer(UUID.randomUUID());
+		player.setAccessible(true);
+		player.setPartyId(UUID.randomUUID());
+		player.setAccessible(false);
+		
+		assertEquals(dispatcher.getListPlayersInPartyNumber(), 0);
+		
+		dispatcher.updatePlayer(player);
+		
+		assertEquals(dispatcher.getListPlayersInPartyNumber(), 1);
+	}
+	
+	@Test
+	public void testCountParties() {
+		PartiesYAMLDispatcher dispatcher = getFileDispatcher();
+		countParties(dispatcher);
+		dispatcher.stop();
+	}
+	
+	private void countParties(PartiesYAMLDispatcher dispatcher) {
+		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.emptyList();
+		
+		PartyImpl party = initializeParty(UUID.randomUUID());
+		
+		party.setAccessible(true);
+		party.setup("test3", null);
+		party.setDescription("description");
+		party.setAccessible(false);
+		
+		assertEquals(dispatcher.getListPartiesNumber(), 0);
+		
+		dispatcher.updateParty(party);
+		
+		assertEquals(dispatcher.getListPartiesNumber(), 1);
 	}
 	
 	@Test
@@ -387,7 +432,7 @@ public class FileDispatcherTest {
 			}
 			
 			@Override
-			public void sendPacketExperience(double newExperience, PartyPlayer killer) {
+			public void sendPacketExperience(double newExperience, PartyPlayer killer, boolean gainMessage) {
 				// Nothing to do
 			}
 			

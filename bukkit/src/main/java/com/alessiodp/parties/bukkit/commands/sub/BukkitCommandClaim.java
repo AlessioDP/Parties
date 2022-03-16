@@ -8,7 +8,6 @@ import com.alessiodp.parties.bukkit.addons.external.ClaimHandler;
 import com.alessiodp.parties.bukkit.commands.list.BukkitCommands;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitMessages;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
@@ -17,7 +16,10 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
+import com.alessiodp.parties.common.utils.RankPermission;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 	@Override
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
-		PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+		PartyPlayerImpl partyPlayer = getPlugin().getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
 		if (!sender.hasPermission(permission)) {
@@ -54,13 +56,13 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			return false;
 		}
 		
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
+		PartyImpl party = getPlugin().getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 			return false;
 		}
 		
-		if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_CLAIM))
+		if (!getPlugin().getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.CLAIM))
 			return false;
 		
 		if (commandData.getArgs().length != 2) {
@@ -95,7 +97,11 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			selection = Selection.REMOVE;
 		
 		if (!selection.equals(Selection.FAILED_GENERAL)) {
-			ClaimHandler.Result res = ClaimHandler.isManager(Bukkit.getPlayer(commandData.getSender().getUUID()));
+			Player bukkitSender = Bukkit.getPlayer(sender.getUUID());
+			if (bukkitSender == null)
+				return;
+			
+			ClaimHandler.Result res = ClaimHandler.isManager(bukkitSender);
 			switch (res) {
 			case NOEXIST:
 				selection = Selection.FAILED_NOEXIST;
@@ -109,7 +115,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 			}
 		}
 		
-		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.CLAIM, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.CLAIM, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		// Command starts
@@ -139,7 +145,7 @@ public class BukkitCommandClaim extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2) {
 			ret.add(BukkitConfigMain.ADDONS_CLAIM_CMD_ACCESS);

@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.14</version>
+		<version>3.2.0</version>
 	</parent>
 	
 	<artifactId>parties-common</artifactId>
@@ -87,6 +87,10 @@
 					<groupId>net.md-5</groupId>
 					<artifactId>bungeecord-api</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.velocitypowered</groupId>
+					<artifactId>velocity-api</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -100,11 +104,6 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>${libs.api.annotations}</version>
 		</dependency>
 		
 		<dependency>
@@ -120,12 +119,6 @@
 		</dependency>
 		
 		<!-- Test dependencies -->
-		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>1.26</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

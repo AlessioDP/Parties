@@ -6,13 +6,13 @@ import com.alessiodp.parties.api.interfaces.PartyHome;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
+import org.jetbrains.annotations.NotNull;
 
 public class DynmapHandler {
 	private static PartiesPlugin plugin = null;
@@ -22,7 +22,7 @@ public class DynmapHandler {
 	private static DynmapCommonAPI api;
 	private static MarkerSet layer;
 	
-	public DynmapHandler(@NonNull PartiesPlugin parties) {
+	public DynmapHandler(@NotNull PartiesPlugin parties) {
 		plugin = parties;
 	}
 	
@@ -60,22 +60,24 @@ public class DynmapHandler {
 	
 	
 	private static void addMarker(String id, String label, Location loc) {
-		layer.createMarker(id,
-				label,
-				true,
-				loc.getWorld().getName(),
-				loc.getX(),
-				loc.getY(),
-				loc.getZ(),
-				api.getMarkerAPI().getMarkerIcon(BukkitConfigMain.ADDONS_DYNMAP_MARKER_ICON),
-				true
-		);
+		if (loc.getWorld() != null) { // Check if the world is loaded
+			layer.createMarker(id,
+					label,
+					true,
+					loc.getWorld().getName(),
+					loc.getX(),
+					loc.getY(),
+					loc.getZ(),
+					api.getMarkerAPI().getMarkerIcon(BukkitConfigMain.ADDONS_DYNMAP_MARKER_ICON),
+					true
+			);
+		}
 	}
 	
 	public static void cleanupMarkers(PartyImpl party) {
 		if (active) {
 			for (Marker m : layer.getMarkers()) {
-				if (m.getMarkerID().startsWith("party_" + party.getId().toString()))
+				if (m.getMarkerID().startsWith("party_" + party.getId()))
 					m.deleteMarker();
 			}
 		}

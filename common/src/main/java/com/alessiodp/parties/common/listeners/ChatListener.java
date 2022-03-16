@@ -7,10 +7,12 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.utils.RankPermission;
 import lombok.RequiredArgsConstructor;
 
 import java.util.regex.Matcher;
@@ -42,7 +44,7 @@ public abstract class ChatListener {
 			final String finalMessage = parsedMessage;
 			// Make it async
 			plugin.getScheduler().runAsync(() -> {
-				if (plugin.getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_SENDMESSAGE)) {
+				if (plugin.getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.SENDMESSAGE)) {
 					// Chat allowed
 					boolean mustWait = false;
 					
@@ -59,7 +61,7 @@ public abstract class ChatListener {
 					boolean mustStartCooldown = false;
 					if (ConfigParties.GENERAL_CHAT_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
 						mustStartCooldown = true;
-						long remainingCooldown = plugin.getCooldownManager().canChat(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+						long remainingCooldown = plugin.getCooldownManager().canAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
 						
 						if (remainingCooldown > 0) {
 							partyPlayer.sendMessage(Messages.MAINCMD_P_COOLDOWN
@@ -70,7 +72,7 @@ public abstract class ChatListener {
 					
 					if (!mustWait && partyPlayer.performPartyMessage(finalMessage)) {
 						if (mustStartCooldown)
-							plugin.getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+							plugin.getCooldownManager().startAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
 						
 						if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT) {
 							plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_CMD_P,
@@ -79,7 +81,7 @@ public abstract class ChatListener {
 					}
 				} else
 					partyPlayer.sendMessage(Messages.PARTIES_PERM_NOPERM
-							.replace("%permission%", PartiesPermission.PRIVATE_SENDMESSAGE.toString()));
+							.replace("%permission%", RankPermission.SENDMESSAGE.toString()));
 			});
 			eventCancelled = true;
 		}
@@ -99,21 +101,23 @@ public abstract class ChatListener {
 						cancel = false;
 					}
 				} catch (Exception ex) {
-					plugin.getLoggerManager().printErrorStacktrace(PartiesConstants.DEBUG_AUTOCMD_REGEXERROR, ex);
+					plugin.getLoggerManager().logError(PartiesConstants.DEBUG_AUTOCMD_REGEXERROR, ex);
 				}
 				
 				if (!cancel) {
 					PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
 					PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyId());
-					if (party != null && plugin.getRankManager().checkPlayerRank(pp, PartiesPermission.PRIVATE_AUTOCOMMAND)) {
+					if (party != null && plugin.getRankManager().checkPlayerRank(pp, RankPermission.AUTOCOMMAND)) {
 						for (PartyPlayer pl : party.getOnlineMembers(true)) {
 							if (!pl.getPlayerUUID().equals(sender.getUUID())) {
 								// Make it sync
 								plugin.getScheduler().getSyncExecutor().execute(() -> {
 									User user = plugin.getPlayer(pl.getPlayerUUID());
-									plugin.getBootstrap().executeCommandByUser(message.substring(1), user);
-									
-									plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_AUTOCMD_PERFORM, pl.getPlayerUUID().toString(), message), true);
+									if (user != null) {
+										plugin.getBootstrap().executeCommandByUser(message.substring(1), user);
+										
+										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_AUTOCMD_PERFORM, pl.getPlayerUUID(), message), true);
+									}
 								});
 							}
 						}

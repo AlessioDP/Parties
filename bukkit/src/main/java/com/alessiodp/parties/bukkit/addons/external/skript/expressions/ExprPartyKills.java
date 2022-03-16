@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Kills")
 @Description("Get the kills number of the given party.")
 @Examples({"send \"%kills of party with name \"test\"%\"",

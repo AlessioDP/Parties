@@ -1,7 +1,7 @@
 -- H2 database
 CREATE TABLE IF NOT EXISTS `<prefix>parties` (
 	`id`			CHAR(36) NOT NULL PRIMARY KEY,
-	`name`			VARCHAR(255) NOT NULL,
+	`name`			VARCHAR(255),
 	`tag`			VARCHAR(255),
 	`leader`		CHAR(36),
 	`description`	VARCHAR(255),

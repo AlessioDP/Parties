@@ -32,6 +32,9 @@ parties:
   # Useful to debug problems related to the plugin
   debug-command: true
 
+  # Automatic upgrade configs if outdated, otherwise just alert
+  automatic-upgrade-configs: false
+
   # Hook into Skript plugin
   hook-into-skript: true
 
@@ -55,7 +58,9 @@ parties:
       player-sync: true
       party-sync: true
       config-sync: true
+      debug-bungeecord: true
       chat: true
+      broadcast: true
       sounds: true
 
 
@@ -105,6 +110,9 @@ storage:
       # Property used to alert when the connection is not using a valid SSL certificate
       use-ssl: false
       charset: 'utf8'
+      # Additional parameters for connections (jdbc:....?thisIsA=Parameter)
+      # Only for MariaDB/MySQL, syntax: '?pameter1=value1&parameter2=value2'
+      additional-parameters: ''
 
 
 # / =============================== \
@@ -123,109 +131,43 @@ additional:
     regex-whitelist: '^(\/join|\/anothercommand).*'
 
   # [Exp system]
-  # Full documentation here: https://alessiodp.com/docs/parties/explevels/
-  # You can setup a level system for parties or decide how to handle dropped mob exp
+  # Full documentation here: https://alessiodp.com/docs/parties/explevels
   exp-system:
     enable: false
-    levels:
-      enable: true
-      # Modes: progressive, fixed
-      mode: progressive
+    # Modes: progressive, fixed
+    mode: progressive
+    # Get experience from dead vanilla mobs
+    earn-exp-from-mobs: false
 
-      # [Progressive mode]
-      # Make infinite levels with a progressive multiplier
-      progressive:
-        # Level 1: 50, Level 2: 100, Level 3: 200, Level 4: 400
-        # Special tags:
-        # => %previous%: Previous level experience
-        start-level-experience: 50
-        level-experience: "%previous% * 2"
-        # This is a special option that prevents loops in calculation
-        # Set this on false if you know what you are doing
-        safe-calculation: true
+    # [Progressive mode]
+    # Make infinite levels with a progressive multiplier
+    progressive:
+      # Level 1: 50, Level 2: 100, Level 3: 200, Level 4: 400
+      # Special tags:
+      # => %previous%: Previous level experience
+      start-level-experience: 50
+      level-experience: "%previous% * 2"
+      # This is a special option that prevents loops in calculation
+      # Set this on false if you know what you are doing
+      safe-calculation: true
 
-      # [Fixed mode]
-      # Make a complete list of finite party levels
-      # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
-      #
-      # repeat-last-one =>  Should the last one end the number of levels?
-      #                     If on true, the number of levels will be infinite
-      #                     Otherwise the party will reach that level as maximum
-      fixed:
-        repeat-last-one: true
-        list:
-          - 50
-          - 100
-          - 200
-          - 350
-          - 650
-          - 900
+    # [Fixed mode]
+    # Make a complete list of finite party levels
+    # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
+    #
+    # repeat-last-one =>  Should the last one end the number of levels?
+    #                     If on true, the number of levels will be infinite
+    #                     Otherwise the party will reach that level as maximum
+    fixed:
+      repeat-last-one: true
+      list:
+        - 50
+        - 100
+        - 200
+        - 350
+        - 650
+        - 900
 
-
-    # [Exp dropping]
-    # Here you can handle how dropped exp should be handled, you can set:
-    # => sharing:           Share dropped experience between party-mates
-    # => exp-to-get:        How to handle dropped exp and decide which
-    #                         experience to get
-    # => convert-exp-into:  How to convert the dropped experience
-    exp-drop:
-      enable: true
-      sharing:
-        enable: false
-        if-more-than: 1
-        range: 30
-        # Convert numbers from 10.1234 to 10
-        round-exp-drop: true
-        # Use JavaScript here
-        # Special tags:
-        # => %exp%:             Dropped mob experience
-        # => %number_players%:  Number of players in range
-        # => %level%:           Current level of the party
-        # => %distance%:        Distance between the player and mob
-        divide-formula-killer: "%exp% / %number_players%"
-        divide-formula-others: "%exp% / %number_players%"
-      exp-to-get:
-        # Experience to get options:
-        # => normal:    Get Minecraft normal experience
-        # => skillapi:  Get SkillAPI experience
-        normal: true
-        skillapi: false
-      convert-exp-into:
-        # Convert experience options:
-        # => party:       Send the exp to the party (total experience)
-        # => normal:      Send it as vanilla Minecraft experience
-        # => levelpoints: Send it as LevelPoints experience
-        # => mmocore:     Send it as MMOCore experience
-        # => skillapi:    Send it as SkillAPI experience
-        #
-        # You can use 'remove-real-exp' to prevent double-exp drop
-        # More information here: https://alessiodp.com/docs/parties/explevels
-        normal: party
-        skillapi: party
-        remove-real-exp: false
-      addons:
-        # [LevelPoints support]
-        # Give LevelPoints experience instead of vanilla
-        levelpoints:
-          enable: false
-        # [MMOCore support]
-        # Give MMOCore experience instead of vanilla
-        mmocore:
-          enable: false
-        # [SkillAPI support]
-        # Get experience drops directly from SkillAPI configs
-        # Give SkillAPI experience instead of vanilla
-        # The SkillAPI option 'use-exp-orbs' must be on false
-        skillapi:
-          enable: false
-          exp-source: "MOB"
-        # [MythicMobs support]
-        # Get experience drops directly from MythicMobs drop tables
-        # Exp supported are 'exp' and 'skillapi-exp'
-        # With option 'handle-only-mm-mobs', Parties will only handle MythicMobs entities
-        mythicmobs:
-          enable: false
-          handle-only-mm-mobs: true
 
   # [Follow system]
   # When the party leader joins a world, the entire party will follow him
@@ -330,6 +272,7 @@ addons:
     price-commands:
       ask: 0.0
       claim: 0.0
+      close: 0.0
       color: 0.0
       create: 0.0
       desc: 0.0
@@ -338,6 +281,7 @@ addons:
       join: 0.0
       motd: 0.0
       nickname: 0.0
+      open: 0.0
       password: 0.0
       protection: 0.0
       rename: 0.0
@@ -370,6 +314,7 @@ commands:
     ask: 'ask'
     chat: 'chat'
     claim: 'claim'
+    close: 'close'
     color: 'color'
     confirm: 'confirm'
     create: 'create'
@@ -390,6 +335,7 @@ commands:
     motd: 'motd'
     mute: 'mute'
     nickname: 'nickname'
+    open: 'open'
     password: 'password'
     protection: 'protection'
     rank: 'rank'
@@ -401,6 +347,7 @@ commands:
     teleport: 'teleport'
     version: 'version'
   misc-commands:
+    bungeecord: 'bungeecord'
     config: 'config'
     exp: 'exp'
     party: 'party'
@@ -428,6 +375,8 @@ commands:
   - tag
   - desc
   - motd
+  - open
+  - close
   - nickname
   - protection
   - follow

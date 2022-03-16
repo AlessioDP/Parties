@@ -12,6 +12,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -38,12 +39,12 @@ public class CommandMute extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		return handlePreRequisitesFull(commandData, null);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
@@ -69,7 +70,7 @@ public class CommandMute extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		return plugin.getCommandManager().getCommandUtils().tabCompleteOnOff(args);
 	}
 }

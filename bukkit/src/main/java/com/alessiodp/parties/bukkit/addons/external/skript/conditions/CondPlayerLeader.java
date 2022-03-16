@@ -9,6 +9,7 @@ import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Player is Leader")
 @Description("Checks if the partyplayer is leader.")
 @Examples({

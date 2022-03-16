@@ -2,100 +2,12 @@ package com.alessiodp.parties.bungeecord.messaging;
 
 import com.alessiodp.core.bungeecord.messaging.BungeeMessageListener;
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.utils.CommonUtils;
-import com.alessiodp.parties.bungeecord.configuration.BungeePartiesConfigurationManager;
-import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.commands.sub.CommandSetHome;
-import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.configuration.data.ConfigMain;
-import com.alessiodp.parties.common.messaging.PartiesPacket;
-import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
-import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-import lombok.NonNull;
-
-import java.util.UUID;
+import com.alessiodp.parties.bungeecord.messaging.bungee.BungeePartiesBungeecordListener;
+import com.alessiodp.parties.bungeecord.messaging.redis.PartiesRedisBungeeListener;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeePartiesMessageListener extends BungeeMessageListener {
-	
-	public BungeePartiesMessageListener(@NonNull ADPPlugin plugin) {
-		super(plugin, true, false);
-	}
-	
-	@Override
-	protected void handlePacket(byte[] bytes, String channel) {
-		if (channel.equals(getMainChannel()))
-			handleChannelMain(bytes, channel); // Dispatch Spigot -> BungeeCord
-	}
-	
-	protected void handleChannelMain(byte[] bytes, String channel) {
-		PartiesPacket packet = PartiesPacket.read(plugin, bytes);
-		if (packet != null) {
-			PartyImpl party;
-			PartyPlayerImpl partyPlayer;
-			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED, packet.getType().name(), channel), true);
-			switch (packet.getType()) {
-				case UPDATE_PARTY:
-					if (((PartiesPlugin) plugin).getPartyManager().reloadParty(packet.getPartyId())) {
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_UPDATE_PARTY,
-								packet.getPartyId().toString()), true);
-					}
-					break;
-				case INVITE_PLAYER:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						try {
-							ByteArrayDataInput input = ByteStreams.newDataInput(packet.getPayloadRaw());
-							PartyPlayerImpl invitedPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(input.readUTF()));
-							String uuidInviter = input.readUTF();
-							PartyPlayerImpl inviter = uuidInviter.isEmpty() ? null : ((PartiesPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(uuidInviter));
-							
-							party.invitePlayer(invitedPlayer, inviter);
-							
-							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY,
-									invitedPlayer.getPlayerUUID().toString(), party.getId().toString(), inviter != null ? inviter.getPlayerUUID().toString() : "none"), true);
-						} catch (Exception ex) {
-							plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
-						}
-					}
-					break;
-				case ADD_HOME:
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-					if (party != null) {
-						String serializedHome = packet.getPayload();
-						CommandSetHome.savePartyHome(party, PartyHomeImpl.deserialize(serializedHome));
-						
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE,
-								party.getId().toString()), true);
-					}
-					break;
-				case EXPERIENCE:
-					if (ConfigMain.ADDITIONAL_EXP_ENABLE) {
-						party = ((PartiesPlugin) plugin).getPartyManager().getParty(packet.getPartyId());
-						partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(packet.getPlayerUuid());
-						if (party != null) {
-							party.giveExperience(packet.getPayloadNumber(), partyPlayer);
-						}
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_EXPERIENCE,
-								CommonUtils.formatDouble(packet.getPayloadNumber()), packet.getPartyId().toString(), packet.getPlayerUuid() != null ? packet.getPlayerUuid().toString() : "none"), true);
-					}
-					break;
-				case REQUEST_CONFIGS:
-					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
-						((BungeePartiesConfigurationManager) plugin.getConfigurationManager()).makeConfigsSync();
-						
-						plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_REQUEST_CONFIGS, true);
-					}
-					break;
-				default:
-					// Nothing to do
-					break;
-			}
-		} else {
-			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_RECEIVED_WRONG, channel));
-		}
+	public BungeePartiesMessageListener(@NotNull ADPPlugin plugin) {
+		super(plugin, new BungeePartiesBungeecordListener(plugin), new PartiesRedisBungeeListener(plugin));
 	}
 }

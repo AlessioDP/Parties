@@ -6,7 +6,7 @@ import com.alessiodp.core.common.storage.file.YAMLDao;
 import com.alessiodp.core.common.storage.file.YAMLUpgradeManager;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class PartiesYAMLUpgradeManager extends YAMLUpgradeManager {
 	
-	public PartiesYAMLUpgradeManager(@NonNull ADPPlugin plugin, @NonNull YAMLDao databaseFile) {
+	public PartiesYAMLUpgradeManager(@NotNull ADPPlugin plugin, @NotNull YAMLDao databaseFile) {
 		super(plugin, databaseFile);
 	}
 	

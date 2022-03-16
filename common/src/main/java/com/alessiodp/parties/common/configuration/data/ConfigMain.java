@@ -1,6 +1,7 @@
 package com.alessiodp.parties.common.configuration.data;
 
 import com.alessiodp.core.common.addons.external.simpleyaml.configuration.ConfigurationSection;
+import com.alessiodp.core.common.addons.external.simpleyaml.configuration.MemorySection;
 import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -30,6 +31,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	
 	@ConfigOption(path = "parties.debug-command")
 	public static boolean		PARTIES_DEBUG_COMMAND;
+	@ConfigOption(path = "parties.automatic-upgrade-configs")
+	public static boolean		PARTIES_AUTOMATIC_UPGRADE_CONFIGS;
 	
 	@ConfigOption(path = "parties.bungeecord.packets.load-players")
 	public static boolean		PARTIES_BUNGEECORD_PACKETS_LOAD_PLAYERS;
@@ -41,8 +44,12 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC;
 	@ConfigOption(path = "parties.bungeecord.packets.config-sync")
 	public static boolean		PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC;
+	@ConfigOption(path = "parties.bungeecord.packets.debug-bungeecord")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_DEBUG_BUNGEECORD;
 	@ConfigOption(path = "parties.bungeecord.packets.chat")
 	public static boolean		PARTIES_BUNGEECORD_PACKETS_CHAT;
+	@ConfigOption(path = "parties.bungeecord.packets.broadcast")
+	public static boolean		PARTIES_BUNGEECORD_PACKETS_BROADCAST;
 	@ConfigOption(path = "parties.bungeecord.packets.sounds")
 	public static boolean		PARTIES_BUNGEECORD_PACKETS_SOUNDS;
 	
@@ -76,6 +83,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		STORAGE_SETTINGS_REMOTE_SQL_USESSL;
 	@ConfigOption(path = "storage.storage-settings.remote-sql.charset")
 	public static String		STORAGE_SETTINGS_REMOTE_SQL_CHARSET;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.additional-parameters")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_ADDITIONAL_PARAMETERS;
 	
 	
 	// Additional settings
@@ -86,20 +95,20 @@ public abstract class ConfigMain extends ConfigurationFile {
 	
 	@ConfigOption(path = "additional.exp-system.enable")
 	public static boolean		ADDITIONAL_EXP_ENABLE;
-	@ConfigOption(path = "additional.exp-system.levels.enable")
-	public static boolean		ADDITIONAL_EXP_LEVELS_ENABLE;
-	@ConfigOption(path = "additional.exp-system.levels.mode")
-	public static String		ADDITIONAL_EXP_LEVELS_MODE;
-	@ConfigOption(path = "additional.exp-system.levels.progressive.start-level-experience")
-	public static double		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_START;
-	@ConfigOption(path = "additional.exp-system.levels.progressive.level-experience")
-	public static String		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_LEVEL_EXP;
-	@ConfigOption(path = "additional.exp-system.levels.progressive.safe-calculation")
-	public static boolean		ADDITIONAL_EXP_LEVELS_PROGRESSIVE_SAFE_CALCULATION;
-	@ConfigOption(path = "additional.exp-system.levels.fixed.repeat-last-one")
-	public static boolean		ADDITIONAL_EXP_LEVELS_FIXED_REPEAT;
-	@ConfigOption(path = "additional.exp-system.levels.fixed.list")
-	public static List<Double>	ADDITIONAL_EXP_LEVELS_FIXED_LIST;
+	@ConfigOption(path = "additional.exp-system.mode")
+	public static String		ADDITIONAL_EXP_MODE;
+	@ConfigOption(path = "additional.exp-system.earn-exp-from-mobs")
+	public static boolean		ADDITIONAL_EXP_EARN_FROM_MOBS;
+	@ConfigOption(path = "additional.exp-system.progressive.start-level-experience")
+	public static double		ADDITIONAL_EXP_PROGRESSIVE_START;
+	@ConfigOption(path = "additional.exp-system.progressive.level-experience")
+	public static String		ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP;
+	@ConfigOption(path = "additional.exp-system.progressive.safe-calculation")
+	public static boolean		ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION;
+	@ConfigOption(path = "additional.exp-system.fixed.repeat-last-one")
+	public static boolean		ADDITIONAL_EXP_FIXED_REPEAT;
+	@ConfigOption(path = "additional.exp-system.fixed.list")
+	public static List<Double>	ADDITIONAL_EXP_FIXED_LIST;
 	
 	@ConfigOption(path = "additional.follow.enable")
 	public static boolean		ADDITIONAL_FOLLOW_ENABLE;
@@ -120,14 +129,14 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		ADDITIONAL_MODERATION_PREVENTCHAT;
 	@ConfigOption(path = "additional.moderation.auto-kick-banned")
 	public static boolean		ADDITIONAL_MODERATION_AUTOKICK;
-	@ConfigOption(path = "additional.moderation.plugins.advancedban")
-	public static boolean		ADDITIONAL_MODERATION_PLUGINS_ADVANCEDBAN;
 	
 	@ConfigOption(path = "additional.mute.enable")
 	public static boolean		ADDITIONAL_MUTE_ENABLE;
 	@ConfigOption(path = "additional.mute.block.invite")
 	public static boolean		ADDITIONAL_MUTE_BLOCK_INVITE;
 	
+	@ConfigOption(path = "additional.placeholders.customs")
+	public static MemorySection RAW_ADDITIONAL_PLACEHOLDER_CUSTOMS;
 	public static HashMap<String, String> ADDITIONAL_PLACEHOLDER_CUSTOMS;
 	
 	
@@ -154,6 +163,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_SUB_ASK;
 	@ConfigOption(path = "commands.sub-commands.chat")
 	public static String		COMMANDS_SUB_CHAT;
+	@ConfigOption(path = "commands.sub-commands.close")
+	public static String		COMMANDS_SUB_CLOSE;
 	@ConfigOption(path = "commands.sub-commands.color")
 	public static String		COMMANDS_SUB_COLOR;
 	@ConfigOption(path = "commands.sub-commands.create")
@@ -192,6 +203,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_SUB_MUTE;
 	@ConfigOption(path = "commands.sub-commands.nickname")
 	public static String		COMMANDS_SUB_NICKNAME;
+	@ConfigOption(path = "commands.sub-commands.open")
+	public static String		COMMANDS_SUB_OPEN;
 	@ConfigOption(path = "commands.sub-commands.password")
 	public static String		COMMANDS_SUB_PASSWORD;
 	@ConfigOption(path = "commands.sub-commands.protection")
@@ -258,7 +271,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 			}
 		} else {
 			// Give error: no ranks node found
-			plugin.getLoggerManager().printError(PartiesConstants.DEBUG_CONFIG_FAILED_PLACEHOLDERS_NOTFOUND);
+			plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_PLACEHOLDERS_NOTFOUND);
 		}
 	}
 }

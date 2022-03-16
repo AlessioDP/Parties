@@ -9,24 +9,28 @@ public interface IPlayerPostChatEvent extends PartiesEvent {
 	/**
 	 * Get the player who sent the message
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	PartyPlayer getPartyPlayer();
+	@NotNull PartyPlayer getPartyPlayer();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
+	
+	/**
+	 * Get the formatted message of the player
+	 *
+	 * @return the formatted message
+	 */
+	@NotNull String getFormattedMessage();
 	
 	/**
 	 * Get the message of the player
 	 *
-	 * @return Returns the message
+	 * @return the message
 	 */
-	@NotNull
-	String getMessage();
+	@NotNull String getMessage();
 }

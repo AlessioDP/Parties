@@ -6,11 +6,8 @@ import com.alessiodp.parties.bukkit.addons.external.ClaimHandler;
 import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsChatHandler;
 import com.alessiodp.parties.bukkit.addons.external.EssentialsHandler;
-import com.alessiodp.parties.bukkit.addons.external.LevelPointsHandler;
-import com.alessiodp.parties.bukkit.addons.external.MMOCoreHandler;
-import com.alessiodp.parties.bukkit.addons.external.MythicMobsHandler;
+import com.alessiodp.parties.bukkit.addons.external.MagicHandler;
 import com.alessiodp.parties.bukkit.addons.external.PlaceholderAPIHandler;
-import com.alessiodp.parties.bukkit.addons.external.SkillAPIHandler;
 import com.alessiodp.parties.bukkit.addons.external.SkriptHandler;
 import com.alessiodp.parties.bukkit.addons.external.VaultHandler;
 import com.alessiodp.parties.common.PartiesPlugin;
@@ -23,11 +20,8 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	private final DynmapHandler dynmap;
 	private final EssentialsHandler essentials;
 	private final EssentialsChatHandler essentialsChat;
-	private final LevelPointsHandler levelPoints;
-	private final MMOCoreHandler mmoCore;
-	private final MythicMobsHandler mythicMobs;
+	private final MagicHandler magic;
 	private final PlaceholderAPIHandler placeholderAPI;
-	private final SkillAPIHandler skillAPI;
 	private final SkriptHandler skriptHandler;
 	private final VaultHandler vault;
 	
@@ -40,11 +34,8 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		dynmap = new DynmapHandler(plugin);
 		essentials = new EssentialsHandler(plugin);
 		essentialsChat = new EssentialsChatHandler(plugin);
-		levelPoints = new LevelPointsHandler(plugin);
-		mmoCore = new MMOCoreHandler(plugin);
-		mythicMobs = new MythicMobsHandler(plugin);
+		magic = new MagicHandler(plugin);
 		placeholderAPI = new PlaceholderAPIHandler(plugin);
-		skillAPI = new SkillAPIHandler(plugin);
 		skriptHandler = new SkriptHandler(plugin);
 		vault = new VaultHandler(plugin);
 	}
@@ -53,18 +44,21 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 	public void loadAddons() {
 		super.loadAddons();
 		
+		dynmap.init();
+		placeholderAPI.init();
+		skriptHandler.init();
+		
+		// Schedule sync later (post load plugins)
+		plugin.getScheduler().getSyncExecutor().execute(this::postLoadAddons);
+	}
+	
+	public void postLoadAddons() {
 		advancedBanHandler.init();
 		banManager.init();
 		claimHandler.init();
-		dynmap.init();
 		essentials.init();
 		essentialsChat.init();
-		levelPoints.init();
-		mmoCore.init();
-		mythicMobs.init();
-		placeholderAPI.init();
-		skillAPI.init();
-		skriptHandler.init();
+		magic.init();
 		vault.init();
 	}
 }

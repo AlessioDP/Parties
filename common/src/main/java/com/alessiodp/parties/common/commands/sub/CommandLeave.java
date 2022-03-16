@@ -7,7 +7,6 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreLeaveEvent;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -19,6 +18,7 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.api.enums.DeleteCause;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandLeave extends PartiesSubCommand {
 	
@@ -39,12 +39,12 @@ public class CommandLeave extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		return handlePreRequisitesFullWithParty(commandData, true, 1, 1, null);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
@@ -52,8 +52,8 @@ public class CommandLeave extends PartiesSubCommand {
 		// Command handling
 		
 		// Calling API event
-		IPlayerPreLeaveEvent partiesPreLeaveEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, LeaveCause.LEAVE, partyPlayer);
-		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreLeaveEvent);
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = getPlugin().getEventManager().preparePlayerPreLeaveEvent(partyPlayer, party, LeaveCause.LEAVE, partyPlayer);
+		getPlugin().getEventManager().callEvent(partiesPreLeaveEvent);
 		
 		if (!partiesPreLeaveEvent.isCancelled()) {
 			if (party.getLeader() != null && party.getLeader().equals(sender.getUUID())) {
@@ -81,8 +81,8 @@ public class CommandLeave extends PartiesSubCommand {
 				
 				if (mustDelete) {
 					// Calling Pre API event
-					IPartyPreDeleteEvent partiesPreDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, null, partyPlayer);
-					((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreDeleteEvent);
+					IPartyPreDeleteEvent partiesPreDeleteEvent = getPlugin().getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.LEAVE, null, partyPlayer);
+					getPlugin().getEventManager().callEvent(partiesPreDeleteEvent);
 					
 					if (!partiesPreDeleteEvent.isCancelled()) {
 						// Disbanding party
@@ -95,7 +95,7 @@ public class CommandLeave extends PartiesSubCommand {
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE,
 								partyPlayer.getName(), party.getName() != null ? party.getName() : "_", true), true);
 					} else
-						plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
+						plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId(), sender.getName(), sender.getUUID().toString()), true);
 				}
 			} else {
 				party.removeMember(partyPlayer, LeaveCause.LEAVE, partyPlayer);
@@ -103,9 +103,9 @@ public class CommandLeave extends PartiesSubCommand {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_LEAVE_LEFT, party);
 				party.broadcastMessage(Messages.MAINCMD_LEAVE_BROADCAST, partyPlayer);
 				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE, partyPlayer.getName(), party.getId().toString(), false), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_LEAVE, partyPlayer.getName(), party.getId(), false), true);
 			}
 		} else
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, sender.getUUID().toString(), party.getId()), true);
 	}
 }

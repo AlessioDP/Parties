@@ -6,7 +6,7 @@ SELECT * FROM sqlite_master WHERE type='table' AND name=:table;
 
 CREATE TABLE `<prefix>parties_new` (
 	'id'			VARCHAR NOT NULL PRIMARY KEY,
-	'name'			VARCHAR NOT NULL,
+	'name'			VARCHAR,
 	'tag'			VARCHAR,
 	'leader'		VARCHAR,
 	'description'	VARCHAR,

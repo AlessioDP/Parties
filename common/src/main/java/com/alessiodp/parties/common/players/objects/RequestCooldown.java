@@ -3,6 +3,7 @@ package com.alessiodp.parties.common.players.objects;
 import com.alessiodp.parties.common.PartiesPlugin;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class RequestCooldown {
 	@Getter private final UUID target;
 	@Getter private final int cooldown;
 	
-	public RequestCooldown(PartiesPlugin plugin, UUID sender, UUID target, int cooldown) {
+	public RequestCooldown(PartiesPlugin plugin, UUID sender, @Nullable UUID target, int cooldown) {
 		this.plugin = plugin;
 		this.sender = sender;
 		this.target = target;

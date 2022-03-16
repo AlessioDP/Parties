@@ -13,11 +13,14 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.tasks.TeleportDelayTask;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,21 +43,25 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFullWithParty(commandData, true, 1, 1, PartiesPermission.PRIVATE_ADMIN_TELEPORT);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		boolean ret = handlePreRequisitesFullWithParty(commandData, true, 1, 1, RankPermission.ADMIN_TELEPORT);
+		if (ret) {
+			commandData.addPermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS);
+		}
+		return ret;
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
 		// Command handling
 		boolean mustStartCooldown = false;
-		if (ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS)) {
+		if (ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS)) {
 			mustStartCooldown = true;
-			long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canTeleport(partyPlayer.getPlayerUUID(), ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN);
+			long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.TELEPORT, partyPlayer.getPlayerUUID(), ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN);
 			
 			if (remainingCooldown > 0) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_TELEPORT_COOLDOWN
@@ -63,16 +70,16 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 			}
 		}
 		
-		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.TELEPORT, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.TELEPORT, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		if (mustStartCooldown) {
-			((PartiesPlugin) plugin).getCooldownManager().startTeleportCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
+			getPlugin().getCooldownManager().startAction(CooldownManager.Action.TELEPORT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
 		}
 		
 		// Command starts
 		int delay = ConfigParties.ADDITIONAL_TELEPORT_DELAY;
-		String teleportDelayPermission = sender.getDynamicPermission(PartiesPermission.USER_TELEPORT.toString() + ".");
+		String teleportDelayPermission = sender.getDynamicPermission(PartiesPermission.USER_TELEPORT + ".");
 		if (teleportDelayPermission != null) {
 			try {
 				delay = Integer.parseInt(teleportDelayPermission);

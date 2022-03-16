@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.1.14</version>
+	<version>3.2.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -47,11 +47,13 @@
 		<module>api</module>
 		<module>bukkit</module>
 		<module>bungeecord</module>
+		<module>velocity</module>
 		<module>common</module>
 		<module>output</module>
 	</modules>
 	
 	<properties>
+		<plugin.id>parties</plugin.id>
 		<plugin.name>Parties</plugin.name>
 		<plugin.description>Party manager for Minecraft servers</plugin.description>
 		<plugin.author>AlessioDP</plugin.author>
@@ -65,46 +67,43 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		
 		
-		<maven.compiler.version>3.8.1</maven.compiler.version>
+		<maven.compiler.version>3.10.1</maven.compiler.version>
 		<maven.deploy.version>2.8.2</maven.deploy.version>
-		<maven.javadoc-plugin.version>3.3.1</maven.javadoc-plugin.version>
+		<maven.javadoc-plugin.version>3.3.2</maven.javadoc-plugin.version>
 		<maven.shade.version>3.2.4</maven.shade.version>
 		<maven.surefire.version>3.0.0-M5</maven.surefire.version>
-		<maven.versions.version>2.8.1</maven.versions.version>
+		<maven.versions.version>2.10.0</maven.versions.version>
 		
 		<!-- Dev libraries -->
+		<dev.annotations>23.0.0</dev.annotations>
 		<dev.lombok>1.18.22</dev.lombok>
-		<dev.mockito>4.1.0</dev.mockito>
+		<dev.mockito>4.3.1</dev.mockito>
 		<dev.junit>5.8.2</dev.junit>
 		
-		<libs.adpcore>1.7.0</libs.adpcore>
-		<libs.api.annotations>23.0.0</libs.api.annotations>
-		<libs.api.spigot>1.18-rc3-R0.1-SNAPSHOT</libs.api.spigot>
+		<libs.adpcore>1.8.0</libs.adpcore>
+		<libs.api.spigot>1.18.2-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.18-R0.1-SNAPSHOT</libs.api.bungeecord>
+		<libs.api.velocity>3.1.0</libs.api.velocity>
 		<!-- ADP Core Test Libraries -->
 		<libs.h2>1.4.200</libs.h2>
 		<libs.hikaricp>4.0.3</libs.hikaricp>
-		<libs.mariadb>2.7.4</libs.mariadb>
-		<libs.mysql>8.0.27</libs.mysql>
+		<libs.mariadb>3.0.3</libs.mariadb>
+		<libs.mysql>8.0.28</libs.mysql>
 		<libs.postgresql>42.3.1</libs.postgresql>
 		<libs.sqlite>3.36.0.3</libs.sqlite>
 		
 		<!-- External plugins -->
 		<libs.advancedBan>2.3.0</libs.advancedBan>
-		<libs.banManager>7.3.0-SNAPSHOT</libs.banManager>
+		<libs.banManager>7.7.0</libs.banManager>
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
-		<libs.essentialsx>2.18.0</libs.essentialsx>
+		<libs.essentialsx>2.19.4</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
 		<libs.lastLoginApi>1.6.0</libs.lastLoginApi>
-		<libs.levelPoints>12bde91fb5</libs.levelPoints>
-		<libs.mmoCore>1.8.2</libs.mmoCore>
-		<libs.mythicMobs>4.12.0</libs.mythicMobs>
-		<libs.placeholderApi>2.10.10</libs.placeholderApi>
-		<libs.premiumVanish>2.7.3</libs.premiumVanish>
-		<libs.proSkillApi>1.1.7.6</libs.proSkillApi>
-		<libs.skillApi>1.98</libs.skillApi>
-		<libs.skript>2.6-beta3</libs.skript>
+		<libs.magic>10.2</libs.magic>
+		<libs.placeholderApi>2.11.1</libs.placeholderApi>
+		<libs.premiumVanish>2.7.11-2</libs.premiumVanish>
+		<libs.skript>2.6.1</libs.skript>
 		<libs.vaultApi>1.7</libs.vaultApi>
 	</properties>
 	
@@ -155,6 +154,11 @@
 			<!-- Spigot repo -->
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<!-- Velocity repo -->
+			<id>velocity-repo</id>
+			<url>https://nexus.velocitypowered.com/repository/maven-public/</url>
 		</repository>
 		<repository>
 			<!-- OSS Sonatype repo -->

@@ -7,7 +7,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.players.RankManager;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
-import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -36,16 +36,16 @@ public class RankManagerTest {
 	public static void setUp() {
 		// Ranks
 		rank1 = new PartyRankImpl(
-				"rank1", "rank1", "rank1", 1,
-				Lists.newArrayList(PartiesPermission.PRIVATE_EDIT_COLOR.toString(), PartiesPermission.PRIVATE_EDIT_DESC.toString()), true
+				"rank1", "rank1", "rank1", 1, 0, null,
+				Lists.newArrayList(RankPermission.EDIT_COLOR.toString(), RankPermission.EDIT_DESC.toString()), true
 		);
 		rank2 = new PartyRankImpl(
-				"rank2", "rank2", "rank2", 2,
-				Lists.newArrayList("-" + PartiesPermission.PRIVATE_EDIT_FOLLOW.toString(), "-" + PartiesPermission.PRIVATE_EDIT_HOME, "*"), false
+				"rank2", "rank2", "rank2", 2, 0, null,
+				Lists.newArrayList("-" + RankPermission.EDIT_FOLLOW, "-" + RankPermission.EDIT_HOME, "*"), false
 		);
 		rank3 = new PartyRankImpl(
-				"rank3", "rank3", "rank3", 3,
-				Lists.newArrayList("-" + PartiesPermission.PRIVATE_EDIT_HOME, "*"), false
+				"rank3", "rank3", "rank3", 3, 0, null,
+				Lists.newArrayList("-" + RankPermission.EDIT_HOME, "*"), false
 		);
 		
 		// Configuration
@@ -89,27 +89,27 @@ public class RankManagerTest {
 		
 		// First rank
 		when(player.getRank()).thenReturn(1);
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_COLOR));
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_DESC));
-		assertFalse(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_FOLLOW));
-		assertFalse(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_HOME));
-		assertFalse(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_MOTD));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_COLOR));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_DESC));
+		assertFalse(rankManager.checkPlayerRank(player, RankPermission.EDIT_FOLLOW));
+		assertFalse(rankManager.checkPlayerRank(player, RankPermission.EDIT_HOME));
+		assertFalse(rankManager.checkPlayerRank(player, RankPermission.EDIT_MOTD));
 		
 		// Second rank
 		when(player.getRank()).thenReturn(2);
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_COLOR));
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_DESC));
-		assertFalse(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_FOLLOW));
-		assertFalse(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_HOME));
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_MOTD));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_COLOR));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_DESC));
+		assertFalse(rankManager.checkPlayerRank(player, RankPermission.EDIT_FOLLOW));
+		assertFalse(rankManager.checkPlayerRank(player, RankPermission.EDIT_HOME));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_MOTD));
 		
 		// Third rank
 		when(player.getRank()).thenReturn(3);
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_COLOR));
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_DESC));
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_FOLLOW));
-		assertFalse(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_HOME));
-		assertTrue(rankManager.checkPlayerRank(player, PartiesPermission.PRIVATE_EDIT_MOTD));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_COLOR));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_DESC));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_FOLLOW));
+		assertFalse(rankManager.checkPlayerRank(player, RankPermission.EDIT_HOME));
+		assertTrue(rankManager.checkPlayerRank(player, RankPermission.EDIT_MOTD));
 	}
 	
 	@Test
@@ -125,15 +125,15 @@ public class RankManagerTest {
 		when(mockPlugin.getPlayer(any())).thenReturn(user);
 		
 		when(player.getRank()).thenReturn(1);
-		assertTrue(rankManager.checkPlayerRankAlerter(player, PartiesPermission.PRIVATE_EDIT_COLOR));
+		assertTrue(rankManager.checkPlayerRankAlerter(player, RankPermission.EDIT_COLOR));
 		verify(player, times(0)).sendMessage(anyString());
-		assertTrue(rankManager.checkPlayerRankAlerter(player, PartiesPermission.PRIVATE_EDIT_DESC));
+		assertTrue(rankManager.checkPlayerRankAlerter(player, RankPermission.EDIT_DESC));
 		verify(player, times(0)).sendMessage(anyString());
-		assertFalse(rankManager.checkPlayerRankAlerter(player, PartiesPermission.PRIVATE_EDIT_FOLLOW));
+		assertFalse(rankManager.checkPlayerRankAlerter(player, RankPermission.EDIT_FOLLOW));
 		verify(player, times(1)).sendMessage(anyString());
-		assertFalse(rankManager.checkPlayerRankAlerter(player, PartiesPermission.PRIVATE_EDIT_HOME));
+		assertFalse(rankManager.checkPlayerRankAlerter(player, RankPermission.EDIT_HOME));
 		verify(player, times(2)).sendMessage(anyString());
-		assertFalse(rankManager.checkPlayerRankAlerter(player, PartiesPermission.PRIVATE_EDIT_MOTD));
+		assertFalse(rankManager.checkPlayerRankAlerter(player, RankPermission.EDIT_MOTD));
 		verify(player, times(3)).sendMessage(anyString());
 	}
 }

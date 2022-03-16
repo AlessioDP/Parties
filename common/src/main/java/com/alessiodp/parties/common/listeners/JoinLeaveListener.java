@@ -40,7 +40,7 @@ public abstract class JoinLeaveListener {
 				}
 				
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN, player.getName(),
-						party.getId() != null ? (party.getName() + "|" + party.getId().toString()) : "none"), true);
+						party.getName() + "|" + party.getId()), true);
 			} else if (ConfigParties.ADDITIONAL_FIXED_DEFAULT_ENABLE
 					&& !player.hasPermission(PartiesPermission.ADMIN_JOIN_DEFAULT_BYPASS)) {
 				// Party not found - checking for default one
@@ -54,7 +54,7 @@ public abstract class JoinLeaveListener {
 					
 					partyPlayer.sendMessage(Messages.OTHER_FIXED_DEFAULTJOIN, party);
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN_DEFAULTJOIN, player.getName(),
-							party.getName() + "|" + party.getId().toString()), true);
+							party.getName() + "|" + party.getId()), true);
 				} else {
 					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_JOIN_DEFAULTFAIL, ConfigParties.ADDITIONAL_FIXED_DEFAULT_PARTY), true);
 				}

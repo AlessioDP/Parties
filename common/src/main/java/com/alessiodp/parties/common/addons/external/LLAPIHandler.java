@@ -4,7 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.addons.external.hooks.LLAPIHook;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ public class LLAPIHandler {
 	private static boolean active;
 	private static LLAPIHook hook;
 	
-	public LLAPIHandler(@NonNull ADPPlugin adpPlugin) {
+	public LLAPIHandler(@NotNull ADPPlugin adpPlugin) {
 		plugin = adpPlugin;
 	}
 	

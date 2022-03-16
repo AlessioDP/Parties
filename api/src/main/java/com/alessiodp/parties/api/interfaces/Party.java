@@ -12,14 +12,14 @@ public interface Party {
 	/**
 	 * Get the party id
 	 *
-	 * @return Returns the id of the party
+	 * @return the id of the party
 	 */
 	@NotNull UUID getId();
 	
 	/**
 	 * Get the party name
 	 *
-	 * @return Returns the name of the party
+	 * @return the name of the party
 	 */
 	@Nullable String getName();
 	
@@ -31,15 +31,15 @@ public interface Party {
 	/**
 	 * Rename the party
 	 *
-	 * @param newName The name to set
+	 * @param newName the name to set
 	 */
 	void rename(@Nullable String newName);
 	
 	/**
 	 * Set the party name
 	 *
-	 * @param name The name to set
-	 * @deprecated Use rename(String)
+	 * @param name the name to set
+	 * @deprecated use rename(String)
 	 */
 	@Deprecated
 	default void setName(String name) {
@@ -49,14 +49,14 @@ public interface Party {
 	/**
 	 * Get a list of party members. It will contains members of every rank, leader too.
 	 *
-	 * @return Returns the members sub of the party
+	 * @return the members sub of the party
 	 */
 	@NotNull Set<UUID> getMembers();
 	
 	/**
 	 * Get a list of online members
 	 *
-	 * @return Returns an unmodifiable {@code Set<PartyPlayer>}
+	 * @return an unmodifiable {@code Set<PartyPlayer>}
 	 */
 	@NotNull default Set<PartyPlayer> getOnlineMembers() {
 		return getOnlineMembers(true);
@@ -65,39 +65,39 @@ public interface Party {
 	/**
 	 * Get a list of online members
 	 *
-	 * @param bypassVanish Bypass player with vanish?
-	 * @return Returns an unmodifiable {@code Set<PartyPlayer>}
+	 * @param bypassVanish bypass player with vanish?
+	 * @return an unmodifiable {@code Set<PartyPlayer>}
 	 */
 	@NotNull Set<PartyPlayer> getOnlineMembers(boolean bypassVanish);
 	
 	/**
 	 * Add the player to the party
 	 *
-	 * @param partyPlayer The {@link PartyPlayer} to add
-	 * @return Returns true if successfully added
+	 * @param partyPlayer the {@link PartyPlayer} to add
+	 * @return true if successfully added
 	 */
 	boolean addMember(@NotNull PartyPlayer partyPlayer);
 	
 	/**
 	 * Remove the player from the party
 	 *
-	 * @param partyPlayer The {@link PartyPlayer} to remove
-	 * @return Returns true if successfully removed
+	 * @param partyPlayer the {@link PartyPlayer} to remove
+	 * @return true if successfully removed
 	 */
 	boolean removeMember(@NotNull PartyPlayer partyPlayer);
 	
 	/**
 	 * Get a list of pending invite requests
 	 *
-	 * @return A set of {@link PartyInvite}
+	 * @return a set of {@link PartyInvite}
 	 */
 	Set<PartyInvite> getInviteRequests();
 	
 	/**
 	 * Invite the player into the party
 	 *
-	 * @param partyPlayer The {@link PartyPlayer} to invite
-	 * @return Returns the {@link PartyInvite} instance
+	 * @param partyPlayer the {@link PartyPlayer} to invite
+	 * @return the {@link PartyInvite} instance
 	 */
 	default PartyInvite invitePlayer(@NotNull PartyPlayer partyPlayer) {
 		return invitePlayer(partyPlayer, null);
@@ -106,9 +106,9 @@ public interface Party {
 	/**
 	 * Invite the player into the party
 	 *
-	 * @param partyPlayer The {@link PartyPlayer} to invite
-	 * @param inviter The {@link PartyPlayer} who is inviting partyPlayer
-	 * @return Returns the {@link PartyInvite} instance
+	 * @param partyPlayer the {@link PartyPlayer} to invite
+	 * @param inviter the {@link PartyPlayer} who is inviting partyPlayer
+	 * @return the {@link PartyInvite} instance
 	 */
 	default PartyInvite invitePlayer(@NotNull PartyPlayer partyPlayer, @Nullable PartyPlayer inviter) {
 		return invitePlayer(partyPlayer, inviter, true);
@@ -117,115 +117,115 @@ public interface Party {
 	/**
 	 * Invite the player into the party
 	 *
-	 * @param partyPlayer The {@link PartyPlayer} to invite
-	 * @param inviter The {@link PartyPlayer} who is inviting partyPlayer
-	 * @param sendMessages True if the event should send messages to players
-	 * @return Returns the {@link PartyInvite} instance
+	 * @param partyPlayer the {@link PartyPlayer} to invite
+	 * @param inviter the {@link PartyPlayer} who is inviting partyPlayer
+	 * @param sendMessages true if the event should send messages to players
+	 * @return the {@link PartyInvite} instance
 	 */
 	PartyInvite invitePlayer(@NotNull PartyPlayer partyPlayer, @Nullable PartyPlayer inviter, boolean sendMessages);
 	
 	/**
 	 * Get a list of pending ask requests
 	 *
-	 * @return A set of {@link PartyAskRequest}
+	 * @return a set of {@link PartyAskRequest}
 	 */
 	Set<PartyAskRequest> getAskRequests();
 	
 	/**
 	 * Is the party full?
 	 *
-	 * @return Returns true if the party is full
+	 * @return true if the party is full
 	 */
 	boolean isFull();
 	
 	/**
 	 * Get the party leader
 	 *
-	 * @return Returns the {@link UUID} of the party leader, can be magic if the party is fixed
+	 * @return the {@link UUID} of the party leader, can be magic if the party is fixed
 	 */
 	@Nullable UUID getLeader();
 	
 	/**
 	 * Change the party leader
 	 *
-	 * @param leaderPartyPlayer The {@link PartyPlayer} to promote as leader
+	 * @param leaderPartyPlayer the {@link PartyPlayer} to promote as leader
 	 */
 	void changeLeader(@NotNull PartyPlayer leaderPartyPlayer);
 	
 	/**
 	 * Is the party fixed?
 	 *
-	 * @return Returns if the party is fixed
+	 * @return true if the party is fixed
 	 */
 	boolean isFixed();
 	
 	/**
 	 * Toggle a fixed party
 	 *
-	 * @param fixed {@code True} to be fixed
-	 * @param newLeader New leader to set, null if setting Party as fixed
+	 * @param fixed {@code true} to be fixed
+	 * @param newLeader new leader to set, null if setting Party as fixed
 	 */
 	void setFixed(boolean fixed, @Nullable PartyPlayer newLeader);
 	
 	/**
 	 * Get the party tag
 	 *
-	 * @return Returns party tag
+	 * @return the party tag
 	 */
 	@Nullable String getTag();
 	
 	/**
 	 * Set the party tag
 	 *
-	 * @param tag The tag of the party
+	 * @param tag the tag of the party
 	 */
 	void setTag(@Nullable String tag);
 	
 	/**
 	 * Get the party description
 	 *
-	 * @return Returns party description
+	 * @return the party description
 	 */
 	@Nullable String getDescription();
 	
 	/**
 	 * Set the party description
 	 *
-	 * @param description The description of the party
+	 * @param description the description of the party
 	 */
 	void setDescription(@Nullable String description);
 	
 	/**
 	 * Get the Message Of The Day of the party
 	 *
-	 * @return Returns the MOTD of the party
+	 * @return the MOTD of the party
 	 */
 	@Nullable String getMotd();
 	
 	/**
 	 * Set the Message Of The Day of the party
 	 *
-	 * @param motd The MOTD of the party
+	 * @param motd the MOTD of the party
 	 */
 	void setMotd(@Nullable String motd);
 	
 	/**
 	 * Get the set of homes of the party
 	 *
-	 * @return Returns the {@code Set<PartyHome>} of the party
+	 * @return the {@code Set<PartyHome>} of the party
 	 */
 	@NotNull Set<PartyHome> getHomes();
 	
 	/**
 	 * Set the set of homes of the party
 	 *
-	 * @param homes The {@code Set<PartyHome>} of the party
+	 * @param homes the {@code Set<PartyHome>} of the party
 	 */
 	void setHomes(@NotNull Set<PartyHome> homes);
 	
 	/**
-	 * @deprecated Use {@code getHomes()} instead
-	 * @return The {@code PartyHome} of the party
+	 * @deprecated use {@code getHomes()} instead
+	 * @return the {@code PartyHome} of the party
 	 */
 	@Deprecated
 	default PartyHome getHome() {
@@ -233,8 +233,8 @@ public interface Party {
 	}
 	
 	/**
-	 * @deprecated Use {@code setHomes(...)} instead
-	 * @param home The new party home
+	 * @deprecated use {@code setHomes(...)} instead
+	 * @param home the new party home
 	 */
 	@Deprecated
 	default void setHome(@Nullable PartyHome home) {
@@ -248,64 +248,78 @@ public interface Party {
 	/**
 	 * Get the party color
 	 *
-	 * @return Returns the {@code Color} of the party
+	 * @return the {@code Color} of the party
 	 */
 	@Nullable PartyColor getColor();
 	
 	/**
 	 * Set the party color
 	 *
-	 * @param color The {@code Color} of the party
+	 * @param color the {@code Color} of the party
 	 */
 	void setColor(@Nullable PartyColor color);
 	
 	/**
 	 * Get the kills number of the party
 	 *
-	 * @return The number of kills of the party
+	 * @return the number of kills of the party
 	 */
 	int getKills();
 	
 	/**
 	 * Set the number of kills of the party
 	 *
-	 * @param kills The number of kills of the party
+	 * @param kills the number of kills of the party
 	 */
 	void setKills(int kills);
 	
 	/**
+	 * Is the party open to players?
+	 *
+	 * @return true if its open
+	 */
+	boolean isOpen();
+	
+	/**
+	 * Set the party as open
+	 *
+	 * @param open true for open
+	 */
+	void setOpen(boolean open);
+	
+	/**
 	 * Get the party password
 	 *
-	 * @return Returns the password of the party, HASHED
+	 * @return the password of the party, HASHED
 	 */
 	@Nullable String getPassword();
 	
 	/**
 	 * Set the party password
 	 *
-	 * @param password The password of the party, HASHED
+	 * @param password the password of the party, HASHED
 	 */
 	void setPassword(@Nullable String password);
 	
 	/**
 	 * Set the party password unhashed, the plugin will hash it
 	 *
-	 * @param password The password of the party
-	 * @return Returns true if the password is valid
+	 * @param password the password of the party
+	 * @return true if the password is valid
 	 */
 	boolean setPasswordUnhashed(@Nullable String password);
 	
 	/**
 	 * Get the party friendly fire protection
 	 *
-	 * @return Returns true if the party is protected
+	 * @return true if the party is protected
 	 */
 	boolean getProtection();
 	
 	/**
 	 * Set the party friendly fire protection
 	 *
-	 * @param protection True if you want protect the party
+	 * @param protection true if you want protect the party
 	 */
 	void setProtection(boolean protection);
 	
@@ -314,70 +328,80 @@ public interface Party {
 	 * command and global protection.
 	 * Use this if you just want to check for FF.
 	 *
-	 * @return Returns true if pvp between players is protected
+	 * @return true if pvp between players is protected
 	 */
 	boolean isFriendlyFireProtected();
 	
 	/**
 	 * Get the party experience
 	 *
-	 * @return Returns the total experience of the party
+	 * @return the total experience of the party
 	 */
 	double getExperience();
 	
 	/**
 	 * Set the party experience
 	 *
-	 * @param experience The experience number to set
+	 * @param experience the experience number to set
 	 */
 	void setExperience(double experience);
 	
 	/**
 	 * Give party experience
 	 *
-	 * @param experience The experience number to give
+	 * @param experience the experience number to give
 	 */
-	void giveExperience(double experience);
+	default void giveExperience(double experience) {
+		giveExperience(experience, true);
+	}
+	
+	/**
+	 * Give party experience. Choose to send the gain message or not.
+	 *
+	 * @param experience the experience number to give
+	 * @param gainMessage should the gain message be sent or not
+	 */
+	void giveExperience(double experience, boolean gainMessage);
 	
 	/**
 	 * Get the current party level
 	 *
-	 * @return Returns the calculated level of the party
+	 * @return the calculated level of the party
 	 */
 	int getLevel();
 	
 	/**
 	 * Get the total experience of the current level
 	 *
-	 * @return Returns the total experience of the current level
+	 * @return the total experience of the current level
 	 */
 	double getLevelExperience();
 	
 	/**
 	 * Get the current party level experience. How many experience of the current level
 	 *
-	 * @return Returns the current level experience of the party
+	 * @return the current level experience of the party
 	 */
 	double getLevelUpCurrent();
 	
 	/**
 	 * Get the experience required to level up the party
 	 *
-	 * @return Returns the experience required to level up the party
+	 * @return the experience required to level up the party
 	 */
 	double getLevelUpNecessary();
 	
 	/**
 	 * Set the party follow option
 	 *
-	 * @param follow True if you want enable follow option
+	 * @param follow true if you want enable follow option
 	 */
 	void setFollowEnabled(boolean follow);
 	
 	/**
 	 * Check if the party have the follow option enabled
 	 *
-	 * @return Returns true if follow option is enabled
+	 * @return true if follow option is enabled
 	 */
 	boolean isFollowEnabled();
 	
@@ -386,8 +410,8 @@ public interface Party {
 	 * It requires a player to send the message because Parties gets the placeholder info from the player.
 	 * The player can be null if its a general broadcast.
 	 *
-	 * @param message The message to broadcast
-	 * @param player  The {@link PartyPlayer} who sent the message
+	 * @param message the message to broadcast
+	 * @param player  the {@link PartyPlayer} who sent the message
 	 */
-	void broadcastMessage(@Nullable String message, @Nullable PartyPlayer player);
+	void broadcastMessage(@NotNull String message, @Nullable PartyPlayer player);
 }

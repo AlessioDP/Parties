@@ -13,14 +13,13 @@ import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
 import com.alessiodp.parties.bukkit.utils.LastConfirmedCommand;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
+import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
+import com.alessiodp.parties.common.utils.RankPermission;
 import org.bukkit.Bukkit;
 
 
@@ -28,6 +27,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	@Getter @Setter private boolean portalPause = false;
@@ -36,6 +36,17 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 	
 	public BukkitPartyPlayerImpl(PartiesPlugin plugin, UUID uuid) {
 		super(plugin, uuid);
+	}
+	
+	@Override
+	public boolean performPartyMessage(@NotNull String message) {
+		if (plugin.isBungeeCordEnabled()) {
+			PartyImpl party = plugin.getPartyManager().getParty(getPartyId());
+			if (party != null)
+				((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendChatMessage(party, this, message);
+			return true;
+		}
+		return super.performPartyMessage(message);
 	}
 	
 	@Override
@@ -64,28 +75,15 @@ public class BukkitPartyPlayerImpl extends PartyPlayerImpl {
 		}
 	}
 	
-	public void playPacketSound(byte[] raw) {
-		try {
-			ByteArrayDataInput input = ByteStreams.newDataInput(raw);
-			String sound = input.readUTF();
-			double volume = input.readDouble();
-			double pitch = input.readDouble();
-			
-			playSound(sound, volume, pitch);
-		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_MESSAGING_LISTEN_PLAY_SOUND_ERROR, ex.getMessage() != null ? ex.getMessage() : ex.toString()));
-		}
-	}
-	
 	@Override
 	public Set<ADPCommand> getAllowedCommands() {
 		Set<ADPCommand> ret = super.getAllowedCommands();
 		PartyRankImpl rank = plugin.getRankManager().searchRankByLevel(getRank());
 		User player = plugin.getPlayer(getPlayerUUID());
 		
-		if (isInParty()) {
+		if (player != null && isInParty()) {
 			// Other commands
-			if (BukkitConfigMain.ADDONS_CLAIM_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(PartiesPermission.PRIVATE_CLAIM))
+			if (BukkitConfigMain.ADDONS_CLAIM_ENABLE && player.hasPermission(PartiesPermission.USER_CLAIM) && rank.havePermission(RankPermission.CLAIM))
 				ret.add(BukkitCommands.CLAIM);
 			
 		}

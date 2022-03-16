@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Description")
 @Description("Get the description of the given party.")
 @Examples({"send \"%description of party with name \"test\"%\"",

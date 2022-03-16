@@ -1,16 +1,24 @@
 package com.alessiodp.parties.bukkit.addons.external.skript.events;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.lang.util.SimpleEvent;
+import ch.njol.skript.lang.Literal;
+import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyLevelUpEvent;
 import com.alessiodp.parties.api.interfaces.Party;
+import org.bukkit.event.Event;
 
-public class EvtPartyExperience {
+import java.util.ArrayList;
+import java.util.Collection;
+
+@SuppressWarnings("NullableProblems")
+public class EvtPartyExperience extends SelfRegisteringSkriptEvent {
 	static {
-		Skript.registerEvent("Party Get Experience", SimpleEvent.class, BukkitPartiesPartyGetExperienceEvent.class,
+		Skript.registerEvent("Party Get Experience", EvtPartyExperience.class, BukkitPartiesPartyGetExperienceEvent.class,
 				"party get[s] experience")
 				.description("Called when a party gets experience.")
 				.examples("on party get experience:",
@@ -29,7 +37,7 @@ public class EvtPartyExperience {
 			}
 		}, 0);
 		
-		Skript.registerEvent("Party Level Up", SimpleEvent.class, BukkitPartiesPartyLevelUpEvent.class,
+		Skript.registerEvent("Party Level Up", EvtPartyExperience.class, BukkitPartiesPartyLevelUpEvent.class,
 				"party level[s] up")
 				.description("Called when a party levels up.")
 				.examples("on party level up:",
@@ -47,5 +55,32 @@ public class EvtPartyExperience {
 				return e.getNewLevel();
 			}
 		}, 0);
+	}
+	
+	final static Collection<Trigger> triggers = new ArrayList<>();
+	
+	@Override
+	public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
+		return true;
+	}
+	
+	@Override
+	public void register(Trigger trigger) {
+		triggers.add(trigger);
+	}
+	
+	@Override
+	public void unregister(Trigger trigger) {
+		triggers.remove(trigger);
+	}
+	
+	@Override
+	public void unregisterAll() {
+		triggers.clear();
+	}
+	
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "party experience";
 	}
 }

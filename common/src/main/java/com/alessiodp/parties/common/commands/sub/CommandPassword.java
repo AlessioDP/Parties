@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -16,6 +15,8 @@ import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.PasswordUtils;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,19 +44,19 @@ public class CommandPassword extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFullWithParty(commandData, true, 2, 2, PartiesPermission.PRIVATE_EDIT_PASSWORD);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		return handlePreRequisitesFullWithParty(commandData, true, 2, 2, RankPermission.EDIT_PASSWORD);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
 		
 		// Command handling
 		boolean isRemove = false;
-		String password = "";
+		String password;
 		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE)) {
 			// Remove command
 			isRemove = true;
@@ -69,7 +70,7 @@ public class CommandPassword extends PartiesSubCommand {
 			
 			password = PasswordUtils.hashText(commandData.getArgs()[1]);
 			
-			if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.PASSWORD, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+			if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.PASSWORD, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 				return;
 		}
 		
@@ -91,7 +92,7 @@ public class CommandPassword extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 2 && ConfigMain.COMMANDS_MISC_REMOVE.startsWith(args[1])) {
 			ret.add(ConfigMain.COMMANDS_MISC_REMOVE);

@@ -9,8 +9,7 @@ public abstract class BungeePartiesEvent extends Event implements PartiesEvent {
 	private PartiesAPI api;
 	
 	@Override
-	@NotNull
-	public PartiesAPI getApi() {
+	public @NotNull PartiesAPI getApi() {
 		return api;
 	}
 	

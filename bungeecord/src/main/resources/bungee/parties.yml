@@ -226,17 +226,20 @@ additional:
       party: "default"
 
   # [Friendly fire protection]
-  # Prevent fights between party-mates
+  # Prevent fights between party-mates (This requires Parties to be installed in Bukkit servers)
   # You can choose which type of friendly fire protect:
   # => global:   Always protect all party-mates
   # => command:  Toggle the party protection with "/party protection" command
   #
   # You can enable 'warn-players-on-fight' to warn leaders on friendly fire hits
+  # 'prevent-fish-hook' works only in 1.15+
+  # 'prevent-damage-with-magic' prevents friendly fire damage of Magic plugin
   friendly-fire:
     enable: true
     type: global
     warn-players-on-fight: true
     prevent-fish-hook: false
+    prevent-damage-with-magic: true
 
   # [Home system]
   # Allow the creation of party homes
@@ -259,6 +262,20 @@ additional:
   # You can enable password system too, this will enable the command "/party password"
   join:
     enable: false
+
+    # Enable open and close commands
+    # Let users open or close their party to let other players join
+    open-close:
+      enable: false
+      # Hide open command if already open, viceversa for close command
+      hide-opposite-command: true
+      open-by-default: false
+      cooldown-open: 0
+      cooldown-close: 0
+
+    # Enable password system
+    # Users can set a password to the party then let other players join it with "/party join <password>"
+    # Password can be set with "/party password" and parties without a password can be freely joined
     password:
       enable: false
       allowed-characters: '[a-zA-Z0-9]+'
@@ -267,6 +284,7 @@ additional:
       encode: "UTF-8"
       minimum-length: 1
       maximum-length: 16
+
     # Enable a cooldown to prevent join request spam
     # You can choose to set a cooldown for every join request (global) or individual parties, in seconds
     # With 'start-cooldown-on-leave' you can force the cooldown to start if the player leaves a party

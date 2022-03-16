@@ -4,19 +4,19 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class PAPIHook extends PlaceholderExpansion {
-	@NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
 	
 	@Override
 	public boolean canRegister() {
@@ -24,22 +24,22 @@ public class PAPIHook extends PlaceholderExpansion {
 	}
 	
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return plugin.getPluginName();
 	}
 	
 	@Override
-	public String getIdentifier() {
+	public @NotNull String getIdentifier() {
 		return "parties";
 	}
 	
 	@Override
-	public String getAuthor() {
+	public @NotNull String getAuthor() {
 		return "AlessioDP";
 	}
 	
 	@Override
-	public String getVersion() {
+	public @NotNull String getVersion() {
 		return plugin.getVersion();
 	}
 	
@@ -49,7 +49,7 @@ public class PAPIHook extends PlaceholderExpansion {
 	}
 	
 	@Override
-	public List<String> getPlaceholders() {
+	public @NotNull List<String> getPlaceholders() {
 		List<String> ret = new ArrayList<>();
 		for (PartiesPlaceholder placeholder : PartiesPlaceholder.values()) {
 			ret.add("%" + getIdentifier() + "_" + placeholder.getSyntax() + "%");
@@ -62,7 +62,7 @@ public class PAPIHook extends PlaceholderExpansion {
 	}
 	
 	@Override
-	public String onRequest(OfflinePlayer offlinePlayer, String identifier) {
+	public String onRequest(OfflinePlayer offlinePlayer, @NotNull String identifier) {
 		if (offlinePlayer != null) {
 			PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
 			PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());

@@ -8,18 +8,29 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-@AllArgsConstructor
+import java.util.UUID;
+
 @EqualsAndHashCode
 public class PartyAskRequestImpl implements PartyAskRequest {
-	@NonNull private final PartiesPlugin plugin;
-	@Getter @Setter private Party party;
-	@Getter @Setter private PartyPlayer asker;
+	@EqualsAndHashCode.Exclude private final PartiesPlugin plugin;
+	@Getter @Setter @EqualsAndHashCode.Exclude private Party party;
+	@Getter @Setter @EqualsAndHashCode.Exclude private PartyPlayer asker;
+	private final UUID partyId;
+	private final UUID playerId;
+	
+	public PartyAskRequestImpl(@NotNull PartiesPlugin plugin, Party party, PartyPlayer asker) {
+		this.plugin = plugin;
+		this.party = party;
+		this.asker = asker;
+		// Used for hash purpose
+		partyId = party.getId();
+		playerId = asker.getPlayerUUID();
+	}
 	
 	@Override
 	public void accept(boolean sendMessages, PartyPlayer accepter) {

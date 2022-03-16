@@ -7,7 +7,6 @@ import com.alessiodp.core.common.scheduling.CancellableTask;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.interfaces.PartyHome;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -15,12 +14,15 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.HomeDelayTask;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -61,22 +63,27 @@ public abstract class CommandHome extends PartiesSubCommand {
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
+	public @NotNull String getSyntaxForUser(User user) {
 		if (user.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS))
 			return syntaxOthers;
 		return syntax;
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFull(commandData, null);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		boolean ret = handlePreRequisitesFull(commandData, null);
+		if (ret) {
+			commandData.addPermission(PartiesPermission.ADMIN_HOME_OTHERS);
+			commandData.addPermission(PartiesPermission.ADMIN_COOLDOWN_HOME_BYPASS);
+		}
+		return ret;
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getPartyOfPlayer(partyPlayer);
+		PartyImpl party = getPlugin().getPartyManager().getPartyOfPlayer(partyPlayer);
 		
 		// Command handling
 		PartyHomeImpl partyHome = null;
@@ -113,7 +120,7 @@ public abstract class CommandHome extends PartiesSubCommand {
 			} else if (commandData.getArgs().length == 2) {
 				
 				// Not admin - Not in party
-				if (!sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS) && party == null) {
+				if (!commandData.havePermission(PartiesPermission.ADMIN_HOME_OTHERS) && party == null) {
 					sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 					return;
 				}
@@ -127,8 +134,8 @@ public abstract class CommandHome extends PartiesSubCommand {
 				
 				// If no home but home.others permission
 				if (partyHome == null
-						&& sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
-					party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
+						&& commandData.havePermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
+					party = getPlugin().getPartyManager().getParty(commandData.getArgs()[1]);
 					
 					if (party != null) {
 						if (party.getHomes().size() > 1) {
@@ -155,8 +162,8 @@ public abstract class CommandHome extends PartiesSubCommand {
 					printValidHomes(sender, partyPlayer, party);
 					return;
 				}
-			} else if (commandData.getArgs().length == 3 && sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
-				party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
+			} else if (commandData.getArgs().length == 3 && commandData.havePermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
+				party = getPlugin().getPartyManager().getParty(commandData.getArgs()[1]);
 				
 				if (party != null) {
 					Optional<PartyHome> opt = party.getHomes().stream().filter((ph) -> ph.getName() != null && ph.getName().equalsIgnoreCase(commandData.getArgs()[1])).findAny();
@@ -186,8 +193,8 @@ public abstract class CommandHome extends PartiesSubCommand {
 					sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_NOHOME, party);
 					return;
 				}
-			} else if (commandData.getArgs().length == 2 && sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
-				party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
+			} else if (commandData.getArgs().length == 2 && commandData.havePermission(PartiesPermission.ADMIN_HOME_OTHERS)) {
+				party = getPlugin().getPartyManager().getParty(commandData.getArgs()[1]);
 				
 				if (party != null) {
 					Optional<PartyHome> opt = party.getHomes().stream().findFirst();
@@ -208,8 +215,8 @@ public abstract class CommandHome extends PartiesSubCommand {
 			}
 		}
 		
-		if (!sender.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
-				&& !((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_HOME))
+		if (!commandData.havePermission(PartiesPermission.ADMIN_HOME_OTHERS)
+				&& !getPlugin().getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.HOME))
 			return;
 		
 		if (partyPlayer.getPendingHomeDelay() != null) {
@@ -218,9 +225,9 @@ public abstract class CommandHome extends PartiesSubCommand {
 		}
 		
 		boolean mustStartCooldown = false;
-		if (ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_HOME_BYPASS)) {
+		if (ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_HOME_BYPASS)) {
 			mustStartCooldown = true;
-			long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canHome(sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME);
+			long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.HOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME);
 			
 			if (remainingCooldown > 0) {
 				sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_COOLDOWN
@@ -229,15 +236,16 @@ public abstract class CommandHome extends PartiesSubCommand {
 			}
 		}
 		
-		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.HOME, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.HOME, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		if (mustStartCooldown)
-			((PartiesPlugin) plugin).getCooldownManager().startHomeCooldown(sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME);
+			getPlugin().getCooldownManager().startAction(CooldownManager.Action.HOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME
+			);
 		
 		// Command starts
 		int delay = ConfigParties.ADDITIONAL_HOME_DELAY;
-		String homeDelayPermission = sender.getDynamicPermission(PartiesPermission.USER_HOME.toString() + ".");
+		String homeDelayPermission = sender.getDynamicPermission(PartiesPermission.USER_HOME + ".");
 		if (homeDelayPermission != null) {
 			try {
 				delay = Integer.parseInt(homeDelayPermission);

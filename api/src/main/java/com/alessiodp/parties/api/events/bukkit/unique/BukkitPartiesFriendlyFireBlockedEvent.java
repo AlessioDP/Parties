@@ -23,30 +23,27 @@ public class BukkitPartiesFriendlyFireBlockedEvent extends BukkitPartiesEvent im
 	/**
 	 * Get the victim of the event
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	public PartyPlayer getPlayerVictim() {
+	public @NotNull PartyPlayer getPlayerVictim() {
 		return victim;
 	}
 	
 	/**
 	 * Get the attacker
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	public PartyPlayer getPlayerAttacker() {
+	public @NotNull PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}
 	
 	/**
 	 * Get the original Bukkit event handled by Parties
 	 *
-	 * @return Returns the original {@link EntityDamageByEntityEvent}, or {@code null} if there is no bukkit event
+	 * @return the original {@link EntityDamageByEntityEvent}, or {@code null} if there is no bukkit event
 	 */
-	@Nullable
-	public EntityDamageByEntityEvent getOriginalEvent() {
+	public @Nullable EntityDamageByEntityEvent getOriginalEvent() {
 		return originalEvent;
 	}
 	

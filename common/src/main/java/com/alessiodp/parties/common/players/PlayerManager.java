@@ -8,7 +8,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.SpyMessage;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import lombok.Getter;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,8 +21,7 @@ public abstract class PlayerManager {
 	@Getter private final HashSet<UUID> cachePlayersToDelete;
 	@Getter private final HashSet<UUID> cacheSpies;
 	
-	
-	protected PlayerManager(@NonNull PartiesPlugin instance) {
+	protected PlayerManager(@NotNull PartiesPlugin instance) {
 		plugin = instance;
 		cachePlayers = new HashMap<>();
 		cachePlayersToDelete = new HashSet<>();
@@ -35,17 +34,21 @@ public abstract class PlayerManager {
 		cacheSpies.clear();
 		
 		for (User player : plugin.getOnlinePlayers()) {
-			PartyPlayerImpl pp = loadPlayer(player.getUUID());
-			
-			PartyImpl party = plugin.getPartyManager().loadParty(pp.getPartyId());
-			if (party != null)
-				party.addOnlineMember(pp);
-			
-			plugin.getLoginAlertsManager().sendAlerts(player);
+			setupOnlinePlayer(player);
 		}
 	}
 	
 	public abstract PartyPlayerImpl initializePlayer(UUID playerUUID);
+	
+	public void setupOnlinePlayer(User player) {
+		PartyPlayerImpl pp = loadPlayer(player.getUUID());
+		
+		PartyImpl party = plugin.getPartyManager().loadParty(pp.getPartyId());
+		if (party != null)
+			party.addOnlineMember(pp);
+		
+		plugin.getLoginAlertsManager().sendAlerts(player);
+	}
 	
 	public PartyPlayerImpl loadPlayer(UUID uuid) {
 		PartyPlayerImpl ret = getPlayer(uuid);

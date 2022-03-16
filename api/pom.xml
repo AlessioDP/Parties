@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.14</version>
+		<version>3.2.0</version>
 	</parent>
 	
 	<artifactId>parties-api</artifactId>
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>${libs.api.annotations}</version>
+			<version>${dev.annotations}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -59,6 +59,12 @@
 			<groupId>net.md-5</groupId>
 			<artifactId>bungeecord-api</artifactId>
 			<version>${libs.api.bungeecord}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.velocitypowered</groupId>
+			<artifactId>velocity-api</artifactId>
+			<version>${libs.api.velocity}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

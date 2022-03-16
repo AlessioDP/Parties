@@ -5,8 +5,8 @@ import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.lastloginapi.api.LastLogin;
 import com.alessiodp.lastloginapi.api.interfaces.LastLoginAPI;
 import com.alessiodp.lastloginapi.api.interfaces.LastLoginPlayer;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class LLAPIHook {
-	@NonNull private final ADPPlugin plugin;
+	@NotNull private final ADPPlugin plugin;
 	private LastLoginAPI api;
 	
 	public boolean register() {
@@ -23,8 +23,7 @@ public class LLAPIHook {
 			api = LastLogin.getApi();
 			ret = true;
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, "LastLoginAPI"));
-			ex.printStackTrace();
+			plugin.getLoggerManager().logError(String.format(Constants.DEBUG_ADDON_OUTDATED, "LastLoginAPI"), ex);
 		}
 		return ret;
 	}

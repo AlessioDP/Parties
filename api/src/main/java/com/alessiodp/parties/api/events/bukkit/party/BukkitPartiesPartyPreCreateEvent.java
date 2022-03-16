@@ -21,15 +21,13 @@ public class BukkitPartiesPartyPreCreateEvent extends BukkitPartiesEvent impleme
 		this.fixed = fixed;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @Nullable PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@Nullable
 	@Override
-	public String getPartyName() {
+	public @Nullable String getPartyName() {
 		return name;
 	}
 	

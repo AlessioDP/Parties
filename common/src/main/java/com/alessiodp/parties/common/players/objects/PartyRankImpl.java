@@ -2,13 +2,13 @@ package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.parties.api.interfaces.PartyRank;
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,12 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class PartyRankImpl implements PartyRank {
-	@Getter @Setter @NonNull private String configName;
+	@Getter @Setter @NotNull private String configName;
 	@Getter @Setter private String name = "";
 	@Getter @Setter private String chat = "";
 	@Getter @Setter private int level = 1;
+	@Getter @Setter private int slot = 0;
+	@Getter @Setter private PartyRankImpl inheritence = null;
 	@Getter @Setter private List<String> permissions = new ArrayList<>();
 	private boolean def = false;
 	
@@ -45,10 +47,12 @@ public class PartyRankImpl implements PartyRank {
 			else if (perm.equalsIgnoreCase(p))
 				return true;
 		}
+		if (inheritence != null)
+			return inheritence.havePermission(p);
 		return false;
 	}
 	
-	public boolean havePermission(PartiesPermission p) {
+	public boolean havePermission(RankPermission p) {
 		return havePermission(p.toString());
 	}
 	

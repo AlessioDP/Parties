@@ -81,6 +81,17 @@ public abstract class PartyManager {
 		}
 	}
 	
+	public void reloadPartyIfCached(UUID id) {
+		if (id != null) {
+			if (cacheParties.containsKey(id))
+				reloadParty(id);
+		}
+	}
+	
+	public boolean isPartyCached(UUID id) {
+		return id != null && cacheParties.containsKey(id);
+	}
+	
 	public PartyImpl loadParty(String name) {
 		// Get the party and save it into the party list
 		PartyImpl ret = getParty(name);
@@ -180,17 +191,17 @@ public abstract class PartyManager {
 			
 			party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEADER_CHANGED, newLeader);
 			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_CHANGE_LEADER, party.getId().toString(), newLeader.getPlayerUUID().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_CHANGE_LEADER, party.getId(), newLeader.getPlayerUUID()), true);
 			return true;
 		}
 		return false;
 	}
 	
-	public void removePlayerTimedOut(PartyPlayerImpl player, PartyImpl party) {
+	public void removePlayerTimedOut(PartyPlayerImpl player, PartyImpl party, LeaveCause leaveCause, DeleteCause deleteCause) {
 		boolean mustDelete = false;
 		
 		// Calling Pre API event
-		IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
+		IPlayerPreLeaveEvent partiesPreLeaveEvent = plugin.getEventManager().preparePlayerPreLeaveEvent(player, party, leaveCause, null);
 		plugin.getEventManager().callEvent(partiesPreLeaveEvent);
 		
 		if (!partiesPreLeaveEvent.isCancelled()) {
@@ -218,7 +229,7 @@ public abstract class PartyManager {
 			
 			if (mustDelete) {
 				// Calling Pre API event
-				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.TIMEOUT, player, null);
+				IPartyPreDeleteEvent partiesPreDeleteEvent = plugin.getEventManager().preparePartyPreDeleteEvent(party, deleteCause, player, null);
 				plugin.getEventManager().callEvent(partiesPreDeleteEvent);
 				
 				if (!partiesPreDeleteEvent.isCancelled()) {
@@ -226,16 +237,16 @@ public abstract class PartyManager {
 					party.delete(DeleteCause.TIMEOUT, player, player);
 					
 					// Calling Post API Delete event
-					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party, DeleteCause.TIMEOUT, player, null);
+					IPartyPostDeleteEvent partiesPostDeleteEvent = plugin.getEventManager().preparePartyPostDeleteEvent(party, deleteCause, player, null);
 					plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostDeleteEvent));
 					
 					// Calling Post API Leave event
-					IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
+					IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, leaveCause, null);
 					plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostLeaveEvent));
 					
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_DELETE, party.getId().toString(), player.getPlayerUUID().toString()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_DELETE, party.getId(), player.getPlayerUUID()), true);
 				} else {
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getId().toString()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY_GENERIC, party.getId()), true);
 				}
 			} else {
 				// Kick member
@@ -244,13 +255,13 @@ public abstract class PartyManager {
 				party.broadcastMessage(Messages.MAINCMD_KICK_BROADCAST_LEAVE_SERVER, player);
 				
 				// Calling Post API Leave event
-				IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, LeaveCause.TIMEOUT, null);
+				IPlayerPostLeaveEvent partiesPostLeaveEvent = plugin.getEventManager().preparePlayerPostLeaveEvent(player, party, leaveCause, null);
 				plugin.getScheduler().runAsync(() -> plugin.getEventManager().callEvent(partiesPostLeaveEvent));
 				
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_KICK, player.getPlayerUUID().toString(), party.getId().toString()), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_TIMEOUT_KICK, player.getPlayerUUID(), party.getId()), true);
 			}
 		} else {
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, player.getPlayerUUID().toString(), party.getId().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_LEAVEEVENT_DENY, player.getPlayerUUID(), party.getId()), true);
 		}
 	}
 	
@@ -273,15 +284,16 @@ public abstract class PartyManager {
 	
 	public void kickBannedPlayer(UUID player) {
 		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(player);
-		if (partyPlayer != null)
+		if (partyPlayer != null) {
 			kickBannedPlayer(partyPlayer);
+		}
 	}
 	
 	public void kickBannedPlayer(PartyPlayerImpl partyPlayer) {
 		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
 		if (party != null) {
 			// If not handled by on leave kick, handle it
-			party.memberLeftTimeout(partyPlayer, 0);
+			removePlayerTimedOut(partyPlayer, party, LeaveCause.BAN, DeleteCause.BAN);
 		}
 	}
 }

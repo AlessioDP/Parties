@@ -13,10 +13,12 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.utils.RankPermission;
 
 import java.util.HashMap;
 
@@ -41,7 +43,7 @@ public abstract class CommandP extends ADPMainCommand {
 			plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), commandSendMessage, args);
 		} else {
 			// Console
-			plugin.logConsole(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD));
+			plugin.getLogger().info(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD));
 		}
 		return true;
 	}
@@ -89,7 +91,7 @@ public abstract class CommandP extends ADPMainCommand {
 				return false;
 			}
 			
-			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_SENDMESSAGE))
+			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.SENDMESSAGE))
 				return false;
 			
 			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
@@ -119,7 +121,7 @@ public abstract class CommandP extends ADPMainCommand {
 			boolean mustStartCooldown = false;
 			if (ConfigParties.GENERAL_CHAT_COOLDOWN > 0  && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
 				mustStartCooldown = true;
-				long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canChat(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+				long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
 				
 				if (remainingCooldown > 0) {
 					sendMessage(sender, partyPlayer, Messages.MAINCMD_P_COOLDOWN
@@ -133,7 +135,11 @@ public abstract class CommandP extends ADPMainCommand {
 			boolean success = partyPlayer.performPartyMessage(message);
 			if (success) {
 				if (mustStartCooldown)
-					((PartiesPlugin) plugin).getCooldownManager().startChatCooldown(partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+					((PartiesPlugin) plugin).getCooldownManager().startAction(
+							CooldownManager.Action.CHAT,
+							partyPlayer.getPlayerUUID(),
+							ConfigParties.GENERAL_CHAT_COOLDOWN
+					);
 				
 				if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)
 					plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_CMD_P,

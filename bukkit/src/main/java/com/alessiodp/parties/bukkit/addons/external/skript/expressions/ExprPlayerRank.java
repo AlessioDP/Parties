@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Player Rank")
 @Description("Get the rank of the given partyplayer.")
 @Examples({"send \"%rank of partyplayer player%\"",

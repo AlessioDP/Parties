@@ -12,6 +12,7 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Leader")
 @Description("Get the leader as partyplayer of the given party.")
 @Examples({"send \"%leader of party with name \"test\"%\"",

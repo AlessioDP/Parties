@@ -16,6 +16,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Exists")
 @Description("Checks if a party exists.")
 @Examples({

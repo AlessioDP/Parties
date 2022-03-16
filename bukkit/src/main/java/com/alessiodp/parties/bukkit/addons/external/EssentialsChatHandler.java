@@ -11,16 +11,16 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class EssentialsChatHandler implements Listener {
-	@NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "EssentialsChat";
 	private final Pattern PATTERN = Pattern.compile("\\{parties_([a-z0-9_]+)}", Pattern.CASE_INSENSITIVE);
 	

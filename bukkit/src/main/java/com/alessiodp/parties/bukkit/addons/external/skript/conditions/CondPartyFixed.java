@@ -7,6 +7,7 @@ import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import com.alessiodp.parties.api.interfaces.Party;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party is Fixed")
 @Description("Checks if a party is fixed.")
 @Examples({

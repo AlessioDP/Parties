@@ -15,26 +15,6 @@ public class BungeePartiesPartyFollowEvent extends BungeePartiesEvent implements
 		this.joinedServer = joinedServer;
 	}
 	
-	/**
-	 * Get the party
-	 *
-	 * @return Returns the {@link Party}
-	 */
-	@NotNull
-	public Party getParty() {
-		return party;
-	}
-	
-	/**
-	 * Get the name of the server that the party will join into
-	 *
-	 * @return Returns the name of the server
-	 */
-	@NotNull
-	public String getJoinedServer() {
-		return joinedServer;
-	}
-	
 	@Override
 	public boolean isCancelled() {
 		return cancelled;
@@ -43,5 +23,23 @@ public class BungeePartiesPartyFollowEvent extends BungeePartiesEvent implements
 	@Override
 	public void setCancelled(boolean cancel) {
 		cancelled = cancel;
+	}
+	
+	/**
+	 * Get the party
+	 *
+	 * @return the {@link Party}
+	 */
+	public @NotNull Party getParty() {
+		return party;
+	}
+	
+	/**
+	 * Get the name of the server that the party will join into
+	 *
+	 * @return the name of the server
+	 */
+	public @NotNull String getJoinedServer() {
+		return joinedServer;
 	}
 }

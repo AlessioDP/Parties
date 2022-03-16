@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -15,6 +14,8 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -41,12 +42,12 @@ public class CommandProtection extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFullWithParty(commandData, true, 2, 2, PartiesPermission.PRIVATE_EDIT_PROTECTION);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		return handlePreRequisitesFullWithParty(commandData, true, 2, 2, RankPermission.EDIT_PROTECTION);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		PartyImpl party = ((PartiesCommandData) commandData).getParty();
@@ -59,7 +60,7 @@ public class CommandProtection extends PartiesSubCommand {
 			return;
 		}
 		
-		if (protection && ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.PROTECTION, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (protection && getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.PROTECTION, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		// Command starts
@@ -72,7 +73,7 @@ public class CommandProtection extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		return plugin.getCommandManager().getCommandUtils().tabCompleteOnOff(args);
 	}
 }

@@ -1,7 +1,7 @@
 -- SQLite database
 CREATE TABLE IF NOT EXISTS `<prefix>parties` (
 	'id'			VARCHAR NOT NULL PRIMARY KEY,
-	'name'			VARCHAR NOT NULL,
+	'name'			VARCHAR,
 	'tag'			VARCHAR,
 	'leader'		VARCHAR,
 	'description'	VARCHAR,

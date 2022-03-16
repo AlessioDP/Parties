@@ -6,7 +6,6 @@ import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -14,11 +13,14 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.CensorUtils;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandRename extends PartiesSubCommand {
 	private final String syntaxOthers;
@@ -56,14 +58,14 @@ public class CommandRename extends PartiesSubCommand {
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
+	public @NotNull String getSyntaxForUser(User user) {
 		if (user.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS))
 			return syntaxOthers;
 		return syntax;
 	}
 	
 	@Override
-	public String getConsoleSyntax() {
+	public @NotNull String getConsoleSyntax() {
 		return syntaxOthersConsole;
 	}
 	
@@ -71,7 +73,7 @@ public class CommandRename extends PartiesSubCommand {
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
 		if (sender.isPlayer()) {
-			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			PartyPlayerImpl partyPlayer = getPlugin().getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
 			if (!sender.hasPermission(permission)) {
@@ -85,7 +87,8 @@ public class CommandRename extends PartiesSubCommand {
 					return false;
 				}
 				
-				if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_ADMIN_RENAME))
+				// Not using handlePreRequesitesFull for this
+				if (!getPlugin().getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.ADMIN_RENAME))
 					return false;
 				
 				if (commandData.getArgs().length != 2) {
@@ -103,6 +106,7 @@ public class CommandRename extends PartiesSubCommand {
 			
 			((PartiesCommandData) commandData).setPartyPlayer(partyPlayer);
 			commandData.addPermission(PartiesPermission.ADMIN_RENAME_OTHERS);
+			commandData.addPermission(PartiesPermission.ADMIN_COOLDOWN_RENAME_BYPASS);
 		} else {
 			if (commandData.getArgs().length != 3) {
 				sendMessage(sender, null, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
@@ -125,21 +129,21 @@ public class CommandRename extends PartiesSubCommand {
 		if (commandData.getArgs().length == 2) {
 			// 2 arguments - own party
 			if (partyPlayer.isInParty())
-				party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyPlayer.getPartyId());
+				party = getPlugin().getPartyManager().getParty(partyPlayer.getPartyId());
 			
 			if (party == null) {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_NOTINPARTY);
 				return;
 			}
 			
-			if (!((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(partyPlayer, PartiesPermission.PRIVATE_ADMIN_RENAME))
+			if (!getPlugin().getRankManager().checkPlayerRankAlerter(partyPlayer, RankPermission.ADMIN_RENAME))
 				return;
 			
 			partyName = commandData.getArgs()[1];
 		} else {
 			// 3 arguments - another party
 			if (!sender.isPlayer() || commandData.havePermission(PartiesPermission.ADMIN_RENAME_OTHERS)) {
-				party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
+				party = getPlugin().getPartyManager().getParty(commandData.getArgs()[1]);
 			}
 			
 			if (party == null) {
@@ -167,16 +171,16 @@ public class CommandRename extends PartiesSubCommand {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_CENSORED);
 			return;
 		}
-		if (((PartiesPlugin) plugin).getPartyManager().existsParty(partyName)) {
+		if (getPlugin().getPartyManager().existsParty(partyName)) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMEEXISTS
 					.replace("%party%", partyName));
 			return;
 		}
 		
 		boolean mustStartCooldown = false;
-		if (ConfigParties.GENERAL_NAME_RENAME_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_RENAME_BYPASS)) {
+		if (ConfigParties.GENERAL_NAME_RENAME_COOLDOWN > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_RENAME_BYPASS)) {
 			mustStartCooldown = true;
-			long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canRename(party, ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
+			long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.RENAME, party.getId(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
 			
 			if (remainingCooldown > 0) {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_RENAME_COOLDOWN
@@ -185,19 +189,19 @@ public class CommandRename extends PartiesSubCommand {
 			}
 		}
 		
-		if (partyPlayer != null && ((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.RENAME, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (partyPlayer != null && getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.RENAME, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		if (mustStartCooldown) {
-			((PartiesPlugin) plugin).getCooldownManager().startRenameCooldown(party, ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
+			getPlugin().getCooldownManager().startAction(CooldownManager.Action.RENAME, party.getId(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
 		}
 		
 		// Command starts
 		String oldPartyName = party.getName();
 		
 		// Calling API event
-		IPartyPreRenameEvent partiesPreRenameEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreRenameEvent(party, party.getName(), partyName, partyPlayer, commandData.getArgs().length > 2);
-		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreRenameEvent);
+		IPartyPreRenameEvent partiesPreRenameEvent = getPlugin().getEventManager().preparePartyPreRenameEvent(party, party.getName(), partyName, partyPlayer, commandData.getArgs().length > 2);
+		getPlugin().getEventManager().callEvent(partiesPreRenameEvent);
 		
 		partyName = partiesPreRenameEvent.getNewPartyName();
 		if (!partiesPreRenameEvent.isCancelled()) {

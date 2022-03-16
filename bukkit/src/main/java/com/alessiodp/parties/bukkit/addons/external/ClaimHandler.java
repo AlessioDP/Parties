@@ -6,14 +6,14 @@ import com.alessiodp.parties.bukkit.addons.external.hooks.GriefPreventionHook;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class ClaimHandler {
-	@NonNull protected final PartiesPlugin plugin;
+	@NotNull protected final PartiesPlugin plugin;
 	protected static boolean active;
 	protected static Plugin activePlugin;
 	private static final String ADDON_NAME_GD = "GriefDefender";

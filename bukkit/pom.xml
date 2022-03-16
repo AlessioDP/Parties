@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>parties</artifactId>
 		<groupId>com.alessiodp.parties</groupId>
-		<version>3.1.14</version>
+		<version>3.2.0</version>
 	</parent>
 	
 	<artifactId>parties-bukkit</artifactId>
@@ -65,7 +65,7 @@
 		<repository>
 			<!-- BanManager repo -->
 			<id>confuser-repo</id>
-			<url>https://ci.frostcast.net/plugin/repository/everything</url>
+			<url>https://ci.frostcast.net/plugin/repository/everything/</url>
 		</repository>
 		<repository>
 			<!-- Dynmap repo -->
@@ -74,13 +74,8 @@
 		</repository>
 		<repository>
 			<!-- EssentialsX repo -->
-			<id>paper-repo</id>
-			<url>https://ci.ender.zone/plugin/repository/everything/</url>
-		</repository>
-		<repository>
-			<!-- MythicMobs/MMOCore repo -->
-			<id>lumine-repo</id>
-			<url>https://mvn.lumine.io/repository/maven-public/</url>
+			<id>essentialsx-repo</id>
+			<url>https://repo.essentialsx.net/releases/</url>
 		</repository>
 		<repository>
 			<!-- PAPI repo -->
@@ -88,7 +83,7 @@
 			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<repository>
-			<!-- LevelPoints/Skript/Vault repo -->
+			<!-- Skript/Vault repo -->
 			<id>jitpack-repo</id>
 			<url>https://jitpack.io</url>
 		</repository>
@@ -131,12 +126,6 @@
 			<artifactId>BanManagerBukkit</artifactId>
 			<version>${libs.banManager}</version>
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>us.dynmap</groupId>
@@ -151,7 +140,7 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>net.ess3</groupId>
+			<groupId>net.essentialsx</groupId>
 			<artifactId>EssentialsX</artifactId>
 			<version>${libs.essentialsx}</version>
 			<scope>provided</scope>
@@ -197,51 +186,16 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>net.Indyuce</groupId>
-			<artifactId>MMOCore</artifactId>
-			<version>${libs.mmoCore}</version>
+			<groupId>com.elmakers.mine.bukkit</groupId>
+			<artifactId>MagicAPI</artifactId>
+			<version>${libs.magic}</version>
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>io.lumine.xikage</groupId>
-			<artifactId>MythicMobs</artifactId>
-			<version>${libs.mythicMobs}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.github.Zoon20X</groupId>
-			<artifactId>LevelPoints-Recoded</artifactId>
-			<version>${libs.levelPoints}</version>
 		</dependency>
 		<dependency>
 			<groupId>me.clip</groupId>
 			<artifactId>placeholderapi</artifactId>
 			<version>${libs.placeholderApi}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.promcteam</groupId>
-			<artifactId>proskillapi</artifactId>
-			<version>${libs.proSkillApi}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.SkriptLang</groupId>

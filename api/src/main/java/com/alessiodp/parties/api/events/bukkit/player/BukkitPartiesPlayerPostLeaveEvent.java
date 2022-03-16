@@ -22,27 +22,23 @@ public class BukkitPartiesPlayerPostLeaveEvent extends BukkitPartiesEvent implem
 		this.kicker = kicker;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
-	@NotNull
 	@Override
-	public LeaveCause getCause() {
+	public @NotNull LeaveCause getCause() {
 		return cause;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getKicker() {
+	public @Nullable PartyPlayer getKicker() {
 		return kicker;
 	}
 }

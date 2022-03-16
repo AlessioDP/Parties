@@ -5,7 +5,6 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -16,6 +15,7 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.api.enums.DeleteCause;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,19 +49,19 @@ public class CommandDelete extends PartiesSubCommand {
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
+	public @NotNull String getSyntaxForUser(User user) {
 		if (user.hasPermission(PartiesPermission.ADMIN_DELETE_SILENT))
 			return syntaxSilent;
 		return syntax;
 	}
 	
 	@Override
-	public String getConsoleSyntax() {
+	public @NotNull String getConsoleSyntax() {
 		return syntaxSilent;
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		boolean ret = handlePreRequisitesFull(commandData, null, 2, 3);
 		if (ret && ((PartiesCommandData) commandData).getPartyPlayer() != null) {
 			commandData.addPermission(PartiesPermission.ADMIN_DELETE_SILENT);
@@ -70,12 +70,12 @@ public class CommandDelete extends PartiesSubCommand {
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(commandData.getArgs()[1]);
+		PartyImpl party = getPlugin().getPartyManager().getParty(commandData.getArgs()[1]);
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND.replace("%party%", commandData.getArgs()[1]));
 			return;
@@ -96,8 +96,8 @@ public class CommandDelete extends PartiesSubCommand {
 		
 		// Command starts
 		// Calling Pre API event
-		IPartyPreDeleteEvent partiesPreDeleteEvent = ((PartiesPlugin) plugin).getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.DELETE, null, partyPlayer);
-		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreDeleteEvent);
+		IPartyPreDeleteEvent partiesPreDeleteEvent = getPlugin().getEventManager().preparePartyPreDeleteEvent(party, DeleteCause.DELETE, null, partyPlayer);
+		getPlugin().getEventManager().callEvent(partiesPreDeleteEvent);
 		
 		if (!partiesPreDeleteEvent.isCancelled()) {
 			if (isSilent) {
@@ -112,12 +112,12 @@ public class CommandDelete extends PartiesSubCommand {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_DELETE,
 					sender.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId().toString(), sender.getName(), sender.getUUID().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_DELETEEVENT_DENY, party.getId(), sender.getName(), sender.getUUID().toString()), true);
 		}
 	}
 	
 	@Override
-	public List<String> onTabComplete(User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (args.length == 3 && sender.hasPermission(PartiesPermission.ADMIN_DELETE_SILENT)) {
 			ret.add(ConfigMain.COMMANDS_MISC_SILENT);

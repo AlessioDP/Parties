@@ -19,21 +19,18 @@ public class BungeePartiesPlayerPreHomeEvent extends BungeePartiesEvent implemen
 		this.home = home;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
-	@NotNull
 	@Override
-	public PartyHome getHome() {
+	public @NotNull PartyHome getHome() {
 		return home;
 	}
 	

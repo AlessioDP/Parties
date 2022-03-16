@@ -12,31 +12,28 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the player that is joining inside the party
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	PartyPlayer getPartyPlayer();
+	@NotNull PartyPlayer getPartyPlayer();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the join cause
 	 *
-	 * @return Returns the {@code JoinCause} of the event
+	 * @return the {@code JoinCause} of the event
 	 */
-	@NotNull
-	JoinCause getCause();
+	@NotNull JoinCause getCause();
 	
 	/**
 	 * Has been invited?
 	 *
-	 * @return Returns {@code true} if the player has been invited
+	 * @return {@code true} if the player has been invited
 	 */
 	@Deprecated
 	default boolean isInvited() {
@@ -46,9 +43,7 @@ public interface IPlayerPreJoinEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the inviter
 	 *
-	 * @return Returns the {@link PartyPlayer} of the inviter, {@code null} if the player joined via join/ask command
+	 * @return the {@link PartyPlayer} of the inviter, {@code null} if the player joined via join/ask command
 	 */
-	@Nullable
-	PartyPlayer getInviter();
-	
+	@Nullable PartyPlayer getInviter();
 }

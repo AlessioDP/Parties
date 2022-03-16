@@ -3,8 +3,10 @@ package com.alessiodp.parties.common.players.objects;
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.scheduling.ADPScheduler;
 import com.alessiodp.core.common.scheduling.CancellableTask;
+import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyAskRequest;
 import com.alessiodp.parties.api.interfaces.PartyInvite;
@@ -18,9 +20,9 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
+import com.alessiodp.parties.common.utils.RankPermission;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
@@ -59,11 +61,11 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	
 	@EqualsAndHashCode.Exclude @ToString.Exclude protected boolean accessible = false;
 	
-	protected PartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid) {
+	protected PartyPlayerImpl(@NotNull PartiesPlugin plugin, @NotNull UUID uuid) {
 		this.plugin = plugin;
 		
 		playerUUID = uuid;
-		name = plugin.getOfflinePlayer(uuid).getName();
+		name = CommonUtils.ifNonNullReturn(plugin.getOfflinePlayer(uuid), OfflineUser::getName, null);
 		if (name == null || name.isEmpty())
 			name = LLAPIHandler.getPlayerName(playerUUID); // Use LastLoginAPI to get the name
 		rank = ConfigParties.RANK_SET_DEFAULT;
@@ -117,7 +119,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			pendingInvites.clear();
 		});
 		
-		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN, getName(), getPartyId().toString(), getPlayerUUID().toString()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_JOIN, getName(), party, getPlayerUUID()), true);
 	}
 	
 	public void removeFromParty(boolean saveToDatabase) {
@@ -131,7 +133,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			resetPendingDelays();
 		}, saveToDatabase);
 		
-		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId != null ? oldPartyId.toString() : "none", getPlayerUUID().toString()), true);
+		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_PARTY_LEAVE, getName(), oldPartyId != null ? oldPartyId.toString() : "none", getPlayerUUID()), true);
 	}
 	
 	public void resetPendingDelays() {
@@ -272,7 +274,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 					User user = plugin.getPlayer(getPlayerUUID());
 					if (user != null
 							&& user.hasPermission(PartiesPermission.USER_CHAT_COLOR)
-							&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_SENDMESSAGE_COLOR)) {
+							&& plugin.getRankManager().checkPlayerRank(this, RankPermission.SENDMESSAGE_COLOR)) {
 						chatMessage = Color.translateAlternateColorCodes(chatMessage);
 					}
 				}
@@ -304,14 +306,14 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 		if (partyId != null) {
 			// In party
 			if (player.hasPermission(PartiesPermission.USER_SENDMESSAGE)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_SENDMESSAGE))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.SENDMESSAGE))
 				ret.add(CommonCommands.P);
 			
 			// Common commands
 			if (player.hasPermission(PartiesPermission.USER_LEAVE))
 				ret.add(CommonCommands.LEAVE);
 			if (player.hasPermission(PartiesPermission.USER_INVITE)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_INVITE))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.INVITE))
 				ret.add(CommonCommands.INVITE);
 			if (player.hasPermission(PartiesPermission.USER_INFO))
 				ret.add(CommonCommands.INFO);
@@ -323,13 +325,13 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			if (ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
 					&& ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE.equalsIgnoreCase("command")
 					&& player.hasPermission(PartiesPermission.USER_PROTECTION)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_PROTECTION))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_PROTECTION))
 				ret.add(CommonCommands.PROTECTION);
 			if (ConfigParties.ADDITIONAL_HOME_ENABLE) {
 				if (player.hasPermission(PartiesPermission.ADMIN_HOME_OTHERS)
-						|| (player.hasPermission(PartiesPermission.USER_HOME) && plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_HOME)))
+						|| (player.hasPermission(PartiesPermission.USER_HOME) && plugin.getRankManager().checkPlayerRank(this, RankPermission.HOME)))
 					ret.add(CommonCommands.HOME);
-				if (player.hasPermission(PartiesPermission.USER_SETHOME) && plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_HOME))
+				if (player.hasPermission(PartiesPermission.USER_SETHOME) && plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_HOME))
 					ret.add(CommonCommands.SETHOME);
 			}
 			
@@ -337,55 +339,69 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 			if (ConfigParties.ADDITIONAL_ASK_ENABLE
 					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE && ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)) {
 				if (player.hasPermission(PartiesPermission.USER_ACCEPT)
-						&& (plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_ASK_ACCEPT) || plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_TELEPORT_ACCEPT)))
+						&& (plugin.getRankManager().checkPlayerRank(this, RankPermission.ASK_ACCEPT) || plugin.getRankManager().checkPlayerRank(this, RankPermission.TELEPORT_ACCEPT)))
 					ret.add(CommonCommands.ACCEPT);
 				if (player.hasPermission(PartiesPermission.USER_DENY)
-						&& (plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_ASK_DENY) || plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_TELEPORT_DENY)))
+						&& (plugin.getRankManager().checkPlayerRank(this, RankPermission.ASK_DENY) || plugin.getRankManager().checkPlayerRank(this, RankPermission.TELEPORT_DENY)))
 					ret.add(CommonCommands.DENY);
 			}
 			if (ConfigParties.ADDITIONAL_DESC_ENABLE
 					&& player.hasPermission(PartiesPermission.USER_DESC)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_DESC))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_DESC))
 				ret.add(CommonCommands.DESC);
 			if (ConfigParties.ADDITIONAL_MOTD_ENABLE
 					&& player.hasPermission(PartiesPermission.USER_MOTD)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_MOTD))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_MOTD))
 				ret.add(CommonCommands.MOTD);
 			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE
 					&& player.hasPermission(PartiesPermission.USER_NICKNAME)
-					&& (plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_NICKNAME_OWN) || plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_NICKNAME_OTHERS)))
+					&& (plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_NICKNAME_OWN) || plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_NICKNAME_OTHERS)))
 				ret.add(CommonCommands.NICKNAME);
 			if (ConfigMain.ADDITIONAL_FOLLOW_ENABLE
 					&& ConfigMain.ADDITIONAL_FOLLOW_TOGGLECMD
 					&& player.hasPermission(PartiesPermission.USER_FOLLOW)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_FOLLOW))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_FOLLOW))
 				ret.add(CommonCommands.FOLLOW);
 			if (ConfigParties.ADDITIONAL_COLOR_ENABLE
 					&& ConfigParties.ADDITIONAL_COLOR_COLORCMD
 					&& player.hasPermission(PartiesPermission.USER_COLOR)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_COLOR))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_COLOR))
 				ret.add(CommonCommands.COLOR);
 			if (ConfigParties.ADDITIONAL_JOIN_ENABLE
 					&& ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE
 					&& player.hasPermission(PartiesPermission.USER_PASSWORD)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_PASSWORD))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_PASSWORD))
 				ret.add(CommonCommands.PASSWORD);
 			if (player.hasPermission(PartiesPermission.USER_RANK)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_ADMIN_RANK))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.ADMIN_RANK))
 				ret.add(CommonCommands.RANK);
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS)
-					|| (player.hasPermission(PartiesPermission.USER_RENAME) && plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_ADMIN_RENAME)))
+					|| (player.hasPermission(PartiesPermission.USER_RENAME) && plugin.getRankManager().checkPlayerRank(this, RankPermission.ADMIN_RENAME)))
 				ret.add(CommonCommands.RENAME);
-			if (ConfigParties.ADDITIONAL_TAG_ENABLE && (player.hasPermission(PartiesPermission.USER_TAG) && plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_EDIT_TAG))
+			if (ConfigParties.ADDITIONAL_TAG_ENABLE && (player.hasPermission(PartiesPermission.USER_TAG) && plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_TAG))
 					|| player.hasPermission(PartiesPermission.ADMIN_TAG_OTHERS))
 				ret.add(CommonCommands.TAG);
 			if (player.hasPermission(PartiesPermission.USER_KICK)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_KICK))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.KICK))
 				ret.add(CommonCommands.KICK);
 			if (ConfigParties.ADDITIONAL_TELEPORT_ENABLE
 					&& player.hasPermission(PartiesPermission.USER_TELEPORT)
-					&& plugin.getRankManager().checkPlayerRank(this, PartiesPermission.PRIVATE_ADMIN_TELEPORT))
+					&& plugin.getRankManager().checkPlayerRank(this, RankPermission.ADMIN_TELEPORT))
 				ret.add(CommonCommands.TELEPORT);
+			if (ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_ENABLE) {
+				if (player.hasPermission(PartiesPermission.USER_CLOSE)
+						&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_CLOSE)) {
+					PartyImpl party = plugin.getPartyManager().getPartyOfPlayer(this);
+					if (!ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_HIDE_OPPOSITE || (party != null && party.isOpen()))
+						ret.add(CommonCommands.CLOSE);
+				}
+				if (player.hasPermission(PartiesPermission.USER_OPEN)
+						&& plugin.getRankManager().checkPlayerRank(this, RankPermission.EDIT_OPEN)) {
+					PartyImpl party = plugin.getPartyManager().getPartyOfPlayer(this);
+					if (!ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_HIDE_OPPOSITE || (party != null && !party.isOpen()))
+						ret.add(CommonCommands.OPEN);
+				}
+			}
 		} else {
 			// Out of party
 			if (player.hasPermission(PartiesPermission.USER_CREATE))
@@ -420,6 +436,10 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 				ret.add(CommonCommands.KICK);
 			if (player.hasPermission(PartiesPermission.ADMIN_RENAME_OTHERS))
 				ret.add(CommonCommands.RENAME);
+			if (player.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CLOSE_BYPASS))
+				ret.add(CommonCommands.CLOSE);
+			if (player.hasPermission(PartiesPermission.ADMIN_COOLDOWN_OPEN_BYPASS))
+				ret.add(CommonCommands.OPEN);
 			
 		}
 		if (ConfigParties.ADDITIONAL_FIXED_ENABLE
@@ -453,7 +473,7 @@ public abstract class PartyPlayerImpl implements PartyPlayer {
 	/**
 	 * Is the player chat muted?
 	 *
-	 * @return Returns true if the player chat is muted
+	 * @return true if the player chat is muted
 	 */
 	public boolean isChatMuted() {
 		return false;

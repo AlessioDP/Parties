@@ -10,16 +10,14 @@ public interface IPartyPostCreateEvent extends PartiesEvent {
 	/**
 	 * Get the creator of the party
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@Nullable
-	PartyPlayer getCreator();
+	@Nullable PartyPlayer getCreator();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 }

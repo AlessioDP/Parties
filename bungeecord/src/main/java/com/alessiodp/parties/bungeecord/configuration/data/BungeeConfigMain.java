@@ -13,10 +13,17 @@ public class BungeeConfigMain extends ConfigMain {
 	@Getter private final String resourceName = "bungee/config.yml";
 	@Getter private final int latestVersion = PartiesConstants.VERSION_BUNGEE_CONFIG_MAIN;
 	
+	
+	// Plugin settings
+	@ConfigOption(path = "parties.bungeecord.redis-support")
+	public static boolean		PARTIES_BUNGEECORD_REDIS;
+	
 	// Additional settings
 	@ConfigOption(path = "additional.follow.blocked-servers")
 	public static List<String> ADDITIONAL_FOLLOW_BLOCKEDSERVERS;
 	
+	@ConfigOption(path = "additional.moderation.plugins.advancedban")
+	public static boolean		ADDITIONAL_MODERATION_PLUGINS_ADVANCEDBAN;
 	@ConfigOption(path = "additional.moderation.plugins.bungeechat")
 	public static boolean		ADDITIONAL_MODERATION_PLUGINS_BUNGEECHAT;
 	

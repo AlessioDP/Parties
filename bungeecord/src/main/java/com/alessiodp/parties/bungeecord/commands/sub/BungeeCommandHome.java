@@ -17,8 +17,6 @@ import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.tasks.HomeDelayTask;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 
@@ -47,20 +45,23 @@ public class BungeeCommandHome extends CommandHome {
 	
 	public static void teleportToPartyHome(PartiesPlugin plugin, User player, PartyPlayerImpl partyPlayer, PartyHomeImpl home) {
 		PartyImpl party = plugin.getPartyManager().getParty(partyPlayer.getPartyId());
-		if (!home.getServer().isEmpty()) {
+		if (home.getServer() != null && !home.getServer().isEmpty()) {
 			boolean serverChange = false;
-			ServerInfo server = ProxyServer.getInstance().getServerInfo(home.getServer());
+			ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(home.getServer());
 			
 			IPlayerPreHomeEvent partiesPreHomeEvent = plugin.getEventManager().preparePlayerPreHomeEvent(partyPlayer, party, home);
 			plugin.getEventManager().callEvent(partiesPreHomeEvent);
 			if (!partiesPreHomeEvent.isCancelled()) {
+				if (((BungeeUser) player).getServer() != null)
+					return; // Cannot get player server
+				
 				if (BungeeConfigParties.ADDITIONAL_HOME_CROSS_SERVER && !((BungeeUser) player).getServer().getName().equalsIgnoreCase(home.getServer())) {
-					if (server == null) {
-						plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_CMD_HOME_NO_SERVER, home));
+					if (serverInfo == null) {
+						plugin.getLoggerManager().logError(String.format(PartiesConstants.DEBUG_CMD_HOME_NO_SERVER, home));
 						return;
 					}
 					
-					((BungeeUser) player).connectTo(server);
+					((BungeeUser) player).connectTo(serverInfo);
 					
 					serverChange = true;
 				}
@@ -69,12 +70,11 @@ public class BungeeCommandHome extends CommandHome {
 				
 				if (serverChange) {
 					plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-									.sendHomeTeleport(player,
-											makeHomeTeleportRaw(home.toString(), message)),
+									.sendHomeTeleport(player, home, message, serverInfo),
 							BungeeConfigParties.ADDITIONAL_HOME_CROSS_SERVER_DELAY, TimeUnit.MILLISECONDS);
 				} else {
 					((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-							.sendHomeTeleport(player, makeHomeTeleportRaw(home.toString(), message));
+							.sendHomeTeleport(player, home, message, serverInfo);
 				}
 				
 				IPlayerPostHomeEvent partiesPostHomeEvent = plugin.getEventManager().preparePlayerPostHomeEvent(partyPlayer, party, home);
@@ -83,14 +83,7 @@ public class BungeeCommandHome extends CommandHome {
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_HOMEEVENT_DENY,
 						player.getName(), party.getName() != null ? party.getName() : "_"), true);
 		} else {
-			plugin.getLoggerManager().printError(String.format(PartiesConstants.DEBUG_HOME_NO_SERVER, party.getId().toString()));
+			plugin.getLoggerManager().logError(String.format(PartiesConstants.DEBUG_HOME_NO_SERVER, party.getId()));
 		}
-	}
-	
-	private static byte[] makeHomeTeleportRaw(String home, String message) {
-		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
-		raw.writeUTF(home);
-		raw.writeUTF(message);
-		return raw.toByteArray();
 	}
 }

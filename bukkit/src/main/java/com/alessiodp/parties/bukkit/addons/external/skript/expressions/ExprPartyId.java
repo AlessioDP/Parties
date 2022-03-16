@@ -7,6 +7,7 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import com.alessiodp.parties.api.interfaces.Party;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party ID")
 @Description("Get the id of the given party.")
 @Examples({"send \"%id of party with name \"test\"%\"",

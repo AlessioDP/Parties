@@ -7,7 +7,6 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.api.interfaces.PartyAskRequest;
 import com.alessiodp.parties.api.interfaces.PartyInvite;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -19,6 +18,8 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyTeleportRequest;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +52,8 @@ public class CommandAccept extends PartiesSubCommand {
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
-		PartyPlayerImpl player = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(user.getUUID());
+	public @NotNull String getSyntaxForUser(User user) {
+		PartyPlayerImpl player = getPlugin().getPlayerManager().getPlayer(user.getUUID());
 		if (player != null
 				&& player.isInParty()
 				&& (ConfigParties.ADDITIONAL_ASK_ENABLE
@@ -63,17 +64,17 @@ public class CommandAccept extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		boolean ret = handlePreRequisitesFull(commandData, null, 0, 2);
 		
 		if (ret && ((PartiesCommandData) commandData).getPartyPlayer().getPartyId() != null) {
 			if ((ConfigParties.ADDITIONAL_ASK_ENABLE
-					&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), PartiesPermission.PRIVATE_ASK_ACCEPT)
+					&& getPlugin().getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), RankPermission.ASK_ACCEPT)
 			)
 					|| (ConfigParties.ADDITIONAL_TELEPORT_ENABLE
 					&& ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE
-					&& ((PartiesPlugin) plugin).getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), PartiesPermission.PRIVATE_TELEPORT_ACCEPT))) {
-				((PartiesCommandData) commandData).setParty(((PartiesPlugin) plugin).getPartyManager().getParty(((PartiesCommandData) commandData).getPartyPlayer().getPartyId()));
+					&& getPlugin().getRankManager().checkPlayerRankAlerter(((PartiesCommandData) commandData).getPartyPlayer(), RankPermission.TELEPORT_ACCEPT))) {
+				((PartiesCommandData) commandData).setParty(getPlugin().getPartyManager().getParty(((PartiesCommandData) commandData).getPartyPlayer().getPartyId()));
 			} else {
 				sendMessage(commandData.getSender(), ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_COMMON_ALREADYINPARTY);
 				return false;

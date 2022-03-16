@@ -18,6 +18,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Members")
 @Description("Get the member list of the given party.")
 @Examples({"send \"%members of party with name \"test\"%\"",

@@ -21,26 +21,14 @@ public class BukkitPartiesPlayerPreTeleportEvent extends BukkitPartiesEvent impl
 		this.destination = destination;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
-	}
-	
-	/**
-	 * Get the destination as Location
-	 *
-	 * @return Returns the {@link Location}
-	 */
-	@NotNull
-	public Location getDestination() {
-		return destination;
 	}
 	
 	@Override
@@ -51,5 +39,14 @@ public class BukkitPartiesPlayerPreTeleportEvent extends BukkitPartiesEvent impl
 	@Override
 	public void setCancelled(boolean cancel) {
 		cancelled = cancel;
+	}
+	
+	/**
+	 * Get the destination as Location
+	 *
+	 * @return the {@link Location}
+	 */
+	public @NotNull Location getDestination() {
+		return destination;
 	}
 }

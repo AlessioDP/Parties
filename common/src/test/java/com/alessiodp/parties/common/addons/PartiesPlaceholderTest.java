@@ -16,7 +16,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.PartyRankImpl;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.utils.MessageUtils;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -125,6 +126,12 @@ public class PartiesPlaceholderTest {
 				return player4;
 			return null;
 		});
+	}
+	
+	@Test
+	public void testNullness() {
+		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("impossible_placeholder");
+		assertNull(placeholder);
 	}
 	
 	@Test
@@ -337,7 +344,7 @@ public class PartiesPlaceholderTest {
 	public void testPlaceholderListRank() {
 		RankManager mockRankManager = mock(RankManager.class);
 		when(mockPlugin.getRankManager()).thenReturn(mockRankManager);
-		when(mockRankManager.searchRankByHardName(any())).thenReturn(new PartyRankImpl("myrank", "myrank", "", 20, Collections.emptyList(), true));
+		when(mockRankManager.searchRankByHardName(any())).thenReturn(new PartyRankImpl("myrank", "myrank", "", 20, 0, null, Collections.emptyList(), true));
 		
 		when(mockMessageUtils.convertPlaceholders(any(), any(), any())).thenReturn("Dummy");
 		
@@ -454,7 +461,7 @@ public class PartiesPlaceholderTest {
 	
 	private static class TestPartyPlayerImpl extends PartyPlayerImpl {
 		
-		protected TestPartyPlayerImpl(@NonNull PartiesPlugin plugin, @NonNull UUID uuid) {
+		protected TestPartyPlayerImpl(@NotNull PartiesPlugin plugin, @NotNull UUID uuid) {
 			super(plugin, uuid);
 		}
 		
@@ -486,7 +493,7 @@ public class PartiesPlaceholderTest {
 	
 	private static class TestPartyImpl extends PartyImpl {
 		
-		protected TestPartyImpl(@NonNull PartiesPlugin plugin, @NonNull UUID id) {
+		protected TestPartyImpl(@NotNull PartiesPlugin plugin, @NotNull UUID id) {
 			super(plugin, id);
 		}
 		
@@ -496,7 +503,7 @@ public class PartiesPlaceholderTest {
 		}
 		
 		@Override
-		public void sendPacketExperience(double newExperience, PartyPlayer killer) {
+		public void sendPacketExperience(double newExperience, PartyPlayer killer, boolean gainMessage) {
 			// Nothing to do
 		}
 		

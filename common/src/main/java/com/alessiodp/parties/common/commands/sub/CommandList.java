@@ -5,7 +5,6 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Pair;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -16,7 +15,7 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,7 +58,7 @@ public class CommandList extends PartiesSubCommand {
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
+	public @NotNull String getSyntaxForUser(User user) {
 		if (!user.hasPermission(permission))
 			return syntax;
 		return syntaxOrder;
@@ -69,7 +68,7 @@ public class CommandList extends PartiesSubCommand {
 	public boolean preRequisites(CommandData commandData) {
 		User sender = commandData.getSender();
 		if (sender.isPlayer()) {
-			PartyPlayerImpl partyPlayer = ((PartiesPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
+			PartyPlayerImpl partyPlayer = getPlugin().getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
 			if (!sender.hasPermission(permission)
@@ -167,7 +166,7 @@ public class CommandList extends PartiesSubCommand {
 		
 		// Command starts
 		int numberPlayers = Math.min(
-				orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS ? ((PartiesPlugin) plugin).getPartyManager().getCacheParties().size() : ((PartiesPlugin) plugin).getDatabaseManager().getListPartiesNumber(),
+				orderBy == PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS ? getPlugin().getPartyManager().getCacheParties().size() : getPlugin().getDatabaseManager().getListPartiesNumber(),
 				ConfigParties.ADDITIONAL_LIST_LIMITPARTIES);
 		int limit = Math.max(1, ConfigParties.ADDITIONAL_LIST_PERPAGE);
 		
@@ -191,7 +190,7 @@ public class CommandList extends PartiesSubCommand {
 					.thenComparing(p -> ((PartyImpl) p).getName())
 					.thenComparing(p -> ((PartyImpl) p).getId()));
 			
-			((PartiesPlugin) plugin).getPartyManager().getCacheParties().values().forEach((party) -> {
+			getPlugin().getPartyManager().getCacheParties().values().forEach((party) -> {
 				if (party.getName() != null && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getName()) && !ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES.contains(party.getId().toString())) {
 					onlineParties.add(party);
 				}
@@ -209,7 +208,7 @@ public class CommandList extends PartiesSubCommand {
 			}
 		} else {
 			int index = 1;
-			for (PartyImpl party : ((PartiesPlugin) plugin).getDatabaseManager().getListParties(orderBy, limit, offset)) {
+			for (PartyImpl party : getPlugin().getDatabaseManager().getListParties(orderBy, limit, offset)) {
 				parties.add(new Pair<>(index, party));
 				index++;
 			}
@@ -237,7 +236,7 @@ public class CommandList extends PartiesSubCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(@NonNull User sender, String[] args) {
+	public List<String> onTabComplete(@NotNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (sender.hasPermission(permission)
 				&& args.length == 2

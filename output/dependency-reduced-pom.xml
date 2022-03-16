@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.14</version>
+    <version>3.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>output</artifactId>
@@ -59,8 +59,8 @@
               <shadedPattern>com.alessiodp.parties.libs.postgresql</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>org.openjdk.nashorn</pattern>
-              <shadedPattern>com.alessiodp.parties.libs.nashorn</shadedPattern>
+              <pattern>net.objecthunter.exp4j</pattern>
+              <shadedPattern>com.alessiodp.parties.libs.exp4j</shadedPattern>
             </relocation>
           </relocations>
           <filters>

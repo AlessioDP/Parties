@@ -1,12 +1,12 @@
 package com.alessiodp.parties.bungeecord.commands.main;
 
+import com.alessiodp.parties.bungeecord.commands.sub.BungeeCommandDebug;
 import com.alessiodp.parties.bungeecord.commands.sub.BungeeCommandHome;
 import com.alessiodp.parties.bungeecord.commands.sub.BungeeCommandSetHome;
 import com.alessiodp.parties.bungeecord.commands.sub.BungeeCommandTeleport;
 import com.alessiodp.parties.bungeecord.configuration.data.BungeeConfigParties;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.main.CommandParty;
-import com.alessiodp.parties.common.commands.sub.CommandDebug;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 
 public class BungeeCommandParty extends CommandParty {
@@ -16,7 +16,7 @@ public class BungeeCommandParty extends CommandParty {
 		
 		// Debug
 		if (ConfigMain.PARTIES_DEBUG_COMMAND)
-			super.register(new CommandDebug(plugin, this));
+			super.register(new BungeeCommandDebug(plugin, this));
 		
 		// Home
 		if (BungeeConfigParties.ADDITIONAL_HOME_ENABLE) {

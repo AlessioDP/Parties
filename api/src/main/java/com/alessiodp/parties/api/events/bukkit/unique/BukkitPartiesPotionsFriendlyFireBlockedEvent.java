@@ -22,30 +22,27 @@ public class BukkitPartiesPotionsFriendlyFireBlockedEvent extends BukkitPartiesE
 	/**
 	 * Get the victim of the event
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	public PartyPlayer getPlayerVictim() {
+	public @NotNull PartyPlayer getPlayerVictim() {
 		return victim;
 	}
 	
 	/**
 	 * Get the attacker
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	public PartyPlayer getPlayerAttacker() {
+	public @NotNull PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}
 	
 	/**
 	 * Gets the original Bukkit event handled by Parties
 	 *
-	 * @return Returns the original {@link PotionSplashEvent}
+	 * @return the original {@link PotionSplashEvent}
 	 */
-	@NotNull
-	public PotionSplashEvent getOriginalEvent() {
+	public @NotNull PotionSplashEvent getOriginalEvent() {
 		return originalEvent;
 	}
 	

@@ -13,6 +13,7 @@ import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@SuppressWarnings("NullableProblems")
 @Name("Delete Party")
 @Description("Delete the party.")
 @Examples({"delete party with name \"test\""})

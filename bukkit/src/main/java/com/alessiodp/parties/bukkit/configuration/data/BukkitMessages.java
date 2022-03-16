@@ -27,22 +27,10 @@ public class BukkitMessages extends Messages {
 	@ConfigOption(path = "additional-commands.claim.allowed-permissions")
 	public static String ADDCMD_CLAIM_ALLOWED_PERMISSIONS;
 	
-	@ConfigOption(path = "additional-commands.exp.normal.gained-killer")
-	public static String ADDCMD_EXP_NORMAL_GAINED_KILLER;
-	@ConfigOption(path = "additional-commands.exp.normal.gained-others")
-	public static String ADDCMD_EXP_NORMAL_GAINED_OTHERS;
-	@ConfigOption(path = "additional-commands.exp.levelpoints.gained-killer")
-	public static String ADDCMD_EXP_LEVELPOINTS_GAINED_KILLER;
-	@ConfigOption(path = "additional-commands.exp.levelpoints.gained-others")
-	public static String ADDCMD_EXP_LEVELPOINTS_GAINED_OTHERS;
-	@ConfigOption(path = "additional-commands.exp.mmocore.gained-killer")
-	public static String ADDCMD_EXP_MMOCORE_GAINED_KILLER;
-	@ConfigOption(path = "additional-commands.exp.mmocore.gained-others")
-	public static String ADDCMD_EXP_MMOCORE_GAINED_OTHERS;
-	@ConfigOption(path = "additional-commands.exp.skillapi.gained-killer")
-	public static String ADDCMD_EXP_SKILLAPI_GAINED_KILLER;
-	@ConfigOption(path = "additional-commands.exp.skillapi.gained-others")
-	public static String ADDCMD_EXP_SKILLAPI_GAINED_OTHERS;
+	@ConfigOption(path = "additional-commands.debug.bungeecord.sent")
+	public static String ADDCMD_DEBUG_BUNGEECORD_SENT;
+	@ConfigOption(path = "additional-commands.debug.bungeecord.server-players")
+	public static String ADDCMD_DEBUG_BUNGEECORD_SERVER_PLAYERS;
 	
 	@ConfigOption(path = "additional-commands.vault.no-money.ask")
 	public static String ADDCMD_VAULT_NOMONEY_ASK;

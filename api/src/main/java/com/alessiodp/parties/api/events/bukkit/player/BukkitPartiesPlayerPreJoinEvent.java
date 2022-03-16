@@ -24,27 +24,23 @@ public class BukkitPartiesPlayerPreJoinEvent extends BukkitPartiesEvent implemen
 		this.inviter = inviter;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
-	@NotNull
 	@Override
-	public JoinCause getCause() {
+	public @NotNull JoinCause getCause() {
 		return cause;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getInviter() {
+	public @Nullable PartyPlayer getInviter() {
 		return inviter;
 	}
 	

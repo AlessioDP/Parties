@@ -2,18 +2,29 @@ package com.alessiodp.parties.common.players.objects;
 
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.Messages;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-@AllArgsConstructor
+import java.util.UUID;
+
 @EqualsAndHashCode
 public abstract class PartyTeleportRequest {
-	@NonNull protected final PartiesPlugin plugin;
-	@Getter @Setter protected PartyPlayerImpl player;
-	@Getter @Setter protected PartyPlayerImpl requester;
+	@EqualsAndHashCode.Exclude protected final PartiesPlugin plugin;
+	@Getter @Setter @EqualsAndHashCode.Exclude protected PartyPlayerImpl player;
+	@Getter @Setter @EqualsAndHashCode.Exclude protected PartyPlayerImpl requester;
+	private final UUID playerId;
+	private final UUID requesterId;
+	
+	public PartyTeleportRequest(@NotNull PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl requester) {
+		this.plugin = plugin;
+		this.player = player;
+		this.requester = requester;
+		// Used for hash purpose
+		playerId = player.getPlayerUUID();
+		requesterId = requester.getPlayerUUID();
+	}
 	
 	public void accept() {
 		if (player.getPendingTeleportRequests().remove(this)) {

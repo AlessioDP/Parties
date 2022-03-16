@@ -9,6 +9,7 @@ import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.OfflinePlayer;
 
+@SuppressWarnings("NullableProblems")
 @Name("Player is in Party")
 @Description("Checks if a player is in party.")
 @Examples({

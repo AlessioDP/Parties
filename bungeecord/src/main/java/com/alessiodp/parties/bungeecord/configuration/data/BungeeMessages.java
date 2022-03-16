@@ -11,7 +11,7 @@ public class BungeeMessages extends Messages {
 	@Getter private final String resourceName = "bungee/messages.yml";
 	@Getter private final int latestVersion = PartiesConstants.VERSION_BUNGEE_MESSAGES;
 	
-	//Additional
+	// Other messages
 	@ConfigOption(path = "other.follow.following-server")
 	public static String OTHER_FOLLOW_SERVER;
 	

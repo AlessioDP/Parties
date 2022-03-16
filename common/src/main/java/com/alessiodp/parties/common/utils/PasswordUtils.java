@@ -1,5 +1,7 @@
 package com.alessiodp.parties.common.utils;
 
+import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 
 import java.io.UnsupportedEncodingException;
@@ -26,8 +28,8 @@ public class PasswordUtils {
 				stringBuilder.append(Integer.toHexString((b & 0xFF) | 0x100), 1, 3);
 			}
 			ret = stringBuilder.toString();
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+			PartiesPlugin.getInstance().getLoggerManager().logError(PartiesConstants.DEBUG_PASSWORD_HASH_ERROR, ex);
 		}
 		return ret;
 	}

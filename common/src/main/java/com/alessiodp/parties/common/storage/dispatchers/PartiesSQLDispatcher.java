@@ -59,6 +59,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 				((MariaDBConnectionFactory) ret).setPassword(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD);
 				((MariaDBConnectionFactory) ret).setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE);
 				((MariaDBConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME);
+				((MariaDBConnectionFactory) ret).setAdditionalParameters(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDITIONAL_PARAMETERS);
 				break;
 			case MYSQL:
 				ret = new MySQLConnectionFactory();
@@ -72,6 +73,7 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 				((MySQLConnectionFactory) ret).setMaximumPoolSize(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE);
 				((MySQLConnectionFactory) ret).setMaxLifetime(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME);
 				((MySQLConnectionFactory) ret).setUseSSL(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL);
+				((MySQLConnectionFactory) ret).setAdditionalParameters(ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDITIONAL_PARAMETERS);
 				break;
 			case POSTGRESQL:
 				ret = new PostgreSQLConnectionFactory();
@@ -118,12 +120,13 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 				ret.add("1__Initial_database.sql");
 				break;
 		}
+		ret.add("2__Added_open.sql");
 		return ret;
 	}
 	
 	@Override
 	public void updatePlayer(PartyPlayerImpl player) {
-		if (player.getPartyId() != null || player.isSpy() || player.isMuted()) {
+		if (player.isPersistent()) {
 			this.connectionFactory.getJdbi().useHandle(handle -> handle.attach(playersDao).update(
 					player.getPlayerUUID().toString(),
 					player.getPartyId() != null ? player.getPartyId().toString() : null,
@@ -143,8 +146,8 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).get(uuid.toString())).orElse(null);
 	}
 	
-	@Override
 	public int getListPlayersInPartyNumber() {
+		// This method is only used by tests
 		return this.connectionFactory.getJdbi().withHandle(handle -> handle.attach(playersDao).countAllInParty());
 	}
 	
@@ -163,7 +166,8 @@ public class PartiesSQLDispatcher extends SQLDispatcher implements IPartiesDatab
 				PartyHomeImpl.serializeMultiple(party.getHomes()),
 				party.getProtection(),
 				party.getExperience(),
-				party.isFollowEnabled()
+				party.isFollowEnabled(),
+				party.isOpenNullable()
 		));
 	}
 	

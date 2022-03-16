@@ -22,9 +22,8 @@ public class BukkitPartiesPartyGetExperienceEvent extends BukkitPartiesEvent imp
 		this.killer = killer;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
@@ -33,15 +32,13 @@ public class BukkitPartiesPartyGetExperienceEvent extends BukkitPartiesEvent imp
 		return experience;
 	}
 	
-	@NotNull
 	@Override
-	public ExpSource getSource() {
+	public @NotNull ExpSource getSource() {
 		return source;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getKiller() {
+	public @Nullable PartyPlayer getKiller() {
 		return killer;
 	}
 }

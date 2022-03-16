@@ -14,9 +14,8 @@ public class BungeePartiesPartyLevelUpEvent extends BungeePartiesEvent implement
 		this.newLevel = newLevel;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	

@@ -7,6 +7,7 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Player Name")
 @Description("Get the name of the given partyplayer.")
 @Examples({"send \"%name of partyplayer player%\"",

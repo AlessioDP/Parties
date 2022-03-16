@@ -16,15 +16,13 @@ public class BungeePartiesPartyPostCreateEvent extends BungeePartiesEvent implem
 		this.party = party;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getCreator() {
+	public @Nullable PartyPlayer getCreator() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 }

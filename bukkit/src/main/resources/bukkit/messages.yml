@@ -213,7 +213,9 @@ main-commands:
     same-rank: "&c%player% is already %rank_name%!"
     low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
     to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
+    full: "&cRank %rank_name% reached the maximum number of players"
     fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
+    demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cYou cannot change your own rank!"
     player-not-in-party: "&c%player% is not in your party"
     players-conflict:
@@ -287,9 +289,19 @@ additional-commands:
     changed: "&bParty color changed into %color_command%"
     removed: "&bParty color removed"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
+    # Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cColor not found. You can select: %available_colors%"
 
   debug:
+    bungeecord:
+      sent: "&bSent a debug BungeeCord request into the network"
+      server-players: "&cThere must be at least 1 player in the server"
+      sync: "Parties is synced correctly"
+      not-sync: "Parties is NOT synced correctly"
+
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -303,16 +315,12 @@ additional-commands:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
         - "&bExp system&7: %exp%"
-        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
-        - "%levels_options%"
-        - "&bExp drop&7: %drop%"
-        - "&bSharing enable/players/range/round&7: %sharing%&7/%sharing_number%&7/%sharing_range%/%sharing_round%"
-        - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
-        - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
-        - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
-      level-options:
-        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
 
     party:
       header: '&b================== &lDebug Party &r&b=================='
@@ -323,7 +331,7 @@ additional-commands:
         - "&bNumber members/online&7: %members%&7/%members_online%"
         - "&bDescription&7: %description%"
         - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
         - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
         - "&bExperience&7: %experience%"
 
@@ -346,25 +354,10 @@ additional-commands:
     censored: "&cThe description contains censored words!"
 
   exp:
-    # [Special tags]
+    # [Special tag]
     # => %exp%        = Experience gained
-    # => %total_exp%  = Total experience dropped by the mob
-    party:
-      gained: "&bGained %exp% party experience for killing the mob"
-    normal:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
-    levelpoints:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
-    mmocore:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
-    skillapi:
-      gained-killer: "&bGained %exp% experience for killing the mob"
-      gained-others: "&b%player% has killed a mob, you gained %exp% experience"
-    level:
-      level-up: "&bParty leveled up to %experience_level%"
+    gained-experience: "&bGained %exp% party experience for killing the mob"
+    level-up: "&bParty leveled up to %experience_level%"
 
   follow:
     toggle-on: "&aNow your party members will follow your leader"
@@ -391,7 +384,15 @@ additional-commands:
   join:
     joined: "&aYou joined the party %party%"
     player-joined: "&b&l%player% joined in the party"
-    wrong-password: "&cWrong password!"
+    open-close:
+      opened: "&bThe party is now open"
+      closed: "&bThe party is now closed"
+      already-open: "&cThe party is already open"
+      already-closed: "&cThe party is already closed"
+      cooldown: "&cYou have to wait %seconds% seconds!"
+      cannot-join: "&cYou cannot join this party"
+    password:
+      wrong-password: "&cWrong password!"
 
   list:
     # [Special tags]
@@ -585,6 +586,7 @@ help:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -596,6 +598,7 @@ help:
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -604,6 +607,7 @@ help:
     descriptions:
       ask: 'Send a join request'
       claim: 'Grant permissions to the claim'
+      close: 'Close the party'
       color: 'Change party color'
       createfixed: 'Create a new fixed party'
       debug: 'Debug issues'
@@ -615,6 +619,7 @@ help:
       motd: 'Set/remove party motd'
       mute: 'Toggle notifications'
       nickname: 'Set/remove member nickname'
+      open: 'Open the party'
       password: 'Change party password'
       protection: 'Toggle friendly fire protection'
       sethome: 'Set/remove party home'

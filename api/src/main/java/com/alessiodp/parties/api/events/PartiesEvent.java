@@ -7,10 +7,9 @@ public interface PartiesEvent {
 	/**
 	 * Get the Parties API instance
 	 *
-	 * @return Returns the {@link PartiesAPI}
+	 * @return the {@link PartiesAPI}
 	 */
-	@NotNull
-	PartiesAPI getApi();
+	@NotNull PartiesAPI getApi();
 	
 	/**
 	 * Set the Parties API instance. Used by Parties instance to let you hook directly to the main API.

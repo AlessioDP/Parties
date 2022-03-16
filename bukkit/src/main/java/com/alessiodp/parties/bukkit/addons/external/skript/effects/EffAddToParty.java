@@ -16,6 +16,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@SuppressWarnings("NullableProblems")
 @Name("Add To Party")
 @Description("Add the player to the party.")
 @Examples({"add player to the party \"test\""})

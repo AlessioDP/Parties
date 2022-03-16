@@ -96,8 +96,7 @@ public class BungeeFollowListener implements Listener {
 					if (serverName.matches(regex))
 						ret = false;
 				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(PartiesConstants.DEBUG_FOLLOW_SERVER_REGEXERROR);
-					ex.printStackTrace();
+					plugin.getLoggerManager().logError(PartiesConstants.DEBUG_FOLLOW_SERVER_REGEXERROR, ex);
 				}
 			}
 		}

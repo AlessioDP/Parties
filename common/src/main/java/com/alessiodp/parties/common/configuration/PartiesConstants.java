@@ -12,6 +12,7 @@ public class PartiesConstants {
 	public static final String PLUGIN_SPIGOTCODE = "3709";
 	public static final int PLUGIN_BSTATS_BUKKIT_ID = 501;
 	public static final int PLUGIN_BSTATS_BUNGEE_ID = 502;
+	public static final int PLUGIN_BSTATS_VELOCITY_ID = 13459;
 	
 	
 	// Versions
@@ -21,6 +22,9 @@ public class PartiesConstants {
 	public static final int VERSION_BUNGEE_CONFIG_MAIN = 13;
 	public static final int VERSION_BUNGEE_CONFIG_PARTIES = 7;
 	public static final int VERSION_BUNGEE_MESSAGES = 12;
+	public static final int VERSION_VELOCITY_CONFIG_MAIN = 1;
+	public static final int VERSION_VELOCITY_CONFIG_PARTIES = 1;
+	public static final int VERSION_VELOCITY_MESSAGES = 1;
 	public static final int VERSION_DATABASE_YAML = 2;
 	
 	
@@ -82,6 +86,7 @@ public class PartiesConstants {
 	public static final String DEBUG_CMD_NICKNAME_REM = "%s removed nickname of %s";
 	public static final String DEBUG_CMD_NICKNAME_REGEXERROR_ALLOWEDCHARS = "Failed to parse allowed characters regex of nickname command";
 	public static final String DEBUG_CMD_NICKNAME_REGEXERROR_CENSORED = "Failed to parse censor regex of nickname command";
+	public static final String DEBUG_CMD_OPENCLOSE = "%s changed the open status of %s to %s";
 	public static final String DEBUG_CMD_P = "%s sent a party message to %s: %s";
 	public static final String DEBUG_CMD_P_REGEXERROR = "Failed to parse censor regex of p command";
 	public static final String DEBUG_CMD_PASSWORD = "%s changed the password of %s";
@@ -109,7 +114,6 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_DB_UPDATEPLAYER = "Update player request for %s (uuid: %s)";
 	public static final String DEBUG_DB_GETPLAYER = "Get player request for %s";
-	public static final String DEBUG_DB_GETALLPLAYERS_NUMBER = "Get the number of all players";
 	public static final String DEBUG_DB_UPDATEPARTY = "Update party request for %s (uuid: %s)";
 	public static final String DEBUG_DB_GETPARTY = "Get party request for %s";
 	public static final String DEBUG_DB_REMOVEPARTY = "Remove party request for %s (uuid: %s)";
@@ -119,14 +123,9 @@ public class PartiesConstants {
 	public static final String DEBUG_DB_GETALLPARTIES = "Get all parties request";
 	public static final String DEBUG_DB_GETALLPARTIES_NUMBER = "Get the number of all parties";
 	
-	public static final String DEBUG_EXP_RECEIVED = "Received a distribute exp request. Normal experience: %s, SkillAPI Experience: %s";
-	public static final String DEBUG_EXP_SENT = "Sent %s %s to player %s (uuid: %s)";
-	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of party %s: %s";
-	public static final String DEBUG_EXP_EXPRESSIONERROR = "Something gone wrong on calculate the formulas '%s' (killer) and '%s' (others): %s";
-	public static final String DEBUG_EXP_REMOVINGEXP = "Removing exp from event. Normal=%b and skillapi=%b";
-	public static final String DEBUG_EXP_MMBYPASS = "Bypassing vanilla event due to MythicMob kill";
-	public static final String DEBUG_EXP_MMHANDLING = "Handling MythicMob mob '%s' killed by player %s (uuid: %s)";
-	public static final String DEBUG_EXP_SEND_PARTY = "Sending %s party experience to the party %s";
+	public static final String DEBUG_EXP_RECEIVED = "Received give experience for party %s of %b experience";
+	public static final String DEBUG_EXP_CANCELLED = "Cancelled give experience for party %s of %b experience";
+	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of party %s";
 	public static final String DEBUG_EXP_SAFE_CALCULATION = "Triggered and prevented an infinite calculation in progressive experience (start: %f, formula: '%s')";
 	public static final String DEBUG_EXP_START_EXP_0 = "The starting progressive experience cannot be 0";
 	
@@ -140,8 +139,10 @@ public class PartiesConstants {
 	
 	public static final String DEBUG_KILL_ADD = "Adding a kill to the party %s by player %s";
 	
-	public static final String DEBUG_MESSAGING_RECEIVED = "Received a Parties packet of type '%s' from channel '%s'";
-	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong Parties packet from channel '%s'";
+	public static final String DEBUG_MESSAGING_BUNGEE_RECEIVED = "Received a Parties Bungeecord packet of type '%s' from channel '%s'";
+	public static final String DEBUG_MESSAGING_BUNGEE_RECEIVED_WRONG = "Received a wrong Bungeecord Parties packet from channel '%s'";
+	public static final String DEBUG_MESSAGING_REDIS_RECEIVED = "Received a Parties Redis packet of type '%s'";
+	public static final String DEBUG_MESSAGING_REDIS_RECEIVED_WRONG = "Received a wrong Parties Redis packet";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PARTY = "Received a Parties packet, updated party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER = "Received a Parties packet, updated player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_LOAD_PARTY = "Received a Parties packet, loaded party %s";
@@ -149,33 +150,32 @@ public class PartiesConstants {
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PARTY = "Received a Parties packet, unloaded party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_UNLOAD_PLAYER = "Received a Parties packet, unloaded player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_PLAY_SOUND = "Received a Parties packet, play sound player %s";
-	public static final String DEBUG_MESSAGING_LISTEN_PLAY_SOUND_ERROR = "Received a Parties packet, play sound parsing failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_CREATE_PARTY = "Received a Parties packet, created party %s by player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_DELETE_PARTY = "Received a Parties packet, deleted party %s (cause: %s, kicked: %s) by player %s";
-	public static final String DEBUG_MESSAGING_LISTEN_DELETE_PARTY_ERROR = "Received a Parties packet, deleted party parsing failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_RENAME_PARTY = "Received a Parties packet, renamed party %s from %s to %s by player %s";
-	public static final String DEBUG_MESSAGING_LISTEN_RENAME_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY = "Received a Parties packet, add member %s to party %s (cause: %s, by: %s)";
-	public static final String DEBUG_MESSAGING_LISTEN_ADD_MEMBER_PARTY_ERROR = "Received a Parties packet, add member party parsing failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY = "Received a Parties packet, remove member %s to party %s (cause: %s, by: %s)";
-	public static final String DEBUG_MESSAGING_LISTEN_REMOVE_MEMBER_PARTY_ERROR = "Received a Parties packet, remove member party parsing failed: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_CHAT_MESSAGE = "Received a Parties packet, sending a chat message by player %s in party %s: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_BROADCAST_MESSAGE = "Received a Parties packet, sending a broadcast message by player %s in party %s: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY = "Received a Parties packet, invited player %s to party %s by player %s";
-	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed";
 	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME = "Received a Parties packet, add home %s to party %s by player %s in server %s";
-	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_ERROR = "Received a Parties packet, add home parsing failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_ERROR = "Received a Parties packet, add home parsing failed";
 	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE = "Received a Parties packet, add new home to party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT = "Received a Parties packet, home teleporting player %s to %s";
-	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT_ERROR = "Received a Parties packet, home teleporting failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT_ERROR = "Received a Parties packet, home teleporting failed";
 	public static final String DEBUG_MESSAGING_LISTEN_TELEPORT = "Received a Parties packet, teleport player %s to %s";
 	public static final String DEBUG_MESSAGING_LISTEN_EXPERIENCE = "Received a Parties packet, gave %s experience to party %s (killer: %s)";
 	public static final String DEBUG_MESSAGING_LISTEN_LEVEL_UP = "Received a Parties packet, %s leveled up to %d";
 	public static final String DEBUG_MESSAGING_LISTEN_CONFIGS = "Received a Parties packet, configs sync";
 	public static final String DEBUG_MESSAGING_LISTEN_REQUEST_CONFIGS = "Received a Parties packet, request for configs sync";
+	public static final String DEBUG_MESSAGING_LISTEN_BUNGEECORD_REPLY = "Received a Parties packet, debug bungeecord reply with result %s";
 	
 	public static final String DEBUG_MIGRATE_MYSQL = "Upgrading MySQL database from version 0";
 	public static final String DEBUG_MIGRATE_SQLITE = "Upgrading SQLite database from version 0";
 	public static final String DEBUG_MIGRATE_YAML = "Upgrading YAML database from version %d";
+	
+	public static final String DEBUG_PASSWORD_HASH_ERROR = "Failed to hash password";
 	
 	public static final String DEBUG_PARTY_CREATE = "Created party %s";
 	public static final String DEBUG_PARTY_DELETE = "Deleted party %s";
@@ -203,17 +203,10 @@ public class PartiesConstants {
 	public static final String DEBUG_PLUGIN_RELOADING = "Reloading plugin...";
 	public static final String DEBUG_SYNC_DIFFERENT_STORAGE = "Found a different storage in BungeeCord (%s), you are using %s";
 	
-	public static final String DEBUG_TASK_ASK_COOLDOWN_EXPIRED = "Ask cooldown expired for player %s";
-	public static final String DEBUG_TASK_CHAT_EXPIRED = "Chat cooldown expired for player %s";
+	public static final String DEBUG_TASK_ACTION_EXPIRED = "Expired cooldown of action %s for subject %s";
 	public static final String DEBUG_TASK_HOME_DENIED_FIGHT = "Denied home teleport of player %s due to fight";
 	public static final String DEBUG_TASK_HOME_DENIED_MOVING = "Denied home teleport of player %s due to moving";
-	public static final String DEBUG_TASK_HOME_EXPIRED = "Home cooldown expired for player %s";
-	public static final String DEBUG_TASK_SETHOME_EXPIRED = "Set home cooldown expired for player %s";
-	public static final String DEBUG_TASK_INVITE_COOLDOWN_EXPIRED = "Invite cooldown expired for player %s";
-	public static final String DEBUG_TASK_INVITE_COOLDOWN_ON_LEAVE_EXPIRED = "Invite on leave cooldown expired for player %s";
-	public static final String DEBUG_TASK_RENAME_EXPIRED = "Rename cooldown expired for party %s";
 	public static final String DEBUG_TASK_TELEPORT_DONE = "Teleported the player %s to the party home";
-	public static final String DEBUG_TASK_TELEPORT_EXPIRED = "Teleport cooldown expired for player %s";
 	public static final String DEBUG_TASK_TELEPORT_DENIED_FIGHT = "Denied teleport cmd of player %s due to fight";
 	public static final String DEBUG_TASK_TELEPORT_DENIED_MOVING = "Denied teleport cmd of player %s due to moving";
 	

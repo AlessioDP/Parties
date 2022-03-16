@@ -19,25 +19,22 @@ public class BukkitPartiesPlayerPostTeleportEvent extends BukkitPartiesEvent imp
 		this.destination = destination;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
 	/**
 	 * Get the destination as Location
 	 *
-	 * @return Returns the {@link Location}
+	 * @return the {@link Location}
 	 */
-	@NotNull
-	public Location getDestination() {
+	public @NotNull Location getDestination() {
 		return destination;
 	}
 }

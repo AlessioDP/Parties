@@ -16,6 +16,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@SuppressWarnings("NullableProblems")
 @Name("Remove From Party")
 @Description("Remove the player from the party.")
 @Examples({"remove player from party"})

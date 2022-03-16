@@ -11,18 +11,30 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
+import java.util.UUID;
+
 @EqualsAndHashCode
 public class PartyInviteImpl implements PartyInvite {
-	@NonNull private final PartiesPlugin plugin;
-	@Getter private final Party party;
-	@Getter private final PartyPlayer invitedPlayer;
-	@Getter private final PartyPlayer inviter;
+	@EqualsAndHashCode.Exclude private final PartiesPlugin plugin;
+	@Getter @EqualsAndHashCode.Exclude private final Party party;
+	@Getter @EqualsAndHashCode.Exclude private final PartyPlayer invitedPlayer;
+	@Getter @EqualsAndHashCode.Exclude private final PartyPlayer inviter;
 	@Getter @Setter @EqualsAndHashCode.Exclude private CancellableTask activeTask;
+	private final UUID partyId;
+	private final UUID playerId;
+	
+	public PartyInviteImpl(@NotNull PartiesPlugin plugin, Party party, PartyPlayer invitedPlayer, PartyPlayer inviter) {
+		this.plugin = plugin;
+		this.party = party;
+		this.invitedPlayer = invitedPlayer;
+		this.inviter = inviter;
+		// Used for hash purpose
+		partyId = party.getId();
+		playerId = invitedPlayer.getPlayerUUID();
+	}
 	
 	@Override
 	public void accept(boolean sendMessages) {

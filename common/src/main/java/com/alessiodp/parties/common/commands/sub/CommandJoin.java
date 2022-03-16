@@ -6,7 +6,6 @@ import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.events.common.player.IPlayerPreJoinEvent;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -19,6 +18,7 @@ import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PasswordUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandJoin extends PartiesSubCommand {
 	private final String syntaxPassword;
@@ -49,14 +49,14 @@ public class CommandJoin extends PartiesSubCommand {
 	}
 	
 	@Override
-	public String getSyntaxForUser(User user) {
+	public @NotNull String getSyntaxForUser(User user) {
 		if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
 			return syntaxPassword;
 		return syntax;
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		boolean ret = handlePreRequisitesFull(commandData, false, 2, 3);
 		if (ret && ((PartiesCommandData) commandData).getPartyPlayer() != null) {
 			commandData.addPermission(PartiesPermission.ADMIN_JOIN_BYPASS);
@@ -65,13 +65,13 @@ public class CommandJoin extends PartiesSubCommand {
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
 		String partyName = commandData.getArgs()[1];
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyName);
+		PartyImpl party = getPlugin().getPartyManager().getParty(partyName);
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND
 					.replace("%party%", partyName));
@@ -79,16 +79,26 @@ public class CommandJoin extends PartiesSubCommand {
 		}
 		
 		if (commandData.getArgs().length == 2) {
-			if (!commandData.havePermission(PartiesPermission.ADMIN_JOIN_BYPASS)
-					&& party.getPassword() != null) {
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGPASSWORD);
+			if (!commandData.havePermission(PartiesPermission.ADMIN_JOIN_BYPASS)) {
+				if (ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_ENABLE && !party.isOpen()) {
+					sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_OPENCLOSE_CANNOT_JOIN);
+					return;
+				}
+				
+				if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE && party.getPassword() != null) {
+					sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_PASSWORD_WRONGPASSWORD);
+					return;
+				}
+			}
+		} else if (commandData.getArgs().length == 3 && ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE) {
+			if (!PasswordUtils.hashText(commandData.getArgs()[2]).equals(party.getPassword())) {
+				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_PASSWORD_WRONGPASSWORD);
 				return;
 			}
 		} else {
-			if (!PasswordUtils.hashText(commandData.getArgs()[2]).equals(party.getPassword())) {
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_WRONGPASSWORD);
-				return;
-			}
+			sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", getSyntaxForUser(sender)));
+			return;
 		}
 		
 		if (party.isFull()) {
@@ -96,14 +106,14 @@ public class CommandJoin extends PartiesSubCommand {
 			return;
 		}
 		
-		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.JOIN, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.JOIN, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		// Command starts
 		
 		// Calling API Event
-		IPlayerPreJoinEvent partiesPreJoinEvent = ((PartiesPlugin) plugin).getEventManager().preparePlayerPreJoinEvent(partyPlayer, party, JoinCause.JOIN, partyPlayer);
-		((PartiesPlugin) plugin).getEventManager().callEvent(partiesPreJoinEvent);
+		IPlayerPreJoinEvent partiesPreJoinEvent = getPlugin().getEventManager().preparePlayerPreJoinEvent(partyPlayer, party, JoinCause.JOIN, partyPlayer);
+		getPlugin().getEventManager().callEvent(partiesPreJoinEvent);
 		
 		if (!partiesPreJoinEvent.isCancelled()) {
 			party.addMember(partyPlayer, JoinCause.JOIN, partyPlayer);

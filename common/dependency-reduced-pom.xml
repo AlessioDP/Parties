@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.14</version>
+    <version>3.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-common</artifactId>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-api</artifactId>
-      <version>3.1.14</version>
+      <version>3.2.0</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -73,6 +73,10 @@
         <exclusion>
           <artifactId>bungeecord-api</artifactId>
           <groupId>net.md-5</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>velocity-api</artifactId>
+          <groupId>com.velocitypowered</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -89,12 +93,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains</groupId>
-      <artifactId>annotations</artifactId>
-      <version>23.0.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>com.github.DevLeoko.AdvancedBan</groupId>
       <artifactId>AdvancedBan-Core</artifactId>
       <version>2.3.0</version>
@@ -105,12 +103,6 @@
           <groupId>*</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <version>1.26</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -127,13 +119,13 @@
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
-      <version>2.7.4</version>
+      <version>3.0.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.27</version>
+      <version>8.0.28</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -147,12 +139,6 @@
       <artifactId>postgresql</artifactId>
       <version>42.3.1</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>checker-qual</artifactId>
-          <groupId>org.checkerframework</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>

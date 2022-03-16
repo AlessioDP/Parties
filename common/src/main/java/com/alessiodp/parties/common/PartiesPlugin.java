@@ -4,8 +4,9 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.libraries.LibraryUsage;
 import com.alessiodp.core.common.logging.ConsoleColor;
-import com.alessiodp.parties.api.interfaces.PartiesAPI;
+import com.alessiodp.parties.api.interfaces.PartiesOptions;
 import com.alessiodp.parties.common.api.ApiHandler;
+import com.alessiodp.parties.common.api.PartiesOptionsHandler;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
@@ -36,7 +37,7 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	@Getter private final String packageName = PartiesConstants.PLUGIN_PACKAGENAME;
 	
 	// Parties fields
-	@Getter protected PartiesAPI api;
+	@Getter protected ApiHandler api;
 	@Getter protected ColorManager colorManager;
 	@Getter protected PartyManager partyManager;
 	@Getter protected PlayerManager playerManager;
@@ -72,9 +73,10 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	@Override
 	protected void postHandle() {
-		api = new ApiHandler(this);
+		api = new ApiHandler(this, initApiOptions());
 		colorManager = new ColorManager();
 		cooldownManager = new CooldownManager(this);
+		expManager = new ExpManager(this);
 		playerUtils = new PartiesPlayerUtils(this);
 		rankManager = new RankManager(this);
 		
@@ -128,7 +130,6 @@ public abstract class PartiesPlugin extends ADPPlugin {
 	
 	private void reloadAdpUpdater() {
 		getAdpUpdater().reload(
-				getPluginFallbackName(),
 				PartiesConstants.PLUGIN_SPIGOTCODE,
 				ConfigMain.PARTIES_UPDATES_CHECK,
 				ConfigMain.PARTIES_UPDATES_WARN,
@@ -136,6 +137,10 @@ public abstract class PartiesPlugin extends ADPPlugin {
 				Messages.PARTIES_UPDATEAVAILABLE
 		);
 		getAdpUpdater().asyncTaskCheckUpdates();
+	}
+	
+	protected PartiesOptions initApiOptions() {
+		return new PartiesOptionsHandler();
 	}
 	
 	public abstract boolean isBungeeCordEnabled();

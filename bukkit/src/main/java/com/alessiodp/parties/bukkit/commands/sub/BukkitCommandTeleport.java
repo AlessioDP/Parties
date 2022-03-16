@@ -62,7 +62,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 		if (bukkitTargetPlayer != null) {
 			teleportSinglePlayer(
 					plugin, player, targetPlayer,
-					Bukkit.getPlayer(targetPlayer.getPlayerUUID()).getLocation()
+					bukkitTargetPlayer.getLocation()
 			);
 		}
 	}
@@ -88,15 +88,16 @@ public class BukkitCommandTeleport extends CommandTeleport {
 			plugin.getEventManager().callEvent(partiesPreTeleportEvent);
 			if (!partiesPreTeleportEvent.isCancelled()) {
 				plugin.getScheduler().getSyncExecutor().execute(() -> {
+					EssentialsHandler.updateLastTeleportLocation(bukkitUser.getUUID());
+					
 					bukkitUser.teleportAsync(location).thenAccept(result -> {
 						if (result) {
-							EssentialsHandler.updateLastTeleportLocation(bukkitUser.getUUID());
 							player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
 							
 							IPlayerPostTeleportEvent partiesPostTeleportEvent = plugin.getEventManager().preparePlayerPostTeleportEvent(player, party, location);
 							plugin.getEventManager().callEvent(partiesPostTeleportEvent);
 						} else {
-							plugin.getLoggerManager().printError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
+							plugin.getLoggerManager().logError(PartiesConstants.DEBUG_TELEPORT_ASYNC);
 						}
 					});
 				});

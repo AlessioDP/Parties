@@ -3,124 +3,99 @@ package com.alessiodp.parties.common.messaging;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.messaging.ADPPacket;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class PartiesPacket extends ADPPacket {
 	// Common
-	@Getter private PacketType type;
+	@Getter private String source;
+	@Getter private UUID party;
+	@Getter private UUID player;
+	@Getter private UUID secondaryPlayer;
 	
-	@Getter private UUID partyId;
-	@Getter private UUID playerUuid;
-	@Getter private String payload;
-	@Getter private double payloadNumber = 0;
-	@Getter private byte[] payloadRaw = new byte[] {};
-	
-	public PartiesPacket(String version) {
-		super(version);
-	}
-	
-	@Override
-	public String getName() {
-		return type != null ? type.name() : "UNKNOWN";
-	}
-	
-	@Override
-	public byte[] build() {
-		ByteArrayDataOutput output = ByteStreams.newDataOutput();
-		
-		try {
-			output.writeUTF(getVersion());
-			output.writeUTF(type.name());
-			output.writeUTF(partyId != null ? partyId.toString() : "");
-			output.writeUTF(playerUuid != null ? playerUuid.toString() : "");
-			output.writeUTF(payload != null ? payload : "");
-			output.writeDouble(payloadNumber);
-			output.writeInt(payloadRaw.length);
-			output.write(payloadRaw);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		return output.toByteArray();
-	}
+	@Getter private String text;
+	@Getter private String secondaryText;
+	@Getter private double number;
+	@Getter private double secondaryNumber;
+	@Getter private boolean bool;
+	@Getter private Enum<?> cause;
+	@Getter private ConfigData configData;
 	
 	public static PartiesPacket read(ADPPlugin plugin, byte[] bytes) {
 		PartiesPacket ret = null;
-		try {
-			ByteArrayDataInput input = ByteStreams.newDataInput(bytes);
-			String foundVersion = input.readUTF();
-			
-			if (foundVersion.equals(plugin.getVersion())) {
-				try {
-					String type = input.readUTF();
-					String partyId = input.readUTF();
-					String playerUuid = input.readUTF();
-					String payload = input.readUTF();
-					double payloadNumber = input.readDouble();
-					byte[] raw = new byte[input.readInt()];
-					input.readFully(raw);
-					
-					PartiesPacket packet = new PartiesPacket(foundVersion);
-					packet.type = PacketType.valueOf(type);
-					if (!partyId.isEmpty())
-						packet.partyId = UUID.fromString(partyId);
-					if (!playerUuid.isEmpty())
-						packet.playerUuid = UUID.fromString(playerUuid);
-					if (!payload.isEmpty())
-						packet.payload = payload;
-					packet.payloadNumber = payloadNumber;
-					packet.payloadRaw = raw;
-					ret = packet;
-				} catch (Exception ex) {
-					plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex.getMessage()));
-					ex.printStackTrace();
-				}
-			} else {
-				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION, plugin.getVersion(), foundVersion));
-			}
+		try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes)) {
+			ObjectInput in = new ObjectInputStream(bis);
+			ret = (PartiesPacket) in.readObject();
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_VERSION, plugin.getVersion(), "none"));
-			ex.printStackTrace();
+			plugin.getLoggerManager().logError(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex);
 		}
 		return ret;
 	}
 	
-	public PartiesPacket setType(PacketType type) {
-		this.type = type;
+	
+	public PartiesPacket setSource(String source) {
+		this.source = source;
 		return this;
 	}
 	
-	public PartiesPacket setPartyId(UUID partyId) {
-		this.partyId = partyId;
+	public PartiesPacket setParty(UUID party) {
+		this.party = party;
 		return this;
 	}
 	
-	public PartiesPacket setPlayerUuid(UUID playerUuid) {
-		this.playerUuid = playerUuid;
+	public PartiesPacket setPlayer(UUID player) {
+		this.player = player;
 		return this;
 	}
 	
-	public PartiesPacket setPayload(String payload) {
-		this.payload = payload;
+	public PartiesPacket setSecondaryPlayer(UUID secondaryPlayer) {
+		this.secondaryPlayer = secondaryPlayer;
 		return this;
 	}
 	
-	public PartiesPacket setPayloadNumber(double payloadNumber) {
-		this.payloadNumber = payloadNumber;
+	public PartiesPacket setText(String text) {
+		this.text = text;
 		return this;
 	}
 	
-	public PartiesPacket setPayloadRaw(byte[] payloadRaw) {
-		this.payloadRaw = payloadRaw;
+	public PartiesPacket setSecondaryText(String secondaryText) {
+		this.secondaryText = secondaryText;
+		return this;
+	}
+	
+	public PartiesPacket setNumber(double number) {
+		this.number = number;
+		return this;
+	}
+	
+	public PartiesPacket setSecondaryNumber(double secondaryNumber) {
+		this.secondaryNumber = secondaryNumber;
+		return this;
+	}
+	
+	public PartiesPacket setBool(boolean bool) {
+		this.bool = bool;
+		return this;
+	}
+	
+	public PartiesPacket setCause(Enum<?> cause) {
+		this.cause = cause;
+		return this;
+	}
+	
+	public PartiesPacket setConfigData(ConfigData configData) {
+		this.configData = configData;
 		return this;
 	}
 	
@@ -134,6 +109,32 @@ public class PartiesPacket extends ADPPacket {
 		ADD_HOME, HOME_TELEPORT, TELEPORT, EXPERIENCE, LEVEL_UP,
 		
 		// Config packets
-		CONFIGS, REQUEST_CONFIGS
+		CONFIGS, REQUEST_CONFIGS, DEBUG_BUNGEECORD,
+		
+		// Redis packets
+		REDIS_MESSAGE, REDIS_TITLE, REDIS_CHAT
+	}
+	
+	@EqualsAndHashCode
+	@ToString
+	@AllArgsConstructor
+	public static class ConfigData implements Serializable {
+		@Getter String storageTypeDatabase;
+		@Getter boolean additionalExpEnable;
+		@Getter boolean additionalExpEarnFromMobs;
+		@Getter String additionalExpMode;
+		@Getter double additionalExpProgressiveStart;
+		@Getter String additionalExpProgressiveLevelExp;
+		@Getter boolean additionalExpProgressiveSafeCalculation;
+		@Getter boolean additionalExpFixedRepeat;
+		@Getter List<Double> additionalExpFixedList;
+		@Getter boolean additionalFriendlyFireEnable;
+		@Getter String additionalFriendlyFireType;
+		@Getter boolean additionalFriendlyFireWarnOnFight;
+		@Getter boolean additionalFriendlyFirePreventFishHook;
+		@Getter boolean additionalKillsEnable;
+		@Getter boolean additionalKillsMobNeutral;
+		@Getter boolean additionalKillsMobHostile;
+		@Getter boolean additionalKillsMobPlayers;
 	}
 }

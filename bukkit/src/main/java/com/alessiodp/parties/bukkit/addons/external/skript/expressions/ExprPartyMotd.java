@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party MOTD")
 @Description("Get the motd of the given party.")
 @Examples({"send \"%motd of party with name \"test\"%\"",

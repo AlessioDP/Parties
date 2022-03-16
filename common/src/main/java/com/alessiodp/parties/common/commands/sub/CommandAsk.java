@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -12,11 +11,13 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
+import com.alessiodp.parties.common.parties.CooldownManager;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.RequestCooldown;
 import com.alessiodp.parties.common.utils.EconomyManager;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandAsk extends PartiesSubCommand {
 	
@@ -40,18 +41,22 @@ public class CommandAsk extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
-		return handlePreRequisitesFull(commandData, false, 2, 2);
+	public boolean preRequisites(@NotNull CommandData commandData) {
+		boolean ret = handlePreRequisitesFull(commandData, false, 2, 2);
+		if (ret) {
+			commandData.addPermission(PartiesPermission.ADMIN_COOLDOWN_ASK_BYPASS);
+		}
+		return ret;
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
 		String partyName = commandData.getArgs()[1];
-		PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(partyName);
+		PartyImpl party = getPlugin().getPartyManager().getParty(partyName);
 		if (party == null) {
 			sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND
 					.replace("%party%", partyName));
@@ -64,10 +69,14 @@ public class CommandAsk extends PartiesSubCommand {
 		}
 		
 		boolean mustStartCooldown = false;
-		if (ConfigParties.ADDITIONAL_ASK_COOLDOWN_ENABLE && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_ASK_BYPASS)) {
+		if (ConfigParties.ADDITIONAL_ASK_COOLDOWN_ENABLE && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_ASK_BYPASS)) {
 			// Check invite cooldown
 			mustStartCooldown = true;
-			RequestCooldown askCooldown = ((PartiesPlugin) plugin).getCooldownManager().canAsk(partyPlayer.getPlayerUUID(), party.getId());
+			RequestCooldown askCooldown = getPlugin().getCooldownManager().canMultiAction(
+					CooldownManager.MultiAction.ASK,
+					partyPlayer.getPlayerUUID(),
+					party.getId()
+			);
 			
 			if (askCooldown != null) {
 				sendMessage(sender, partyPlayer, (askCooldown.isGlobal() ? Messages.ADDCMD_ASK_COOLDOWN_GLOBAL : Messages.ADDCMD_ASK_COOLDOWN_INDIVIDUAL)
@@ -75,15 +84,25 @@ public class CommandAsk extends PartiesSubCommand {
 			}
 		}
 		
-		if (((PartiesPlugin) plugin).getEconomyManager().payCommand(EconomyManager.PaidCommand.ASK, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
+		if (getPlugin().getEconomyManager().payCommand(EconomyManager.PaidCommand.ASK, partyPlayer, commandData.getCommandLabel(), commandData.getArgs()))
 			return;
 		
 		// Command starts
 		partyPlayer.askToJoin(party);
 		
 		if (mustStartCooldown) {
-			((PartiesPlugin) plugin).getCooldownManager().startAskCooldown(partyPlayer.getPlayerUUID(), null, ConfigParties.ADDITIONAL_ASK_COOLDOWN_GLOBAL);
-			((PartiesPlugin) plugin).getCooldownManager().startAskCooldown(partyPlayer.getPlayerUUID(), party.getId(), ConfigParties.ADDITIONAL_ASK_COOLDOWN_INDIVIDUAL);
+			getPlugin().getCooldownManager().startMultiAction(
+					CooldownManager.MultiAction.ASK,
+					partyPlayer.getPlayerUUID(),
+					null,
+					ConfigParties.ADDITIONAL_ASK_COOLDOWN_GLOBAL
+			);
+			getPlugin().getCooldownManager().startMultiAction(
+					CooldownManager.MultiAction.ASK,
+					partyPlayer.getPlayerUUID(),
+					party.getId(),
+					ConfigParties.ADDITIONAL_ASK_COOLDOWN_INDIVIDUAL
+			);
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_ASK,

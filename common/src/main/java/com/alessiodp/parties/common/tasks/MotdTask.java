@@ -7,16 +7,16 @@ import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 @RequiredArgsConstructor
 public class MotdTask implements Runnable {
-	@NonNull private final PartiesPlugin plugin;
-	@NonNull private final UUID playerUUID;
-	@NonNull private final UUID createID;
+	@NotNull private final PartiesPlugin plugin;
+	@NotNull private final UUID playerUUID;
+	@NotNull private final UUID createID;
 
 	@Override
 	public void run() {
@@ -36,7 +36,7 @@ public class MotdTask implements Runnable {
 					line = line.replace("%motd%", "%temporary_motd%"); // Used to bypass tags from convertAllPlaceholders
 					line = plugin.getMessageUtils().convertPlaceholders(line, partyPlayer, party);
 					line = Color.translateAlternateColorCodes(line);
-					line = line.replace("%temporary_motd%", motd.toString());
+					line = line.replace("%temporary_motd%", motd);
 					
 					partyPlayer.sendMessage(line);
 				}

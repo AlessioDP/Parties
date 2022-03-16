@@ -4,12 +4,12 @@ import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandTeleport;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.players.objects.PartyTeleportRequest;
-import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitPartyTeleportRequest extends PartyTeleportRequest {
-	public BukkitPartyTeleportRequest(@NonNull PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl requester) {
+	public BukkitPartyTeleportRequest(@NotNull PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl requester) {
 		super(plugin, player, requester);
 	}
 	

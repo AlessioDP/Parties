@@ -6,7 +6,6 @@ import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.confuser.banmanager.bukkit.api.events.PlayerBannedEvent;
 import me.confuser.banmanager.common.api.BmAPI;
@@ -15,10 +14,11 @@ import org.bukkit.Bukkit;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class BanManagerHandler implements Listener {
-	@NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "BanManager";
 	private static boolean active;
 	

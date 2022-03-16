@@ -7,6 +7,7 @@ import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import com.alessiodp.parties.api.interfaces.Party;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party is Friendly Fire Protected")
 @Description("Checks if a party is friendly fire protected.")
 @Examples({

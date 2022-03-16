@@ -10,6 +10,7 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.sub.CommandAccept;
 import com.alessiodp.parties.common.commands.sub.CommandAsk;
 import com.alessiodp.parties.common.commands.sub.CommandChat;
+import com.alessiodp.parties.common.commands.sub.CommandClose;
 import com.alessiodp.parties.common.commands.sub.CommandColor;
 import com.alessiodp.parties.common.commands.sub.CommandCreate;
 import com.alessiodp.parties.common.commands.sub.CommandCreateFixed;
@@ -28,6 +29,7 @@ import com.alessiodp.parties.common.commands.sub.CommandList;
 import com.alessiodp.parties.common.commands.sub.CommandMotd;
 import com.alessiodp.parties.common.commands.sub.CommandMute;
 import com.alessiodp.parties.common.commands.sub.CommandNickname;
+import com.alessiodp.parties.common.commands.sub.CommandOpen;
 import com.alessiodp.parties.common.commands.sub.CommandPassword;
 import com.alessiodp.parties.common.commands.sub.CommandProtection;
 import com.alessiodp.parties.common.commands.sub.CommandRank;
@@ -119,6 +121,12 @@ public abstract class CommandParty extends ADPMainCommand {
 			if (ConfigParties.ADDITIONAL_NICKNAME_ENABLE)
 				register(new CommandNickname(plugin, this));
 			
+			// Open/close
+			if (ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_ENABLE) {
+				register(new CommandOpen(plugin, this));
+				register(new CommandClose(plugin, this));
+			}
+			
 			// Password
 			if (ConfigParties.ADDITIONAL_JOIN_PASSWORD_ENABLE)
 				register(new CommandPassword(plugin, this));
@@ -160,16 +168,16 @@ public abstract class CommandParty extends ADPMainCommand {
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {
-					plugin.logConsole(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD));
+					plugin.getLogger().info(Color.translateAndStripColor(Messages.PARTIES_COMMON_INVALIDCMD));
 				}
 			} else {
 				// Print help
-				plugin.logConsole(Messages.HELP_CONSOLEHELP_HEADER);
+				plugin.getLogger().info(Messages.HELP_CONSOLEHELP_HEADER);
 				for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
 					if (e.getValue().isExecutableByConsole()  && e.getValue().isListedInHelp()) {
-						plugin.logConsole(Messages.HELP_CONSOLEHELP_COMMAND
+						plugin.getLogger().info(Messages.HELP_CONSOLEHELP_COMMAND
 								.replace("%command%", e.getValue().getConsoleSyntax())
-								.replace("%description%", e.getValue().getDescription()));
+								.replace("%description%", e.getValue().getDescription() != null ? e.getValue().getDescription() : ""));
 					}
 				}
 			}

@@ -5,12 +5,12 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class SpyMessage {
-	@NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
 	@Getter private SpyType type;
 	@Getter private String message;
 	

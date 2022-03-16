@@ -98,7 +98,7 @@ public class BukkitFightListener implements Listener {
 						BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 						
 						if (party != null
-								&& ppAttacker.getPartyId().equals(ppVictim.getPartyId())
+								&& party.getId().equals(ppVictim.getPartyId())
 								&& party.isFriendlyFireProtected()
 								&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 							// Calling API event
@@ -108,15 +108,17 @@ public class BukkitFightListener implements Listener {
 							if (!partiesFriendlyFireEvent.isCancelled()) {
 								// Friendly fire confirmed
 								User userAttacker = plugin.getPlayer(attacker.getUniqueId());
-								userAttacker.sendMessage(
-										plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
-										, true);
-								party.warnFriendlyFire(ppVictim, ppAttacker);
-								
-								event.setCancelled(true);
-								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, type.name(), attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
+								if (userAttacker != null) {
+									userAttacker.sendMessage(
+											plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
+											, true);
+									party.warnFriendlyFire(ppVictim, ppAttacker);
+									
+									event.setCancelled(true);
+									plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, type.name(), attacker.getUniqueId(), victim.getUniqueId()), true);
+								}
 							} else
-								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, type.name(), attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
+								plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, type.name(), attacker.getUniqueId(), victim.getUniqueId()), true);
 						}
 					}
 				}
@@ -161,7 +163,7 @@ public class BukkitFightListener implements Listener {
 							Player victim = (Player) e;
 							if (!attacker.equals(victim)) {
 								PartyPlayerImpl ppVictim = plugin.getPlayerManager().getPlayer(victim.getUniqueId());
-								if (ppAttacker.getPartyId().equals(ppVictim.getPartyId())) {
+								if (ppAttacker.getPartyId() != null && ppAttacker.getPartyId().equals(ppVictim.getPartyId())) {
 									// Calling API event
 									BukkitPartiesPotionsFriendlyFireBlockedEvent partiesFriendlyFireEvent = ((BukkitEventManager) plugin.getEventManager()).preparePartiesPotionsFriendlyFireBlockedEvent(ppVictim, ppAttacker, event);
 									plugin.getEventManager().callEvent(partiesFriendlyFireEvent);
@@ -169,15 +171,17 @@ public class BukkitFightListener implements Listener {
 									if (!partiesFriendlyFireEvent.isCancelled()) {
 										// Friendly fire confirmed
 										User userAttacker = plugin.getPlayer(attacker.getUniqueId());
-										userAttacker.sendMessage(
-												plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
-												, true);
-										party.warnFriendlyFire(ppVictim, ppAttacker);
-										
-										event.setIntensity(e, 0);
-										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "potion splash", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
+										if (userAttacker != null) {
+											userAttacker.sendMessage(
+													plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
+													, true);
+											party.warnFriendlyFire(ppVictim, ppAttacker);
+											
+											event.setIntensity(e, 0);
+											plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "potion splash", attacker.getUniqueId(), victim.getUniqueId()), true);
+										}
 									} else
-										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "potion splash", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
+										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "potion splash", attacker.getUniqueId(), victim.getUniqueId()), true);
 								}
 							}
 						}
@@ -204,7 +208,7 @@ public class BukkitFightListener implements Listener {
 				BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 				
 				if (party != null
-						&& ppAttacker.getPartyId().equals(ppVictim.getPartyId())
+						&& party.getId().equals(ppVictim.getPartyId())
 						&& party.isFriendlyFireProtected()
 						&& !attacker.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 					// Calling API event
@@ -214,15 +218,17 @@ public class BukkitFightListener implements Listener {
 					if (!partiesFriendlyFireEvent.isCancelled()) {
 						// Friendly fire confirmed
 						User userAttacker = plugin.getPlayer(attacker.getUniqueId());
-						userAttacker.sendMessage(
-								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
-								, true);
-						party.warnFriendlyFire(ppVictim, ppAttacker);
-						
-						event.setCancelled(true);
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "entity combust", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
+						if (userAttacker != null) {
+							userAttacker.sendMessage(
+									plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
+									, true);
+							party.warnFriendlyFire(ppVictim, ppAttacker);
+							
+							event.setCancelled(true);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "entity combust", attacker.getUniqueId(), victim.getUniqueId()), true);
+						}
 					} else
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "entity combust", attacker.getUniqueId().toString(), victim.getUniqueId().toString()), true);
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "entity combust", attacker.getUniqueId(), victim.getUniqueId()), true);
 				}
 			}
 			
@@ -252,7 +258,7 @@ public class BukkitFightListener implements Listener {
 				
 				if (gotKill) {
 					party.setKills(party.getKills() + 1);
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_KILL_ADD, party.getId().toString(), killer.getUniqueId().toString()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_KILL_ADD, party.getId(), killer.getUniqueId()), true);
 				}
 			}
 		}
@@ -266,28 +272,30 @@ public class BukkitFightListener implements Listener {
 				BukkitPartyPlayerImpl partyPlayer = (BukkitPartyPlayerImpl) plugin.getPlayerManager().getPlayer(event.getEntity().getUniqueId());
 				User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
 				
-				// Check if the player is on home cooldown
-				if (partyPlayer.getPendingHomeDelay() != null) {
-					// Cancelling home task
-					partyPlayer.getPendingHomeDelay().cancel();
+				if (user != null) {
+					// Check if the player is on home cooldown
+					if (partyPlayer.getPendingHomeDelay() != null) {
+						// Cancelling home task
+						partyPlayer.getPendingHomeDelay().cancel();
+						
+						user.sendMessage(
+								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null)
+								, true);
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT, partyPlayer.getPlayerUUID()), true);
+					}
 					
-					user.sendMessage(
-							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null)
-							, true);
-					
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT, partyPlayer.getPlayerUUID().toString()), true);
-				}
-				
-				// Check if the player is on teleport cooldown
-				if (partyPlayer.getPendingTeleportDelay() != null) {
-					// Cancelling home task
-					partyPlayer.getPendingTeleportDelay().cancel();
-					
-					user.sendMessage(
-							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED, partyPlayer, null)
-							, true);
-					
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_FIGHT, partyPlayer.getPlayerUUID().toString()), true);
+					// Check if the player is on teleport cooldown
+					if (partyPlayer.getPendingTeleportDelay() != null) {
+						// Cancelling home task
+						partyPlayer.getPendingTeleportDelay().cancel();
+						
+						user.sendMessage(
+								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED, partyPlayer, null)
+								, true);
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_FIGHT, partyPlayer.getPlayerUUID()), true);
+					}
 				}
 			});
 		}
@@ -307,7 +315,7 @@ public class BukkitFightListener implements Listener {
 			BukkitPartyImpl party = (BukkitPartyImpl) plugin.getPartyManager().getParty(ppAttacker.getPartyId());
 			
 			if (party != null
-					&& ppAttacker.getPartyId().equals(ppVictim.getPartyId())
+					&& party.getId().equals(ppVictim.getPartyId())
 					&& party.isFriendlyFireProtected()
 					&& !event.getPlayer().hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS.toString())) {
 				// Calling API event
@@ -317,21 +325,23 @@ public class BukkitFightListener implements Listener {
 				if (!partiesFriendlyFireEvent.isCancelled()) {
 					// Friendly fire confirmed
 					User userAttacker = plugin.getPlayer(event.getPlayer().getUniqueId());
-					userAttacker.sendMessage(
-							plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
-							, true);
-					party.warnFriendlyFire(ppVictim, ppAttacker);
-					
-					try {
-						event.getHook().remove();
-						event.setCancelled(true);
-						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "fish hook", ppAttacker.getPlayerUUID().toString(), ppVictim.getPlayerUUID().toString()), true);
-					} catch (NoSuchMethodError ignored) {
-						// Hook remove not supported in this version
-						plugin.getLoggerManager().printError(PartiesConstants.DEBUG_FRIENDLYFIRE_FISH_NOT_SUPPORTED);
+					if (userAttacker != null) {
+						userAttacker.sendMessage(
+								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_PROTECTION_PROTECTED, ppAttacker, party)
+								, true);
+						party.warnFriendlyFire(ppVictim, ppAttacker);
+						
+						try {
+							event.getHook().remove();
+							event.setCancelled(true);
+							plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_FRIENDLYFIRE_DENIED, "fish hook", ppAttacker.getPlayerUUID(), ppVictim.getPlayerUUID()), true);
+						} catch (NoSuchMethodError ignored) {
+							// Hook remove not supported in this version
+							plugin.getLoggerManager().logError(PartiesConstants.DEBUG_FRIENDLYFIRE_FISH_NOT_SUPPORTED);
+						}
 					}
 				} else
-					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "fish hook", ppAttacker.getPlayerUUID().toString(), ppVictim.getPlayerUUID().toString()), true);
+					plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_FRIENDLYFIREEVENT_DENY, "fish hook", ppAttacker.getPlayerUUID(), ppVictim.getPlayerUUID()), true);
 			}
 		}
 	}

@@ -18,25 +18,22 @@ public class BungeePartiesPlayerPostTeleportEvent extends BungeePartiesEvent imp
 		this.destination = destination;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
 	/**
 	 * Get the destination as ServerInfo
 	 *
-	 * @return Returns the {@link ServerInfo}
+	 * @return the {@link ServerInfo}
 	 */
-	@NotNull
-	public ServerInfo getDestination() {
+	public @NotNull ServerInfo getDestination() {
 		return destination;
 	}
 }

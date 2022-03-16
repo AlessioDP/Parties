@@ -10,25 +10,21 @@ public interface IPlayerPostInviteEvent extends PartiesEvent {
 	/**
 	 * Get the invited player
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	PartyPlayer getInvitedPlayer();
+	@NotNull PartyPlayer getInvitedPlayer();
 	
 	/**
 	 * Get the inviter
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@Nullable
-	PartyPlayer getInviter();
+	@Nullable PartyPlayer getInviter();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
-	
+	@NotNull Party getParty();
 }

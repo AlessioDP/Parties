@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Tag")
 @Description("Get the tag of the given party.")
 @Examples({"send \"%tag of party with name \"test\"%\"",

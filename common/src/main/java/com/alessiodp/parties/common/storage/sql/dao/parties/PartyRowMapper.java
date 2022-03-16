@@ -27,6 +27,9 @@ public class PartyRowMapper implements RowMapper<PartyImpl> {
 		ret.setProtection(rs.getBoolean("protection"));
 		ret.setExperience(rs.getDouble("experience"));
 		ret.setFollowEnabled(rs.getBoolean("follow"));
+		boolean isopen = rs.getBoolean("isopen");
+		if (!rs.wasNull())
+			ret.setOpenNullable(isopen);
 		ret.setAccessible(false);
 		
 		return ret;

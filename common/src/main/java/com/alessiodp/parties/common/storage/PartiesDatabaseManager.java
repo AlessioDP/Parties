@@ -44,7 +44,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 				break;
 			default:
 				// Unsupported storage type
-				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED, ConfigMain.STORAGE_TYPE_DATABASE));
+				plugin.getLoggerManager().logError(String.format(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED, ConfigMain.STORAGE_TYPE_DATABASE));
 				break;
 		}
 		return ret;
@@ -52,7 +52,7 @@ public class PartiesDatabaseManager extends DatabaseManager {
 	
 	public CompletableFuture<Void> updatePlayer(PartyPlayerImpl player) {
 		return executeSafelyAsync(() -> {
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPLAYER, player.getName(), player.getPlayerUUID().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_UPDATEPLAYER, player.getName(), player.getPlayerUUID()), true);
 			
 			((IPartiesDatabase) database).updatePlayer(player);
 		});
@@ -63,14 +63,6 @@ public class PartiesDatabaseManager extends DatabaseManager {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_DB_GETPLAYER, uuid.toString()), true);
 			
 			return ((IPartiesDatabase) database).getPlayer(uuid);
-		}).join();
-	}
-	
-	public int getListPlayersInPartyNumber() {
-		return executeSafelySupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_DB_GETALLPLAYERS_NUMBER, true);
-			
-			return ((IPartiesDatabase) database).getListPlayersInPartyNumber();
 		}).join();
 	}
 	

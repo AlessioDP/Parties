@@ -12,6 +12,7 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+@SuppressWarnings("NullableProblems")
 public class Types {
 	
 	static {
@@ -43,12 +44,7 @@ public class Types {
 					
 					@Override
 					public String toVariableNameString(Party party) {
-						return "party:" + party.getId().toString();
-					}
-					
-					@Override
-					public String getVariableNamePattern() {
-						return ".+";
+						return "party:" + party.getId();
 					}
 				})
 		);
@@ -76,19 +72,12 @@ public class Types {
 					
 					@Override
 					public String toString(PartyPlayer partyPlayer, int i) {
-						return partyPlayer.getName() != null ? partyPlayer.getName() : partyPlayer.getPlayerUUID().toString();
+						return partyPlayer.getName();
 					}
-					
-					
 					
 					@Override
 					public String toVariableNameString(PartyPlayer partyPlayer) {
-						return "partyplayer:" + partyPlayer.getPlayerUUID().toString();
-					}
-					
-					@Override
-					public String getVariableNamePattern() {
-						return ".+";
+						return "partyplayer:" + partyPlayer.getPlayerUUID();
 					}
 				})
 		);

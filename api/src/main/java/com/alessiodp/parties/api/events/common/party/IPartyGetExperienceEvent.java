@@ -10,33 +10,30 @@ public interface IPartyGetExperienceEvent extends PartiesEvent {
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the experience
 	 *
-	 * @return Returns the experience
+	 * @return the experience
 	 */
 	double getExperience();
 	
 	/**
 	 * Get experience source
 	 *
-	 * @return The {@link ExpSource}
+	 * @return the {@link ExpSource}
 	 */
-	@NotNull
-	ExpSource getSource();
+	@NotNull ExpSource getSource();
 	
 	/**
 	 * Get the player who killed the mob
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@Nullable
-	PartyPlayer getKiller();
+	@Nullable PartyPlayer getKiller();
 	
 	enum ExpSource {
 		/**

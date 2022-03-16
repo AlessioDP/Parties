@@ -1,5 +1,6 @@
 package com.alessiodp.parties.common.api;
 
+import com.alessiodp.parties.api.interfaces.PartiesOptions;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
@@ -22,7 +23,13 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class ApiHandler implements PartiesAPI {
-	@lombok.NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesOptions options;
+	
+	@Override
+	public @NotNull PartiesOptions getOptions() {
+		return options;
+	}
 	
 	@Override
 	public void reloadPlugin() {
@@ -48,57 +55,63 @@ public class ApiHandler implements PartiesAPI {
 	}
 	
 	@Override
-	public Party getParty(@NotNull String party) {
+	public @Nullable Party getParty(@NotNull String party) {
 		return plugin.getPartyManager().getParty(party);
 	}
 	
 	@Override
-	public Party getParty(@NotNull UUID party) {
+	public @Nullable Party getParty(@NotNull UUID party) {
 		return plugin.getPartyManager().getParty(party);
 	}
 	
 	@Override
-	public PartyPlayer getPartyPlayer(UUID uuid) {
+	public @Nullable PartyPlayer getPartyPlayer(@NotNull UUID uuid) {
 		return plugin.getPlayerManager().getPlayer(uuid);
 	}
 	
 	@Override
-	public List<Party> getOnlineParties() {
+	public @Nullable Party getPartyOfPlayer(@NotNull UUID uuid) {
+		PartyPlayerImpl partyPlayer = plugin.getPlayerManager().getPlayer(uuid);
+		return partyPlayer != null ? plugin.getPartyManager().getPartyOfPlayer(partyPlayer) : null;
+	}
+	
+	@Override
+	public @NotNull List<Party> getOnlineParties() {
 		return new ArrayList<>(plugin.getPartyManager().getCacheParties().values());
 	}
 	
 	@Override
-	public Set<PartyRank> getRanks() {
+	public @NotNull Set<PartyRank> getRanks() {
 		return new HashSet<>(plugin.getRankManager().getRankList());
 	}
 	
 	@Override
-	public Set<PartyColor> getColors() {
+	public @NotNull Set<PartyColor> getColors() {
 		return new HashSet<>(plugin.getColorManager().getColorList());
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByName(int numberOfParties, int offset) {
+	public @NotNull LinkedList<Party> getPartiesListByName(int numberOfParties, int offset) {
 		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.NAME, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByOnlineMembers(int numberOfParties, int offset) {
+	public @NotNull LinkedList<Party> getPartiesListByOnlineMembers(int numberOfParties, int offset) {
 		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.ONLINE_MEMBERS, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByMembers(int numberOfParties, int offset) {
+	public @NotNull LinkedList<Party> getPartiesListByMembers(int numberOfParties, int offset) {
 		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.MEMBERS, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByKills(int numberOfParties, int offset) {
+	public @NotNull LinkedList<Party> getPartiesListByKills(int numberOfParties, int offset) {
 		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.KILLS, numberOfParties, offset));
 	}
 	
 	@Override
-	public LinkedList<Party> getPartiesListByExperience(int numberOfParties, int offset) {
+	public @NotNull LinkedList<Party> getPartiesListByExperience(int numberOfParties, int offset) {
 		return new LinkedList<>(plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.EXPERIENCE, numberOfParties, offset));
 	}
 	

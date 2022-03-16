@@ -9,30 +9,34 @@ import org.jetbrains.annotations.NotNull;
 public class BukkitPartiesPlayerPostChatEvent extends BukkitPartiesEvent implements IPlayerPostChatEvent {
 	private final PartyPlayer player;
 	private final Party party;
+	private final String formattedMessage;
 	private final String message;
 	
-	public BukkitPartiesPlayerPostChatEvent(PartyPlayer player, Party party, String message) {
+	public BukkitPartiesPlayerPostChatEvent(PartyPlayer player, Party party, String formattedMessage, String message) {
 		super(true);
 		this.player = player;
 		this.party = party;
+		this.formattedMessage = formattedMessage;
 		this.message = message;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @NotNull PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
-	@NotNull
 	@Override
-	public String getMessage() {
+	public @NotNull String getFormattedMessage() {
+		return formattedMessage;
+	}
+	
+	@Override
+	public @NotNull String getMessage() {
 		return message;
 	}
 }

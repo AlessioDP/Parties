@@ -15,8 +15,7 @@ public class BukkitPartiesEvent extends Event implements PartiesEvent {
 	}
 	
 	@Override
-	@NotNull
-	public PartiesAPI getApi() {
+	public @NotNull PartiesAPI getApi() {
 		return api;
 	}
 	
@@ -26,8 +25,7 @@ public class BukkitPartiesEvent extends Event implements PartiesEvent {
 	}
 	
 	@Override
-	@NotNull
-	public HandlerList getHandlers() {
+	public @NotNull HandlerList getHandlers() {
 		return HANDLERS;
 	}
 	

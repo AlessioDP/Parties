@@ -1,7 +1,10 @@
 package com.alessiodp.parties.bukkit.addons.external.skript.events;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.lang.util.SimpleEvent;
+import ch.njol.skript.lang.Literal;
+import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostDeleteEvent;
@@ -10,10 +13,15 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event;
 
-public class EvtPartyDelete {
+import java.util.ArrayList;
+import java.util.Collection;
+
+@SuppressWarnings("NullableProblems")
+public class EvtPartyDelete extends SelfRegisteringSkriptEvent {
 	static {
-		Skript.registerEvent("Party Pre Delete", SimpleEvent.class, BukkitPartiesPartyPreDeleteEvent.class,
+		Skript.registerEvent("Party Pre Delete", EvtPartyDelete.class, BukkitPartiesPartyPreDeleteEvent.class,
 				"[player] pre delete[s] [a] party")
 				.description("Called when a player is deleting a party. Cancellable.")
 				.examples("on pre delete party:",
@@ -38,7 +46,7 @@ public class EvtPartyDelete {
 			}
 		}, 0);
 		
-		Skript.registerEvent("Party Post Delete", SimpleEvent.class, BukkitPartiesPartyPostDeleteEvent.class,
+		Skript.registerEvent("Party Post Delete", EvtPartyDelete.class, BukkitPartiesPartyPostDeleteEvent.class,
 				"[player] [post] delete[s] [a] party")
 				.description("Called when a player has deleted a party.")
 				.examples("on post delete party:",
@@ -62,5 +70,32 @@ public class EvtPartyDelete {
 				return e.getKickedPlayer() != null ? Bukkit.getPlayer(e.getKickedPlayer().getPlayerUUID()) : Bukkit.getConsoleSender();
 			}
 		}, 0);
+	}
+	
+	final static Collection<Trigger> triggers = new ArrayList<>();
+	
+	@Override
+	public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
+		return true;
+	}
+	
+	@Override
+	public void register(Trigger trigger) {
+		triggers.add(trigger);
+	}
+	
+	@Override
+	public void unregister(Trigger trigger) {
+		triggers.remove(trigger);
+	}
+	
+	@Override
+	public void unregisterAll() {
+		triggers.clear();
+	}
+	
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "party delete";
 	}
 }

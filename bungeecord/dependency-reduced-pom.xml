@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.1.14</version>
+    <version>3.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bungeecord</artifactId>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-common</artifactId>
-      <version>3.1.14</version>
+      <version>3.2.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.github.LeonMangler</groupId>
       <artifactId>PremiumVanishAPI</artifactId>
-      <version>2.7.3</version>
+      <version>2.7.11-2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -10,24 +10,21 @@ public interface IPlayerPostHomeEvent extends PartiesEvent {
 	/**
 	 * Get the player who got teleported
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	PartyPlayer getPartyPlayer();
+	@NotNull PartyPlayer getPartyPlayer();
 	
 	/**
 	 * Get the party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the destination home
 	 *
-	 * @return Returns the {@link PartyHome}
+	 * @return the {@link PartyHome}
 	 */
-	@NotNull
-	PartyHome getHome();
+	@NotNull PartyHome getHome();
 }

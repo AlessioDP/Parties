@@ -1,0 +1,385 @@
+# / ================================================================== \
+# | This is the party related Velocity configuration file of Parties |
+# \ ================================================================== /
+#
+# For any problem be sure to:
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
+#
+
+# / =============================== \
+# |        GENERAL  SETTINGS        |
+# \ =============================== /
+general:
+  members:
+    # Limit the number of party members (-1 is unlimited)
+    limit: -1
+    # If the leader of a party left, change the leader instead of disbanding
+    on-party-leave-change-leader: false
+    # If you kick players on leave, you should enable this option
+    #   to prevent ghost parties
+    disband-parties-on-disable: false
+    # Settings for on player leave from server event
+    # => change-leader:      Change the leader if he leaves
+    # => kick-from-party:    Kick the player from the party
+    # => delay:              Delay time in seconds before actions
+    on-player-leave-from-server:
+      change-leader: false
+      kick-from-party: false
+      delay: 600
+
+  broadcast:
+    titles:
+      # Send a title message
+      enable: false
+      # Send the normal message too
+      send-normal-message: true
+      # Times of the title in milliseconds
+      fade-in-time: 200
+      show-time: 2000
+      fade-out-time: 200
+
+  name:
+    # Regex of chars (Use \\ instead of \ if you use "text" format)
+    # For ALL utf characters use '[\p{L}\s]+'
+    allowed-characters: '[a-zA-Z0-9]+'
+    # Censor party name with a regex
+    censor-regex: ''
+    minimum-length: 3
+    maximum-length: 10
+    # Cooldown for rename command (in seconds)
+    rename-cooldown: 300
+    # Make party name automated, upon creation give a name based on player
+    # => format:           The format of the party name
+    # => allow-in-create:  Allow inserting name in create command
+    dynamic:
+      enable: false
+      # Do not uses spaces, names are not meant to be used with spaces
+      # By default the party will use the name of the player
+      format: "%player%"
+      allow-in-create: true
+
+  # Show messages upon login and logout of party-mates
+  join-leave-messages: false
+
+  invite:
+    # Invite timeout in seconds
+    timeout: 20
+    # Enable revoke command  (Do again "/party invite <player>")
+    revoke: true
+    # Don't invite players that doesn't have the permission to join in parties
+    prevent-invite-player-no-permission-join: true
+    # Automatically create the party if a player invite a player
+    # Warning: Dynamic name must be enabled
+    auto-create-party-upon-invite: false
+    # Enable a cooldown to prevent invite spam
+    # You can choose to set a cooldown for every invite (global) or individual players, in seconds
+    cooldown:
+      enable: false
+      global: 60
+      individual: 0
+      # A cooldown to prevent to invite a player when he recently left a party
+      on-leave:
+        global: 0
+        individual: 0
+
+  chat:
+    # Allow sending messages with color codes (&1, &2, etc..)
+    allow-colors: false
+    # Enable "/party chat" command to toggle party chat
+    toggle-command: true
+    # Set a cooldown in seconds
+    cooldown: 0
+    allowed-characters: '[\p{L}\s]+'
+    # Censor party chat message with a regex
+    censor-regex: ''
+    # Enable a chat prefix to directly send the message into the party chat
+    # For example: "@this is a party message"
+    direct:
+      enable: false
+      prefix: "@"
+
+  sounds:
+    # Enable sounds in game
+    on-chat:
+      enable: false
+      name: ''
+      volume: 1.0
+      pitch: 2.0
+    on-broadcast:
+      enable: false
+      name: ''
+      volume: 1.0
+      pitch: 2.0
+
+
+# / =============================== \
+# |      PARTY RANKS  SETTINGS      |
+# \ =============================== /
+# Here you can setup rank permissions for each party rank
+# You can negate a permission with -
+#
+# Full permissions list: https://alessiodp.com/docs/parties/permissions#rank
+ranks:
+  member:
+    level: 5
+    name: "Member"
+    chat: "&bMember"
+    default: true
+    permissions:
+      - party.sendmessage
+      - party.home
+      - party.desc
+      - party.motd
+      - party.claim
+      - party.teleport.accept
+      - party.teleport.deny
+  moderator:
+    level: 10
+    name: "Moderator"
+    chat: "&cModerator"
+    inheritence: member
+    permissions:
+      - party.ask.accept
+      - party.ask.deny
+      - party.invite
+      - party.kick
+  leader:
+    level: 20
+    name: "Leader"
+    chat: "&4&lLeader"
+    permissions:
+      - '*'
+
+
+# / =============================== \
+# |       ADDITIONAL SETTINGS       |
+# \ =============================== /
+additional:
+  # [Ask system]
+  # Enable the command "/party ask <party>"
+  # You can accept/deny the request with "/party accept/deny"
+  ask:
+    enable: false
+    # Ask timeout in seconds
+    timeout: 30
+    # Enable a cooldown to prevent ask request spam
+    # You can choose to set a cooldown for every ask request (global) or individual players, in seconds
+    cooldown:
+      enable: false
+      global: 60
+      individual: 0
+
+  # [Color system]
+  # Enable the "/party color" command to define party color
+  # If you wanna use dynamic color you can disable the color command.
+  #
+  # By default the placeholder "%color%" is not set in messages.yml. You have to
+  #   put it wherever you want
+  color:
+    enable: false
+    color-command: true
+    # Give to parties a color based on their stats
+    # Add to each color a priority value and the relative
+    #  statistic minimum value (Supported: kills, members)
+    # Example:
+    # red:
+    #   command: "red"
+    #   code: "&c"
+    #   dynamic:
+    #     priority: 10
+    #     kills: 100
+    #     members: 5
+    dynamic-color: false
+    # Define here your custom party colors:
+    # => command:   The sub command name ("/party color <command>")
+    # => code:      The code of the color
+    list-colors:
+      red:
+        command: "red"
+        code: "&c"
+      green:
+        command: "green"
+        code: "&a"
+      yourcustomcolor:
+        command: "special"
+        code: "&9&n"
+
+  # [Description system]
+  # Allow parties to set a description with "/party desc"
+  description:
+    enable: true
+    minimum-length: 3
+    maximum-length: 16
+    allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
+    censor-regex: ''
+
+  # [Fixed system]
+  # Allow the creation of fixed parties (without a leader)
+  fixed:
+    # Allow the creation of parties without leader (they are called "fixed")
+    enable: false
+    default-party:
+      # When a player join into the server, put him into a party (if he doesn't have one)
+      # You can bypass this default join with the permission: parties.admin.join.default.bypass)
+      enable: false
+      party: "default"
+
+  # [Friendly fire protection]
+  # Prevent fights between party-mates (This requires Parties to be installed in Bukkit servers)
+  # You can choose which type of friendly fire protect:
+  # => global:   Always protect all party-mates
+  # => command:  Toggle the party protection with "/party protection" command
+  #
+  # You can enable 'warn-players-on-fight' to warn leaders on friendly fire hits
+  # 'prevent-fish-hook' works only in 1.15+
+  # 'prevent-damage-with-magic' prevents friendly fire damage of Magic plugin
+  friendly-fire:
+    enable: true
+    type: global
+    warn-players-on-fight: true
+    prevent-fish-hook: false
+    prevent-damage-with-magic: true
+
+  # [Home system]
+  # Allow the creation of party homes
+  # You can set a delay before the teleport or a cooldown to the command (in seconds)
+  #
+  # You can setup a cancel event if you wanna prevent teleport right after movement/damage
+  home:
+    enable: false
+    delay: 0
+    cooldown-home: 0
+    cooldown-sethome: 0
+    # Set the maximum number of homes
+    max-homes: 1
+    cross-server: true
+    # Delay between connection and teleport in milliseconds (increase if not working out of the box)
+    cross-server-delay: 300
+
+  # [Join system]
+  # Enable the command "/party join" (can be disabled with permissions)
+  # You can enable password system too, this will enable the command "/party password"
+  join:
+    enable: false
+
+    # Enable open and close commands
+    # Let users open or close their party to let other players join
+    open-close:
+      enable: false
+      # Hide open command if already open, viceversa for close command
+      hide-opposite-command: true
+      open-by-default: false
+      cooldown-open: 0
+      cooldown-close: 0
+
+    # Enable password system
+    # Users can set a password to the party then let other players join it with "/party join <password>"
+    # Password can be set with "/party password" and parties without a password can be freely joined
+    password:
+      enable: false
+      allowed-characters: '[a-zA-Z0-9]+'
+      # Allowed hashes: MD5, SHA-1, SHA-256
+      hash: "MD5"
+      encode: "UTF-8"
+      minimum-length: 1
+      maximum-length: 16
+
+    # Enable a cooldown to prevent join request spam
+    # You can choose to set a cooldown for every join request (global) or individual parties, in seconds
+    # With 'start-cooldown-on-leave' you can force the cooldown to start if the player leaves a party
+    cooldown:
+      enable: false
+      start-cooldown-on-leave: false
+      global: 60
+      individual: 0
+
+  # [Kills system]
+  # Enable a counter of how many kills a party did
+  # Choose to count neutral/hostile mobs or players
+  kills:
+    enable: false
+    which-save:
+      neutral-mobs: false
+      hostile-mobs: false
+      players: true
+
+  # [List system]
+  # Enable the command "/party list"
+  # Choose how to order the list:
+  # => name:             Alphabetical order
+  # => online_members:   Total online players
+  # => members:          Total players
+  # => kills:            Total kills
+  # => experience:       Total experience order
+  #
+  # You can allow the command order change with 'change-order'
+  # With 'limit-parties' you can limit the number of parties shown
+  # Decide which parties to hide with 'hidden-parties'
+  list:
+    enable: true
+    order-by: online_members
+    change-order: false
+    parties-per-page: 8
+    limit-parties: -1
+    hidden-parties: []
+
+  # [MOTD system]
+  # Allow to set the Message Of The Day, a message that will be shown on player login
+  # You can set a delay to the message print in milliseconds
+  motd:
+    enable: true
+    minimum-length: 3
+    maximum-length: 100
+    delay: 1000
+    allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
+    censor-regex: ''
+    # Decide which code defines the 'new line' ('\n' must be escaped => '\\n')
+    new-line-code: '\\n'
+
+  # [Nickname system]
+  # Set a nickname to your party members
+  # This will enable "/party nickname"
+  # Use the placeholder %player_nickname% to show it
+  nickname:
+    enable: false
+    minimum-length: 3
+    maximum-length: 16
+    allowed-characters: '[a-zA-Z0-9\ \.\,\-\_]+'
+    censor-regex: ''
+    # Only the tag %nickname%
+    format: '~%nickname%'
+
+  # [Tag system]
+  # Allow tag definition in parties, a simple alternative name for the party
+  # This will enable "/party tag"
+  # If 'must-be-unique' is enabled, tags will identify a single party
+  tag:
+    enable: false
+    must-be-unique: true
+    minimum-length: 3
+    maximum-length: 10
+    allowed-characters: '[a-zA-Z0-9]+'
+    censor-regex: ''
+
+  # [Teleport system]
+  # Enable the command "/party teleport" to tp every party-mate to the command sender
+  teleport:
+    enable: false
+    # Teleport the player to the exact location
+    # Otherwise you will be only teleported to its server
+    exact-location: true
+    # Delay between connection and teleport in milliseconds (increase if not working out of the box)
+    exact-location-delay: 300
+    delay: 0
+    cooldown: 60
+    accept-request:
+      # Members will be teleported only after accepting with /party accept/deny
+      # Time in seconds
+      enable: false
+      time: 20
+
+
+# End of configuration file
+dont-edit-this:
+  version: 1

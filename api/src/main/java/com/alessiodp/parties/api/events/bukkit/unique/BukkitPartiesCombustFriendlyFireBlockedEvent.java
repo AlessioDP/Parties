@@ -22,30 +22,27 @@ public class BukkitPartiesCombustFriendlyFireBlockedEvent extends BukkitPartiesE
 	/**
 	 * Get the victim of the event
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	public PartyPlayer getPlayerVictim() {
+	public @NotNull PartyPlayer getPlayerVictim() {
 		return victim;
 	}
 	
 	/**
 	 * Get the attacker
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
-	@NotNull
-	public PartyPlayer getPlayerAttacker() {
+	public @NotNull PartyPlayer getPlayerAttacker() {
 		return attacker;
 	}
 	
 	/**
 	 * Get the original Bukkit event handled by Parties
 	 *
-	 * @return Returns the original {@link EntityCombustByEntityEvent}
+	 * @return the original {@link EntityCombustByEntityEvent}
 	 */
-	@NotNull
-	public EntityCombustByEntityEvent getOriginalEvent() {
+	public @NotNull EntityCombustByEntityEvent getOriginalEvent() {
 		return originalEvent;
 	}
 	

@@ -21,21 +21,18 @@ public class BukkitPartiesPlayerPreInviteEvent extends BukkitPartiesEvent implem
 		this.party = party;
 	}
 	
-	@NotNull
 	@Override
-	public PartyPlayer getInvitedPlayer() {
+	public @NotNull PartyPlayer getInvitedPlayer() {
 		return invitedPlayer;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getInviter() {
+	public @Nullable PartyPlayer getInviter() {
 		return inviter;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	

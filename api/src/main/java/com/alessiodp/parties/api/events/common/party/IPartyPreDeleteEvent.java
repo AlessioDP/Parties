@@ -12,35 +12,31 @@ public interface IPartyPreDeleteEvent extends PartiesEvent, Cancellable {
 	/**
 	 * Get the party that is getting cancelled
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the cause of delete
 	 *
-	 * @return Returns the {@link DeleteCause} of the delete
+	 * @return the {@link DeleteCause} of the delete
 	 */
-	@NotNull
-	DeleteCause getCause();
+	@NotNull DeleteCause getCause();
 	
 	/**
 	 * Get the kicked player
 	 *
-	 * @return Returns the {@link PartyPlayer} of the kicked player, returns {@code null}
+	 * @return the {@link PartyPlayer} of the kicked player, returns {@code null}
 	 * if the delete cause is {@link DeleteCause#DELETE} or
 	 * {@link DeleteCause#TIMEOUT}
 	 */
-	@Nullable
-	PartyPlayer getKickedPlayer();
+	@Nullable PartyPlayer getKickedPlayer();
 	
 	/**
 	 * Get the player who performed the command
 	 *
-	 * @return Returns the {@link PartyPlayer} who did the command, returns
+	 * @return the {@link PartyPlayer} who did the command, returns
 	 * {@code null} if the delete cause is {@link DeleteCause#TIMEOUT}
 	 */
-	@Nullable
-	PartyPlayer getCommandSender();
+	@Nullable PartyPlayer getCommandSender();
 }

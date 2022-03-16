@@ -23,21 +23,18 @@ public class BungeePartiesPartyPreRenameEvent extends BungeePartiesEvent impleme
 		this.isAdmin = isAdmin;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
-	@Nullable
 	@Override
-	public String getOldPartyName() {
+	public @Nullable String getOldPartyName() {
 		return oldName;
 	}
 	
-	@Nullable
 	@Override
-	public String getNewPartyName() {
+	public @Nullable String getNewPartyName() {
 		return newName;
 	}
 	
@@ -46,9 +43,8 @@ public class BungeePartiesPartyPreRenameEvent extends BungeePartiesEvent impleme
 		newName = name;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getPartyPlayer() {
+	public @Nullable PartyPlayer getPartyPlayer() {
 		return player;
 	}
 	

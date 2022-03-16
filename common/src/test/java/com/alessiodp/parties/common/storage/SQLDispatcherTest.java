@@ -84,7 +84,7 @@ public class SQLDispatcherTest {
 		doAnswer((args) -> {
 			((Exception) args.getArgument(1)).printStackTrace();
 			return null;
-		}).when(mockLoggerManager).printErrorStacktrace(any(), any());
+		}).when(mockLoggerManager).logError(any(), any());
 		
 		// Mock names
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
@@ -132,7 +132,7 @@ public class SQLDispatcherTest {
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMySQL(PartiesPlugin plugin) {
 		// Manual test only
-		/*
+		/*ignored
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -155,7 +155,7 @@ public class SQLDispatcherTest {
 	
 	public static PartiesSQLDispatcher getSQLDispatcherMariaDB(PartiesPlugin plugin) {
 		// Manual test only
-		/*
+		/*ignored
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -178,7 +178,7 @@ public class SQLDispatcherTest {
 	
 	public static PartiesSQLDispatcher getSQLDispatcherPostgreSQL(PartiesPlugin plugin) {
 		// Manual test only
-		/*
+		/*ignored
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
 		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
@@ -445,11 +445,9 @@ public class SQLDispatcherTest {
 	
 	private void listPartiesNumber(PartiesSQLDispatcher dispatcher) {
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.singletonList("test2");
-		
 		assertEquals(8, dispatcher.getListPartiesNumber());
 		
 		ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES = Collections.emptyList();
-		
 		assertEquals(9, dispatcher.getListPartiesNumber());
 	}
 	
@@ -742,7 +740,7 @@ public class SQLDispatcherTest {
 	public void testMultipleOperations() {
 		PartiesSQLDispatcher dispatcher = getSQLDispatcherH2();
 		PartiesDao dao = dispatcher.getConnectionFactory().getJdbi().onDemand(H2PartiesDao.class);
-		ArrayList<CompletableFuture<?>> lst = new ArrayList<CompletableFuture<?>>();
+		ArrayList<CompletableFuture<?>> lst = new ArrayList<>();
 		final int concurrentOperations = 20;
 		
 		PartyImpl mockParty = mock(PartyImpl.class);
@@ -829,7 +827,7 @@ public class SQLDispatcherTest {
 			}
 			
 			@Override
-			public void sendPacketExperience(double newExperience, PartyPlayer killer) {
+			public void sendPacketExperience(double newExperience, PartyPlayer killer, boolean gainMessage) {
 				// Nothing to do
 			}
 			

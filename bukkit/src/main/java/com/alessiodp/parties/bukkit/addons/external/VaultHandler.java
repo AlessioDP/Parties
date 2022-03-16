@@ -4,16 +4,16 @@ import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class VaultHandler {
-	@NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "Vault";
 	
 	private static Economy economy;

@@ -51,9 +51,9 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 	@Override
 	public void updatePlayer(PartyPlayerImpl player) {
 		if (player.isPersistent()) {
-			ConfigurationSection node = database.getYaml().getConfigurationSection("players." + player.getPlayerUUID().toString());
+			ConfigurationSection node = database.getYaml().getConfigurationSection("players." + player.getPlayerUUID());
 			if (node == null)
-				node = database.getYaml().createSection("players." + player.getPlayerUUID().toString());
+				node = database.getYaml().createSection("players." + player.getPlayerUUID());
 			if (player.getPartyId() != null) {
 				node.set("party", player.getPartyId().toString());
 				node.set("rank", player.getRank());
@@ -72,7 +72,7 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 				node.set("options", null);
 			}
 		} else {
-			database.getYaml().set("players." + player.getPlayerUUID().toString(), null);
+			database.getYaml().set("players." + player.getPlayerUUID(), null);
 		}
 		
 		save();
@@ -84,14 +84,15 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 		return getPlayerFromNode(node);
 	}
 	
-	@Override
 	public int getListPlayersInPartyNumber() {
 		int ret = 0;
 		ConfigurationSection players = database.getYaml().getConfigurationSection("players");
-		Set<String> keys = players.getKeys(false);
-		for (String key : keys) {
-			if (players.get(key + ".party") != null)
-				ret++;
+		if (players != null) {
+			Set<String> keys = players.getKeys(false);
+			for (String key : keys) {
+				if (players.get(key + ".party") != null)
+					ret++;
+			}
 		}
 		return ret;
 		//return (int) database.getRootNode().node("players").childrenList().stream().filter(p -> !p.node("party").empty()).count();
@@ -99,9 +100,9 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 	
 	@Override
 	public void updateParty(PartyImpl party) {
-		ConfigurationSection node = database.getYaml().getConfigurationSection("parties." + party.getId().toString());
+		ConfigurationSection node = database.getYaml().getConfigurationSection("parties." + party.getId());
 		if (node == null)
-			node = database.getYaml().createSection("parties." + party.getId().toString());
+			node = database.getYaml().createSection("parties." + party.getId());
 		
 		// Save in map name -> id
 		if (party.getName() != null) {
@@ -124,6 +125,8 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 		node.set("protection", party.getProtection() ? true : null);
 		node.set("experience", party.getExperience() > 0 ? party.getExperience() : null);
 		node.set("follow", party.isFollowEnabled() ? null : false); // By default is true, so insert it only if false
+		if (party.isOpenNullable() != null)
+			node.set("isopen", party.isOpenNullable());
 		node.set("home", party.getHomes().size() > 0 ? PartyHomeImpl.serializeMultiple(party.getHomes()) : null);
 		node.set("leader", party.getLeader() != null ? party.getLeader().toString() : null);
 		
@@ -150,7 +153,7 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 	@Override
 	public void removeParty(PartyImpl party) {
 		// Only remove the party, players are handled by Party.removeParty()
-		database.getYaml().set("parties." + party.getId().toString(), null);
+		database.getYaml().set("parties." + party.getId(), null);
 		if (party.getName() != null)
 			database.getYaml().set("map-parties-by-name." + CommonUtils.toLowerCase(party.getName()), null);
 		
@@ -249,14 +252,16 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 	@Override
 	public int getListPartiesNumber() {
 		int ret = 0;
-		List<String> lowerCaseBlacklist = new ArrayList<>();
-		for (String b : ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES)
-			lowerCaseBlacklist.add(CommonUtils.toLowerCase(b));
-		
 		ConfigurationSection node = database.getYaml().getConfigurationSection("parties");
-		for (String key : node.getKeys(false)) {
-			if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(node.getString(key + ".name"))))
-				ret++;
+		if (node != null) {
+			List<String> lowerCaseBlacklist = new ArrayList<>();
+			for (String b : ConfigParties.ADDITIONAL_LIST_HIDDENPARTIES)
+				lowerCaseBlacklist.add(CommonUtils.toLowerCase(b));
+			
+			for (String key : node.getKeys(false)) {
+				if (!lowerCaseBlacklist.contains(CommonUtils.toLowerCase(node.getString(key + ".name"))))
+					ret++;
+			}
 		}
 		return ret;
 	}
@@ -306,6 +311,8 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 			ret.setProtection(node.getBoolean("protection", false));
 			ret.setExperience(node.getDouble("experience"));
 			ret.setFollowEnabled(node.getBoolean("follow", true));
+			if (node.isSet("isopen"))
+				ret.setOpenNullable(node.getBoolean("isopen"));
 			ret.setAccessible(false);
 			
 			// Members check
@@ -314,7 +321,7 @@ public class PartiesYAMLDispatcher extends YAMLDispatcher implements IPartiesDat
 					try {
 						ret.getMembers().add(UUID.fromString(id));
 					} catch (Exception ex) {
-						plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_DB_FILE_ERROR, ex);
+						plugin.getLoggerManager().logError(Constants.DEBUG_DB_FILE_ERROR, ex);
 					}
 				}
 			}

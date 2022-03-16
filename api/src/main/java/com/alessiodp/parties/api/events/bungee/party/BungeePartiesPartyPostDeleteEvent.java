@@ -22,27 +22,23 @@ public class BungeePartiesPartyPostDeleteEvent extends BungeePartiesEvent implem
 		this.commandSender = commandSender;
 	}
 	
-	@NotNull
 	@Override
-	public Party getParty() {
+	public @NotNull Party getParty() {
 		return party;
 	}
 	
-	@NotNull
 	@Override
-	public DeleteCause getCause() {
+	public @NotNull DeleteCause getCause() {
 		return cause;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getKickedPlayer() {
+	public @Nullable PartyPlayer getKickedPlayer() {
 		return kickedPlayer;
 	}
 	
-	@Nullable
 	@Override
-	public PartyPlayer getCommandSender() {
+	public @Nullable PartyPlayer getCommandSender() {
 		return commandSender;
 	}
 }

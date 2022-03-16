@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Password")
 @Description("Get the password of the given party. The password is hashed, if you set one you must insert a plain password.")
 @Examples({"send \"%password of party with name \"test\"%\"",

@@ -1,12 +1,10 @@
 package com.alessiodp.parties.common.messaging;
 
 import com.alessiodp.parties.common.PartiesPlugin;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,39 +21,27 @@ public class PartiesPacketTest {
 		when(mockPlugin.getVersion()).thenReturn(VERSION);
 	}
 	
-	
 	@Test
-	public void testBuildBasic() {
+	public void testBuildBasic() throws IOException {
 		makePacket()
 				.setType(PartiesPacket.PacketType.values()[0])
 				.build();
 	}
 	
 	@Test
-	public void testBuildAdvanced() {
+	public void testBuildAdvanced() throws IOException {
 		makePacket()
+				.setPlayer(UUID.randomUUID())
+				.setPlayer(UUID.randomUUID())
+				.setText("text")
+				.setNumber(100D)
 				.setType(PartiesPacket.PacketType.values()[0])
-				.setPlayerUuid(UUID.randomUUID())
-				.setPlayerUuid(UUID.randomUUID())
-				.setPayload("text")
-				.setPayloadNumber(100D)
 				.build();
 	}
 	
 	@Test
-	public void testBuildWithPayloadRaw() {
-		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
-		raw.writeInt(1);
-		raw.writeInt(2);
-		makePacket()
-				.setType(PartiesPacket.PacketType.values()[0])
-				.setPayloadRaw(raw.toByteArray())
-				.build();
-	}
-	
-	@Test
-	public void testReadBasic() {
-		PartiesPacket packet = makePacket()
+	public void testReadBasic() throws IOException {
+		PartiesPacket packet = (PartiesPacket) makePacket()
 				.setType(PartiesPacket.PacketType.values()[0]);
 		
 		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
@@ -64,65 +50,30 @@ public class PartiesPacketTest {
 	}
 	
 	@Test
-	public void testReadBasicFail() {
-		PartiesPacket packet = makePacket()
+	public void testReadBasicFail() throws IOException {
+		PartiesPacket packet = (PartiesPacket) makePacket()
 				.setType(PartiesPacket.PacketType.values()[0]);
 		
 		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
-		packet = packet.setPayloadNumber(1D);
+		packet = packet.setNumber(1D);
 		assertNotEquals(packet, newPacket);
 	}
 	
 	@Test
-	public void testReadAdvanced() {
-		PartiesPacket packet = makePacket()
-				.setType(PartiesPacket.PacketType.values()[0])
-				.setPlayerUuid(UUID.randomUUID())
-				.setPlayerUuid(UUID.randomUUID())
-				.setPayload("text")
-				.setPayloadNumber(100D);
+	public void testReadAdvanced() throws IOException {
+		PartiesPacket packet = (PartiesPacket) makePacket()
+				.setPlayer(UUID.randomUUID())
+				.setPlayer(UUID.randomUUID())
+				.setText("text")
+				.setNumber(100D)
+				.setType(PartiesPacket.PacketType.values()[0]);
 		
 		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
 		
 		assertEquals(packet, newPacket);
-	}
-	
-	@Test
-	public void testReadWithPayloadRaw() {
-		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
-		raw.writeInt(1);
-		raw.writeInt(2);
-		PartiesPacket packet = makePacket()
-				.setType(PartiesPacket.PacketType.values()[0])
-				.setPayloadRaw(raw.toByteArray());
-		
-		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
-		
-		assertEquals(packet, newPacket);
-		
-		ByteArrayDataInput rawReader = ByteStreams.newDataInput(newPacket.getPayloadRaw());
-		assertEquals(1, rawReader.readInt());
-		assertEquals(2, rawReader.readInt());
-	}
-	
-	@Test
-	public void testReadWithPayloadRawFail() {
-		ByteArrayDataOutput raw = ByteStreams.newDataOutput();
-		raw.writeInt(1);
-		raw.writeInt(2);
-		PartiesPacket packet = makePacket()
-				.setType(PartiesPacket.PacketType.values()[0])
-				.setPayloadRaw(raw.toByteArray());
-		
-		PartiesPacket newPacket = PartiesPacket.read(mockPlugin, packet.build());
-		
-		raw.writeInt(3);
-		packet.setPayloadRaw(raw.toByteArray());
-		
-		assertNotEquals(packet, newPacket);
 	}
 	
 	private PartiesPacket makePacket() {
-		return new PartiesPacket(VERSION);
+		return (PartiesPacket) new PartiesPacket().setVersion(VERSION);
 	}
 }

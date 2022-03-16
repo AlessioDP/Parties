@@ -12,47 +12,42 @@ public interface IPartyPostDeleteEvent extends PartiesEvent {
 	/**
 	 * Get the deleted party
 	 *
-	 * @return Returns the deleted {@link Party}
+	 * @return the deleted {@link Party}
 	 */
-	@NotNull
-	Party getParty();
+	@NotNull Party getParty();
 	
 	/**
 	 * Get the deleted party name
 	 *
-	 * @return Returns the name of the deleted party
-	 * @deprecated Use getParty()
+	 * @return the name of the deleted party
+	 * @deprecated use getParty() instead
 	 */
-	@NotNull
 	@Deprecated
-	default String getPartyName() {
+	 default @NotNull String getPartyName() {
 		return getParty().getName() != null ? getParty().getName() : "";
 	}
 	
 	/**
 	 * Get the delete cause
 	 *
-	 * @return Returns the {@link DeleteCause} of the delete
+	 * @return the {@link DeleteCause} of the delete
 	 */
-	@NotNull
-	DeleteCause getCause();
+	@NotNull DeleteCause getCause();
 	
 	/**
 	 * Get the kicked player
 	 *
-	 * @return Returns the {@link PartyPlayer} of the kicked player, returns
+	 * @return the {@link PartyPlayer} of the kicked player, returns
 	 * {@code null} if the delete cause is {@link DeleteCause#DELETE} or
 	 * {@link DeleteCause#TIMEOUT}
 	 */
-	@Nullable
-	PartyPlayer getKickedPlayer();
+	@Nullable PartyPlayer getKickedPlayer();
 	
 	/**
 	 * Get the player who performed the command
 	 *
-	 * @return Returns the {@link PartyPlayer} who did the command, returns
+	 * @return the {@link PartyPlayer} who did the command, returns
 	 * {@code null} if the delete cause is {@link DeleteCause#TIMEOUT}
 	 */
-	@Nullable
-	PartyPlayer getCommandSender();
+	@Nullable PartyPlayer getCommandSender();
 }

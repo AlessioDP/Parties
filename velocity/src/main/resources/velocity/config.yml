@@ -1,0 +1,312 @@
+# / ================================================================ \
+# |     This is the main Velocity configuration file of Parties      |
+# \ ================================================================ /
+#
+# For any problem be sure to:
+# - Read the entire documentation on: https://alessiodp.com/docs/parties
+# - Join our Discord for further help: https://discord.alessiodp.com
+#
+
+# / =============================== \
+# |        PARTIES  SETTINGS        |
+# \ =============================== /
+parties:
+  # [Check for plugins updates]
+  # Parties will check for updates when the server finishes to load.
+  updates:
+    check: true
+    warn: true
+
+  # [Enable logging system]
+  # => debug:      Print debug messages
+  # => save-file:  Save any log into a text file
+  logging:
+    debug: false
+    party-chat: false
+    save-file:
+      enable: false
+      format: "%date% [%time%] %message%\n"
+      file: "log.txt"
+
+  # [Enable debug command]
+  # Useful to debug problems related to the plugin
+  debug-command: true
+
+  # Automatic upgrade configs if outdated, otherwise just alert
+  automatic-upgrade-configs: false
+
+  # [BungeeCord settings]
+  # Some tweaks for BungeeCord
+  bungeecord:
+    # Experts only!
+    # The plugin need to keep data in sync with Bukkit Parties
+    # You can disable it to increase performances a bit
+    # If you do not use Parties in Spigot servers, you can disable them
+    packets:
+      # These options will stop to send data to sub servers
+      load-players: true
+      load-parties: true
+      player-sync: true
+      party-sync: true
+      config-sync: true
+      debug-bungeecord: true
+      chat: true
+      broadcast: true
+      sounds: true
+
+
+# / =============================== \
+# |        STORAGE  SETTINGS        |
+# \ =============================== /
+storage:
+  # [Database type]
+  # What type of storage the plugin should use? Database storage types:
+  # => yaml       | [File]   Save the data into a YAML file
+  # => mariadb    | [Remote] Save the data into a MariaDB database
+  # => mysql      | [Remote] Save the data into a MySQL database
+  # => postgresql | [Remote] Save the data into a PostgreSQL database
+  # => sqlite     | [File]   Save the data into a SQLite database
+  # => h2         | [File]   Save the data into a H2 database (default)
+  database-storage-type: h2
+
+  storage-settings:
+    # [YAML settings]
+    yaml:
+      database-file: database.yml
+
+    # [General SQL settings]
+    # General settings for sql databases, recommended to use default values
+    general-sql-settings:
+      prefix: 'parties_'
+
+    # [SQLite settings]
+    sqlite:
+      database-file: database.db
+
+    # [H2 settings]
+    h2:
+      database-file: database
+
+    # [Remote SQL settings - MySQL/MariaDB/PostgreSQL]
+    remote-sql:
+      address: localhost
+      port: '3306'
+      database: database
+      username: username
+      password: password
+      # Size of the connection pool
+      pool-size: 10
+      # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
+      connection-lifetime: 1800000
+      # Property used to alert when the connection is not using a valid SSL certificate
+      use-ssl: false
+      charset: 'utf8'
+      # Additional parameters for connections (jdbc:....?thisIsA=Parameter)
+      # Only for MariaDB/MySQL, syntax: '?pameter1=value1&parameter2=value2'
+      additional-parameters: ''
+
+
+# / =============================== \
+# |       ADDITIONAL SETTINGS       |
+# \ =============================== /
+additional:
+  # [Auto command system]
+  # All party-mates will use the same command executed by the leader (Rank permission: party.autocommand)
+  # You can configure the leader or any other rank with rank permissions
+  #
+  # With regex-whitelist you can choose which command should be replicated by other party-mates
+  # You need to use REGEX (google it)
+  # The default example will allows any command except /party, /pay and /money
+  #
+  # This will work only for BUNGEECORD commands. For Bukkit commands, setup auto-command in Bukkit Parties too!
+  auto-command:
+    enable: false
+    regex-whitelist: '^(\/server|\/anothercommand).*'
+
+  # [Exp system]
+  # Full documentation here: https://alessiodp.com/docs/parties/explevels
+  exp-system:
+    enable: false
+    # Modes: progressive, fixed
+    mode: progressive
+    # Get experience from dead vanilla mobs (you need to install Parties in Spigot servers)
+    earn-exp-from-mobs: false
+
+    # [Progressive mode]
+    # Make infinite levels with a progressive multiplier
+    progressive:
+      # Level 1: 50, Level 2: 100, Level 3: 200, Level 4: 400
+      # Special tags:
+      # => %previous%: Previous level experience
+      start-level-experience: 50
+      level-experience: "%previous% * 2"
+      # This is a special option that prevents loops in calculation
+      # Set this on false if you know what you are doing
+      safe-calculation: true
+
+    # [Fixed mode]
+    # Make a complete list of finite party levels
+    # Example: Level 1 is from 0 to 49, Level 2 is from 50 to 149, Level 2 is from 150 to 349
+    #
+    # repeat-last-one =>  Should the last one end the number of levels?
+    #                     If on true, the number of levels will be infinite
+    #                     Otherwise the party will reach that level as maximum
+    fixed:
+      repeat-last-one: true
+      list:
+        - 50
+        - 100
+        - 200
+        - 350
+        - 650
+        - 900
+
+
+  # [Follow system]
+  # When the party leader joins a server, the entire party will follow him
+  # => toggle-command:    Make the follow toggleable with /party follow
+  # => delay:             Teleport other players after a specific delay (in milliseconds)
+  # => perform-commands:  Perform commands after a specific delay (in milliseconds)
+  follow:
+    enable: false
+    toggle-command: false
+    delay: 0
+    perform-commands:
+      enable: false
+      delay: 2000
+      commands: []
+    # List of servers not allowed to join into as group (Regexes allowed)
+    blocked-servers:
+      - "lobby"
+      - "hub"
+
+  # [Moderation]
+  # Auto kick banned users
+  # Prevent to speak in party chat if the player is muted
+  # Select what plugin to handle in 'plugins'
+  moderation:
+    enable: false
+    prevent-chat-muted: true
+    auto-kick-banned: true
+
+  # [Mute]
+  # Enable mute system.
+  # If an user uses mute command, he won't receive notifications
+  mute:
+    enable: false
+    block:
+      invite: true
+
+  # [Placeholders]
+  # Here you can setup your own custom placeholders.
+  # Custom placeholders will return by default '' if the player is not in a party
+  placeholders:
+    customs:
+      example1: "[%color_code%%party%] "
+      example2: "[%player_rank_chat% %party%] "
+      example3: "&b%party% &7- "
+
+
+# / =============================== \
+# |        COMMANDS SETTINGS        |
+# \ =============================== /
+commands:
+  # Enable tab support (/party <tab> to see every allowed command)
+  # Warning: If you change any of this settings you need to restart the server
+  tab-support: true
+  help-pages:
+    commands-per-page: 9
+  main-commands:
+    party:
+      command: 'party'
+      aliases: []
+    p:
+      command: 'p'
+      aliases: []
+  sub-commands:
+    help: 'help'
+    accept: 'accept'
+    ask: 'ask'
+    chat: 'chat'
+    claim: 'claim'
+    close: 'close'
+    color: 'color'
+    create: 'create'
+    createfixed: 'createfixed'
+    debug: 'debug'
+    delete: 'delete'
+    deny: 'deny'
+    desc: 'desc'
+    follow: 'follow'
+    home: 'home'
+    ignore: 'ignore'
+    info: 'info'
+    invite: 'invite'
+    join: 'join'
+    kick: 'kick'
+    leave: 'leave'
+    list: 'list'
+    motd: 'motd'
+    mute: 'mute'
+    nickname: 'nickname'
+    open: 'open'
+    password: 'password'
+    protection: 'protection'
+    rank: 'rank'
+    reload: 'reload'
+    rename: 'rename'
+    sethome: 'sethome'
+    spy: 'spy'
+    tag: 'tag'
+    teleport: 'teleport'
+    version: 'version'
+  misc-commands:
+    config: 'config'
+    exp: 'exp'
+    party: 'party'
+    player: 'player'
+    word-on: 'on'
+    word-off: 'off'
+    silent: 'silent'
+    remove: 'remove'
+  order:
+  - help
+  - create
+  - createfixed
+  - accept
+  - deny
+  - ask
+  - join
+  - ignore
+  - mute
+  - p
+  - leave
+  - invite
+  - info
+  - list
+  - chat
+  - tag
+  - desc
+  - motd
+  - open
+  - close
+  - nickname
+  - protection
+  - follow
+  - home
+  - sethome
+  - color
+  - claim
+  - teleport
+  - password
+  - rank
+  - rename
+  - kick
+  - spy
+  - delete
+  - debug
+  - reload
+  - version
+
+dont-edit-this:
+  version: 1

@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
 import com.alessiodp.parties.common.commands.utils.PartiesCommandData;
 import com.alessiodp.parties.common.commands.utils.PartiesSubCommand;
@@ -14,6 +13,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -39,12 +39,12 @@ public class CommandIgnore extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		return handlePreRequisitesFull(commandData, null);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
@@ -64,7 +64,7 @@ public class CommandIgnore extends PartiesSubCommand {
 			
 			ignoredParty = commandData.getArgs()[1];
 			
-			if (!((PartiesPlugin) plugin).getPartyManager().existsParty(ignoredParty)) {
+			if (!getPlugin().getPartyManager().existsParty(ignoredParty)) {
 				sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND
 						.replace("%party%", ignoredParty));
 				return;
@@ -78,7 +78,7 @@ public class CommandIgnore extends PartiesSubCommand {
 				if (builder.length() > 0) {
 					builder.append(Messages.MAINCMD_IGNORE_LIST_SEPARATOR);
 				}
-				PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(uuid);
+				PartyImpl party = getPlugin().getPartyManager().getParty(uuid);
 				if (party != null) {
 					builder.append(Messages.MAINCMD_IGNORE_LIST_PARTYPREFIX)
 							.append(party.getName());
@@ -95,7 +95,7 @@ public class CommandIgnore extends PartiesSubCommand {
 					.replace("%number%", Integer.toString(partyPlayer.getIgnoredParties().size())));
 			sendMessage(sender, partyPlayer, ignores);
 		} else {
-			PartyImpl party = ((PartiesPlugin) plugin).getPartyManager().getParty(ignoredParty);
+			PartyImpl party = getPlugin().getPartyManager().getParty(ignoredParty);
 			if (party != null) {
 				if (partyPlayer.getIgnoredParties().contains(party.getId())) {
 					// Remove

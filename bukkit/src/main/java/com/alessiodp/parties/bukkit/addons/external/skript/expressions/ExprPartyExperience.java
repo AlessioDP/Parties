@@ -10,6 +10,7 @@ import ch.njol.util.coll.CollectionUtils;
 import com.alessiodp.parties.api.interfaces.Party;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("NullableProblems")
 @Name("Party Experience")
 @Description("Get the experience of the given party.")
 @Examples({"send \"%experience of party with name \"test\"%\"",

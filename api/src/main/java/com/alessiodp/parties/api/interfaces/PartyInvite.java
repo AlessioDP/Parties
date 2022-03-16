@@ -7,21 +7,21 @@ public interface PartyInvite {
 	/**
 	 * Get the referencing party
 	 *
-	 * @return Returns the {@link Party}
+	 * @return the {@link Party}
 	 */
 	@NotNull Party getParty();
 	
 	/**
 	 * Get the invited player
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
 	@NotNull PartyPlayer getInvitedPlayer();
 	
 	/**
 	 * Get who sent the invite request
 	 *
-	 * @return Returns the {@link PartyPlayer}
+	 * @return the {@link PartyPlayer}
 	 */
 	@Nullable PartyPlayer getInviter();
 	
@@ -35,7 +35,7 @@ public interface PartyInvite {
 	/**
 	 * Accept the invite request
 	 *
-	 * @param sendMessages Should messages be sent?
+	 * @param sendMessages should messages be sent?
 	 */
 	void accept(boolean sendMessages);
 	
@@ -49,7 +49,7 @@ public interface PartyInvite {
 	/**
 	 * Deny the invite request
 	 *
-	 * @param sendMessages Should messages be sent?
+	 * @param sendMessages should messages be sent?
 	 */
 	void deny(boolean sendMessages);
 	
@@ -63,7 +63,7 @@ public interface PartyInvite {
 	/**
 	 * Revoke the invite request
 	 *
-	 * @param sendMessages Should messages be sent?
+	 * @param sendMessages should messages be sent?
 	 */
 	void revoke(boolean sendMessages);
 	
@@ -77,7 +77,7 @@ public interface PartyInvite {
 	/**
 	 * Timeout the invite request
 	 *
-	 * @param sendMessages Should messages be sent?
+	 * @param sendMessages should messages be sent?
 	 */
 	void timeout(boolean sendMessages);
 }

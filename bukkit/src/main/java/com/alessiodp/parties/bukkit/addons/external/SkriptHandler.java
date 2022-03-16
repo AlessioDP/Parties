@@ -5,14 +5,14 @@ import ch.njol.skript.SkriptAddon;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.PartiesPlugin;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class SkriptHandler {
-	@NonNull private final PartiesPlugin plugin;
+	@NotNull private final PartiesPlugin plugin;
 	private static final String ADDON_NAME = "Skript";
 	private static boolean loaded = false;
 	
@@ -28,11 +28,14 @@ public class SkriptHandler {
 						loaded = true;
 					}
 					
-					BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT = true;
-					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+					if (loaded) {
+						BukkitConfigMain.PARTIES_HOOK_INTO_SKRIPT = true;
+						plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+					} else {
+						plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
+					}
 				} catch (Exception ex) {
-					ex.printStackTrace();
-					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), ex, true);
 				}
 			}
 		}

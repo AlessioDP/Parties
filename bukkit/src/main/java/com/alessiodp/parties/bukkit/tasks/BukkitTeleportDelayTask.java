@@ -40,7 +40,7 @@ public class BukkitTeleportDelayTask extends TeleportDelayTask {
 			
 			player.sendMessage(plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED, partyPlayer, null), true);
 			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_MOVING, player.getUUID().toString()), true);
+			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_MOVING, player.getUUID()), true);
 			return false;
 		}
 		return true;

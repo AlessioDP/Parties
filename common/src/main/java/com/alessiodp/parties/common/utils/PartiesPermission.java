@@ -3,12 +3,12 @@ package com.alessiodp.parties.common.utils;
 import com.alessiodp.core.common.commands.utils.ADPPermission;
 
 public enum PartiesPermission implements ADPPermission {
-	
 	// User
 	USER_ACCEPT			("parties.user.accept"),
 	USER_ASK			("parties.user.ask"),
 	USER_CHAT			("parties.user.chat"),
 	USER_CHAT_COLOR		("parties.user.chat.color"),
+	USER_CLOSE			("parties.user.close"),
 	USER_COLOR			("parties.user.color"),
 	USER_CREATE			("parties.user.create"),
 	USER_DENY			("parties.user.deny"),
@@ -32,6 +32,7 @@ public enum PartiesPermission implements ADPPermission {
 	USER_MOTD			("parties.user.motd"),
 	USER_MUTE			("parties.user.mute"),
 	USER_NICKNAME		("parties.user.nickname"),
+	USER_OPEN			("parties.user.open"),
 	USER_PASSWORD		("parties.user.password"),
 	USER_PROTECTION		("parties.user.protection"),
 	USER_RANK			("parties.user.rank"),
@@ -45,10 +46,13 @@ public enum PartiesPermission implements ADPPermission {
 	
 	// Admin
 	ADMIN_ALERTS				("parties.admin.alerts"),
+	ADMIN_CLOSE_OTHERS			("parties.admin.close.others"),
 	ADMIN_COOLDOWN_ASK_BYPASS	("parties.admin.cooldown.ask.bypass"),
 	ADMIN_COOLDOWN_CHAT_BYPASS	("parties.admin.cooldown.chat.bypass"),
+	ADMIN_COOLDOWN_CLOSE_BYPASS ("parties.admin.cooldown.close.bypass"),
 	ADMIN_COOLDOWN_HOME_BYPASS	("parties.admin.cooldown.home.bypass"),
 	ADMIN_COOLDOWN_INVITE_BYPASS ("parties.admin.cooldown.invite.bypass"),
+	ADMIN_COOLDOWN_OPEN_BYPASS ("parties.admin.cooldown.open.bypass"),
 	ADMIN_COOLDOWN_RENAME_BYPASS ("parties.admin.cooldown.rename.bypass"),
 	ADMIN_COOLDOWN_SETHOME_BYPASS ("parties.admin.cooldown.sethome.bypass"),
 	ADMIN_COOLDOWN_TELEPORT_BYPASS ("parties.admin.cooldown.teleport.bypass"),
@@ -61,6 +65,7 @@ public enum PartiesPermission implements ADPPermission {
 	ADMIN_JOIN_DEFAULT_BYPASS	("parties.admin.join.default.bypass"),
 	ADMIN_KICK_OTHERS			("parties.admin.kick.others"),
 	ADMIN_NICKNAME_OTHERS		("parties.admin.nickname.others"),
+	ADMIN_OPEN_OTHERS			("parties.admin.open.others"),
 	ADMIN_PROTECTION_BYPASS		("parties.admin.protection.bypass"),
 	ADMIN_RANK_BYPASS			("parties.admin.rank.bypass"),
 	ADMIN_RANK_OTHERS			("parties.admin.rank.others"),
@@ -70,37 +75,7 @@ public enum PartiesPermission implements ADPPermission {
 	ADMIN_TAG_OTHERS			("parties.admin.tag.others"),
 	ADMIN_VERSION				("parties.admin.version"),
 	// Bukkit
-	ADMIN_VAULT_BYPASS			("parties.admin.vault.bypass"),
-	
-	
-	PRIVATE_ASK_ACCEPT			("party.ask.accept"),
-	PRIVATE_ASK_DENY			("party.ask.deny"),
-	PRIVATE_CLAIM				("party.claim"),
-	PRIVATE_HOME				("party.home"),
-	PRIVATE_INVITE				("party.invite"),
-	PRIVATE_KICK				("party.kick"),
-	PRIVATE_SENDMESSAGE			("party.sendmessage"),
-	PRIVATE_SENDMESSAGE_COLOR	("party.sendmessage.color"),
-	PRIVATE_TELEPORT_ACCEPT		("party.teleport.accept"),
-	PRIVATE_TELEPORT_DENY		("party.teleport.deny"),
-	
-	PRIVATE_EDIT_COLOR			("party.edit.color"),
-	PRIVATE_EDIT_DESC			("party.edit.desc"),
-	PRIVATE_EDIT_FOLLOW			("party.edit.follow"),
-	PRIVATE_EDIT_HOME			("party.edit.home"),
-	PRIVATE_EDIT_MOTD			("party.edit.motd"),
-	PRIVATE_EDIT_NICKNAME_OWN	("party.edit.nickname.own"),
-	PRIVATE_EDIT_NICKNAME_OTHERS("party.edit.nickname.others"),
-	PRIVATE_EDIT_PASSWORD		("party.edit.password"),
-	PRIVATE_EDIT_PROTECTION		("party.edit.protection"),
-	PRIVATE_EDIT_TAG			("party.edit.tag"),
-	
-	PRIVATE_ADMIN_RANK			("party.admin.rank"),
-	PRIVATE_ADMIN_RENAME		("party.admin.rename"),
-	PRIVATE_ADMIN_TELEPORT		("party.admin.teleport"),
-	
-	PRIVATE_WARNONDAMAGE		("party.warnondamage"),
-	PRIVATE_AUTOCOMMAND			("party.autocommand");
+	ADMIN_VAULT_BYPASS			("parties.admin.vault.bypass");
 	
 	private final String perm;
 	PartiesPermission(String t) {

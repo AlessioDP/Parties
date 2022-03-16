@@ -12,6 +12,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.PartiesPermission;
+import org.jetbrains.annotations.NotNull;
 
 
 public class CommandCreateFixed extends PartiesSubCommand {
@@ -36,12 +37,12 @@ public class CommandCreateFixed extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		return handlePreRequisitesFull(commandData, false, 2, 2);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
@@ -51,7 +52,7 @@ public class CommandCreateFixed extends PartiesSubCommand {
 		if (!CommandCreate.checkName(this, sender, partyPlayer, partyName))
 			return;
 		
-		if (((PartiesPlugin) plugin).getPartyManager().existsParty(partyName)) {
+		if (getPlugin().getPartyManager().existsParty(partyName)) {
 			sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMEEXISTS.replace("%party%", partyName));
 			return;
 		}

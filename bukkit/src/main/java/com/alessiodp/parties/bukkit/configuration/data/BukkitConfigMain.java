@@ -26,43 +26,6 @@ public class BukkitConfigMain extends ConfigMain {
 	
 	
 	// Additional settings
-	@ConfigOption(path = "additional.exp-system.exp-drop.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_ENABLE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_SHARING_ENABLE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.if-more-than")
-	public static int			ADDITIONAL_EXP_DROP_SHARING_IFMORETHAN;
-	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.range")
-	public static int			ADDITIONAL_EXP_DROP_SHARING_RANGE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.round-exp-drop")
-	public static boolean		ADDITIONAL_EXP_DROP_SHARING_ROUND_EXP_DROP;
-	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.divide-formula-killer")
-	public static String		ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA_KILLER;
-	@ConfigOption(path = "additional.exp-system.exp-drop.sharing.divide-formula-others")
-	public static String		ADDITIONAL_EXP_DROP_SHARING_DIVIDEFORMULA_OTHERS;
-	@ConfigOption(path = "additional.exp-system.exp-drop.exp-to-get.normal")
-	public static boolean		ADDITIONAL_EXP_DROP_GET_NORMAL;
-	@ConfigOption(path = "additional.exp-system.exp-drop.exp-to-get.skillapi")
-	public static boolean		ADDITIONAL_EXP_DROP_GET_SKILLAPI;
-	@ConfigOption(path = "additional.exp-system.exp-drop.convert-exp-into.normal")
-	public static String		ADDITIONAL_EXP_DROP_CONVERT_NORMAL;
-	@ConfigOption(path = "additional.exp-system.exp-drop.convert-exp-into.skillapi")
-	public static String		ADDITIONAL_EXP_DROP_CONVERT_SKILLAPI;
-	@ConfigOption(path = "additional.exp-system.exp-drop.convert-exp-into.remove-real-exp")
-	public static boolean		ADDITIONAL_EXP_DROP_CONVERT_REMOVEREALEXP;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.levelpoints.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_LEVELPOINTS_ENABLE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mmocore.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MMOCORE_ENABLE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.skillapi.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_ENABLE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.skillapi.exp-source")
-	public static String		ADDITIONAL_EXP_DROP_ADDITIONAL_SKILLAPI_EXPSOURCE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mythicmobs.enable")
-	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_ENABLE;
-	@ConfigOption(path = "additional.exp-system.exp-drop.addons.mythicmobs.handle-only-mm-mobs")
-	public static boolean		ADDITIONAL_EXP_DROP_ADDITIONAL_MYTHICMOBS_HANDLEONLYMMMOBS;
-	
 	@ConfigOption(path = "additional.follow.teleport-to-the-same-location")
 	public static boolean		ADDITIONAL_FOLLOW_TELEPORT_TO_SAME_LOCATION;
 	@ConfigOption(path = "additional.follow.timeout-portal")
@@ -72,6 +35,8 @@ public class BukkitConfigMain extends ConfigMain {
 	
 	@ConfigOption(path = "additional.moderation.handle-server-ban")
 	public static boolean		ADDITIONAL_MODERATION_HANDLE_SERVER_BAN;
+	@ConfigOption(path = "additional.moderation.plugins.advancedban")
+	public static boolean		ADDITIONAL_MODERATION_PLUGINS_ADVANCEDBAN;
 	@ConfigOption(path = "additional.moderation.plugins.banmanager")
 	public static boolean		ADDITIONAL_MODERATION_PLUGINS_BANMANAGER;
 	@ConfigOption(path = "additional.moderation.plugins.essentials")
@@ -120,6 +85,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static double		ADDONS_VAULT_PRICE_ASK;
 	@ConfigOption(path = "addons.vault.price-commands.claim")
 	public static double		ADDONS_VAULT_PRICE_CLAIM;
+	@ConfigOption(path = "addons.vault.price-commands.close")
+	public static double		ADDONS_VAULT_PRICE_CLOSE;
 	@ConfigOption(path = "addons.vault.price-commands.color")
 	public static double		ADDONS_VAULT_PRICE_COLOR;
 	@ConfigOption(path = "addons.vault.price-commands.create")
@@ -136,6 +103,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static double		ADDONS_VAULT_PRICE_MOTD;
 	@ConfigOption(path = "addons.vault.price-commands.nickname")
 	public static double		ADDONS_VAULT_PRICE_NICKNAME;
+	@ConfigOption(path = "addons.vault.price-commands.open")
+	public static double		ADDONS_VAULT_PRICE_OPEN;
 	@ConfigOption(path = "addons.vault.price-commands.password")
 	public static double		ADDONS_VAULT_PRICE_PASSWORD;
 	@ConfigOption(path = "addons.vault.price-commands.protection")
@@ -160,6 +129,8 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		COMMANDS_SUB_CLAIM;
 	@ConfigOption(path = "commands.sub-commands.confirm")
 	public static String		COMMANDS_SUB_CONFIRM;
+	@ConfigOption(path = "commands.misc-commands.bungeecord")
+	public static String		COMMANDS_MISC_BUNGEECORD;
 	
 	
 	public BukkitConfigMain(PartiesPlugin plugin) {

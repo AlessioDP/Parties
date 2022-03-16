@@ -13,6 +13,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.utils.PartiesPermission;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -40,12 +41,12 @@ public class CommandHelp extends PartiesSubCommand {
 	}
 	
 	@Override
-	public boolean preRequisites(CommandData commandData) {
+	public boolean preRequisites(@NotNull CommandData commandData) {
 		return handlePreRequisitesFull(commandData, null, 0, 2);
 	}
 	
 	@Override
-	public void onCommand(CommandData commandData) {
+	public void onCommand(@NotNull CommandData commandData) {
 		User sender = commandData.getSender();
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
@@ -58,7 +59,7 @@ public class CommandHelp extends PartiesSubCommand {
 			if (allowedCommands.contains(e.getKey()) && e.getValue().isListedInHelp()) {
 				list.add(e.getValue().getHelp()
 						.replace("%syntax%", e.getValue().getSyntaxForUser(sender))
-						.replace("%description%", e.getValue().getDescription())
+						.replace("%description%", e.getValue().getDescription() != null ? e.getValue().getDescription() : "")
 						.replace("%run_command%", e.getValue().getRunCommand())
 						.replace("%perform_command%", Messages.HELP_PERFORM_COMMAND));
 			}

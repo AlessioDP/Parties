@@ -19,6 +19,10 @@ public class BukkitCommandParty extends CommandParty {
 		
 		description = BukkitConfigMain.COMMANDS_MAIN_PARTY_DESCRIPTION;
 		
+		// Debug
+		if (ConfigMain.PARTIES_DEBUG_COMMAND)
+			super.register(new BukkitCommandDebug(plugin, this));
+		
 		if (!((PartiesPlugin) plugin).isBungeeCordEnabled()) {
 			// Claim
 			if (BukkitConfigMain.ADDONS_CLAIM_ENABLE)
@@ -27,10 +31,6 @@ public class BukkitCommandParty extends CommandParty {
 			// Confirm
 			if (BukkitConfigMain.ADDONS_VAULT_ENABLE && BukkitConfigMain.ADDONS_VAULT_CONFIRM_ENABLE)
 				super.register(new BukkitCommandConfirm(plugin, this));
-			
-			// Debug
-			if (ConfigMain.PARTIES_DEBUG_COMMAND)
-				super.register(new BukkitCommandDebug(plugin, this));
 			
 			// Home
 			if (BukkitConfigParties.ADDITIONAL_HOME_ENABLE) {

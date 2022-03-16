@@ -1,7 +1,10 @@
 package com.alessiodp.parties.bukkit.addons.external.skript.events;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.lang.util.SimpleEvent;
+import ch.njol.skript.lang.Literal;
+import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostLeaveEvent;
@@ -10,10 +13,15 @@ import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event;
 
-public class EvtPlayerLeave {
+import java.util.ArrayList;
+import java.util.Collection;
+
+@SuppressWarnings("NullableProblems")
+public class EvtPlayerLeave extends SelfRegisteringSkriptEvent {
 	static {
-		Skript.registerEvent("PartyPlayer Pre Leave Party", SimpleEvent.class, BukkitPartiesPlayerPreLeaveEvent.class,
+		Skript.registerEvent("PartyPlayer Pre Leave Party", EvtPlayerLeave.class, BukkitPartiesPlayerPreLeaveEvent.class,
 				"[player] pre leave[s] [a] party")
 				.description("Called when a player is leaving a party.")
 				.examples("on player pre leave party:",
@@ -38,7 +46,7 @@ public class EvtPlayerLeave {
 			}
 		}, 0);
 		
-		Skript.registerEvent("PartyPlayer Post Leave Party", SimpleEvent.class, BukkitPartiesPlayerPostLeaveEvent.class,
+		Skript.registerEvent("PartyPlayer Post Leave Party", EvtPlayerLeave.class, BukkitPartiesPlayerPostLeaveEvent.class,
 				"[player] [post] leave[s] [a] party")
 				.description("Called when a player left a party.")
 				.examples("on player post leave party:",
@@ -62,5 +70,32 @@ public class EvtPlayerLeave {
 				return Bukkit.getPlayer(e.getPartyPlayer().getPlayerUUID());
 			}
 		}, 0);
+	}
+	
+	final static Collection<Trigger> triggers = new ArrayList<>();
+	
+	@Override
+	public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
+		return true;
+	}
+	
+	@Override
+	public void register(Trigger trigger) {
+		triggers.add(trigger);
+	}
+	
+	@Override
+	public void unregister(Trigger trigger) {
+		triggers.remove(trigger);
+	}
+	
+	@Override
+	public void unregisterAll() {
+		triggers.clear();
+	}
+	
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "party leave";
 	}
 }

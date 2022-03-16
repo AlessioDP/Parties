@@ -5,11 +5,14 @@ import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyLevelUpEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostBroadcastEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPostRenameEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreBroadcastEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.bukkit.party.BukkitPartiesPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostChatEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPostHomeEvent;
@@ -24,14 +27,16 @@ import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreJoin
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreLeaveEvent;
 import com.alessiodp.parties.api.events.bukkit.player.BukkitPartiesPlayerPreTeleportEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFishHookFriendlyFireBlockedEvent;
-import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyGetExperienceEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPostBroadcastEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostDeleteEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPostRenameEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreBroadcastEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreCreateEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreDeleteEvent;
+import com.alessiodp.parties.api.events.common.party.IPartyPreExperienceDropEvent;
 import com.alessiodp.parties.api.events.common.party.IPartyPreRenameEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostChatEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostHomeEvent;
@@ -55,7 +60,6 @@ import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriend
 import com.alessiodp.parties.api.interfaces.Party;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -102,13 +106,23 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
-	public IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String message) {
-		return new BukkitPartiesPlayerPreChatEvent(player, party, message);
+	public IPlayerPreChatEvent preparePlayerPreChatEvent(PartyPlayer player, Party party, String formattedMessage, String message) {
+		return new BukkitPartiesPlayerPreChatEvent(player, party, formattedMessage, message);
 	}
 	
 	@Override
-	public IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String message) {
-		return new BukkitPartiesPlayerPostChatEvent(player, party, message);
+	public IPlayerPostChatEvent preparePlayerPostChatEvent(PartyPlayer player, Party party, String formattedMessage, String message) {
+		return new BukkitPartiesPlayerPostChatEvent(player, party, formattedMessage, message);
+	}
+	
+	@Override
+	public IPartyPreBroadcastEvent preparePartyPreBroadcastEvent(Party party, String message, PartyPlayer player) {
+		return new BukkitPartiesPartyPreBroadcastEvent(party, message, player);
+	}
+	
+	@Override
+	public IPartyPostBroadcastEvent preparePartyPostBroadcastEvent(Party party, String message, PartyPlayer player) {
+		return new BukkitPartiesPartyPostBroadcastEvent(party, message, player);
 	}
 	
 	@Override
@@ -162,6 +176,11 @@ public class BukkitEventManager extends EventManager {
 	}
 	
 	@Override
+	public IPartyPreExperienceDropEvent preparePreExperienceDropEvent(Party party, PartyPlayer player, Object killedEntity, double experience) {
+		return new BukkitPartiesPartyPreExperienceDropEvent(party, player, killedEntity, experience);
+	}
+	
+	@Override
 	public IPartyLevelUpEvent prepareLevelUpEvent(Party party, int newLevel) {
 		return new BukkitPartiesPartyLevelUpEvent(party, newLevel);
 	}
@@ -180,9 +199,5 @@ public class BukkitEventManager extends EventManager {
 	
 	public BukkitPartiesPotionsFriendlyFireBlockedEvent preparePartiesPotionsFriendlyFireBlockedEvent(PartyPlayer victim, PartyPlayer attacker, PotionSplashEvent originalEvent) {
 		return new BukkitPartiesPotionsFriendlyFireBlockedEvent(victim, attacker, originalEvent);
-	}
-	
-	public BukkitPartiesPreExperienceDropEvent preparePreExperienceDropEvent(Party party, PartyPlayer player, Entity killedEntity, double normalExperience, double skillApiExperience) {
-		return new BukkitPartiesPreExperienceDropEvent(party, player, killedEntity, normalExperience, skillApiExperience);
 	}
 }

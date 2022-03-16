@@ -26,7 +26,6 @@ public class BungeePartyImpl extends PartyImpl {
 	
 	@Override
 	public void sendPacketUpdate() {
-		// Send event to Bukkit servers
 		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendUpdateParty(this);
 	}
 	
@@ -34,7 +33,6 @@ public class BungeePartyImpl extends PartyImpl {
 	public void sendPacketCreate(PartyPlayerImpl leader) {
 		super.sendPacketCreate(leader);
 		
-		// Send event to Bukkit servers
 		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendCreateParty(this, leader);
 	}
 	
@@ -42,52 +40,54 @@ public class BungeePartyImpl extends PartyImpl {
 	public void sendPacketDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
 		super.sendPacketDelete(cause, kicked, commandSender);
 		
-		// Send event to Bukkit servers
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendDeleteParty(this, makeRawDelete(cause, kicked, commandSender));
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendDeleteParty(this, cause, kicked, commandSender);
 	}
 	
 	@Override
 	public void sendPacketRename(String oldName, String newName, PartyPlayerImpl player, boolean isAdmin) {
 		super.sendPacketRename(oldName, newName, player, isAdmin);
 		
-		// Send event to Bukkit servers
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRenameParty(this, makeRawRename(oldName, newName, player, isAdmin));
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRenameParty(this, oldName, newName, player, isAdmin);
 	}
 	
 	@Override
 	public void sendPacketAddMember(PartyPlayerImpl player, JoinCause cause, PartyPlayerImpl inviter) {
 		super.sendPacketAddMember(player, cause, inviter);
 		
-		// Send event to Bukkit servers
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddMemberParty(this, makeRawAddMember(player, cause, inviter));
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddMemberParty(this, player, cause, inviter);
 	}
 	
 	@Override
 	public void sendPacketRemoveMember(PartyPlayerImpl player, LeaveCause cause, PartyPlayerImpl kicker) {
 		super.sendPacketRemoveMember(player, cause, kicker);
 		
-		// Send event to Bukkit servers
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRemoveMemberParty(this, makeRawRemoveMember(player, cause, kicker));
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRemoveMemberParty(this, player, cause, kicker);
 	}
 	
 	@Override
-	public void sendPacketChat(PartyPlayerImpl player, String message) {
-		super.sendPacketChat(player, message);
+	public void sendPacketChat(PartyPlayerImpl player, String formattedMessage, String message, boolean dispatchBetweenServers) {
+		super.sendPacketChat(player, formattedMessage, message, dispatchBetweenServers);
 		
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendChatMessage(this, player, message);
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendChatMessage(this, player, formattedMessage, message, dispatchBetweenServers);
+	}
+	
+	@Override
+	public void sendPacketBroadcast(String message, PartyPlayerImpl player, boolean dispatchBetweenServers) {
+		super.sendPacketBroadcast(message, player, dispatchBetweenServers);
+		
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendBroadcastMessage(this, player, message, dispatchBetweenServers);
 	}
 	
 	@Override
 	public void sendPacketInvite(PartyPlayer invitedPlayer, PartyPlayer inviter) {
 		super.sendPacketInvite(invitedPlayer, inviter);
 		
-		// Send event to Bukkit servers
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendInvitePlayer(this, makeRawInvite(invitedPlayer, inviter));
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendInvitePlayer(this, (PartyPlayerImpl) invitedPlayer, inviter != null ? (PartyPlayerImpl) inviter : null);
 	}
 	
 	@Override
-	public void sendPacketExperience(double newExperience, PartyPlayer killer) {
-		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPartyExperience(this, (PartyPlayerImpl) killer, newExperience);
+	public void sendPacketExperience(double newExperience, PartyPlayer killer, boolean gainMessage) {
+		((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPartyExperience(this, (PartyPlayerImpl) killer, newExperience, gainMessage);
 	}
 	
 	@Override
