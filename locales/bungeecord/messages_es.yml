@@ -190,7 +190,9 @@ main-commands:
     same-rank: "&c%player% ya es %rank_name%!"
     low-rank: "&cNo puedes editar jugadores con un rango equivalente o superior al tuyo!"
     to-higher-rank: "&cNo puedes ascender a un rango equivalente o superior al tuyo!"
+    full: "&cRank %rank_name% reached the maximum number of players"
     fixed-leader: "&cNo puedes hacer de alguien un líder de un equipo fijo!"
+    demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cNo puedes cambiar tu rango!"
     player-not-in-party: "&c%player% no esta en tu equipo"
     players-conflict:
@@ -251,8 +253,15 @@ additional-commands:
     changed: "&bEl color de tu equipo ha cambiado a %color_command%"
     removed: "&bColor del equipo removido"
     broadcast: ""
-    wrong-color: "&cColor no encontrad, puedes usar: red (rojo), green (verde) o special (especial)!"
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
+    bungeecord:
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -265,11 +274,12 @@ additional-commands:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
         - "&bExp system&7: %exp%"
-        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
-        - "%levels_options%"
-      level-options:
-        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
     party:
       header: '&b================== &lDebug Party &r&b=================='
       text:
@@ -279,7 +289,7 @@ additional-commands:
         - "&bNumber members/online&7: %members%&7/%members_online%"
         - "&bDescription&7: %description%"
         - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
         - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
         - "&bExperience&7: %experience%"
     player:
@@ -299,13 +309,10 @@ additional-commands:
     invalid-chars: "&cCaracteres invalidos. Usa: a-Z or 0-9. Minimo 3 y maximo 16 caracteres."
     censored: "&cLa description contiene caracteres invalidos!"
   exp:
-    #[Special tags]
+    #[Special tag]
     #=> %exp%        = Experience gained
-    #=> %total_exp%  = Total experience dropped by the mob
-    party:
-      gained: "&bGanas %exp% experiencia de equipo por matar a un mob/monstruo"
-    level:
-      level-up: "&bLa fiesta subió a nivel %experience_level%"
+    gained-experience: "&bGanas %exp% experiencia de equipo por matar a un mob/monstruo"
+    level-up: "&bLa fiesta subió a nivel %experience_level%"
   follow:
     toggle-on: "&aAhora los miembros de tu equipo seguirán a tu líder"
     toggle-off: "&aLos miembros de tu equipo ya no seguirán a tu líde"
@@ -329,7 +336,15 @@ additional-commands:
   join:
     joined: "&aHas entrado al equipo %party%"
     player-joined: "&b&l%player% ha entrado al equipo"
-    wrong-password: "&cContraseña incorrecta!"
+    open-close:
+      opened: "&bThe party is now open"
+      closed: "&bThe party is now closed"
+      already-open: "&cThe party is already open"
+      already-closed: "&cThe party is already closed"
+      cooldown: "&cTienes que esperar %seconds% segundos!"
+      cannot-join: "&cYou cannot join this party"
+    password:
+      wrong-password: "&cContraseña incorrecta!"
   list:
     #[Special tags]
     #=> %index%     = The party index
@@ -483,6 +498,7 @@ help:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -494,6 +510,7 @@ help:
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -502,6 +519,7 @@ help:
     descriptions:
       ask: 'Enviar una invitación'
       claim: 'Dar permisos del terreno'
+      close: 'Close the party'
       color: 'Cambiar el color del grupo'
       createfixed: 'Crear un grupo fijo'
       debug: 'Problemas de depuración'
@@ -513,6 +531,7 @@ help:
       motd: 'Poner/Quitar el mensaje del día del grupo'
       mute: 'Encender/Apagar notificaciones'
       nickname: 'Poner/Quitar apodo de un miembro'
+      open: 'Open the party'
       password: 'Cambiar la contraseña del grupo'
       protection: 'Activar/Desactivar daño amigo'
       sethome: 'Agregar/Quitar la casa del grupo'
