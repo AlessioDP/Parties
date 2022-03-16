@@ -190,7 +190,9 @@ main-commands:
     same-rank: "&c%player% je již %rank_name%!"
     low-rank: "&cNemůžeš upravovat hráče se stejnou nebo vyšší hodností než máš ty!"
     to-higher-rank: "&cNemůžeš povýšit na stejnou nebo vyšší hodnost než máš ty!"
+    full: "&cRank %rank_name% reached the maximum number of players"
     fixed-leader: "&cNemůžeš někoho učinit vedoucím pevné párty!"
+    demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cNemůžeš sám/sama sobě změnit hodnost!"
     player-not-in-party: "&c%player% není ve tvé párty"
     players-conflict:
@@ -257,8 +259,17 @@ additional-commands:
     changed: "&bBarva párty změněna na %color_command%"
     removed: "&bBarva párty odebrána"
     broadcast: ""
-    wrong-color: "&cBarva nenalezena. Můžeš si vybrat: červená, zelená nebo speciální!"
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
+    bungeecord:
+      sent: "&bSent a debug BungeeCord request into the network"
+      server-players: "&cThere must be at least 1 player in the server"
+      sync: "Parties is synced correctly"
+      not-sync: "Parties is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -271,16 +282,12 @@ additional-commands:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
         - "&bExp system&7: %exp%"
-        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
-        - "%levels_options%"
-        - "&bExp drop&7: %drop%"
-        - "&bSharing enable/players/range/round&7: %sharing%&7/%sharing_number%&7/%sharing_range%/%sharing_round%"
-        - "&bExp to get normal/SAPI&7: %get_normal%&7/%get_skillapi%"
-        - "&bConvert into normal/SAPI/remove&7: %convert_normal%&7/%convert_skillapi%&7/%convert_remove%"
-        - "&bAddons SAPI/MCORE/MM&7: %addons_skillapi%&7/%addons_mmocore%&7/%addons_mythicmobs%"
-      level-options:
-        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
     party:
       header: '&b================== &lDebug Party &r&b=================='
       text:
@@ -290,7 +297,7 @@ additional-commands:
         - "&bNumber members/online&7: %members%&7/%members_online%"
         - "&bDescription&7: %description%"
         - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
         - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
         - "&bExperience&7: %experience%"
     player:
@@ -310,25 +317,10 @@ additional-commands:
     invalid-chars: "&cNeplatné znaky. Použij: a-Z a 0-9. 3 až 16 znaků."
     censored: "&cPopis obsahuje nepovolená slova!"
   exp:
-    #[Special tags]
+    #[Special tag]
     #=> %exp%        = Experience gained
-    #=> %total_exp%  = Total experience dropped by the mob
-    party:
-      gained: "&bObdrženo %exp% zkušeností párty za zabití stvoření"
-    normal:
-      gained-killer: "&bObdrženo %exp% za zabití stvoření"
-      gained-others: "&bHráč %player% zabil stvoření, obdržel/a jsi %exp% zkušeností"
-    levelpoints:
-      gained-killer: "&bObdrženo %exp% za zabití stvoření"
-      gained-others: "&bHráč %player% zabil stvoření, obdržel/a jsi %exp% zkušeností"
-    mmocore:
-      gained-killer: "&bObdrženo %exp% za zabití stvoření"
-      gained-others: "&bHráč %player% zabil stvoření, obdržel/a jsi %exp% zkušeností"
-    skillapi:
-      gained-killer: "&bObdrženo %exp% za zabití stvoření"
-      gained-others: "&bHráč %player% zabil stvoření, obdržel/a jsi %exp% zkušeností"
-    level:
-      level-up: "&bPárty povýšena na úroveň %experience_level%"
+    gained-experience: "&bObdrženo %exp% zkušeností párty za zabití stvoření"
+    level-up: "&bPárty povýšena na úroveň %experience_level%"
   follow:
     toggle-on: "&aNyní budou členové tvé párty následovat tvého vedoucího"
     toggle-off: "&aČlenové tvé párty již nebudou nadále následovat tvého vedoucího"
@@ -352,7 +344,15 @@ additional-commands:
   join:
     joined: "&aPřipojil/a ses do párty %party%"
     player-joined: "&b&lHráč %player% se připojil do párty"
-    wrong-password: "&cŠpatné heslo!"
+    open-close:
+      opened: "&bThe party is now open"
+      closed: "&bThe party is now closed"
+      already-open: "&cThe party is already open"
+      already-closed: "&cThe party is already closed"
+      cooldown: "&cMusíš počkat %seconds% sekund!"
+      cannot-join: "&cYou cannot join this party"
+    password:
+      wrong-password: "&cŠpatné heslo!"
   list:
     #[Special tags]
     #=> %index%     = The party index
@@ -530,6 +530,7 @@ help:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -541,6 +542,7 @@ help:
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -549,6 +551,7 @@ help:
     descriptions:
       ask: 'Odeslat žádost o připojení'
       claim: 'Udělit oprávnění na zabrání'
+      close: 'Close the party'
       color: 'Změnit barvu párty'
       createfixed: 'Vytvořit novou pevnou párty'
       debug: 'Ladění problémů'
@@ -560,6 +563,7 @@ help:
       motd: 'Nastavit/odebrat MOTD párty'
       mute: 'Přepnout oznámení'
       nickname: 'Nastavit/odebrat přezdívku člena'
+      open: 'Open the party'
       password: 'Změnit heslo párty'
       protection: 'Přepnout ochranu proti friendly fire'
       sethome: 'Nastavit/odebrat domov párty'
