@@ -190,7 +190,9 @@ main-commands:
     same-rank: "&c%player% вече е ранг %rank_name%!"
     low-rank: "&cНе можеш да редактираш ранговете на играчи, които имат по-голям или еквивалентен на твоя ранг!"
     to-higher-rank: "&cНе можеш да повишиш играч до ранг еквивалентен или равен на твоя ранг!"
+    full: "&cRank %rank_name% reached the maximum number of players"
     fixed-leader: "&cНе можеш да направиш някого лидера на фиксирано парти!"
+    demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cНе можеш да промениш собствения си ранг!"
     player-not-in-party: "&c%player% не е в партито"
     players-conflict:
@@ -251,8 +253,15 @@ additional-commands:
     changed: "&bЦвета на партито беше променен на %color_command%"
     removed: "&bЦвета на партито беше премахнат"
     broadcast: ""
-    wrong-color: "&cЦвета не беше открит. Можеш да избереш: red, green или special!"
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
+    bungeecord:
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -265,11 +274,12 @@ additional-commands:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
         - "&bExp system&7: %exp%"
-        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
-        - "%levels_options%"
-      level-options:
-        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
     party:
       header: '&b================== &lDebug Party &r&b=================='
       text:
@@ -279,7 +289,7 @@ additional-commands:
         - "&bNumber members/online&7: %members%&7/%members_online%"
         - "&bDescription&7: %description%"
         - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
         - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
         - "&bExperience&7: %experience%"
     player:
@@ -299,13 +309,10 @@ additional-commands:
     invalid-chars: "&cНевалидни знаци. Използвай: a-Z or 0-9. Минимум 3 и максимум 16 знака."
     censored: "&cОписанието съдържа цензурирани думи!"
   exp:
-    #[Special tags]
+    #[Special tag]
     #=> %exp%        = Experience gained
-    #=> %total_exp%  = Total experience dropped by the mob
-    party:
-      gained: "&bПартито получи %exp% опит за убиването на моб"
-    level:
-      level-up: "&bПартито достигна %experience_level% ниво"
+    gained-experience: "&bПартито получи %exp% опит за убиването на моб"
+    level-up: "&bПартито достигна %experience_level% ниво"
   follow:
     toggle-on: "&aВече членовете на партито ще следват лидера на партито"
     toggle-off: "&aВече членовете на партито няма да следват лидера на партито"
@@ -329,7 +336,15 @@ additional-commands:
   join:
     joined: "&aТи влезе в партито %party%"
     player-joined: "&b&l%player% влезе в партито"
-    wrong-password: "&cГрешна парола!"
+    open-close:
+      opened: "&bThe party is now open"
+      closed: "&bThe party is now closed"
+      already-open: "&cThe party is already open"
+      already-closed: "&cThe party is already closed"
+      cooldown: "&cТрябва да изчакаш %seconds% секунди!"
+      cannot-join: "&cYou cannot join this party"
+    password:
+      wrong-password: "&cГрешна парола!"
   list:
     #[Special tags]
     #=> %index%     = The party index
@@ -483,6 +498,7 @@ help:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -494,6 +510,7 @@ help:
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -502,6 +519,7 @@ help:
     descriptions:
       ask: 'Изпрати заявка за влизане в парти до някого'
       claim: 'Дай права до участъка'
+      close: 'Close the party'
       color: 'Смени цвета на партито'
       createfixed: 'Създай ново фиксирано парти'
       debug: 'Дебъгвай проблеми'
@@ -513,6 +531,7 @@ help:
       motd: 'Задай/премахни motd на партито'
       mute: 'Включи си нотификациите'
       nickname: 'Задай/премахни прякор на член на партито'
+      open: 'Open the party'
       password: 'Смени паролата на партито'
       protection: 'Включи защитата за приятелски огън'
       sethome: 'Задай/премахни дома на партито'
