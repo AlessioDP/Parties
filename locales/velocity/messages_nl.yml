@@ -1,6 +1,6 @@
 ---
 #/ ===================================================== \
-#|    This is the BungeeCord messages file of Parties    |
+#|    This is the Velocity messages file of Parties    |
 #\ ===================================================== /
 #For any problem be sure to:
 #- Read the entire documentation on: https://alessiodp.com/docs/parties
@@ -538,4 +538,4 @@ help:
       tag: 'Groepslabel instellen/verwijderen'
       teleport: 'Teleporteer je party naar jou'
 dont-edit-this:
-  version: 12
+  version: 1

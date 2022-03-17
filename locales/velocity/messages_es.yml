@@ -1,7 +1,7 @@
 ---
-#/ ================================================= \
-#|    This is the Bukkit messages file of Parties    |
-#\ ================================================= /
+#/ ===================================================== \
+#|    This is the Velocity messages file of Parties    |
+#\ ===================================================== /
 #For any problem be sure to:
 #- Read the entire documentation on: https://alessiodp.com/docs/parties
 #- Join our Discord for further help: https://discord.alessiodp.com
@@ -194,7 +194,7 @@ main-commands:
     fixed-leader: "&cNo puedes hacer de alguien un líder de un equipo fijo!"
     demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cNo puedes cambiar tu rango!"
-    player-not-in-party: "&c%player% no está en tu equipo"
+    player-not-in-party: "&c%player% no esta en tu equipo"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -247,12 +247,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cDebes esperar %seconds% segundos antes de solicitar en otra fiesta"
       individual: "&cDebes esperar %seconds% segundos antes de solicitar a la misma fiesta"
-  claim:
-    claimed: "&aConcedido permiso para el equipo"
-    removed: "&aPermiso removido para el equipo"
-    no-manager: "&cNecesitas ser el administrador de la reclamación"
-    claim-no-exists: "&cClaim no encontrado"
-    allowed-permissions: "&cPermisos: trust, container y access"
   color:
     info: "&bEl color de tu equipo es: %color_code%%color_command%"
     empty: "&bTu equipo no tiene color"
@@ -266,10 +260,8 @@ additional-commands:
     wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
     bungeecord:
-      sent: "&bSent a debug BungeeCord request into the network"
-      server-players: "&cThere must be at least 1 player in the server"
-      sync: "Parties is synced correctly"
-      not-sync: "Parties is NOT synced correctly"
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -437,38 +429,14 @@ additional-commands:
       sent: "&aSolicitud de teletransporte enviada a la fiesta"
       received: "[{\"text\":\"&b¿Quieres ser teletransportado a %player%? \"},{\"text\":\"&b¿&a&lSí\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceptar la petición\"}]}}},{\"text\":\" &bo \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Denegar la invitación\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bPuedes usar &7/party <accept/deny> %player% &bpara elegir.\"}]"
       denied: "&7Rechazaste la petición de teletransporte de %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cNo tienes suficiente dinero para enviar una solicitud de unión [%price%$]"
-      claim: "&cNo tienes suficiente dinero para realizar un reclamo [%price%$]"
-      color: "&cNo tienes suficiente dinero para ejecutar el comando de color [%price%$]"
-      create: "&cNo tienes suficiente dinero para crear un equipo [%price%$]"
-      desc: "&cNo tienes suficiente dinero para poner una descripción [%price%$]"
-      follow: "&cNo tienes suficiente dinero para activar el seguimiento [%price%$]"
-      home: "&cNo tienes suficiente dinero para usar el comando de viaje a casa [%price%$]"
-      join: "&cNo tienes suficiente dinero para entrar al equipo [%price%$]"
-      motd: "&cNo tienes suficiente dinero para poner un MOTD [%price%$]"
-      nickname: "&cNo tienes suficiente dinero para establecer tu apodo [%price%$]"
-      password: "&cNo tienes suficiente dinero para establecer una contraseña [%price%$]"
-      protection: "&cNo tienes suficiente dinero para activar la protección [%price%$]"
-      rename: "&cNo tienes suficiente dinero para renombrar el grupo, precio: [%price%$]"
-      sethome: "&cNo tienes suficiente dinero para establecer una casa [%price%$]"
-      tag: "&cNo tienes suficiente dinero para poner un tag al grupo, precio: [%price%$]"
-      teleport: "&cNo tienes suficiente dinero realizar un teletransporte [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aComando %cmd% precio %price%$.\n\"},{\"text\":\"&2&lPresiona aquí para confirmar\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Paga el comando\"}]}}},{\"text\":\" &ao escribe &7/party confirm &apara usarlo.\"}]"
-      confirmed: "&aEjecutando el comando."
-      no-cmd: "&cEste no es un comando valido"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
 other:
   follow:
     #[Special tags]
-    #=> %world%          = New world
-    following-world: "&7Siguiendo %player% en %world%"
+    #=> %server%          = New server
+    following-server: "&7Siguiendo a %player% en %server%"
   fixed-parties:
     default-join: "&bEntraste al equipo %party%"
   join-leave:
@@ -570,4 +538,4 @@ help:
       tag: 'Agregar/Quitar el tag del grupo'
       teleport: 'Teletranporta tu grupo a tu posición'
 dont-edit-this:
-  version: 14
+  version: 1

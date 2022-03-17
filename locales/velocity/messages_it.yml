@@ -1,7 +1,7 @@
 ---
-#/ ================================================= \
-#|    This is the Bukkit messages file of Parties    |
-#\ ================================================= /
+#/ ===================================================== \
+#|    This is the Velocity messages file of Parties    |
+#\ ===================================================== /
 #For any problem be sure to:
 #- Read the entire documentation on: https://alessiodp.com/docs/parties
 #- Join our Discord for further help: https://discord.alessiodp.com
@@ -247,12 +247,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cDevi attendere %seconds% secondi prima di chiedere ad un altro party"
       individual: "&cDevi attendere %seconds% secondi prima di chiedere allo stesso party"
-  claim:
-    claimed: "&aConcessi i permessi al party"
-    removed: "&aRimossi i permessi al party"
-    no-manager: "&cDevi essere il manager del claim"
-    claim-no-exists: "&aClaim non trovato"
-    allowed-permissions: "&cPermessi: trust, container & access"
   color:
     info: "&bIl colore del tuo party è: %color_code%%color_command%"
     empty: "&bIl tuo party non ha un colore"
@@ -266,10 +260,8 @@ additional-commands:
     wrong-color: "&cColore non trovato. Puoi selezionare: %available_colors%"
   debug:
     bungeecord:
-      sent: "&bSent a debug BungeeCord request into the network"
-      server-players: "&cThere must be at least 1 player in the server"
-      sync: "Parties is synced correctly"
-      not-sync: "Parties is NOT synced correctly"
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -437,38 +429,14 @@ additional-commands:
       sent: "&aRichiesta di teletrasporto inviata al party"
       received: "[{\"text\":\"&bVuoi essere teletrasportato da %player%? \"},{\"text\":\"&a&lSì\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accetta la richiesta\"}]}}},{\"text\":\" &bo \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Rifiuta la richiesta\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bPuoi usare &7/party <accept/deny> %player% &bper scegliere.\"}]"
       denied: "&7Hai rifiutato la richiesta di teletrasporto di %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cNon hai abbastanza soldi per inviare una richiesta di partecipazione [%price%$]"
-      claim: "&cNon hai abbastanza soldi per eseguire il comando claim [%price%$]"
-      color: "&cNon hai abbastanza soldi per eseguire il comando color [%price%$]"
-      create: "&cNon hai abbastanza soldi per creare un party [%price%$]"
-      desc: "&cNon hai abbastanza soldi per impostare la descrizione [%price%$]"
-      follow: "&cNon hai abbastanza soldi per abilitare il segui [%price%$]"
-      home: "&cNon hai abbastanza soldi per eseguire il comando home [%price%$]"
-      join: "&cNon hai abbastanza soldi per entrare in un party [%price%$]"
-      motd: "&cNon hai abbastanza soldi per impostare il MOTD [%price%$]"
-      nickname: "&cNon hai abbastanza soldi per impostare il nickname [%price%$]"
-      password: "&cNon hai abbastanza soldi per impostare la password [%price%$]"
-      protection: "&cNon hai abbastanza soldi per abilitare la protezione [%price%$]"
-      rename: "&cNon hai abbastanza soldi per rinominare il party [%price%$]"
-      sethome: "&cNon hai abbastanza soldi per impostare la home [%price%$]"
-      tag: "&cNon hai abbastanza soldi per impostare il tag [%price%$]"
-      teleport: "&cNon hai abbastanza soldi per eseguire il comando teleport [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aIl comando %cmd% costa %price%$.\n\"},{\"text\":\"&2&lClicca qui per confermare\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Paga il comando\"}]}}},{\"text\":\" &aoppure scrivi &7/party confirm &aper utilizzarlo\"}]"
-      confirmed: "&aEseguendo il comando."
-      no-cmd: "&cNon ci sta nessun comando da confermare"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
 other:
   follow:
     #[Special tags]
-    #=> %world%          = New world
-    following-world: "&7Stai seguendo %player% in %world%"
+    #=> %server%          = New server
+    following-server: "&7Stai seguendo %player% in %server%"
   fixed-parties:
     default-join: "&bSei entrato in %party%"
   join-leave:
@@ -570,4 +538,4 @@ help:
       tag: 'Imposta/rimuovi tag del party'
       teleport: 'Teletrasporta il party da te'
 dont-edit-this:
-  version: 14
+  version: 1

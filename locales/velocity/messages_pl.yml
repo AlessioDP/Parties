@@ -1,7 +1,7 @@
 ---
-#/ ================================================= \
-#|    This is the Bukkit messages file of Parties    |
-#\ ================================================= /
+#/ ===================================================== \
+#|    This is the Velocity messages file of Parties    |
+#\ ===================================================== /
 #For any problem be sure to:
 #- Read the entire documentation on: https://alessiodp.com/docs/parties
 #- Join our Discord for further help: https://discord.alessiodp.com
@@ -12,37 +12,37 @@ parties:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&9Neue Version von Parties gefunden: %version% (Aktuell: %thisversion%)"
+  update-available: "&9Dostepna jest nowa wersja pluginu Parties: %version% (Aktualna: %thisversion%)"
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cDie Konfigurationsdatei '%config%' von Parties ist veraltet!"
+  configuration-outdated: "&cPlik konfiguracyjny '%config%' Parties jest przestarzały!"
   common-messages:
-    invalid-command: "&cUngültiger Befehl"
-    configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
-    not-in-party: "&cDu bist kein Mitglied einer Gruppe"
-    already-in-party: "&cDu bist bereits Mitglied einer Gruppe!"
-    party-not-found: "&cDie Gruppe %party% existiert nicht"
-    party-full: "&cDiese Gruppe ist voll!"
-    player-not-found: "&cDer Spieler %player% wurde nicht gefunden"
-    player-not-in-party: "&c%player% ist kein Mitglied einer Gruppe"
+    invalid-command: "&cNiepoprawna komenda"
+    configuration-reloaded: "&aKonfiguracja przeladowana"
+    not-in-party: "&cNie jestes w grupie"
+    already-in-party: "&cJuz jestes w grupie!"
+    party-not-found: "&cGrupa %party% nie istnieje"
+    party-full: "&cTa grupa jest pelna!"
+    player-not-found: "&cNie znaleziono gracza %player%"
+    player-not-in-party: "&c%player% nie jest w zdanej grupie"
   options:
-    enabled: '&aAktiviert'
-    disabled: '&cDeaktiviert'
-    toggled-on: '&aAn'
-    toggled-off: '&cAus'
-    word-yes: '&aJa'
-    word-no: '&cNein'
-    empty: '&8Leer'
-    none: '&8Keine'
+    enabled: '&aWłączone'
+    disabled: '&cWyłączone'
+    toggled-on: '&aWł'
+    toggled-off: '&cWył'
+    word-yes: '&aTak'
+    word-no: '&cNie'
+    empty: '&8Puste'
+    none: '&8Brak'
   syntax:
-    wrong-message: '&cFalsche Syntax: Typ &7/%syntax%'
-    color: 'farbe'
-    description: 'beschreibung'
-    experience: 'erfahrung'
-    kills: 'kills'
-    home: 'zuhause'
-    members: 'mitglieder'
-    message: 'nachricht'
+    wrong-message: '&cNiepoprawna składnia: Wpisz &7/%syntax%'
+    color: 'kolor'
+    description: 'opis'
+    experience: 'doświadczenie'
+    kills: 'zabójstwa'
+    home: 'home'
+    members: 'members'
+    message: 'message'
     motd: 'motd'
     name: 'name'
     nickname: 'nickname'
@@ -50,25 +50,25 @@ parties:
     order: 'order'
     page: 'page'
     party: 'party'
-    password: 'passwort'
+    password: 'password'
     permission: 'permission'
-    player: 'spieler'
-    rank: 'rang'
+    player: 'player'
+    rank: 'rank'
     tag: 'tag'
   permissions:
     #[Special tags]
     #=> %permission%  = Missing permission
-    no-permission: "&cDu hast keinen Zugriff auf diesen Befehl"
-    no-permission-in-party-general: "&cDein Party Rang hat keinen Zugriff auf diesen Befehl"
-    no-permission-in-party-rank: "&cDu musst %rank_name% sein, um diesen Befehl verwenden zu dürfen"
-  out-party: "Out party"
+    no-permission: "&cNie masz uprawnien do tej komendy"
+    no-permission-in-party-general: "&cTwoja ranga party nie ma dostępu do tej komendy"
+    no-permission-in-party-rank: "&cMusisz byc %rank_name% by wykonac ta komende"
+  out-party: "Opuść grupę"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
-    player-empty: "& 7keine"
-    player-unknown: "&6 unbekannt"
-    missing-value: "&7 fehlt"
+    player-empty: "&7Nikt"
+    player-unknown: "&6Ktos"
+    missing-value: "&7Zgubiony"
   #Define the format of Parties chat messages
   formats:
     party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
@@ -86,20 +86,20 @@ main-commands:
     multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
     multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
   chat:
-    enabled: "&aBetrete Gruppenchat"
-    disabled: "&aVerlasse Gruppenchat"
+    enabled: "&aCzat ustawiony na grupowy"
+    disabled: "&aCzat ustawiony na publiczny"
   create:
-    created: "[{\"text\":\"Du hast erfolgreich die Gruppe %party% erstellt.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Verwende \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" um weitere Spieler einzuladen.\",\"color\":\"aqua\"}]"
-    created-fixed: "&b&lDu hast eine dauerhafte Gruppe namens %party% erstellt"
-    name-already-exists: "&cDer Name %party% wird bereits verwendet, bitte wähle eine andere Bezeichnung"
-    name-too-long: "&cDer Gruppenname ist zu lang!"
-    name-too-short: "&cDer Gruppenname ist zu kurz!"
-    invalid-name: "&cUngültige Satzzeichen. Erlaubt sind: a-Z und 0-9."
-    censored: "&cDer Gruppenname enthält einen zensierten Wortlaut!"
+    created: "[{\"text\":\"Stworzyles grupe o nazwie %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Wpisz \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" by zaprosic przyjaciela.\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lUtworzyles stala grupe o nazwie %party%"
+    name-already-exists: "&cGrupa o nazwie %party% juz istnieje, wybierz inna nazwe"
+    name-too-long: "&cNazwa tej grupy jest za dluga!"
+    name-too-short: "&cNazwa tej grupy jest za krotka!"
+    invalid-name: "&cBledne znaki. Uzyj: a-Z lub 0-9."
+    censored: "&cNazwa grupy zawiera niecenzuralne slowa!"
   delete:
-    deleted: "&aDie Gruppe %party% wurde aufgelöst"
-    deleted-silently: "&aDie Gruppe %party% stillschweigend aufgelöst"
-    broadcast: "&6&lDie Gruppe wurde aufgelöst."
+    deleted: "&cGrupa %party% usunieta"
+    deleted-silently: "&aGrupa %party% usunieta po cichu"
+    broadcast: "&6&lTwoja grupa zostala usunieta"
   deny:
     no-request: "&cYou have not pending request"
     no-exists: "&cThe request doesn't exist anymore"
@@ -107,57 +107,57 @@ main-commands:
     multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
     multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
   ignore:
-    start-ignore: "&7Ignoriere Einladungen von %party%"
-    stop-ignore: "&7Du ignorierst nicht länger die Einladungen von %party%"
+    start-ignore: "&7Od teraz ignorujesz zaproszenia %party%"
+    stop-ignore: "&7Przestales ignorowac zaproszenia %party%"
     ignore-list:
-      header: "&b&lListe ignorierter Gruppen:"
+      header: "&b&lLista ignorowanych grup:"
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7 keine"
+      empty: "&7Brak"
   info:
     content:
-      - "&b============ &lInfos zu %party% &r&b============"
-      - "&b&lBeschreibung&7: %desc%"
+      - "&b============ &lInfo o %party% &r&b============"
+      - "&b&lDescription&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
-      - "&bMitglieder&7: %list_rank_member%"
+      - "&bMembers&7: %list_rank_member%"
       - "&bOnline players&7: %members_online_total%"
   invite:
-    sent: "&bDu hast %player% in deine Gruppe eingeladen"
+    sent: "&bZaprosiles gracza %player% do twojej grupy"
     player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
     accept:
-      broadcast: "&b&l%player% ist der Gruppe beigetreten"
-      accepted: "&aDu hast die Einladung angenommen"
-      receipt: "&a%player% hat die Einladung angenommen"
+      broadcast: "&b&l%player% dolaczyl do grupy"
+      accepted: "&aZaakceptowales zaproszenie do grupy"
+      receipt: "&a%player% zaakceptowal twoje zaproszenie"
     deny:
       broadcast: ""
       denied: "&aYou denied the party invite"
       receipt: "&a%player% denied your invite"
     timeout:
-      no-response: "&7%player% hat die Einladung nicht angenommen"
-      timeout: "&7You didn't accept the party invite to %party%"
+      no-response: "&7%player% nie zaakceptowal zaproszenia do grupy"
+      timeout: "&7Nie zaakceptowałeś zaproszenia do grupy %party%"
     revoke:
-      sent-revoked: "&7Die Einladung für %player% wurde widerufen"
-      player-invite-revoked: "&7Die Einladung der Gruppe %party% wurde widerufen"
+      sent-revoked: "&7Anulowales zaproszenie dla %player%"
+      player-invite-revoked: "&7Zaproszenie od grupy %party% zostalo anulowane"
     cooldown:
       global: "&cYou need to wait %seconds% seconds before invite another player"
       individual: "&cYou need to wait %seconds% seconds before invite again the same player"
       on-leave: "&cYou need to wait %seconds% seconds before invite this player"
-    player-offline: "&cDu kannst nur Spieler einladen, welche online sind"
-    player-no-permission: "&c%player% fehlen die Rechte um der Gruppe beizutreten"
-    player-in-party: "&c%player% ist bereits Mitglied einer Gruppe"
-    already-invited: "&c%player% wurde bereits eingeladen"
+    player-offline: "&cMozesz zaprosic wylacznie graczy online"
+    player-no-permission: "&c%player% nie ma uprawnien by dolaczyc"
+    player-in-party: "&c%player% jest juz w grupie"
+    already-invited: "&c%player% zostal juz zaproszony"
     invite-yourself: "&cYou cannot invite yourself"
     failed: "&cFailed to invite the player %player%"
   kick:
-    sent: "&aDu hast %player% aus der Party gekickt!"
-    player-kicked: "&bDu wurdest aus der Gruppe %party% geworfen"
-    broadcast: "&b&l%player% wurde aus der Gruppe geworfen"
-    broadcast-disband: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
+    sent: "&aYou kicked %player% from the party!"
+    player-kicked: "&bZostales wyrzucony z grupy %party%"
+    broadcast: "&b&l%player% zostal wyrzucony z grupy"
+    broadcast-disband: "&b&lGrupa zostala rozwiazana, poniewaz lider zostal wyrzucony"
     broadcast-leader-changed: "&b&lThe new leader is %player%"
-    broadcast-leave-server: "&b&l%player% wurde aus der Gruppe geworfen"
-    player-higher-rank: "&cDu kannst deinen Vorgesetzten nicht rauswerfen!"
-    player-not-in-party: "&c%player% ist nicht Mitglied deiner Gruppe"
+    broadcast-leave-server: "&b&l%player% zostal wyrzucony z grupy"
+    player-higher-rank: "&cNie mozesz wyrzucic osoby wyzszej ranga!"
+    player-not-in-party: "&c%player% nie jest w twojej grupie"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -166,35 +166,35 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
+        - "&cZnalezismy kilku graczy o tej nazwie:"
         - "%list_players%"
-        - "&cVerwende '&7/party kick <Name> <Nummer>&c' um den richtigen Spieler rauszuwerfen"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+        - "&cUzyj '&7/party kick <nazwa gracza> <numer>&c' by wyrzucic danego gracza"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: ostatnio logowany %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Wyrzuc tego gracza","color":"gold"}}}'
   leave:
-    left: "&b&lDu hast die Gruppe %party% verlassen"
-    broadcast: "&b&l%player% hat die Gruppe verlassen"
-    party-disbanded: "&b&lDer Anführer hat die Gruppe verlassen, sie wurde damit aufgelöst"
+    left: "&b&lOpusciles grupe %party%"
+    broadcast: "&b&l%player% opuscil grupe"
+    party-disbanded: "&6&lGrupa zostala rozwiazana, poniewaz lider ja opuscil"
     leader-changed: "&b&lThe leader left the party, the new leader is %player%"
   p:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cDu musst noch %seconds% Sekunden warten"
-    censored: "&cDie Nachricht enthält einen zensierten Wortlaut!"
-    muted: "&cDu bist gemutet!"
+    cooldown: "&cMusisz poczekac %seconds% sekund"
+    censored: "&cWiadomość zawiera niecenzuralne słowa!"
+    muted: "&cYou are muted!"
   rank:
     #[Special tags]
     #=> %rank_name%   = Rank wrote by the player
-    changed: "&a%player% ist nun %rank_name%"
+    changed: "&aStopien %player% zmieniony na %rank_name%"
     broadcast: ""
-    wrong-rank: "&cDer Rang '%rank_name%' existiert nicht!"
-    same-rank: "&c%player% ist bereits %rank_name%!"
-    low-rank: "&cDu kannst Spieler gleichen oder höheren Ranges nicht bearbeiten!"
-    to-higher-rank: "&cDu kannst keine Ränge vergeben, welche höher oder gleich deinem sind!"
+    wrong-rank: "&cStopien '%rank_name%' nie istnieje!"
+    same-rank: "&c%player% juz jest %rank_name%!"
+    low-rank: "&cNie mozesz edytowac graczy z ranga ta sama lub wyzsza co twoja!"
+    to-higher-rank: "&cNie mozesz awansowac graczy z ranga ta sama lub wyzsza co twoja!"
     full: "&cRank %rank_name% reached the maximum number of players"
-    fixed-leader: "&cDu kannst nicht jemanden zum Anführer der Gruppe machen!"
+    fixed-leader: "&cNie mozesz zmienic lidera w grupie stalej!"
     demote-leader: "&cYou cannot demote the party leader"
     changing-yourself: "&cYou cannot change your own rank!"
-    player-not-in-party: "&c%player% ist kein Mitglied deiner Gruppe"
+    player-not-in-party: "&c%player% nie jest w twojej grupie"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -203,28 +203,28 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cEs wurden einige Spieler mit diesem Namen gefunden:"
+        - "&cZnalezismy kilku graczy o tej nazwie:"
         - "%list_players%"
-        - "&cVerwende '&7/Party rank <username> <rank> <number>&c' um den Rang des richtigen Spielers zu ändern"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cUżyj '&7/party rank <username> <rank> <number>&c' aby zmienić rangę właściwego gracza"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: ostatnie logowanie %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Zmień rangę tego gracza","color":"gold"}}}}'
   rename:
     #[Special tags]
     #=> %old%   = Old party name
-    renamed: "&aDie Gruppe %old% wurde umbenannt zu %party%"
-    broadcast: "&6Deine Gruppe wurde umbenannt zu %party%!"
+    renamed: "&aNazwa grupy %old% zostala zmieniona na %party%"
+    broadcast: "&6Nazwa twojej grupy zostala zmieniona na %party%!"
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cDu musst noch %seconds% Sekunden warten"
+    cooldown: "&cMusisz poczekac %seconds% sekund!"
   spy:
-    enabled: "&7Du bist nun ein Spion!"
-    disabled: "&7Du bist nicht länger ein Spion!"
+    enabled: "&7Jestes teraz w trybie szpiega!"
+    disabled: "&7Nie jestes dluzej w trybie szpiega"
   version:
     #[Special tags]
     #=> %version%    = Parties version
     #=> %newversion% = Latest Parties version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Opracowane przez &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Opracowane przez &6AlessioDP\n&aZnaleziono nową wersję: &2%newversion%"
 #/ =============================== \
 #|  ADDITIONAL COMMANDS  MESSAGES  |
 #\ =============================== /
@@ -233,7 +233,7 @@ additional-commands:
     sent: "&aJoin request sent to %party%"
     received: "[{\"text\":\"&b%player% want to join your party.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
     accept:
-      broadcast: "&b&l%player% ist der Gruppe beigetreten"
+      broadcast: "&b&l%player% dolaczyl do grupy"
       accepted: "&aYou accepted the ask request"
       receipt: "&a%party% accepted your ask request"
     deny:
@@ -247,17 +247,11 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cYou need to wait %seconds% seconds before ask to another party"
       individual: "&cYou need to wait %seconds% seconds before ask to the same party"
-  claim:
-    claimed: "&aEine Parzelle für deine Gruppe wurde erstellt"
-    removed: "&aDie Parzelle der Gruppe wurde entfernt"
-    no-manager: "&cDu musst Inhaber dieser Parzelle sein"
-    claim-no-exists: "&cEs konnte keine Parzelle gefunden werden"
-    allowed-permissions: "&cPermissions: trust, container & access"
   color:
-    info: "&bDeine Gruppenfarbe ist: %color_code%%color_command%"
-    empty: "&bDeine Gruppe verfügt über keine Farbe"
-    changed: "&bDie Gruppenfarbe wurde geändert zu %color_command%"
-    removed: "&bDie Gruppenfarbe wurde entfernt"
+    info: "&bKolor twojej grupy to: %color_code%%color_command%"
+    empty: "&bTwoja grupa nie ma ustawionego koloru"
+    changed: "&bKolor grupy zmieniony na %color_command%"
+    removed: "&bKolor grupy usuniety"
     broadcast: ""
     #Syntax of %available_colors%
     available-colors:
@@ -266,10 +260,8 @@ additional-commands:
     wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
     bungeecord:
-      sent: "&bSent a debug BungeeCord request into the network"
-      server-players: "&cThere must be at least 1 player in the server"
-      sync: "Parties is synced correctly"
-      not-sync: "Parties is NOT synced correctly"
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -311,30 +303,30 @@ additional-commands:
         - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
-    changed: "&bDie Beschreibung wurde geändert"
-    removed: "&bDie Beschreibung wurde entfernt"
+    changed: "&bOpis grupy zmieniony"
+    removed: "&bOpis grupy usuniety"
     broadcast: ""
-    invalid-chars: "&cUnbekanntes Satzzeichen, erlaubt ist a-Z und 0-9, zwischen 3 bis 16 Zeichen."
-    censored: "&cDie Beschreibung enthält einen zensierten Wortlaut!"
+    invalid-chars: "&cBledne znaki. Uzyj: a-Z lub 0-9. Minimum 3 i maximum 16 znakow."
+    censored: "&cOpis zawiera niecenzuralne slowa!"
   exp:
     #[Special tag]
     #=> %exp%        = Experience gained
-    gained-experience: "&bDu erhälst %exp% Erfahrung aus der Gruppe"
+    gained-experience: "&bZdobyto %exp% doswiadczenia do grupy za zabicie stwora"
     level-up: "&bParty leveled up to %experience_level%"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&aTeraz twoi członkowie grupy będą podążać za liderem"
+    toggle-off: "&aCzłonkowie twojej grupy nie będą już podążać za liderem"
   home:
-    teleported: "&7Teleportiere zum Gruppenhome"
+    teleported: "&7Teleportowano do domu grupy"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7Du wirst in %seconds% Sekunden teleportiert..."
-    teleport-denied: "&7Teleportation ist hier nicht möglich"
-    teleport-waiting: "&cDu wartest bereits auf einen Teleport!"
-    no-home: "&cEs wurde noch kein Gruppenhome gesetzt"
+    teleport-in: "&7You will be teleported in %seconds% seconds..."
+    teleport-denied: "&7Teleportacja odrzucona"
+    teleport-waiting: "&cJuz czekasz na teleportacje!"
+    no-home: "&cNie ma ustawionego domu"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cDu musst noch %seconds% Sekunden warten"
+    cooldown: "&cMusisz poczekac %seconds% sekund!"
     must-select-home: "&cYou must select a valid home"
     invalid-home: "&cThe selected home doesn't exist"
     valid-homes: "&bList of valid homes:"
@@ -342,40 +334,40 @@ additional-commands:
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
     valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
   join:
-    joined: "&aDu bist der Gruppe %party% beigetreten"
-    player-joined: "&b&l%player% ist der Gruppe beigetreten"
+    joined: "&aDolaczyles do grupy %party%"
+    player-joined: "&b&l%player% dolaczyl do grupy"
     open-close:
       opened: "&bThe party is now open"
       closed: "&bThe party is now closed"
       already-open: "&cThe party is already open"
       already-closed: "&cThe party is already closed"
-      cooldown: "&cDu musst noch %seconds% Sekunden warten"
+      cooldown: "&cMusisz poczekac %seconds% sekund!"
       cannot-join: "&cYou cannot join this party"
     password:
-      wrong-password: "&cFalsches Passwort!"
+      wrong-password: "&cBledne haslo!"
   list:
     #[Special tags]
     #=> %index%     = The party index
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b=========== &lListe der Gruppen Online &r&b==========="
-    footer: "&b================= &lSeite %page% von %maxpages% &r&b================="
-    no-one: "&7keine"
+    header: "&b============ &lLista grup online &r&b============"
+    footer: "&b================ &lStrona %page% z %maxpages% &r&b================"
+    no-one: "&7Brak"
     format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
     invalid-order: '&cInvalid order type'
   motd:
-    changed: "&bDas Motto der Gruppe wurde geändert"
-    removed: "&bDas Motto der Gruppe wurde entfernt"
+    changed: "&bMOTD grupy zmienione"
+    removed: "&bMOTD grupy usuniete"
     broadcast: ""
     content:
-      - "&bMotto der Gruppe:"
+      - "&bMOTD grupy:"
       - "&b%motd%"
-    invalid-chars: "&cUnbekanntes Satzzeichen, erlaubt ist '. , /' mit 3 bis 100 Zeichen."
-    censored: "&cDas Motto enthält einen zensierten Wortlaut!"
+    invalid-chars: "&cBledne znaki. Mozesz takze uzyc '. , /'. Minimum 3 i maximum 100 znakow."
+    censored: "&cMOTD zawiera niecenzuralne slowa!"
   mute:
-    toggle-on: "&7Mitteilungen der Gruppe sind nun abgeschaltet!"
-    toggle-off: "&7Mitteilungen der Gruppe sind nun sichtbar!"
+    toggle-on: "&7Wylaczyles powiadomienia!"
+    toggle-off: "&7Wlaczyles powiadomienia!"
   nickname:
     own:
       changed: "&bYou changed your nickname into %player_nickname%"
@@ -391,30 +383,30 @@ additional-commands:
       target-removed: "&b%player% removed your nickname"
       no-permission: "&cYou cannot change other player nicknames"
     show:
-      own: "&bDein Nickname ist %player_nickname%"
+      own: "&bYour nickname is %player_nickname%"
       own-none: "&bYou do not have any nickname"
-      other: "&bDer Nickname von %player% ist %player_nickname%"
-      other-none: "&b%player% hat keinen Nicknamen"
+      other: "&bThe nickname of %player% is %player_nickname%"
+      other-none: "&b%player% does not have any nickname"
     invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
     censored: "&cThe nickname contains censored words!"
   password:
-    changed: "&aDas Passwort der Gruppe wurde geändert"
-    removed: "&aDas Passwort der Gruppe wurde entfernt"
+    changed: "&aHaslo grupy zmienione"
+    removed: "&aHaslo grupy usuniete"
     broadcast: ""
-    invalid-chars: "&cUngültige Satzzeichen. Erlaubt ist: a-Z und 0-9, zwischen 1 bis 16 Zeichen."
+    invalid-chars: "&cBledne znaki. Uzyj: a-Z lub 0-9. Minimum 1 i maximum 16 znakow."
   protection:
-    toggle-on: "&aGruppenmitglieder können sich nun nicht gegenseitig verletzen"
-    toggle-off: "&aGruppenmitglieder können sich nun gegenseitig verletzen"
-    protected: "&cDu darfst deine Mitglieder deiner Gruppe nicht angreifen!"
-    warn-on-attack: "&c%player% versucht %victim% zu schlagen!"
+    toggle-on: "&aTwoja grupa jest teraz chroniona przed ogniem bratobojczym"
+    toggle-off: "&aTwoja grupa nie jest juz chroniona przed ogniem bratobojczym"
+    protected: "&cNie mozesz bic kumpli z grupy"
+    warn-on-attack: "&c%player% probowal uderzyc %victim%!"
   sethome:
     changed: ""
-    removed: "&bDas Gruppenhome wurde entfernt"
+    removed: "&bDom grupy usuniety"
     removed-none: "&cNo party home found"
-    broadcast: "&bDie Gruppe besitzt ein neues Zuhause!"
+    broadcast: "&aGrupa ma nowy dom!"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cDu musst noch %seconds% Sekunden warten"
+    cooldown: "&cMusisz poczekac %seconds% sekund!"
     max-homes: "&cYou reached the maximum number of homes"
   tag:
     changed: "&bParty tag changed"
@@ -424,61 +416,37 @@ additional-commands:
     censored: "&cThe tag contains censored words!"
     already-used: "&c The tag %tag% is already used"
   teleport:
-    teleporting: "&7Gruppenmitglieder werden teleportiert!"
-    player-teleported: "&7Teleportiere zu %player%"
+    teleporting: "&7Teleportowano tutaj twoja grupe!"
+    player-teleported: "&bTeleportowano do %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-denied: "&7Teleportation ist hier nicht möglich"
+    player-teleport-denied: "&7Teleportacja odrzucona"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cDu musst noch %seconds% Sekunden warten"
+    cooldown: "&cMusisz poczekac %seconds% sekund!"
     accept-request:
       sent: "&aTeleport request sent to the party"
       received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
       denied: "&7You denied the teleport request of %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cYou don't have enough money to send a join request [%price%$]"
-      claim: "&cDu besitzt nicht genügend Geld für das 'Claimen' dieser Parzelle [%price%$]"
-      color: "&cDu besitzt nicht genügend Geld, um die Farbe zu ändern [%price%$]"
-      create: "&cDu besitzt nicht genügend Geld, um eine neue Gruppe zu eröffnen [%price%$]"
-      desc: "&cDu besitzt nicht genügend Geld, um die Beschreibung zu ändern [%price%$]"
-      follow: "&cYou don't have enough money to enable follow [%price%$]"
-      home: "&cDu besitzt nicht genügend Geld, um den Home-Befehl zu verwenden [%price%$]"
-      join: "&cDu besitzt nicht genügend Geld, um dieser Gruppe beizutreten [%price%$]"
-      motd: "&cDu besitzt nicht genügend Geld, um das Motto zu ändern [%price%$]"
-      nickname: "&cYou don't have enough money to set the nickname [%price%$]"
-      password: "&cYou don't have enough money to set the password [%price%$]"
-      protection: "&cYou don't have enough money to enable protection [%price%$]"
-      rename: "&cYou don't have enough money to rename the party [%price%$]"
-      sethome: "&cDu besitzt nicht genügend Geld, um das Gruppenhome zu setzen [%price%$]"
-      tag: "&cYou don't have enough money to set the tag [%price%$]"
-      teleport: "&cDu besitzt nicht genügend Geld für den Teleport-Befehl [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClick here to confirm\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
-      confirmed: "&aFühre Befehl aus."
-      no-cmd: "&cKein Befehl bestätigt"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
 other:
   follow:
     #[Special tags]
-    #=> %world%          = New world
-    following-world: "&7Folge %player% in %world%"
+    #=> %server%          = New server
+    following-server: "&7Ogladanie gracza %player% na swiecie %server%"
   fixed-parties:
-    default-join: "&bDu bist der Gruppe %party% beigetreten"
+    default-join: "&bDolaczyles do grupy %party%"
   join-leave:
-    server-join: "&b%player% ist nun online!"
-    server-leave: "&7%player% ist nun offline!"
+    server-join: "&b%player% jest teraz online!"
+    server-leave: "&7%player% jest teraz offline!"
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: "&b============== &lParty Befehlsliste %page%/%maxpages% &r&b=============="
+  header: "&b================= &lPomoc do grup %page%/%maxpages% &r&b================="
   footer: ""
   perform-command: 'Perform the command'
   console-help:
@@ -552,7 +520,7 @@ help:
       ask: 'Send a join request'
       claim: 'Grant permissions to the claim'
       close: 'Close the party'
-      color: 'Party-Farbe ändern'
+      color: 'Change party color'
       createfixed: 'Create a new fixed party'
       debug: 'Debug issues'
       desc: 'Set/remove party description'
@@ -564,10 +532,10 @@ help:
       mute: 'Toggle notifications'
       nickname: 'Set/remove member nickname'
       open: 'Open the party'
-      password: 'Gruppenpasswort ändern'
+      password: 'Change party password'
       protection: 'Toggle friendly fire protection'
       sethome: 'Set/remove party home'
-      tag: 'Gruppen-Tag setzen / entfernen'
-      teleport: 'Teleportiere deine Party zu dir'
+      tag: 'Set/remove party tag'
+      teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 14
+  version: 1

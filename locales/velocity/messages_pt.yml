@@ -1,7 +1,7 @@
 ---
-#/ ================================================= \
-#|    This is the Bukkit messages file of Parties    |
-#\ ================================================= /
+#/ ===================================================== \
+#|    This is the Velocity messages file of Parties    |
+#\ ===================================================== /
 #For any problem be sure to:
 #- Read the entire documentation on: https://alessiodp.com/docs/parties
 #- Join our Discord for further help: https://discord.alessiodp.com
@@ -247,12 +247,6 @@ additional-commands:
       #=> %seconds%          = Remaining time in seconds
       global: "&cVocê precisa esperar %seconds% segundos antes de enviar um pedido a outra equipe"
       individual: "&cVocê precisa esperar %seconds% antes de enviar outro pedido a esta equipe"
-  claim:
-    claimed: "&aConcedida permissão para a equipe"
-    removed: "&aPermissão removida do grupo"
-    no-manager: "&cVocê precisa ser o gerente da reivindicação"
-    claim-no-exists: "&cReivindicação não encontrada"
-    allowed-permissions: "&cPermissões: confiança, contêiner e acesso"
   color:
     info: "&bA cor da sua equipe é: %color_code%%color_command%"
     empty: "&bSua equipe não tem cor"
@@ -266,10 +260,8 @@ additional-commands:
     wrong-color: "&cColor not found. You can select: %available_colors%"
   debug:
     bungeecord:
-      sent: "&bSent a debug BungeeCord request into the network"
-      server-players: "&cThere must be at least 1 player in the server"
-      sync: "Parties is synced correctly"
-      not-sync: "Parties is NOT synced correctly"
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -437,38 +429,14 @@ additional-commands:
       sent: "&aPedido de teleporte enviado para a equipe"
       received: "[{\"text\":\"&bVocê quer ser teleportado para %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar pedido\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Recusar pedido\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bVocê pode usar &7/party <accept/deny> %player% &bpara escolher.\"}]"
       denied: "&7Você negou a solicitação de teleporte de %player%"
-  vault:
-    #[Special tags]
-    #=> %price%          = Price of the command
-    no-money:
-      ask: "&cVocê não tem dinheiro suficiente para enviar um pedido de adesão [%price%$]"
-      claim: "&cVocê não tem dinheiro suficiente para executar uma reivindicação [%price%$]"
-      color: "&cVocê não tem dinheiro suficiente para executar o comando de cores [%price%$]"
-      create: "&cVocê não tem dinheiro suficiente para criar uma equipe [%price%$]"
-      desc: "&cVocê não tem dinheiro suficiente para definir a descrição [%price%$]"
-      follow: "&cVocê não tem dinheiro suficiente para ativar a função de seguir[%price%$]"
-      home: "&cVocê não tem dinheiro suficiente para usar o comando 'home' [%price%$]"
-      join: "&cVocê não tem dinheiro suficiente para entrar em uma equipe [%price%$]"
-      motd: "&cVocê não tem dinheiro suficiente para definir a mensagem do dia[%price%$]"
-      nickname: "&cVocê não tem dinheiro suficiente para definir o apelido [%price%$]"
-      password: "&cVocê não tem dinheiro suficiente para definir a senha [%price%$]"
-      protection: "&cVocê não tem dinheiro suficiente para ativar a proteção de pvp [%price%$]"
-      rename: "&cVocê não tem dinheiro suficiente para renomear a party [%price%$]"
-      sethome: "&cVocê não tem dinheiro suficiente para definir a casa da equipe [%price%$]"
-      tag: "&cVocê não tem dinheiro suficiente para definir a tag [%price%$]"
-      teleport: "&cVocê não tem dinheiro suficiente para realizar um teletransporte [%price%$]"
-    confirm:
-      warn-onbuy: "[{\"text\":\"&aCommand %cmd% custo: %price%$.\n\"},{\"text\":\"&2&lClique aqui para confirmar\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aou digite &7/party confirm &apara usar isto\"}]"
-      confirmed: "&aExecutando o comando."
-      no-cmd: "&cNão há nenhum comando para confirmar"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
 other:
   follow:
     #[Special tags]
-    #=> %world%          = New world
-    following-world: "&7Seguindo %player% no %world%"
+    #=> %server%          = New server
+    following-server: "&7Seguindo %player% no %server%"
   fixed-parties:
     default-join: "&bVocê entrou na equipe %party%"
   join-leave:
@@ -570,4 +538,4 @@ help:
       tag: 'Definir/Remover tag da equipe'
       teleport: 'Teleporte sua equipe até você'
 dont-edit-this:
-  version: 14
+  version: 1
