@@ -98,7 +98,7 @@
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.19.4</libs.essentialsx>
-		<libs.griefPrevention>16.17.1</libs.griefPrevention>
+		<libs.griefPrevention>16.18</libs.griefPrevention>
 		<libs.lastLoginApi>1.7.0</libs.lastLoginApi>
 		<libs.magic>10.2</libs.magic>
 		<libs.placeholderApi>2.11.1</libs.placeholderApi>
