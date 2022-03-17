@@ -62,9 +62,9 @@
 		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>8</java.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 		
 		
 		<maven.compiler.version>3.10.1</maven.compiler.version>
@@ -99,7 +99,7 @@
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.19.4</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.6.0</libs.lastLoginApi>
+		<libs.lastLoginApi>1.7.0</libs.lastLoginApi>
 		<libs.magic>10.2</libs.magic>
 		<libs.placeholderApi>2.11.1</libs.placeholderApi>
 		<libs.premiumVanish>2.7.11-2</libs.premiumVanish>

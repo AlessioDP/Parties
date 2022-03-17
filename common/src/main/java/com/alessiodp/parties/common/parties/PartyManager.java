@@ -82,10 +82,8 @@ public abstract class PartyManager {
 	}
 	
 	public void reloadPartyIfCached(UUID id) {
-		if (id != null) {
-			if (cacheParties.containsKey(id))
-				reloadParty(id);
-		}
+		if (id != null && cacheParties.containsKey(id))
+			reloadParty(id);
 	}
 	
 	public boolean isPartyCached(UUID id) {

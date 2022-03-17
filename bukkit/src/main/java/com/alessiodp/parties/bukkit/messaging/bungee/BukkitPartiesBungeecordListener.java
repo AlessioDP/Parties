@@ -131,6 +131,9 @@ public class BukkitPartiesBungeecordListener extends BukkitBungeecordListener {
 					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_DEBUG_BUNGEECORD)
 						handleDebugBungeecordReply(packet);
 					break;
+				default:
+					// Nothing to do
+					break;
 			}
 		}
 	}

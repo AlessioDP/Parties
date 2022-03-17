@@ -3,3 +3,5 @@ files:
     translation: /locales/bukkit/messages_%two_letters_code%.yml
   - source: /bungeecord/src/main/resources/bungee/messages.yml
     translation: /locales/bungeecord/messages_%two_letters_code%.yml
+  - source: /velocity/src/main/resources/velocity/messages.yml
+    translation: /locales/velocity/messages_%two_letters_code%.yml

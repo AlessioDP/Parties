@@ -39,11 +39,6 @@ public class VelocityPartiesBootstrap extends ADPVelocityBootstrap {
 	}
 	
 	@Override
-	public void stopPlugin() {
-	
-	}
-	
-	@Override
 	public @NotNull String getAuthor() {
 		return VelocityConstants.AUTHORS;
 	}
