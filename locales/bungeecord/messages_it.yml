@@ -190,9 +190,9 @@ main-commands:
     same-rank: "&c%player% è già %rank_name%!"
     low-rank: "&cNon puoi modificare i player che hanno un rank equivalente o maggiore al tuo!"
     to-higher-rank: "&cNon puoi promuovere un player ad un rank equivalente o maggiore al tuo!"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&cIl rank %rank_name% ha raggiunto il massimo numero di giocatori"
     fixed-leader: "&cNon puoi aggiungere un leader ad un party fisso!"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&cNon puoi retrocedere il leader del party"
     changing-yourself: "&cNon puoi cambiare il tuo rank!"
     player-not-in-party: "&c%player% non è nel tuo party"
     players-conflict:
@@ -257,7 +257,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cColore non trovato. Puoi selezionare: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
@@ -337,12 +337,12 @@ additional-commands:
     joined: "&aSei entrato nel party %party%"
     player-joined: "&b&l%player% è entrato nel party"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&bIl party ora è aperto"
+      closed: "&bIl party ora è chiuso"
+      already-open: "&cIl party è già aperto"
+      already-closed: "&cIl party è già chiuso"
       cooldown: "&cDevi aspettare %seconds% secondi!"
-      cannot-join: "&cYou cannot join this party"
+      cannot-join: "&cNon puoi unirti a questo party"
     password:
       wrong-password: "&cPassword sbagliata!"
   list:
@@ -519,7 +519,7 @@ help:
     descriptions:
       ask: 'Invia una richiesta di partecipazione'
       claim: 'Concedi i permessi al claim'
-      close: 'Close the party'
+      close: 'Chiudi il party'
       color: 'Cambia colore del party'
       createfixed: 'Crea un nuovo party fisso'
       debug: 'Debug problemi'
@@ -531,7 +531,7 @@ help:
       motd: 'Imposta/rimuovi motd del party'
       mute: 'Attiva/disattiva notifiche'
       nickname: 'Imposta/rimuovi nickname del membro'
-      open: 'Open the party'
+      open: 'Apri il party'
       password: 'Cambia password del party'
       protection: 'Attiva/disattiva protezione dal fuoco amico'
       sethome: 'Imposta/rimuovi home del party'
