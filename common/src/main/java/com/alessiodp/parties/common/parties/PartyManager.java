@@ -117,9 +117,12 @@ public abstract class PartyManager {
 		if (party != null) {
 			removePartyFromCache(party);
 			party =  plugin.getDatabaseManager().getParty(id);
-			addPartyToCache(party);
-			
-			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RELOADED, party.getName() != null ? party.getName() : "_"), true);
+			if (party != null) {
+				addPartyToCache(party);
+				
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RELOADED, party.getName() != null ? party.getName() : party.getId()), true);
+			} else
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PARTY_RELOADED_DELETED, id), true);
 			return true;
 		}
 		return false;

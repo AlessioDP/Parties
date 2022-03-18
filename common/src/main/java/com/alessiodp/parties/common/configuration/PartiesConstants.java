@@ -181,6 +181,7 @@ public class PartiesConstants {
 	public static final String DEBUG_PARTY_DELETE = "Deleted party %s";
 	public static final String DEBUG_PARTY_RENAME = "Renamed party %s into %s";
 	public static final String DEBUG_PARTY_RELOADED = "Reloaded party %s";
+	public static final String DEBUG_PARTY_RELOADED_DELETED = "Reloaded party %s then deleted due to missing in database";
 	public static final String DEBUG_PARTY_GET_DATABASE = "Got party %s from database";
 	public static final String DEBUG_PARTY_GET_LIST = "Got party %s from list";
 	public static final String DEBUG_PARTY_TIMEOUT_CHANGE_LEADER = "Party %s leader is changed into %s due to timeout";

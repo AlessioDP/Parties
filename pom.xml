@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.2.0</version>
+	<version>3.2.1</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -62,9 +62,9 @@
 		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>11</java.version>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<java.version>8</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		
 		
 		<maven.compiler.version>3.10.1</maven.compiler.version>
@@ -80,7 +80,7 @@
 		<dev.mockito>4.3.1</dev.mockito>
 		<dev.junit>5.8.2</dev.junit>
 		
-		<libs.adpcore>1.8.0</libs.adpcore>
+		<libs.adpcore>1.8.1</libs.adpcore>
 		<libs.api.spigot>1.18.2-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.18-R0.1-SNAPSHOT</libs.api.bungeecord>
 		<libs.api.velocity>3.1.0</libs.api.velocity>
