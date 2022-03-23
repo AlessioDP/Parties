@@ -80,7 +80,7 @@
 		<dev.mockito>4.3.1</dev.mockito>
 		<dev.junit>5.8.2</dev.junit>
 		
-		<libs.adpcore>1.8.2</libs.adpcore>
+		<libs.adpcore>1.8.3</libs.adpcore>
 		<libs.api.spigot>1.18.2-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.18-R0.1-SNAPSHOT</libs.api.bungeecord>
 		<libs.api.velocity>3.1.0</libs.api.velocity>
