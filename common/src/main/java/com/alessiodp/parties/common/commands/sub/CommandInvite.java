@@ -126,13 +126,7 @@ public class CommandInvite extends PartiesSubCommand {
 		// Check for party, create one if option enabled
 		if (party == null) {
 			if (ConfigParties.GENERAL_INVITE_AUTO_CREATE_PARTY_UPON_INVITE && ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE) {
-				String partyName = getPlugin().getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, partyPlayer, null);
-				
-				if (getPlugin().getPartyManager().existsParty(partyName)) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_CREATE_NAMEEXISTS.replace("%party%", partyName));
-					return;
-				}
-				
+				String partyName = CommandCreate.generateDynamicName(getPlugin(), partyPlayer);
 				party = CommandCreate.createParty((PartiesPlugin) plugin, this, sender, partyPlayer, partyName, false);
 				
 				if (party == null || party.isFixed()) {

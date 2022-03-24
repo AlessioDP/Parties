@@ -87,7 +87,7 @@ public class CommandCreate extends PartiesSubCommand {
 						.replace("%syntax%", syntax));
 				return;
 			}
-			partyName = getPlugin().getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, partyPlayer, null);
+			partyName = generateDynamicName(getPlugin(), partyPlayer);
 		}
 		
 		if (getPlugin().getPartyManager().existsParty(partyName)) {
@@ -123,6 +123,17 @@ public class CommandCreate extends PartiesSubCommand {
 			return false;
 		}
 		return true;
+	}
+	
+	public static String generateDynamicName(PartiesPlugin plugin, PartyPlayerImpl player) {
+		String name = plugin.getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_FORMAT, player, null);
+		int count = 2;
+		while (plugin.getPartyManager().existsParty(name)) {
+			name = plugin.getMessageUtils().convertPlaceholders(ConfigParties.GENERAL_NAME_DYNAMIC_IF_ALREADY_EXISTS_FORMAT
+					.replace("%number%", Integer.toString(count)), player, null);
+			count++;
+		}
+		return name;
 	}
 	
 	public static PartyImpl createParty(PartiesPlugin plugin, PartiesSubCommand subCommand, User sender, PartyPlayerImpl partyPlayer, String partyName, boolean fixed) {

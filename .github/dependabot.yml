@@ -18,3 +18,4 @@ updates:
     - dependency-name: "org.apache.maven.plugins:maven-compiler-plugin"
     - dependency-name: "org.apache.maven.plugins:maven-javadoc-plugin"
     - dependency-name: "org.jetbrains:annotations"
+    - dependency-name: "com.alessiodp.core:*"

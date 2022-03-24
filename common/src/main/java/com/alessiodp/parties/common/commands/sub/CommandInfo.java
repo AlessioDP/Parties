@@ -54,7 +54,7 @@ public class CommandInfo extends PartiesSubCommand {
 	@Override
 	public boolean preRequisites(@NotNull CommandData commandData) {
 		boolean ret = handlePreRequisitesFull(commandData, null, 1, 2);
-		if (ret && ((PartiesCommandData) commandData).getPartyPlayer() != null) {
+		if (ret) {
 			commandData.addPermission(PartiesPermission.USER_INFO_OTHERS);
 		}
 		return ret;

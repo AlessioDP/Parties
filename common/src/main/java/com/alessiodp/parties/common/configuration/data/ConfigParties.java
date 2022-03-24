@@ -58,6 +58,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static String		GENERAL_NAME_DYNAMIC_FORMAT;
 	@ConfigOption(path = "general.name.dynamic.allow-in-create")
 	public static boolean		GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE;
+	@ConfigOption(path = "general.name.dynamic.if-already-exists-format")
+	public static String		GENERAL_NAME_DYNAMIC_IF_ALREADY_EXISTS_FORMAT;
 	
 	@ConfigOption(path = "general.join-leave-messages")
 	public static boolean		GENERAL_JOIN_LEAVE_MESSAGES;

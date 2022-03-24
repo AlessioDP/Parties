@@ -57,6 +57,9 @@ general:
       # Do not uses spaces, names are not meant to be used with spaces
       # By default the party will use the name of the player
       format: "%player%"
+      # If a party with that name exists, use a different name:
+      # > %number%: Consecutive number
+      if-already-exists-format: "%player%%number%"
       allow-in-create: true
 
   # Show messages upon login and logout of party-mates
@@ -382,4 +385,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 7
+  version: 8
