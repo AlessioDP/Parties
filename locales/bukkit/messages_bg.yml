@@ -570,4 +570,4 @@ help:
       tag: 'Задай/премахни тага на партито'
       teleport: 'Телепортирай твоето парти до себе си'
 dont-edit-this:
-  version: 14
+  version: 15
