@@ -190,9 +190,9 @@ main-commands:
     same-rank: "&c%player% je již %rank_name%!"
     low-rank: "&cNemůžeš upravovat hráče se stejnou nebo vyšší hodností než máš ty!"
     to-higher-rank: "&cNemůžeš povýšit na stejnou nebo vyšší hodnost než máš ty!"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&cHodnost %rank_name% dosáhla maximálního počtu hráčů"
     fixed-leader: "&cNemůžeš někoho učinit vedoucím pevné párty!"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&cNemůžete degradovat vedoucího párty"
     changing-yourself: "&cNemůžeš sám/sama sobě změnit hodnost!"
     player-not-in-party: "&c%player% není ve tvé párty"
     players-conflict:
@@ -257,7 +257,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cBarva nenalezena. Můžeš si vybrat: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
@@ -337,12 +337,12 @@ additional-commands:
     joined: "&aPřipojil/a ses do párty %party%"
     player-joined: "&b&lHráč %player% se připojil do párty"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&bPárty je nyní otevřena"
+      closed: "&bPárty je nyní uzavřena"
+      already-open: "&cPárty je již otevřena"
+      already-closed: "&cPárty je již uzavřena"
       cooldown: "&cMusíš počkat %seconds% sekund!"
-      cannot-join: "&cYou cannot join this party"
+      cannot-join: "&cDo této párty se nemůžete připojit"
     password:
       wrong-password: "&cŠpatné heslo!"
   list:
@@ -519,7 +519,7 @@ help:
     descriptions:
       ask: 'Odeslat žádost o připojení'
       claim: 'Udělit oprávnění na zabrání'
-      close: 'Close the party'
+      close: 'Zavřít párty'
       color: 'Změnit barvu párty'
       createfixed: 'Vytvořit novou pevnou párty'
       debug: 'Ladění problémů'
@@ -531,7 +531,7 @@ help:
       motd: 'Nastavit/odebrat MOTD párty'
       mute: 'Přepnout oznámení'
       nickname: 'Nastavit/odebrat přezdívku člena'
-      open: 'Open the party'
+      open: 'Otevřít párty'
       password: 'Změnit heslo párty'
       protection: 'Přepnout ochranu proti friendly fire'
       sethome: 'Nastavit/odebrat domov párty'
