@@ -538,4 +538,4 @@ help:
       tag: 'Gruppen-Tag setzen / entfernen'
       teleport: 'Teleportiere deine Party zu dir'
 dont-edit-this:
-  version: 12
+  version: 13
