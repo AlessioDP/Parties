@@ -7,7 +7,7 @@ import com.alessiodp.core.velocity.addons.internal.title.VelocityTitleHandler;
 import com.alessiodp.core.velocity.bootstrap.ADPVelocityBootstrap;
 import com.alessiodp.core.velocity.scheduling.ADPVelocityScheduler;
 import com.alessiodp.core.velocity.user.VelocityUser;
-import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.ServerCommonPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.velocity.addons.VelocityPartiesAddonManager;
@@ -26,7 +26,7 @@ import com.alessiodp.parties.velocity.utils.VelocityMessageUtils;
 import com.velocitypowered.api.event.EventManager;
 import lombok.Getter;
 
-public class VelocityPartiesPlugin extends PartiesPlugin {
+public class VelocityPartiesPlugin extends ServerCommonPlugin {
 	@Getter private final int bstatsId = PartiesConstants.PLUGIN_BSTATS_VELOCITY_ID;
 	
 	public VelocityPartiesPlugin(ADPBootstrap bootstrap) {
@@ -105,9 +105,5 @@ public class VelocityPartiesPlugin extends PartiesPlugin {
 		}
 		return "";
 	}
-	
-	@Override
-	public String getServerId(PartyPlayerImpl player) {
-		return getServerName(player);
-	}
+
 }

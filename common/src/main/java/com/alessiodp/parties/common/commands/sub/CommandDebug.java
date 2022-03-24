@@ -91,7 +91,7 @@ public class CommandDebug extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
-		String playerName;
+
 		PartyImpl targetParty = null;
 		PartyPlayerImpl targetPlayer = null;
 		CommandType commandType = CommandType.parse(commandData.getArgs()[1]);
@@ -101,64 +101,27 @@ public class CommandDebug extends PartiesSubCommand {
 					.replace("%syntax%", syntax));
 			return;
 		}
-		
-		switch (commandType) {
-			case CONFIG:
-				if (commandData.getArgs().length != 2) {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", syntaxConfig));
-					return;
-				}
-				break;
-			case EXP:
-				if (commandData.getArgs().length != 2) {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", syntaxExp));
-					return;
-				}
-				break;
-			case PARTY:
-				if (commandData.getArgs().length == 3) {
-					targetParty = getPlugin().getPartyManager().getParty(commandData.getArgs()[2]);
-					
-					if (targetParty == null) {
-						sendMessage(sender, partyPlayer, Messages.PARTIES_COMMON_PARTYNOTFOUND
-								.replace("%party%", commandData.getArgs()[2]));
-						return;
-					}
-				} else {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", syntaxParty));
-					return;
-				}
-				break;
-			case PLAYER:
-				if (commandData.getArgs().length == 2) {
-					targetPlayer = partyPlayer;
-				} else if (commandData.getArgs().length == 3) {
-					playerName = commandData.getArgs()[2];
-					
-					User targetUser = plugin.getPlayerByName(playerName);
-					if (targetUser != null) {
-						targetPlayer = getPlugin().getPlayerManager().getPlayer(targetUser.getUUID());
-					} else {
-						Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
-						if (targetPlayersUuid.size() > 0) {
-							targetPlayer = getPlugin().getPlayerManager().getPlayer(targetPlayersUuid.iterator().next());
-						} else {
-							// Not found
-							sendMessage(sender, partyPlayer, Messages.ADDCMD_DEBUG_PLAYER_PLAYER_OFFLINE
-									.replace("%player%", playerName));
-							return;
-						}
-					}
-				} else {
-					sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
-							.replace("%syntax%", syntaxPlayer));
-					return;
-				}
-				break;
-			default:
+		if(commandType.equals(CommandType.CONFIG)) {
+
+			ConfigCommandType configCommandType = new ConfigCommandType(plugin, mainCommand, sender, partyPlayer, syntaxConfig);
+			configCommandType.onCommand(commandData);
+		}
+		else if(commandType.equals(CommandType.EXP)) {
+
+			ExpCommandType expCommandType = new ExpCommandType(plugin, mainCommand, sender, partyPlayer, syntaxExp);
+			expCommandType.onCommand(commandData);
+		}
+		else if(commandType.equals(CommandType.PLAYER)) {
+
+			PartyCommandType partyCommandType = new PartyCommandType(plugin, mainCommand, sender, partyPlayer, syntaxParty, targetParty);
+			partyCommandType.onCommand(commandData);
+		}
+		else if(commandType.equals(CommandType.PARTY)) {
+
+			PlayerCommandType playerCommandType = new PlayerCommandType(plugin, mainCommand, sender, partyPlayer, syntaxPlayer, targetPlayer);
+			playerCommandType.onCommand(commandData);
+		}
+			else{
 				if (commandHandleExtra(commandType, commandData, sender, partyPlayer)) {
 					// Command handle extra stopped, return
 					return;
@@ -198,104 +161,26 @@ public class CommandDebug extends PartiesSubCommand {
 	}
 	
 	protected void commandStart(CommandType commandType, User sender, PartyPlayerImpl partyPlayer, PartyImpl targetParty, PartyPlayerImpl targetPlayer) {
-		switch (commandType) {
-			case CONFIG:
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_DEBUG_CONFIG_HEADER);
-				
-				StringBuilder ranks = new StringBuilder();
-				for (PartyRankImpl rank : ConfigParties.RANK_LIST) {
-					if (ranks.length() > 0)
-						ranks.append(Messages.ADDCMD_DEBUG_CONFIG_RANK_SEPARATOR);
-					ranks.append(rank.parseWithPlaceholders((PartiesPlugin) plugin, Messages.ADDCMD_DEBUG_CONFIG_RANK_FORMAT));
-				}
-				
-				for (String line : Messages.ADDCMD_DEBUG_CONFIG_TEXT) {
-					sendMessage(sender, partyPlayer, line
-							.replace("%outdated_config%", getPlugin().getMessageUtils().formatYesNo(((PartiesConfigurationManager) plugin.getConfigurationManager()).getConfigMain().isOutdated()))
-							.replace("%outdated_parties%", getPlugin().getMessageUtils().formatYesNo(((PartiesConfigurationManager) plugin.getConfigurationManager()).getConfigParties().isOutdated()))
-							.replace("%outdated_messages%", getPlugin().getMessageUtils().formatYesNo(((PartiesConfigurationManager) plugin.getConfigurationManager()).getMessages().isOutdated()))
-							.replace("%storage%", plugin.getDatabaseManager().getDatabaseType().toString())
-							.replace("%ranks%", ranks.toString())
-					);
-				}
-				break;
-			case EXP:
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_DEBUG_EXP_HEADER);
-				
-				for (String line : Messages.ADDCMD_DEBUG_EXP_TEXT) {
-					sendMessage(sender, partyPlayer, parseDebugExp(line));
-				}
-				break;
-			case PARTY:
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_DEBUG_PARTY_HEADER);
-				
-				for (String line : Messages.ADDCMD_DEBUG_PARTY_TEXT) {
-					sendMessage(sender, partyPlayer, line
-							.replace("%id%", targetParty.getId().toString())
-							.replace("%name%", getPlugin().getMessageUtils().formatText(targetParty.getName()))
-							.replace("%tag%", getPlugin().getMessageUtils().formatText(targetParty.getTag()))
-							.replace("%leader%", targetParty.getLeader() != null ? targetParty.getLeader().toString() : Messages.PARTIES_OPTIONS_NONE)
-							.replace("%members%", Integer.toString(targetParty.getMembers().size()))
-							.replace("%members_online%", Integer.toString(targetParty.getOnlineMembers(true).size()))
-							.replace("%description%", getPlugin().getMessageUtils().formatText(targetParty.getDescription()))
-							.replace("%motd_size%", Integer.toString(targetParty.getMotd() != null ? targetParty.getMotd().length() : 0))
-							.replace("%homes%", Integer.toString(targetParty.getHomes().size()))
-							.replace("%kills%", Integer.toString(targetParty.getKills()))
-							.replace("%password%", getPlugin().getMessageUtils().formatYesNo(targetParty.getPassword() != null))
-							.replace("%protection%", getPlugin().getMessageUtils().formatYesNo(targetParty.getProtection()))
-							.replace("%follow%", getPlugin().getMessageUtils().formatYesNo(targetParty.isFollowEnabled()))
-							.replace("%open%", getPlugin().getMessageUtils().formatYesNo(targetParty.isOpen()))
-							.replace("%color%", (targetParty.getColor() != null ? targetParty.getColor().getName() : Messages.PARTIES_OPTIONS_NONE))
-							.replace("%color_active%", (targetParty.getCurrentColor() != null ? targetParty.getCurrentColor().getName() : Messages.PARTIES_OPTIONS_NONE))
-							.replace("%color_dynamic%", (targetParty.getDynamicColor() != null ? targetParty.getDynamicColor().getName() : Messages.PARTIES_OPTIONS_NONE))
-							.replace("%experience%", Integer.toString((int) targetParty.getExperience()))
-					);
-				}
-				break;
-			case PLAYER:
-				User targetUser = plugin.getPlayer(targetPlayer.getPlayerUUID());
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_DEBUG_PLAYER_HEADER);
-				
-				for (String line : Messages.ADDCMD_DEBUG_PLAYER_TEXT) {
-					sendMessage(sender, partyPlayer, line
-							.replace("%uuid%", targetPlayer.getPlayerUUID().toString())
-							.replace("%name%", targetPlayer.getName())
-							.replace("%rank%", Integer.toString(targetPlayer.getRank()))
-							.replace("%party%", targetPlayer.getPartyId() != null ? targetPlayer.getPartyId().toString() : Messages.PARTIES_OPTIONS_NONE)
-							.replace("%chat%", getPlugin().getMessageUtils().formatYesNo(targetPlayer.isChatParty()))
-							.replace("%spy%", getPlugin().getMessageUtils().formatYesNo(targetPlayer.isSpy()))
-							.replace("%muted%", getPlugin().getMessageUtils().formatYesNo(targetPlayer.isMuted()))
-							.replace("%protection_bypass%", getPlugin().getMessageUtils().formatYesNo(targetUser != null && targetUser.hasPermission(PartiesPermission.ADMIN_PROTECTION_BYPASS)))
-					);
-				}
-				break;
-			default:
-				// Nothing
+		if(commandType.equals(CommandType.CONFIG)) {
+			ConfigCommandType configCommandType = new ConfigCommandType(plugin, mainCommand, sender, partyPlayer, syntaxConfig);
+			configCommandType.commandStart();
 		}
-	}
-	
-	protected String parseDebugExp(String line) {
-		String newLine = line;
-		if (newLine.contains("%mode_options%")) {
-			if (getPlugin().getExpManager().getMode() == ExpManager.ExpMode.PROGRESSIVE) {
-				
-				newLine = newLine.replace("%mode_options%", Messages.ADDCMD_DEBUG_EXP_MODE_OPTIONS_PROGRESSIVE
-						.replace("%start%", Integer.toString((int) ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START))
-						.replace("%formula%", getPlugin().getMessageUtils().formatText(ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP)
-						));
-			} else {
-				newLine = newLine.replace("%mode_options%", Messages.ADDCMD_DEBUG_EXP_MODE_OPTIONS_FIXED
-						.replace("%repeat%", getPlugin().getMessageUtils().formatYesNo(ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT))
-						.replace("%levels%", Integer.toString(ConfigMain.ADDITIONAL_EXP_FIXED_LIST.size())
-						));
-			}
+		else if(commandType.equals(CommandType.EXP)) {
+			ExpCommandType expCommandType = new ExpCommandType(plugin, mainCommand, sender, partyPlayer, syntaxExp);
+			expCommandType.commandStart();
 		}
-		return newLine
-				.replace("%exp%", getPlugin().getMessageUtils().formatEnabledDisabled(ConfigMain.ADDITIONAL_EXP_ENABLE))
-				.replace("%earn%", getPlugin().getMessageUtils().formatYesNo(ConfigMain.ADDITIONAL_EXP_EARN_FROM_MOBS))
-				.replace("%mode%", ConfigMain.ADDITIONAL_EXP_MODE);
-	}
-	
+
+		else if(commandType.equals(CommandType.PLAYER)) {
+			PartyCommandType partyCommandType = new PartyCommandType(plugin, mainCommand, sender, partyPlayer, syntaxParty, targetParty);
+			partyCommandType.commandStart();
+
+		}
+		else if(commandType.equals(CommandType.PARTY)) {
+			PlayerCommandType playerCommandType = new PlayerCommandType(plugin, mainCommand, sender, partyPlayer, syntaxPlayer, targetPlayer);
+			playerCommandType.commandStart();
+		}
+		}
+
 	protected static class TemporaryPartyPlayer extends PartyPlayerImpl {
 		@Setter private boolean persistent = true;
 		

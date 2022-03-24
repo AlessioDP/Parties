@@ -21,14 +21,14 @@ import com.alessiodp.parties.bungeecord.parties.BungeePartyManager;
 import com.alessiodp.parties.bungeecord.players.BungeePlayerManager;
 import com.alessiodp.parties.bungeecord.utils.BungeeEconomyManager;
 import com.alessiodp.parties.bungeecord.utils.BungeeMessageUtils;
-import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.ServerCommonPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
-public class BungeePartiesPlugin extends PartiesPlugin {
+public class BungeePartiesPlugin extends ServerCommonPlugin {
 	@Getter private final int bstatsId = PartiesConstants.PLUGIN_BSTATS_BUNGEE_ID;
 	
 	public BungeePartiesPlugin(ADPBootstrap bootstrap) {
@@ -112,9 +112,5 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 		}
 		return "";
 	}
-	
-	@Override
-	public String getServerId(PartyPlayerImpl player) {
-		return getServerName(player);
-	}
+
 }
