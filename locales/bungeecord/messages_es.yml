@@ -538,4 +538,4 @@ help:
       tag: 'Agregar/Quitar el tag del grupo'
       teleport: 'Teletranporta tu grupo a tu posición'
 dont-edit-this:
-  version: 12
+  version: 13
