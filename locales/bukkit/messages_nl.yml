@@ -263,7 +263,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&ckleur niet gevonden. U kunt selecteren: %available_colors%"
   debug:
     bungeecord:
       sent: "&bSent a debug BungeeCord request into the network"
@@ -570,4 +570,4 @@ help:
       tag: 'Groepslabel instellen/verwijderen'
       teleport: 'Teleporteer je party naar jou'
 dont-edit-this:
-  version: 14
+  version: 15

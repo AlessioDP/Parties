@@ -263,7 +263,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cFarbe nicht gefunden. Du kannst wählen zwischen: %available_colors%"
   debug:
     bungeecord:
       sent: "&bSent a debug BungeeCord request into the network"
@@ -570,4 +570,4 @@ help:
       tag: 'Gruppen-Tag setzen / entfernen'
       teleport: 'Teleportiere deine Party zu dir'
 dont-edit-this:
-  version: 14
+  version: 15

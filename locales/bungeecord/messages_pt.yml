@@ -257,7 +257,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cCor não encontrada. você pode selecionar: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
@@ -538,4 +538,4 @@ help:
       tag: 'Definir/Remover tag da equipe'
       teleport: 'Teleporte sua equipe até você'
 dont-edit-this:
-  version: 12
+  version: 13
