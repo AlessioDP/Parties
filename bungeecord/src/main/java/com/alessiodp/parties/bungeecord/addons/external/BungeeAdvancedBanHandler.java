@@ -22,7 +22,7 @@ public class BungeeAdvancedBanHandler extends AdvancedBanHandler implements List
 	
 	@Override
 	public void registerListener() {
-		((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPluginManager().registerListener((BungeePartiesBootstrap) plugin.getBootstrap(), this);
+		((BungeePartiesBootstrap) partiesPlugin.getBootstrap()).getProxy().getPluginManager().registerListener((BungeePartiesBootstrap) partiesPlugin.getBootstrap(), this);
 	}
 	
 	@EventHandler

@@ -22,7 +22,7 @@ public class BukkitAdvancedBanHandler extends AdvancedBanHandler implements List
 	
 	@Override
 	public void registerListener() {
-		((BukkitPartiesBootstrap) plugin.getBootstrap()).getServer().getPluginManager().registerEvents(this, (BukkitPartiesBootstrap) plugin.getBootstrap());
+		((BukkitPartiesBootstrap) partiesPlugin.getBootstrap()).getServer().getPluginManager().registerEvents(this, (BukkitPartiesBootstrap) partiesPlugin.getBootstrap());
 	}
 	
 	@EventHandler

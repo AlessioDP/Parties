@@ -13,23 +13,23 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public abstract class AdvancedBanHandler {
-	@NotNull protected final PartiesPlugin plugin;
+	@NotNull protected final PartiesPlugin partiesPlugin;
 	private static final String ADDON_NAME = "AdvancedBan";
 	protected static boolean active;
 	
 	public void init() {
 		active = false;
 		if (ConfigMain.ADDITIONAL_MODERATION_ENABLE && isEnabled()) {
-			if (plugin.isPluginEnabled(ADDON_NAME)) {
+			if (partiesPlugin.isPluginEnabled(ADDON_NAME)) {
 				active = true;
 				
 				registerListener();
 				
-				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
+				partiesPlugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			} else {
 				active = false;
 				
-				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
+				partiesPlugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_FAILED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -48,7 +48,7 @@ public abstract class AdvancedBanHandler {
 			if (punishment.getType() == PunishmentType.BAN || punishment.getType() == PunishmentType.IP_BAN) {
 				try {
 					UUID uuid = UUID.fromString(punishment.getUuid());
-					plugin.getPartyManager().kickBannedPlayer(uuid);
+					partiesPlugin.getPartyManager().kickBannedPlayer(uuid);
 				} catch (IllegalArgumentException ignored) {}
 			}
 		}

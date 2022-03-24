@@ -80,8 +80,35 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		String storage = configData.getStorageTypeDatabase();
 		if (!storage.equalsIgnoreCase(ConfigMain.STORAGE_TYPE_DATABASE))
 			plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_SYNC_DIFFERENT_STORAGE, storage, ConfigMain.STORAGE_TYPE_DATABASE), true);
-		
+
+		//Extract Method
 		// Experience
+		setConfigDataForExperience(configData);
+
+		// Friendly fire
+		setConfigDataForFriendlyFire(configData);
+
+		// Kills
+		setConfigDataForKils(configData);
+
+		((PartiesPlugin) plugin).getExpManager().reloadAll(); // Reload ExpManager
+	}
+
+	private void setConfigDataForKils(PartiesPacket.ConfigData configData) {
+		ConfigParties.ADDITIONAL_KILLS_ENABLE = configData.isAdditionalKillsEnable();
+		ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL = configData.isAdditionalKillsMobNeutral();
+		ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE = configData.isAdditionalKillsMobHostile();
+		ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS = configData.isAdditionalKillsMobPlayers();
+	}
+
+	private void setConfigDataForFriendlyFire(PartiesPacket.ConfigData configData) {
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = configData.isAdditionalFriendlyFireEnable();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = configData.getAdditionalFriendlyFireType();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = configData.isAdditionalFriendlyFireWarnOnFight();
+		ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK = configData.isAdditionalFriendlyFirePreventFishHook();
+	}
+
+	private void setConfigDataForExperience(PartiesPacket.ConfigData configData) {
 		ConfigMain.ADDITIONAL_EXP_ENABLE = configData.isAdditionalExpEnable();
 		ConfigMain.ADDITIONAL_EXP_EARN_FROM_MOBS = configData.isAdditionalExpEarnFromMobs();
 		ConfigMain.ADDITIONAL_EXP_MODE = configData.getAdditionalExpMode();
@@ -90,19 +117,5 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION = configData.isAdditionalExpProgressiveSafeCalculation();
 		ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT = configData.isAdditionalExpFixedRepeat();
 		ConfigMain.ADDITIONAL_EXP_FIXED_LIST = configData.getAdditionalExpFixedList();
-		
-		// Friendly fire
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE = configData.isAdditionalFriendlyFireEnable();
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE = configData.getAdditionalFriendlyFireType();
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT = configData.isAdditionalFriendlyFireWarnOnFight();
-		ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK = configData.isAdditionalFriendlyFirePreventFishHook();
-		
-		// Kills
-		ConfigParties.ADDITIONAL_KILLS_ENABLE = configData.isAdditionalKillsEnable();
-		ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL = configData.isAdditionalKillsMobNeutral();
-		ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE = configData.isAdditionalKillsMobHostile();
-		ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS = configData.isAdditionalKillsMobPlayers();
-		
-		((PartiesPlugin) plugin).getExpManager().reloadAll(); // Reload ExpManager
 	}
 }
