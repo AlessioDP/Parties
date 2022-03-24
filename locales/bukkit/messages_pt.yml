@@ -570,4 +570,4 @@ help:
       tag: 'Definir/Remover tag da equipe'
       teleport: 'Teleporte sua equipe até você'
 dont-edit-this:
-  version: 14
+  version: 15
