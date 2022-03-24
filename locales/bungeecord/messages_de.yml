@@ -257,7 +257,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cFarbe nicht gefunden. Du kannst wählen zwischen: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
