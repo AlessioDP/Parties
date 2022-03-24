@@ -570,4 +570,4 @@ help:
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 14
+  version: 15
