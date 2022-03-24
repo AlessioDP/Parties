@@ -570,4 +570,4 @@ help:
       tag: 'Groepslabel instellen/verwijderen'
       teleport: 'Teleporteer je party naar jou'
 dont-edit-this:
-  version: 14
+  version: 15
