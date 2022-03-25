@@ -52,29 +52,7 @@ public abstract class PartiesConfigurationManager extends ConfigurationManager {
 		}
 		throw new IllegalStateException("No Messages configuration file found");
 	}
-	
-	public PartiesPacket.ConfigData makePacketConfigData() {
-		return new PartiesPacket.ConfigData(
-				ConfigMain.STORAGE_TYPE_DATABASE,
-				ConfigMain.ADDITIONAL_EXP_ENABLE,
-				ConfigMain.ADDITIONAL_EXP_EARN_FROM_MOBS,
-				ConfigMain.ADDITIONAL_EXP_MODE,
-				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START,
-				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP,
-				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION,
-				ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT,
-				ConfigMain.ADDITIONAL_EXP_FIXED_LIST,
-				ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE,
-				ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE,
-				ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT,
-				ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK,
-				ConfigParties.ADDITIONAL_KILLS_ENABLE,
-				ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL,
-				ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE,
-				ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS
-		);
-	}
-	
+
 	public void parsePacketConfigData(PartiesPacket.ConfigData configData) {
 		// Storage check
 		String storage = configData.getStorageTypeDatabase();

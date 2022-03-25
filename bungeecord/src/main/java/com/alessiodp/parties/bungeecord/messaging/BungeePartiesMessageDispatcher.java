@@ -267,8 +267,8 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 	
 	public void sendConfigs() {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
-			PartiesPacket packet = makePacket(PartiesPacket.PacketType.CONFIGS)
-					.setConfigData(((PartiesConfigurationManager) plugin.getConfigurationManager()).makePacketConfigData());
+			PartiesPacket packet = makePacket(PartiesPacket.PacketType.CONFIGS);
+			packet.setConfigData(packet.makePacketConfigData());
 			sendPacketToBungeecord(packet);
 		}
 	}

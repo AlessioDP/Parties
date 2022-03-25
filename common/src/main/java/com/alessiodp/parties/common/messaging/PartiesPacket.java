@@ -3,6 +3,8 @@ package com.alessiodp.parties.common.messaging;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.messaging.ADPPacket;
+import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,6 +44,8 @@ public class PartiesPacket extends ADPPacket {
 		}
 		return ret;
 	}
+
+
 	
 	
 	public PartiesPacket setSource(String source) {
@@ -97,6 +101,28 @@ public class PartiesPacket extends ADPPacket {
 	public PartiesPacket setConfigData(ConfigData configData) {
 		this.configData = configData;
 		return this;
+	}
+
+	public PartiesPacket.ConfigData makePacketConfigData() {
+		return new PartiesPacket.ConfigData(
+				ConfigMain.STORAGE_TYPE_DATABASE,
+				ConfigMain.ADDITIONAL_EXP_ENABLE,
+				ConfigMain.ADDITIONAL_EXP_EARN_FROM_MOBS,
+				ConfigMain.ADDITIONAL_EXP_MODE,
+				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_START,
+				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_LEVEL_EXP,
+				ConfigMain.ADDITIONAL_EXP_PROGRESSIVE_SAFE_CALCULATION,
+				ConfigMain.ADDITIONAL_EXP_FIXED_REPEAT,
+				ConfigMain.ADDITIONAL_EXP_FIXED_LIST,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_TYPE,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_WARNONFIGHT,
+				ConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK,
+				ConfigParties.ADDITIONAL_KILLS_ENABLE,
+				ConfigParties.ADDITIONAL_KILLS_MOB_NEUTRAL,
+				ConfigParties.ADDITIONAL_KILLS_MOB_HOSTILE,
+				ConfigParties.ADDITIONAL_KILLS_MOB_PLAYERS
+		);
 	}
 	
 	public enum PacketType {
