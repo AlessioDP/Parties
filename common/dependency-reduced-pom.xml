@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.2.3</version>
+    <version>3.2.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-common</artifactId>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-api</artifactId>
-      <version>3.2.3</version>
+      <version>3.2.4</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.alessiodp.lastloginapi</groupId>
       <artifactId>lastloginapi-api</artifactId>
-      <version>1.7.1</version>
+      <version>1.7.2</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -113,13 +113,13 @@
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
-      <version>4.0.3</version>
+      <version>5.0.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
-      <version>3.0.3</version>
+      <version>3.0.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -137,7 +137,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.1</version>
+      <version>42.3.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>

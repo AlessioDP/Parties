@@ -67,8 +67,9 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 		super.postHandle();
 		
 		new BukkitMetricsHandler(this);
-		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
-			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		if (isBungeeCordEnabled()) {
+			if (BukkitConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC)
+				((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
 			
 			getLoggerManager().log(PartiesConstants.DEBUG_PLUGIN_BUNGEECORD_MODE, true);
 		}
@@ -102,8 +103,11 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	public void reloadConfiguration() {
 		super.reloadConfiguration();
 		
-		if (isBungeeCordEnabled() && BukkitConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC) {
-			((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+		if (isBungeeCordEnabled()) {
+			if (BukkitConfigMain.PARTIES_BUNGEECORD_PACKETS_CONFIG_SYNC)
+				((BukkitPartiesConfigurationManager) getConfigurationManager()).makeConfigsRequest();
+			
+			getLoggerManager().log(PartiesConstants.DEBUG_PLUGIN_BUNGEECORD_MODE, true);
 		}
 	}
 	

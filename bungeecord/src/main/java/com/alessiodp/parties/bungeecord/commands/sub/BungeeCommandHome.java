@@ -52,7 +52,7 @@ public class BungeeCommandHome extends CommandHome {
 			IPlayerPreHomeEvent partiesPreHomeEvent = plugin.getEventManager().preparePlayerPreHomeEvent(partyPlayer, party, home);
 			plugin.getEventManager().callEvent(partiesPreHomeEvent);
 			if (!partiesPreHomeEvent.isCancelled()) {
-				if (((BungeeUser) player).getServer() != null)
+				if (((BungeeUser) player).getServer() == null)
 					return; // Cannot get player server
 				
 				if (BungeeConfigParties.ADDITIONAL_HOME_CROSS_SERVER && !((BungeeUser) player).getServer().getName().equalsIgnoreCase(home.getServer())) {
@@ -67,7 +67,6 @@ public class BungeeCommandHome extends CommandHome {
 				}
 				
 				String message = plugin.getMessageUtils().convertPlaceholders(Messages.ADDCMD_HOME_TELEPORTED, partyPlayer, party);
-				
 				if (serverChange) {
 					plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
 									.sendHomeTeleport(player, home, message, serverInfo),

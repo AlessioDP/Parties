@@ -89,6 +89,6 @@ public class BungeePartiesBungeecordListener extends BungeeBungeecordListener {
 	}
 	
 	public void handleDebugBungeecord(PartiesPacket packet) {
-		BungeeCommandDebug.handleDebugBungeecord((PartiesPlugin) plugin, packet.getPlayer(), packet.getSecondaryPlayer(), packet.isBool());
+		BungeeCommandDebug.handleDebugBungeecord((PartiesPlugin) plugin, packet.getPlayer(), packet.getSecondaryPlayer(), packet.isBool(), packet.getSource());
 	}
 }

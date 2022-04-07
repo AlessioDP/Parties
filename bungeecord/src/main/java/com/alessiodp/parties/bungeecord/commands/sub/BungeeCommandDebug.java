@@ -16,7 +16,7 @@ public class BungeeCommandDebug extends CommandDebug {
 		super(plugin, mainCommand);
 	}
 	
-	public static void handleDebugBungeecord(PartiesPlugin plugin, UUID temporaryUuid, UUID receiver, boolean replyToPlayer) {
+	public static void handleDebugBungeecord(PartiesPlugin plugin, UUID temporaryUuid, UUID receiver, boolean replyToPlayer, String sourceServer) {
 		PartyPlayerImpl player = plugin.getDatabaseManager().getPlayer(temporaryUuid);
 		User userReceiver = receiver != null ? plugin.getPlayer(receiver) : null;
 		
@@ -25,19 +25,25 @@ public class BungeeCommandDebug extends CommandDebug {
 			temporaryPlayer.setPersistent(false);
 			plugin.getDatabaseManager().updatePlayer(temporaryPlayer); // Remove the player
 			
-			if (userReceiver != null) {
+			if (userReceiver != null)
 				((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendDebugBungeecordReply(userReceiver, true, replyToPlayer);
-				
-				userReceiver.sendMessage(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_SYNC, true);
-			} else
-				plugin.getLoggerManager().log(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_SYNC);
+			
+			if (userReceiver != null && replyToPlayer)
+				userReceiver.sendMessage(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_SYNC
+						.replace("%server%", sourceServer), true);
+			else
+				plugin.getLoggerManager().log(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_SYNC
+						.replace("%server%", sourceServer));
 		} else {
-			if (userReceiver != null) {
+			if (userReceiver != null)
 				((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendDebugBungeecordReply(userReceiver, false, replyToPlayer);
-				
-				userReceiver.sendMessage(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_NOT_SYNC, true);
-			} else
-				plugin.getLoggerManager().log(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_NOT_SYNC);
+			
+			if (userReceiver != null && replyToPlayer)
+				userReceiver.sendMessage(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_NOT_SYNC
+						.replace("%server%", sourceServer), true);
+			else
+				plugin.getLoggerManager().log(BungeeMessages.ADDCMD_DEBUG_BUNGEECORD_NOT_SYNC
+						.replace("%server%", sourceServer));
 		}
 	}
 }

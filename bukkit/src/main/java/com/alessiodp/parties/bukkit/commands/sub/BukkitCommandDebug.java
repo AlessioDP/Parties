@@ -61,6 +61,11 @@ public class BukkitCommandDebug extends CommandDebug {
 			UUID receiver = null;
 			boolean replyToPlayer = false;
 			
+			if (plugin.getOnlinePlayers().size() < 1) {
+				sendMessage(sender, partyPlayer, BukkitMessages.ADDCMD_DEBUG_BUNGEECORD_SERVER_PLAYERS);
+				return;
+			}
+			
 			if (partyPlayer != null) {
 				receiver = partyPlayer.getPlayerUUID();
 				replyToPlayer = true;

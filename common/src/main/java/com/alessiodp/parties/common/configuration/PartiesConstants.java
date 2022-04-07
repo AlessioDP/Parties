@@ -159,12 +159,12 @@ public class PartiesConstants {
 	public static final String DEBUG_MESSAGING_LISTEN_BROADCAST_MESSAGE = "Received a Parties packet, sending a broadcast message by player %s in party %s: %s";
 	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY = "Received a Parties packet, invited player %s to party %s by player %s";
 	public static final String DEBUG_MESSAGING_LISTEN_INVITE_PARTY_ERROR = "Received a Parties packet, renamed party parsing failed";
-	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME = "Received a Parties packet, add home %s to party %s by player %s in server %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME = "Received a Parties packet, add home '%s' to party %s by player %s in server %s";
 	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_ERROR = "Received a Parties packet, add home parsing failed";
 	public static final String DEBUG_MESSAGING_LISTEN_ADD_HOME_BUNGEE = "Received a Parties packet, add new home to party %s";
 	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT = "Received a Parties packet, home teleporting player %s to %s";
 	public static final String DEBUG_MESSAGING_LISTEN_HOME_TELEPORT_ERROR = "Received a Parties packet, home teleporting failed";
-	public static final String DEBUG_MESSAGING_LISTEN_TELEPORT = "Received a Parties packet, teleport player %s to %s";
+	public static final String DEBUG_MESSAGING_LISTEN_TELEPORT = "Received a Parties packet, teleport player %s to '%s'";
 	public static final String DEBUG_MESSAGING_LISTEN_EXPERIENCE = "Received a Parties packet, gave %s experience to party %s (killer: %s)";
 	public static final String DEBUG_MESSAGING_LISTEN_LEVEL_UP = "Received a Parties packet, %s leveled up to %d";
 	public static final String DEBUG_MESSAGING_LISTEN_CONFIGS = "Received a Parties packet, configs sync";

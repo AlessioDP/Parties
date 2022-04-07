@@ -86,7 +86,8 @@ public abstract class PartiesSubCommand extends ADPSubCommand {
 		}
 		
 		if (commandData.getArgs().length < argMin || commandData.getArgs().length > argMax) {
-			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), getSyntaxForUser(sender));
+			sendMessage(sender, ((PartiesCommandData) commandData).getPartyPlayer(), Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+					.replace("%syntax%", getSyntaxForUser(sender)));
 			return false;
 		}
 		return true;

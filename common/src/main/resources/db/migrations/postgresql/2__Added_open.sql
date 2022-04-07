@@ -1,2 +1,2 @@
--- H2 database
-ALTER TABLE `<prefix>parties` ADD `isopen` INTEGER NULL;
+-- PostgreSQL database
+ALTER TABLE <prefix>parties ADD "isopen" BOOL DEFAULT NULL;

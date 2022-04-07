@@ -6,6 +6,7 @@ import com.alessiodp.core.common.messaging.MessageChannel;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
+import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.bukkit.messaging.bungee.BukkitPartiesBungeecordDispatcher;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
@@ -22,7 +23,7 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 	}
 	
 	private void sendPacketToBungeecord(PartiesPacket packet) {
-		bungeeDispatcher.sendPacket(packet, MessageChannel.MAIN);
+		bungeeDispatcher.sendPacket(packet.setSource(BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_ID), MessageChannel.MAIN);
 	}
 	
 	
