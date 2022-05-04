@@ -99,7 +99,7 @@
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.19.4</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.7.2</libs.lastLoginApi>
+		<libs.lastLoginApi>1.7.3</libs.lastLoginApi>
 		<libs.magic>10.2</libs.magic>
 		<libs.placeholderApi>2.11.1</libs.placeholderApi>
 		<libs.premiumVanish>2.7.11-2</libs.premiumVanish>
