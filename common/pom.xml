@@ -118,6 +118,12 @@
 			</exclusions>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>${dev.annotations}</version>
+			<scope>compile</scope>
+		</dependency>
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>com.h2database</groupId>
