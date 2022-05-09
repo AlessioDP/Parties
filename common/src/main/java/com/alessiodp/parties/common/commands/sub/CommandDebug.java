@@ -134,7 +134,13 @@ public class CommandDebug extends PartiesSubCommand {
 				break;
 			case PLAYER:
 				if (commandData.getArgs().length == 2) {
-					targetPlayer = partyPlayer;
+					if (partyPlayer != null)
+						targetPlayer = partyPlayer;
+					else {
+						sendMessage(sender, partyPlayer, Messages.PARTIES_SYNTAX_WRONG_MESSAGE
+								.replace("%syntax%", syntaxPlayer));
+						return;
+					}
 				} else if (commandData.getArgs().length == 3) {
 					playerName = commandData.getArgs()[2];
 					

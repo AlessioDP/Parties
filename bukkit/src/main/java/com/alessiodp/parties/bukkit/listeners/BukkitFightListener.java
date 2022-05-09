@@ -129,7 +129,6 @@ public class BukkitFightListener implements Listener {
 	@EventHandler (ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
 		if (BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_ENABLE
-				&& event.getEntity() instanceof Player
 				&& event.getPotion().getShooter() instanceof Player) {
 			Player attacker = (Player) event.getPotion().getShooter();
 			PartyPlayerImpl ppAttacker = plugin.getPlayerManager().getPlayer(attacker.getUniqueId());

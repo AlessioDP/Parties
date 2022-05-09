@@ -199,7 +199,7 @@ public abstract class PartyImpl implements Party {
 		delete(DeleteCause.OTHERS, null, null);
 	}
 	
-	public void delete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
+	public void delete(@NotNull DeleteCause cause, @Nullable PartyPlayerImpl kicked, @Nullable PartyPlayerImpl commandSender) {
 		synchronized (this) {
 			plugin.getPartyManager().removePartyFromCache(this); // Remove from cache
 			plugin.getDatabaseManager().removeParty(this); // Remove from database
@@ -211,7 +211,7 @@ public abstract class PartyImpl implements Party {
 		}
 		
 		// Start cooldown on leave
-		if (ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && (ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL > 0 || ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL > 0)) {
+		if (kicked != null && ConfigParties.GENERAL_INVITE_COOLDOWN_ENABLE && (ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_GLOBAL > 0 || ConfigParties.GENERAL_INVITE_COOLDOWN_ON_LEAVE_INDIVIDUAL > 0)) {
 			plugin.getCooldownManager().startMultiAction(
 					CooldownManager.MultiAction.INVITE_AFTER_LEAVE,
 					kicked.getPlayerUUID(),
@@ -239,7 +239,7 @@ public abstract class PartyImpl implements Party {
 		rename(newName, null, true);
 	}
 	
-	public void rename(@Nullable String newName, PartyPlayerImpl player, boolean isAdmin) {
+	public void rename(@Nullable String newName, @Nullable PartyPlayerImpl player, boolean isAdmin) {
 		CompletableFuture<Void> futureAfterUpdate;
 		String oldName = getName();
 		synchronized (this) {
@@ -263,7 +263,7 @@ public abstract class PartyImpl implements Party {
 		return addMember(partyPlayer, JoinCause.OTHERS, null);
 	}
 	
-	public boolean addMember(@NotNull PartyPlayer partyPlayer, JoinCause cause, PartyPlayerImpl inviter) {
+	public boolean addMember(@NotNull PartyPlayer partyPlayer, @NotNull JoinCause cause, @Nullable PartyPlayerImpl inviter) {
 		boolean ret = false;
 		CompletableFuture<Void> futureAfterUpdate = null;
 		synchronized (this) {
@@ -290,7 +290,7 @@ public abstract class PartyImpl implements Party {
 		return removeMember(partyPlayer, LeaveCause.OTHERS, null);
 	}
 	
-	public boolean removeMember(@NotNull PartyPlayer partyPlayer, LeaveCause cause, PartyPlayer kicker) {
+	public boolean removeMember(@NotNull PartyPlayer partyPlayer, @NotNull LeaveCause cause, @Nullable PartyPlayer kicker) {
 		boolean ret = false;
 		CompletableFuture<Void> future = null;
 		synchronized (this) {
@@ -651,7 +651,7 @@ public abstract class PartyImpl implements Party {
 	 *
 	 * @param dispatchBetweenServers is used to dispatch the message to Redis
 	 */
-	public boolean dispatchChatMessage(PartyPlayerImpl sender, String formattedMessage, String chatMessage, boolean dispatchBetweenServers) {
+	public boolean dispatchChatMessage(@NotNull PartyPlayerImpl sender, @Nullable String formattedMessage, @Nullable String chatMessage, boolean dispatchBetweenServers) {
 		if (formattedMessage != null && !formattedMessage.isEmpty() && chatMessage != null && !chatMessage.isEmpty()) {
 			IPlayerPreChatEvent partiesPreChatEvent = plugin.getEventManager().preparePlayerPreChatEvent(sender, this, formattedMessage, chatMessage);
 			plugin.getEventManager().callEvent(partiesPreChatEvent);
@@ -759,7 +759,7 @@ public abstract class PartyImpl implements Party {
 			IPartyPreExperienceDropEvent eventPre = plugin.getEventManager().preparePreExperienceDropEvent(this, killer, killedEntity, experience);
 			plugin.getEventManager().callEvent(eventPre);
 			double newExperience = eventPre.getExperience();
-			if (eventPre.isCancelled() && newExperience != 0) {
+			if (!eventPre.isCancelled() && newExperience != 0) {
 				if (plugin.isBungeeCordEnabled()) {
 					// Bukkit with BC enabled: just send the event to BC
 					sendPacketExperience(newExperience, killer, gainMessage);
@@ -869,7 +869,7 @@ public abstract class PartyImpl implements Party {
 		return ret;
 	}
 	
-	public void memberJoinTimeout(PartyPlayerImpl joinedPlayer) {
+	public void memberJoinTimeout(@NotNull PartyPlayerImpl joinedPlayer) {
 		if (plugin.getPartyManager().getCacheMembersTimedOut().containsKey(joinedPlayer.getPlayerUUID())) {
 			plugin.getPartyManager().getCacheMembersTimedOut().get(joinedPlayer.getPlayerUUID()).cancel();
 			plugin.getPartyManager().getCacheMembersTimedOut().remove(joinedPlayer.getPlayerUUID());
@@ -878,7 +878,7 @@ public abstract class PartyImpl implements Party {
 		}
 	}
 	
-	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer) {
+	public boolean memberLeftTimeout(@NotNull PartyPlayerImpl kickedPlayer) {
 		return memberLeftTimeout(kickedPlayer, ConfigParties.GENERAL_MEMBERS_ON_LEAVE_SERVER_DELAY);
 	}
 	
@@ -889,7 +889,7 @@ public abstract class PartyImpl implements Party {
 	 * @param delay delay of time out
 	 * @return if the timeout started
 	 */
-	public boolean memberLeftTimeout(PartyPlayerImpl kickedPlayer, int delay) {
+	public boolean memberLeftTimeout(@NotNull PartyPlayerImpl kickedPlayer, int delay) {
 		boolean ret = false;
 		if (ConfigParties.GENERAL_MEMBERS_ON_LEAVE_SERVER_KICK_FROM_PARTY) {
 			// Kick the player + eventually change leader
