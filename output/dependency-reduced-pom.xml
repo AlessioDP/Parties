@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.2.5</version>
+    <version>3.2.6</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>output</artifactId>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.5.1</version>
+      <version>4.6.1</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

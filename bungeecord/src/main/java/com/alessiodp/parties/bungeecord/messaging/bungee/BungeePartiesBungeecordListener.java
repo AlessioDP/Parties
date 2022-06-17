@@ -35,7 +35,7 @@ public class BungeePartiesBungeecordListener extends BungeeBungeecordListener {
 					commonListener.handleUpdateParty(packet.getParty());
 					break;
 				case UPDATE_PLAYER:
-					commonListener.handleUpdateParty(packet.getPlayer());
+					commonListener.handleUpdatePlayer(packet.getPlayer());
 					break;
 				case CREATE_PARTY:
 					commonListener.handlePostPartyCreate(packet.getParty(), packet.getPlayer(), true);

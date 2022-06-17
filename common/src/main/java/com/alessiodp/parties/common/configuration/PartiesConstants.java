@@ -123,8 +123,8 @@ public class PartiesConstants {
 	public static final String DEBUG_DB_GETALLPARTIES = "Get all parties request";
 	public static final String DEBUG_DB_GETALLPARTIES_NUMBER = "Get the number of all parties";
 	
-	public static final String DEBUG_EXP_RECEIVED = "Received give experience for party %s of %b experience";
-	public static final String DEBUG_EXP_CANCELLED = "Cancelled give experience for party %s of %b experience";
+	public static final String DEBUG_EXP_RECEIVED = "Received give experience for party %s of %f experience";
+	public static final String DEBUG_EXP_CANCELLED = "Cancelled give experience for party %s of %f experience (new exp: %f)";
 	public static final String DEBUG_EXP_LEVELERROR = "Something gone wrong on calculate the level of party %s";
 	public static final String DEBUG_EXP_SAFE_CALCULATION = "Triggered and prevented an infinite calculation in progressive experience (start: %f, formula: '%s')";
 	public static final String DEBUG_EXP_START_EXP_0 = "The starting progressive experience cannot be 0";

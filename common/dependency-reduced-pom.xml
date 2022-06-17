@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.2.5</version>
+    <version>3.2.6</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-common</artifactId>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-api</artifactId>
-      <version>3.2.5</version>
+      <version>3.2.6</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
-      <version>3.0.4</version>
+      <version>3.0.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -143,7 +143,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.4</version>
+      <version>42.4.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -161,7 +161,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.5.1</version>
+      <version>4.6.1</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

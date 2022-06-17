@@ -756,7 +756,7 @@ public abstract class PartyImpl implements Party {
 		if (exp != 0) {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_RECEIVED, getId(), exp), true);
 			
-			IPartyPreExperienceDropEvent eventPre = plugin.getEventManager().preparePreExperienceDropEvent(this, killer, killedEntity, experience);
+			IPartyPreExperienceDropEvent eventPre = plugin.getEventManager().preparePreExperienceDropEvent(this, killer, killedEntity, exp);
 			plugin.getEventManager().callEvent(eventPre);
 			double newExperience = eventPre.getExperience();
 			if (!eventPre.isCancelled() && newExperience != 0) {
@@ -805,7 +805,7 @@ public abstract class PartyImpl implements Party {
 					});
 				}
 			} else {
-				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_CANCELLED, getId(), exp), true);
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_EXP_CANCELLED, getId(), exp, newExperience), true);
 			}
 		}
 	}
