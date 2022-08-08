@@ -89,7 +89,7 @@ main-commands:
     enabled: "&aChat mis en groupe"
     disabled: "&aChat mis en public"
   create:
-    created: "[{\"text\":\"Vous avez créé le groupe %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Tapez \",\"color\":\"aqua\",bold\":false},{\"text\":\"/party invite\",\"color:\"gray\",\"clickEvent\":\n{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" pour inviter votre ami.\",\"color\":\"aqua\"}]"
+    created: "[{\"text\":\"Vous avez créé le groupe %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Tapez \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":\n{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" pour inviter votre ami.\",\"color\":\"aqua\"}]"
     created-fixed: "&b&lVous avez créé le groupe permanent %party%"
     name-already-exists: "&cUn groupe du nom de %party% existe déjà, choisissez un nom différent"
     name-too-long: "&cLe nom du groupe est trop long !"
