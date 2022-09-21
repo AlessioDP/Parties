@@ -78,7 +78,7 @@
 		<dev.annotations>23.0.0</dev.annotations>
 		<dev.lombok>1.18.24</dev.lombok>
 		<dev.mockito>4.6.1</dev.mockito>
-		<dev.junit>5.8.2</dev.junit>
+		<dev.junit>5.9.1</dev.junit>
 		
 		<libs.adpcore>1.8.6</libs.adpcore>
 		<libs.api.spigot>1.19-R0.1-SNAPSHOT</libs.api.spigot>
