@@ -105,6 +105,7 @@
 		<libs.premiumVanish>2.7.11-2</libs.premiumVanish>
 		<libs.skript>2.6.2</libs.skript>
 		<libs.vaultApi>1.7</libs.vaultApi>
+		<libs.luckPerms>5.4</libs.luckPerms>
 	</properties>
 	
 	<build>

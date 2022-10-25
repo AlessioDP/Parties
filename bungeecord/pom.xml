@@ -128,5 +128,11 @@
 			<version>${libs.premiumVanish}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.luckperms</groupId>
+			<artifactId>api</artifactId>
+			<version>${libs.luckPerms}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
