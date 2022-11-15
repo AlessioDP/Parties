@@ -359,7 +359,7 @@ additional-commands:
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lÇevrimiçi Parti Listesi &r&b============"
+    header: "&b============ &lAktif Parti Listesi &r&b============"
     footer: "&b================ &lSayfa %page% /%maxpages% &r&b================"
     no-one: "&7Hiç Kimse Yok"
     format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
