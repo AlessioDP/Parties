@@ -174,7 +174,8 @@ main-commands:
     player-kicked: "&bYou have been kicked from %party%"
     broadcast: "&b&l%player% has been kicked from the clan"
     broadcast-disband: "&b&lThe clan has been disbanded because the leader got kicked"
-    broadcast-leader-changed: "&b&lThe leader has been kicked from the clan, the new leader is %player%"
+    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leave-server: "&b&l%player% has been kicked from the clan"
     player-higher-rank: "&cYou cannot kick your superior!"
     player-not-in-party: "&c%player% is not in your clan"
     players-conflict:
@@ -212,7 +213,9 @@ main-commands:
     same-rank: "&c%player% is already %rank_name%!"
     low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
     to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
+    full: "&cRank %rank_name% reached the maximum number of players"
     fixed-leader: "&cYou cannot make someone a leader of a fixed clan!"
+    demote-leader: "&cYou cannot demote the clan leader"
     changing-yourself: "&cYou cannot change your own rank!"
     player-not-in-party: "&c%player% is not in your clan"
     players-conflict:
@@ -279,9 +282,17 @@ additional-commands:
     changed: "&bClan color changed into %color_command%"
     removed: "&bClan color removed"
     broadcast: ""
-    wrong-color: "&cColor not found. You can select: red, green or special!"
+    # Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cColor not found. You can select: %available_colors%"
 
   debug:
+    bungeecord:
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
+
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
@@ -295,11 +306,12 @@ additional-commands:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
         - "&bExp system&7: %exp%"
-        - "&bLevels enabled/mode&7: %levels%&7/%levels_mode%"
-        - "%levels_options%"
-      level-options:
-        progressive: "&bProgressive start/formula&7: %start%/'%formula%'"
-        fixed: "&bFixed repeat/levels&7: %repeat%/%levels%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
 
     party:
       header: '&b================== &lDebug Clan &r&b=================='
@@ -310,7 +322,7 @@ additional-commands:
         - "&bNumber members/online&7: %members%&7/%members_online%"
         - "&bDescription&7: %description%"
         - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow&7: %password%&7/%protection%&7/%follow%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
         - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
         - "&bExperience&7: %experience%"
 
@@ -333,13 +345,10 @@ additional-commands:
     censored: "&cThe description contains censored words!"
 
   exp:
-    # [Special tags]
+    # [Special tag]
     # => %exp%        = Experience gained
-    # => %total_exp%  = Total experience dropped by the mob
-    party:
-      gained: "&bGained %exp% clan experience for killing the mob"
-    level:
-      level-up: "&bClan leveled up to %experience_level%"
+    gained-experience: "&bGained %exp% clan experience for killing the mob"
+    level-up: "&bClan leveled up to %experience_level%"
 
   follow:
     toggle-on: "&aNow your clan members will follow your leader"
@@ -366,7 +375,15 @@ additional-commands:
   join:
     joined: "&aYou joined the clan %party%"
     player-joined: "&b&l%player% joined in the clan"
-    wrong-password: "&cWrong password!"
+    open-close:
+      opened: "&bThe clan is now open"
+      closed: "&bThe clan is now closed"
+      already-open: "&cThe clan is already open"
+      already-closed: "&cThe clan is already closed"
+      cooldown: "&cYou have to wait %seconds% seconds!"
+      cannot-join: "&cYou cannot join this clan"
+    password:
+      wrong-password: "&cWrong password!"
 
   list:
     # [Special tags]
@@ -535,6 +552,7 @@ help:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -546,6 +564,7 @@ help:
       motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -554,6 +573,7 @@ help:
     descriptions:
       ask: 'Send a join request'
       claim: 'Grant permissions to the claim'
+      close: 'Close the clan'
       color: 'Change clan color'
       createfixed: 'Create a new fixed clan'
       debug: 'Debug issues'
@@ -565,6 +585,7 @@ help:
       motd: 'Set/remove clan motd'
       mute: 'Toggle notifications'
       nickname: 'Set/remove member nickname'
+      open: 'Open the clan'
       password: 'Change clan password'
       protection: 'Toggle friendly fire protection'
       sethome: 'Set/remove clan home'
@@ -572,4 +593,4 @@ help:
       teleport: 'Teleport your clan to you'
 
 dont-edit-this:
-  version: 12
+  version: 13
