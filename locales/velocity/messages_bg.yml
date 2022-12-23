@@ -115,13 +115,20 @@ main-commands:
       separator: "&7, "
       empty: "&7Никакви"
   info:
-    content:
-      - "&b============ &l%party% Инфо &r&b============"
-      - "&b&lОписание&7: %desc%"
-      - "&bЛидер&7: %list_rank_leader%"
-      - "&bМодове&7: %list_rank_moderator%"
-      - "&bЧленове&7: %list_rank_member%"
-      - "&bОнлайн играчи&7: %members_online_total%"
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&bТи покани %player% в партито"
     player-invited: '[{"text":"&b%player% те покани в партито %party%.\n&bИскаш ли да "},{"text":"&a&lприемеш","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"&6Приеми поканата"}]}}},{"text":" &bили "},{"text":"&c&lоткажи","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Откажи поканата"}]}}},{"text":"&b?\n&bМожеш да използваш &7/party <accept/deny>&b, за да избереш."}]'
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Ще бъдеш телепортиран след %seconds% секунди..."
-    teleport-denied: "&7Телепорта е отказан"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cВече чакаш за телепортация!"
     no-home: "&cВсе още няма дом на партито"
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cПартито вече е затворено"
       cooldown: "&cТрябва да изчакаш %seconds% секунди!"
       cannot-join: "&cНе можете да влезете в това парти"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cГрешна парола!"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Ще бъдеш телепортиран след %seconds% секунди"
-    player-teleport-denied: "&7Телепорта е отказан"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cТрябва да изчакаш %seconds% секунди!"
@@ -538,4 +546,4 @@ help:
       tag: 'Задай/премахни тага на партито'
       teleport: 'Телепортирай твоето парти до себе си'
 dont-edit-this:
-  version: 1
+  version: 2
