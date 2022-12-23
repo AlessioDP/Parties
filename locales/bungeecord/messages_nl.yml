@@ -115,13 +115,20 @@ main-commands:
       separator: "&7, "
       empty: "&7geen"
   info:
-    content:
-      - "&b============ &l%party%'s Info &r&b========"
-      - "&b&lBeschrijving&7: %desc%"
-      - "&bLeider&7: %list_rank_leader%"
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
-      - "&bLeden&7: %list_rank_member%"
-      - "&bOnline spelers&7: %members_online_total%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&bJe hebt %player% uitgenodigd in je groep"
     player-invited: "[{\"text\":\"&b%player% heeft je uitgenodigd voor de groep %party%.\n&bWil je \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepteer de uitnodiging\"}}, \"text\":\" &bof \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bJe kunt &7/ party <accept/deny> &bgebruiken om te kiezen.\"}]"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Je wordt geteleporteerd over %seconds% seconden..."
-    teleport-denied: "&7Teleport geweigerd"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cJe bent al aan het wachten op de teleport!"
     no-home: "&cEr is nog geen huis"
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cDe groep is al gesloten"
       cooldown: "&cJe moet %seconds% seconden wachten!"
       cannot-join: "&cJe kan deze party niet binnentreden"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cverkeerd wachtwoord!"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Je zult geteleporteerd worden over %seconds% seconden"
-    player-teleport-denied: "&7Teleport geweigerd"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cJe moet %seconds% seconden wachten!"
@@ -538,4 +546,4 @@ help:
       tag: 'Groepslabel instellen/verwijderen'
       teleport: 'Teleporteer je party naar jou'
 dont-edit-this:
-  version: 13
+  version: 14
