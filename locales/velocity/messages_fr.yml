@@ -115,13 +115,20 @@ main-commands:
       separator: "&7, "
       empty: "&7Aucun"
   info:
-    content:
-      - "&b============ &lInfos du groupe %party% &r&b============"
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b============"
       - "&b&lDescription&7: %desc%"
-      - "&bChef de groupe&7: %list_rank_leader%"
-      - "&bModérateurs&7 : %list_rank_moderator%"
-      - "&bMembres&7 : %list_rank_member%"
-      - "&bJoueurs en ligne&7: %members_online_total%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&bVous avez invité %player% dans votre groupe"
     player-invited: "[{\"text\":\"&b%player% vous a invité dans le groupe %party%.\n&bVoulez-vous \"},{\"text\":\"&a&laccepter\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter l'invitation\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lrefuser\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Refuser l'invitation\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> &bpour choisir.\"}]"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Vous allez être téléporté dans %seconds% secondes..."
-    teleport-denied: "&7Téléportation refusée"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cVous attendez déjà la téléportation !"
     no-home: "&cIl n'y a pas encore de home"
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cLe groupe est déjà fermé"
       cooldown: "&cVous devez attendre %seconds% secondes !"
       cannot-join: "&cVous ne pouvez pas rejoindre ce groupe"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cMot de passe incorrect !"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Vous allez être téléporté dans %seconds% secondes"
-    player-teleport-denied: "&7Téléportation refusée"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cVous devez attendre %seconds% secondes !"
@@ -538,4 +546,4 @@ help:
       tag: 'Définir/retirer un tag de groupe'
       teleport: 'Téléporter votre groupe vers vous'
 dont-edit-this:
-  version: 1
+  version: 2
