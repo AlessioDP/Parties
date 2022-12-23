@@ -115,8 +115,15 @@ main-commands:
       separator: "&7, "
       empty: "&7아무도"
   info:
-    content:
-      - "&b============&l%party%'의 정보 &r&b============"
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b============"
       - "&b&lDescription&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7You will be teleported in %seconds% seconds..."
-    teleport-denied: "&7순간이동이 거부되었습니다."
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&c순간이동을 이미 기다리고 있습니다."
     no-home: "&c아직은 집이 없습니다."
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cThe party is already closed"
       cooldown: "&c당신은 %seconds%초를 기다리셔야 합니다."
       cannot-join: "&cYou cannot join this party"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&c잘못된 비밀번호"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-denied: "&7순간이동이 거부되었습니다."
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&c당신은 %seconds%초를 기다리셔야 합니다."
@@ -538,4 +546,4 @@ help:
       tag: 'Set/remove party tag'
       teleport: 'Teleport your party to you'
 dont-edit-this:
-  version: 13
+  version: 14
