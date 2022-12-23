@@ -115,12 +115,19 @@ main-commands:
       separator: "&7, "
       empty: "&7 keine"
   info:
-    content:
-      - "&b============ &lInfos zu %party% &r&b============"
-      - "&b&lBeschreibung&7: %desc%"
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
       - "&bLeader&7: %list_rank_leader%"
       - "&bMods&7: %list_rank_moderator%"
-      - "&bMitglieder&7: %list_rank_member%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
       - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&bDu hast %player% in deine Gruppe eingeladen"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Du wirst in %seconds% Sekunden teleportiert..."
-    teleport-denied: "&7Teleportation ist hier nicht möglich"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cDu wartest bereits auf einen Teleport!"
     no-home: "&cEs wurde noch kein Gruppenhome gesetzt"
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cThe party is already closed"
       cooldown: "&cDu musst noch %seconds% Sekunden warten"
       cannot-join: "&cYou cannot join this party"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cFalsches Passwort!"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-denied: "&7Teleportation ist hier nicht möglich"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cDu musst noch %seconds% Sekunden warten"
@@ -538,4 +546,4 @@ help:
       tag: 'Gruppen-Tag setzen / entfernen'
       teleport: 'Teleportiere deine Party zu dir'
 dont-edit-this:
-  version: 13
+  version: 14

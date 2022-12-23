@@ -115,7 +115,14 @@ main-commands:
       separator: "&7, "
       empty: "&7-"
   info:
-    content:
+    content-own-party:
+      - "&b============ &l%party% Infó &r&b============"
+      - "&b&lLeírás&7: %desc%"
+      - "&bVezető&7: %list_rank_leader%"
+      - "&bModerátorok&7: %list_rank_moderator%"
+      - "&bTagok&7: %list_rank_member%"
+      - "&bOnline játékosok&7: %members_online_total%"
+    content-other-party:
       - "&b============ &l%party% Infó &r&b============"
       - "&b&lLeírás&7: %desc%"
       - "&bVezető&7: %list_rank_leader%"
@@ -329,7 +336,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Teleportálás megkezdődik %seconds% másodperc múlva..."
-    teleport-denied: "&7Teleportálás elutasítva"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cMár várakozol a teleportálásra!"
     no-home: "&cA partynak nincs beállítva bázis"
     #[Special tags]
@@ -351,6 +358,7 @@ additional-commands:
       already-closed: "&cThe party is already closed"
       cooldown: "&cKérlek várj %seconds% másodpercet!"
       cannot-join: "&cYou cannot join this party"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cHelytelen jelszó!"
   list:
@@ -429,7 +437,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Teleportálás megkezdődik %seconds% másodperc múlva"
-    player-teleport-denied: "&7Teleportálás elutasítva"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cKérlek várj %seconds% másodpercet!"
@@ -570,4 +578,4 @@ help:
       tag: 'Party tag beállítás/törlés'
       teleport: 'Party hozzád teleportálása'
 dont-edit-this:
-  version: 15
+  version: 16

@@ -115,7 +115,14 @@ main-commands:
       separator: "&7, "
       empty: "&7Никакви"
   info:
-    content:
+    content-own-party:
+      - "&b============ &l%party% Инфо &r&b============"
+      - "&b&lОписание&7: %desc%"
+      - "&bЛидер&7: %list_rank_leader%"
+      - "&bМодове&7: %list_rank_moderator%"
+      - "&bЧленове&7: %list_rank_member%"
+      - "&bОнлайн играчи&7: %members_online_total%"
+    content-other-party:
       - "&b============ &l%party% Инфо &r&b============"
       - "&b&lОписание&7: %desc%"
       - "&bЛидер&7: %list_rank_leader%"
@@ -190,9 +197,9 @@ main-commands:
     same-rank: "&c%player% вече е ранг %rank_name%!"
     low-rank: "&cНе можеш да редактираш ранговете на играчи, които имат по-голям или еквивалентен на твоя ранг!"
     to-higher-rank: "&cНе можеш да повишиш играч до ранг еквивалентен или равен на твоя ранг!"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&cРанга %rank_name% достигна максимума играчи"
     fixed-leader: "&cНе можеш да направиш някого лидера на фиксирано парти!"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&cНе можете да понижите лидера на партито"
     changing-yourself: "&cНе можеш да промениш собствения си ранг!"
     player-not-in-party: "&c%player% не е в партито"
     players-conflict:
@@ -257,7 +264,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cЦвета не беше открит. Можеш да избереш: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Ще бъдеш телепортиран след %seconds% секунди..."
-    teleport-denied: "&7Телепорта е отказан"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cВече чакаш за телепортация!"
     no-home: "&cВсе още няма дом на партито"
     #[Special tags]
@@ -337,12 +344,13 @@ additional-commands:
     joined: "&aТи влезе в партито %party%"
     player-joined: "&b&l%player% влезе в партито"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&bСега партито е отворено"
+      closed: "&bСега партито е затворено"
+      already-open: "&cПартито вече е отворено"
+      already-closed: "&cПартито вече е затворено"
       cooldown: "&cТрябва да изчакаш %seconds% секунди!"
-      cannot-join: "&cYou cannot join this party"
+      cannot-join: "&cНе можете да влезете в това парти"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cГрешна парола!"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Ще бъдеш телепортиран след %seconds% секунди"
-    player-teleport-denied: "&7Телепорта е отказан"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cТрябва да изчакаш %seconds% секунди!"
@@ -519,7 +527,7 @@ help:
     descriptions:
       ask: 'Изпрати заявка за влизане в парти до някого'
       claim: 'Дай права до участъка'
-      close: 'Close the party'
+      close: 'Затвори партито'
       color: 'Смени цвета на партито'
       createfixed: 'Създай ново фиксирано парти'
       debug: 'Дебъгвай проблеми'
@@ -531,11 +539,11 @@ help:
       motd: 'Задай/премахни motd на партито'
       mute: 'Включи си нотификациите'
       nickname: 'Задай/премахни прякор на член на партито'
-      open: 'Open the party'
+      open: 'Отвори партито'
       password: 'Смени паролата на партито'
       protection: 'Включи защитата за приятелски огън'
       sethome: 'Задай/премахни дома на партито'
       tag: 'Задай/премахни тага на партито'
       teleport: 'Телепортирай твоето парти до себе си'
 dont-edit-this:
-  version: 13
+  version: 14

@@ -115,7 +115,14 @@ main-commands:
       separator: "&7, "
       empty: "&7无"
   info:
-    content:
+    content-own-party:
+      - "&b============ &l%party%的信息 &r&b============"
+      - "&b&l描述&7: %desc%"
+      - "&b领导者&7: %list_rank_leader%"
+      - "&b组织者&7: %list_rank_moderator%"
+      - "&b成员&7: %list_rank_member%"
+      - "&b在线玩家&7: %members_online_total%"
+    content-other-party:
       - "&b============ &l%party%的信息 &r&b============"
       - "&b&l描述&7: %desc%"
       - "&b领导者&7: %list_rank_leader%"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7您将在 %seconds% 秒后被传送..."
-    teleport-denied: "&7传送邀请被拒绝"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&c你需等待传送！"
     no-home: "&c还没有家"
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cThe party is already closed"
       cooldown: "&c您需要等待 %seconds% 秒!"
       cannot-join: "&cYou cannot join this party"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&c密码错误！"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7您将在 %seconds% 秒后被传送。"
-    player-teleport-denied: "&7传送邀请被拒绝"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&c您需要等待 %seconds% 秒!"
@@ -538,4 +546,4 @@ help:
       tag: '设置/移除 团队的标签'
       teleport: '传送您的团队到您的位置'
 dont-edit-this:
-  version: 13
+  version: 14

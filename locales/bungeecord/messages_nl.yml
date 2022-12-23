@@ -115,7 +115,14 @@ main-commands:
       separator: "&7, "
       empty: "&7geen"
   info:
-    content:
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b========"
+      - "&b&lBeschrijving&7: %desc%"
+      - "&bLeider&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bLeden&7: %list_rank_member%"
+      - "&bOnline spelers&7: %members_online_total%"
+    content-other-party:
       - "&b============ &l%party%'s Info &r&b========"
       - "&b&lBeschrijving&7: %desc%"
       - "&bLeider&7: %list_rank_leader%"
@@ -154,7 +161,7 @@ main-commands:
     player-kicked: "&bJe bent verwijderd van %party%"
     broadcast: "&b&l%player% is uit de groep gezet"
     broadcast-disband: "&b&lDe groep is ontbonden omdat de leider uit het spel is gezet"
-    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leader-changed: "&b&lDe nieuwe leider is %player%"
     broadcast-leave-server: "&b&l%player% is uit de groep gezet"
     player-higher-rank: "&cJe kan je Leider niet kicken!"
     player-not-in-party: "&c%player% zit niet in je groep"
@@ -190,9 +197,9 @@ main-commands:
     same-rank: "&c%player% is al %rank_name%!"
     low-rank: "&cJe kunt spelers met een gelijkwaardige of hogere rang niet bewerken dan de jouwe!"
     to-higher-rank: "&cU kunt niet promoten naar een equivalente rang of hoger dan de uwe!"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&cRang %rank_name% heeft het maximum aantal spelers bereikt"
     fixed-leader: "&cJe kunt iemand niet tot leider van een vaste party maken!"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&cJe kan de groepsleider niet degraderen"
     changing-yourself: "&cJe kan je eigen rang niet veranderen!"
     player-not-in-party: "&c%player% zit niet in je groep"
     players-conflict:
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Je wordt geteleporteerd over %seconds% seconden..."
-    teleport-denied: "&7Teleport geweigerd"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cJe bent al aan het wachten op de teleport!"
     no-home: "&cEr is nog geen huis"
     #[Special tags]
@@ -337,12 +344,13 @@ additional-commands:
     joined: "&aJe bent toegetreden tot de groep %party%"
     player-joined: "&b&l%player% is toegetreden tot de groep"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&bDe groep is nu geopend"
+      closed: "&bDe party is nu gesloten"
+      already-open: "&cDe groep is al geopend"
+      already-closed: "&cDe groep is al gesloten"
       cooldown: "&cJe moet %seconds% seconden wachten!"
-      cannot-join: "&cYou cannot join this party"
+      cannot-join: "&cJe kan deze party niet binnentreden"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cverkeerd wachtwoord!"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Je zult geteleporteerd worden over %seconds% seconden"
-    player-teleport-denied: "&7Teleport geweigerd"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cJe moet %seconds% seconden wachten!"
@@ -519,7 +527,7 @@ help:
     descriptions:
       ask: 'Verstuur een samenvoegingsverzoek'
       claim: 'Geef toestemming aan de claim'
-      close: 'Close the party'
+      close: 'Party sluiten'
       color: 'Verander groepkleur'
       createfixed: 'Maak een nieuwe vaste partij'
       debug: 'Foutopsporing problemen'
@@ -531,11 +539,11 @@ help:
       motd: 'Motd groep/verwijderen'
       mute: 'Meldingen aan/uit'
       nickname: 'Bijnaam lid/verwijderen'
-      open: 'Open the party'
+      open: 'Party openen'
       password: 'Wachtwoord van de partij wijzigen'
       protection: 'Wissel vriendschappelijke brandbeveiliging'
       sethome: 'Startpagina instellen/verwijderen'
       tag: 'Groepslabel instellen/verwijderen'
       teleport: 'Teleporteer je party naar jou'
 dont-edit-this:
-  version: 13
+  version: 14
