@@ -12,63 +12,63 @@ parties:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9Noskhe jadidi az Parties peyda shod: %version% (Feli: %thisversion%)"
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  configuration-outdated: "&cFile peykarbandie Parties '%config%' mansookh shode ast!"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
-    already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
-    player-not-found: "&cThe player %player% has not been found"
-    player-not-in-party: "&c%player% is not in a party"
+    invalid-command: "&cDastoore Namotabar"
+    configuration-reloaded: "&aPeykarbandi mojadadan bargozari shod"
+    not-in-party: "&cShoma dar yek party nistid"
+    already-in-party: "&cShoma dar hale hazer dar yek party hastid!"
+    party-not-found: "&cParty %party% vojood nadarad"
+    party-full: "&cParty por ast!"
+    player-not-found: "&cBazikon %player% peyda nashod"
+    player-not-in-party: "&c%player% dar yek party nist"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aFa''al'
+    disabled: '&cGheyre Fa''al'
+    toggled-on: '&aRoshan'
+    toggled-off: '&cKhamoosh'
+    word-yes: '&aBale'
+    word-no: '&cKheyr'
+    empty: '&8Khali'
+    none: '&8Hichkodam'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    color: 'color'
-    description: 'desc'
-    experience: 'experience'
-    kills: 'kills'
-    home: 'home'
-    members: 'members'
-    message: 'message'
-    motd: 'motd'
-    name: 'name'
-    nickname: 'nickname'
-    online-members: 'online_members'
-    order: 'order'
-    page: 'page'
+    wrong-message: '&cTarkibe eshtebah: Type konid &7/%syntax%'
+    color: 'rang'
+    description: 'tozih'
+    experience: 'tajrobe'
+    kills: 'koshteha'
+    home: 'khane'
+    members: 'ozvha'
+    message: 'payam'
+    motd: 'payamerooz'
+    name: 'esm'
+    nickname: 'esmmosta''ar'
+    online-members: 'ozvha_online'
+    order: 'chideman'
+    page: 'safhe'
     party: 'party'
-    password: 'password'
-    permission: 'permission'
-    player: 'player'
-    rank: 'rank'
+    password: 'ramz'
+    permission: 'dastresi'
+    player: 'bazikon'
+    rank: 'rotbe'
     tag: 'tag'
   permissions:
     #[Special tags]
     #=> %permission%  = Missing permission
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
-    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
-  out-party: "Out party"
+    no-permission: "&cShoma be in dastoor dastresi nadarid"
+    no-permission-in-party-general: "&cParty shoma be in dastoor dastresi nadarad"
+    no-permission-in-party-rank: "&cShoma bayad %rank_name% bashid ta in dastoor ra ejra konid"
+  out-party: "Khareje party"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
-    player-empty: "&7Nobody"
-    player-unknown: "&6Someone"
-    missing-value: "&7Miss"
+    player-empty: "&7Hichkas"
+    player-unknown: "&6Shakhsi"
+    missing-value: "&7Mafqood"
   #Define the format of Parties chat messages
   formats:
     party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
@@ -80,40 +80,40 @@ parties:
 #\ =============================== /
 main-commands:
   accept:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want accept:"
-    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
-    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
+    no-request: "&cShoma darkhaste dar entezari nadarid"
+    no-exists: "&cIn darkhast digar vojood nadarad"
+    multiple-requests: "&cDarkhasti ke mikhahid bepazirid entekhab konid:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Baraye paziroftan inja click konid","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Paziroftane darkhast","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Baraye paziroftan inja click konid","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Paziroftane darkhast","color":"gold"}]}}}]'
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
+    enabled: "&aChat be party tanzim shod"
+    disabled: "&aChat be omoomi tanzim shod"
   create:
-    created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
-    created-fixed: "&b&lYou have created the fixed party %party%"
-    name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    name-too-long: "&cThe party name is too long!"
-    name-too-short: "&cThe party name is too short!"
-    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
-    censored: "&cThe party name contains censored words!"
+    created: "[{\"text\":\"Shoma party %party% ra sakhtid.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type konid \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" ta dooste khod ra davat konid.\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lShoma party sabet %party% ra sakhtid"
+    name-already-exists: "&cEsme party %party% dar hale hazer vojood darad, esme digari entekhab konid"
+    name-too-long: "&cEsme party kheyli toolani ast!"
+    name-too-short: "&cEsme party kheyli kootah ast!"
+    invalid-name: "&cCharacter haye namotabar. Estefade konid az: a-Z ya 0-9."
+    censored: "&cEsme party shamele kalamate sansor shode ast!"
   delete:
-    deleted: "&aParty %party% deleted"
-    deleted-silently: "&aParty %party% deleted silently"
-    broadcast: "&6&lYour party has been deleted"
+    deleted: "&aParty %party% hazf shod"
+    deleted-silently: "&aParty %party% bi seda hazf shod"
+    broadcast: "&6&lParty shoma hazf shod"
   deny:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want deny:"
-    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
-    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
+    no-request: "&cShoma darkhaste dar entezari nadarid"
+    no-exists: "&cIn darkhast digar vojood nadarad"
+    multiple-requests: "&cDarkhasti ke mikhahid rad konid entekhab konid:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Baraye rad kardan inja click konid","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Rad kardane darkhast","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Baraye rad kardan inja click konid","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Rad kardane darkhast","color":"gold"}]}}}]'
   ignore:
-    start-ignore: "&7Ignoring %party% invites"
-    stop-ignore: "&7You stopped ignoring %party%"
+    start-ignore: "&7Az davat haye %party% cheshm pooshi mishavad"
+    stop-ignore: "&7Shoma cheshm pooshi az %party% ra motevaqef kardid"
     ignore-list:
-      header: "&b&lList ignored parties:"
+      header: "&b&lListe party haye chesm pooshi shode:"
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7None"
+      empty: "&7Hich"
   info:
     content-own-party:
       - "&b============ &l%party%'s Info &r&b============"
@@ -130,41 +130,41 @@ main-commands:
       - "&bMembers&7: %list_rank_member%"
       - "&bOnline players&7: %members_online_total%"
   invite:
-    sent: "&bYou invited %player% in your party"
-    player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
+    sent: "&bShoma %player% ra be party khod davat kardid"
+    player-invited: "[{\"text\":\"&b%player% shoma ra be party %party% davat kard.\n&bAya mikhahid \"},{\"text\":\"&a&lbepazirid\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Paziroftane davat\"}]}}},{\"text\":\" &bya \"},{\"text\":\"&c&lrad konid\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Rad kardane davat\"}]}}},{\"text\":\"&b?\n&bShoma mitavanid baraye entekhab az &7/party <accept/deny> &bestefade konid.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the party invite"
-      receipt: "&a%player% accepted your invite"
+      broadcast: "&b&l%player% be party peyvast"
+      accepted: "&aShoma davate party ra paziroftid"
+      receipt: "&a%player% davate shoma ra paziroft"
     deny:
       broadcast: ""
-      denied: "&aYou denied the party invite"
-      receipt: "&a%player% denied your invite"
+      denied: "&aShoma davate party ra rad kardid"
+      receipt: "&a%player% davate shoma ra rad kard"
     timeout:
-      no-response: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite to %party%"
+      no-response: "&7%player% davate party ra napaziroft"
+      timeout: "&7Shoma davate party be %party% ra napaziroftid"
     revoke:
-      sent-revoked: "&7Revoked invite sent to %player%"
-      player-invite-revoked: "&7Invite received from %party% has been revoked"
+      sent-revoked: "&7Davate ersal shode be %player% laqv shod"
+      player-invite-revoked: "&7Davate daryaft shode az %party% laqv shod"
     cooldown:
-      global: "&cYou need to wait %seconds% seconds before invite another player"
-      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
-      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
-    player-offline: "&cYou can invite only online players"
-    player-no-permission: "&c%player% doesn't have the permission to join"
-    player-in-party: "&c%player% is already in a party"
-    already-invited: "&c%player% was already invited"
-    invite-yourself: "&cYou cannot invite yourself"
-    failed: "&cFailed to invite the player %player%"
+      global: "&cShoma bayad %seconds% sanie ghabl az davate bazikone digari sabr konid"
+      individual: "&cShoma bayad %seconds% sanie ghabl az davate mojadade haman bazikon sabr konid"
+      on-leave: "&cShoma bayad %seconds% sanie ghabl az davate in bazikon sabr konid"
+    player-offline: "&cShoma faqat mitavanid bazikonane online ra davat konid"
+    player-no-permission: "&c%player% dastresie peyvastan ra nadarad"
+    player-in-party: "&c%player% dar hale hazer dar yek party ast"
+    already-invited: "&c%player% ghablan davat shode ast"
+    invite-yourself: "&cShoma nemitavanid khodetan ra davat konid"
+    failed: "&cKhata dar davat az bazikon %player%"
   kick:
-    sent: "&aYou kicked %player% from the party!"
-    player-kicked: "&bYou have been kicked from %party%"
-    broadcast: "&b&l%player% has been kicked from the party"
-    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
-    broadcast-leader-changed: "&b&lThe new leader is %player%"
-    broadcast-leave-server: "&b&l%player% has been kicked from the party"
-    player-higher-rank: "&cYou cannot kick your superior!"
-    player-not-in-party: "&c%player% is not in your party"
+    sent: "&aShoma %player% ra az party ekhraj kardid!"
+    player-kicked: "&bShoma az %party% ekhraj shodid"
+    broadcast: "&b&l%player% Az party ekhraj shod"
+    broadcast-disband: "&b&lParty monhal shod chon rahbare party biroon oftad"
+    broadcast-leader-changed: "&b&lRahbare jadid %player% ast"
+    broadcast-leave-server: "&b&l%player% Az party ekhraj shod"
+    player-higher-rank: "&cShoma nemitavanid maafoq khod ra ekhraj konid!"
+    player-not-in-party: "&c%player% dar party shoma nist"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -173,35 +173,35 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&cMa chand bazikon ba in esm peyda kardim:"
         - "%list_players%"
-        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+        - "&cAz '&7/party kick <username> <number>&c' estefade konid ta bazikone sahih ra ekhraj konid"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: akharin vorood %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Ekhraje in bazikon","color":"gold"}}}'
   leave:
-    left: "&b&lYou left the party %party%"
-    broadcast: "&b&l%player% left the party"
-    party-disbanded: "&6&lThe party has been disbanded because the leader left"
-    leader-changed: "&b&lThe leader left the party, the new leader is %player%"
+    left: "&b&lShoma az party %party% raftid"
+    broadcast: "&b&l%player% az party raft"
+    party-disbanded: "&6&lParty monhal shod chon rahbare party raft"
+    leader-changed: "&b&lRahbare party raft, rahbare jadid %player% ast"
   p:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou still have to wait %seconds% seconds"
-    censored: "&cThe message contains censored words!"
-    muted: "&cYou are muted!"
+    cooldown: "&cShoma hamchenan bayad %seconds% sanie sabr konid"
+    censored: "&cPayam shamel kalamate sansor shode ast!"
+    muted: "&cShoma bi seda shode iid!"
   rank:
     #[Special tags]
     #=> %rank_name%   = Rank wrote by the player
-    changed: "&a%player% rank changed into %rank_name%"
+    changed: "&aRotbe %player% be %rank_name% taqir yaft"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
-    same-rank: "&c%player% is already %rank_name%!"
-    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
-    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
-    full: "&cRank %rank_name% reached the maximum number of players"
-    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
-    demote-leader: "&cYou cannot demote the party leader"
-    changing-yourself: "&cYou cannot change your own rank!"
-    player-not-in-party: "&c%player% is not in your party"
+    wrong-rank: "&cRotbe '%rank_name%' vojood nadarad!"
+    same-rank: "&c%player% dar hale hazer %rank_name% hast!"
+    low-rank: "&cShoma nemitavanid bazikonan ba rotbe yeksan ya balatar az khodetan ra virayesh konid!"
+    to-higher-rank: "&cShoma nemitavanid be yek rotbe yeksan ya balatar az khodetan erteqa yabid!"
+    full: "&cRotbe %rank_name% be hadaksar tedade bazikon resid"
+    fixed-leader: "&cShoma nemitavanid shakhsi ra rahbare yek larty sabet konid!"
+    demote-leader: "&cShoma nemitavanid rotbe rahbare party ra kasr konid"
+    changing-yourself: "&cShoma nemitavanid rotbe khodetan ra taqir dahid!"
+    player-not-in-party: "&c%player% dar party shoma nist"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -210,61 +210,61 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&cMa chand bazikon ba in esm peyda kardim:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cAz '&7/party rank <username> <rank> <number>&c' estefade konid ta rotbe bazikone sahih ra taqir dahid"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: akharin vorood %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Taqire rotbe in bazikon","color":"gold"}}}'
   rename:
     #[Special tags]
     #=> %old%   = Old party name
-    renamed: "&aThe party %old% has been renamed into %party%"
-    broadcast: "&6Your party has been renamed into %party%!"
+    renamed: "&aParty %old% be %party% taqire esm dad"
+    broadcast: "&6Party shoma be %party% taqire esm dad!"
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
   spy:
-    enabled: "&7Now you are a spy!"
-    disabled: "&7You are no longer a spy"
+    enabled: "&7Shoma hala yek jasoos hastid!"
+    disabled: "&7Shoma digar yek jasoos nistid"
   version:
     #[Special tags]
     #=> %version%    = Parties version
     #=> %newversion% = Latest Parties version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Tosee yafte tavasote &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Tosee yafte tavasote &6AlessioDP &aNoskhe jadidi yaft shod: &2%newversion%"
 #/ =============================== \
 #|  ADDITIONAL COMMANDS  MESSAGES  |
 #\ =============================== /
 additional-commands:
   ask:
-    sent: "&aJoin request sent to %party%"
-    received: "[{\"text\":\"&b%player% want to join your party.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
+    sent: "&aDarkhaste peyvastan be %party% ersal shod"
+    received: "[{\"text\":\"&b%player% mikhahad be party shoma bepeyvandad.\n&bAya mikhahid \"},{\"text\":\"&a&lbepazirid\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Paziroftane darkhast\"}]}}},{\"text\":\" &bya \"},{\"text\":\"&c&lrad konid\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Rad kardane davat\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bShoma mitavanid baraye entekhab az &7/party <accept/deny> %player% &bestefade konid.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the ask request"
-      receipt: "&a%party% accepted your ask request"
+      broadcast: "&b&l%player% be party peyvast"
+      accepted: "&aShoma darkhast ra paziroftid"
+      receipt: "&a%party% darkhaste shoma ra paziroft"
     deny:
       broadcast: ""
-      denied: "&aYou denied the %player% ask request"
-      receipt: "&a%party% denied your ask request"
+      denied: "&aShoma darkhaste %player% ra rad kardid"
+      receipt: "&a%party% darkhaste shoma ra rad kard"
     timeout:
-      no-response: "&7%party% didn't accept the ask request"
+      no-response: "&7%party% darkhast ra napaziroft"
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% seconds before ask to another party"
-      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
+      global: "&cShoma bayad %seconds% sanie sabr konid ta az party digari darkhast konid"
+      individual: "&cShoma bayas %seconds% sanie sabr konid ta az haman party darkhast konid"
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&bRange party shoma hast: %color_code%%color_command%"
+    empty: "&bParty shoma rangi nadarad"
+    changed: "&bRange party be %color_command% taqir yaft"
+    removed: "&bRange party hazf shod"
     broadcast: ""
     #Syntax of %available_colors%
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cRang peyda nashod. Shoma mitavanid entekhab konid: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
@@ -310,133 +310,133 @@ additional-commands:
         - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&bTozihate party taqir yaft"
+    removed: "&bTozihate party hazf shod"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
+    invalid-chars: "&cCharacter haye namotabar: Estefade konid az: a-Z ya 0-9. Hadeaghal 3 va hadeaksar 16 character."
+    censored: "&cTozihat shamele kalamate sansor shode ast!"
   exp:
     #[Special tag]
     #=> %exp%        = Experience gained
-    gained-experience: "&bGained %exp% party experience for killing the mob"
-    level-up: "&bParty leveled up to %experience_level%"
+    gained-experience: "&bMeqdare %exp% tajrobe party baraye koshtane mojood be dast amad"
+    level-up: "&bParty be sathe %experience_level% resid"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&aOzv haye party shoma hala az rahbare party peyrovi khahand kard"
+    toggle-off: "&aOzv haye party shoma digar az rahbare party peyrovi nemikonand"
   home:
-    teleported: "&7Teleported to the party home"
+    teleported: "&7Be khane party teleport shodid"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
+    teleport-in: "&7Shoma dar %seconds% sanie teleport khahid shod..."
     teleport-cancelled: "&7Teleport cancelled"
-    teleport-waiting: "&cYou are already waiting for the teleport!"
-    no-home: "&cThere isn't a home yet"
+    teleport-waiting: "&cShoma dar hale hazer montazere teleport hastid!"
+    no-home: "&cKhane ii vojood nadarad"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    must-select-home: "&cYou must select a valid home"
-    invalid-home: "&cThe selected home doesn't exist"
-    valid-homes: "&bList of valid homes:"
+    cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
+    must-select-home: "&cShoma bayad khane motabari entekhab konid"
+    invalid-home: "&cKhane entekhab shode vojood nadarad"
+    valid-homes: "&bListe khane haye motabar:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aBaraye teleport click konid"}]}}}]'
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
+    joined: "&aShoma be party %party% peyvastid"
+    player-joined: "&b&l%player% be party peyvast"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
-      cooldown: "&cYou have to wait %seconds% seconds!"
-      cannot-join: "&cYou cannot join this party"
+      opened: "&bParty hala baaz ast"
+      closed: "&bParty hala baste ast"
+      already-open: "&cParty dar hale hazer baaz hast"
+      already-closed: "&cParty dar hale hazer baste hast"
+      cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
+      cannot-join: "&cShoma nemitavanid be in party bepeyvandid"
       failed: "&cFailed to open the party"
     password:
-      wrong-password: "&cWrong password!"
+      wrong-password: "&cRamze eshtebah!"
   list:
     #[Special tags]
     #=> %index%     = The party index
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
-    invalid-order: '&cInvalid order type'
+    header: "&b============ &lListe Party Haye Online &r&b============"
+    footer: "&b================ &lSafhe %page% az %maxpages% &r&b================"
+    no-one: "&7Hichkodam"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aNamayeshe etelaat"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cNoe chidemane nomatabr'
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&bPayame rooze party taqir yaft"
+    removed: "&bPayame rooze party hazf shod"
     broadcast: ""
     content:
-      - "&bParty MOTD:"
+      - "&bPayame rooze party:"
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
+    invalid-chars: "&cCharacter haye namotabar. Shoma hamchenin mitavanid az '. , /' estefade konid. Hadeaghal 3 va hadeaksar 100 character."
+    censored: "&cPayame rooz shamele kalamate sansor shode ast!"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
+    toggle-on: "&7Shoma e'lan ha ra gheyre fa'al kardid!"
+    toggle-off: "&7Shoma e'lan ha ra fa'al kardid!"
   nickname:
     own:
-      changed: "&bYou changed your nickname into %player_nickname%"
-      removed: "&bYou removed your own nickname"
-      no-permission: "&cYou cannot change your own nickname"
+      changed: "&bShoma esme mosta'ar khod ra be %player_nickname% taqir dadid"
+      removed: "&bShoma esme mosta'ar khod ra hazf kardid"
+      no-permission: "&cShoma nemitavanid esm mosta'are khodetan ra taqir dahid"
     others:
-      changed: "&bChanged nickname of %player% into %player_nickname%"
+      changed: "&bEsme mosta'are %player% be %player_nickname% taqir yaft"
       #Special tags:
       #=> %nickname%   = The target player nickname
       #Tags are parsed for sender
-      target-changed: "&b%player% changed your nickname into %nickname%"
-      removed: "&bRemoved nickname of %player%"
-      target-removed: "&b%player% removed your nickname"
-      no-permission: "&cYou cannot change other player nicknames"
+      target-changed: "&b%player% esme mosta'ar shoma ra be %nickname% taqir dad"
+      removed: "&bEsme mosta'are %player% hazf shod"
+      target-removed: "&b%player% esme mosta'are shoma ra hazf kard"
+      no-permission: "&cShoma nemitavanid esme mosta'ar digar bazikonan ra taqir dahid"
     show:
-      own: "&bYour nickname is %player_nickname%"
-      own-none: "&bYou do not have any nickname"
-      other: "&bThe nickname of %player% is %player_nickname%"
-      other-none: "&b%player% does not have any nickname"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
-    censored: "&cThe nickname contains censored words!"
+      own: "&bEsme mosta'are shoma %player_nickname% ast"
+      own-none: "&bShoma esme mosta'ari nadarid"
+      other: "&b%player% daraye esme mosta'ar %player_nickname% ast"
+      other-none: "&b%player% esme mosta'ari nadarad"
+    invalid-chars: "&cCharacter haye namotabar. Shoma hamchenin mitavanid az '. , /' estefade konid. Hadeaghal 3 va hadeaksar 16 character."
+    censored: "&cEsme mosta'ar shamele kalamate sansor shode ast!"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&aRamze party taqir yaft"
+    removed: "&aRamze party hazf shod"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+    invalid-chars: "&cCharacter haye namotabar: Estefade konid az: a-Z ya 0-9. Hadeaghal 1 va hadeaksar 16 character."
   protection:
-    toggle-on: "&aNow your party is protected by friendly fire"
-    toggle-off: "&aYour party is not protected anymore by friendly fire"
-    protected: "&cYou can't hit your partymates"
-    warn-on-attack: "&c%player% tried to hit %victim%!"
+    toggle-on: "&aParty shoma hala tavasote atash doostane mohafezat mishavad"
+    toggle-off: "&aParty shoma digar tavasote atash doostane mohafezat nemishavad"
+    protected: "&cShoma nemitavanid be ham-party haye khod zarbe bezanid"
+    warn-on-attack: "&c%player% say kard be %victim% zarbe bezanad!"
   sethome:
     changed: ""
-    removed: "&bParty home removed"
-    removed-none: "&cNo party home found"
-    broadcast: "&aThe party has a new home!"
+    removed: "&bKhane party hazf shod"
+    removed-none: "&cHich khane party yaft nashod"
+    broadcast: "&aParty yek khane jadid darad!"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    max-homes: "&cYou reached the maximum number of homes"
+    cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
+    max-homes: "&cShoma be hadeaksar tedade khane ha residid"
   tag:
-    changed: "&bParty tag changed"
-    removed: "&bParty tag removed"
+    changed: "&bTage party taqir yaft"
+    removed: "&bTage party hazf shod"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 10 chars."
-    censored: "&cThe tag contains censored words!"
-    already-used: "&c The tag %tag% is already used"
+    invalid-chars: "&cCharacter haye namotabar: Estefade konid az: a-Z ya 0-9. Hadeaghal 3 va hadeaksar 10 character."
+    censored: "&cTag shamele kalamate sansor shode ast!"
+    already-used: "&c Tag %tag% dar hale hazer estefade shode ast"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
+    teleporting: "&7Dar hale teleporte party shoma be inja!"
+    player-teleported: "&bTeleport shodid be %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    player-teleport-in: "&7You will be teleported in %seconds% seconds"
+    player-teleport-in: "&7Shoma dar %seconds% sanie teleport mishavid"
     player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
     accept-request:
-      sent: "&aTeleport request sent to the party"
-      received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
-      denied: "&7You denied the teleport request of %player%"
+      sent: "&aDarkhaste teleport be party ersal shod"
+      received: "[{\"text\":\"&bAya shoma mikhahid be %player% teleport shavid? \"},{\"text\":\"&a&lBale\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Paziroftane darkhast\"}]}}},{\"text\":\" &bya \"},{\"text\":\"&c&lkheyr\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Rad kardane davat\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bShoma mitavanid baraye entekhab az &7/party <accept/deny> %player% &bestefade konid.\"}]"
+      denied: "&7Shoma darkhaste teleporte %player% ra rad kardid"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
@@ -444,21 +444,21 @@ other:
   follow:
     #[Special tags]
     #=> %server%          = New server
-    following-server: "&7Following %player% in %server%"
+    following-server: "&7Dar hale peyrovi az %player% dar %server%"
   fixed-parties:
-    default-join: "&bYou entered into %party%"
+    default-join: "&bShoma varede %party% shodid"
   join-leave:
-    server-join: "&b%player% is online!"
-    server-leave: "&7%player% is offline!"
+    server-join: "&b%player% online ast!"
+    server-leave: "&7%player% offline ast!"
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b================= &lRahnamaye Party %page%/%maxpages% &r&b================="
   footer: ""
-  perform-command: 'Perform the command'
+  perform-command: 'Ejraye dastoor'
   console-help:
-    header: 'You can only perform these commands:'
+    header: 'Shoma faqat mitavanid in dastoor ha ra ejra konid:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
@@ -485,23 +485,23 @@ help:
       spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      help: 'Show help pages'
-      accept: 'Accept a party request'
-      chat: 'Toggle party chat'
-      create: 'Create a new party'
-      delete: 'Delete the party'
-      deny: 'Deny a party request'
-      ignore: 'Add/remove/show ignored parties'
-      info: 'Show party information'
-      invite: 'Invite a player to your party'
-      kick: 'Kick a player from the party'
-      leave: 'Leave your party'
-      p: 'Send a message to the party'
-      rank: 'Change rank of the player'
-      reload: 'Reload Parties configuration files'
-      rename: 'Rename the party'
-      spy: 'Spy messages of other parties'
-      version: 'Show Parties information'
+      help: 'Namayeshe safhate rahnama'
+      accept: 'Paziroftane yek darkhaste party'
+      chat: 'Taqire vaz''iate chate party'
+      create: 'Sakhte yek party jadid'
+      delete: 'Hazfe party'
+      deny: 'Rad kardane yek darkhaste party'
+      ignore: 'Afzoodan/hazf/namayesh party haye cheshm pooshi shode'
+      info: 'Namayeshe etelaat party'
+      invite: 'Davate yek bazikon be party shoma'
+      kick: 'Ekhraje yek bazikon az party'
+      leave: 'Raftan az party khod'
+      p: 'Ersale payami be party'
+      rank: 'Taqire rotbe bazikon'
+      reload: 'Bargozarie mojadad file haye peykarbandie Parties'
+      rename: 'Taqire esme party'
+      spy: 'Jasoosi az payam haye digar party ha'
+      version: 'Namayesh etelaat party'
   additional:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -525,25 +525,25 @@ help:
       tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      ask: 'Send a join request'
-      claim: 'Grant permissions to the claim'
-      close: 'Close the party'
-      color: 'Change party color'
-      createfixed: 'Create a new fixed party'
+      ask: 'Ersale darkhaste peyvastan'
+      claim: 'E''taye dastresi be claim'
+      close: 'Bastane party'
+      color: 'Taqire range party'
+      createfixed: 'Sakhte yek party sabet jadid'
       debug: 'Debug issues'
-      desc: 'Set/remove party description'
-      follow: 'Toggle follow leader'
-      home: 'Teleport to the party home'
-      join: 'Join into the party'
-      list: 'List of online parties'
-      motd: 'Set/remove party motd'
-      mute: 'Toggle notifications'
-      nickname: 'Set/remove member nickname'
-      open: 'Open the party'
-      password: 'Change party password'
-      protection: 'Toggle friendly fire protection'
-      sethome: 'Set/remove party home'
-      tag: 'Set/remove party tag'
-      teleport: 'Teleport your party to you'
+      desc: 'Tanzim/hazf tozihat party'
+      follow: 'Taqire vaz''iate peyrovi az rahbare party'
+      home: 'Teleport be khane party'
+      join: 'Peyvastan be party'
+      list: 'Liste party haye online'
+      motd: 'Tanzim/hazf payame rooze party'
+      mute: 'Taqire vaz''iate e''lan ha'
+      nickname: 'Tanzim/hazf esm mosta''are ozv'
+      open: 'Baaz kardane party'
+      password: 'Taqire ramze party'
+      protection: 'Taqire vaz''iate mohafezate atash doostane'
+      sethome: 'Tanzim/hazf khane party'
+      tag: 'Tanzim/hazf tage party'
+      teleport: 'Teleport kardane party shoma be khodetan'
 dont-edit-this:
   version: 2
