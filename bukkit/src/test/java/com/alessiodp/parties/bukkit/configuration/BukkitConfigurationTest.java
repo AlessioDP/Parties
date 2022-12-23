@@ -82,11 +82,6 @@ public class BukkitConfigurationTest {
 		// Initialize YAML
 		configurationFile.initializeConfiguration(tempDir);
 		YamlFile yf = configurationFile.getConfiguration();
-		try {
-			System.out.println(Files.readAllLines(yf.getConfigurationFile().toPath()).size());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 		
 		// Check fields
 		for (Field f : fields) {
@@ -104,13 +99,6 @@ public class BukkitConfigurationTest {
 		configurationFile.getConfiguration().save();
 		
 		configurationFile.checkVersion(true);
-		
-		System.out.println(Files.readAllLines(configurationFile.getConfiguration().getConfigurationFile().toPath()).size());
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	private boolean skippablePath(String path, List<String> skipPaths) {
