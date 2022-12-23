@@ -203,17 +203,32 @@ public class CommandInvite extends PartiesSubCommand {
 			party.invitePlayer(invitedPartyPlayer, partyPlayer);
 			
 			if (mustStartCooldown) {
+				String customCooldownGlobal = sender.getDynamicPermission(PartiesPermission.USER_INVITE + ".global.cooldown.");
+				String customCooldownIndividual = sender.getDynamicPermission(PartiesPermission.USER_INVITE + ".individual.cooldown.");
+				int cooldownGlobal = ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL;
+				int cooldownIndividual = ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL;
+				if (customCooldownGlobal != null) {
+					try {
+						cooldownGlobal = Integer.parseInt(customCooldownGlobal);
+					} catch (Exception ignored) {}
+				}
+				if (customCooldownIndividual != null) {
+					try {
+						cooldownIndividual = Integer.parseInt(customCooldownIndividual);
+					} catch (Exception ignored) {}
+				}
+				
 				getPlugin().getCooldownManager().startMultiAction(
 						CooldownManager.MultiAction.INVITE,
 						partyPlayer.getPlayerUUID(),
 						null,
-						ConfigParties.GENERAL_INVITE_COOLDOWN_GLOBAL
+						cooldownGlobal
 				);
 				getPlugin().getCooldownManager().startMultiAction(
 						CooldownManager.MultiAction.INVITE,
 						partyPlayer.getPlayerUUID(),
 						invitedPartyPlayer.getPlayerUUID(),
-						ConfigParties.GENERAL_INVITE_COOLDOWN_INDIVIDUAL
+						cooldownIndividual
 				);
 			}
 		}

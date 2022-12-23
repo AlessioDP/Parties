@@ -14,6 +14,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.common.storage.PartiesDatabaseManager;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -266,7 +267,7 @@ public abstract class PartyManager {
 		}
 	}
 	
-	public void disbandLoadedParties() {
+	public void disbandAllParties() {
 		if (ConfigParties.GENERAL_MEMBERS_DISBAND_PARTIES_ON_DISABLE) {
 			// Disband all loaded parties
 			HashSet<PartyImpl> cachedParties = new HashSet<>(cacheParties.values());
@@ -280,6 +281,9 @@ public abstract class PartyManager {
 				e.getValue().cancel();
 			}
 			cacheMembersTimedOut.clear();
+			
+			// Remove any non loaded party
+			plugin.getDatabaseManager().getListParties(PartiesDatabaseManager.ListOrder.NAME, Integer.MAX_VALUE, 0).forEach(PartyImpl::delete);
 		}
 	}
 	

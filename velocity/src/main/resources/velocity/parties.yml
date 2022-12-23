@@ -130,29 +130,29 @@ ranks:
     chat: "&bMember"
     default: true
     permissions:
-      - party.sendmessage
-      - party.home
-      - party.desc
-      - party.motd
-      - party.claim
-      - party.teleport.accept
-      - party.teleport.deny
+    - party.sendmessage
+    - party.home
+    - party.desc
+    - party.motd
+    - party.claim
+    - party.teleport.accept
+    - party.teleport.deny
   moderator:
     level: 10
     name: "Moderator"
     chat: "&cModerator"
     inheritence: member
     permissions:
-      - party.ask.accept
-      - party.ask.deny
-      - party.invite
-      - party.kick
+    - party.ask.accept
+    - party.ask.deny
+    - party.invite
+    - party.kick
   leader:
     level: 20
     name: "Leader"
     chat: "&4&lLeader"
     permissions:
-      - '*'
+    - '*'
 
 
 # / =============================== \
@@ -275,6 +275,9 @@ additional:
       open-by-default: false
       cooldown-open: 0
       cooldown-close: 0
+      # Automatically create the party if a player doesn't have one upon open
+      # Warning: Dynamic name must be enabled
+      auto-create-party-upon-open: false
 
     # Enable password system
     # Users can set a password to the party then let other players join it with "/party join <password>"
@@ -385,4 +388,4 @@ additional:
 
 # End of configuration file
 dont-edit-this:
-  version: 1
+  version: 2

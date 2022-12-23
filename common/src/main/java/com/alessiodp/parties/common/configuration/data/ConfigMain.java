@@ -92,6 +92,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		ADDITIONAL_AUTOCMD_ENABLE;
 	@ConfigOption(path = "additional.auto-command.regex-whitelist")
 	public static String		ADDITIONAL_AUTOCMD_REGEXWHITELIST;
+	@ConfigOption(path = "additional.auto-command.delay")
+	public static long			ADDITIONAL_AUTOCMD_DELAY;
 	
 	@ConfigOption(path = "additional.exp-system.enable")
 	public static boolean		ADDITIONAL_EXP_ENABLE;
@@ -252,17 +254,14 @@ public abstract class ConfigMain extends ConfigurationFile {
 	}
 	
 	@Override
-	public void loadDefaults() {
-		loadDefaultConfigOptions();
-		
+	public void loadCustomDefaultOptions() {
 		ADDITIONAL_PLACEHOLDER_CUSTOMS = new HashMap<>();
 		ADDITIONAL_PLACEHOLDER_CUSTOMS.put("example1", "[%color_code%%party%] ");
 		ADDITIONAL_PLACEHOLDER_CUSTOMS.put("example2", "[%rank_chat% %party%] ");
 	}
 	
 	@Override
-	public void loadConfiguration() {
-		loadConfigOptions();
+	public void loadCustomFileOptions() {
 		ConfigurationSection csPlaceholders = configuration.getConfigurationSection("additional.placeholders.customs");
 		if (csPlaceholders != null) {
 			ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS = new HashMap<>();
@@ -270,7 +269,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 				ConfigMain.ADDITIONAL_PLACEHOLDER_CUSTOMS.put(key, csPlaceholders.getString(key, ""));
 			}
 		} else {
-			// Give error: no ranks node found
+			// Give error: no custom placeholders node found
 			plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_PLACEHOLDERS_NOTFOUND);
 		}
 	}

@@ -1,7 +1,7 @@
 package com.alessiodp.parties.bungeecord.messaging.redis;
 
-import com.alessiodp.core.bungeecord.addons.external.RedisBungeeHandler;
-import com.alessiodp.core.bungeecord.messaging.redis.RedisBungeeListener;
+import com.alessiodp.core.bungeecord.addons.external.BungeeRedisBungeeHandler;
+import com.alessiodp.core.bungeecord.messaging.redis.BungeeRedisBungeeListener;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
@@ -22,10 +22,10 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class PartiesRedisBungeeListener extends RedisBungeeListener {
+public class BungeePartiesRedisBungeeListener extends BungeeRedisBungeeListener {
 	private final CommonListener commonListener;
 	
-	public PartiesRedisBungeeListener(ADPPlugin plugin) {
+	public BungeePartiesRedisBungeeListener(ADPPlugin plugin) {
 		super(plugin, plugin.getPluginName());
 		commonListener = new CommonListener((PartiesPlugin) plugin);
 	}
@@ -34,7 +34,7 @@ public class PartiesRedisBungeeListener extends RedisBungeeListener {
 	protected void onMessageEvent(byte[] bytes) {
 		PartiesPacket packet = PartiesPacket.read(plugin, bytes);
 		if (packet != null) {
-			if (packet.getSource().equals(RedisBungeeHandler.getCurrentServer()))
+			if (packet.getSource().equals(BungeeRedisBungeeHandler.getProxyId()))
 				return;
 			
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_REDIS_RECEIVED, packet.getType().name()), true);

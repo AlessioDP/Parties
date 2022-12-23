@@ -93,8 +93,10 @@ public class PartyInviteImpl implements PartyInvite {
 			}
 		}
 		
-		if (activeTask != null)
+		if (activeTask != null) {
 			activeTask.cancel();
+			activeTask = null;
+		}
 	}
 	
 	@Override

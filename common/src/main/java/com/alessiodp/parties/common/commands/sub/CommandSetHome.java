@@ -115,14 +115,24 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 		
 		if (!isRemove) {
 			boolean mustStartCooldown = false;
-			if (ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_SETHOME_BYPASS)) {
-				mustStartCooldown = true;
-				long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.SETHOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME);
+			int cooldown = ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME;
+			if (cooldown > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_SETHOME_BYPASS)) {
+				String customCooldown = sender.getDynamicPermission(PartiesPermission.USER_SETHOME + ".cooldown.");
+				if (customCooldown != null) {
+					try {
+						cooldown = Integer.parseInt(customCooldown);
+					} catch (Exception ignored) {}
+				}
 				
-				if (remainingCooldown > 0) {
-					sendMessage(sender, partyPlayer, Messages.ADDCMD_SETHOME_COOLDOWN
-							.replace("%seconds%", String.valueOf(remainingCooldown)));
-					return;
+				if (cooldown > 0) {
+					mustStartCooldown = true;
+					long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.SETHOME, sender.getUUID(), cooldown);
+					
+					if (remainingCooldown > 0) {
+						sendMessage(sender, partyPlayer, Messages.ADDCMD_SETHOME_COOLDOWN
+								.replace("%seconds%", String.valueOf(remainingCooldown)));
+						return;
+					}
 				}
 			}
 			
@@ -130,7 +140,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 				return;
 			
 			if (mustStartCooldown) {
-				getPlugin().getCooldownManager().startAction(CooldownManager.Action.SETHOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_SETHOME);
+				getPlugin().getCooldownManager().startAction(CooldownManager.Action.SETHOME, sender.getUUID(), cooldown);
 			}
 		}
 		

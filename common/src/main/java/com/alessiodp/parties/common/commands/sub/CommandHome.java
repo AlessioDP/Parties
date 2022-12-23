@@ -220,19 +220,28 @@ public abstract class CommandHome extends PartiesSubCommand {
 			return;
 		
 		if (partyPlayer.getPendingHomeDelay() != null) {
-			sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_TELEPORTWAITING, party);
+			sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_TELEPORT_WAITING, party);
 			return;
 		}
 		
 		boolean mustStartCooldown = false;
-		if (ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_HOME_BYPASS)) {
-			mustStartCooldown = true;
-			long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.HOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME);
-			
-			if (remainingCooldown > 0) {
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_COOLDOWN
-						.replace("%seconds%", String.valueOf(remainingCooldown)));
-				return;
+		int cooldown = ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME;
+		if (cooldown > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_HOME_BYPASS)) {
+			String customCooldown = sender.getDynamicPermission(PartiesPermission.USER_HOME + ".cooldown.");
+			if (customCooldown != null) {
+				try {
+					cooldown = Integer.parseInt(customCooldown);
+				} catch (Exception ignored) {}
+			}
+			if (cooldown > 0) {
+				mustStartCooldown = true;
+				long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.HOME, sender.getUUID(), cooldown);
+				
+				if (remainingCooldown > 0) {
+					sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_COOLDOWN
+							.replace("%seconds%", String.valueOf(remainingCooldown)));
+					return;
+				}
 			}
 		}
 		
@@ -240,26 +249,18 @@ public abstract class CommandHome extends PartiesSubCommand {
 			return;
 		
 		if (mustStartCooldown)
-			getPlugin().getCooldownManager().startAction(CooldownManager.Action.HOME, sender.getUUID(), ConfigParties.ADDITIONAL_HOME_COOLDOWN_HOME
+			getPlugin().getCooldownManager().startAction(CooldownManager.Action.HOME, sender.getUUID(), cooldown
 			);
 		
 		// Command starts
-		int delay = ConfigParties.ADDITIONAL_HOME_DELAY;
-		String homeDelayPermission = sender.getDynamicPermission(PartiesPermission.USER_HOME + ".");
-		if (homeDelayPermission != null) {
-			try {
-				delay = Integer.parseInt(homeDelayPermission);
-			} catch (Exception ignored) {}
-		}
-		
-		if (delay > 0) {
-			HomeDelayTask homeDelayTask = teleportPlayerWithDelay(partyPlayer, partyHome, delay);
+		if (ConfigParties.ADDITIONAL_HOME_DELAY > 0) {
+			HomeDelayTask homeDelayTask = teleportPlayerWithDelay(partyPlayer, partyHome, ConfigParties.ADDITIONAL_HOME_DELAY);
 			
 			CancellableTask task = plugin.getScheduler().scheduleAsyncRepeating(homeDelayTask, 0, 300, TimeUnit.MILLISECONDS);
 			partyPlayer.setPendingHomeDelay(task);
 			
 			sendMessage(sender, partyPlayer, Messages.ADDCMD_HOME_TELEPORTIN
-					.replace("%seconds%", Integer.toString(delay)));
+					.replace("%seconds%", Integer.toString(ConfigParties.ADDITIONAL_HOME_DELAY)));
 		} else {
 			teleportPlayer(sender, partyPlayer, partyHome);
 		}

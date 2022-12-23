@@ -133,7 +133,14 @@ main-commands:
       empty: "&7None"
 
   info:
-    content:
+    content-own-party:
+    - "&b============ &l%party%'s Info &r&b============"
+    - "&b&lDescription&7: %desc%"
+    - "&bLeader&7: %list_rank_leader%"
+    - "&bMods&7: %list_rank_moderator%"
+    - "&bMembers&7: %list_rank_member%"
+    - "&bOnline players&7: %members_online_total%"
+    content-other-party:
     - "&b============ &l%party%'s Info &r&b============"
     - "&b&lDescription&7: %desc%"
     - "&bLeader&7: %list_rank_leader%"
@@ -226,9 +233,9 @@ main-commands:
       # => %number%                         = The number of the player
       # => %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
-        - "%list_players%"
-        - "&cUse '&7/clan rank <username> <rank> <number>&c' to change rank of the right player"
+      - "&cWe have found some players with that name:"
+      - "%list_players%"
+      - "&cUse '&7/clan rank <username> <rank> <number>&c' to change rank of the right player"
       player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/clan rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
 
   rename:
@@ -305,19 +312,19 @@ additional-commands:
     config:
       header: '&b================== &lDebug Config &r&b=================='
       text:
-        - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
-        - "&bStorage&7: %storage%"
-        - "&bRanks&7: %ranks%"
+      - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
+      - "&bStorage&7: %storage%"
+      - "&bRanks&7: %ranks%"
       rank-format: '&f%name%&7[%level%]'
       rank-separator: '&7, '
 
     exp:
       header: '&b=================== &lDebug Exp &r&b==================='
       text:
-        - "&bExp system&7: %exp%"
-        - "&bEarn from mobs: %earn%"
-        - "&bMode&7: %mode%"
-        - "%mode_options%"
+      - "&bExp system&7: %exp%"
+      - "&bEarn from mobs: %earn%"
+      - "&bMode&7: %mode%"
+      - "%mode_options%"
       mode-options:
         progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
         fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
@@ -325,25 +332,25 @@ additional-commands:
     party:
       header: '&b================== &lDebug Clan &r&b=================='
       text:
-        - "&bID&7: %id%"
-        - "&bName/tag&7: %name%&7/%tag%"
-        - "&bLeader&7: %leader%"
-        - "&bNumber members/online&7: %members%&7/%members_online%"
-        - "&bDescription&7: %description%"
-        - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
-        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
-        - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
-        - "&bExperience&7: %experience%"
+      - "&bID&7: %id%"
+      - "&bName/tag&7: %name%&7/%tag%"
+      - "&bLeader&7: %leader%"
+      - "&bNumber members/online&7: %members%&7/%members_online%"
+      - "&bDescription&7: %description%"
+      - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
+      - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
+      - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
+      - "&bExperience&7: %experience%"
 
     player:
       header: '&b================== &lDebug Player &r&b=================='
       text:
-        - "&bUUID&7: %uuid%"
-        - "&bName&7: %name%"
-        - "&bRank&7: %rank%"
-        - "&bClan&7: %party%"
-        - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
-        - "&bProtection bypass&7: %protection_bypass%"
+      - "&bUUID&7: %uuid%"
+      - "&bName&7: %name%"
+      - "&bRank&7: %rank%"
+      - "&bClan&7: %party%"
+      - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+      - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
 
   desc:
@@ -368,7 +375,7 @@ additional-commands:
     # [Special tags]
     # => %seconds%          = Time of delay in seconds
     teleport-in: "&7You will be teleported in %seconds% seconds..."
-    teleport-denied: "&7Teleport denied"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cYou are already waiting for the teleport!"
     no-home: "&cThere isn't a home yet"
     # [Special tags]
@@ -391,6 +398,7 @@ additional-commands:
       already-closed: "&cThe clan is already closed"
       cooldown: "&cYou have to wait %seconds% seconds!"
       cannot-join: "&cYou cannot join this clan"
+      failed: "&cFailed to open the clan"
     password:
       wrong-password: "&cWrong password!"
 
@@ -478,7 +486,7 @@ additional-commands:
     # [Special tags]
     # => %seconds%          = Time of delay in seconds
     player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-denied: "&7Teleport denied"
+    player-teleport-cancelled: "&7Teleport cancelled"
     # [Special tags]
     # => %seconds%          = Remaining time in seconds
     cooldown: "&cYou have to wait %seconds% seconds!"
@@ -627,4 +635,4 @@ help:
       teleport: 'Teleport your clan to you'
 
 dont-edit-this:
-  version: 15
+  version: 16

@@ -1,13 +1,13 @@
 package com.alessiodp.parties.bungeecord.addons.external;
 
-import com.alessiodp.core.bungeecord.addons.external.RedisBungeeHandler;
+import com.alessiodp.core.bungeecord.addons.external.BungeeRedisBungeeHandler;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher;
 import org.jetbrains.annotations.NotNull;
 
-public class PartiesRedisBungeeHandler extends RedisBungeeHandler {
-	public PartiesRedisBungeeHandler(@NotNull ADPPlugin plugin) {
+public class PartiesBungeeRedisBungeeHandler extends BungeeRedisBungeeHandler {
+	public PartiesBungeeRedisBungeeHandler(@NotNull ADPPlugin plugin) {
 		super(plugin);
 	}
 	

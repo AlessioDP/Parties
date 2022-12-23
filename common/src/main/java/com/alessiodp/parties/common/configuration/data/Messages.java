@@ -179,8 +179,10 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "main-commands.ignore.ignore-list.empty")
 	public static String MAINCMD_IGNORE_LIST_EMPTY;
 	
-	@ConfigOption(path = "main-commands.info.content")
-	public static List<String> MAINCMD_INFO_CONTENT;
+	@ConfigOption(path = "main-commands.info.content-own-party")
+	public static List<String> MAINCMD_INFO_CONTENT_OWN;
+	@ConfigOption(path = "main-commands.info.content-other-party")
+	public static List<String> MAINCMD_INFO_CONTENT_OTHER;
 	
 	@ConfigOption(path = "main-commands.invite.sent")
 	public static String MAINCMD_INVITE_SENT;
@@ -408,10 +410,10 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_HOME_TELEPORTED;
 	@ConfigOption(path = "additional-commands.home.teleport-in")
 	public static String ADDCMD_HOME_TELEPORTIN;
-	@ConfigOption(path = "additional-commands.home.teleport-denied")
-	public static String ADDCMD_HOME_TELEPORTDENIED;
+	@ConfigOption(path = "additional-commands.home.teleport-cancelled")
+	public static String ADDCMD_HOME_TELEPORT_CANCELLED;
 	@ConfigOption(path = "additional-commands.home.teleport-waiting")
-	public static String ADDCMD_HOME_TELEPORTWAITING;
+	public static String ADDCMD_HOME_TELEPORT_WAITING;
 	@ConfigOption(path = "additional-commands.home.no-home")
 	public static String ADDCMD_HOME_NOHOME;
 	@ConfigOption(path = "additional-commands.home.cooldown")
@@ -441,6 +443,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_JOIN_OPENCLOSE_COOLDOWN;
 	@ConfigOption(path = "additional-commands.join.open-close.cannot-join")
 	public static String ADDCMD_JOIN_OPENCLOSE_CANNOT_JOIN;
+	@ConfigOption(path = "additional-commands.join.open-close.failed")
+	public static String ADDCMD_JOIN_OPENCLOSE_FAILED;
 	@ConfigOption(path = "additional-commands.join.password.wrong-password")
 	public static String ADDCMD_JOIN_PASSWORD_WRONGPASSWORD;
 	
@@ -552,8 +556,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ADDCMD_TELEPORT_PLAYER_TELEPORTED;
 	@ConfigOption(path = "additional-commands.teleport.player-teleport-in")
 	public static String ADDCMD_TELEPORT_PLAYER_TELEPORTIN;
-	@ConfigOption(path = "additional-commands.teleport.player-teleport-denied")
-	public static String ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED;
+	@ConfigOption(path = "additional-commands.teleport.player-teleport-cancelled")
+	public static String ADDCMD_TELEPORT_PLAYER_TELEPORT_CANCELLED;
 	@ConfigOption(path = "additional-commands.teleport.cooldown")
 	public static String ADDCMD_TELEPORT_COOLDOWN;
 	@ConfigOption(path = "additional-commands.teleport.accept-request.sent")
@@ -737,15 +741,5 @@ public abstract class Messages extends ConfigurationFile {
 	
 	protected Messages(PartiesPlugin plugin) {
 		super(plugin);
-	}
-	
-	@Override
-	public void loadDefaults() {
-		loadDefaultConfigOptions();
-	}
-	
-	@Override
-	public void loadConfiguration() {
-		loadConfigOptions();
 	}
 }

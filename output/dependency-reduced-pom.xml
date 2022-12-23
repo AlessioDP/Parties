@@ -65,7 +65,7 @@
           </relocations>
           <filters>
             <filter>
-              <artifact>*:*</artifact>
+              <artifact>com.alessiodp.parties:*</artifact>
               <excludes>
                 <exclude>META-INF/MANIFEST.MF</exclude>
                 <exclude>META-INF/**</exclude>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.6.1</version>
+      <version>4.10.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.2</version>
+      <version>5.9.1</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

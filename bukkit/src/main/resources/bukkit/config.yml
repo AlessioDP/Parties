@@ -125,10 +125,12 @@ additional:
   #
   # With regex-whitelist you can choose which command should be replicated by other party-mates
   # You need to use REGEX (google it)
-  # The default example will allows any command except /party, /pay and /money
+  # The default example will allows any command except /join and /anothercommand
+  # With delay you can specify after how many milliseconds execute them
   auto-command:
     enable: false
     regex-whitelist: '^(\/join|\/anothercommand).*'
+    delay: 0
 
   # [Exp system]
   # Full documentation here: https://alessiodp.com/docs/parties/explevels
@@ -161,12 +163,12 @@ additional:
     fixed:
       repeat-last-one: true
       list:
-        - 50
-        - 100
-        - 200
-        - 350
-        - 650
-        - 900
+      - 50
+      - 100
+      - 200
+      - 350
+      - 650
+      - 900
 
 
   # [Follow system]
@@ -396,4 +398,4 @@ commands:
   - version
 
 dont-edit-this:
-  version: 14
+  version: 15

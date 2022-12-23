@@ -604,12 +604,12 @@ public enum PartiesPlaceholder {
 		if (mustBeOnline) {
 			members.removeIf(pl -> {
 				OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
-				return !offlinePlayer.isOnline() || pl.isVanished();
+				return (offlinePlayer != null && !offlinePlayer.isOnline()) || pl.isVanished();
 			});
 		} else {
 			members.removeIf(pl -> {
 				OfflineUser offlinePlayer = plugin.getOfflinePlayer(pl.getPlayerUUID());
-				return offlinePlayer.isOnline() && !pl.isVanished();
+				return (offlinePlayer != null && offlinePlayer.isOnline()) && !pl.isVanished();
 			});
 		}
 		return members;

@@ -3,6 +3,7 @@ package com.alessiodp.parties.velocity.messaging;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.messaging.MessageChannel;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.velocity.addons.external.VelocityRedisBungeeHandler;
 import com.alessiodp.core.velocity.messaging.VelocityMessageDispatcher;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.enums.JoinCause;
@@ -14,6 +15,7 @@ import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.velocity.messaging.bungee.VelocityPartiesBungeecordDispatcher;
+import com.alessiodp.parties.velocity.messaging.redis.VelocityPartiesRedisBungeeDispatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +24,8 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 	public VelocityPartiesMessageDispatcher(@NotNull ADPPlugin plugin) {
 		super(
 				plugin,
-				new VelocityPartiesBungeecordDispatcher(plugin)
+				new VelocityPartiesBungeecordDispatcher(plugin),
+				new VelocityPartiesRedisBungeeDispatcher(plugin)
 		);
 	}
 	
@@ -32,6 +35,11 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 	
 	private void sendPacketToBungeecordUser(PartiesPacket packet, User user) {
 		bungeeDispatcher.sendPacketToUser(packet, user, MessageChannel.SUB);
+	}
+	
+	private void sendPacketToRedis(PartiesPacket packet) {
+		if (redisBungeeDispatcher.isRegistered())
+			redisBungeeDispatcher.sendPacket(packet.setSource(VelocityRedisBungeeHandler.getProxyId()));
 	}
 	
 	public void sendUpdateParty(PartyImpl party) {
@@ -232,6 +240,29 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setConfigData(((PartiesConfigurationManager) plugin.getConfigurationManager()).makePacketConfigData());
 			sendPacketToBungeecord(packet);
 		}
+	}
+	
+	public void sendRedisMessage(User receiver, String message, boolean colorTranslation) {
+		PartiesPacket packet = makePacket(PartiesPacket.PacketType.REDIS_MESSAGE)
+				.setPlayer(receiver.getUUID())
+				.setText(message)
+				.setBool(colorTranslation);
+		sendPacketToRedis(packet);
+	}
+	
+	public void sendRedisTitle(User receiver, String message, int fadeInTime, int showTime, int fadeOutTime) {
+		PartiesPacket packet = makePacket(PartiesPacket.PacketType.REDIS_TITLE)
+				.setPlayer(receiver.getUUID())
+				.setText(message)
+				.setSecondaryText(String.format("%d:%d:%d", fadeInTime, showTime, fadeOutTime));
+		sendPacketToRedis(packet);
+	}
+	
+	public void sendRedisChat(User receiver, String message) {
+		PartiesPacket packet = makePacket(PartiesPacket.PacketType.REDIS_CHAT)
+				.setPlayer(receiver.getUUID())
+				.setText(message);
+		sendPacketToRedis(packet);
 	}
 	
 	private PartiesPacket makePacket(PartiesPacket.PacketType type) {

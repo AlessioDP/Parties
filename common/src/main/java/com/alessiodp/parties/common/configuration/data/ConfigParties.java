@@ -196,6 +196,8 @@ public abstract class ConfigParties extends ConfigurationFile {
 	public static int			ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_OPEN;
 	@ConfigOption(path = "additional.join.open-close.cooldown-close")
 	public static int			ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_CLOSE;
+	@ConfigOption(path = "additional.join.open-close.auto-create-party-upon-open")
+	public static boolean		ADDITIONAL_JOIN_OPENCLOSE_AUTO_CREATE;
 	@ConfigOption(path = "additional.join.password.enable")
 	public static boolean		ADDITIONAL_JOIN_PASSWORD_ENABLE;
 	@ConfigOption(path = "additional.join.password.allowed-characters")
@@ -289,9 +291,7 @@ public abstract class ConfigParties extends ConfigurationFile {
 	}
 	
 	@Override
-	public void loadDefaults() {
-		loadDefaultConfigOptions();
-		
+	public void loadCustomDefaultOptions() {
 		RANK_LIST = new HashSet<>();
 		PartyRankImpl rankMember = new PartyRankImpl(
 				"member", "Member", "&bMember", 5, 0, null,
@@ -328,45 +328,40 @@ public abstract class ConfigParties extends ConfigurationFile {
 	}
 	
 	@Override
-	public void loadConfiguration() {
-		loadConfigOptions();
-		
+	public void loadCustomFileOptions() {
 		// Ranks settings
-		handleRanks();
-		handleColors();
+		loadRanks();
+		loadColors();
 	}
 	
 	@Override
-	public void save() {
-		// Save custom sections first
+	public void saveCustomOptions() {
 		saveRanks();
 		saveColors();
-		
-		super.save();
 	}
 	
-	private void handleRanks() {
+	private void loadRanks() {
 		Set<PartyRankImpl> ranks = new HashSet<>();
 		PartyRankImpl rank;
-		ConfigurationSection csBlocks = configuration.getConfigurationSection("ranks");
-		if (csBlocks != null) {
+		//ConfigurationSection csBlocks = configuration.getConfigurationSection("ranks");
+		if (ConfigParties.RAW_RANK_LIST != null) {
 			PartyRankImpl def = null;
 			PartyRankImpl lower = null;
 			PartyRankImpl higher = null;
-			for (String key : csBlocks.getKeys(false)) {
+			for (String key : ConfigParties.RAW_RANK_LIST.getKeys(false)) {
 				rank = new PartyRankImpl(key);
-				rank.setName(csBlocks.getString(key + ".name", key));
-				rank.setChat(csBlocks.getString(key + ".chat", rank.getName()));
-				rank.setLevel(csBlocks.getInt(key + ".level", 1));
-				if (csBlocks.get(key + ".inheritence") != null) {
-					Optional<PartyRankImpl> opt = ranks.stream().filter(r -> r.getConfigName().equals(csBlocks.getString(key + ".inheritence"))).findAny();
+				rank.setName(ConfigParties.RAW_RANK_LIST.getString(key + ".name", key));
+				rank.setChat(ConfigParties.RAW_RANK_LIST.getString(key + ".chat", rank.getName()));
+				rank.setLevel(ConfigParties.RAW_RANK_LIST.getInt(key + ".level", 1));
+				if (ConfigParties.RAW_RANK_LIST.get(key + ".inheritence") != null) {
+					Optional<PartyRankImpl> opt = ranks.stream().filter(r -> r.getConfigName().equals(ConfigParties.RAW_RANK_LIST.getString(key + ".inheritence"))).findAny();
 					if (opt.isPresent())
 						rank.setInheritence(opt.get());
 				}
-				rank.getPermissions().addAll(csBlocks.getStringList(key + ".permissions"));
-				rank.setDefault(csBlocks.getBoolean(key + ".default", false));
+				rank.getPermissions().addAll(ConfigParties.RAW_RANK_LIST.getStringList(key + ".permissions"));
+				rank.setDefault(ConfigParties.RAW_RANK_LIST.getBoolean(key + ".default", false));
 				if (!rank.isDefault())
-					rank.setSlot(csBlocks.getInt(key + ".slot", 0));
+					rank.setSlot(ConfigParties.RAW_RANK_LIST.getInt(key + ".slot", 0));
 				ranks.add(rank);
 				
 				if (rank.isDefault())
@@ -436,7 +431,7 @@ public abstract class ConfigParties extends ConfigurationFile {
 		}
 	}
 	
-	private void handleColors() {
+	private void loadColors() {
 		Set<PartyColorImpl> colors = new HashSet<>();
 		
 		if (ConfigParties.RAW_ADDITIONAL_COLOR_LIST != null) {
@@ -453,7 +448,6 @@ public abstract class ConfigParties extends ConfigurationFile {
 		} else {
 			plugin.getLoggerManager().logError(PartiesConstants.DEBUG_CONFIG_FAILED_COLOR_NOTFOUND);
 		}
-		ConfigParties.ADDITIONAL_COLOR_LIST.stream().findFirst().get().setDynamicMembers(15);
 	}
 	
 	private void saveColors() {

@@ -1,6 +1,6 @@
 package com.alessiodp.parties.bungeecord.messaging;
 
-import com.alessiodp.core.bungeecord.addons.external.RedisBungeeHandler;
+import com.alessiodp.core.bungeecord.addons.external.BungeeRedisBungeeHandler;
 import com.alessiodp.core.bungeecord.messaging.BungeeMessageDispatcher;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.messaging.MessageChannel;
@@ -10,7 +10,7 @@ import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.bungeecord.bootstrap.BungeePartiesBootstrap;
 import com.alessiodp.parties.bungeecord.messaging.bungee.BungeePartiesBungeecordDispatcher;
-import com.alessiodp.parties.bungeecord.messaging.redis.PartiesRedisBungeeDispatcher;
+import com.alessiodp.parties.bungeecord.messaging.redis.BungeePartiesRedisBungeeDispatcher;
 import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.configuration.data.ConfigParties;
@@ -28,7 +28,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		super(
 				plugin,
 				new BungeePartiesBungeecordDispatcher(plugin),
-				new PartiesRedisBungeeDispatcher(plugin)
+				new BungeePartiesRedisBungeeDispatcher(plugin)
 		);
 	}
 	
@@ -42,7 +42,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 	
 	private void sendPacketToRedis(PartiesPacket packet) {
 		if (redisBungeeDispatcher.isRegistered())
-			redisBungeeDispatcher.sendPacket(packet.setSource(RedisBungeeHandler.getCurrentServer()));
+			redisBungeeDispatcher.sendPacket(packet.setSource(BungeeRedisBungeeHandler.getProxyId()));
 	}
 	
 	public void sendUpdateParty(PartyImpl party) {

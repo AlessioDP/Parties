@@ -15,6 +15,8 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.RankPermission;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,20 +61,29 @@ public abstract class ChatListener {
 					}
 					
 					boolean mustStartCooldown = false;
-					if (ConfigParties.GENERAL_CHAT_COOLDOWN > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
-						mustStartCooldown = true;
-						long remainingCooldown = plugin.getCooldownManager().canAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
-						
-						if (remainingCooldown > 0) {
-							partyPlayer.sendMessage(Messages.MAINCMD_P_COOLDOWN
-									.replace("%seconds%", String.valueOf(remainingCooldown)));
-							mustWait = true;
+					int cooldown = ConfigParties.GENERAL_CHAT_COOLDOWN;
+					if (cooldown > 0 && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
+						String customCooldown = sender.getDynamicPermission(PartiesPermission.USER_SENDMESSAGE + ".cooldown.");
+						if (customCooldown != null) {
+							try {
+								cooldown = Integer.parseInt(customCooldown);
+							} catch (Exception ignored) {}
+						}
+						if (cooldown > 0) {
+							mustStartCooldown = true;
+							long remainingCooldown = plugin.getCooldownManager().canAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), cooldown);
+							
+							if (remainingCooldown > 0) {
+								partyPlayer.sendMessage(Messages.MAINCMD_P_COOLDOWN
+										.replace("%seconds%", String.valueOf(remainingCooldown)));
+								mustWait = true;
+							}
 						}
 					}
 					
 					if (!mustWait && partyPlayer.performPartyMessage(finalMessage)) {
 						if (mustStartCooldown)
-							plugin.getCooldownManager().startAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
+							plugin.getCooldownManager().startAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), cooldown);
 						
 						if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT) {
 							plugin.getLoggerManager().log(String.format(PartiesConstants.DEBUG_CMD_P,
@@ -108,22 +119,35 @@ public abstract class ChatListener {
 					PartyPlayerImpl pp = plugin.getPlayerManager().getPlayer(sender.getUUID());
 					PartyImpl party = plugin.getPartyManager().getParty(pp.getPartyId());
 					if (party != null && plugin.getRankManager().checkPlayerRank(pp, RankPermission.AUTOCOMMAND)) {
-						for (PartyPlayer pl : party.getOnlineMembers(true)) {
-							if (!pl.getPlayerUUID().equals(sender.getUUID())) {
-								// Make it sync
-								plugin.getScheduler().getSyncExecutor().execute(() -> {
-									User user = plugin.getPlayer(pl.getPlayerUUID());
-									if (user != null) {
-										plugin.getBootstrap().executeCommandByUser(message.substring(1), user);
-										
-										plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_AUTOCMD_PERFORM, pl.getPlayerUUID(), message), true);
-									}
-								});
-							}
+						
+						if (ConfigMain.ADDITIONAL_AUTOCMD_DELAY > 0) {
+							plugin.getScheduler().scheduleAsyncLater(
+									() -> executeCommand(party, sender.getUUID(), message.substring(1)),
+									ConfigMain.ADDITIONAL_AUTOCMD_DELAY,
+									TimeUnit.MILLISECONDS
+							);
+						} else {
+							executeCommand(party, sender.getUUID(), message.substring(1));
 						}
 					}
 				}
 			});
+		}
+	}
+	
+	public void executeCommand(PartyImpl party, UUID originalExecutor, String command) {
+		for (PartyPlayer pl : party.getOnlineMembers(true)) {
+			if (!pl.getPlayerUUID().equals(originalExecutor)) {
+				// Make it sync
+				plugin.getScheduler().getSyncExecutor().execute(() -> {
+					User user = plugin.getPlayer(pl.getPlayerUUID());
+					if (user != null) {
+						plugin.getBootstrap().executeCommandByUser(command, user);
+						
+						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_AUTOCMD_PERFORM, pl.getPlayerUUID(), command), true);
+					}
+				});
+			}
 		}
 	}
 }

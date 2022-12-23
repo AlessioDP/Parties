@@ -59,14 +59,23 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 		
 		// Command handling
 		boolean mustStartCooldown = false;
-		if (ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS)) {
-			mustStartCooldown = true;
-			long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.TELEPORT, partyPlayer.getPlayerUUID(), ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN);
-			
-			if (remainingCooldown > 0) {
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_TELEPORT_COOLDOWN
-						.replace("%seconds%", String.valueOf(remainingCooldown)));
-				return;
+		int cooldown = ConfigParties.ADDITIONAL_TELEPORT_COOLDOWN;
+		if (cooldown > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_TELEPORT_BYPASS)) {
+			String customCooldown = sender.getDynamicPermission(PartiesPermission.USER_TELEPORT + ".cooldown.");
+			if (customCooldown != null) {
+				try {
+					cooldown = Integer.parseInt(customCooldown);
+				} catch (Exception ignored) {}
+			}
+			if (cooldown > 0) {
+				mustStartCooldown = true;
+				long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.TELEPORT, partyPlayer.getPlayerUUID(), cooldown);
+				
+				if (remainingCooldown > 0) {
+					sendMessage(sender, partyPlayer, Messages.ADDCMD_TELEPORT_COOLDOWN
+							.replace("%seconds%", String.valueOf(remainingCooldown)));
+					return;
+				}
 			}
 		}
 		
@@ -74,7 +83,7 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 			return;
 		
 		if (mustStartCooldown) {
-			getPlugin().getCooldownManager().startAction(CooldownManager.Action.TELEPORT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_NAME_RENAME_COOLDOWN);
+			getPlugin().getCooldownManager().startAction(CooldownManager.Action.TELEPORT, partyPlayer.getPlayerUUID(), cooldown);
 		}
 		
 		// Command starts

@@ -91,7 +91,6 @@ public class CommandDebug extends PartiesSubCommand {
 		PartyPlayerImpl partyPlayer = ((PartiesCommandData) commandData).getPartyPlayer();
 		
 		// Command handling
-		String playerName;
 		PartyImpl targetParty = null;
 		PartyPlayerImpl targetPlayer = null;
 		CommandType commandType = CommandType.parse(commandData.getArgs()[1]);
@@ -142,7 +141,7 @@ public class CommandDebug extends PartiesSubCommand {
 						return;
 					}
 				} else if (commandData.getArgs().length == 3) {
-					playerName = commandData.getArgs()[2];
+					String playerName = commandData.getArgs()[2];
 					
 					User targetUser = plugin.getPlayerByName(playerName);
 					if (targetUser != null) {

@@ -1,7 +1,6 @@
 package com.alessiodp.parties.bungeecord;
 
-import com.alessiodp.core.bungeecord.addons.internal.json.BungeeJsonHandler;
-import com.alessiodp.core.bungeecord.addons.internal.title.BungeeTitleHandler;
+import com.alessiodp.core.bungeecord.addons.internal.BungeeJsonHandler;
 import com.alessiodp.core.bungeecord.scheduling.ADPBungeeScheduler;
 import com.alessiodp.core.bungeecord.user.BungeeUser;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
@@ -69,11 +68,6 @@ public class BungeePartiesPlugin extends PartiesPlugin {
 	@Override
 	protected  void initializeJsonHandler() {
 		jsonHandler = new BungeeJsonHandler(this);
-	}
-	
-	@Override
-	protected  void initializeTitleHandler() {
-		titleHandler = new BungeeTitleHandler(this);
 	}
 	
 	@Override

@@ -2,8 +2,7 @@ package com.alessiodp.parties.velocity;
 
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
-import com.alessiodp.core.velocity.addons.internal.json.VelocityJsonHandler;
-import com.alessiodp.core.velocity.addons.internal.title.VelocityTitleHandler;
+import com.alessiodp.core.velocity.addons.internal.VelocityJsonHandler;
 import com.alessiodp.core.velocity.bootstrap.ADPVelocityBootstrap;
 import com.alessiodp.core.velocity.scheduling.ADPVelocityScheduler;
 import com.alessiodp.core.velocity.user.VelocityUser;
@@ -67,11 +66,6 @@ public class VelocityPartiesPlugin extends PartiesPlugin {
 	@Override
 	protected  void initializeJsonHandler() {
 		jsonHandler = new VelocityJsonHandler(this);
-	}
-	
-	@Override
-	protected  void initializeTitleHandler() {
-		titleHandler = new VelocityTitleHandler(this);
 	}
 	
 	@Override

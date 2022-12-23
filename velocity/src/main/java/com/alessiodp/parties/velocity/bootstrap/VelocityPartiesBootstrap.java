@@ -24,7 +24,8 @@ import java.nio.file.Path;
 		url = VelocityConstants.URL,
 		version = VelocityConstants.VERSION,
 		dependencies = {
-				@Dependency(id = "lastloginapi", optional = true)
+				@Dependency(id = "lastloginapi", optional = true),
+				@Dependency(id = "redisbungee", optional = true)
 		}
 )
 public class VelocityPartiesBootstrap extends ADPVelocityBootstrap {

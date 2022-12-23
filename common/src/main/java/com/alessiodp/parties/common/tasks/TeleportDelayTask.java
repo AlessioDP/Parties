@@ -19,6 +19,7 @@ public abstract class TeleportDelayTask extends TeleportingDelayTask implements 
 	
 	@Override
 	public void cancel() {
+		// Cancel the runnable task in scheduler
 		if (partyPlayer.getPendingTeleportDelay() != null) {
 			partyPlayer.getPendingTeleportDelay().cancel();
 			partyPlayer.setPendingTeleportDelay(null);

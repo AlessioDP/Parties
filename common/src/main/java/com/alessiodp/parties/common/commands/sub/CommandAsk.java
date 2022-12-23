@@ -91,18 +91,37 @@ public class CommandAsk extends PartiesSubCommand {
 		partyPlayer.askToJoin(party);
 		
 		if (mustStartCooldown) {
-			getPlugin().getCooldownManager().startMultiAction(
-					CooldownManager.MultiAction.ASK,
-					partyPlayer.getPlayerUUID(),
-					null,
-					ConfigParties.ADDITIONAL_ASK_COOLDOWN_GLOBAL
-			);
-			getPlugin().getCooldownManager().startMultiAction(
-					CooldownManager.MultiAction.ASK,
-					partyPlayer.getPlayerUUID(),
-					party.getId(),
-					ConfigParties.ADDITIONAL_ASK_COOLDOWN_INDIVIDUAL
-			);
+			String customCooldownGlobal = sender.getDynamicPermission(PartiesPermission.USER_ASK + ".global.cooldown.");
+			String customCooldownIndividual = sender.getDynamicPermission(PartiesPermission.USER_ASK + ".individual.cooldown.");
+			int cooldownGlobal = ConfigParties.ADDITIONAL_ASK_COOLDOWN_GLOBAL;
+			int cooldownIndividual = ConfigParties.ADDITIONAL_ASK_COOLDOWN_INDIVIDUAL;
+			if (customCooldownGlobal != null) {
+				try {
+					cooldownGlobal = Integer.parseInt(customCooldownGlobal);
+				} catch (Exception ignored) {}
+			}
+			if (customCooldownIndividual != null) {
+				try {
+					cooldownIndividual = Integer.parseInt(customCooldownIndividual);
+				} catch (Exception ignored) {}
+			}
+			
+			if (cooldownGlobal > 0) {
+				getPlugin().getCooldownManager().startMultiAction(
+						CooldownManager.MultiAction.ASK,
+						partyPlayer.getPlayerUUID(),
+						null,
+						cooldownGlobal
+				);
+			}
+			if (cooldownIndividual > 0) {
+				getPlugin().getCooldownManager().startMultiAction(
+						CooldownManager.MultiAction.ASK,
+						partyPlayer.getPlayerUUID(),
+						party.getId(),
+						cooldownIndividual
+				);
+			}
 		}
 		
 		plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_CMD_ASK,

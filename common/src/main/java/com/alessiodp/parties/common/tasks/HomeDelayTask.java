@@ -20,6 +20,7 @@ public abstract class HomeDelayTask extends TeleportingDelayTask implements Runn
 	
 	@Override
 	public void cancel() {
+		// Cancel the runnable task in scheduler
 		if (partyPlayer.getPendingHomeDelay() != null) {
 			partyPlayer.getPendingHomeDelay().cancel();
 			partyPlayer.setPendingHomeDelay(null);

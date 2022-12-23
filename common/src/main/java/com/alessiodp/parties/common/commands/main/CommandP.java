@@ -119,14 +119,23 @@ public abstract class CommandP extends ADPMainCommand {
 			}
 			
 			boolean mustStartCooldown = false;
-			if (ConfigParties.GENERAL_CHAT_COOLDOWN > 0  && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
-				mustStartCooldown = true;
-				long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), ConfigParties.GENERAL_CHAT_COOLDOWN);
-				
-				if (remainingCooldown > 0) {
-					sendMessage(sender, partyPlayer, Messages.MAINCMD_P_COOLDOWN
-							.replace("%seconds%", String.valueOf(remainingCooldown)));
-					return;
+			int cooldown = ConfigParties.GENERAL_CHAT_COOLDOWN;
+			if (cooldown > 0  && !sender.hasPermission(PartiesPermission.ADMIN_COOLDOWN_CHAT_BYPASS)) {
+				String customCooldown = sender.getDynamicPermission(PartiesPermission.USER_SENDMESSAGE + ".cooldown.");
+				if (customCooldown != null) {
+					try {
+						cooldown = Integer.parseInt(customCooldown);
+					} catch (Exception ignored) {}
+				}
+				if (cooldown > 0) {
+					mustStartCooldown = true;
+					long remainingCooldown = ((PartiesPlugin) plugin).getCooldownManager().canAction(CooldownManager.Action.CHAT, partyPlayer.getPlayerUUID(), cooldown);
+					
+					if (remainingCooldown > 0) {
+						sendMessage(sender, partyPlayer, Messages.MAINCMD_P_COOLDOWN
+								.replace("%seconds%", String.valueOf(remainingCooldown)));
+						return;
+					}
 				}
 			}
 			
@@ -138,7 +147,7 @@ public abstract class CommandP extends ADPMainCommand {
 					((PartiesPlugin) plugin).getCooldownManager().startAction(
 							CooldownManager.Action.CHAT,
 							partyPlayer.getPlayerUUID(),
-							ConfigParties.GENERAL_CHAT_COOLDOWN
+							cooldown
 					);
 				
 				if (ConfigMain.PARTIES_LOGGING_PARTY_CHAT)

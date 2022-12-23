@@ -102,14 +102,23 @@ public class CommandClose extends PartiesSubCommand {
 		}
 		
 		boolean mustStartCooldown = false;
-		if (ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_CLOSE > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_CLOSE_BYPASS)) {
-			mustStartCooldown = true;
-			long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.CLOSE, sender.getUUID(), ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_CLOSE);
-			
-			if (remainingCooldown > 0) {
-				sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_OPENCLOSE_COOLDOWN
-						.replace("%seconds%", String.valueOf(remainingCooldown)));
-				return;
+		int cooldown = ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_CLOSE;
+		if (cooldown > 0 && !commandData.havePermission(PartiesPermission.ADMIN_COOLDOWN_CLOSE_BYPASS)) {
+			String customCooldown = sender.getDynamicPermission(PartiesPermission.USER_CLOSE + ".cooldown.");
+			if (customCooldown != null) {
+				try {
+					cooldown = Integer.parseInt(customCooldown);
+				} catch (Exception ignored) {}
+			}
+			if (cooldown > 0) {
+				mustStartCooldown = true;
+				long remainingCooldown = getPlugin().getCooldownManager().canAction(CooldownManager.Action.CLOSE, sender.getUUID(), cooldown);
+				
+				if (remainingCooldown > 0) {
+					sendMessage(sender, partyPlayer, Messages.ADDCMD_JOIN_OPENCLOSE_COOLDOWN
+							.replace("%seconds%", String.valueOf(remainingCooldown)));
+					return;
+				}
 			}
 		}
 		
@@ -120,7 +129,7 @@ public class CommandClose extends PartiesSubCommand {
 			getPlugin().getCooldownManager().startAction(
 					CooldownManager.Action.CLOSE,
 					sender.getUUID(),
-					ConfigParties.ADDITIONAL_JOIN_OPENCLOSE_COOLDOWN_CLOSE
+					cooldown
 			);
 		
 		

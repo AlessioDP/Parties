@@ -91,9 +91,11 @@ public class RankManager {
 	public boolean checkPlayerRank(PartyPlayerImpl pp, RankPermission rankPermission) {
 		boolean ret = true;
 		PartyRankImpl r = searchRankByLevel(pp.getRank());
+		User player = plugin.getPlayer(pp.getPlayerUUID());
 		
 		if (r != null
-				&& !plugin.getPlayer(pp.getPlayerUUID()).hasPermission(PartiesPermission.ADMIN_RANK_BYPASS)
+				&& player != null
+				&& !player.hasPermission(PartiesPermission.ADMIN_RANK_BYPASS)
 				&& !r.havePermission(rankPermission.toString())) {
 				ret = false;
 		}
@@ -106,6 +108,7 @@ public class RankManager {
 		User user = plugin.getPlayer(partyPlayer.getPlayerUUID());
 		
 		if (r != null
+				&& user != null
 				&& !user.hasPermission(PartiesPermission.ADMIN_RANK_BYPASS)
 				&& !r.havePermission(rankPermission.toString())) {
 			PartyRankImpl rr = searchUpRank(partyPlayer.getRank(), rankPermission);

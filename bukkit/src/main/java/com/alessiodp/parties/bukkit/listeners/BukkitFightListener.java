@@ -275,10 +275,10 @@ public class BukkitFightListener implements Listener {
 					// Check if the player is on home cooldown
 					if (partyPlayer.getPendingHomeDelay() != null) {
 						// Cancelling home task
-						partyPlayer.getPendingHomeDelay().cancel();
+						partyPlayer.cancelHomeDelay();
 						
 						user.sendMessage(
-								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORTDENIED, partyPlayer, null)
+								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_HOME_TELEPORT_CANCELLED, partyPlayer, null)
 								, true);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_HOME_DENIED_FIGHT, partyPlayer.getPlayerUUID()), true);
@@ -287,10 +287,10 @@ public class BukkitFightListener implements Listener {
 					// Check if the player is on teleport cooldown
 					if (partyPlayer.getPendingTeleportDelay() != null) {
 						// Cancelling home task
-						partyPlayer.getPendingTeleportDelay().cancel();
+						partyPlayer.cancelTeleportDelay();
 						
 						user.sendMessage(
-								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_TELEPORT_PLAYER_TELEPORTDENIED, partyPlayer, null)
+								plugin.getMessageUtils().convertPlaceholders(BukkitMessages.ADDCMD_TELEPORT_PLAYER_TELEPORT_CANCELLED, partyPlayer, null)
 								, true);
 						
 						plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_TASK_TELEPORT_DENIED_FIGHT, partyPlayer.getPlayerUUID()), true);

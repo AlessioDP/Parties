@@ -87,7 +87,8 @@ public class CommandInfo extends PartiesSubCommand {
 		}
 		
 		// Command starts
-		for (String line : Messages.MAINCMD_INFO_CONTENT) {
+		boolean ownParty = partyPlayer != null && party.getMembers().contains(partyPlayer.getPlayerUUID());
+		for (String line : ownParty ? Messages.MAINCMD_INFO_CONTENT_OWN : Messages.MAINCMD_INFO_CONTENT_OTHER) {
 			line = getPlugin().getMessageUtils().convertPlaceholders(line, partyPlayer, party, Messages.PARTIES_LIST_MISSING);
 			
 			sendMessage(sender, partyPlayer, line);

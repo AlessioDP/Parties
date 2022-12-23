@@ -8,6 +8,7 @@ import com.alessiodp.parties.velocity.messaging.VelocityPartiesMessageDispatcher
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
+import com.velocitypowered.api.event.connection.PostLoginEvent;
 
 public class VelocityJoinLeaveListener extends JoinLeaveListener {
 	
@@ -16,7 +17,7 @@ public class VelocityJoinLeaveListener extends JoinLeaveListener {
 	}
 	
 	@Subscribe
-	public void onPlayerJoin(LoginEvent event) {
+	public void onPlayerJoin(PostLoginEvent event) {
 		super.onPlayerJoin(new VelocityUser(plugin, event.getPlayer()));
 	}
 	
