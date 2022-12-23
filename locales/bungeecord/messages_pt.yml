@@ -115,13 +115,20 @@ main-commands:
       separator: "&7, "
       empty: "&7Nenhum"
   info:
-    content:
-      - "&b======== &l informação de %party% &r&b========"
-      - "&b&lDescrição&7: %desc%"
-      - "&bLíder&7: %list_rank_leader%"
-      - "&bModeradores&7: %list_rank_moderator%"
-      - "&bMembros&7: %list_rank_member%"
-      - "&bJogadores online&7: %members_online_total%"
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bLeader&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bMembers&7: %list_rank_member%"
+      - "&bOnline players&7: %members_online_total%"
   invite:
     sent: "&bVocê convidou %player% para sua equipe"
     player-invited: "[{\"text\":\"&b%player% convidou você para equipe %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar o convite\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Negar o convite\"}]}}},{\"text\":\"&b?\n&bVocê pode digitar &7/party <accept/deny> &bpara escolher.\"}]"
@@ -321,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Você será teleportado em %seconds% segundos..."
-    teleport-denied: "&7Teletransporte negado"
+    teleport-cancelled: "&7Teleport cancelled"
     teleport-waiting: "&cVocê já está esperando pelo teleporte!"
     no-home: "&cAinda não há uma casa"
     #[Special tags]
@@ -343,6 +350,7 @@ additional-commands:
       already-closed: "&cThe party is already closed"
       cooldown: "&cVocê precisa esperar %seconds% segundos!"
       cannot-join: "&cYou cannot join this party"
+      failed: "&cFailed to open the party"
     password:
       wrong-password: "&cSenha errada!"
   list:
@@ -421,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Você será teleportado em %seconds% segundos"
-    player-teleport-denied: "&7Teletransporte negado"
+    player-teleport-cancelled: "&7Teleport cancelled"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cVocê precisa esperar %seconds% segundos!"
@@ -538,4 +546,4 @@ help:
       tag: 'Definir/Remover tag da equipe'
       teleport: 'Teleporte sua equipe até você'
 dont-edit-this:
-  version: 13
+  version: 14
