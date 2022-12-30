@@ -77,7 +77,7 @@
 		<!-- Dev libraries -->
 		<dev.annotations>23.1.0</dev.annotations>
 		<dev.lombok>1.18.24</dev.lombok>
-		<dev.mockito>4.10.0</dev.mockito>
+		<dev.mockito>4.11.0</dev.mockito>
 		<dev.junit>5.9.1</dev.junit>
 		
 		<libs.adpcore>1.8.9</libs.adpcore>
