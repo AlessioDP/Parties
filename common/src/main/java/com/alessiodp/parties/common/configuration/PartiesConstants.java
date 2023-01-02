@@ -192,6 +192,7 @@ public class PartiesConstants {
 	public static final String DEBUG_PLAYER_PARTY_JOIN = "Added player %s into party %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_PARTY_LEAVE = "Removed player %s from party %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_RELOADED = "Reloaded player %s";
+	public static final String DEBUG_PLAYER_GHOST_PARTY = "Removing ghost party from player %s (p-uuid: %s) (party: %s)";
 	public static final String DEBUG_PLAYER_CLEANUP = "Cleaning up player %s (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_GET_DATABASE = "Got player %s from database (party: %s) (p-uuid: %s)";
 	public static final String DEBUG_PLAYER_GET_LIST = "Got player %s from list (party: %s) (p-uuid: %s)";

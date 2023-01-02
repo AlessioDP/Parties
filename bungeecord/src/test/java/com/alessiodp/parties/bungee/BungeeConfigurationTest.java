@@ -32,7 +32,7 @@ public class BungeeConfigurationTest {
 	public static void setUp() {
 		ADPLogger testLogger = mock(ADPLogger.class);
 		doAnswer((params) -> {
-			System.out.println((String) params.getArgument(0));
+			//System.out.println((String) params.getArgument(0));
 			return null;
 		}).when(testLogger).info(anyString());
 		doAnswer((params) -> {

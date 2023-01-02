@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.2.6</version>
+    <version>3.2.8</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-bungeecord</artifactId>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-common</artifactId>
-      <version>3.2.6</version>
+      <version>3.2.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -114,7 +114,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.10.0</version>
+      <version>4.11.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

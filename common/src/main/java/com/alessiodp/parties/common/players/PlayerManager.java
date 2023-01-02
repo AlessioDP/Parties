@@ -43,9 +43,15 @@ public abstract class PlayerManager {
 	public void setupOnlinePlayer(User player) {
 		PartyPlayerImpl pp = loadPlayer(player.getUUID());
 		
-		PartyImpl party = plugin.getPartyManager().loadParty(pp.getPartyId());
-		if (party != null)
-			party.addOnlineMember(pp);
+		if (pp.getPartyId() != null) {
+			PartyImpl party = plugin.getPartyManager().loadParty(pp.getPartyId());
+			if (party != null)
+				party.addOnlineMember(pp);
+			else {
+				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_PLAYER_GHOST_PARTY, pp.getName(), pp.getPlayerUUID(), pp.getPartyId()), true);
+				pp.removeFromParty(true);
+			}
+		}
 		
 		plugin.getLoginAlertsManager().sendAlerts(player);
 	}

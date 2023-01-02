@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.2.7</version>
+	<version>3.2.8</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -77,10 +77,10 @@
 		<!-- Dev libraries -->
 		<dev.annotations>23.1.0</dev.annotations>
 		<dev.lombok>1.18.24</dev.lombok>
-		<dev.mockito>4.10.0</dev.mockito>
+		<dev.mockito>4.11.0</dev.mockito>
 		<dev.junit>5.9.1</dev.junit>
 		
-		<libs.adpcore>1.8.9</libs.adpcore>
+		<libs.adpcore>1.8.10</libs.adpcore>
 		<libs.api.spigot>1.19.3-R0.1-SNAPSHOT</libs.api.spigot>
 		<libs.api.bungeecord>1.19-R0.1-SNAPSHOT</libs.api.bungeecord>
 		<libs.api.velocity>3.1.1</libs.api.velocity>
@@ -99,7 +99,7 @@
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.19.7</libs.essentialsx>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
-		<libs.lastLoginApi>1.7.3</libs.lastLoginApi>
+		<libs.lastLoginApi>1.7.4</libs.lastLoginApi>
 		<libs.magic>10.2</libs.magic>
 		<libs.placeholderApi>2.11.2</libs.placeholderApi>
 		<libs.premiumVanish>2.7.11-2</libs.premiumVanish>
