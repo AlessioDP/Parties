@@ -1,11 +1,9 @@
 package com.alessiodp.parties.velocity.messaging.redis;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.messaging.MessageChannel;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.core.velocity.addons.external.VelocityRedisBungeeHandler;
-import com.alessiodp.core.velocity.messaging.bungee.VelocityBungeecordListener;
 import com.alessiodp.core.velocity.messaging.redis.VelocityRedisBungeeListener;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.enums.JoinCause;
@@ -15,14 +13,11 @@ import com.alessiodp.parties.api.events.common.party.IPartyLevelUpEvent;
 import com.alessiodp.parties.api.events.common.player.IPlayerPostInviteEvent;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.configuration.PartiesConstants;
-import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.messaging.CommonListener;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyInviteImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
-import com.alessiodp.parties.velocity.configuration.VelocityPartiesConfigurationManager;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;

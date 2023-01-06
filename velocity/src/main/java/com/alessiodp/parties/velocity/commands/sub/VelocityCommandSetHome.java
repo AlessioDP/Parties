@@ -9,6 +9,7 @@ import com.alessiodp.parties.velocity.bootstrap.VelocityPartiesBootstrap;
 import com.alessiodp.parties.velocity.messaging.VelocityPartiesMessageDispatcher;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
+import org.jetbrains.annotations.NotNull;
 
 public class VelocityCommandSetHome extends CommandSetHome {
 	
@@ -17,7 +18,7 @@ public class VelocityCommandSetHome extends CommandSetHome {
 	}
 	
 	@Override
-	protected void getLocationAndSave(PartyPlayerImpl sender, PartyImpl party, String name) {
+	protected void getLocationAndSave(@NotNull PartyPlayerImpl sender, @NotNull PartyImpl party, @NotNull String name) {
 		Player player = ((VelocityPartiesBootstrap) plugin.getBootstrap()).getServer().getPlayer(sender.getPlayerUUID()).orElse(null);
 		if (player != null) {
 			ServerConnection serverConnection = player.getCurrentServer().orElse(null);

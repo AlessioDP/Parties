@@ -1,6 +1,5 @@
 package com.alessiodp.parties.common.configuration.data;
 
-import com.alessiodp.core.common.addons.external.simpleyaml.configuration.ConfigurationSection;
 import com.alessiodp.core.common.addons.external.simpleyaml.configuration.MemorySection;
 import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;

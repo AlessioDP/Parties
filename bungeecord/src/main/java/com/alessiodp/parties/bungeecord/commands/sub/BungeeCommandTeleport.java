@@ -20,6 +20,7 @@ import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 		super(plugin, mainCommand);
 	}
 	
-	public void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay) {
+	public void performTeleport(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, int delay) {
 		ProxiedPlayer bungeePlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(player.getPlayerUUID());
 		if (bungeePlayer != null) {
 			if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
@@ -59,7 +60,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer) {
+	public void teleportSinglePlayer(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer) {
 		ProxiedPlayer bungeeTargetPlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(targetPlayer.getPlayerUUID());
 		if (bungeeTargetPlayer != null) {
 			teleportSinglePlayer(
@@ -70,7 +71,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public BungeeTeleportDelayTask teleportSinglePlayerWithDelay(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay) {
+	public BungeeTeleportDelayTask teleportSinglePlayerWithDelay(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer, int delay) {
 		return new BungeeTeleportDelayTask(
 				plugin,
 				player,
@@ -80,7 +81,7 @@ public class BungeeCommandTeleport extends CommandTeleport {
 		);
 	}
 	
-	public static void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, ServerInfo serverInfo) {
+	public static void teleportSinglePlayer(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer, @NotNull ServerInfo serverInfo) {
 		ProxiedPlayer bungeePlayer = ((BungeePartiesBootstrap) plugin.getBootstrap()).getProxy().getPlayer(player.getPlayerUUID());
 		if (bungeePlayer != null) {
 			boolean serverChange = false;

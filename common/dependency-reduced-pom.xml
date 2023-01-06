@@ -3,7 +3,7 @@
   <parent>
     <artifactId>parties</artifactId>
     <groupId>com.alessiodp.parties</groupId>
-    <version>3.2.8</version>
+    <version>3.2.9</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>parties-common</artifactId>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.alessiodp.parties</groupId>
       <artifactId>parties-api</artifactId>
-      <version>3.2.8</version>
+      <version>3.2.9</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.alessiodp.lastloginapi</groupId>
       <artifactId>lastloginapi-api</artifactId>
-      <version>1.7.3</version>
+      <version>1.7.4</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

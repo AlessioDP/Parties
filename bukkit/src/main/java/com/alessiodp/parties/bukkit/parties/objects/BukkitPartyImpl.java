@@ -13,6 +13,7 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.RankPermission;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -53,7 +54,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketCreate(PartyPlayerImpl leader) {
+	public void sendPacketCreate(@Nullable PartyPlayerImpl leader) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to BungeeCord
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendCreateParty(this, leader);
@@ -63,7 +64,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
+	public void sendPacketDelete(@NotNull DeleteCause cause, @Nullable PartyPlayerImpl kicked, @Nullable PartyPlayerImpl commandSender) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to BungeeCord
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendDeleteParty(this, cause, kicked, commandSender);
@@ -73,7 +74,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketRename(String oldName, String newName, PartyPlayerImpl player, boolean isAdmin) {
+	public void sendPacketRename(@Nullable String oldName, @Nullable String newName, @Nullable PartyPlayerImpl player, boolean isAdmin) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to BungeeCord
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRenameParty(this, oldName, newName, player, isAdmin);
@@ -83,7 +84,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketAddMember(PartyPlayerImpl player, JoinCause cause, PartyPlayerImpl inviter) {
+	public void sendPacketAddMember(@NotNull PartyPlayerImpl player, @NotNull JoinCause cause, @Nullable PartyPlayerImpl inviter) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to BungeeCord
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddMemberParty(this, player, cause, inviter);
@@ -93,7 +94,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketRemoveMember(PartyPlayerImpl player, LeaveCause cause, PartyPlayerImpl kicker) {
+	public void sendPacketRemoveMember(@NotNull PartyPlayerImpl player, @NotNull LeaveCause cause, @Nullable PartyPlayerImpl kicker) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to BungeeCord
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendRemoveMemberParty(this, player, cause, kicker);
@@ -103,7 +104,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketInvite(PartyPlayer invitedPlayer, PartyPlayer inviter) {
+	public void sendPacketInvite(@NotNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to Bukkit servers
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendInvitePlayer(this, (PartyPlayerImpl) invitedPlayer, inviter != null ? (PartyPlayerImpl) inviter : null);
@@ -113,7 +114,7 @@ public class BukkitPartyImpl extends PartyImpl {
 	}
 	
 	@Override
-	public void sendPacketExperience(double newExperience, PartyPlayer killer, boolean gainMessage) {
+	public void sendPacketExperience(double newExperience, @Nullable PartyPlayer killer, boolean gainMessage) {
 		if (plugin.isBungeeCordEnabled()) {
 			// Send event to BungeeCord
 			((BukkitPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendPartyExperience(this, newExperience, (PartyPlayerImpl) killer, gainMessage);

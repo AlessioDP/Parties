@@ -7,7 +7,6 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.velocity.messaging.VelocityPartiesMessageDispatcher;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
-import com.velocitypowered.api.event.connection.LoginEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
 
 public class VelocityJoinLeaveListener extends JoinLeaveListener {

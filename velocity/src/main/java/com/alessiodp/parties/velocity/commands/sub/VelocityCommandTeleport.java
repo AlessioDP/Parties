@@ -20,6 +20,7 @@ import com.alessiodp.parties.velocity.parties.objects.VelocityPartyTeleportReque
 import com.alessiodp.parties.velocity.tasks.VelocityTeleportDelayTask;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ public class VelocityCommandTeleport extends CommandTeleport {
 		super(plugin, mainCommand);
 	}
 	
-	public void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay) {
+	public void performTeleport(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, int delay) {
 		Player velocityPlayer = ((VelocityPartiesBootstrap) plugin.getBootstrap()).getServer().getPlayer(player.getPlayerUUID()).orElse(null);
 		if (velocityPlayer != null) {
 			if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
@@ -59,7 +60,7 @@ public class VelocityCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer) {
+	public void teleportSinglePlayer(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer) {
 		((VelocityPartiesBootstrap) plugin.getBootstrap()).getServer().getPlayer(targetPlayer.getPlayerUUID()).ifPresent(velocityTargetPlayer -> {
 			velocityTargetPlayer.getCurrentServer().ifPresent(serverConnection -> {
 				teleportSinglePlayer(
@@ -71,7 +72,7 @@ public class VelocityCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public VelocityTeleportDelayTask teleportSinglePlayerWithDelay(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay) {
+	public VelocityTeleportDelayTask teleportSinglePlayerWithDelay(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer, int delay) {
 		return new VelocityTeleportDelayTask(
 				plugin,
 				player,

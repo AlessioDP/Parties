@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.addons.external.LLAPIHandler;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
@@ -194,7 +195,7 @@ public class CommandRank extends PartiesSubCommand {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_SAMERANK
 						.replace("%rank_name%", rank.getName())
 						.replace("%rank_chat%", rank.getChat())
-						.replace("%player%", promotedPlayer.getName()));
+						.replace("%player%", CommonUtils.getOr(promotedPlayer.getName(), "Unknown")));
 				return;
 			}
 			
@@ -202,7 +203,7 @@ public class CommandRank extends PartiesSubCommand {
 				sendMessage(sender, partyPlayer, Messages.MAINCMD_RANK_LOWRANK
 						.replace("%rank_name%", rank.getName())
 						.replace("%rank_chat%", rank.getChat())
-						.replace("%player%", promotedPlayer.getName()));
+						.replace("%player%", CommonUtils.getOr(promotedPlayer.getName(), "Unknown")));
 				return;
 			}
 			if ((rank.getLevel() != ConfigParties.RANK_SET_HIGHER) && (rank.getLevel() >= partyPlayer.getRank())) {

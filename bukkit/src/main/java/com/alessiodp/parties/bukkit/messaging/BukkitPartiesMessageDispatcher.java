@@ -12,6 +12,7 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,26 +23,26 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		super(plugin, new BukkitPartiesBungeecordDispatcher(plugin));
 	}
 	
-	private void sendPacketToBungeecord(PartiesPacket packet) {
+	private void sendPacketToBungeecord(@NotNull PartiesPacket packet) {
 		bungeeDispatcher.sendPacket(packet.setSource(BukkitConfigMain.PARTIES_BUNGEECORD_SERVER_ID), MessageChannel.MAIN);
 	}
 	
 	
-	public void sendUpdateParty(PartyImpl party) {
+	public void sendUpdateParty(@NotNull PartyImpl party) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
 					.setParty(party.getId()));
 		}
 	}
 	
-	public void sendUpdatePlayer(PartyPlayerImpl partyPlayer) {
+	public void sendUpdatePlayer(@NotNull PartyPlayerImpl partyPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PLAYER_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.UPDATE_PLAYER)
 					.setPlayer(partyPlayer.getPartyId()));
 		}
 	}
 	
-	public void sendCreateParty(PartyImpl party, PartyPlayerImpl leader) {
+	public void sendCreateParty(@NotNull PartyImpl party, @Nullable PartyPlayerImpl leader) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.CREATE_PARTY)
 					.setParty(party.getId())
@@ -49,17 +50,17 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendDeleteParty(PartyImpl party, DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl executor) {
+	public void sendDeleteParty(@NotNull PartyImpl party, @NotNull DeleteCause cause, @Nullable PartyPlayerImpl kicked, @Nullable PartyPlayerImpl executor) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.DELETE_PARTY)
 					.setParty(party.getId())
 					.setCause(cause)
-					.setPlayer(kicked.getPlayerUUID())
+					.setPlayer(kicked != null ? kicked.getPlayerUUID() : null)
 					.setSecondaryPlayer(executor != null ? executor.getPlayerUUID() : null));
 		}
 	}
 	
-	public void sendRenameParty(PartyImpl party, String oldName, String newName, @Nullable PartyPlayerImpl executor, boolean admin) {
+	public void sendRenameParty(@NotNull PartyImpl party, @Nullable String oldName, @Nullable String newName, @Nullable PartyPlayerImpl executor, boolean admin) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.RENAME_PARTY)
 					.setParty(party.getId())
@@ -70,7 +71,7 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendAddMemberParty(PartyImpl party, PartyPlayerImpl player, JoinCause cause, @Nullable PartyPlayerImpl inviter) {
+	public void sendAddMemberParty(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull JoinCause cause, @Nullable PartyPlayerImpl inviter) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.ADD_MEMBER_PARTY)
 					.setParty(party.getId())
@@ -80,7 +81,7 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendRemoveMemberParty(PartyImpl party, PartyPlayerImpl player, LeaveCause cause, @Nullable PartyPlayerImpl executor) {
+	public void sendRemoveMemberParty(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull LeaveCause cause, @Nullable PartyPlayerImpl executor) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.REMOVE_MEMBER_PARTY)
 					.setParty(party.getId())
@@ -90,7 +91,7 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendChatMessage(PartyImpl party, PartyPlayerImpl player, String message) {
+	public void sendChatMessage(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull String message) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CHAT) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.CHAT_MESSAGE)
 					.setParty(party.getId())
@@ -99,16 +100,16 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendBroadcastMessage(PartyImpl party, PartyPlayerImpl player, String message) {
+	public void sendBroadcastMessage(@NotNull PartyImpl party, @Nullable PartyPlayerImpl player, @NotNull String message) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_BROADCAST) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.BROADCAST_MESSAGE)
 					.setParty(party.getId())
-					.setPlayer(player.getPlayerUUID())
+					.setPlayer(player != null ? player.getPlayerUUID() : null)
 					.setText(message));
 		}
 	}
 	
-	public void sendInvitePlayer(PartyImpl party, PartyPlayerImpl player, @Nullable PartyPlayerImpl inviter) {
+	public void sendInvitePlayer(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @Nullable PartyPlayerImpl inviter) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
 					.setParty(party.getId())
@@ -117,7 +118,7 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendAddHome(PartyImpl party, String home) {
+	public void sendAddHome(@NotNull PartyImpl party, @NotNull String home) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.ADD_HOME)
 					.setParty(party.getId())
@@ -125,12 +126,12 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendPartyExperience(PartyImpl party, double experience, PartyPlayerImpl killer, boolean gainMessage) {
+	public void sendPartyExperience(@NotNull PartyImpl party, double experience, @Nullable PartyPlayerImpl killer, boolean gainMessage) {
 		// Not duplication: this is used to alert BungeeCord that experience must be given
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.EXPERIENCE)
 					.setParty(party.getId())
-					.setPlayer(killer.getPlayerUUID())
+					.setPlayer(killer != null ? killer.getPlayerUUID() : null)
 					.setNumber(experience)
 					.setBool(gainMessage));
 		}
@@ -142,7 +143,8 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	public void sendDebugBungeeCord(UUID temporaryUuid, UUID receiver, boolean replyToPlayer) {
+	@Contract("_, null, true -> fail")
+	public void sendDebugBungeeCord(@NotNull UUID temporaryUuid, @Nullable UUID receiver, boolean replyToPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_DEBUG_BUNGEECORD) {
 			sendPacketToBungeecord(makePacket(PartiesPacket.PacketType.DEBUG_BUNGEECORD)
 					.setPlayer(temporaryUuid)
@@ -151,7 +153,7 @@ public class BukkitPartiesMessageDispatcher extends BukkitMessageDispatcher {
 		}
 	}
 	
-	private PartiesPacket makePacket(PartiesPacket.PacketType type) {
+	private PartiesPacket makePacket(@NotNull PartiesPacket.PacketType type) {
 		return (PartiesPacket) new PartiesPacket()
 				.setVersion(plugin.getVersion())
 				.setType(type);

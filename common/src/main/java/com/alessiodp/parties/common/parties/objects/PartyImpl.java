@@ -2,6 +2,7 @@ package com.alessiodp.parties.common.parties.objects;
 
 import com.alessiodp.core.common.bootstrap.PluginPlatform;
 import com.alessiodp.core.common.scheduling.ADPScheduler;
+import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.core.common.utils.CommonUtils;
@@ -176,7 +177,8 @@ public abstract class PartyImpl implements Party {
 				this.leader = leader.getPlayerUUID();
 				members.add(leader.getPlayerUUID());
 				
-				if (plugin.getOfflinePlayer(leader.getPlayerUUID()).isOnline())
+				OfflineUser ou = plugin.getOfflinePlayer(leader.getPlayerUUID());
+				if (ou != null && ou.isOnline())
 					onlineMembers.add(leader);
 				
 				// Update player
@@ -913,55 +915,55 @@ public abstract class PartyImpl implements Party {
 	
 	public abstract void sendPacketUpdate();
 	
-	public void sendPacketCreate(PartyPlayerImpl creator) {
+	public void sendPacketCreate(@Nullable PartyPlayerImpl creator) {
 		// Calling API event
 		IPartyPostCreateEvent event = plugin.getEventManager().preparePartyPostCreateEvent(creator, this);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketDelete(DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl commandSender) {
+	public void sendPacketDelete(@NotNull DeleteCause cause, @Nullable PartyPlayerImpl kicked, @Nullable PartyPlayerImpl commandSender) {
 		// Calling API event
 		IPartyPostDeleteEvent event = plugin.getEventManager().preparePartyPostDeleteEvent(this, cause, kicked, commandSender);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketRename(String oldName, String newName, PartyPlayerImpl player, boolean isAdmin) {
+	public void sendPacketRename(@Nullable String oldName, @Nullable String newName, @Nullable PartyPlayerImpl player, boolean isAdmin) {
 		// Calling API event
 		IPartyPostRenameEvent event = plugin.getEventManager().preparePartyPostRenameEvent(this, oldName, getName(), player, isAdmin);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketAddMember(PartyPlayerImpl player, JoinCause cause, PartyPlayerImpl inviter) {
+	public void sendPacketAddMember(@NotNull PartyPlayerImpl player, @NotNull JoinCause cause, @Nullable PartyPlayerImpl inviter) {
 		// Calling API Event
 		IPlayerPostJoinEvent event = plugin.getEventManager().preparePlayerPostJoinEvent(player, this, cause, inviter);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketRemoveMember(PartyPlayerImpl player, LeaveCause cause, PartyPlayerImpl kicker) {
+	public void sendPacketRemoveMember(@NotNull PartyPlayerImpl player, @NotNull LeaveCause cause, @Nullable PartyPlayerImpl kicker) {
 		// Calling API Event
 		IPlayerPostLeaveEvent event = plugin.getEventManager().preparePlayerPostLeaveEvent(player, this, cause, kicker);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketChat(PartyPlayerImpl player, String formattedMessage, String message, boolean dispatchBetweenServers) {
+	public void sendPacketChat(@NotNull PartyPlayerImpl player, @NotNull String formattedMessage, @NotNull String message, boolean dispatchBetweenServers) {
 		// Calling API Event
 		IPlayerPostChatEvent event = plugin.getEventManager().preparePlayerPostChatEvent(player, this, formattedMessage, message);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketBroadcast(String message, PartyPlayerImpl partyPlayer, boolean dispatchBetweenServers) {
+	public void sendPacketBroadcast(@NotNull String message, @Nullable PartyPlayerImpl partyPlayer, boolean dispatchBetweenServers) {
 		// Calling API Event
 		IPartyPostBroadcastEvent event = plugin.getEventManager().preparePartyPostBroadcastEvent(this, message, partyPlayer);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public void sendPacketInvite(PartyPlayer invitedPlayer, PartyPlayer inviter) {
+	public void sendPacketInvite(@NotNull PartyPlayer invitedPlayer, @Nullable PartyPlayer inviter) {
 		// Calling API Event
 		IPlayerPostInviteEvent event = plugin.getEventManager().preparePlayerPostInviteEvent(invitedPlayer, inviter, this);
 		plugin.getEventManager().callEvent(event);
 	}
 	
-	public abstract void sendPacketExperience(double newExperience, PartyPlayer killer, boolean gainMessage);
+	public abstract void sendPacketExperience(double newExperience, @Nullable PartyPlayer killer, boolean gainMessage);
 	
 	public abstract void sendPacketLevelUp(int newLevel);
 }

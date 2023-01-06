@@ -102,10 +102,10 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 	}
 	
 	// Perform the teleport command and handle cooldown
-	protected abstract void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay);
+	protected abstract void performTeleport(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, int delay);
 	
 	// The player accepted the teleport, handling delay
-	protected void handleSinglePlayerTeleport(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay) {
+	protected void handleSinglePlayerTeleport(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer, int delay) {
 		User user = plugin.getPlayer(player.getPlayerUUID());
 		if (user != null && player.getPendingTeleportDelay() == null) {
 			if (delay > 0) {
@@ -123,10 +123,10 @@ public abstract class CommandTeleport extends PartiesSubCommand {
 	}
 	
 	// Teleport the player
-	public abstract void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer);
+	public abstract void teleportSinglePlayer(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer);
 	
 	// Get the task for teleport delay
-	public abstract TeleportDelayTask teleportSinglePlayerWithDelay(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay);
+	public abstract TeleportDelayTask teleportSinglePlayerWithDelay(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer, int delay);
 	
 	
 }

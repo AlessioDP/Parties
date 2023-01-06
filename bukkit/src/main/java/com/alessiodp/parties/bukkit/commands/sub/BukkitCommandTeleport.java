@@ -19,6 +19,7 @@ import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public void performTeleport(PartyImpl party, PartyPlayerImpl player, int delay) {
+	public void performTeleport(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, int delay) {
 		if (ConfigParties.ADDITIONAL_TELEPORT_ACCEPT_REQUEST_ENABLE)
 			player.sendMessage(Messages.ADDCMD_TELEPORT_ACCEPT_REQUEST_SENT);
 		else
@@ -57,7 +58,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public void teleportSinglePlayer(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer) {
+	public void teleportSinglePlayer(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer) {
 		Player bukkitTargetPlayer = Bukkit.getPlayer(targetPlayer.getPlayerUUID());
 		if (bukkitTargetPlayer != null) {
 			teleportSinglePlayer(
@@ -68,7 +69,7 @@ public class BukkitCommandTeleport extends CommandTeleport {
 	}
 	
 	@Override
-	public BukkitTeleportDelayTask teleportSinglePlayerWithDelay(PartiesPlugin plugin, PartyPlayerImpl player, PartyPlayerImpl targetPlayer, int delay) {
+	public BukkitTeleportDelayTask teleportSinglePlayerWithDelay(@NotNull PartiesPlugin plugin, @NotNull PartyPlayerImpl player, @NotNull PartyPlayerImpl targetPlayer, int delay) {
 		return new BukkitTeleportDelayTask(
 				plugin,
 				player,

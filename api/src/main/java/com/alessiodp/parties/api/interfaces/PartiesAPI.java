@@ -198,7 +198,7 @@ public interface PartiesAPI {
 	 * Get a list of online players of the party
 	 *
 	 * @param party the {@code Party}
-	 * @return a list of {@code Set<PartyPlayer>}, if the party
+	 * @return a set of {@code Set<PartyPlayer>}, if the party
 	 * doesn't exist returns {@code null}
 	 * @deprecated use Party.getOnlineMembers(boolean) instead
 	 */

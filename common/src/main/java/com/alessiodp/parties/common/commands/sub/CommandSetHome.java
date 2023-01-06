@@ -176,7 +176,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 		}
 	}
 	
-	protected abstract void getLocationAndSave(PartyPlayerImpl sender, PartyImpl party, String name);
+	protected abstract void getLocationAndSave(@NotNull PartyPlayerImpl sender, @NotNull PartyImpl party, @NotNull String name);
 	
 	public static void savePartyHome(PartyImpl party, PartyHomeImpl home) {
 		if (home != null) {

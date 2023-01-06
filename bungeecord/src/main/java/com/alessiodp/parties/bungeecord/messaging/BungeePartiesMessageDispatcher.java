@@ -32,20 +32,20 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		);
 	}
 	
-	private void sendPacketToBungeecord(PartiesPacket packet) {
+	private void sendPacketToBungeecord(@NotNull PartiesPacket packet) {
 		bungeeDispatcher.sendPacket(packet, MessageChannel.SUB);
 	}
 	
-	private void sendPacketToBungeecordUser(PartiesPacket packet, User user) {
+	private void sendPacketToBungeecordUser(@NotNull PartiesPacket packet, @NotNull User user) {
 		bungeeDispatcher.sendPacketToUser(packet, user, MessageChannel.SUB);
 	}
 	
-	private void sendPacketToRedis(PartiesPacket packet) {
+	private void sendPacketToRedis(@NotNull PartiesPacket packet) {
 		if (redisBungeeDispatcher.isRegistered())
 			redisBungeeDispatcher.sendPacket(packet.setSource(BungeeRedisBungeeHandler.getProxyId()));
 	}
 	
-	public void sendUpdateParty(PartyImpl party) {
+	public void sendUpdateParty(@NotNull PartyImpl party) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
 					.setParty(party.getId());
@@ -54,7 +54,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendUpdatePlayer(PartyPlayerImpl partyPlayer) {
+	public void sendUpdatePlayer(@NotNull PartyPlayerImpl partyPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PLAYER_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.UPDATE_PLAYER)
 					.setPlayer(partyPlayer.getPlayerUUID());
@@ -63,7 +63,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendLoadParty(PartyImpl party) {
+	public void sendLoadParty(@NotNull PartyImpl party) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PARTIES) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.LOAD_PARTY)
 					.setParty(party.getId());
@@ -71,7 +71,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendLoadPlayer(PartyPlayerImpl partyPlayer) {
+	public void sendLoadPlayer(@NotNull PartyPlayerImpl partyPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PLAYERS) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.LOAD_PLAYER)
 					.setPlayer(partyPlayer.getPlayerUUID());
@@ -79,7 +79,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendUnloadParty(PartyImpl party) {
+	public void sendUnloadParty(@NotNull PartyImpl party) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PARTIES) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.UNLOAD_PARTY)
 					.setParty(party.getId());
@@ -87,7 +87,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendUnloadPlayer(PartyPlayerImpl partyPlayer) {
+	public void sendUnloadPlayer(@NotNull PartyPlayerImpl partyPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_LOAD_PLAYERS) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.UNLOAD_PLAYER)
 					.setPlayer(partyPlayer.getPlayerUUID());
@@ -95,7 +95,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendPlaySound(User user, String sound, double volume, double pitch) {
+	public void sendPlaySound(@NotNull User user, @NotNull String sound, double volume, double pitch) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_SOUNDS) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.PLAY_SOUND)
 					.setPlayer(user.getUUID())
@@ -107,29 +107,29 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendCreateParty(PartyImpl party, PartyPlayerImpl leader) {
+	public void sendCreateParty(@NotNull PartyImpl party, @Nullable PartyPlayerImpl leader) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.CREATE_PARTY)
 					.setParty(party.getId())
-					.setPlayer(leader.getPlayerUUID());
+					.setPlayer(leader != null ? leader.getPlayerUUID() : null);
 			sendPacketToBungeecord(packet);
 			sendPacketToRedis(packet);
 		}
 	}
 	
-	public void sendDeleteParty(PartyImpl party, DeleteCause cause, PartyPlayerImpl kicked, PartyPlayerImpl executor) {
+	public void sendDeleteParty(@NotNull PartyImpl party, @NotNull DeleteCause cause, @Nullable PartyPlayerImpl kicked, @Nullable PartyPlayerImpl executor) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.DELETE_PARTY)
 					.setParty(party.getId())
 					.setCause(cause)
-					.setPlayer(kicked.getPlayerUUID())
+					.setPlayer(kicked != null ? kicked.getPlayerUUID() : null)
 					.setSecondaryPlayer(executor != null ? executor.getPlayerUUID() : null);
 			sendPacketToBungeecord(packet);
 			sendPacketToRedis(packet);
 		}
 	}
 	
-	public void sendRenameParty(PartyImpl party, String oldName, String newName, @Nullable PartyPlayerImpl executor, boolean admin) {
+	public void sendRenameParty(@NotNull PartyImpl party, @Nullable String oldName, @Nullable String newName, @Nullable PartyPlayerImpl executor, boolean admin) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.RENAME_PARTY)
 					.setParty(party.getId())
@@ -142,7 +142,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendAddMemberParty(PartyImpl party, PartyPlayerImpl player, JoinCause cause, @Nullable PartyPlayerImpl inviter) {
+	public void sendAddMemberParty(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull JoinCause cause, @Nullable PartyPlayerImpl inviter) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.ADD_MEMBER_PARTY)
 					.setParty(party.getId())
@@ -154,7 +154,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendRemoveMemberParty(PartyImpl party, PartyPlayerImpl player, LeaveCause cause, @Nullable PartyPlayerImpl executor) {
+	public void sendRemoveMemberParty(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull LeaveCause cause, @Nullable PartyPlayerImpl executor) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.REMOVE_MEMBER_PARTY)
 					.setParty(party.getId())
@@ -166,7 +166,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendChatMessage(PartyImpl party, PartyPlayerImpl player, String formattedMessage, String message, boolean dispatchRedis) {
+	public void sendChatMessage(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull String formattedMessage, @NotNull String message, boolean dispatchRedis) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CHAT) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.CHAT_MESSAGE)
 					.setParty(party.getId())
@@ -179,11 +179,11 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendBroadcastMessage(PartyImpl party, PartyPlayerImpl player, String message, boolean dispatchRedis) {
+	public void sendBroadcastMessage(@NotNull PartyImpl party, @Nullable PartyPlayerImpl player, @NotNull String message, boolean dispatchRedis) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_BROADCAST) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.BROADCAST_MESSAGE)
 					.setParty(party.getId())
-					.setPlayer(player.getPlayerUUID())
+					.setPlayer(player != null ? player.getPlayerUUID() : null)
 					.setText(message);
 			sendPacketToBungeecord(packet);
 			if (dispatchRedis)
@@ -191,7 +191,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendInvitePlayer(PartyImpl party, PartyPlayerImpl player, @Nullable PartyPlayerImpl inviter) {
+	public void sendInvitePlayer(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @Nullable PartyPlayerImpl inviter) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
 					.setParty(party.getId())
@@ -203,7 +203,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendAddHome(User user, PartyImpl party, String name, String server) {
+	public void sendAddHome(@NotNull User user, @NotNull PartyImpl party, @NotNull String name, @NotNull String server) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			// The home is set by Bukkit, send name + server name.
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.ADD_HOME)
@@ -215,7 +215,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendHomeTeleport(User user, PartyHomeImpl home, String message, ServerInfo targetServer) {
+	public void sendHomeTeleport(@NotNull User user, @NotNull PartyHomeImpl home, @NotNull String message, @NotNull ServerInfo targetServer) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.HOME_TELEPORT)
 				.setPlayer(user.getUUID())
 				.setText(home.toString())
@@ -229,7 +229,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendTeleport(User user, PartyPlayerImpl target, ServerInfo targetServer) {
+	public void sendTeleport(@NotNull User user, @NotNull PartyPlayerImpl target, @NotNull ServerInfo targetServer) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.TELEPORT)
 				.setPlayer(user.getUUID())
 				.setSecondaryPlayer(target.getPlayerUUID());
@@ -242,12 +242,12 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendPartyExperience(PartyImpl party, PartyPlayerImpl killer, double experience, boolean gainMessage) {
+	public void sendPartyExperience(@NotNull PartyImpl party, @Nullable PartyPlayerImpl killer, double experience, boolean gainMessage) {
 		// Not duplication: this is used to make an event in bukkit servers
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.EXPERIENCE)
 					.setParty(party.getId())
-					.setPlayer(killer.getPlayerUUID())
+					.setPlayer(killer != null ? killer.getPlayerUUID() : null)
 					.setNumber(experience)
 					.setBool(gainMessage);
 			sendPacketToBungeecord(packet);
@@ -255,7 +255,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendLevelUp(PartyImpl party, int newLevel) {
+	public void sendLevelUp(@NotNull PartyImpl party, int newLevel) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.LEVEL_UP)
 					.setParty(party.getId())
@@ -273,7 +273,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendDebugBungeecordReply(User receiver, boolean result, boolean replyToPlayer) {
+	public void sendDebugBungeecordReply(@NotNull User receiver, boolean result, boolean replyToPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_DEBUG_BUNGEECORD) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.DEBUG_BUNGEECORD)
 					.setPlayer(replyToPlayer ? receiver.getUUID() : null)
@@ -282,7 +282,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		}
 	}
 	
-	public void sendRedisMessage(User receiver, String message, boolean colorTranslation) {
+	public void sendRedisMessage(@NotNull User receiver, @NotNull String message, boolean colorTranslation) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.REDIS_MESSAGE)
 				.setPlayer(receiver.getUUID())
 				.setText(message)
@@ -290,7 +290,7 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		sendPacketToRedis(packet);
 	}
 	
-	public void sendRedisTitle(User receiver, String message, int fadeInTime, int showTime, int fadeOutTime) {
+	public void sendRedisTitle(@NotNull User receiver, @NotNull String message, int fadeInTime, int showTime, int fadeOutTime) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.REDIS_TITLE)
 				.setPlayer(receiver.getUUID())
 				.setText(message)
@@ -298,14 +298,14 @@ public class BungeePartiesMessageDispatcher extends BungeeMessageDispatcher {
 		sendPacketToRedis(packet);
 	}
 	
-	public void sendRedisChat(User receiver, String message) {
+	public void sendRedisChat(@NotNull User receiver, @NotNull String message) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.REDIS_CHAT)
 				.setPlayer(receiver.getUUID())
 				.setText(message);
 		sendPacketToRedis(packet);
 	}
 	
-	private PartiesPacket makePacket(PartiesPacket.PacketType type) {
+	private PartiesPacket makePacket(@NotNull PartiesPacket.PacketType type) {
 		return (PartiesPacket) new PartiesPacket()
 				.setVersion(plugin.getVersion())
 				.setType(type);

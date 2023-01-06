@@ -9,6 +9,7 @@ import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitCommandSetHome extends CommandSetHome {
 	
@@ -17,7 +18,7 @@ public class BukkitCommandSetHome extends CommandSetHome {
 	}
 	
 	@Override
-	protected void getLocationAndSave(PartyPlayerImpl sender, PartyImpl party, String name) {
+	protected void getLocationAndSave(@NotNull PartyPlayerImpl sender, @NotNull PartyImpl party, @NotNull String name) {
 		Player bukkitPlayer = Bukkit.getPlayer(sender.getPlayerUUID());
 		if (bukkitPlayer != null) {
 			savePartyHome(party, getHomeLocationOfPlayer(sender, name, ""));

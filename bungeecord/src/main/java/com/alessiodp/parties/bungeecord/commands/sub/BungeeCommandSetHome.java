@@ -8,6 +8,7 @@ import com.alessiodp.parties.bungeecord.messaging.BungeePartiesMessageDispatcher
 import com.alessiodp.parties.common.commands.sub.CommandSetHome;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import org.jetbrains.annotations.NotNull;
 
 public class BungeeCommandSetHome extends CommandSetHome {
 	
@@ -16,7 +17,7 @@ public class BungeeCommandSetHome extends CommandSetHome {
 	}
 	
 	@Override
-	protected void getLocationAndSave(PartyPlayerImpl sender, PartyImpl party, String name) {
+	protected void getLocationAndSave(@NotNull PartyPlayerImpl sender, @NotNull PartyImpl party, @NotNull String name) {
 		User user = plugin.getPlayer(sender.getPlayerUUID());
 		if (user != null && ((BungeeUser) user).getServer() != null) {
 			String serverName = ((BungeeUser) user).getServer().getName();
