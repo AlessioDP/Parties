@@ -3,7 +3,6 @@ package com.alessiodp.parties.bukkit.addons.external.hooks;
 import com.alessiodp.parties.bukkit.addons.external.ClaimHandler;
 import com.alessiodp.parties.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
-import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustType;
@@ -15,12 +14,14 @@ import java.util.UUID;
 public class GriefDefenderHook {
 	
 	public static ClaimHandler.Result isManager(Player claimer) {
-		Vector3i vector = Vector3i.from(claimer.getLocation().getBlockX(), claimer.getLocation().getBlockY(), claimer.getLocation().getBlockZ());
-		Claim claim = GriefDefender.getCore().getClaimManager(claimer.getWorld().getUID()).getClaimAt(vector);
+		final Claim claim = GriefDefender.getCore().getClaimAt(claimer.getLocation());
+		if (claim == null) {
+			return ClaimHandler.Result.NOEXIST;
+		}
 		if (claim.isWilderness()) {
 			return ClaimHandler.Result.NOEXIST;
 		}
-		if (!claim.getOwnerName().equalsIgnoreCase(claimer.getName())
+		if (!claimer.getUniqueId().equals(claim.getOwnerUniqueId())
 				&& (BukkitConfigMain.ADDONS_CLAIM_NEEDOWNER || !claim.getUserTrusts(TrustTypes.MANAGER).contains(claimer.getUniqueId()))) {
 			return ClaimHandler.Result.NOMANAGER;
 		}
@@ -28,8 +29,10 @@ public class GriefDefenderHook {
 	}
 	
 	public static void addPartyPermission(Player claimer, PartyImpl party, ClaimHandler.PermissionType perm) {
-		Vector3i vector = Vector3i.from(claimer.getLocation().getBlockX(), claimer.getLocation().getBlockY(), claimer.getLocation().getBlockZ());
-		Claim claim = GriefDefender.getCore().getClaimManager(claimer.getWorld().getUID()).getClaimAt(vector);
+		final Claim claim = GriefDefender.getCore().getClaimAt(claimer.getLocation());
+		if (claim == null) {
+			return;
+		}
 		for (UUID uuid : party.getMembers()) {
 			if (claimer.getUniqueId().equals(uuid))
 				continue;
