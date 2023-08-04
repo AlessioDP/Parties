@@ -8,6 +8,7 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.api.enums.DeleteCause;
 import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
+import com.alessiodp.parties.bukkit.addons.external.DynmapHandler;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandHome;
 import com.alessiodp.parties.bukkit.commands.sub.BukkitCommandSetHome;
 import com.alessiodp.parties.bukkit.messaging.BukkitPartiesMessageDispatcher;
@@ -46,8 +47,11 @@ public class BukkitPartiesBungeecordListener extends BukkitBungeecordListener {
 			plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_MESSAGING_BUNGEE_RECEIVED, packet.getType().name(), messageChannel.getId()), true);
 			switch ((PartiesPacket.PacketType) packet.getType()) {
 				case UPDATE_PARTY:
-					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC)
+					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 						commonListener.handleUpdateParty(packet.getParty());
+						// Refresh Dynmap markers (Usually triggered on add home, but its executed in Bungee)
+						DynmapHandler.updatePartyMarker(packet.getParty());
+					}
 					break;
 				case UPDATE_PLAYER:
 					if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PLAYER_SYNC)

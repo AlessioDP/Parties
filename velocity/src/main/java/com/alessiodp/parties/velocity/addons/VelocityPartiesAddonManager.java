@@ -17,6 +17,8 @@ public class VelocityPartiesAddonManager extends PartiesAddonManager {
 	
 	@Override
 	public void loadAddons() {
+		super.loadAddons();
+		
 		redisBungee.init(VelocityConfigMain.PARTIES_BUNGEECORD_REDIS);
 	}
 }

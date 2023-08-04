@@ -3,6 +3,7 @@ package com.alessiodp.parties.common.commands.sub;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
+import com.alessiodp.core.common.scheduling.ADPScheduler;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.commands.list.CommonCommands;
@@ -186,7 +187,7 @@ public abstract class CommandSetHome extends PartiesSubCommand {
 				party.getHomes().removeIf(h -> h.getName() != null && h.getName().equalsIgnoreCase(home.getName()));
 			}
 			party.getHomes().add(home);
-			party.updateParty();
+			party.updateParty().thenRun(party::sendPacketUpdate).exceptionally(ADPScheduler.exceptionally());;
 		}
 	}
 	

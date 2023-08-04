@@ -29,12 +29,12 @@ public class BungeePartiesAddonManager extends PartiesAddonManager {
 		super.loadAddons();
 		
 		redisBungee.init(BungeeConfigMain.PARTIES_BUNGEECORD_REDIS);
-		
-		// Schedule sync later (post load plugins)
-		plugin.getScheduler().getSyncExecutor().execute(this::postLoadAddons);
 	}
 	
+	@Override
 	public void postLoadAddons() {
+		super.postLoadAddons();
+		
 		advancedBanHandler.init();
 		bungeeChat.init();
 		premiumVanish.init();

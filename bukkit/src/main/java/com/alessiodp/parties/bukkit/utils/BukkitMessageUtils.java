@@ -15,6 +15,7 @@ public class BukkitMessageUtils extends MessageUtils {
 	@Override
 	public String convertPlaceholders(String message, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
 		String ret = super.convertPlaceholders(message, player, party, emptyPlaceholder);
+		// PlaceholderAPI
 		if (player != null) {
 			ret = PlaceholderAPIHandler.getPlaceholders(player.getPlayerUUID(), ret);
 		}
@@ -24,6 +25,7 @@ public class BukkitMessageUtils extends MessageUtils {
 	@Override
 	public String convertRawPlaceholder(String placeholder, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
 		String ret = super.convertRawPlaceholder(placeholder, player, party, emptyPlaceholder);
+		// PlaceholderAPI
 		if (ret == null && player != null)
 			ret = PlaceholderAPIHandler.formatRawPlaceholder(player.getPlayerUUID(), "%" + placeholder + "%");
 		return ret;

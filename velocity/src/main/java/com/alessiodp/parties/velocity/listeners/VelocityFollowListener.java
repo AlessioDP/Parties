@@ -8,11 +8,13 @@ import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.velocity.VelocityPartiesPlugin;
+import com.alessiodp.parties.velocity.bootstrap.VelocityPartiesBootstrap;
 import com.alessiodp.parties.velocity.configuration.data.VelocityConfigMain;
 import com.alessiodp.parties.velocity.configuration.data.VelocityMessages;
 import com.alessiodp.parties.velocity.events.VelocityEventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.RequiredArgsConstructor;
 
@@ -27,18 +29,14 @@ public class VelocityFollowListener {
 		if (!VelocityConfigMain.ADDITIONAL_FOLLOW_ENABLE)
 			return;
 		
-		// Not connected to the network yet
-		if (!event.getPlayer().getCurrentServer().isPresent())
-			return;
-		
 		plugin.getScheduler().scheduleAsyncLater(() -> {
-			if (allowedServer(event.getPlayer().getCurrentServer().get().getServerInfo().getName())) {
+			if (allowedServer(event.getServer().getServerInfo().getName())) {
 				PartyPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 				PartyImpl party = plugin.getPartyManager().getParty(player.getPartyId());
 				if (party != null
 						&& party.isFollowEnabled()
 						&& (party.getLeader() != null && party.getLeader().equals(player.getPlayerUUID()))) {
-					RegisteredServer server = event.getPlayer().getCurrentServer().get().getServer();
+					RegisteredServer server = event.getServer();
 					
 					// Calling API event
 					VelocityPartiesPartyFollowEvent partyFollowEvent = ((VelocityEventManager) plugin.getEventManager()).preparePartyFollowEvent(party, server);
@@ -64,7 +62,11 @@ public class VelocityFollowListener {
 								.replace("%server%", server.getServerInfo().getName()),
 						player, party
 				), true);
-				memberUser.connectTo(server);
+				
+				// WIP: Workaround for teleport
+				Player pp = ((VelocityPartiesBootstrap)  plugin.getBootstrap()).getServer().getPlayer(memberUser.getUUID()).get();
+				pp.createConnectionRequest(server).connect();
+				//memberUser.connectTo(server);
 				
 				if (VelocityConfigMain.ADDITIONAL_FOLLOW_PERFORMCMD_ENABLE) {
 					

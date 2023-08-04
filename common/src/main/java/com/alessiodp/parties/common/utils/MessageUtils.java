@@ -4,6 +4,7 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.parties.common.PartiesPlugin;
+import com.alessiodp.parties.common.addons.external.LuckPermsHandler;
 import com.alessiodp.parties.common.addons.internal.PartiesPlaceholder;
 import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
@@ -42,20 +43,34 @@ public abstract class MessageUtils {
 				default: // Nothing to do
 			}
 			
+			// Parties
 			PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder(stripPlaceholder(identifier));
 			if (placeholder != null) {
 				replacement = placeholder.formatPlaceholder(player, party, stripPlaceholder(identifier), emptyPlaceholder);
 				if (replacement != null)
 					ret = ret.replace(identifier, replacement);
 			}
+			
+			// LuckPerms
+			if (player != null) {
+				ret = LuckPermsHandler.parsePlaceholders(ret, player);
+			}
 		}
 		return ret;
 	}
 	
 	public String convertRawPlaceholder(String placeholder, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
+		String ret = null;
+		// Parties
 		PartiesPlaceholder newPlaceholder = PartiesPlaceholder.getPlaceholder(placeholder);
-		
-		return newPlaceholder != null ? newPlaceholder.formatPlaceholder(player, party, placeholder, emptyPlaceholder) : null;
+		if (newPlaceholder != null) {
+			ret = newPlaceholder.formatPlaceholder(player, party, placeholder, emptyPlaceholder);
+		}
+		// LuckPerms
+		if (ret != null && player != null) {
+			ret = LuckPermsHandler.parsePlaceholders("%" + placeholder + "%", player);
+		}
+		return ret;
 	}
 	
 	public void sendMessage(User receiver, String message, PartyPlayerImpl victim, PartyImpl party) {

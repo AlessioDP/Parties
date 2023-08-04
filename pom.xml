@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.parties</groupId>
 	<artifactId>parties</artifactId>
-	<version>3.2.9</version>
+	<version>3.2.10</version>
 	<packaging>pom</packaging>
 	
 	<name>Parties</name>
@@ -98,8 +98,10 @@
 		<libs.bungeeChat>2.2.3.1241</libs.bungeeChat>
 		<libs.dynmap>3.1-SNAPSHOT</libs.dynmap>
 		<libs.essentialsx>2.19.7</libs.essentialsx>
+		<libs.griefDefender>2.1.0-SNAPSHOT</libs.griefDefender>
 		<libs.griefPrevention>16.17.1</libs.griefPrevention>
 		<libs.lastLoginApi>1.7.4</libs.lastLoginApi>
+		<libs.luckperms>5.4</libs.luckperms>
 		<libs.magic>10.2</libs.magic>
 		<libs.placeholderApi>2.11.2</libs.placeholderApi>
 		<libs.premiumVanish>2.7.11-2</libs.premiumVanish>

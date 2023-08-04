@@ -14,6 +14,8 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class DynmapHandler {
 	private static PartiesPlugin plugin = null;
 	private static final String ADDON_NAME = "Dynmap";
@@ -116,6 +118,15 @@ public class DynmapHandler {
 						);
 					}
 				}
+			}
+		}
+	}
+	
+	public static void updatePartyMarker(UUID partyId) {
+		if (active) {
+			PartyImpl party = plugin.getPartyManager().getParty(partyId);
+			if (party != null) {
+				updatePartyMarker(party);
 			}
 		}
 	}

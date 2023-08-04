@@ -47,12 +47,12 @@ public class BukkitPartiesAddonManager extends PartiesAddonManager {
 		dynmap.init();
 		placeholderAPI.init();
 		skriptHandler.init();
-		
-		// Schedule sync later (post load plugins)
-		plugin.getScheduler().getSyncExecutor().execute(this::postLoadAddons);
 	}
 	
+	@Override
 	public void postLoadAddons() {
+		super.postLoadAddons();
+		
 		advancedBanHandler.init();
 		banManager.init();
 		claimHandler.init();
