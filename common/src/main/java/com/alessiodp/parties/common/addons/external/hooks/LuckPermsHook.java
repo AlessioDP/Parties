@@ -2,6 +2,7 @@ package com.alessiodp.parties.common.addons.external.hooks;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.core.common.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -29,7 +30,7 @@ public class LuckPermsHook {
 	public String getPlayerPrefix(UUID uuid) {
 		User user = api.getUserManager().getUser(uuid);
 		if (user != null) {
-			return user.getCachedData().getMetaData().getPrefix();
+			return CommonUtils.getOr(user.getCachedData().getMetaData().getPrefix(), "");
 		}
 		return "";
 	}
@@ -37,7 +38,7 @@ public class LuckPermsHook {
 	public String getPlayerSuffix(UUID uuid) {
 		User user = api.getUserManager().getUser(uuid);
 		if (user != null) {
-			return user.getCachedData().getMetaData().getSuffix();
+			return CommonUtils.getOr(user.getCachedData().getMetaData().getSuffix(), "");
 		}
 		return "";
 	}

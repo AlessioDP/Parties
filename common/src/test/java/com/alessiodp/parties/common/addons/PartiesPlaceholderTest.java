@@ -267,24 +267,24 @@ public class PartiesPlaceholderTest {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_name_1");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_NAME_NUMBER, placeholder);
-		assertEquals(party1.getName(), placeholder.formatPlaceholder(null, null, "list_parties_by_name_1"));
+		assertEquals(party1.getName(), placeholder.formatPlaceholder(player1, null, "list_parties_by_name_1"));
 		
 		placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_name_2");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_NAME_NUMBER, placeholder);
-		assertEquals(party2.getName(), placeholder.formatPlaceholder(null, null, "list_parties_by_name_2"));
+		assertEquals(party2.getName(), placeholder.formatPlaceholder(player1, null, "list_parties_by_name_2"));
 		
 		// No more parties
 		placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_name_4");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_NAME_NUMBER, placeholder);
-		assertEquals("", placeholder.formatPlaceholder(null, null, "list_parties_by_name_4"));
+		assertEquals("", placeholder.formatPlaceholder(player1, null, "list_parties_by_name_4"));
 		
 		// Placeholder
 		placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_name_1_id");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_NAME_NUMBER_PLACEHOLDER, placeholder);
-		assertEquals(party1.getId().toString(), placeholder.formatPlaceholder(null, null, "list_parties_by_name_1_id"));
+		assertEquals(party1.getId().toString(), placeholder.formatPlaceholder(player1, null, "list_parties_by_name_1_id"));
 	}
 	
 	@Test
@@ -302,24 +302,24 @@ public class PartiesPlaceholderTest {
 		PartiesPlaceholder placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_online_members_1");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER, placeholder);
-		assertEquals(party3.getName(), placeholder.formatPlaceholder(null, null, "list_parties_by_online_members_1"));
+		assertEquals(party3.getName(), placeholder.formatPlaceholder(player1, null, "list_parties_by_online_members_1"));
 		
 		placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_online_members_2");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER, placeholder);
-		assertEquals(party2.getName(), placeholder.formatPlaceholder(null, null, "list_parties_by_online_members_2"));
+		assertEquals(party2.getName(), placeholder.formatPlaceholder(player1, null, "list_parties_by_online_members_2"));
 		
 		// No more parties
 		placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_online_members_4");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER, placeholder);
-		assertEquals("", placeholder.formatPlaceholder(null, null, "list_parties_by_online_members_4"));
+		assertEquals("", placeholder.formatPlaceholder(player1, null, "list_parties_by_online_members_4"));
 		
 		// Placeholder
 		placeholder = PartiesPlaceholder.getPlaceholder("list_parties_by_online_members_1_id");
 		
 		assertEquals(PartiesPlaceholder.LIST_PARTIES_BY_ONLINE_MEMBERS_NUMBER_PLACEHOLDER, placeholder);
-		assertEquals(party3.getId().toString(), placeholder.formatPlaceholder(null, null, "list_parties_by_online_members_1_id"));
+		assertEquals(party3.getId().toString(), placeholder.formatPlaceholder(player1, null, "list_parties_by_online_members_1_id"));
 	}
 	
 	@Test

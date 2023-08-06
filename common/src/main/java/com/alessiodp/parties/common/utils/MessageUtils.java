@@ -67,7 +67,7 @@ public abstract class MessageUtils {
 			ret = newPlaceholder.formatPlaceholder(player, party, placeholder, emptyPlaceholder);
 		}
 		// LuckPerms
-		if (ret != null && player != null) {
+		if (ret == null && player != null) {
 			ret = LuckPermsHandler.parsePlaceholders("%" + placeholder + "%", player);
 		}
 		return ret;
