@@ -336,7 +336,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Вы будете телепортированы через %seconds% сек..."
-    teleport-cancelled: "&7Teleport cancelled"
+    teleport-cancelled: "&7Телепорт отменен"
     teleport-waiting: "&cВы уже ожидаете телепорта!"
     no-home: "&cЕщё не установлена точка дома"
     #[Special tags]
@@ -358,7 +358,7 @@ additional-commands:
       already-closed: "&cГруппа уже закрыта"
       cooldown: "&cВы должны подождать %seconds% сек!"
       cannot-join: "&cВы не можете присоединиться к этой группе"
-      failed: "&cFailed to open the party"
+      failed: "&cНе удалось открыть группу"
     password:
       wrong-password: "&cНеправильный пароль!"
   list:
@@ -437,7 +437,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Вы будете телепортированы через %seconds% сек."
-    player-teleport-cancelled: "&7Teleport cancelled"
+    player-teleport-cancelled: "&7Телепорт отменен"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cВы должны подождать %seconds% сек!"
