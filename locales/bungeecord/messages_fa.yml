@@ -328,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Shoma dar %seconds% sanie teleport khahid shod..."
-    teleport-cancelled: "&7Teleport cancelled"
+    teleport-cancelled: "&7Teleport laqv shod"
     teleport-waiting: "&cShoma dar hale hazer montazere teleport hastid!"
     no-home: "&cKhane ii vojood nadarad"
     #[Special tags]
@@ -350,7 +350,7 @@ additional-commands:
       already-closed: "&cParty dar hale hazer baste hast"
       cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
       cannot-join: "&cShoma nemitavanid be in party bepeyvandid"
-      failed: "&cFailed to open the party"
+      failed: "&cKhata dar baaz kardane party"
     password:
       wrong-password: "&cRamze eshtebah!"
   list:
@@ -429,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Shoma dar %seconds% sanie teleport mishavid"
-    player-teleport-cancelled: "&7Teleport cancelled"
+    player-teleport-cancelled: "&7Teleport laqv shod"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cShoma bayad %seconds% sanie sabr konid!"
