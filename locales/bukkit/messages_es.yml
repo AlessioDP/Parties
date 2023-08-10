@@ -197,9 +197,9 @@ main-commands:
     same-rank: "&c%player% ya es %rank_name%!"
     low-rank: "&cNo puedes editar jugadores con un rango equivalente o superior al tuyo!"
     to-higher-rank: "&cNo puedes ascender a un rango equivalente o superior al tuyo!"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&cEl rango %rank_name% alcanzó el máximo número de jugadores"
     fixed-leader: "&cNo puedes hacer de alguien un líder de un equipo fijo!"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&cNo puedes degradar al líder de la fiesta"
     changing-yourself: "&cNo puedes cambiar tu rango!"
     player-not-in-party: "&c%player% no está en tu equipo"
     players-conflict:
@@ -270,7 +270,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cColor no encontrad, puedes usar: red (rojo), green (verde) o special (especial)!"
   debug:
     bungeecord:
       sent: "&bSent a debug BungeeCord request into the network"
@@ -336,7 +336,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Serás teletransportado en %seconds% segundos..."
-    teleport-cancelled: "&7Teleport cancelled"
+    teleport-cancelled: "&7Teletransporte cancelado"
     teleport-waiting: "&cYa estas esperando para teletransportarte!"
     no-home: "&cNo hay una casa establecida para el equipo"
     #[Special tags]
@@ -352,13 +352,13 @@ additional-commands:
     joined: "&aHas entrado al equipo %party%"
     player-joined: "&b&l%player% ha entrado al equipo"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&bLa fiesta ahora está abierta"
+      closed: "&bLa fiesta ahora está cerrada"
+      already-open: "&cLa fiesta ya está abierta"
+      already-closed: "&cLa fiesta ya está cerrada"
       cooldown: "&cTienes que esperar %seconds% segundos!"
-      cannot-join: "&cYou cannot join this party"
-      failed: "&cFailed to open the party"
+      cannot-join: "&cNo puedes unirte a esta fiesta"
+      failed: "&cError al intentar abrir la fiesta"
     password:
       wrong-password: "&cContraseña incorrecta!"
   list:
@@ -437,7 +437,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Serás teletransportado en %seconds% segundos"
-    player-teleport-cancelled: "&7Teleport cancelled"
+    player-teleport-cancelled: "&7Teletransporte cancelado"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cTienes que esperar %seconds% segundos!"
@@ -559,7 +559,7 @@ help:
     descriptions:
       ask: 'Enviar una invitación'
       claim: 'Dar permisos del terreno'
-      close: 'Close the party'
+      close: 'Cerrar la fiesta'
       color: 'Cambiar el color del grupo'
       createfixed: 'Crear un grupo fijo'
       debug: 'Problemas de depuración'
@@ -571,7 +571,7 @@ help:
       motd: 'Poner/Quitar el mensaje del día del grupo'
       mute: 'Encender/Apagar notificaciones'
       nickname: 'Poner/Quitar apodo de un miembro'
-      open: 'Open the party'
+      open: 'Abrir la fiesta'
       password: 'Cambiar la contraseña del grupo'
       protection: 'Activar/Desactivar daño amigo'
       sethome: 'Agregar/Quitar la casa del grupo'
