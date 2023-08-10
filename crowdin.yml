@@ -1,7 +1,7 @@
 files:
   - source: /bukkit/src/main/resources/bukkit/messages.yml
-    translation: /locales/bukkit/messages_%two_letters_code%.yml
+    translation: /locales/bukkit/messages_%locale_with_underscore%.yml
   - source: /bungeecord/src/main/resources/bungee/messages.yml
-    translation: /locales/bungeecord/messages_%two_letters_code%.yml
+    translation: /locales/bungeecord/messages_%locale_with_underscore%.yml
   - source: /velocity/src/main/resources/velocity/messages.yml
-    translation: /locales/velocity/messages_%two_letters_code%.yml
+    translation: /locales/velocity/messages_%locale_with_underscore%.yml
