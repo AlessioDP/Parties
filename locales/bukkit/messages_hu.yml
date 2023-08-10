@@ -197,9 +197,9 @@ main-commands:
     same-rank: "&c%player% már a %rank_name% rangba van!"
     low-rank: "&cNem szerkesztheted az azonos vagy magasabb rangú játékosokat!"
     to-higher-rank: "&cNem támogathatod az azonos vagy magasabb rangú játékosokat!"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&c%rank_name% rang elérte a játékosok számának maximumát"
     fixed-leader: "&cNem tehetsz valakit egy fix party vezetőjévé!"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&cNem fokozhatod le a party vezetőjét"
     changing-yourself: "&cNem változtathatod meg a saját rangodat!"
     player-not-in-party: "&c%player% nem a partyd tagja"
     players-conflict:
@@ -270,7 +270,7 @@ additional-commands:
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cA szín nem található. Ezeket választhatod: %available_colors%"
   debug:
     bungeecord:
       sent: "&bSent a debug BungeeCord request into the network"
@@ -336,7 +336,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7Teleportálás megkezdődik %seconds% másodperc múlva..."
-    teleport-cancelled: "&7Teleport cancelled"
+    teleport-cancelled: "&7Teleportálás megszakítva"
     teleport-waiting: "&cMár várakozol a teleportálásra!"
     no-home: "&cA partynak nincs beállítva bázis"
     #[Special tags]
@@ -352,13 +352,13 @@ additional-commands:
     joined: "&aCsatlakoztál a %party% partyba"
     player-joined: "&b&l%player% csatlakozott a partyba"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&bA party most nyitva van"
+      closed: "&bA party most zárva van"
+      already-open: "&cA party már nyitva van"
+      already-closed: "&cA party már zárva van"
       cooldown: "&cKérlek várj %seconds% másodpercet!"
-      cannot-join: "&cYou cannot join this party"
-      failed: "&cFailed to open the party"
+      cannot-join: "&cNem csatlakozhatsz ehhez a partyhoz"
+      failed: "&cA party megnyitása sikertelen"
     password:
       wrong-password: "&cHelytelen jelszó!"
   list:
@@ -437,7 +437,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7Teleportálás megkezdődik %seconds% másodperc múlva"
-    player-teleport-cancelled: "&7Teleport cancelled"
+    player-teleport-cancelled: "&7Teleportálás megszakítva"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&cKérlek várj %seconds% másodpercet!"
@@ -559,7 +559,7 @@ help:
     descriptions:
       ask: 'Küldj csatlakozás kérelmet'
       claim: 'Engedélyek megadása a foglaláshoz'
-      close: 'Close the party'
+      close: 'Bezárja a partyt'
       color: 'Party színének megváltoztatása'
       createfixed: 'Új party rögzített party létrehozása'
       debug: 'Debug issues'
@@ -571,7 +571,7 @@ help:
       motd: 'Party MOTD beállítás/törlés'
       mute: 'Értesítések'
       nickname: 'Tag becenév beállítása/törlése'
-      open: 'Open the party'
+      open: 'Kinyitja a partyt'
       password: 'Party jelszó módosítása'
       protection: 'Baráti tűz védelem'
       sethome: 'Party otthon beállítás/törlés'
