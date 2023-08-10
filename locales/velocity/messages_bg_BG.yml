@@ -1,0 +1,549 @@
+---
+#/ ===================================================== \
+#|    This is the Velocity messages file of Parties    |
+#\ ===================================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/parties
+#- Join our Discord for further help: https://discord.alessiodp.com
+#/ =============================== \
+#|        PARTIES  MESSAGES        |
+#\ =============================== /
+parties:
+  #[Special tags]
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
+  update-available: "&9Беше намерена нова версия на Parties: %version% (Текуща Версия: %thisversion%)"
+  #[Special tags]
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cКонфигурационният файл '%config%' на Parties е доста остарял!"
+  common-messages:
+    invalid-command: "&cНевалидна команда"
+    configuration-reloaded: "&aКонфигурацията е презаредена"
+    not-in-party: "&cНе си в парти"
+    already-in-party: "&cВече си в парти!"
+    party-not-found: "&cПартито %party% не съществува"
+    party-full: "&cПартито е пълно!"
+    player-not-found: "&cИграча %player% не беше намерен"
+    player-not-in-party: "&c%player% не е в парти"
+  options:
+    enabled: '&aАктивирано'
+    disabled: '&cДеактивирано'
+    toggled-on: '&aВключено'
+    toggled-off: '&cИзключено'
+    word-yes: '&aДа'
+    word-no: '&cНе'
+    empty: '&8Празно'
+    none: '&8Нищо'
+  syntax:
+    wrong-message: '&cГрешен синтаксис: Напиши &7/%syntax%'
+    color: 'color'
+    description: 'desc'
+    experience: 'experience'
+    kills: 'kills'
+    home: 'home'
+    members: 'members'
+    message: 'message'
+    motd: 'motd'
+    name: 'name'
+    nickname: 'nickname'
+    online-members: 'online_members'
+    order: 'order'
+    page: 'page'
+    party: 'party'
+    password: 'password'
+    permission: 'permission'
+    player: 'player'
+    rank: 'rank'
+    tag: 'tag'
+  permissions:
+    #[Special tags]
+    #=> %permission%  = Missing permission
+    no-permission: "&cНямаш достъп до тази команда"
+    no-permission-in-party-general: "&cТвоят парти ранг няма достъп до тази команда"
+    no-permission-in-party-rank: "&cТрябва да си %rank_name%, за да изпълниш тази команда"
+  out-party: "Извън парти"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Никого"
+    player-unknown: "&6Някого"
+    missing-value: "&7Липсва"
+  #Define the format of Parties chat messages
+  formats:
+    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
+    spy:
+      party-chat: "&7[SPY] [%party%] %player%: %message%"
+      broadcast: "&7[SPY] [%party%]: %message%"
+#/ =============================== \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ =============================== /
+main-commands:
+  accept:
+    no-request: "&cНямаш изчакващи заявки"
+    no-exists: "&cЗаявката вече не съществува"
+    multiple-requests: "&cИзбери заявката, която желаеш да приемеш:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Натисни тук, за да приемеш","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"Приеми заявката","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Натисни тук, за да приемеш","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"Приеми заявката","color":"gold"}]}}}]'
+  chat:
+    enabled: "&aПревключи чата си на парти"
+    disabled: "&aПревключи чата си на публичен"
+  create:
+    created: '[{"text":"Създадохте партито %party%.\n","color":"aqua","bold":true},{"text":"Напишете ","color":"aqua","bold":false},{"text":"/party invite","color":"gray","clickEvent":{"action":"suggest_command","value":"/party invite "}},{"text":", за да поканите приятелите си в партито.","color":"aqua"}]'
+    created-fixed: "&b&lСъздадохте фиксираното парти %party%"
+    name-already-exists: "&cПарти с името %party% вече съществува, избери друго име"
+    name-too-long: "&cИмето на партито е прекалено дълго!"
+    name-too-short: "&cИмето на партито е прекалено късо!"
+    invalid-name: "&cНевалидни знаци. Използвай: a-Z или 0-9."
+    censored: "&cИмето на партито съдържа цензурирани думи!"
+  delete:
+    deleted: "&aПартито %party% беше изтрито"
+    deleted-silently: "&aПартито %party% беше изтрито тихо"
+    broadcast: "&6&lТвоето парти беше изтрито"
+  deny:
+    no-request: "&cНямаш изчакващи заявки"
+    no-exists: "&cЗаявката вече не съществува"
+    multiple-requests: "&cИзбери заявката, която желаеш да откажеш:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Натисни тук, за да откажеш","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"Откажи заявката","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Натисни тук, за да откажеш","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"Откажи заявката","color":"gold"}]}}}]'
+  ignore:
+    start-ignore: "&7Игнорираш парти заявките на %party%"
+    stop-ignore: "&7Спря да игнорираш парти заявките на %party%"
+    ignore-list:
+      header: "&b&lЛист с игнорирани партита:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7Никакви"
+  info:
+    content-own-party:
+      - "&b============ &l%party% Инфо &r&b============"
+      - "&b&lОписание&7: %desc%"
+      - "&bЛидер&7: %list_rank_leader%"
+      - "&bМодове&7: %list_rank_moderator%"
+      - "&bЧленове&7: %list_rank_member%"
+      - "&bОнлайн играчи&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party% Инфо &r&b============"
+      - "&b&lОписание&7: %desc%"
+      - "&bЛидер&7: %list_rank_leader%"
+      - "&bМодове&7: %list_rank_moderator%"
+      - "&bЧленове&7: %list_rank_member%"
+      - "&bОнлайн играчи&7: %members_online_total%"
+  invite:
+    sent: "&bТи покани %player% в партито"
+    player-invited: '[{"text":"&b%player% те покани в партито %party%.\n&bИскаш ли да "},{"text":"&a&lприемеш","clickEvent":{"action":"run_command","value":"/party accept %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"&6Приеми поканата"}]}}},{"text":" &bили "},{"text":"&c&lоткажи","clickEvent":{"action":"run_command","value":"/party deny %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&6Откажи поканата"}]}}},{"text":"&b?\n&bМожеш да използваш &7/party <accept/deny>&b, за да избереш."}]'
+    accept:
+      broadcast: "&b&l%player% влезе в партито"
+      accepted: "&aТи прие поканата за парти"
+      receipt: "&a%player% прие твоята покана за парти"
+    deny:
+      broadcast: ""
+      denied: "&aТи отказа поканата за парти"
+      receipt: "&a%player% отказа твоята покана за парти"
+    timeout:
+      no-response: "&7%player% не прие поканата за парти"
+      timeout: "&7Ти не прие поканата за партито %party%"
+    revoke:
+      sent-revoked: "&7Поканата изпратена до %player% беше отменена"
+      player-invite-revoked: "&7Поканата получена от %party% беше отменена"
+    cooldown:
+      global: "&cТрябва да изчакаш %seconds% секунди преди да можеш да поканиш друг играч"
+      individual: "&cТрябва да изчакаш %seconds% секунди преди да можеш да поканиш същия играч отново"
+      on-leave: "&cТрябва да изчакаш %seconds% секунди преди да поканиш този играч отново"
+    player-offline: "&cМожеш да каниш само играчи, които са онлайн"
+    player-no-permission: "&c%player% няма право да влезе в партито"
+    player-in-party: "&c%player% е вече в парти"
+    already-invited: "&c%player% вече беше поканен"
+    invite-yourself: "&cНе можеш да поканиш себе си"
+    failed: "&cПровал при опит да поканиш %player%"
+  kick:
+    sent: "&aТи изогни %player% от партито!"
+    player-kicked: "&bТи беше изгонен от партито %party%"
+    broadcast: "&b&l%player% беше изгонен от партито"
+    broadcast-disband: "&b&lПартито беше разпуснато, защото лидера беше изгонен"
+    broadcast-leader-changed: "&b&lЛидера беше изгонен от партито, новия лидер е %player%"
+    broadcast-leave-server: "&b&l%player% беше изгонен от партито"
+    player-higher-rank: "&cНе можеш да изогниш някой по-висш от теб!"
+    player-not-in-party: "&c%player% не е в партито"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cНамерихме няколко играча с това име:"
+        - "%list_players%"
+        - "&cИзползвай '&7/party kick <username> <number>&c', за да изгониш правилния играч"
+      player: '{"text":"","екстра":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: последно влизане %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Изгони този играч","color":"gold"}}}'
+  leave:
+    left: "&b&lТи напусна партито %party%"
+    broadcast: "&b&l%player% напусна партито"
+    party-disbanded: "&6&lПартито беше разпуснато, защото лидера напусна"
+    leader-changed: "&b&lЛидера напусна партито, новия лидер е %player%"
+  p:
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cВсе още трябва да изчакаш %seconds% секунди"
+    censored: "&cСъобщението съдържа цензурирани думи!"
+    muted: "&cТи си заглушен!"
+  rank:
+    #[Special tags]
+    #=> %rank_name%   = Rank wrote by the player
+    changed: "&aРанга на %player% беше сменен на %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cРанга '%rank_name%' не съществува!"
+    same-rank: "&c%player% вече е ранг %rank_name%!"
+    low-rank: "&cНе можеш да редактираш ранговете на играчи, които имат по-голям или еквивалентен на твоя ранг!"
+    to-higher-rank: "&cНе можеш да повишиш играч до ранг еквивалентен или равен на твоя ранг!"
+    full: "&cРанга %rank_name% достигна максимума играчи"
+    fixed-leader: "&cНе можеш да направиш някого лидера на фиксирано парти!"
+    demote-leader: "&cНе можете да понижите лидера на партито"
+    changing-yourself: "&cНе можеш да промениш собствения си ранг!"
+    player-not-in-party: "&c%player% не е в партито"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cНамерихме няколко играча с това име:"
+        - "%list_players%"
+        - "&cИзползвай '&7/party rank <username> <rank> <number>&c', за да смениш ранга на правилния играч"
+      player: '{"text":"","екстра":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: последно влизане %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Промени ранга на този играч","color":"gold"}}}'
+  rename:
+    #[Special tags]
+    #=> %old%   = Old party name
+    renamed: "&aПартито %old% беше преименувано на %party%"
+    broadcast: "&6Твоето парти беше преименувано на %party%!"
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cТрябва да изчакаш %seconds% секунди!"
+  spy:
+    enabled: "&7Вече си шпионин!"
+    disabled: "&7Вече не си шпионин"
+  version:
+    #[Special tags]
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&b&lParties &b%version% &7(%platform%) - Разработено от &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Разработено от &6AlessioDP\\n&aБеше открита нова версия: &2%newversion%"
+#/ =============================== \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ =============================== /
+additional-commands:
+  ask:
+    sent: "&aБеше изпратена заявка за влизане в %party%"
+    received: '[{"text":"&b%player% иска да влезе в твоето парти.\n&bИскаш ли "},{"text":"&a&laccept","clickEvent":{"action":"run_command","value":"/party accept %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"&6Приемеш заявката"}]}}},{"text":" &bили "},{"text":"&c&lоткажеш","clickEvent":{"action":"run_command","value":"/party deny %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"Откажи поканата","color":"gold"}]}}},{"text":"&b?\n&bМожеш да използваш &7/party <accept/deny> %player%&b, за да избереш."}]'
+    accept:
+      broadcast: "&b&l%player% влезе в партито"
+      accepted: "&aПрие заявката за влизане в парти"
+      receipt: "&a%party% прие твоята заявка за влизане в партито"
+    deny:
+      broadcast: ""
+      denied: "&aТи отказа заявката на %player% за влизане в партито"
+      receipt: "&a%party% отказа твоята заявка"
+    timeout:
+      no-response: "&7%party% не прие твоята заявка"
+    cooldown:
+      #[Special tags]
+      #=> %seconds%          = Remaining time in seconds
+      global: "&cТрябва да изчакаш %seconds% секунди преди да попиташ друго парти"
+      individual: "&cТрябва да изчакаш %seconds% секунди преди да попиташ същото парти"
+  color:
+    info: "&bТвоят цвят на партито е: %color_code%%color_command%"
+    empty: "&bТвоето парти няма цвят"
+    changed: "&bЦвета на партито беше променен на %color_command%"
+    removed: "&bЦвета на партито беше премахнат"
+    broadcast: ""
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cЦвета не беше открит. Можеш да избереш: %available_colors%"
+  debug:
+    bungeecord:
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
+    config:
+      header: '&b================== &lDebug Config &r&b=================='
+      text:
+        - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
+        - "&bStorage&7: %storage%"
+        - "&bRanks&7: %ranks%"
+      rank-format: '&f%name%&7[%level%]'
+      rank-separator: '&7, '
+    exp:
+      header: '&b=================== &lDebug Exp &r&b==================='
+      text:
+        - "&bExp system&7: %exp%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
+    party:
+      header: '&b================== &lDebug Party &r&b=================='
+      text:
+        - "&bID&7: %id%"
+        - "&bName/tag&7: %name%&7/%tag%"
+        - "&bLeader&7: %leader%"
+        - "&bNumber members/online&7: %members%&7/%members_online%"
+        - "&bDescription&7: %description%"
+        - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
+        - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
+        - "&bExperience&7: %experience%"
+    player:
+      header: '&b================== &lDebug Player &r&b=================='
+      text:
+        - "&bUUID&7: %uuid%"
+        - "&bName&7: %name%"
+        - "&bRank&7: %rank%"
+        - "&bParty&7: %party%"
+        - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+        - "&bProtection bypass&7: %protection_bypass%"
+      player-offline: "&cThe player '%player%' must be online"
+  desc:
+    changed: "&bОписанието на партито е променено"
+    removed: "&bОписанието на партито е премахнато"
+    broadcast: ""
+    invalid-chars: "&cНевалидни знаци. Използвай: a-Z or 0-9. Минимум 3 и максимум 16 знака."
+    censored: "&cОписанието съдържа цензурирани думи!"
+  exp:
+    #[Special tag]
+    #=> %exp%        = Experience gained
+    gained-experience: "&bПартито получи %exp% опит за убиването на моб"
+    level-up: "&bПартито достигна %experience_level% ниво"
+  follow:
+    toggle-on: "&aВече членовете на партито ще следват лидера на партито"
+    toggle-off: "&aВече членовете на партито няма да следват лидера на партито"
+  home:
+    teleported: "&7Телепортира се до дома на партито"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7Ще бъдеш телепортиран след %seconds% секунди..."
+    teleport-cancelled: "&7Teleport cancelled"
+    teleport-waiting: "&cВече чакаш за телепортация!"
+    no-home: "&cВсе още няма дом на партито"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cТрябва да изчакаш %seconds% секунди!"
+    must-select-home: "&cНалага се да избереш валиден дом"
+    invalid-home: "&cИзбрания дом не съществува"
+    valid-homes: "&bЛист с валидни домове:"
+    #[Special tags]
+    #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aНатисни, за да се телепортираш"}]}}}]'
+  join:
+    joined: "&aТи влезе в партито %party%"
+    player-joined: "&b&l%player% влезе в партито"
+    open-close:
+      opened: "&bСега партито е отворено"
+      closed: "&bСега партито е затворено"
+      already-open: "&cПартито вече е отворено"
+      already-closed: "&cПартито вече е затворено"
+      cooldown: "&cТрябва да изчакаш %seconds% секунди!"
+      cannot-join: "&cНе можете да влезете в това парти"
+      failed: "&cFailed to open the party"
+    password:
+      wrong-password: "&cГрешна парола!"
+  list:
+    #[Special tags]
+    #=> %index%     = The party index
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
+    header: "&b============ &lЛист с Онлайн Партита &r&b============"
+    footer: "&b================ &lСтраница %page% от %maxpages% &r&b================"
+    no-one: "&7Никого"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"&aПокажи инфо"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cНевалиден тип заявка'
+  motd:
+    changed: "&bMOTD на Партито беше променено"
+    removed: "&bMOTD на Партито беше премахнато"
+    broadcast: ""
+    content:
+      - "&bMOTD на Партито:"
+      - "&b%motd%"
+    invalid-chars: "&cНевалидни знаци. Може също така да използваш '. , /'. Минимум 3 и максимум 100 знака."
+    censored: "&cMOTD съдържа цензурирани думи!"
+  mute:
+    toggle-on: "&7Спря си нотификациите!"
+    toggle-off: "&7Включи си нотификациите!"
+  nickname:
+    own:
+      changed: "&bПромени прякора си на %player_nickname%"
+      removed: "&bПремахна собствения си прякор"
+      no-permission: "&cНе можеш да си промениш собствения прякор"
+    others:
+      changed: "&bПрякора на %player% беше променен на %player_nickname%"
+      #Special tags:
+      #=> %nickname%   = The target player nickname
+      #Tags are parsed for sender
+      target-changed: "&b%player% промени твоето име на %nickname%"
+      removed: "&bПремахна името на %player%"
+      target-removed: "&b%player% премахна твоя прякор"
+      no-permission: "&cНе можеш да променяш прякорите на други играчи"
+    show:
+      own: "&bТвоят прякор е %player_nickname%"
+      own-none: "&bНямаш никакъв прякор"
+      other: "&bПрякора на %player% е %player_nickname%"
+      other-none: "&b%player% няма никакви прякори"
+    invalid-chars: "&cНевалидни знаци. Можеш също така да използваш '. , /'. Минимум 3 и максимум 16 знака."
+    censored: "&cИмето съдържа цензурирани думи!"
+  password:
+    changed: "&aПаролата на партито беше променена"
+    removed: "&aПаролата на партито беше премахната"
+    broadcast: ""
+    invalid-chars: "&cНевалидни знаци. Използвай: a-Z or 0-9. Минимум 1 и максимум 16 знака."
+  protection:
+    toggle-on: "&aСега твоето парти е защитено от приятелски огън(приятелско нараняване)"
+    toggle-off: "&aТвоето парти вече не е защитено от приятелски огън(приятелско наранявае)"
+    protected: "&cНе можеш да удряш своите съпартийци"
+    warn-on-attack: "&c%player% се опита да удари %victim%!"
+  sethome:
+    changed: ""
+    removed: "&bДома на партито беше премахнат"
+    removed-none: "&cНе беше открит дом на партито"
+    broadcast: "&aПартито има нов дом!"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cТрябва да изчакаш %seconds% секунди!"
+    max-homes: "&cДостигна максималния брой домове"
+  tag:
+    changed: "&bТага на партито беше променен"
+    removed: "&bТага на партито беше премахнат"
+    broadcast: ""
+    invalid-chars: "&cНевалидни знаци. Използвай: a-Z or 0-9. Минимум 3 и максимум 10 знака."
+    censored: "&cThe tag contains censored words!"
+    already-used: "&c Тага %tag% вече се използва"
+  teleport:
+    teleporting: "&7Телепортиране на твоето парти тук!"
+    player-teleported: "&bТи се телепортира до %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7Ще бъдеш телепортиран след %seconds% секунди"
+    player-teleport-cancelled: "&7Teleport cancelled"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cТрябва да изчакаш %seconds% секунди!"
+    accept-request:
+      sent: "&aИзпратена е заявка за телепортация на партито"
+      received: '[{"text":"&bИскаш ли да бъдеш телепортиран до %player%? "},{"text":"&a&lДа","clickEvent":{"action":"run_command","value":"/party accept %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"&6Приеми заявката"}]}}},{"text":" &bили "},{"text":"&c&lне","clickEvent":{"action":"run_command","value":"/party deny %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","екстра":[{"text":"Откажи заявката","color":"gold"}]}}},{"text":"&b?\n&bМожеш да използваш &7/party <accept/deny> %player%&b, за да избереш."}]'
+      denied: "&7Отказа заявката за телепортация на %player%"
+#/ =============================== \
+#|         OTHER  MESSAGES         |
+#\ =============================== /
+other:
+  follow:
+    #[Special tags]
+    #=> %server%          = New server
+    following-server: "&7Последвахте %player% в %server%"
+  fixed-parties:
+    default-join: "&bТи влезе в партито %party%"
+  join-leave:
+    server-join: "&b%player% е онлайн!"
+    server-leave: "&7%player% е офлайн!"
+#/ =============================== \
+#|          HELP MESSAGES          |
+#\ =============================== /
+help:
+  header: "&b================= &lПарти Помощ %page%/%maxpages% &r&b================="
+  footer: ""
+  perform-command: 'Изпълни командата'
+  console-help:
+    header: 'Можеш да изпълниш само тези команди:'
+    command: ' > %command% - %description%'
+  #[Special tags]
+  #=> %syntax%          = Command syntax
+  #=> %description%     = Description
+  #=> %run_command%     = Command run syntax
+  #=> %perform_command% = Perform command message
+  main:
+    commands:
+      help: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      accept: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      chat: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      create: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      delete: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      deny: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      ignore: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      info: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      invite: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      kick: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      leave: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      p: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rank: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      reload: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rename: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      help: 'Показва помощната страница/страници'
+      accept: 'Приеми заявка за парти'
+      chat: 'Включи си чата на партито'
+      create: 'Създай ново парти'
+      delete: 'Изтрий вече съществуващо парти'
+      deny: 'Откажи заявка за парти'
+      ignore: 'Добави/премахни/покажи игнорирани партита'
+      info: 'Показва информация за партито'
+      invite: 'Покани играч в твоето парти'
+      kick: 'Изгони играч от партито си'
+      leave: 'Напусни партито си'
+      p: 'Изпрати съобщение до партито'
+      rank: 'Смени ранга на играч в партито'
+      reload: 'Презареди конфигурационните файлове на Parties'
+      rename: 'Преименувай партито'
+      spy: 'Шпионирай съобщенията на останалите'
+      version: 'Показва информация относно Parties'
+  additional:
+    commands:
+      ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      desc: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      follow: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      home: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      join: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      list: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      ask: 'Изпрати заявка за влизане в парти до някого'
+      claim: 'Дай права до участъка'
+      close: 'Затвори партито'
+      color: 'Смени цвета на партито'
+      createfixed: 'Създай ново фиксирано парти'
+      debug: 'Дебъгвай проблеми'
+      desc: 'Задай/премахни описание на партито'
+      follow: 'Включи следването на лидера'
+      home: 'Телепортирай се до дома на партито'
+      join: 'Влез в партито'
+      list: 'Лист с всички онлайн партита'
+      motd: 'Задай/премахни motd на партито'
+      mute: 'Включи си нотификациите'
+      nickname: 'Задай/премахни прякор на член на партито'
+      open: 'Отвори партито'
+      password: 'Смени паролата на партито'
+      protection: 'Включи защитата за приятелски огън'
+      sethome: 'Задай/премахни дома на партито'
+      tag: 'Задай/премахни тага на партито'
+      teleport: 'Телепортирай твоето парти до себе си'
+dont-edit-this:
+  version: 2
