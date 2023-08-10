@@ -1,0 +1,549 @@
+---
+#/ ===================================================== \
+#|    This is the Velocity messages file of Parties    |
+#\ ===================================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/parties
+#- Join our Discord for further help: https://discord.alessiodp.com
+#/ =============================== \
+#|        PARTIES  MESSAGES        |
+#\ =============================== /
+parties:
+  #[Special tags]
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
+  update-available: "&9Nouvelle version de Parties trouvée : %version% (Actuelle : %thisversion%)"
+  #[Special tags]
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cLe fichier de configuration \"%config%\" de Parties est obsolète !"
+  common-messages:
+    invalid-command: "&cCommande invalide"
+    configuration-reloaded: "&aConfiguration rechargée"
+    not-in-party: "&cVous n'êtes pas dans un groupe"
+    already-in-party: "&cVous êtes déjà dans un groupe !"
+    party-not-found: "&cLe groupe %party% n'existe pas"
+    party-full: "&cLe groupe est complet !"
+    player-not-found: "&cLe joueur %player% n'a pas été trouvé"
+    player-not-in-party: "&c%player% n'est pas dans un groupe"
+  options:
+    enabled: '&aActivé'
+    disabled: '&cDésactivé'
+    toggled-on: '&aActif'
+    toggled-off: '&cDésactiver'
+    word-yes: '&aOui'
+    word-no: '&cNon'
+    empty: '&8Vide'
+    none: '&8Rien'
+  syntax:
+    wrong-message: '&cMauvaise syntaxe: écrivez &7/%syntax%'
+    color: 'couleur'
+    description: 'desc'
+    experience: 'expérience'
+    kills: 'éliminations'
+    home: 'home'
+    members: 'membres'
+    message: 'message'
+    motd: 'motd'
+    name: 'nom'
+    nickname: 'pseudo'
+    online-members: 'membre_en_ligne'
+    order: 'l''ordre'
+    page: 'page'
+    party: 'party'
+    password: 'mot de passe'
+    permission: 'permission'
+    player: 'joueur'
+    rank: 'rang'
+    tag: 'tag'
+  permissions:
+    #[Special tags]
+    #=> %permission%  = Missing permission
+    no-permission: "&cVous n'avez pas accès à cette commande"
+    no-permission-in-party-general: "&cVotre rang de groupe n'a pas accès à cette commande"
+    no-permission-in-party-rank: "&cVous devez être %rank_name% pour exécuter cette commande"
+  out-party: "Sans groupe"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Personne"
+    player-unknown: "&6Quelqu'un"
+    missing-value: "&7Manquant"
+  #Define the format of Parties chat messages
+  formats:
+    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
+    spy:
+      party-chat: "&7[SPY] [%party%] %player%: %message%"
+      broadcast: "&7[SPY] [%party%]: %message%"
+#/ =============================== \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ =============================== /
+main-commands:
+  accept:
+    no-request: "&cVous n'avez aucune demande en attente"
+    no-exists: "&cLa requête n'existe plus"
+    multiple-requests: "&cChoisissez la requête que vous souhaitez accepter:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Cliquer ici pour accepter","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accepter la requête","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Cliquer ici pour accepter","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accepter la requête","color":"gold"}]}}}]'
+  chat:
+    enabled: "&aChat mis en groupe"
+    disabled: "&aChat mis en public"
+  create:
+    created: "[{\"text\":\"Vous avez créé le groupe %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Tapez \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":\n{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" pour inviter votre ami.\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lVous avez créé le groupe permanent %party%"
+    name-already-exists: "&cUn groupe du nom de %party% existe déjà, choisissez un nom différent"
+    name-too-long: "&cLe nom du groupe est trop long !"
+    name-too-short: "&cLe nom du groupe est trop court !"
+    invalid-name: "&cCaractères invalides. Utilisez : a-Z ou 0-9."
+    censored: "&cLe nom du groupe contient des mots censurés !"
+  delete:
+    deleted: "&aGroupe %party% supprimé"
+    deleted-silently: "&aGroupe %party% supprimé en silence"
+    broadcast: "&6&lVotre groupe a été supprimé"
+  deny:
+    no-request: "&cVous n'avez aucune demande en attente"
+    no-exists: "&cLa requête n'existe plus"
+    multiple-requests: "&cChoisissez la demande que vous souhaitez refuser :"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Cliquer ici pour refuser","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Refuser la requête","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Cliquer ici pour refuser","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Refuser la requête","color":"gold"}]}}}]'
+  ignore:
+    start-ignore: "&7Vous ignorez les invitations du groupe %party%"
+    stop-ignore: "&7Vous avez cessé d'ignorer le groupe %party%"
+    ignore-list:
+      header: "&b&lListe des groupes ignorés :"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7Aucun"
+  info:
+    content-own-party:
+      - "&b============ &lInfos du groupe %party% &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bChef de groupe&7: %list_rank_leader%"
+      - "&bModérateurs&7 : %list_rank_moderator%"
+      - "&bMembres&7 : %list_rank_member%"
+      - "&bJoueurs en ligne&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &lInfos du groupe %party% &r&b============"
+      - "&b&lDescription&7: %desc%"
+      - "&bChef de groupe&7: %list_rank_leader%"
+      - "&bModérateurs&7 : %list_rank_moderator%"
+      - "&bMembres&7 : %list_rank_member%"
+      - "&bJoueurs en ligne&7: %members_online_total%"
+  invite:
+    sent: "&bVous avez invité %player% dans votre groupe"
+    player-invited: "[{\"text\":\"&b%player% vous a invité dans le groupe %party%.\n&bVoulez-vous \"},{\"text\":\"&a&laccepter\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter l'invitation\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lrefuser\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Refuser l'invitation\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> &bpour choisir.\"}]"
+    accept:
+      broadcast: "&b&l%player% a rejoint le groupe"
+      accepted: "&aVous avez accepté l'invitation du groupe"
+      receipt: "&a%player% a accepté votre invitation"
+    deny:
+      broadcast: ""
+      denied: "&aVous avez refusé l'invitation du groupe"
+      receipt: "&a%player% a refusé votre invitation"
+    timeout:
+      no-response: "&7%player% n'a pas accepté l'invitation du groupe"
+      timeout: "&7Vous n'avez pas accepté l'invitation du groupe %party%"
+    revoke:
+      sent-revoked: "&7L'invitation envoyée à %player% a été révoquée"
+      player-invite-revoked: "&7L'invitation reçue de %party% a été révoquée"
+    cooldown:
+      global: "&cVous devez attendre %seconds% secondes avant d'inviter un autre joueur"
+      individual: "&cVous devez attendre %seconds% secondes avant d'inviter à nouveau le même joueur"
+      on-leave: "&cVous devez attendre %seconds% secondes avant d'inviter ce joueur"
+    player-offline: "&cVous ne pouvez inviter que des joueurs en ligne"
+    player-no-permission: "&c%player% n'a pas la permission de rejoindre"
+    player-in-party: "&c%player% est déjà dans un groupe"
+    already-invited: "&c%player% était déjà invité"
+    invite-yourself: "&cVous ne pouvez pas vous inviter vous-même"
+    failed: "&cImpossible d'inviter le joueur %player%"
+  kick:
+    sent: "&aVous avez expulsé %player% du groupe !"
+    player-kicked: "&bVous avez été expulsé du groupe %party%"
+    broadcast: "&b&l%player% a été expulsé du groupe"
+    broadcast-disband: "&b&lLe groupe a été dissous parce que le chef a été expulsé"
+    broadcast-leader-changed: "&b&lLe nouveau chef de groupe est %player%"
+    broadcast-leave-server: "&b&l%player% a été expulsé du groupe"
+    player-higher-rank: "&cVous ne pouvez pas expulser votre supérieur !"
+    player-not-in-party: "&c%player% n'est pas dans votre groupe"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cNous avons trouvé des joueurs avec ce nom :"
+        - "%list_players%"
+        - "&cUtilisez \"&7/party kick <pseudo> <nombre>&c\" pour expulser le bon joueur"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: dernière connexion %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Expulser ce joueur","color":"gold"}}}'
+  leave:
+    left: "&b&lVous avez quitté le groupe %party%"
+    broadcast: "&b&l%player% a quitté le groupe"
+    party-disbanded: "&6&lLe groupe a été dissous parce que le chef est parti"
+    leader-changed: "&b&lLe chef de groupe a quitté le groupe, le nouveau chef de groupe est %player%"
+  p:
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cVous devez encore attendre %seconds% secondes"
+    censored: "&cLe message contient des mots censurés !"
+    muted: "&cVous êtes muet !"
+  rank:
+    #[Special tags]
+    #=> %rank_name%   = Rank wrote by the player
+    changed: "&aLe rang de %player% a été changé en %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cLe rang \"%rank_name%\" n'existe pas !"
+    same-rank: "&c%player% est déjà %rank_name% !"
+    low-rank: "&cVous ne pouvez pas modifier de joueurs avec un rang équivalent ou supérieur au votre !"
+    to-higher-rank: "&cTu peux pas promouvoir un grade équivalent ou supérieur a la tienne!"
+    full: "&cLe rang %rank_name% a atteint le nombre maximum de joueurs"
+    fixed-leader: "&cVous ne pouvez pas faire de quelqu'un le chef d'un groupe permanent !"
+    demote-leader: "&cVous ne pouvez pas rétrograder le chef du groupe"
+    changing-yourself: "&cVous ne pouvez pas changer votre propre rang !"
+    player-not-in-party: "&c%player% n'est pas dans votre groupe"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cNous avons trouvé des joueurs avec ce nom :"
+        - "%list_players%"
+        - "&cUtilisez \"&7/party rank <pseudo> <rang> <nombre>&c\" pour changer le rang du bon joueur"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: dernière connexion %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Changer le rang de ce joueur","color":"gold"}}}'
+  rename:
+    #[Special tags]
+    #=> %old%   = Old party name
+    renamed: "&aLe groupe %old% a été renommé en %party%"
+    broadcast: "&6Votre groupe a été renommé en %party% !"
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cVous devez attendre %seconds% secondes !"
+  spy:
+    enabled: "&7Vous êtes maintenant un espion !"
+    disabled: "&7Vous n'êtes plus un espion"
+  version:
+    #[Special tags]
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&b&lParties &b%version% &7(%platform%) - Développé par &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Développé par &6AlessioDP\n&aNouvelle version trouvée : &2%newversion%"
+#/ =============================== \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ =============================== /
+additional-commands:
+  ask:
+    sent: "&aDemande d'adhésion envoyée au groupe %party%"
+    received: "[{\"text\":\"&b%player% veut rejoindre votre groupe.\n&bVoulez-vous \"},{\"text\":\"&a&laccepter\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter la requête\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lrefuser\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> %player% &bpour choisir.\"}]"
+    accept:
+      broadcast: "&b&l%player% a rejoint le groupe"
+      accepted: "&aVous avez accepté la demande"
+      receipt: "&a%party% a accepté votre demande"
+    deny:
+      broadcast: ""
+      denied: "&aVous avez refusé la demande de %player%"
+      receipt: "&a%party% a refusé votre demande"
+    timeout:
+      no-response: "&7%party% n'a pas accepté la demande"
+    cooldown:
+      #[Special tags]
+      #=> %seconds%          = Remaining time in seconds
+      global: "&cVous devez attendre %seconds% secondes avant d'envoyer une requête à un autre groupe"
+      individual: "&cVous devez attendre %seconds% secondes avant d'envoyer une requête au même groupe"
+  color:
+    info: "&bLa couleur de votre groupe est : %color_code%%color_command%"
+    empty: "&bVotre groupe n'a pas de couleur"
+    changed: "&bLa couleur du groupe a été changée en %color_command%"
+    removed: "&bCouleur du groupe retirée"
+    broadcast: ""
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cCouleur non trouvée. Vous pouvez sélectionner : red (rouge), green (vert) ou special (spécial) !"
+  debug:
+    bungeecord:
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
+    config:
+      header: '&b================== &lDebug Config &r&b=================='
+      text:
+        - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
+        - "&bStorage&7: %storage%"
+        - "&bRanks&7: %ranks%"
+      rank-format: '&f%name%&7[%level%]'
+      rank-separator: '&7, '
+    exp:
+      header: '&b=================== &lDebug Exp &r&b==================='
+      text:
+        - "&bExp system&7: %exp%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
+    party:
+      header: '&b================== &lDebug Party &r&b=================='
+      text:
+        - "&bID&7: %id%"
+        - "&bName/tag&7: %name%&7/%tag%"
+        - "&bLeader&7: %leader%"
+        - "&bNumber members/online&7: %members%&7/%members_online%"
+        - "&bDescription&7: %description%"
+        - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
+        - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
+        - "&bExperience&7: %experience%"
+    player:
+      header: '&b================== &lDebug Player &r&b=================='
+      text:
+        - "&bUUID&7: %uuid%"
+        - "&bName&7: %name%"
+        - "&bRank&7: %rank%"
+        - "&bParty&7: %party%"
+        - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+        - "&bProtection bypass&7: %protection_bypass%"
+      player-offline: "&cThe player '%player%' must be online"
+  desc:
+    changed: "&bDescription du groupe changée"
+    removed: "&bDescription du groupe retirée"
+    broadcast: ""
+    invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 3 et maximum 16 caractères."
+    censored: "&cLa description contient des mots censurés !"
+  exp:
+    #[Special tag]
+    #=> %exp%        = Experience gained
+    gained-experience: "&bVous avez gagné %exp% expérience de groupe pour avoir tué la créature"
+    level-up: "&bLe groupe a atteint le niveau %experience_level%"
+  follow:
+    toggle-on: "&aLes membres de votre groupe suivront à présent votre chef"
+    toggle-off: "&aLes membres de votre groupe ne suivront plus votre chef"
+  home:
+    teleported: "&7Vous avez été téléporté au home du groupe"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7Vous allez être téléporté dans %seconds% secondes..."
+    teleport-cancelled: "&7Téléportation annulée"
+    teleport-waiting: "&cVous attendez déjà la téléportation !"
+    no-home: "&cIl n'y a pas encore de home"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cVous devez attendre %seconds% secondes !"
+    must-select-home: "&cVous devez sélectionner un home valide"
+    invalid-home: "&cLa résidence sélectionnée n'existe pas"
+    valid-homes: "&bListe des homes valides :"
+    #[Special tags]
+    #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aCliquer pour se téléporter"}]}}}]'
+  join:
+    joined: "&aVous avez rejoint le groupe %party%"
+    player-joined: "&b&l%player% a rejoint le groupe"
+    open-close:
+      opened: "&bLe groupe est désormais ouvert"
+      closed: "&bLe groupe est désormais fermé"
+      already-open: "&cLe groupe est déjà ouvert"
+      already-closed: "&cLe groupe est déjà fermé"
+      cooldown: "&cVous devez attendre %seconds% secondes !"
+      cannot-join: "&cVous ne pouvez pas rejoindre ce groupe"
+      failed: "&cImpossible d'ouvrir le groupe"
+    password:
+      wrong-password: "&cMot de passe incorrect !"
+  list:
+    #[Special tags]
+    #=> %index%     = The party index
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
+    header: "&b============ &lListe des groupes en ligne &r&b============"
+    footer: "&b================ &lPage %page% sur %maxpages% &r&b================"
+    no-one: "&7Personne"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aAfficher les informations"}]}}},{"text":" &7[&6En ligne %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cOrdre invalide'
+  motd:
+    changed: "&bMOTD du groupe changé"
+    removed: "&bMOTD du groupe retiré"
+    broadcast: ""
+    content:
+      - "&bMOTD du groupe :"
+      - "&b%motd%"
+    invalid-chars: "&cCaractères invalides. Vous pouvez aussi utiliser \". , /\". Minimum 3 et maximum 100 caractères."
+    censored: "&cLe MOTD contient des mots censurés !"
+  mute:
+    toggle-on: "&7Vous avez désactivé les notifications !"
+    toggle-off: "&7Vous avez activé les notifications !"
+  nickname:
+    own:
+      changed: "&bVous avez changé votre pseudo en %player_nickname%"
+      removed: "&bVous avez retiré votre pseudo"
+      no-permission: "&cVous ne pouvez pas changer votre pseudo"
+    others:
+      changed: "&bPseudo de %player% changé en %player_nickname%"
+      #Special tags:
+      #=> %nickname%   = The target player nickname
+      #Tags are parsed for sender
+      target-changed: "&b%player% a changé votre pseudo en %nickname%"
+      removed: "&bVous avez retiré le pseudo de %player%"
+      target-removed: "&b&%player% a retiré votre pseudo"
+      no-permission: "&cVous ne pouvez pas changer le pseudo des autres joueurs"
+    show:
+      own: "&bVotre pseudo est %player_nickname%"
+      own-none: "&bVous n'avez aucun pseudo"
+      other: "&bLe pseudo de %player% est %player_nickname%"
+      other-none: "&b%player% n'a aucun pseudo"
+    invalid-chars: "&cCaractères invalides. Vous pouvez aussi utiliser \". , /\". Minimum 3 et maximum 16 caractères."
+    censored: "&cCe pseudo contient des mots censurés !"
+  password:
+    changed: "&aMot de passe du groupe changé"
+    removed: "&aMot de passe du groupe retiré"
+    broadcast: ""
+    invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 1 et maximum 16 caractères."
+  protection:
+    toggle-on: "&aVotre groupe est à présent protégé du feu allié"
+    toggle-off: "&aVotre groupe n'est plus protégé du feu allié"
+    protected: "&cVous ne pouvez pas frapper vos coéquipiers"
+    warn-on-attack: "&c%player% a essayé de frapper %victim% !"
+  sethome:
+    changed: ""
+    removed: "&bHome du groupe retiré"
+    removed-none: "&cAucun home de partie trouvé"
+    broadcast: "&aLe groupe a un nouveau home !"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cVous devez attendre %seconds% secondes !"
+    max-homes: "&cVous avez atteint le nombre maximum de homes"
+  tag:
+    changed: "&bTag de partie changé"
+    removed: "&bTag de partie retiré"
+    broadcast: ""
+    invalid-chars: "&cCaractères invalides. Utilisez : a-Z ou 0-9. Minimum 3 et maximum 10 caractères."
+    censored: "&cLe tag contient des mots censurés !"
+    already-used: "&cLe tag %tag% est déjà utilisé"
+  teleport:
+    teleporting: "&7Téléportation de votre groupe ici !"
+    player-teleported: "&bVous avez été téléporté vers %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7Vous allez être téléporté dans %seconds% secondes"
+    player-teleport-cancelled: "&7Téléportation annulée"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cVous devez attendre %seconds% secondes !"
+    accept-request:
+      sent: "&aDemande de téléportation envoyée au groupe"
+      received: "[{\"text\":\"&bVoulez-vous vous faire téléporter vers %player%? \"},{\"text\":\"&a&lOui\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepter la requête\"}]}}},{\"text\":\" &bou \"},{\"text\":\"&c&lnon\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Refuser l'invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b ?\n&bVous pouvez utiliser &7/party <accept/deny> %player% &bpour choisir.\"}]"
+      denied: "&7Vous avez refusé la demande de téléportation de %player%"
+#/ =============================== \
+#|         OTHER  MESSAGES         |
+#\ =============================== /
+other:
+  follow:
+    #[Special tags]
+    #=> %server%          = New server
+    following-server: "&7Vous suivez %player% dans %server%"
+  fixed-parties:
+    default-join: "&bVous êtes entré dans le groupe %party%"
+  join-leave:
+    server-join: "&b%player% est en ligne !"
+    server-leave: "&7%player% est hors-ligne !"
+#/ =============================== \
+#|          HELP MESSAGES          |
+#\ =============================== /
+help:
+  header: "&b================= &lAide de groupe %page%/%maxpages% &r&b================="
+  footer: ""
+  perform-command: 'Exécuter la commande'
+  console-help:
+    header: 'Vous ne pouvez exécuter que ces commandes :'
+    command: ' > %command% - %description%'
+  #[Special tags]
+  #=> %syntax%          = Command syntax
+  #=> %description%     = Description
+  #=> %run_command%     = Command run syntax
+  #=> %perform_command% = Perform command message
+  main:
+    commands:
+      help: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      accept: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      chat: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      create: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      delete: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      deny: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      ignore: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      info: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      invite: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      kick: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      leave: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      p: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rank: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      reload: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rename: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      help: 'Afficher les pages d''aide'
+      accept: 'Accepter une requête de groupe'
+      chat: 'Basculer le chat de groupe'
+      create: 'Créer un nouveau groupe'
+      delete: 'Supprimer le groupe'
+      deny: 'Refuser une requête de groupe'
+      ignore: 'Ajouter/supprimer/afficher les groupes ignorés'
+      info: 'Afficher les informations du groupe'
+      invite: 'Inviter un joueur dans votre groupe'
+      kick: 'Exclure un joueur de votre groupe'
+      leave: 'Quitter votre groupe'
+      p: 'Envoyer un message dans le groupe'
+      rank: 'Changer le rang du joueur'
+      reload: 'Recharger les fichiers de configuration de Parties'
+      rename: 'Renommer le groupe'
+      spy: 'Espionner les messages des autres groupes'
+      version: 'Afficher les informations à propos de Parties'
+  additional:
+    commands:
+      ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      desc: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      follow: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      home: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      join: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      list: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      ask: 'Envoyer une demande d''adhésion'
+      claim: 'Donner des autorisations au claim'
+      close: 'Fermer le groupe'
+      color: 'Changer la couleur du groupe'
+      createfixed: 'Créer un nouveau groupe fixe'
+      debug: 'Problèmes de débogage'
+      desc: 'Définir/retirer la description du groupe'
+      follow: 'Basculer le mode "suivre le chef du groupe"'
+      home: 'Se téléporter au home du groupe'
+      join: 'Rejoindre le groupe'
+      list: 'Liste des groupes en ligne'
+      motd: 'Définir/retirer le MOTD du groupe'
+      mute: 'Activer/désactiver les notifications'
+      nickname: 'Définir/retirer le pseudo du membre'
+      open: 'Ouvrir le groupe'
+      password: 'Changer le mot de passe du groupe'
+      protection: 'Activer/désactiver la protection contre le feu allié'
+      sethome: 'Définir/retirer un home du groupe'
+      tag: 'Définir/retirer un tag de groupe'
+      teleport: 'Téléporter votre groupe vers vous'
+dont-edit-this:
+  version: 2
