@@ -1,0 +1,581 @@
+---
+#/ ================================================= \
+#|    This is the Bukkit messages file of Parties    |
+#\ ================================================= /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/parties
+#- Join our Discord for further help: https://discord.alessiodp.com
+#/ =============================== \
+#|        PARTIES  MESSAGES        |
+#\ =============================== /
+parties:
+  #[Special tags]
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
+  update-available: "&9Nova versão de Parties foi encontrada: %version% (Atual: %thisversion%)"
+  #[Special tags]
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cO ficheiro de configuração '%config%' de Parties está desatualizado!"
+  common-messages:
+    invalid-command: "&cComando incorreto"
+    configuration-reloaded: "&aA foi configuração recarregada"
+    not-in-party: "&cNão está em uma party"
+    already-in-party: "&cJá está em uma party!"
+    party-not-found: "&cEssa party %party% não existe"
+    party-full: "&cEssa party está cheia!"
+    player-not-found: "&cO jogador %player% não foi detectado"
+    player-not-in-party: "&c%player% não está em uma party"
+  options:
+    enabled: '&aAtivado'
+    disabled: '&cDesativado'
+    toggled-on: '&aAtivado'
+    toggled-off: '&cDesativo'
+    word-yes: '&a Sim'
+    word-no: '&c Não'
+    empty: '&8Vazia'
+    none: '&8Nenhum'
+  syntax:
+    wrong-message: '&cSintaxe incorreta: Escreva &7/%syntax%'
+    color: 'coloração'
+    description: 'detalhes'
+    experience: 'experience'
+    kills: 'matanças'
+    home: 'lar'
+    members: 'jogadores'
+    message: 'mensagem'
+    motd: 'motd'
+    name: 'nome'
+    nickname: 'nome'
+    online-members: 'membros ativos'
+    order: 'ordem'
+    page: 'página'
+    party: 'party'
+    password: 'palavra-passe'
+    permission: 'permissão'
+    player: 'jogador'
+    rank: 'grupo'
+    tag: 'tag'
+  permissions:
+    #[Special tags]
+    #=> %permission%  = Missing permission
+    no-permission: "&cNão tem permissão para executar este comando"
+    no-permission-in-party-general: "&cO seu grupo na party não tem permissão para executar este comando"
+    no-permission-in-party-rank: "&cPrecisa ser %rank_name% para executar esse comando"
+  out-party: "Fora da party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Ninguém"
+    player-unknown: "&6Alguém"
+    missing-value: "&7Perdida"
+  #Define the format of Parties chat messages
+  formats:
+    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
+    spy:
+      party-chat: "&7[ESPIA] [%party%] %player%: %message%"
+      broadcast: "&7[ESPIA] [%party%] %message%"
+#/ =============================== \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ =============================== /
+main-commands:
+  accept:
+    no-request: "&cNão tem nenhum pedido pendente"
+    no-exists: "&cO pedido deixou de existir"
+    multiple-requests: "&cSeleccione o pedido que pretende aceitar:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Clique para aceitar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"show_text","value":{"text":"","extra":{"text":"text":"Aceitar pedido","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Clique aqui para aceitar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"show_text","value":{"text":"","extra":{"text":"text":"Aceitar o pedido","color":"gold"}]}}}]'
+  chat:
+    enabled: "&aChat foi definido para party"
+    disabled: "&aChat alternardo para público"
+  create:
+    created: "[{\"text\":\"Criou a party %party%.\n\",\"color\":aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":{\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" para convidar um amigo.\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lCriou uma party fixa %party%"
+    name-already-exists: "&cO nome da party %party% já existe, escolha um nome de party diferente"
+    name-too-long: "&cO nome da party é muito comprido!"
+    name-too-short: "&cO nome da party é demasiado pequeno!"
+    invalid-name: "&cCaracteres não válidos. Utilizar: a-Z ou 0-9."
+    censored: "&cO nome do party contém palavras censuradas!"
+  delete:
+    deleted: "&aParty %party% foi eliminada"
+    deleted-silently: "&aParty %party% apagada silenciosamente"
+    broadcast: "&6&lA sua party foi apagada"
+  deny:
+    no-request: "&cNão tem nenhum pedido pendente"
+    no-exists: "&cO pedido deixou de existir"
+    multiple-requests: "&cSeleccione o pedido que pretende recusar:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Clique para aceitar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"show_text","value":{"text":"","extra":{"text":"text":"Aceitar pedido","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Clique para aceitar","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"show_text","value":{"text":"","extra":{"text":"text":"Aceitar pedido","color":"gold"}]}}}]'
+  ignore:
+    start-ignore: "&7A ignorar %party% convites"
+    stop-ignore: "&7Paraste de ignorar %party%"
+    ignore-list:
+      header: "&b&lListagem de parties ignoradas:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7Nenhum"
+  info:
+    content-own-party:
+      - "&b============ &lInformações para %party%&r&b============"
+      - "&b&l&Descrição para &7: %desc%"
+      - "&bLíder &7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bOs membros&7: %list_rank_member%"
+      - "&bJogadores online&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &lInformações para %party%&r&b============"
+      - "&b&l&Descrição para &7: %desc%"
+      - "&bLíder &7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bOs membros&7: %list_rank_member%"
+      - "&bJogadores online&7: %members_online_total%"
+  invite:
+    sent: "&bConvidaste %player% para a sua party"
+    player-invited: "[{\"text\":\"&b%player% convidou-o para a sua party %party%.\n&bVocê quer \"},{\"text\":\"&a&laceito\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar convite\"}]}}}, \"text\":\" &bou \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Recusar convite\"}]}}},{\"text\":\"&b?\n&bPode usar &7/party <accept/deny> &bpara escolher.\"}]"
+    accept:
+      broadcast: "&b&l%player% entrou na party"
+      accepted: "&aAceitaste o convite da party"
+      receipt: "&a%player% aceitou o teu convite"
+    deny:
+      broadcast: ""
+      denied: "&aNegou o convite da party"
+      receipt: "&a%player% negou o teu convite"
+    timeout:
+      no-response: "&7%player% não aceitou o convite par a party"
+      timeout: "&7Não aceitou o convite da party para %party%"
+    revoke:
+      sent-revoked: "&7Convite anulado enviado para %player%"
+      player-invite-revoked: "&7Convite recebido de %party% foi anulado"
+    cooldown:
+      global: "&cPrecisas esperar %seconds% segundos antes de convidar outro jogador"
+      individual: "&cPrecisas esperar %seconds% segundos antes de convidar outro jogador"
+      on-leave: "&cPrecisas esperar %seconds% segundos antes de convidar outro jogador"
+    player-offline: "&cSó podes convidar jogadores ativos"
+    player-no-permission: "&c%player% não tens permissão para entrar"
+    player-in-party: "&c%player% já estás numa party"
+    already-invited: "&c%player% já tinha sido convidado"
+    invite-yourself: "&cNão podes convidar ti mesmo"
+    failed: "&cErro ao convidar o jogador %player%"
+  kick:
+    sent: "&aExpulsou %player% da party!"
+    player-kicked: "&bFoi expulso da %party%"
+    broadcast: "&b&l%player% foi expulso da party"
+    broadcast-disband: "&b&lA party foi desfeita porque o líder foi expulso"
+    broadcast-leader-changed: "&b&lO novo líder é %player%"
+    broadcast-leave-server: "&b&l%player% foi expulso da party"
+    player-higher-rank: "&cNão pode expulsar o seu superior!"
+    player-not-in-party: "&c%player% não está na sua party"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cEncontrámos alguns jogadores com esse nome:"
+        - "%list_players%"
+        - "&cUse '&7/party kick <username> <number>&c para expulsar o jogador certo"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: Última entrada %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Expulsar este jogador","color":"gold"}}}'
+  leave:
+    left: "&b&lSaiu da party %party%"
+    broadcast: "&b&l%player% saiu da party"
+    party-disbanded: "&6&lA party foi desfeita porque o líder saiu"
+    leader-changed: "&b&lO líder saiu da party, o novo líder é %player%"
+  p:
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cTem ainda que aguardar %seconds% segundos"
+    censored: "&cA mensagem contém palavras censuradas!"
+    muted: "&cEstá silenciado!"
+  rank:
+    #[Special tags]
+    #=> %rank_name%   = Rank wrote by the player
+    changed: "O rank de &a%player% foi alterado para %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cO grupo '%rank_name%' não existe!"
+    same-rank: "&c%player% ja é %rank_name%!"
+    low-rank: "&cNão pode editar jogadores com um grupo equivalente ou superior ao seu!"
+    to-higher-rank: "&cNão pode promover jogadores com um grupo equivalente ou superior ao seu!"
+    full: "&cO grupo %rank_name% alcançou o número máximo de jogadores"
+    fixed-leader: "&cNão pode fazer de alguém um líder de uma party fixa!"
+    demote-leader: "&cNão pode despromover o líder da party"
+    changing-yourself: "&cNão pode alterar o seu próprio grupo!"
+    player-not-in-party: "&c%player% não está na sua party"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cEncontrámos alguns jogadores com esse nome:"
+        - "%list_players%"
+        - "&cUse '&7/party rank <username> <rank> <number>&c' para mudar o grupo do jogador certo"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: Última entrada %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Altera o grupo do jogador","color":"gold"}}}'
+  rename:
+    #[Special tags]
+    #=> %old%   = Old party name
+    renamed: "&aA party %old% foi renomeada para %party%"
+    broadcast: "&6A sua party foi renomeada para %party%!"
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cTem de esperar %seconds% segundos!"
+  spy:
+    enabled: "&7É agora um espião!"
+    disabled: "&7Já não é um espião"
+  version:
+    #[Special tags]
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&b&lParties &b%version% &7(%platform%) - Desenvolvido por &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Desenvolvido por &6AlessioDP\n&aNova versão encontrada: &2%newversion%"
+#/ =============================== \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ =============================== /
+additional-commands:
+  ask:
+    sent: "&aPedido de entrada enviado por %party%"
+    received: "[{\"text\":\"&b%player% deseja entrar na sua party.\n&bDeseja \"},{\"text\":\"&a&laceitar\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar o pedido\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Recusar o convite\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bPode &7/party <accept/deny> %player% &bpara escolher.\"}]"
+    accept:
+      broadcast: "&b&l%player% entrou na party"
+      accepted: "&aAceitou o pedido"
+      receipt: "&a%party% aceitou o seu pedido"
+    deny:
+      broadcast: ""
+      denied: "&aRecusou o pedido de %player%"
+      receipt: "&a%party% recusou seu pedido"
+    timeout:
+      no-response: "&7%party% não aceitou o seu pedido"
+    cooldown:
+      #[Special tags]
+      #=> %seconds%          = Remaining time in seconds
+      global: "&cPrecisa aguardar %seconds% segundos antes de falar noutra party"
+      individual: "&cPrecisa de aguardar %seconds% segundos antes de perguntar na mesma party"
+  claim:
+    claimed: "&aCondeceu permissão à party"
+    removed: "&aRemoveu permissão à party"
+    no-manager: "&cÉ necessário ser o gestor do pedido"
+    claim-no-exists: "&cReivindicação não encontrada"
+    allowed-permissions: "&cPermissões: confiança, contentor e acesso"
+  color:
+    info: "&bA cor da sua party é: %color_code%%color_command%"
+    empty: "&bA sua party não tem uma cor"
+    changed: "&bA cor da party foi alterada para %color_command%"
+    removed: "&bCor da party removida"
+    broadcast: ""
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&cCor não encontrada. Seleccione: %available_colors%"
+  debug:
+    bungeecord:
+      sent: "&bSent a debug BungeeCord request into the network"
+      server-players: "&cThere must be at least 1 player in the server"
+      sync: "Parties is synced correctly"
+      not-sync: "Parties is NOT synced correctly"
+    config:
+      header: '&b================== &lDebug Config &r&b=================='
+      text:
+        - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
+        - "&bStorage&7: %storage%"
+        - "&bRanks&7: %ranks%"
+      rank-format: '&f%name%&7[%level%]'
+      rank-separator: '&7, '
+    exp:
+      header: '&b=================== &lDebug Exp &r&b==================='
+      text:
+        - "&bExp system&7: %exp%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
+    party:
+      header: '&b================== &lDebug Party &r&b=================='
+      text:
+        - "&bID&7: %id%"
+        - "&bName/tag&7: %name%&7/%tag%"
+        - "&bLeader&7: %leader%"
+        - "&bNumber members/online&7: %members%&7/%members_online%"
+        - "&bDescription&7: %description%"
+        - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
+        - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
+        - "&bExperience&7: %experience%"
+    player:
+      header: '&b================== &lDebug Player &r&b=================='
+      text:
+        - "&bUUID&7: %uuid%"
+        - "&bName&7: %name%"
+        - "&bRank&7: %rank%"
+        - "&bParty&7: %party%"
+        - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+        - "&bProtection bypass&7: %protection_bypass%"
+      player-offline: "&cThe player '%player%' must be online"
+  desc:
+    changed: "&bDescrição da party alterada"
+    removed: "&bDescrição da party removida"
+    broadcast: ""
+    invalid-chars: "&cCaracteres inválidos. Utilize: a-Z ou 0-9. Mínimo 3 e máximo 16 caracteres."
+    censored: "&cA descrição contém palavras censuradas!"
+  exp:
+    #[Special tag]
+    #=> %exp%        = Experience gained
+    gained-experience: "&bGanhou %exp% experiência de party por matar o mob"
+    level-up: "&bA party subiu de nível para %experience_level%"
+  follow:
+    toggle-on: "&aAgora os membros da sua party seguirão o seu líder"
+    toggle-off: "&aOs membros da sua party já não seguem o seu líder"
+  home:
+    teleported: "&7Teletransportado para a casa da party"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7Será teletransportado em %seconds% segundos..."
+    teleport-cancelled: "&7Teletransporte cancelado"
+    teleport-waiting: "&cJá está à espera do teletransporte!"
+    no-home: "&cAinda não existe uma casa definida"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cTem de esperar %seconds% segundos!"
+    must-select-home: "&cDeve selecionar uma casa válida"
+    invalid-home: "&cA casa selecionada não existe"
+    valid-homes: "&bLista de casas válidas:"
+    #[Special tags]
+    #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClicar para teletransportar"}]}}}]'
+  join:
+    joined: "&aJuntou-se à party %party%"
+    player-joined: "&b&l%player% juntou-se à party"
+    open-close:
+      opened: "&bA party está agora aberta"
+      closed: "&bA party está agora fechada"
+      already-open: "&cA party já se encontra aberta"
+      already-closed: "&cA party já se encontra fechada"
+      cooldown: "&cTem de esperar %seconds% segundos!"
+      cannot-join: "&cNão pode juntar-se a esta party"
+      failed: "&cFalha ao abrir a party"
+    password:
+      wrong-password: "&cPalavra-passe errada!"
+  list:
+    #[Special tags]
+    #=> %index%     = The party index
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
+    header: "&b============ &lLista de parties online &r&b============"
+    footer: "&b================ &lPágina %page% de %maxpages% &r&b================"
+    no-one: "&7Ninguém"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aMostrar info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cTipo de ordem inválida'
+  motd:
+    changed: "&bA MOTD da party mudou"
+    removed: "&bMOTD da party removida"
+    broadcast: ""
+    content:
+      - "&bMOTD da party:"
+      - "&b%motd%"
+    invalid-chars: "&cCaracteres inválidos. Poderá também usar '. , /'. Mínimo 3 e máximo 100 caracteres."
+    censored: "&cA MOTD contém palavras censuradas!"
+  mute:
+    toggle-on: "&7Desativou as notificações!"
+    toggle-off: "&7Ativou as notificações!"
+  nickname:
+    own:
+      changed: "&bMudou o seu nickname para %player_nickname%"
+      removed: "&bRemoveu o seu próprio nickname"
+      no-permission: "&cNão pode alterar o seu próprio nickname"
+    others:
+      changed: "&bAlterou a alcunha de %player% para %player_nickname%"
+      #Special tags:
+      #=> %nickname%   = The target player nickname
+      #Tags are parsed for sender
+      target-changed: "&b%player% mudou o seu nickname para %nickname%"
+      removed: "&bRemoveu o nickname de %player%"
+      target-removed: "&b%player% removeu o seu nickname"
+      no-permission: "&cNão pode alterar os nicknames de outros jogadores"
+    show:
+      own: "&bO seu nickname é %player_nickname%"
+      own-none: "&bNão tem nickname"
+      other: "&bO nickname de %player% é %player_nickname%"
+      other-none: "&b%player% não tem um nickname"
+    invalid-chars: "&cCaracteres inválidos. Também pode utilizar '. , /'. Mínimo 3 e máximo 16 caracteres."
+    censored: "&cO nickname contém palavras censuradas!"
+  password:
+    changed: "&aPalavra-passe da party alterada"
+    removed: "&aPalavra-passe da party removida"
+    broadcast: ""
+    invalid-chars: "&cCaracteres inválidos. Utilizar: a-Z ou 0-9. Mínimo 1 e máximo 16 caracteres."
+  protection:
+    toggle-on: "&aAgora a sua party está protegido por fogo amigo"
+    toggle-off: "&aA sua party já não está protegida por fogo amigo"
+    protected: "&cNão pode atingir os seus membros de party"
+    warn-on-attack: "&c%player% tentou atingir %victim%!"
+  sethome:
+    changed: ""
+    removed: "&bCasa da party removida"
+    removed-none: "&cNão foi encontrada nenhuma casa nesta party"
+    broadcast: "&aA party tem uma nova casa!"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cTem de esperar %seconds% segundos!"
+    max-homes: "&cAtingiu o número máximo de casas"
+  tag:
+    changed: "&bAlteração da tag da party"
+    removed: "&bTag da party removida"
+    broadcast: ""
+    invalid-chars: "&cCaracteres inválidos. Utilizar: a-Z ou 0-9. Mínimo 3 e máximo 10 caracteres."
+    censored: "&cA tag contém palavras censuradas!"
+    already-used: "&c A tag %tag% já está a ser usada"
+  teleport:
+    teleporting: "&7A teletransportar a sua party para aqui!"
+    player-teleported: "&bTeletransportado para %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7Será teletransportado em %seconds% segundos"
+    player-teleport-cancelled: "&7Teletransporte cancelado"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cTem de esperar %seconds% segundos!"
+    accept-request:
+      sent: "&aPedido de teletransporte enviado para a party"
+      received: "[{\"text\":\"&bQuer ser teletransportado para %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Aceitar o pedido\"}]}}},{\"text\":\" &bou\"},{\"text\":\"&c&lnão\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bPode usar &7/party <accept/deny> %player% &bpara escolher.\"}]"
+      denied: "&7Negou o pedido de teletransporte de %player%"
+  vault:
+    #[Special tags]
+    #=> %price%          = Price of the command
+    no-money:
+      ask: "&cNão tem dinheiro suficiente para enviar um pedido de adesão [%price%$]"
+      claim: "&cNão tem dinheiro suficiente para avançar [%price%$]"
+      color: "&cNão tem dinheiro suficiente para efetuar o comando de cor [%price%$]"
+      create: "&cNão tem dinheiro suficiente para criar uma party [%price%$]"
+      desc: "&cNão tem dinheiro suficiente para fazer a descrição [%price%$]"
+      follow: "&cNão tem dinheiro suficiente para poder seguir [%price%$]"
+      home: "&cNão tem dinheiro suficiente para utilizar o comando casa [%price%$]"
+      join: "&cNão tem dinheiro suficiente para se juntar a uma party [%price%$]"
+      motd: "&cNão tem dinheiro suficiente para definir o MOTD [%price%$]"
+      nickname: "&cNão tem dinheiro suficiente para definir o nickname [%price%$]"
+      password: "&cNão tem dinheiro suficiente para definir a palavra-passe [%price%$]"
+      protection: "&cNão tem dinheiro suficiente para ativar a proteção [%price%$]"
+      rename: "&cNão tem dinheiro suficiente para renomear a party [%price%$]"
+      sethome: "&cNão tem dinheiro suficiente para definir uma casa [%price%$]"
+      tag: "&cNão tem dinheiro suficiente para definir uma tag [%price%$]"
+      teleport: "&cNão tem dinheiro suficiente para efetuar um teletransporte [%price%$]"
+    confirm:
+      warn-onbuy: "[{\"text\":\"&aCommand %cmd% costs %price%$.\n\"},{\"text\":\"&2&lClique aqui para confirmar\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party confirm\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Pay the command\"}]}}},{\"text\":\" &aor type &7/party confirm &ato use it\"}]"
+      confirmed: "&aExecutar o comando."
+      no-cmd: "&cNão existe nenhum comando para confirmar"
+#/ =============================== \
+#|         OTHER  MESSAGES         |
+#\ =============================== /
+other:
+  follow:
+    #[Special tags]
+    #=> %world%          = New world
+    following-world: "&7Seguindo %player% no %world%"
+  fixed-parties:
+    default-join: "&bEntrou na %party%"
+  join-leave:
+    server-join: "&b%player% está online!"
+    server-leave: "&7%player% está offline!"
+#/ =============================== \
+#|          HELP MESSAGES          |
+#\ =============================== /
+help:
+  header: "&b================= &lAjuda %page%/%maxpages% &r&b================="
+  footer: ""
+  perform-command: 'Executar o comando'
+  console-help:
+    header: 'Só é possível executar estes comandos:'
+    command: ' > %command% - %description%'
+  #[Special tags]
+  #=> %syntax%          = Command syntax
+  #=> %description%     = Description
+  #=> %run_command%     = Command run syntax
+  #=> %perform_command% = Perform command message
+  main:
+    commands:
+      help: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      accept: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      chat: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      create: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      delete: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      deny: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      ignore: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      info: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      invite: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      kick: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      leave: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      p: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rank: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      reload: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rename: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      help: 'Mostrar páginas de ajuda'
+      accept: 'Aceitar um pedido de party'
+      chat: 'Alternar mensagens da party'
+      create: 'Criar uma nova party'
+      delete: 'Apagar a party'
+      deny: 'Recusar um pedido de party'
+      ignore: 'Adicionar/remover/mostrar parties ignoradas'
+      info: 'Mostrar informações da party'
+      invite: 'Convidar um jogador para a party'
+      kick: 'Expulsar um jogador da party'
+      leave: 'Sair da party'
+      p: 'Enviar uma mensagem para a party'
+      rank: 'Alterar o grupo do jogador'
+      reload: 'Recarregar ficheiros de configuração das parties'
+      rename: 'Renomear a party'
+      spy: 'Espiar mensagens de outras parties'
+      version: 'Mostrar informações de parties'
+  additional:
+    commands:
+      ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      desc: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      follow: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      home: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      join: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      list: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      ask: 'Enviar um pedido de adesão'
+      claim: 'Conceder permissões à reivindicação'
+      close: 'Encerrar a party'
+      color: 'Alterar a cor da party'
+      createfixed: 'Criar uma nova party fixa'
+      debug: 'Debug issues'
+      desc: 'Definir/remover a descrição da party'
+      follow: 'Alternar seguir o líder'
+      home: 'Teletransportar para a casa da party'
+      join: 'Entrar na party'
+      list: 'Lista de parties online'
+      motd: 'Definir/remover o motd da party'
+      mute: 'Alternar notificações'
+      nickname: 'Definir/remover nickname de um membro'
+      open: 'Abrir a party'
+      password: 'Alterar a palavra-passe da party'
+      protection: 'Proteção contra fogo amigo'
+      sethome: 'Definir/remover a casa da party'
+      tag: 'Definir/remover tag da party'
+      teleport: 'Teletransportar a sua party para si'
+dont-edit-this:
+  version: 16
