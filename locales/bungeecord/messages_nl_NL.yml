@@ -1,0 +1,549 @@
+---
+#/ ===================================================== \
+#|    This is the BungeeCord messages file of Parties    |
+#\ ===================================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/parties
+#- Join our Discord for further help: https://discord.alessiodp.com
+#/ =============================== \
+#|        PARTIES  MESSAGES        |
+#\ =============================== /
+parties:
+  #[Special tags]
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
+  update-available: "&9Nieuwe versie van Parties gevonden: %version% (Actueel: %thisversion%)"
+  #[Special tags]
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cHet configuratie bestand '%config%' van Parties is verouderd!"
+  common-messages:
+    invalid-command: "&cOngeldige opdracht"
+    configuration-reloaded: "&aConfiguratie herladen"
+    not-in-party: "&cJe zit niet in een party"
+    already-in-party: "&cJe zit al in een party!"
+    party-not-found: "&cDe groep %party% bestaat niet"
+    party-full: "&cDe groep is vol!"
+    player-not-found: "&cDe speler %player% is niet gevonden"
+    player-not-in-party: "&c%player% is niet in een groep"
+  options:
+    enabled: '&aingeschakeld'
+    disabled: '&cuitgeschakeld'
+    toggled-on: '&aaan'
+    toggled-off: '&cuit'
+    word-yes: '&aJa'
+    word-no: '&cNee'
+    empty: '&8Leeg'
+    none: '&8geen'
+  syntax:
+    wrong-message: '&cFoute syntax: Type &7/%syntax%'
+    color: 'kleur'
+    description: 'beschrijving'
+    experience: 'ervaring'
+    kills: 'kills'
+    home: 'huis'
+    members: 'leden'
+    message: 'bericht'
+    motd: 'motd'
+    name: 'naam'
+    nickname: 'bijnaam'
+    online-members: 'online_leden'
+    order: 'volgorde'
+    page: 'pagina'
+    party: 'party'
+    password: 'wachtwoord'
+    permission: 'toestemming'
+    player: 'speler'
+    rank: 'positie'
+    tag: 'tag'
+  permissions:
+    #[Special tags]
+    #=> %permission%  = Missing permission
+    no-permission: "&cJe hebt geen toegang tot dit commando"
+    no-permission-in-party-general: "&cJe party rang heeft geen toegang tot die opdracht"
+    no-permission-in-party-rank: "&cJe moet %rank_name% zijn om die opdracht uit te voeren"
+  out-party: "Uit party"
+  list:
+    player-online-format: "&b%player%"
+    player-offline-format: "&7%player%"
+    player-separator: "&7, "
+    player-empty: "&7Niemand"
+    player-unknown: "&6iemand"
+    missing-value: "&7Ontbrekend"
+  #Define the format of Parties chat messages
+  formats:
+    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
+    spy:
+      party-chat: "&7[SPY] [%party%] %player%: %message%"
+      broadcast: "&7[SPY] [%party%]: %message%"
+#/ =============================== \
+#|     MAIN COMMANDS  MESSAGES     |
+#\ =============================== /
+main-commands:
+  accept:
+    no-request: "&cU hebt geen uitstaande verzoeken"
+    no-exists: "&cHet verzoek bestaat niet meer"
+    multiple-requests: "&cKies het verzoek dat u wilt accepteren:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Klik hier om te accepteren","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accepteer verzoek","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Klik hier om te accepteren","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accepteer verzoek","color":"gold"}]}}}]'
+  chat:
+    enabled: "&aChat ingesteld op groep"
+    disabled: "&aChat op openbaar gezet"
+  create:
+    created: "[{\"text\":\"Je hebt de party %party% gemaakt.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" om je vriend uit te nodigen.\",\"color\":\"aqua\"}"
+    created-fixed: "&b&lU heeft de vaste groep %party% aangemaakt"
+    name-already-exists: "&cDe groepsnaam %party% bestaat al, kies een andere naam"
+    name-too-long: "&cDe groepsnaam is te lang!"
+    name-too-short: "&cDe groepsnaam is te kort!"
+    invalid-name: "&cOngeldige tekens. Gebruik: a-Z of 0-9."
+    censored: "&cDe groepsnaam bevat gecensureerde woorden!"
+  delete:
+    deleted: "&aGroep %party% verwijderd"
+    deleted-silently: "&aGroep %party% stilletjes verwijderd"
+    broadcast: "&6&lJe groep is verwijderd"
+  deny:
+    no-request: "&cU hebt geen uitstaande verzoeken"
+    no-exists: "&cHet verzoek bestaat niet meer"
+    multiple-requests: "&cKies de aanvraag die u wilt weigeren:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Klik hier om te accepteren","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accepteer verzoek","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Klik hier om te weigeren","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Weiger verzoek","color":"gold"}]}}}]'
+  ignore:
+    start-ignore: "&7Negeer %party% uitnodigingen"
+    stop-ignore: "&7Je bent gestopt met het negeren van %party%"
+    ignore-list:
+      header: "&b&lLijst genegeerde partijen:"
+      party-prefix: "&c"
+      separator: "&7, "
+      empty: "&7geen"
+  info:
+    content-own-party:
+      - "&b============ &l%party%'s Info &r&b========"
+      - "&b&lBeschrijving&7: %desc%"
+      - "&bLeider&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bLeden&7: %list_rank_member%"
+      - "&bOnline spelers&7: %members_online_total%"
+    content-other-party:
+      - "&b============ &l%party%'s Info &r&b========"
+      - "&b&lBeschrijving&7: %desc%"
+      - "&bLeider&7: %list_rank_leader%"
+      - "&bMods&7: %list_rank_moderator%"
+      - "&bLeden&7: %list_rank_member%"
+      - "&bOnline spelers&7: %members_online_total%"
+  invite:
+    sent: "&bJe hebt %player% uitgenodigd in je groep"
+    player-invited: "[{\"text\":\"&b%player% heeft je uitgenodigd voor de groep %party%.\n&bWil je \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepteer de uitnodiging\"}}, \"text\":\" &bof \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bJe kunt &7/ party <accept/deny> &bgebruiken om te kiezen.\"}]"
+    accept:
+      broadcast: "&b&l%player% is toegetreden tot de groep"
+      accepted: "&aJe hebt de uitnodiging van de groep geaccepteerd"
+      receipt: "&a%player% heeft je uitnodiging geaccepteerd"
+    deny:
+      broadcast: ""
+      denied: "&aJe hebt de uitnodiging van de groep geweigerd"
+      receipt: "&a%player% heeft je uitnodiging geweigerd"
+    timeout:
+      no-response: "&7%player% accepteerde de party uitnodiging niet"
+      timeout: "&7Je hebt de groepsuitnodiging voor %party% niet geaccepteerd"
+    revoke:
+      sent-revoked: "&7Ingetrokken uitnodiging verstuurd naar %player%"
+      player-invite-revoked: "&7uitnodiging ontvangen van %party% is ingetrokken"
+    cooldown:
+      global: "&cJe moet %seconds% seconden wachten om een andere speler uit te nodigen"
+      individual: "&cJe moet %seconds% seconden wachten voordat je dezelfde speler opnieuw uitnodigt"
+      on-leave: "&cJe moet %seconds% seconden wachten voordat je deze speler uitnodigt"
+    player-offline: "&cJe kunt alleen online spelers uitnodigen"
+    player-no-permission: "&c%player% heeft geen toestemming om toe te treden"
+    player-in-party: "&c%player% is al in een groep"
+    already-invited: "&c%player% is al uitgenodigd"
+    invite-yourself: "&cJe kunt jezelf niet uitnodigen"
+    failed: "&cUitnodigen van speler %player% mislukt"
+  kick:
+    sent: "&aJe hebt %player% uit de groep verwijderd!"
+    player-kicked: "&bJe bent verwijderd van %party%"
+    broadcast: "&b&l%player% is uit de groep gezet"
+    broadcast-disband: "&b&lDe groep is ontbonden omdat de leider uit het spel is gezet"
+    broadcast-leader-changed: "&b&lDe nieuwe leider is %player%"
+    broadcast-leave-server: "&b&l%player% is uit de groep gezet"
+    player-higher-rank: "&cJe kan je Leider niet kicken!"
+    player-not-in-party: "&c%player% zit niet in je groep"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cWe hebben enkele spelers met die naam gevonden:"
+        - "%list_players%"
+        - "&cGebruik '&7/party kick <username> <number>&c' om de juiste speler te kicken"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"color":"aqua"},{"text":"]: laatste login %lastloginapi_last_logout_date%","color":"gray"},"clickEvent":{"action":"run_command","value":"/party %username% %number%"},"hoverEvent":"action":"show_text":"value":"color":"{"value":"color":"{"value":"value":"value":"{"value":"value":"value":"{"text":"value":"value":"text":"valu'
+  leave:
+    left: "&b&lJe hebt de groep %party% verlaten"
+    broadcast: "&b&l%player% heeft de groep verlaten"
+    party-disbanded: "&6&lDe groep is ontbonden omdat de leider is vertrokken"
+    leader-changed: "&b&lDe leider verliet de groep, de nieuwe leider is %player%"
+  p:
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cJe moet nog %seconds% seconden wachten"
+    censored: "&cHet bericht bevat gecensureerde woorden!"
+    muted: "&cJe bent gedempt!"
+  rank:
+    #[Special tags]
+    #=> %rank_name%   = Rank wrote by the player
+    changed: "&a%player% rang veranderd in %rank_name%"
+    broadcast: ""
+    wrong-rank: "&cRang '%rank_name%' bestaat niet!"
+    same-rank: "&c%player% is al %rank_name%!"
+    low-rank: "&cJe kunt spelers met een gelijkwaardige of hogere rang niet bewerken dan de jouwe!"
+    to-higher-rank: "&cU kunt niet promoten naar een equivalente rang of hoger dan de uwe!"
+    full: "&cRang %rank_name% heeft het maximum aantal spelers bereikt"
+    fixed-leader: "&cJe kunt iemand niet tot leider van een vaste party maken!"
+    demote-leader: "&cJe kan de groepsleider niet degraderen"
+    changing-yourself: "&cJe kan je eigen rang niet veranderen!"
+    player-not-in-party: "&c%player% zit niet in je groep"
+    players-conflict:
+      #[Special tags]
+      #=> %username%                       = The name of the player
+      #=> %rank%                           = The rank
+      #=> %list_players%                   = List of each player
+      #=> %number%                         = The number of the player
+      #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
+      content:
+        - "&cWe hebben enkele spelers met die naam gevonden:"
+        - "%list_players%"
+        - "&cGebruik '&7/party rank <username> <rank> <number>&c' om de rang van de juiste speler te wijzigen"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: laatste login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Wijzig de speler zijn rank","color":"gold"}}}'
+  rename:
+    #[Special tags]
+    #=> %old%   = Old party name
+    renamed: "&aDe groep %old% is hernoemd naar %party%"
+    broadcast: "&6Je groep is hernoemd naar %party%!"
+    #[Special tags]
+    #=> %seconds%   = Remaining time in seconds
+    cooldown: "&cJe moet %seconds% seconden wachten!"
+  spy:
+    enabled: "&7Nu ben je een spion!"
+    disabled: "&7Je bent niet langer een spion"
+  version:
+    #[Special tags]
+    #=> %version%    = Parties version
+    #=> %newversion% = Latest Parties version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&b&lParties &b%version% &7(%platform%) - Ontwikkeld door &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Ontwikkeld door &6AlessioDP\n&aNieuwe versie gevonden: &2%newversion%"
+#/ =============================== \
+#|  ADDITIONAL COMMANDS  MESSAGES  |
+#\ =============================== /
+additional-commands:
+  ask:
+    sent: "&aDeelnameverzoek verstuurd naar %party%"
+    received: "[{\"text\":\"&b%player% wil lid worden van je groep.\n&bWil je \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accepteer de verzoek\"}}}}, \"text\":\" &bof \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"text\":\"Deny the invitation\",\"color\":\"gold\"}},{\"text\":\"&b?\n&bJe kunt &7/ party <accept/deny> %player% &bgebruiken om te kiezen.\"}]"
+    accept:
+      broadcast: "&b&l%player% is toegetreden tot de groep"
+      accepted: "&aJe hebt de vraagaanvraag geaccepteerd"
+      receipt: "&a%party% heeft uw verzoek geaccepteerd"
+    deny:
+      broadcast: ""
+      denied: "&aJe hebt het verzoek van %player% geweigerd"
+      receipt: "&a%party% heeft uw verzoek afgewezen"
+    timeout:
+      no-response: "&7%party% accepteerde het verzoek niet"
+    cooldown:
+      #[Special tags]
+      #=> %seconds%          = Remaining time in seconds
+      global: "&cJe moet %seconds% seconden wachten voordat je een andere groep vraagt"
+      individual: "&cJe moet %seconds% seconden wachten voordat je aan dezelfde groep vraagt"
+  color:
+    info: "&bJouw groepkleur is: %color_code%%color_command%"
+    empty: "&bJe party heeft geen kleur"
+    changed: "&bParty kleur veranderd in %color_command%"
+    removed: "&bParty kleur verwijderd"
+    broadcast: ""
+    #Syntax of %available_colors%
+    available-colors:
+      color: "%color_command%"
+      separator: ", "
+    wrong-color: "&ckleur niet gevonden. U kunt selecteren: %available_colors%"
+  debug:
+    bungeecord:
+      sync: "Parties in the server %server% is synced correctly"
+      not-sync: "Parties in the server %server% is NOT synced correctly"
+    config:
+      header: '&b================== &lDebug Config &r&b=================='
+      text:
+        - "&bOutdated config/parties/messages:&7 %outdated_config%&7/%outdated_parties%&7/%outdated_messages%"
+        - "&bStorage&7: %storage%"
+        - "&bRanks&7: %ranks%"
+      rank-format: '&f%name%&7[%level%]'
+      rank-separator: '&7, '
+    exp:
+      header: '&b=================== &lDebug Exp &r&b==================='
+      text:
+        - "&bExp system&7: %exp%"
+        - "&bEarn from mobs: %earn%"
+        - "&bMode&7: %mode%"
+        - "%mode_options%"
+      mode-options:
+        progressive: "&bProgressive start&7: %start%\n&bFormula&7: '%formula%'"
+        fixed: "&bFixed repeat&7: %repeat%&bLevels&7: %levels%"
+    party:
+      header: '&b================== &lDebug Party &r&b=================='
+      text:
+        - "&bID&7: %id%"
+        - "&bName/tag&7: %name%&7/%tag%"
+        - "&bLeader&7: %leader%"
+        - "&bNumber members/online&7: %members%&7/%members_online%"
+        - "&bDescription&7: %description%"
+        - "&bMOTD size/homes/kills&7: %motd_size%&7/%homes%&7/%kills%"
+        - "&bPassword/protection/follow/open&7: %password%&7/%protection%&7/%follow%&7/%open%"
+        - "&bColor set/active/dynamic&7: %color%&7/%color_active%&7/%color_dynamic%"
+        - "&bExperience&7: %experience%"
+    player:
+      header: '&b================== &lDebug Player &r&b=================='
+      text:
+        - "&bUUID&7: %uuid%"
+        - "&bName&7: %name%"
+        - "&bRank&7: %rank%"
+        - "&bParty&7: %party%"
+        - "&bChat/spy/muted&7: %chat%&7/%spy%&7/%muted%"
+        - "&bProtection bypass&7: %protection_bypass%"
+      player-offline: "&cThe player '%player%' must be online"
+  desc:
+    changed: "&bParty beschrijving veranderd"
+    removed: "&bPartybeschrijving verwijderd"
+    broadcast: ""
+    invalid-chars: "&cOngeldige tekens. Gebruik: a-Z of 0-9. Minimaal 3 en max 16 tekens."
+    censored: "&cDe beschrijving bevat gecensureerde woorden!"
+  exp:
+    #[Special tag]
+    #=> %exp%        = Experience gained
+    gained-experience: "&bheeft %exp% groepservaring gekregen voor het doden van de mob"
+    level-up: "&bGroep level tot %experience_level%"
+  follow:
+    toggle-on: "&aNu zullen je groepsleden jouw leider volgen"
+    toggle-off: "&aJe groepsleden zullen je leider niet meer volgen"
+  home:
+    teleported: "&7geteleporteerd naar de party home"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    teleport-in: "&7Je wordt geteleporteerd over %seconds% seconden..."
+    teleport-cancelled: "&7Teleport cancelled"
+    teleport-waiting: "&cJe bent al aan het wachten op de teleport!"
+    no-home: "&cEr is nog geen huis"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cJe moet %seconds% seconden wachten!"
+    must-select-home: "&cU moet een geldig huis selecteren"
+    invalid-home: "&cHet geselecteerde huis bestaat niet"
+    valid-homes: "&blijst met geldige woningen:"
+    #[Special tags]
+    #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"}, "hoverEvent":{"show_text","value":{"text":"","extra":[{"text":"&aKlik om te teleporteren"}}]}}}]'
+  join:
+    joined: "&aJe bent toegetreden tot de groep %party%"
+    player-joined: "&b&l%player% is toegetreden tot de groep"
+    open-close:
+      opened: "&bDe groep is nu geopend"
+      closed: "&bDe party is nu gesloten"
+      already-open: "&cDe groep is al geopend"
+      already-closed: "&cDe groep is al gesloten"
+      cooldown: "&cJe moet %seconds% seconden wachten!"
+      cannot-join: "&cJe kan deze party niet binnentreden"
+      failed: "&cFailed to open the party"
+    password:
+      wrong-password: "&cverkeerd wachtwoord!"
+  list:
+    #[Special tags]
+    #=> %index%     = The party index
+    #=> %number%    = Number of online parties
+    #=> %page%      = Current page of the list
+    #=> %maxpages%  = Total pages
+    header: "&b============ &lOnline Parties Lijst &r&b============"
+    footer: "&b================ &lPagina %page% van %maxpages% &r&b============"
+    no-one: "&7Niemand"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aToon info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cOngeldig bestellingstype'
+  motd:
+    changed: "&bParty MOTD veranderd"
+    removed: "&bParty MOTD verwijderd"
+    broadcast: ""
+    content:
+      - "&bParty MOTD:"
+      - "&b%motd%"
+    invalid-chars: "&cOngeldige karakters. U kunt ook ' , /'. Minimaal 3 en max 100 tekens."
+    censored: "&cDe MOTD bevat gecensureerde woorden!"
+  mute:
+    toggle-on: "&7Je hebt meldingen uitgeschakeld!"
+    toggle-off: "&7Je hebt meldingen ingeschakeld!"
+  nickname:
+    own:
+      changed: "&bJe hebt je bijnaam veranderd in %player_nickname%"
+      removed: "&bJe hebt je eigen bijnaam verwijderd"
+      no-permission: "&cJe kan je eigen bijnaam niet wijzigen"
+    others:
+      changed: "&bheeft bijnaam van %player% veranderd in %player_nickname%"
+      #Special tags:
+      #=> %nickname%   = The target player nickname
+      #Tags are parsed for sender
+      target-changed: "&b%player% heeft je bijnaam veranderd in %nickname%"
+      removed: "&bVerwijderde bijnaam van %player%"
+      target-removed: "&b%player% verwijderde je bijnaam"
+      no-permission: "&cJe kan de nicknames van andere spelers niet veranderen"
+    show:
+      own: "&bJe bijnaam is %player_nickname%"
+      own-none: "&bJe hebt geen bijnaam"
+      other: "&bDe bijnaam van %player% is %player_nickname%"
+      other-none: "&b%player% heeft geen bijnaam"
+    invalid-chars: "&cOngeldige karakters. U kunt ook ' , /'. Minimaal 3 en max 16 tekens."
+    censored: "&cDe bijnaam bevat gecensureerde woorden!"
+  password:
+    changed: "&aParty wachtwoord veranderd"
+    removed: "&aParty wachtwoord verwijderd"
+    broadcast: ""
+    invalid-chars: "&cOngeldige tekens. Gebruik: a-Z of 0-9. Minimaal 1 en max 16 tekens."
+  protection:
+    toggle-on: "&aNu is uw party beschermd door een friendly fire"
+    toggle-off: "&aJe party is niet meer beschermd door een friendly fire"
+    protected: "&cJe kan je partymaten niet raken"
+    warn-on-attack: "&c%player% probeerde %victim% te raken!"
+  sethome:
+    changed: ""
+    removed: "&bParty home verwijderd"
+    removed-none: "&cGeen party home gevonden"
+    broadcast: "&aDe groep heeft een nieuw huis!"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cJe moet %seconds% seconden wachten!"
+    max-homes: "&cU heeft het maximum aantal huizen bereikt"
+  tag:
+    changed: "&bParty tag veranderd"
+    removed: "&bParty tag verwijderd"
+    broadcast: ""
+    invalid-chars: "&cOngeldige tekens. Gebruik: a-Z of 0-9. Minimaal 3 en max 10 tekens."
+    censored: "&cDe tag bevat gecensureerde woorden!"
+    already-used: "&c De tag %tag% wordt al gebruikt"
+  teleport:
+    teleporting: "&7Teleporteert je party hier!"
+    player-teleported: "&bgeteleporteerd naar %player%"
+    #[Special tags]
+    #=> %seconds%          = Time of delay in seconds
+    player-teleport-in: "&7Je zult geteleporteerd worden over %seconds% seconden"
+    player-teleport-cancelled: "&7Teleport cancelled"
+    #[Special tags]
+    #=> %seconds%          = Remaining time in seconds
+    cooldown: "&cJe moet %seconds% seconden wachten!"
+    accept-request:
+      sent: "&aTeleporteer aanvraag verstuurd naar de party"
+      received: "[{\"text\":\"&bWil je geteleporteerd worden naar %player%? \"},{\"text\":\"&a&lJa\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6accepteert de request\"}]},{\"text\":\" &bof \"}, \"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}}}},{\"text\":\"&b?\n&bJe kunt &7/party <accept/deny> %player% &bgebruiken om te kiezen.\"}]"
+      denied: "&7U heeft het teleport verzoek van %player% geweigerd"
+#/ =============================== \
+#|         OTHER  MESSAGES         |
+#\ =============================== /
+other:
+  follow:
+    #[Special tags]
+    #=> %server%          = New server
+    following-server: "&7Following %player% in %server%"
+  fixed-parties:
+    default-join: "&bJe bent ingetreden in %party%"
+  join-leave:
+    server-join: "&b%player% is online!"
+    server-leave: "&7%player% is offline!"
+#/ =============================== \
+#|          HELP MESSAGES          |
+#\ =============================== /
+help:
+  header: "&b============= &lParty Help %page%/%maxpages% &r&b============="
+  footer: ""
+  perform-command: 'Voer het commando uit'
+  console-help:
+    header: 'Je kunt alleen deze commando''s uitvoeren:'
+    command: ' > %command% - %description%'
+  #[Special tags]
+  #=> %syntax%          = Command syntax
+  #=> %description%     = Description
+  #=> %run_command%     = Command run syntax
+  #=> %perform_command% = Perform command message
+  main:
+    commands:
+      help: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      accept: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      chat: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      create: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      delete: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      deny: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      ignore: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      info: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      invite: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      kick: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      leave: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      p: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rank: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      reload: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      rename: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      help: 'Help-pagina''s weergeven'
+      accept: 'Accepteer een party verzoek'
+      chat: 'Schakel groepschat aan/uit'
+      create: 'Maak een nieuwe groep aan'
+      delete: 'Verwijder de party'
+      deny: 'Weiger een party verzoek'
+      ignore: 'Genegeerde parties toevoegen/verwijderen/tonen'
+      info: 'Toon party informatie'
+      invite: 'Nodig een speler uit voor jouw party'
+      kick: 'Een speler uit de party verwijderen'
+      leave: 'Verlaat je party'
+      p: 'Stuur een bericht naar de party'
+      rank: 'Wijzig rang van de speler'
+      reload: 'Herlaad de configuratiebestanden van de parties plugin'
+      rename: 'Hernoem de party'
+      spy: 'Berichten van andere parties spioneren'
+      version: 'Toon party informatie'
+  additional:
+    commands:
+      ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      claim: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      close: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      color: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      createfixed: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      debug: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      desc: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      follow: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      home: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      join: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      list: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      motd: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      mute: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      nickname: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      open: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      password: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      protection: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      sethome: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+      teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    descriptions:
+      ask: 'Verstuur een samenvoegingsverzoek'
+      claim: 'Geef toestemming aan de claim'
+      close: 'Party sluiten'
+      color: 'Verander groepkleur'
+      createfixed: 'Maak een nieuwe vaste partij'
+      debug: 'Foutopsporing problemen'
+      desc: 'Beschrijving groep/verwijderen'
+      follow: 'Wissel volgleider'
+      home: 'Teleporteer naar de party home'
+      join: 'Word lid van de groep'
+      list: 'Lijst van online partijen'
+      motd: 'Motd groep/verwijderen'
+      mute: 'Meldingen aan/uit'
+      nickname: 'Bijnaam lid/verwijderen'
+      open: 'Party openen'
+      password: 'Wachtwoord van de partij wijzigen'
+      protection: 'Wissel vriendschappelijke brandbeveiliging'
+      sethome: 'Startpagina instellen/verwijderen'
+      tag: 'Groepslabel instellen/verwijderen'
+      teleport: 'Teleporteer je party naar jou'
+dont-edit-this:
+  version: 14
