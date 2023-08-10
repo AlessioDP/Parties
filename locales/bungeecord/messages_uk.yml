@@ -12,159 +12,159 @@ parties:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&9New version of Parties found: %version% (Current: %thisversion%)"
+  update-available: "&9Знайдено нову версію Parties: %version% (Поточна: %thisversion%)"
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of Parties is outdated!"
+  configuration-outdated: "&cФайл конфігурації '%config%' плагіну Parties застарілий!"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
-    not-in-party: "&cYou are not in a party"
-    already-in-party: "&cYou are already in a party!"
-    party-not-found: "&cThe party %party% doesn't exist"
-    party-full: "&cThe party is full!"
-    player-not-found: "&cThe player %player% has not been found"
-    player-not-in-party: "&c%player% is not in a party"
+    invalid-command: "&cНеправильна команда"
+    configuration-reloaded: "&aКонфігурацію оновлено"
+    not-in-party: "&cТи не знаходишся у команді"
+    already-in-party: "&cТи вже в команді!"
+    party-not-found: "&cКоманди %party% не існує"
+    party-full: "&cКоманда заповнена!"
+    player-not-found: "&cГравеця %player% не знайдено"
+    player-not-in-party: "&c%player% немає в команді"
   options:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aУвімкнено'
+    disabled: '&cВимкнено'
+    toggled-on: '&aУвімкнено'
+    toggled-off: '&cВимкнено'
+    word-yes: '&aТак'
+    word-no: '&cНі'
+    empty: '&8Пустий'
+    none: '&8–'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    color: 'color'
-    description: 'desc'
-    experience: 'experience'
-    kills: 'kills'
-    home: 'home'
-    members: 'members'
-    message: 'message'
+    wrong-message: '&cНеправильний синтаксис: Введіть &7/%syntax%'
+    color: 'колір'
+    description: 'опис'
+    experience: 'досвід'
+    kills: 'вбивств'
+    home: 'дім'
+    members: 'учасники'
+    message: 'повідомлення'
     motd: 'motd'
-    name: 'name'
-    nickname: 'nickname'
-    online-members: 'online_members'
-    order: 'order'
-    page: 'page'
-    party: 'party'
-    password: 'password'
-    permission: 'permission'
-    player: 'player'
-    rank: 'rank'
-    tag: 'tag'
+    name: 'ім''я'
+    nickname: 'нікнейм'
+    online-members: 'онлайн_учасники_команди'
+    order: 'порядок'
+    page: 'сторінка'
+    party: 'команда'
+    password: 'пароль'
+    permission: 'права'
+    player: 'гравець'
+    rank: 'ранг'
+    tag: 'тег'
   permissions:
     #[Special tags]
     #=> %permission%  = Missing permission
-    no-permission: "&cYou do not have access to that command"
-    no-permission-in-party-general: "&cYour party rank do not have access to that command"
-    no-permission-in-party-rank: "&cYou need to be %rank_name% to perform that command"
-  out-party: "Out party"
+    no-permission: "&cУ тебе немає доступу до цієї команди"
+    no-permission-in-party-general: "&cТвій ранг в команді не дозволяє використовувати цю команду"
+    no-permission-in-party-rank: "&cТобі потрібен ранг %rank_name% для використання цієї команди"
+  out-party: "Покинути команду"
   list:
     player-online-format: "&b%player%"
     player-offline-format: "&7%player%"
     player-separator: "&7, "
-    player-empty: "&7Nobody"
-    player-unknown: "&6Someone"
-    missing-value: "&7Miss"
+    player-empty: "&7Нікого"
+    player-unknown: "&6Хтось"
+    missing-value: "&7Немає"
   #Define the format of Parties chat messages
   formats:
-    party-chat: "&b[Party] %player_rank_chat% %player%&r&7: &b%message%"
+    party-chat: "&b[Команда] %player_rank_chat% %player%&r&7: &b%message%"
     spy:
-      party-chat: "&7[SPY] [%party%] %player%: %message%"
-      broadcast: "&7[SPY] [%party%]: %message%"
+      party-chat: "&7[ПІДСЛУХАНО] [%party%] %player%: %message%"
+      broadcast: "&7[ПІДСЛУХАНО] [%party%]: %message%"
 #/ =============================== \
 #|     MAIN COMMANDS  MESSAGES     |
 #\ =============================== /
 main-commands:
   accept:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want accept:"
-    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
-    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to accept","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Accept the request","color":"gold"}]}}}]'
+    no-request: "&cУ тебе немає нерозглянутих запрошень"
+    no-exists: "&cЦе запрошення більше не дійсне"
+    multiple-requests: "&cОбери запрошення, яке хочеш прийняти:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Натисни тут, щоб прийняти","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Прийняти запрошення","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Натисни тут, щоб прийняти","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Прийняти запрошення","color":"gold"}]}}}]'
   chat:
-    enabled: "&aChat set to party"
-    disabled: "&aChat set to public"
+    enabled: "&aЧат встановлено на чат команди"
+    disabled: "&aЧат встановлено на публічний"
   create:
-    created: "[{\"text\":\"You have created the party %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Type \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" to invite your friend.\",\"color\":\"aqua\"}]"
-    created-fixed: "&b&lYou have created the fixed party %party%"
-    name-already-exists: "&cThe party name %party% already exists, choose a different name"
-    name-too-long: "&cThe party name is too long!"
-    name-too-short: "&cThe party name is too short!"
-    invalid-name: "&cInvalid characters. Use: a-Z or 0-9."
-    censored: "&cThe party name contains censored words!"
+    created: "[{\"text\":\"Ти створив команду %party%.\n\",\"color\":\"aqua\",\"bold\":true},{\"text\":\"Використовуй \",\"color\":\"aqua\",\"bold\":false},{\"text\":\"/party invite\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/party invite \"}},{\"text\":\" щоб запросити друзів.\",\"color\":\"aqua\"}]"
+    created-fixed: "&b&lТи створив фіксовану команду %party%"
+    name-already-exists: "&cНазва команда %party% вже зайняти, вибери іншу"
+    name-too-long: "&cНазва команди занадто довга!"
+    name-too-short: "&cНазва команди занадто коротка!"
+    invalid-name: "&cНеправильні символи. Використовуй латиницю і цифри."
+    censored: "&cНазва команди містить заборонені слова!"
   delete:
-    deleted: "&aParty %party% deleted"
-    deleted-silently: "&aParty %party% deleted silently"
-    broadcast: "&6&lYour party has been deleted"
+    deleted: "&aКоманду %party% видалено"
+    deleted-silently: "&aКоманду %party% мовчки видалено"
+    broadcast: "&6&lТвою команду було видалено"
   deny:
-    no-request: "&cYou have not pending request"
-    no-exists: "&cThe request doesn't exist anymore"
-    multiple-requests: "&cChoose the request that you want deny:"
-    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
-    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Click here to deny","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Deny the request","color":"gold"}]}}}]'
+    no-request: "&cУ тебе немає нерозглянутих запрошень"
+    no-exists: "&cЦе запрошення більше не дійсне"
+    multiple-requests: "&cВибери запрошення яке хочеш відхилити:"
+    multiple-requests-party: '[{"text":"%party%","color":"aqua"},{"text":" - Натисни тут, щоб відхилити","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Відхилити запрошення","color":"gold"}]}}}]'
+    multiple-requests-player: '[{"text":"%player%","color":"aqua"},{"text":" - Натисни тут, щоб відхилити","color":"gray","clickEvent":{"action":"run_command","value":"/%run_command% %player%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"Відхилити запрошення","color":"gold"}]}}}]'
   ignore:
-    start-ignore: "&7Ignoring %party% invites"
-    stop-ignore: "&7You stopped ignoring %party%"
+    start-ignore: "&7Команда %party% відтепер ігнорується"
+    stop-ignore: "&7Команда %party% більше не ігнорується"
     ignore-list:
-      header: "&b&lList ignored parties:"
+      header: "&b&lСписок команд які ігноруються:"
       party-prefix: "&c"
       separator: "&7, "
-      empty: "&7None"
+      empty: "&7Немає"
   info:
     content-own-party:
-      - "&b============ &l%party%'s Info &r&b============"
-      - "&b&lDescription&7: %desc%"
-      - "&bLeader&7: %list_rank_leader%"
-      - "&bMods&7: %list_rank_moderator%"
-      - "&bMembers&7: %list_rank_member%"
-      - "&bOnline players&7: %members_online_total%"
+      - "&b===== &lІнфо про %party% &r&b====="
+      - "&b&lОпис&7: %desc%"
+      - "&bЛідер&7: %list_rank_leader%"
+      - "&bМодератори&7: %list_rank_moderator%"
+      - "&bУчасники&7: %list_rank_member%"
+      - "&bУчасники онлайн&7: %members_online_total%"
     content-other-party:
-      - "&b============ &l%party%'s Info &r&b============"
-      - "&b&lDescription&7: %desc%"
-      - "&bLeader&7: %list_rank_leader%"
-      - "&bMods&7: %list_rank_moderator%"
-      - "&bMembers&7: %list_rank_member%"
-      - "&bOnline players&7: %members_online_total%"
+      - "&b===== &lІнфо про %party% &r&b====="
+      - "&b&lОпис&7: %desc%"
+      - "&bЛідер&7: %list_rank_leader%"
+      - "&bМодератори&7: %list_rank_moderator%"
+      - "&bУчасники&7: %list_rank_member%"
+      - "&bУчасники онлайн&7: %members_online_total%"
   invite:
-    sent: "&bYou invited %player% in your party"
-    player-invited: "[{\"text\":\"&b%player% has invited you to the party %party%.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the invitation\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Deny the invitation\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> &bto choose.\"}]"
+    sent: "&bТи запросив %player% в свою команду"
+    player-invited: "[{\"text\":\"&b%player% запросив тебе в команду %party%.\n&bХочеш \"},{\"text\":\"&a&lприйняти\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Прийняти запрошення\"}]}}},{\"text\":\" &bабо \"},{\"text\":\"&c&lвідхилити\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %party%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Відхилити запрошення\"}]}}},{\"text\":\"&b?\n&bТакож, можеш використовувати &7/party <accept/deny> &bдля вибору.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the party invite"
-      receipt: "&a%player% accepted your invite"
+      broadcast: "&b&l%player% приєднався до команди"
+      accepted: "&aТи прийняв запрошення в команду"
+      receipt: "&a%player% прийняв твоє запрошення"
     deny:
       broadcast: ""
-      denied: "&aYou denied the party invite"
-      receipt: "&a%player% denied your invite"
+      denied: "&aТи відхилив запрошення в команду"
+      receipt: "&a%player% відхилив твоє запрошення"
     timeout:
-      no-response: "&7%player% didn't accept the party invite"
-      timeout: "&7You didn't accept the party invite to %party%"
+      no-response: "&7%player% не прийняв запрошення в команду"
+      timeout: "&7Ти не прийняв запрошення в команду %party%"
     revoke:
-      sent-revoked: "&7Revoked invite sent to %player%"
-      player-invite-revoked: "&7Invite received from %party% has been revoked"
+      sent-revoked: "&7Запрошення гравцю %player% відкликано"
+      player-invite-revoked: "&7Запрошення до %party% відкликано"
     cooldown:
-      global: "&cYou need to wait %seconds% seconds before invite another player"
-      individual: "&cYou need to wait %seconds% seconds before invite again the same player"
-      on-leave: "&cYou need to wait %seconds% seconds before invite this player"
-    player-offline: "&cYou can invite only online players"
-    player-no-permission: "&c%player% doesn't have the permission to join"
-    player-in-party: "&c%player% is already in a party"
-    already-invited: "&c%player% was already invited"
-    invite-yourself: "&cYou cannot invite yourself"
-    failed: "&cFailed to invite the player %player%"
+      global: "&cТи маєш зачекати %seconds% сек. перед тим, як відправити запрошення іншому гравцю"
+      individual: "&cТи маєш зачекати %seconds% сек. перед тим, як повторно відправити запрошення цьому гравцю"
+      on-leave: "&cТи маєш зачекати %seconds% сек. перед тим, як відправити запрошення цьому гравцю"
+    player-offline: "&cТи можеш запрошувати тільки гравців які зараз онлайн"
+    player-no-permission: "&c%player% не має прав щоб приєднатись"
+    player-in-party: "&c%player% вже знаходиться в команді"
+    already-invited: "&c%player% вже запрошений"
+    invite-yourself: "&cТи не можеш запросити сам себе"
+    failed: "&cНе вдалося запросити гравця %player%"
   kick:
-    sent: "&aYou kicked %player% from the party!"
-    player-kicked: "&bYou have been kicked from %party%"
-    broadcast: "&b&l%player% has been kicked from the party"
-    broadcast-disband: "&b&lThe party has been disbanded because the leader got kicked"
-    broadcast-leader-changed: "&b&lThe new leader is %player%"
-    broadcast-leave-server: "&b&l%player% has been kicked from the party"
-    player-higher-rank: "&cYou cannot kick your superior!"
-    player-not-in-party: "&c%player% is not in your party"
+    sent: "&aТи вигнав %player% з команди!"
+    player-kicked: "&bТебе вигнали з команди %party%"
+    broadcast: "&b&l%player% вигнано з команди"
+    broadcast-disband: "&b&lКоманду розпущено бо лідера вигнали"
+    broadcast-leader-changed: "&b&lНовий лідер: %player%"
+    broadcast-leave-server: "&b&l%player% вигнано з команди"
+    player-higher-rank: "&cТи не можеш вигнати учасника вищого рангу!"
+    player-not-in-party: "&c%player% не є членом твоєї команди"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -173,35 +173,35 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&cЗнайдено гравців з таким ім'ям:"
         - "%list_players%"
-        - "&cUse '&7/party kick <username> <number>&c' to kick the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Kick this player","color":"gold"}}}'
+        - "&cВикористовуй '&7/party kick <нікнейм> <число>&c' щоб вигнати потрібного гравця"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: останній раз був онлайн %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party kick %username% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Вигнати гравця","color":"gold"}}}'
   leave:
-    left: "&b&lYou left the party %party%"
-    broadcast: "&b&l%player% left the party"
-    party-disbanded: "&6&lThe party has been disbanded because the leader left"
-    leader-changed: "&b&lThe leader left the party, the new leader is %player%"
+    left: "&b&lТи покинув команду %party%"
+    broadcast: "&b&l%player% покинув команду"
+    party-disbanded: "&6&lКоманду розпущено бо лідер покинув її"
+    leader-changed: "&b&lЛідер покинув команду, новий лідер: %player%"
   p:
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou still have to wait %seconds% seconds"
-    censored: "&cThe message contains censored words!"
-    muted: "&cYou are muted!"
+    cooldown: "&cТи все ще маєш почекати %seconds% сек."
+    censored: "&cПовідомлення містить заборонені слова!"
+    muted: "&cТебе заглушено!"
   rank:
     #[Special tags]
     #=> %rank_name%   = Rank wrote by the player
-    changed: "&a%player% rank changed into %rank_name%"
+    changed: "&aРанг %player% змінено на %rank_name%"
     broadcast: ""
-    wrong-rank: "&cRank '%rank_name%' doesn't exist!"
-    same-rank: "&c%player% is already %rank_name%!"
-    low-rank: "&cYou cannot edit players with an equivalent or higher rank than yours!"
-    to-higher-rank: "&cYou cannot promote to a rank equivalent or higher than yours!"
-    full: "&cRank %rank_name% reached the maximum number of players"
-    fixed-leader: "&cYou cannot make someone a leader of a fixed party!"
-    demote-leader: "&cYou cannot demote the party leader"
-    changing-yourself: "&cYou cannot change your own rank!"
-    player-not-in-party: "&c%player% is not in your party"
+    wrong-rank: "&cРангу '%rank_name%' не існує!"
+    same-rank: "&c%player% вже має ранг '%rank_name%'!"
+    low-rank: "&cТи не можеш редагувати гравців з таким самим рангом або вищим за твій!"
+    to-higher-rank: "&cТи не можеш підвищувати до свого рангу, або вище за свій!"
+    full: "&cРанг %rank_name% досяг максимальної кількості гравців"
+    fixed-leader: "&cТи не можеш призначити когось лідером фіксованої команди!"
+    demote-leader: "&cТи не можеш понизити лідера команди"
+    changing-yourself: "&cТи не можеш змінювати свій ранг!"
+    player-not-in-party: "&c%player% не є членом твоєї команди"
     players-conflict:
       #[Special tags]
       #=> %username%                       = The name of the player
@@ -210,61 +210,61 @@ main-commands:
       #=> %number%                         = The number of the player
       #=> %lastloginapi_last_logout_date%  = The last logout date (See LastLoginAPI plugin)
       content:
-        - "&cWe have found some players with that name:"
+        - "&cЗнайдено гравців з таким ім'ям:"
         - "%list_players%"
-        - "&cUse '&7/party rank <username> <rank> <number>&c' to change rank of the right player"
-      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: last login %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Change rank of this player","color":"gold"}}}'
+        - "&cВикористовуй '&7/party rank <нікнейм> <ранг> <число>&c' щоб змінити ранг потрібного гравця"
+      player: '{"text":"","extra":[{"text":"[%number%] ","color":"gray"},{"text":"%username%","color":"gold"},{"text":" [","color":"gray"},{"text":"%party%","color":"aqua"},{"text":"]: останній раз був онлайн %lastloginapi_last_logout_date%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/party rank %username% %rank% %number%"},"hoverEvent":{"action":"show_text","value":{"text":"Змінити ранг гравця","color":"gold"}}}'
   rename:
     #[Special tags]
     #=> %old%   = Old party name
-    renamed: "&aThe party %old% has been renamed into %party%"
-    broadcast: "&6Your party has been renamed into %party%!"
+    renamed: "&aКоманду %old% перейменовано на %party%"
+    broadcast: "&6Твою команду перейменовано на %party%!"
     #[Special tags]
     #=> %seconds%   = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cТи маєш зачекати %seconds% сек."
   spy:
-    enabled: "&7Now you are a spy!"
-    disabled: "&7You are no longer a spy"
+    enabled: "&7Тепер ти підслуховуєш!"
+    disabled: "&7Ти більше не підслуховуєш"
   version:
     #[Special tags]
     #=> %version%    = Parties version
     #=> %newversion% = Latest Parties version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&b&lParties &b%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&b&lParties &b%version% &7(%platform%) - Розроблено &6AlessioDP"
+    outdated: "&b&lParties &b%version% &7(%platform%) - Розроблено &6AlessioDP\n&aЗнайдено нову версію: &2%newversion%"
 #/ =============================== \
 #|  ADDITIONAL COMMANDS  MESSAGES  |
 #\ =============================== /
 additional-commands:
   ask:
-    sent: "&aJoin request sent to %party%"
-    received: "[{\"text\":\"&b%player% want to join your party.\n&bDo you want \"},{\"text\":\"&a&laccept\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&ldeny\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
+    sent: "&aЗапрошення на вступ до %party% надіслано"
+    received: "[{\"text\":\"&b%player% бажає приєднатись до твоєї команди.\n&bТи хочеш \"},{\"text\":\"&a&lприйняти\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Прийняти запит\"}]}}},{\"text\":\" &bабо \"},{\"text\":\"&c&lвідхилити\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Відхилити запит\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bТакож, можеш використовувати &7/party <accept/deny> %player% &bдля вибору.\"}]"
     accept:
-      broadcast: "&b&l%player% joined the party"
-      accepted: "&aYou accepted the ask request"
-      receipt: "&a%party% accepted your ask request"
+      broadcast: "&b&l%player% приєднався до команди"
+      accepted: "&aТи прийняв запит"
+      receipt: "&aКоманда %party% прийняла твій запит"
     deny:
       broadcast: ""
-      denied: "&aYou denied the %player% ask request"
-      receipt: "&a%party% denied your ask request"
+      denied: "&aТи відхилив запит %player%"
+      receipt: "&aКоманда %party% відхилила твій запит"
     timeout:
-      no-response: "&7%party% didn't accept the ask request"
+      no-response: "&7Команда %party% не прийняла твій запит"
     cooldown:
       #[Special tags]
       #=> %seconds%          = Remaining time in seconds
-      global: "&cYou need to wait %seconds% seconds before ask to another party"
-      individual: "&cYou need to wait %seconds% seconds before ask to the same party"
+      global: "&cТи маєш зачекати %seconds% сек. перед тим як відправити запрошення в іншу команду"
+      individual: "&cТи маєш зачекати %seconds% сек. перед тим як відправити запрошення в команду повторно"
   color:
-    info: "&bYour party color is: %color_code%%color_command%"
-    empty: "&bYour party doesn't have a color"
-    changed: "&bParty color changed into %color_command%"
-    removed: "&bParty color removed"
+    info: "&bКолір команди: %color_code%%color_command%"
+    empty: "&bТвоя команда не має кольору"
+    changed: "&bКолір команди змінено на %color_command%"
+    removed: "&bКолір команди прибрано"
     broadcast: ""
     #Syntax of %available_colors%
     available-colors:
       color: "%color_command%"
       separator: ", "
-    wrong-color: "&cColor not found. You can select: %available_colors%"
+    wrong-color: "&cКолір не знайдено. Доступні кольори: %available_colors%"
   debug:
     bungeecord:
       sync: "Parties in the server %server% is synced correctly"
@@ -310,133 +310,133 @@ additional-commands:
         - "&bProtection bypass&7: %protection_bypass%"
       player-offline: "&cThe player '%player%' must be online"
   desc:
-    changed: "&bParty description changed"
-    removed: "&bParty description removed"
+    changed: "&bОпис команди змінено"
+    removed: "&bОпис команди прибрано"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 16 chars."
-    censored: "&cThe description contains censored words!"
+    invalid-chars: "&cНедопустимі символи. Використовуй латиницю або цифри. Від 3 до 16 символів."
+    censored: "&cОпис містить заборонені слова!"
   exp:
     #[Special tag]
     #=> %exp%        = Experience gained
-    gained-experience: "&bGained %exp% party experience for killing the mob"
-    level-up: "&bParty leveled up to %experience_level%"
+    gained-experience: "&bЗдобуто %exp% командного досвіду за вбивство моба"
+    level-up: "&bНовий рівень команди: %experience_level%"
   follow:
-    toggle-on: "&aNow your party members will follow your leader"
-    toggle-off: "&aYour party members will not follow your leader anymore"
+    toggle-on: "&aВідтепер учасники команди будуть слідувати за її лідером"
+    toggle-off: "&aВідтепер учасники команди не слідуватимуть за лідером"
   home:
-    teleported: "&7Teleported to the party home"
+    teleported: "&7Переміщено до дому команди"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    teleport-in: "&7You will be teleported in %seconds% seconds..."
-    teleport-cancelled: "&7Teleport cancelled"
-    teleport-waiting: "&cYou are already waiting for the teleport!"
-    no-home: "&cThere isn't a home yet"
+    teleport-in: "&7Тебе буде переміщено через %seconds% сек."
+    teleport-cancelled: "&7Переміщення скасовано"
+    teleport-waiting: "&cТи вже і так чекаєш на переміщення!"
+    no-home: "&cПокищо немає дому"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    must-select-home: "&cYou must select a valid home"
-    invalid-home: "&cThe selected home doesn't exist"
-    valid-homes: "&bList of valid homes:"
+    cooldown: "&cТи маєш зачекати %seconds% сек."
+    must-select-home: "&cТи маєш вибрати дійсний дім"
+    invalid-home: "&cВибраного дому не існує"
+    valid-homes: "&bСписок дійсних домів:"
     #[Special tags]
     #Any value related to home: %name%, %world%, %server%, %x%, %y%, %z%, %pitch% & %yaw%
-    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aClick to teleport"}]}}}]'
+    valid-home-line: '[{"text":"&b%name%","clickEvent":{"action":"run_command","value":"/party home %name%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aНатисни щоб переміститись"}]}}}]'
   join:
-    joined: "&aYou joined the party %party%"
-    player-joined: "&b&l%player% joined in the party"
+    joined: "&aТи приєднався до команди %party%"
+    player-joined: "&b&l%player% приєднався до команди"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
-      cooldown: "&cYou have to wait %seconds% seconds!"
-      cannot-join: "&cYou cannot join this party"
-      failed: "&cFailed to open the party"
+      opened: "&bКоманда відтепер відкрита"
+      closed: "&bКоманда відтепер закрита"
+      already-open: "&cКоманда і так відкрита"
+      already-closed: "&cКоманда і так закрита"
+      cooldown: "&cТи маєш зачекати %seconds% сек."
+      cannot-join: "&cТи не можеш приєднатись до цієї команди"
+      failed: "&cНе вдалося відкрити команду"
     password:
-      wrong-password: "&cWrong password!"
+      wrong-password: "&cНеправильний пароль!"
   list:
     #[Special tags]
     #=> %index%     = The party index
     #=> %number%    = Number of online parties
     #=> %page%      = Current page of the list
     #=> %maxpages%  = Total pages
-    header: "&b============ &lOnline Parties List &r&b============"
-    footer: "&b================ &lPage %page% of %maxpages% &r&b================"
-    no-one: "&7No one"
-    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aShow info"}]}}},{"text":" &7[&6Online %members_online_total%&7] %desc%"}]'
-    invalid-order: '&cInvalid order type'
+    header: "&b===== &lСписок команд онлайн &r&b====="
+    footer: "&b===== &lСторінка %page% з %maxpages% &r&b====="
+    no-one: "&7Нікого"
+    format-party: '[{"text":"&b%party%","clickEvent":{"action":"run_command","value":"/party info %party%"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&aПоказати інформацію"}]}}},{"text":" &7[&6Онлайн %members_online_total%&7] %desc%"}]'
+    invalid-order: '&cНеправильний тип порядку'
   motd:
-    changed: "&bParty MOTD changed"
-    removed: "&bParty MOTD removed"
+    changed: "&bКомандне повідомлення було змінено"
+    removed: "&bКомандне повідомлення прибрано"
     broadcast: ""
     content:
-      - "&bParty MOTD:"
+      - "&bКомандне повідомлення:"
       - "&b%motd%"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 100 chars."
-    censored: "&cThe MOTD contains censored words!"
+    invalid-chars: "&cНедопустимі символи. Також можна використовувати '. , /'. Від 3 до 10 символів."
+    censored: "&cКомандне повідомлення містить заборонені слова!"
   mute:
-    toggle-on: "&7You have disabled notifications!"
-    toggle-off: "&7You have enabled notifications!"
+    toggle-on: "&7Ти вимкнув сповіщення!"
+    toggle-off: "&7Ти увімкнув сповіщення!"
   nickname:
     own:
-      changed: "&bYou changed your nickname into %player_nickname%"
-      removed: "&bYou removed your own nickname"
-      no-permission: "&cYou cannot change your own nickname"
+      changed: "&bТи змінив свій нікнейм на %player_nickname%"
+      removed: "&bТи видалив свій нікнейм"
+      no-permission: "&cТи не можеш змінювати свій нікнейм"
     others:
-      changed: "&bChanged nickname of %player% into %player_nickname%"
+      changed: "&bНікнейм %player% змінено на %player_nickname%"
       #Special tags:
       #=> %nickname%   = The target player nickname
       #Tags are parsed for sender
-      target-changed: "&b%player% changed your nickname into %nickname%"
-      removed: "&bRemoved nickname of %player%"
-      target-removed: "&b%player% removed your nickname"
-      no-permission: "&cYou cannot change other player nicknames"
+      target-changed: "&b%player% змінив твій нікнейм на %nickname%"
+      removed: "&bВидалено нікнейм гравця %player%"
+      target-removed: "&b%player% видалив твій нікнейм"
+      no-permission: "&cТи не можеш змінювати нікнейми іншим гравцям"
     show:
-      own: "&bYour nickname is %player_nickname%"
-      own-none: "&bYou do not have any nickname"
-      other: "&bThe nickname of %player% is %player_nickname%"
-      other-none: "&b%player% does not have any nickname"
-    invalid-chars: "&cInvalid characters. You can also use '. , /'. Min 3 and max 16 chars."
-    censored: "&cThe nickname contains censored words!"
+      own: "&bТвій нікнейм: %player_nickname%"
+      own-none: "&bВ тебе немає нікнейму"
+      other: "&bНікнейм гравця %player% – %player_nickname%"
+      other-none: "&b%player% не має нікнейму"
+    invalid-chars: "&cНедопустимі символи. Також можна використовувати '. , /'. Від 3 до 16 символів."
+    censored: "&cНікнейм містить заборонені слова!"
   password:
-    changed: "&aParty password changed"
-    removed: "&aParty password removed"
+    changed: "&aПароль команди змінено"
+    removed: "&aПароль команди видалено"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 1 and max 16 chars."
+    invalid-chars: "&cНедопустимі символи. Використовуй латиницю і цифри. Від 1 до 16 символів."
   protection:
-    toggle-on: "&aNow your party is protected by friendly fire"
-    toggle-off: "&aYour party is not protected anymore by friendly fire"
-    protected: "&cYou can't hit your partymates"
-    warn-on-attack: "&c%player% tried to hit %victim%!"
+    toggle-on: "&aВідтепер команда захищена від \"вогню по своїм\""
+    toggle-off: "&aВідтепер команда не захищена від \"вогню по своїм\""
+    protected: "&cТи не можеш бити членів команди"
+    warn-on-attack: "&c%player% намагався вдарити %victim%!"
   sethome:
     changed: ""
-    removed: "&bParty home removed"
-    removed-none: "&cNo party home found"
-    broadcast: "&aThe party has a new home!"
+    removed: "&bКомандний дім видалено"
+    removed-none: "&cНе знайдено командного дому"
+    broadcast: "&aКоманда має новий дім!"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
-    max-homes: "&cYou reached the maximum number of homes"
+    cooldown: "&cТи маєш зачекати %seconds% сек."
+    max-homes: "&cТи досяг максимальної кількості домів"
   tag:
-    changed: "&bParty tag changed"
-    removed: "&bParty tag removed"
+    changed: "&bТег команди змінено"
+    removed: "&bТег команди видалено"
     broadcast: ""
-    invalid-chars: "&cInvalid characters. Use: a-Z or 0-9. Min 3 and max 10 chars."
-    censored: "&cThe tag contains censored words!"
-    already-used: "&c The tag %tag% is already used"
+    invalid-chars: "&cНедопустимі символи. Використовуй латиницю і цифри. Від 3 до 10 символів."
+    censored: "&cТег містить заборонені слова!"
+    already-used: "&cТег %tag% вже зайнятий"
   teleport:
-    teleporting: "&7Teleporting your party here!"
-    player-teleported: "&bTeleported to %player%"
+    teleporting: "&7Переміщення до командного дому!"
+    player-teleported: "&bПереміщення до %player%"
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
-    player-teleport-in: "&7You will be teleported in %seconds% seconds"
-    player-teleport-cancelled: "&7Teleport cancelled"
+    player-teleport-in: "&7Тебе буде переміщено через %seconds% сек."
+    player-teleport-cancelled: "&7Переміщення скасовано"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
-    cooldown: "&cYou have to wait %seconds% seconds!"
+    cooldown: "&cТи маєш зачекати %seconds% сек."
     accept-request:
-      sent: "&aTeleport request sent to the party"
-      received: "[{\"text\":\"&bDo you want to be teleported to %player%? \"},{\"text\":\"&a&lYes\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Accept the request\"}]}}},{\"text\":\" &bor \"},{\"text\":\"&c&lno\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Deny the invitation\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bYou can use &7/party <accept/deny> %player% &bto choose.\"}]"
-      denied: "&7You denied the teleport request of %player%"
+      sent: "&aЗапит на переміщення відправлено команді"
+      received: "[{\"text\":\"&bТи хочеш аби тебе було переміщено до %player%? \"},{\"text\":\"&a&lТак\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"&6Прийняти запит\"}]}}},{\"text\":\" &bабо \"},{\"text\":\"&c&lні\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party deny %player%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"Відхилити запит\",\"color\":\"gold\"}]}}},{\"text\":\"&b?\n&bТакож, можна використовувати &7/party <accept/deny> %player% &bдля вибору.\"}]"
+      denied: "&7Ти відхилив запит на переміщення від %player%"
 #/ =============================== \
 #|         OTHER  MESSAGES         |
 #\ =============================== /
@@ -444,21 +444,21 @@ other:
   follow:
     #[Special tags]
     #=> %server%          = New server
-    following-server: "&7Following %player% in %server%"
+    following-server: "&7Слідуємо за %player% у світ %server%"
   fixed-parties:
-    default-join: "&bYou entered into %party%"
+    default-join: "&bТи приєднався до команди %party%"
   join-leave:
-    server-join: "&b%player% is online!"
-    server-leave: "&7%player% is offline!"
+    server-join: "&b%player% онлайн!"
+    server-leave: "&7%player% офлайн!"
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: "&b================= &lParty Help %page%/%maxpages% &r&b================="
+  header: "&b===== &lДопомога по Party %page%/%maxpages% &r&b====="
   footer: ""
-  perform-command: 'Perform the command'
+  perform-command: 'Виконати команду'
   console-help:
-    header: 'You can only perform these commands:'
+    header: 'Ти можеш виконувати лише наступні команди:'
     command: ' > %command% - %description%'
   #[Special tags]
   #=> %syntax%          = Command syntax
@@ -485,23 +485,23 @@ help:
       spy: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       version: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      help: 'Show help pages'
-      accept: 'Accept a party request'
-      chat: 'Toggle party chat'
-      create: 'Create a new party'
-      delete: 'Delete the party'
-      deny: 'Deny a party request'
-      ignore: 'Add/remove/show ignored parties'
-      info: 'Show party information'
-      invite: 'Invite a player to your party'
-      kick: 'Kick a player from the party'
-      leave: 'Leave your party'
-      p: 'Send a message to the party'
-      rank: 'Change rank of the player'
-      reload: 'Reload Parties configuration files'
-      rename: 'Rename the party'
-      spy: 'Spy messages of other parties'
-      version: 'Show Parties information'
+      help: 'Показати сторінки допомоги'
+      accept: 'Прийняти запит'
+      chat: 'Переключити командний чат'
+      create: 'Створити нову команду'
+      delete: 'Видалити команду'
+      deny: 'Відхилити запит'
+      ignore: 'Додати/видалити/показати команди, що ігноруються'
+      info: 'Показати інформацію про команду'
+      invite: 'Запросити гравця в команду'
+      kick: 'Вигнати гравця з команди'
+      leave: 'Покинути команду'
+      p: 'Надіслати повідомлення команді'
+      rank: 'Змінити ранг гравця'
+      reload: 'Перезавантажити файл конфігурації Parties'
+      rename: 'Перейменувати команду'
+      spy: 'Підслуховувати повідомлення іншої команди'
+      version: 'Показати інформація про Parties'
   additional:
     commands:
       ask: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
@@ -525,25 +525,25 @@ help:
       tag: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
       teleport: '{"text":"&b/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     descriptions:
-      ask: 'Send a join request'
-      claim: 'Grant permissions to the claim'
-      close: 'Close the party'
-      color: 'Change party color'
-      createfixed: 'Create a new fixed party'
+      ask: 'Надіслати запит на приєднання'
+      claim: 'Надати права на ділянці (claim''і)'
+      close: 'Закрити команду'
+      color: 'Змінити колір команди'
+      createfixed: 'Створити нову фіксовану команду'
       debug: 'Debug issues'
-      desc: 'Set/remove party description'
-      follow: 'Toggle follow leader'
-      home: 'Teleport to the party home'
-      join: 'Join into the party'
-      list: 'List of online parties'
-      motd: 'Set/remove party motd'
-      mute: 'Toggle notifications'
-      nickname: 'Set/remove member nickname'
-      open: 'Open the party'
-      password: 'Change party password'
-      protection: 'Toggle friendly fire protection'
-      sethome: 'Set/remove party home'
-      tag: 'Set/remove party tag'
-      teleport: 'Teleport your party to you'
+      desc: 'Встановити/видалити опис команди'
+      follow: 'Перемкнути режим слідування за лідером'
+      home: 'Переміститись до командного дому'
+      join: 'Приєднатись до команди'
+      list: 'Список команд які онлайн'
+      motd: 'Встановити/видалити командне повідомлення'
+      mute: 'Увімкнути/вимкнути сповіщення'
+      nickname: 'Встановити/видалити нікнейм члена команди'
+      open: 'Відкрити команду'
+      password: 'Змінити пароль команди'
+      protection: 'Переключити режим "вогню по своїм"'
+      sethome: 'Встановити/видалити дім команди'
+      tag: 'Встановити/видалити тег команди'
+      teleport: 'Перемістити всіх членів команди до себе'
 dont-edit-this:
   version: 14
