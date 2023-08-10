@@ -94,22 +94,28 @@ public class BungeeCommandTeleport extends CommandTeleport {
 					bungeePlayer.connect(serverInfo);
 				}
 				
-				User bungeeUser = plugin.getPlayer(player.getPlayerUUID());
-				if (bungeeUser != null) {
-					if (serverChange) {
-						plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-										.sendTeleport(bungeeUser, targetPlayer, serverInfo),
-								BungeeConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY, TimeUnit.MILLISECONDS);
+				if (BungeeConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION || serverChange) {
+					// Send message & event only if server is changed or exact location is enabled
+					User bungeeUser = plugin.getPlayer(player.getPlayerUUID());
+					if (bungeeUser != null) {
+						if (BungeeConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION) {
+							// Teleports to the same location only if enabled
+							if (serverChange) {
+								plugin.getScheduler().scheduleAsyncLater(() -> ((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+												.sendTeleport(bungeeUser, targetPlayer, serverInfo),
+										BungeeConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY, TimeUnit.MILLISECONDS);
+								
+							} else {
+								((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+										.sendTeleport(bungeeUser, targetPlayer, serverInfo);
+							}
+						}
 						
-					} else {
-						((BungeePartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-								.sendTeleport(bungeeUser, targetPlayer, serverInfo);
+						player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
+						
+						IPlayerPostTeleportEvent partiesPostTeleportEvent = plugin.getEventManager().preparePlayerPostTeleportEvent(player, party, serverInfo);
+						plugin.getEventManager().callEvent(partiesPostTeleportEvent);
 					}
-					
-					player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
-					
-					IPlayerPostTeleportEvent partiesPostTeleportEvent = plugin.getEventManager().preparePlayerPostTeleportEvent(player, party, serverInfo);
-					plugin.getEventManager().callEvent(partiesPostTeleportEvent);
 				}
 			} else
 				plugin.getLoggerManager().logDebug(String.format(PartiesConstants.DEBUG_API_TELEPORTEVENT_DENY,

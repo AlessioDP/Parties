@@ -97,16 +97,22 @@ public class VelocityCommandTeleport extends CommandTeleport {
 						velocityPlayer.createConnectionRequest(server);
 					}
 					
-					User velocityUser = plugin.getPlayer(player.getPlayerUUID());
-					if (velocityUser != null) {
-						if (serverChange) {
-							plugin.getScheduler().scheduleAsyncLater(() -> ((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-											.sendTeleport(velocityUser, targetPlayer),
-									VelocityConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY, TimeUnit.MILLISECONDS);
-							
-						} else {
-							((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-									.sendTeleport(velocityUser, targetPlayer);
+					if (VelocityConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION || serverChange) {
+						// Send message & event only if server is changed or exact location is enabled
+						User velocityUser = plugin.getPlayer(player.getPlayerUUID());
+						if (velocityUser != null) {
+							if (VelocityConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION) {
+								// Teleports to the same location only if enabled
+								if (serverChange) {
+									plugin.getScheduler().scheduleAsyncLater(() -> ((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+													.sendTeleport(velocityUser, targetPlayer),
+											VelocityConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY, TimeUnit.MILLISECONDS);
+									
+								} else {
+									((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
+											.sendTeleport(velocityUser, targetPlayer);
+								}
+							}
 						}
 						
 						player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
