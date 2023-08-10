@@ -161,7 +161,7 @@ main-commands:
     player-kicked: "&b你已被踢出了 %party%"
     broadcast: "&b&l%player%已被踢出队伍"
     broadcast-disband: "&b&l帮派已被解散，因为领导者被踢了"
-    broadcast-leader-changed: "&b&lThe new leader is %player%"
+    broadcast-leader-changed: "&b&l新领袖是 %player%"
     broadcast-leave-server: "&b&l%player%已被踢出队伍"
     player-higher-rank: "&c你不可以踢你的上级"
     player-not-in-party: "&c%player% 不在你的帮派中"
@@ -197,9 +197,9 @@ main-commands:
     same-rank: "&c%player% 已成为 %rank_name%！"
     low-rank: "&c您不能编辑该玩家职位，其级别比你的级别高或相同！"
     to-higher-rank: "&c你不能升为相等或更高级别！"
-    full: "&cRank %rank_name% reached the maximum number of players"
+    full: "&c等级 %rank_name% 的玩家数量已达到最大值"
     fixed-leader: "&c你无法让某个人成为特定帮派的领导人！"
-    demote-leader: "&cYou cannot demote the party leader"
+    demote-leader: "&c你不能降级帮派领袖"
     changing-yourself: "&c你不能改变自己的职位！"
     player-not-in-party: "&c%player% 不在你的帮派中"
     players-conflict:
@@ -328,7 +328,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     teleport-in: "&7您将在 %seconds% 秒后被传送..."
-    teleport-cancelled: "&7Teleport cancelled"
+    teleport-cancelled: "&7传送已取消"
     teleport-waiting: "&c你需等待传送！"
     no-home: "&c还没有家"
     #[Special tags]
@@ -344,13 +344,13 @@ additional-commands:
     joined: "&a你加入了帮派 %party%"
     player-joined: "&b&l%player% 加入了帮派"
     open-close:
-      opened: "&bThe party is now open"
-      closed: "&bThe party is now closed"
-      already-open: "&cThe party is already open"
-      already-closed: "&cThe party is already closed"
+      opened: "&b该帮派现在是公开状态"
+      closed: "&b该帮派现在是私密状态"
+      already-open: "&c该帮派已经是公开状态了"
+      already-closed: "&c该帮派已经是私密状态了"
       cooldown: "&c您需要等待 %seconds% 秒!"
-      cannot-join: "&cYou cannot join this party"
-      failed: "&cFailed to open the party"
+      cannot-join: "&c你不能加入这个帮派"
+      failed: "&c无法公开帮派"
     password:
       wrong-password: "&c密码错误！"
   list:
@@ -429,7 +429,7 @@ additional-commands:
     #[Special tags]
     #=> %seconds%          = Time of delay in seconds
     player-teleport-in: "&7您将在 %seconds% 秒后被传送。"
-    player-teleport-cancelled: "&7Teleport cancelled"
+    player-teleport-cancelled: "&7传送已取消"
     #[Special tags]
     #=> %seconds%          = Remaining time in seconds
     cooldown: "&c您需要等待 %seconds% 秒!"
@@ -527,7 +527,7 @@ help:
     descriptions:
       ask: '发送加入申请'
       claim: '给团队的领地权限'
-      close: 'Close the party'
+      close: '设为私密'
       color: '更改团队主题色'
       createfixed: '创建一个新的固定团队'
       debug: '调试问题'
@@ -539,7 +539,7 @@ help:
       motd: '设置/移除 团队的 motd'
       mute: '切换通知'
       nickname: '设置/移除 成员昵称'
-      open: 'Open the party'
+      open: '公开帮派'
       password: '更改团队密码'
       protection: '切换友伤保护'
       sethome: '设置/移除 团队的家'
