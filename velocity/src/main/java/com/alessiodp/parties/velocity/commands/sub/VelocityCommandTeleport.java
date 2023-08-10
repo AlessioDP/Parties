@@ -113,12 +113,12 @@ public class VelocityCommandTeleport extends CommandTeleport {
 											.sendTeleport(velocityUser, targetPlayer);
 								}
 							}
+							
+							player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
+							
+							IPlayerPostTeleportEvent partiesPostTeleportEvent = plugin.getEventManager().preparePlayerPostTeleportEvent(player, party, server);
+							plugin.getEventManager().callEvent(partiesPostTeleportEvent);
 						}
-						
-						player.sendMessage(Messages.ADDCMD_TELEPORT_PLAYER_TELEPORTED, targetPlayer);
-						
-						IPlayerPostTeleportEvent partiesPostTeleportEvent = plugin.getEventManager().preparePlayerPostTeleportEvent(player, party, server);
-						plugin.getEventManager().callEvent(partiesPostTeleportEvent);
 					}
 				});
 			} else
