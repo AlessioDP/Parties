@@ -17,15 +17,7 @@ import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesCombustFriend
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesFriendlyFireBlockedEvent;
 import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriendlyFireBlockedEvent;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.Trident;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
@@ -50,6 +42,8 @@ public class BukkitFightListener implements Listener {
 				type = DamageType.PLAYER;
 			else if (event.getDamager() instanceof Arrow)
 				type = DamageType.ARROW;
+			else if (event.getDamager() instanceof SpectralArrow)
+				type = DamageType.SPECTRALARROW;
 			else if (event.getDamager() instanceof EnderPearl)
 				type = DamageType.ENDERPEARL;
 			else if (event.getDamager() instanceof Snowball)
@@ -67,6 +61,11 @@ public class BukkitFightListener implements Listener {
 					break;
 				case ARROW:
 					shooterSource = ((Arrow)event.getDamager()).getShooter();
+					if (shooterSource instanceof Player)
+						attacker = (Player) shooterSource;
+					break;
+				case SPECTRALARROW:
+					shooterSource = ((SpectralArrow)event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
@@ -346,6 +345,6 @@ public class BukkitFightListener implements Listener {
 	}
 	
 	private enum DamageType {
-		UNSUPPORTED, PLAYER, ARROW, ENDERPEARL, SNOWBALL, TRIDENT
+		UNSUPPORTED, PLAYER, ARROW, SPECTRALARROW, ENDERPEARL, SNOWBALL, TRIDENT
 	}
 }
