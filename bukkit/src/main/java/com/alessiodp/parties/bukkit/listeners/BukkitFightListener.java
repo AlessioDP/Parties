@@ -19,6 +19,7 @@ import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriend
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -50,6 +51,8 @@ public class BukkitFightListener implements Listener {
 				type = DamageType.PLAYER;
 			else if (event.getDamager() instanceof Arrow)
 				type = DamageType.ARROW;
+			else if (event.getDamager() instanceof SpectralArrow)
+				type = DamageType.SPECTRALARROW;
 			else if (event.getDamager() instanceof EnderPearl)
 				type = DamageType.ENDERPEARL;
 			else if (event.getDamager() instanceof Snowball)
@@ -67,6 +70,11 @@ public class BukkitFightListener implements Listener {
 					break;
 				case ARROW:
 					shooterSource = ((Arrow)event.getDamager()).getShooter();
+					if (shooterSource instanceof Player)
+						attacker = (Player) shooterSource;
+					break;
+				case SPECTRALARROW:
+					shooterSource = ((SpectralArrow)event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
@@ -346,6 +354,6 @@ public class BukkitFightListener implements Listener {
 	}
 	
 	private enum DamageType {
-		UNSUPPORTED, PLAYER, ARROW, ENDERPEARL, SNOWBALL, TRIDENT
+		UNSUPPORTED, PLAYER, ARROW, SPECTRALARROW, ENDERPEARL, SNOWBALL, TRIDENT
 	}
 }
