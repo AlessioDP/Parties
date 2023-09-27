@@ -2,6 +2,7 @@ package com.alessiodp.parties.velocity.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.parties.common.commands.sub.CommandSetHome;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
@@ -19,13 +20,14 @@ public class VelocityCommandSetHome extends CommandSetHome {
 	
 	@Override
 	protected void getLocationAndSave(@NotNull PartyPlayerImpl sender, @NotNull PartyImpl party, @NotNull String name) {
+		User user = plugin.getPlayer(sender.getPlayerUUID());
 		Player player = ((VelocityPartiesBootstrap) plugin.getBootstrap()).getServer().getPlayer(sender.getPlayerUUID()).orElse(null);
-		if (player != null) {
+		if (user != null && player != null) {
 			ServerConnection serverConnection = player.getCurrentServer().orElse(null);
 			if (serverConnection != null) {
 				String serverName = serverConnection.getServerInfo().getName();
 				
-				((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddHome(party, sender, name, serverName);
+				((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAddHome(user, party, name, serverName);
 			}
 		}
 	}

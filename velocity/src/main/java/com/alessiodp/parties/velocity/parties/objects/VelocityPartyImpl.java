@@ -70,14 +70,14 @@ public class VelocityPartyImpl extends PartyImpl {
 	public void sendPacketChat(@NotNull PartyPlayerImpl player, @NotNull String formattedMessage, @NotNull String message, boolean dispatchBetweenServers) {
 		super.sendPacketChat(player, formattedMessage, message, dispatchBetweenServers);
 		
-		((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendChatMessage(this, player, formattedMessage, message);
+		((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendChatMessage(this, player, formattedMessage, message, dispatchBetweenServers);
 	}
 	
 	@Override
 	public void sendPacketBroadcast(@NotNull String message, @Nullable PartyPlayerImpl player, boolean dispatchBetweenServers) {
 		super.sendPacketBroadcast(message, player, dispatchBetweenServers);
 		
-		((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendBroadcastMessage(this, player, message);
+		((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendBroadcastMessage(this, player, message, dispatchBetweenServers);
 	}
 	
 	@Override

@@ -10,12 +10,16 @@ import com.alessiodp.parties.api.enums.JoinCause;
 import com.alessiodp.parties.api.enums.LeaveCause;
 import com.alessiodp.parties.common.configuration.PartiesConfigurationManager;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
+import com.alessiodp.parties.common.configuration.data.ConfigParties;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
 import com.alessiodp.parties.common.parties.objects.PartyHomeImpl;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
+import com.alessiodp.parties.velocity.bootstrap.VelocityPartiesBootstrap;
 import com.alessiodp.parties.velocity.messaging.bungee.VelocityPartiesBungeecordDispatcher;
 import com.alessiodp.parties.velocity.messaging.redis.VelocityPartiesRedisBungeeDispatcher;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,14 +51,16 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.UPDATE_PARTY)
 					.setParty(party.getId());
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
 	public void sendUpdatePlayer(@NotNull PartyPlayerImpl partyPlayer) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PLAYER_SYNC) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.UPDATE_PLAYER)
-					.setPlayer(partyPlayer.getPartyId());
+					.setPlayer(partyPlayer.getPlayerUUID());
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -98,6 +104,7 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setNumber(volume)
 					.setSecondaryNumber(pitch);
 			sendPacketToBungeecordUser(packet, user);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -107,6 +114,7 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setParty(party.getId())
 					.setPlayer(leader != null ? leader.getPlayerUUID() : null);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -115,9 +123,10 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.DELETE_PARTY)
 					.setParty(party.getId())
 					.setCause(cause)
-					.setPlayer(kicked != null ? kicked.getPlayerUUID(): null)
+					.setPlayer(kicked != null ? kicked.getPlayerUUID() : null)
 					.setSecondaryPlayer(executor != null ? executor.getPlayerUUID() : null);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -130,6 +139,7 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setPlayer(executor != null ? executor.getPlayerUUID() : null)
 					.setBool(admin);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -141,6 +151,7 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setCause(cause)
 					.setSecondaryPlayer(inviter != null ? inviter.getPlayerUUID() : null);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -152,10 +163,11 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setCause(cause)
 					.setSecondaryPlayer(executor != null ? executor.getPlayerUUID() : null);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
-	public void sendChatMessage(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull String formattedMessage, @NotNull String message) {
+	public void sendChatMessage(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull String formattedMessage, @NotNull String message, boolean dispatchRedis) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_CHAT) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.CHAT_MESSAGE)
 					.setParty(party.getId())
@@ -163,16 +175,20 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setText(formattedMessage)
 					.setSecondaryText(message);
 			sendPacketToBungeecord(packet);
+			if (dispatchRedis)
+				sendPacketToRedis(packet);
 		}
 	}
 	
-	public void sendBroadcastMessage(@NotNull PartyImpl party, @Nullable PartyPlayerImpl player, @NotNull String message) {
+	public void sendBroadcastMessage(@NotNull PartyImpl party, @Nullable PartyPlayerImpl player, @NotNull String message, boolean dispatchRedis) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_BROADCAST) {
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.BROADCAST_MESSAGE)
 					.setParty(party.getId())
 					.setPlayer(player != null ? player.getPlayerUUID() : null)
 					.setText(message);
 			sendPacketToBungeecord(packet);
+			if (dispatchRedis)
+				sendPacketToRedis(packet);
 		}
 	}
 	
@@ -181,36 +197,50 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.INVITE_PLAYER)
 					.setParty(party.getId())
 					.setPlayer(player.getPlayerUUID())
-					.setSecondaryPlayer(inviter != null ? inviter.getPlayerUUID() : null);
+					.setSecondaryPlayer(inviter != null ? inviter.getPlayerUUID() : null)
+					.setNumber(ConfigParties.GENERAL_INVITE_TIMEOUT);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
-	public void sendAddHome(@NotNull PartyImpl party, @NotNull PartyPlayerImpl player, @NotNull String name, @NotNull String server) {
+	public void sendAddHome(@NotNull User user, @NotNull PartyImpl party, @NotNull String name, @NotNull String server) {
 		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_PARTY_SYNC) {
 			// The home is set by Bukkit, send name + server name.
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.ADD_HOME)
 					.setParty(party.getId())
-					.setPlayer(player.getPlayerUUID())
+					.setPlayer(user.getUUID())
 					.setText(name)
 					.setSecondaryText(server);
-			sendPacketToBungeecord(packet);
+			sendPacketToBungeecordUser(packet, user);
 		}
 	}
 	
-	public void sendHomeTeleport(@NotNull User user, @NotNull PartyHomeImpl home, @NotNull String message) {
+	public void sendHomeTeleport(@NotNull User user, @NotNull PartyHomeImpl home, @NotNull String message, @NotNull RegisteredServer targetServer) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.HOME_TELEPORT)
 				.setPlayer(user.getUUID())
 				.setText(home.toString())
 				.setSecondaryText(message);
-		sendPacketToBungeecordUser(packet, user);
+		
+		if (((VelocityPartiesBootstrap) plugin.getBootstrap()).getServersList().contains(targetServer)) {
+			sendPacketToBungeecordUser(packet, user);
+		} else {
+			// If the server is not in this network
+			sendPacketToRedis(packet);
+		}
 	}
 	
-	public void sendTeleport(@NotNull User user, @NotNull PartyPlayerImpl target) {
+	public void sendTeleport(@NotNull User user, @NotNull PartyPlayerImpl target, @NotNull RegisteredServer targetServer) {
 		PartiesPacket packet = makePacket(PartiesPacket.PacketType.TELEPORT)
 				.setPlayer(user.getUUID())
 				.setSecondaryPlayer(target.getPlayerUUID());
-		sendPacketToBungeecordUser(packet, user);
+		
+		if (((VelocityPartiesBootstrap) plugin.getBootstrap()).getServersList().contains(targetServer)) {
+			sendPacketToBungeecordUser(packet, user);
+		} else {
+			// If the server is not in this network
+			sendPacketToRedis(packet);
+		}
 	}
 	
 	public void sendPartyExperience(@NotNull PartyImpl party, @Nullable PartyPlayerImpl killer, double experience, boolean gainMessage) {
@@ -222,6 +252,7 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setNumber(experience)
 					.setBool(gainMessage);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -231,6 +262,7 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 					.setParty(party.getId())
 					.setNumber(newLevel);
 			sendPacketToBungeecord(packet);
+			sendPacketToRedis(packet);
 		}
 	}
 	
@@ -239,6 +271,15 @@ public class VelocityPartiesMessageDispatcher extends VelocityMessageDispatcher 
 			PartiesPacket packet = makePacket(PartiesPacket.PacketType.CONFIGS)
 					.setConfigData(((PartiesConfigurationManager) plugin.getConfigurationManager()).makePacketConfigData());
 			sendPacketToBungeecord(packet);
+		}
+	}
+	
+	public void sendDebugBungeecordReply(@NotNull User receiver, boolean result, boolean replyToPlayer) {
+		if (ConfigMain.PARTIES_BUNGEECORD_PACKETS_DEBUG_BUNGEECORD) {
+			PartiesPacket packet = makePacket(PartiesPacket.PacketType.DEBUG_BUNGEECORD)
+					.setPlayer(replyToPlayer ? receiver.getUUID() : null)
+					.setBool(result);
+			sendPacketToBungeecordUser(packet, receiver);
 		}
 	}
 	

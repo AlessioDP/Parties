@@ -91,10 +91,9 @@ public class VelocityCommandTeleport extends CommandTeleport {
 			if (!partiesPreTeleportEvent.isCancelled()) {
 				velocityPlayer.getCurrentServer().ifPresent(serverConnection1 -> {
 					boolean serverChange = false;
-					
 					if (!serverConnection1.getServer().equals(server)) {
 						serverChange = true;
-						velocityPlayer.createConnectionRequest(server);
+						velocityPlayer.createConnectionRequest(server).connect();
 					}
 					
 					if (VelocityConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION || serverChange) {
@@ -105,12 +104,12 @@ public class VelocityCommandTeleport extends CommandTeleport {
 								// Teleports to the same location only if enabled
 								if (serverChange) {
 									plugin.getScheduler().scheduleAsyncLater(() -> ((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-													.sendTeleport(velocityUser, targetPlayer),
+													.sendTeleport(velocityUser, targetPlayer, server),
 											VelocityConfigParties.ADDITIONAL_TELEPORT_EXACT_LOCATION_DELAY, TimeUnit.MILLISECONDS);
 									
 								} else {
 									((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-											.sendTeleport(velocityUser, targetPlayer);
+											.sendTeleport(velocityUser, targetPlayer, server);
 								}
 							}
 							

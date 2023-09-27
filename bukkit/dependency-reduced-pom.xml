@@ -56,10 +56,6 @@
   </build>
   <repositories>
     <repository>
-      <id>confuser-repo</id>
-      <url>https://ci.frostcast.net/plugin/repository/everything/</url>
-    </repository>
-    <repository>
       <id>mikeprimm-repo</id>
       <url>https://repo.mikeprimm.com/</url>
     </repository>

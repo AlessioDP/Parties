@@ -49,29 +49,31 @@ public class VelocityCommandHome extends CommandHome {
 			boolean serverChange = false;
 			RegisteredServer server = ((ADPVelocityBootstrap) plugin.getBootstrap()).getServer().getServer(home.getServer()).orElse(null);
 			
+			if (server == null) {
+				plugin.getLoggerManager().logError(String.format(PartiesConstants.DEBUG_CMD_HOME_NO_SERVER, home));
+				return;
+			}
+			
 			IPlayerPreHomeEvent partiesPreHomeEvent = plugin.getEventManager().preparePlayerPreHomeEvent(partyPlayer, party, home);
 			plugin.getEventManager().callEvent(partiesPreHomeEvent);
 			if (!partiesPreHomeEvent.isCancelled()) {
+				if (((VelocityUser) player).getServer() == null)
+					return; // Cannot get player server
+				
 				if (VelocityConfigParties.ADDITIONAL_HOME_CROSS_SERVER && !((VelocityUser) player).getServerName().equalsIgnoreCase(home.getServer())) {
-					if (server == null) {
-						plugin.getLoggerManager().logError(String.format(PartiesConstants.DEBUG_CMD_HOME_NO_SERVER, home));
-						return;
-					}
-					
 					((VelocityUser) player).connectTo(server);
 					
 					serverChange = true;
 				}
 				
 				String message = plugin.getMessageUtils().convertPlaceholders(Messages.ADDCMD_HOME_TELEPORTED, partyPlayer, party);
-				
 				if (serverChange) {
 					plugin.getScheduler().scheduleAsyncLater(() -> ((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-									.sendHomeTeleport(player, home, message),
+									.sendHomeTeleport(player, home, message, server),
 							VelocityConfigParties.ADDITIONAL_HOME_CROSS_SERVER_DELAY, TimeUnit.MILLISECONDS);
 				} else {
 					((VelocityPartiesMessageDispatcher) plugin.getMessenger().getMessageDispatcher())
-							.sendHomeTeleport(player, home, message);
+							.sendHomeTeleport(player, home, message, server);
 				}
 				
 				IPlayerPostHomeEvent partiesPostHomeEvent = plugin.getEventManager().preparePlayerPostHomeEvent(partyPlayer, party, home);

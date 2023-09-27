@@ -11,6 +11,7 @@ import com.alessiodp.parties.common.configuration.PartiesConstants;
 import com.alessiodp.parties.common.configuration.data.ConfigMain;
 import com.alessiodp.parties.common.messaging.CommonListener;
 import com.alessiodp.parties.common.messaging.PartiesPacket;
+import com.alessiodp.parties.velocity.commands.sub.VelocityCommandDebug;
 import com.alessiodp.parties.velocity.configuration.VelocityPartiesConfigurationManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +71,9 @@ public class VelocityPartiesBungeecordListener extends VelocityBungeecordListene
 				case REQUEST_CONFIGS:
 					handleRequestConfigs();
 					break;
+				case DEBUG_BUNGEECORD:
+					handleDebugBungeecord(packet);
+					break;
 				default:
 					// Nothing to do
 					break;
@@ -85,5 +89,9 @@ public class VelocityPartiesBungeecordListener extends VelocityBungeecordListene
 			
 			plugin.getLoggerManager().logDebug(PartiesConstants.DEBUG_MESSAGING_LISTEN_REQUEST_CONFIGS, true);
 		}
+	}
+	
+	public void handleDebugBungeecord(PartiesPacket packet) {
+		VelocityCommandDebug.handleDebugBungeecord((PartiesPlugin) plugin, packet.getPlayer(), packet.getSecondaryPlayer(), packet.isBool(), packet.getSource());
 	}
 }

@@ -10,11 +10,14 @@ import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 @Plugin(
 		id = PartiesConstants.PLUGIN_FALLBACK,
@@ -47,5 +50,14 @@ public class VelocityPartiesBootstrap extends ADPVelocityBootstrap {
 	@Override
 	public @NotNull String getVersion() {
 		return VelocityConstants.VERSION;
+	}
+	
+	/**
+	 * Returns the list of registered servers of this network
+	 *
+	 * @return a set of registered servers
+	 */
+	public @NotNull Set<RegisteredServer> getServersList() {
+		return new HashSet<>(getServer().getAllServers());
 	}
 }
