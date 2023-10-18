@@ -82,7 +82,7 @@
 		
 		<libs.adpcore>1.8.10</libs.adpcore>
 		<libs.api.spigot>1.20.2-R0.1-SNAPSHOT</libs.api.spigot>
-		<libs.api.bungeecord>1.20-R0.1-SNAPSHOT</libs.api.bungeecord>
+		<libs.api.bungeecord>1.20-R0.2-SNAPSHOT</libs.api.bungeecord>
 		<libs.api.velocity>3.1.1</libs.api.velocity>
 		<!-- ADP Core Test Libraries -->
 		<libs.h2>1.4.200</libs.h2>
