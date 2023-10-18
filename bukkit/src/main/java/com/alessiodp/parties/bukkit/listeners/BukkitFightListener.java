@@ -19,6 +19,7 @@ import com.alessiodp.parties.api.events.bukkit.unique.BukkitPartiesPotionsFriend
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.FishHook;
 import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.LivingEntity;
@@ -51,12 +52,16 @@ public class BukkitFightListener implements Listener {
 				type = DamageType.PLAYER;
 			else if (event.getDamager() instanceof Arrow)
 				type = DamageType.ARROW;
-			else if (event.getDamager() instanceof SpectralArrow)
-				type = DamageType.SPECTRALARROW;
 			else if (event.getDamager() instanceof EnderPearl)
 				type = DamageType.ENDERPEARL;
+			else if (event.getDamager() instanceof FishHook && BukkitConfigParties.ADDITIONAL_FRIENDLYFIRE_PREVENT_FISH_HOOK)
+				type = DamageType.FISH_HOOK;
 			else if (event.getDamager() instanceof Snowball)
 				type = DamageType.SNOWBALL;
+			try {
+				if (event.getDamager() instanceof SpectralArrow)
+					type = DamageType.SPECTRAL_ARROW;
+			} catch (NoClassDefFoundError ignored) {}
 			try {
 				if (event.getDamager() instanceof Trident)
 					type = DamageType.TRIDENT;
@@ -69,17 +74,17 @@ public class BukkitFightListener implements Listener {
 					attacker = (Player) event.getDamager();
 					break;
 				case ARROW:
-					shooterSource = ((Arrow)event.getDamager()).getShooter();
-					if (shooterSource instanceof Player)
-						attacker = (Player) shooterSource;
-					break;
-				case SPECTRALARROW:
-					shooterSource = ((SpectralArrow)event.getDamager()).getShooter();
+					shooterSource = ((Arrow) event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
 				case ENDERPEARL:
-					shooterSource = ((EnderPearl)event.getDamager()).getShooter();
+					shooterSource = ((EnderPearl) event.getDamager()).getShooter();
+					if (shooterSource instanceof Player)
+						attacker = (Player) shooterSource;
+					break;
+				case FISH_HOOK:
+					shooterSource = ((FishHook) event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
@@ -88,8 +93,13 @@ public class BukkitFightListener implements Listener {
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
+				case SPECTRAL_ARROW:
+					shooterSource = ((SpectralArrow) event.getDamager()).getShooter();
+					if (shooterSource instanceof Player)
+						attacker = (Player) shooterSource;
+					break;
 				case TRIDENT:
-					shooterSource = ((Trident)event.getDamager()).getShooter();
+					shooterSource = ((Trident) event.getDamager()).getShooter();
 					if (shooterSource instanceof Player)
 						attacker = (Player) shooterSource;
 					break;
@@ -354,6 +364,6 @@ public class BukkitFightListener implements Listener {
 	}
 	
 	private enum DamageType {
-		UNSUPPORTED, PLAYER, ARROW, SPECTRALARROW, ENDERPEARL, SNOWBALL, TRIDENT
+		UNSUPPORTED, PLAYER, ARROW, ENDERPEARL, FISH_HOOK, SNOWBALL, SPECTRAL_ARROW, TRIDENT
 	}
 }

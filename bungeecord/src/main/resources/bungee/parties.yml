@@ -235,7 +235,6 @@ additional:
   # => command:  Toggle the party protection with "/party protection" command
   #
   # You can enable 'warn-players-on-fight' to warn leaders on friendly fire hits
-  # 'prevent-fish-hook' works only in 1.15+
   # 'prevent-damage-with-magic' prevents friendly fire damage of Magic plugin
   friendly-fire:
     enable: true
