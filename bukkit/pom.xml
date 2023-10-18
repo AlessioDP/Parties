@@ -161,6 +161,12 @@
 			<artifactId>api</artifactId>
 			<version>${libs.griefDefender}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
