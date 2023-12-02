@@ -58,7 +58,7 @@ public class CommandCreate extends PartiesSubCommand {
 		return handlePreRequisitesFull(
 				commandData,
 				false,
-				ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE && ConfigParties.GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE ? 1 : 2,
+				ConfigParties.GENERAL_NAME_DYNAMIC_ENABLE && !ConfigParties.GENERAL_NAME_DYNAMIC_ALLOW_IN_CREATE ? 1 : 2,
 				2);
 	}
 	
