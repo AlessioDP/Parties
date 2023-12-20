@@ -33,18 +33,19 @@ public class LuckPermsHandler {
 		}
 	}
 	
+	@NotNull
 	public static String parsePlaceholders(@NotNull String text, @NotNull PartyPlayerImpl player) {
-		String ret = null;
+		String ret = text;
 		if (active) {
-			Matcher matcher = PLACEHOLDER_PATTERN.matcher(text);
+			Matcher matcher = PLACEHOLDER_PATTERN.matcher(ret);
 			while (matcher.find()) {
 				String identifier = matcher.group(1);
 				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%luckperms_prefix%":
-						ret = text.replace(identifier, hook.getPlayerPrefix(player.getPlayerUUID()));
+						ret = ret.replace(identifier, hook.getPlayerPrefix(player.getPlayerUUID()));
 						break;
 					case "%luckperms_suffix%":
-						ret = text.replace(identifier, hook.getPlayerSuffix(player.getPlayerUUID()));
+						ret = ret.replace(identifier, hook.getPlayerSuffix(player.getPlayerUUID()));
 						break;
 					default: // Nothing to do
 				}

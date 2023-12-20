@@ -5,6 +5,7 @@ import com.alessiodp.parties.common.PartiesPlugin;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import com.alessiodp.parties.common.utils.MessageUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitMessageUtils extends MessageUtils {
 	
@@ -12,8 +13,9 @@ public class BukkitMessageUtils extends MessageUtils {
 		super(plugin);
 	}
 	
+	@NotNull
 	@Override
-	public String convertPlaceholders(String message, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
+	public String convertPlaceholders(@NotNull String message, PartyPlayerImpl player, PartyImpl party, @NotNull String emptyPlaceholder) {
 		String ret = super.convertPlaceholders(message, player, party, emptyPlaceholder);
 		// PlaceholderAPI
 		if (player != null) {

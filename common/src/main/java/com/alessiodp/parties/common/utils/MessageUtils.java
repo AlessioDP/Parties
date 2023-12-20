@@ -10,6 +10,7 @@ import com.alessiodp.parties.common.configuration.data.Messages;
 import com.alessiodp.parties.common.parties.objects.PartyImpl;
 import com.alessiodp.parties.common.players.objects.PartyPlayerImpl;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,11 +22,13 @@ public abstract class MessageUtils {
 	private static final int[] ROMAN_VALUES = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 	private static final String[] ROMAN_LITERALS = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 	
-	public String convertPlaceholders(String message, PartyPlayerImpl player, PartyImpl party) {
+	@NotNull
+	public String convertPlaceholders(@NotNull String message, PartyPlayerImpl player, PartyImpl party) {
 		return convertPlaceholders(message, player, party, "");
 	}
 	
-	public String convertPlaceholders(String message, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
+	@NotNull
+	public String convertPlaceholders(@NotNull String message, PartyPlayerImpl player, PartyImpl party, @NotNull String emptyPlaceholder) {
 		String ret = message;
 		String replacement;
 		Matcher matcher = PLACEHOLDER_PATTERN.matcher(ret);
