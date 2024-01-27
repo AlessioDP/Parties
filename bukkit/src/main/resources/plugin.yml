@@ -4,6 +4,7 @@ author: ${plugin.author}
 website: ${plugin.website}
 version: ${plugin.version}
 main: com.alessiodp.parties.bukkit.bootstrap.BukkitPartiesBootstrap
+folia-supported: true
 api-version: 1.13
 softdepend: [dynmap, LastLoginAPI, PlaceholderAPI, Skript]
 permissions:

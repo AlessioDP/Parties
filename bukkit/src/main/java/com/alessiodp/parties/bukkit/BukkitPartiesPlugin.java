@@ -40,7 +40,7 @@ public class BukkitPartiesPlugin extends PartiesPlugin {
 	
 	@Override
 	protected void initializeCore() {
-		scheduler = new ADPBukkitScheduler(this);
+		scheduler = new PartiesFoliaScheduler(this);
 		configurationManager = new BukkitPartiesConfigurationManager(this);
 		messageUtils = new BukkitMessageUtils(this);
 		messenger = new BukkitPartiesMessenger(this);
