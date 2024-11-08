@@ -28,8 +28,12 @@ public class BukkitMessageUtils extends MessageUtils {
 	public String convertRawPlaceholder(String placeholder, PartyPlayerImpl player, PartyImpl party, String emptyPlaceholder) {
 		String ret = super.convertRawPlaceholder(placeholder, player, party, emptyPlaceholder);
 		// PlaceholderAPI
-		if (ret == null && player != null)
-			ret = PlaceholderAPIHandler.formatRawPlaceholder(player.getPlayerUUID(), "%" + placeholder + "%");
+		if (ret == null && player != null) {
+			String temp = PlaceholderAPIHandler.formatRawPlaceholder(player.getPlayerUUID(), "%" + placeholder + "%");
+			if (temp != null && !temp.equals("%" + placeholder + "%")) {
+				ret = temp;
+			}
+		}
 		return ret;
 	}
 }
